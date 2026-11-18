@@ -108,7 +108,13 @@
     snap_unit_size: 2
     # Massachusetts counts all of the undocumented member's income.
     snap_earned_income: 2_000
-    snap: 194
+    # No utility costs or elderly/disabled member: no actual-cost SUA or
+    # Massachusetts H-EAT SUA under P.L. 119-21 section 10103(a).
+    # https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
+    # https://dtapolicyguide.qa.eohhs.mass.gov/SNAP/ExpensesDeductions/HEAT.htm
+    # $2,000 - $400 earned income deduction - $209 standard deduction
+    # = $1,391; $546 - ceil(30% x $1,391) = $546 - $418 = $128.
+    snap: 128
 
 - name: Case 5, undocumented earner in a hybrid gross-test state.
   period: 2026-01

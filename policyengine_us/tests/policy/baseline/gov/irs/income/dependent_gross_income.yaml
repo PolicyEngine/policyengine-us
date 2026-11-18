@@ -410,3 +410,28 @@
     # Gross income = 14,000 + 0 gains + 500 = 14,500.
     dependent_taxable_ss_magi: [0, 11_000]
     dependent_gross_income: [0, 14_500]
+
+- name: A dependent's disability benefits from an employer-paid plan are gross income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 62
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 1_500
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Only the part due to the employer's payments is gross income
+    # (IRC 105(a)): 6,000 - 1,500 = 4,500.
+    dependent_gross_income: [0, 4_500]

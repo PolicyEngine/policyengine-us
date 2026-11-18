@@ -1,3 +1,80 @@
+# Arkansas grants each taxpayer and spouse a standard deduction under 26-51-430.
+# For 2025, one taxpayer deducts $2,470 and joint spouses deduct
+# 2 x $2,470 = $4,940, including a filer whom another taxpayer can claim.
+- name: 2025 claimable single filer keeps their Arkansas standard deduction
+  period: 2025
+  input:
+    state_code: AR
+    filing_status: SINGLE
+    claimable_as_dependent_on_another_return: true
+  output:
+    ar_standard_deduction_joint: 2_470
+    ar_standard_deduction_indiv: 2_470
+
+- name: 2025 joint filers keep both Arkansas deductions when the head is claimable
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AR
+  output:
+    ar_standard_deduction_joint: [4_940, 0]
+    ar_standard_deduction_indiv: [2_470, 2_470]
+
+- name: 2025 joint filers keep both Arkansas deductions when the spouse is claimable
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AR
+  output:
+    ar_standard_deduction_joint: [4_940, 0]
+    ar_standard_deduction_indiv: [2_470, 2_470]
+
+- name: 2025 joint filers keep both Arkansas deductions when both are claimable
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AR
+  output:
+    ar_standard_deduction_joint: [4_940, 0]
+    ar_standard_deduction_indiv: [2_470, 2_470]
+
 - name: AR Standard deduction if single filer
   period: 2022
   input:

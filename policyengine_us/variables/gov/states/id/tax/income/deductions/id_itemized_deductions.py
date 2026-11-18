@@ -56,9 +56,10 @@ class id_itemized_deductions(Variable):
             threshold = parameters(period).gov.irs.income.bracket.thresholds["6"][
                 filing_status
             ]
-            agi = tax_unit("adjusted_gross_income", period)
-            exemptions = tax_unit("exemptions", period)
-            excess = max_(0, agi - exemptions - threshold)
+            taxable_income = tax_unit(
+                "taxable_income_before_itemized_deductions", period
+            )
+            excess = max_(0, taxable_income - threshold)
             limitation_adjustment = p.obbb.rate * (
                 min_(total, excess) - min_(corrected_total, excess)
             )

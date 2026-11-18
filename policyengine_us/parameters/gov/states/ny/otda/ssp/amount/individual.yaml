@@ -1,0 +1,37 @@
+description: New York provides this amount as the monthly individual payment under the State Supplement Program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New York SSP individual amount
+  breakdown:
+    - ny_ssp_living_arrangement
+  reference:
+    - title: "New York 2026 SSI and SSP maximum monthly benefit levels #page 1-2"
+      href: https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf#page=1
+    - title: New York Social Services Law section 209(2)(a)-(e)
+      href: https://www.nysenate.gov/legislation/laws/SOS/209
+
+LIVING_ALONE:
+  2026-01-01: 87
+
+LIVING_WITH_OTHERS:
+  2026-01-01: 23
+
+FAMILY_CARE:
+  2026-01-01: 228.48
+
+RESIDENTIAL_CARE:
+  2026-01-01: 405
+
+ENHANCED_RESIDENTIAL_CARE:
+  2026-01-01: 694
+
+RESIDENTIAL_HEALTH_CARE_FACILITY:
+  2026-01-01: 0
+
+DEVELOPMENTAL_OR_MENTAL_HEALTH_FACILITY:
+  2026-01-01: 0
+
+NONE:
+  2026-01-01: 0

@@ -3,8 +3,28 @@ values:
   2025-01-01:
     - market_income
     - social_security
-    - unemployment_compensation
+    - total_unemployment_compensation
+    # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
+    # assistance benefits". The IRS leaves general assistance, SSI and TANF out
+    # of gross income under its general welfare exclusion, which rests on IRS
+    # rulings, not a statute or regulation. Congress wrote that exclusion into
+    # law for some payments, among them disaster relief payments (26 U.S.C.
+    # 139) and Indian general welfare benefits (26 U.S.C. 139E). Those stay
+    # out, so general_assistance should hold only assistance outside those
+    # sections. No federal or state statute or regulation excludes SSI or TANF
+    # from income. SNAP (7 U.S.C. 2017(b)) and LIHEAP, including nd_liheap
+    # (42 U.S.C. 8624(f)(1)), stay out because federal law excludes them from
+    # income for any purpose under state law. Item 11 of the Tax
+    # Commissioner's guideline, the second reference below, lists TANF among
+    # items that are not income; candidate us-nd:renters-refund-tanf records
+    # why the statute governs.
     - general_assistance
+    - ssi
+    # The statute counts the income of the applicant and the applicant's
+    # dependents. The model gives each member of an SPM unit an equal share of
+    # its TANF, so a renter who shares an SPM unit with a TANF family that is
+    # not the renter's dependent counts part of that family's TANF.
+    - tanf
 metadata:
   unit: list
   period: year
@@ -14,3 +34,5 @@ metadata:
       href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
     - title: North Dakota Office of State Tax Commissioner | Property Tax Credits for North Dakota Homeowners and Renters
       href: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+    - title: North Dakota Office of State Tax Commissioner | SFN 24777 (10-2025), Application for Senior Citizens or Permanently and Totally Disabled Renter's Property Tax Refund, line 7
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1

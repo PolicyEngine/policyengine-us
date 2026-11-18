@@ -19,3 +19,50 @@
   output:
     hhs_smi: 103_856
     ca_riv_liheap_eligible: false
+
+- name: Case 3, federal 110% poverty floor above the 60% state median income limit at size 21.
+  period: 2026
+  input:
+    state_code: [CA, CA, CA, CA, CA]
+    in_riv: [true, true, true, true, true]
+    spm_unit_size: [21, 21, 21, 21, 20]
+    ca_riv_liheap_countable_income: [136_000, 138_214.99, 138_215, 138_216, 133_800]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY2026 uses the 2025 guidelines (LIHEAP IM
+    # 2025-02): 15,650 + 5,500 x 20 = 125,650 for 21 people, and 110% is
+    # 138,215. The 60% SMI limit for 21 people is 136,088.93.
+    # Household 1 is below the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 20 people, whose 133,782.34 limit exceeds the 132,165
+    # floor (110% of 120,150), so the limit still applies: not eligible.
+    ca_riv_liheap_eligible: [true, true, false, false, false]
+
+- name: Case 4, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: CA
+    in_riv: true
+    spm_unit_size: 21
+    ca_riv_liheap_countable_income: 140_000
+  output:
+    # FY2026 uses the 2025 guidelines, so the floor is 138,215. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 20) = 142,516.
+    ca_riv_liheap_eligible: false
+
+- name: Case 5, FY2025 uses the 2024 poverty guidelines for the floor.
+  period: 2025
+  input:
+    state_code: [CA, CA]
+    in_riv: [true, true]
+    spm_unit_size: [20, 20]
+    ca_riv_liheap_countable_income: [129_007.99, 129_008]
+  output:
+    # LIHEAP IM 2024-02 makes the 2024 guidelines mandatory in FY2025:
+    # 110% x (15,060 + 5,380 x 19) = 129,008 for 20 people, above the
+    # 127,290.74 FY2025 60% SMI limit. The 2025 CSD table (Final Plan PDF page
+    # 180) prints a monthly top of 10,607.47 for 20 people, also below the
+    # 10,750.67 monthly floor.
+    ca_riv_liheap_eligible: [true, false]

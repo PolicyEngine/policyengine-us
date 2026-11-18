@@ -87,3 +87,94 @@
         state_code: OR
   output:
     or_wfhdc_eligibility_category: ["NONE"]
+
+# ORS 315.264(2): the column follows the youngest qualifying individual. The
+# child of a return on which a filer can be claimed is not one.
+- name: 2025 child of a joint return with one claimable spouse does not set the column (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        or_wfhdc_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["DISABLED_ADULTS"]
+
+- name: 2025 child of a joint return with one claimable spouse does not set the column (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        or_wfhdc_eligible: true
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["DISABLED_ADULTS"]
+
+- name: 2025 the same joint return with neither spouse claimable uses the child's column
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        or_wfhdc_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["YOUNGEST"]

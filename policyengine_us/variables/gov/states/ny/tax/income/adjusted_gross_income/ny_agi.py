@@ -10,5 +10,6 @@ class ny_agi(Variable):
     reference = "https://www.law.cornell.edu/regulations/new-york/20-NYCRR-132.1"
     defined_for = StateCode.NY
 
-    adds = ["adjusted_gross_income", "ny_additions"]
+    # IT-201 line 19a, recomputed federal AGI, plus the New York additions.
+    adds = ["ny_recomputed_federal_agi", "ny_additions"]
     subtracts = ["ny_agi_subtractions"]

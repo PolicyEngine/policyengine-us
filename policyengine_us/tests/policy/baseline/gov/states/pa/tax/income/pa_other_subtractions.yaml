@@ -1,0 +1,32 @@
+- name: Case 1, default pa_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: PA
+    employment_income: 50_000
+  output:
+    pa_other_subtractions: 0
+    pa_tax_deductions: 0
+    pa_adjusted_taxable_income: 50_000
+
+- name: Case 2, pa_other_subtractions increases PA tax deductions and reduces adjusted taxable income
+  period: 2024
+  input:
+    state_code: PA
+    employment_income: 50_000
+    pa_other_subtractions: 2_000
+  output:
+    pa_other_subtractions: 2_000
+    pa_tax_deductions: 2_000
+    pa_adjusted_taxable_income: 48_000
+
+- name: Case 3, PA deductions cannot exceed total PA taxable income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 30_000
+    pa_other_subtractions: 40_000
+  output:
+    pa_tax_deductions: 30_000
+    pa_adjusted_taxable_income: 0
+    pa_income_tax: 0

@@ -1,0 +1,371 @@
+# Acquisition-debt limits by vintage, 26 U.S.C. 163(h)(3)(B)(ii), (D) and (F),
+# computed as in IRS Publication 936 (2025), Table 1 (PDF page 14):
+#   G = grandfathered debt, incurred on or before October 13, 1987 (line 1)
+#   P = other debt incurred on or before December 15, 2017 (line 2)
+#   N = debt incurred after December 15, 2017 (line 7)
+#   line 6  = min(max(G, $1,000,000), G + P)
+#   line 11 = min(max(line 6, $750,000), line 6 + N)  (qualified loan limit)
+#   deductible interest = interest x min(1, line 11 / (G + P + N))
+# The model prorates by the exact ratio; Table 1 line 14 rounds it to three
+# decimals, which would move some amounts below by up to $20.
+# Limits are halved for married filing separately. Grandfathered debt has no
+# dollar limit (Pub. 936 p. 13: "Grandfathered debt isn't limited"). The model
+# knows only the origination year, so 1987 counts as on or before
+# October 13, 1987 and 2017 as on or before December 15, 2017.
+# https://www.irs.gov/pub/irs-prior/p936--2025.pdf#page=13
+
+- name: Grandfathered debt above $1,000,000 is fully deductible
+  period: 2024
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 15_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 1986
+  output:
+    # G = 1,500,000: line 6 = min(max(1,500,000, 1,000,000), 1,500,000)
+    # = 1,500,000 = line 11 = line 12, so all interest is deductible.
+    deductible_mortgage_interest_tax_unit: 15_000
+    non_deductible_mortgage_interest_tax_unit: 0
+
+- name: Grandfathered debt is not limited for a separate filer
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    home_mortgage_interest: 30_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 1985
+  output:
+    # The $500,000 separate-return limit does not apply to grandfathered debt.
+    deductible_mortgage_interest_tax_unit: 30_000
+
+- name: Debt from 1987 counts as grandfathered
+  period: 2024
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1987
+  output:
+    # Model convention: only the year is known, and January 1 to October 13
+    # is most of 1987, as January 1 to December 15 is most of 2017.
+    deductible_mortgage_interest_tax_unit: 60_000
+
+- name: Debt from 1988 is not grandfathered
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1988
+  output:
+    # P = 1,200,000: line 6 = min(1,000,000, 1,200,000) = 1,000,000 = line 11.
+    # 60,000 x 1,000,000 / 1,200,000 = 50,000.
+    deductible_mortgage_interest_tax_unit: 50_000
+    non_deductible_mortgage_interest_tax_unit: 10_000
+
+- name: Two grandfathered mortgages are both fully deductible
+  period: 2024
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 52_000
+    first_home_mortgage_balance: 700_000
+    first_home_mortgage_origination_year: 1984
+    second_home_mortgage_balance: 600_000
+    second_home_mortgage_origination_year: 1986
+  output:
+    # G = 1,300,000 = line 6 = line 11 = line 12.
+    deductible_mortgage_interest_tax_unit: 52_000
+
+- name: Grandfathered debt reduces the $1,000,000 limit for later pre-2018 debt
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 65_000
+    first_home_mortgage_balance: 600_000
+    first_home_mortgage_origination_year: 1986
+    second_home_mortgage_balance: 700_000
+    second_home_mortgage_origination_year: 2010
+  output:
+    # line 6 = min(max(600,000, 1,000,000), 1,300,000) = 1,000,000 = line 11.
+    # 65,000 x 1,000,000 / 1,300,000 = 50,000.
+    deductible_mortgage_interest_tax_unit: 50_000
+
+- name: Grandfathered debt above $1,000,000 leaves no limit for later pre-2018 debt
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1985
+    second_home_mortgage_balance: 300_000
+    second_home_mortgage_origination_year: 2010
+  output:
+    # line 6 = min(max(1,200,000, 1,000,000), 1,500,000) = 1,200,000 = line 11.
+    # 60,000 x 1,200,000 / 1,500,000 = 48,000.
+    deductible_mortgage_interest_tax_unit: 48_000
+
+- name: Grandfathered debt reduces the $750,000 limit for post-2017 debt
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 45_000
+    first_home_mortgage_balance: 400_000
+    first_home_mortgage_origination_year: 1986
+    second_home_mortgage_balance: 500_000
+    second_home_mortgage_origination_year: 2022
+  output:
+    # line 6 = 400,000; line 11 = min(max(400,000, 750,000), 900,000) = 750,000.
+    # 45,000 x 750,000 / 900,000 = 37,500.
+    deductible_mortgage_interest_tax_unit: 37_500
+
+- name: Grandfathered debt above $750,000 leaves no limit for post-2017 debt
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 400_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 1_100_000
+    second_home_mortgage_origination_year: 1986
+  output:
+    # line 6 = 1,100,000; line 11 = min(max(1,100,000, 750,000), 1,500,000)
+    # = 1,100,000. 60,000 x 1,100,000 / 1,500,000 = 44,000.
+    deductible_mortgage_interest_tax_unit: 44_000
+
+- name: Refinanced grandfathered balloon loan keeps the original year
+  period: 2025
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1986
+  output:
+    # Pub. 936 (2025) p. 13 example, with a larger balance: a 1986 ten-year
+    # balloon note refinanced in 1996 with a 30-year mortgage stays
+    # grandfathered debt for that whole term (163(h)(3)(D)(iii)(II), (iv)(II)),
+    # so the 1986 year is entered and all interest is deductible. Entering the
+    # 1996 refinancing year would cap it at 60,000 x 1,000,000 / 1,200,000.
+    deductible_mortgage_interest_tax_unit: 60_000
+
+- name: Older debt larger than the $750,000 limit leaves no limit for newer debt (issue 10011)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 17_000
+    first_home_mortgage_balance: 800_000
+    first_home_mortgage_origination_year: 2016
+    second_home_mortgage_balance: 900_000
+    second_home_mortgage_origination_year: 2020
+  output:
+    # line 6 = 800,000; line 11 = min(max(800,000, 750,000), 1,700,000)
+    # = 800,000. 17,000 x 800,000 / 1,700,000 = 8,000.
+    deductible_mortgage_interest_tax_unit: 8_000
+
+- name: Mixed-vintage limit does not depend on loan order (issue 10011)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 17_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 800_000
+    second_home_mortgage_origination_year: 2016
+  output:
+    deductible_mortgage_interest_tax_unit: 8_000
+
+- name: Equal balances with the newer loan first (issue 10011)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 62_000
+    first_home_mortgage_balance: 775_000
+    first_home_mortgage_origination_year: 2018
+    second_home_mortgage_balance: 775_000
+    second_home_mortgage_origination_year: 2017
+  output:
+    # line 6 = 775,000; line 11 = min(max(775,000, 750,000), 1,550,000)
+    # = 775,000. 62,000 x 775,000 / 1,550,000 = 31,000.
+    deductible_mortgage_interest_tax_unit: 31_000
+
+- name: Equal balances with the older loan first (issue 10011)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 62_000
+    first_home_mortgage_balance: 775_000
+    first_home_mortgage_origination_year: 2017
+    second_home_mortgage_balance: 775_000
+    second_home_mortgage_origination_year: 2018
+  output:
+    deductible_mortgage_interest_tax_unit: 31_000
+
+- name: Grandfathered debt is not limited before 2018
+  period: 2017
+  input:
+    filing_status: JOINT
+    home_mortgage_interest: 60_000
+    first_home_mortgage_balance: 1_200_000
+    first_home_mortgage_origination_year: 1985
+  output:
+    # Pub. 936 (2017), PDF page 10: "Grandfathered debt isn't limited."
+    # Table 1 (PDF page 11): line 6 = min(max(1,200,000, 1,000,000),
+    # 1,200,000) = 1,200,000 = line 8 (no home equity debt) = line 9.
+    deductible_mortgage_interest_tax_unit: 60_000
+
+- name: Unknown origination year takes the post-2017 limit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 45_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 0
+  output:
+    # 45,000 x 750,000 / 900,000 = 37,500.
+    deductible_mortgage_interest_tax_unit: 37_500
+
+- name: Mixed filing statuses and vintages in one vectorized run
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1:
+        home_mortgage_interest: 15_000
+      p2:
+        home_mortgage_interest: 25_000
+      p3:
+        home_mortgage_interest: 17_000
+      p4:
+        home_mortgage_interest: 62_000
+      p5:
+        home_mortgage_interest: 60_000
+      p6:
+        home_mortgage_interest: 40_000
+    tax_units:
+      t1:
+        members: [p1]
+        filing_status: JOINT
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 1986
+      t2:
+        members: [p2]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 500_000
+        first_home_mortgage_origination_year: 2018
+      t3:
+        members: [p3]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2020
+        second_home_mortgage_balance: 800_000
+        second_home_mortgage_origination_year: 2016
+      t4:
+        members: [p4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        first_home_mortgage_balance: 775_000
+        first_home_mortgage_origination_year: 2018
+        second_home_mortgage_balance: 775_000
+        second_home_mortgage_origination_year: 2017
+      t5:
+        members: [p5]
+        filing_status: SURVIVING_SPOUSE
+        first_home_mortgage_balance: 300_000
+        first_home_mortgage_origination_year: 2010
+        second_home_mortgage_balance: 1_200_000
+        second_home_mortgage_origination_year: 1985
+      t6:
+        members: [p6]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 600_000
+        first_home_mortgage_origination_year: 1985
+        second_home_mortgage_balance: 200_000
+        second_home_mortgage_origination_year: 2020
+    households:
+      h1:
+        members: [p1]
+      h2:
+        members: [p2]
+      h3:
+        members: [p3]
+      h4:
+        members: [p4]
+      h5:
+        members: [p5]
+      h6:
+        members: [p6]
+  output:
+    # t1: G = 1,500,000, no limit. t2: 25,000 x 375,000 / 500,000.
+    # t3: line 11 = 800,000; 17,000 x 800,000 / 1,700,000.
+    # t4: line 11 = 775,000; 62,000 x 775,000 / 1,550,000.
+    # t5: line 6 = 1,200,000 = line 11; 60,000 x 1,200,000 / 1,500,000.
+    # t6: separate limits $500,000 / $375,000; line 6 = min(max(600,000,
+    # 500,000), 600,000) = 600,000 = line 11; 40,000 x 600,000 / 800,000.
+    # Deductible plus non-deductible interest equals interest paid.
+    deductible_mortgage_interest_tax_unit: [15_000, 18_750, 8_000, 31_000, 48_000, 30_000]
+    non_deductible_mortgage_interest_tax_unit: [0, 6_250, 9_000, 31_000, 12_000, 10_000]
+
+- name: Mixed filing statuses and vintages before 2018
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1:
+        home_mortgage_interest: 60_000
+      p2:
+        home_mortgage_interest: 35_000
+      p3:
+        home_mortgage_interest: 35_000
+      p4:
+        home_mortgage_interest: 45_000
+    tax_units:
+      t1:
+        members: [p1]
+        filing_status: JOINT
+        first_home_mortgage_balance: 1_200_000
+        first_home_mortgage_origination_year: 1985
+      t2:
+        members: [p2]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 700_000
+        first_home_mortgage_origination_year: 1986
+      t3:
+        members: [p3]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 400_000
+        first_home_mortgage_origination_year: 2010
+        second_home_mortgage_balance: 300_000
+        second_home_mortgage_origination_year: 2016
+      t4:
+        members: [p4]
+        filing_status: JOINT
+        first_home_mortgage_balance: 300_000
+        first_home_mortgage_origination_year: 2012
+        second_home_mortgage_balance: 600_000
+        second_home_mortgage_origination_year: 1986
+    households:
+      h1:
+        members: [p1]
+      h2:
+        members: [p2]
+      h3:
+        members: [p3]
+      h4:
+        members: [p4]
+  output:
+    # 2017 Pub. 936, PDF pp. 10-11: grandfathered debt has no limit (t1, and
+    # t2 above the $500,000 separate limit). t3's 700,000 is within
+    # $1,000,000; t4's 300,000 of 2012 debt is within $1,000,000 less its
+    # 600,000 of grandfathered debt. These cases stay
+    # within the acquisition-debt limit for non-grandfathered debt, because
+    # the pre-2018 home equity allowance is not modeled.
+    deductible_mortgage_interest_tax_unit: [60_000, 35_000, 35_000, 45_000]
+    non_deductible_mortgage_interest_tax_unit: [0, 0, 0, 0]

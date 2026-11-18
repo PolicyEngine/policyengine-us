@@ -24,5 +24,7 @@ class ny_misc_deduction(Variable):
         # with the 2% AGI floor (not suspended like federal post-2017)
         p = parameters(period).gov.irs.deductions.itemized.misc
         expenses = tax_unit("total_misc_deductions", period)
-        misc_floor = p.floor * tax_unit("positive_agi", period)
+        # IT-196 line 26: recomputed federal AGI (IT-201 line 19a).
+        agi = max_(0, tax_unit("ny_recomputed_federal_agi", period))
+        misc_floor = p.floor * agi
         return max_(0, expenses - misc_floor)

@@ -16,9 +16,7 @@ class wa_capital_gains_tax(Variable):
             ltcg = add(tax_unit, period, ["long_term_capital_gains"])
             # Deduct charitable contributions.
             charitable_contributions = add(
-                tax_unit,
-                period,
-                ["charitable_cash_donations", "charitable_non_cash_donations"],
+                tax_unit, period, ["total_charitable_donations"]
             )
             charitable_contributions_above_exemption = max_(
                 0, charitable_contributions - p.deductions.charitable.exemption

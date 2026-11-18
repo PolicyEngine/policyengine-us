@@ -333,3 +333,28 @@
     has_heating_expense: [true, true, true, true]
     nc_lieap_eligible: [true, false, true, false]
     nc_lieap: [400, 0, 300, 0]
+
+- name: Case 10, Special Assistance In-Home counts as unearned income.
+  # FNS 300.02 "Special Assistance (SA)" is countable unearned income (page
+  # 20), and SA-5400 II counts the SA In-Home payment for Energy Programs.
+  # Age 65, no other income: SSI 994 x 12 = 11_928; SA In-Home basic
+  # (1,397 + 70 - 994) x 12 = 5_676. Gross 17_604; medical deduction 1_020 ->
+  # nc_lieap_income 16_584 ($1,382 a month). Limit 15_650 x 1.5 = 23_475 ->
+  # $1,956. Lower band ends at $978 -> $300. Without SA the income would be
+  # 10_908 ($909) and the payment $400.
+  period: 2026
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+    tanf: 0
+    childcare_expenses: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_200
+  output:
+    nc_sa: 5_676
+    nc_lieap_gross_income_person: 17_604
+    nc_lieap_income: 16_584
+    nc_lieap_income_limit: 23_475
+    nc_lieap_eligible: true
+    nc_lieap: 300

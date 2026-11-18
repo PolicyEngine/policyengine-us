@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class nj_liheap_income_limit(Variable):
@@ -32,15 +32,11 @@ class nj_liheap_income_limit(Variable):
         p = parameters(period).gov.states.nj.dca.liheap.eligibility
         size = max_(spm_unit("nj_liheap_household_size", period), 1)
         state = spm_unit.household("state_code_str", period)
-        smi_parameters = parameters(period).gov.hhs.smi
-        base = smi_parameters.amount[state]
 
         def monthly_limit(table_size):
-            factor = smi(table_size, state, period, parameters) / base
-            # ACF LIHEAP IM 2025-02 Attachment 4 (page 2) floors 60% of the
-            # four-person SMI, then floors each size's share of it; the fact
-            # sheet's monthly column rounds that half up (not half to even).
-            annual = np.floor(factor * np.floor(base * p.smi_rate))
+            annual = liheap_smi_limit(table_size, state, p.smi_rate, period, parameters)
+            # The fact sheet's monthly column rounds the HHS annual limit half
+            # up (not half to even).
             return np.floor(annual / MONTHS_IN_YEAR + 0.5)
 
         monthly = monthly_limit(min_(size, p.max_table_size))

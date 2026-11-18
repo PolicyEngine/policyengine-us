@@ -1,0 +1,167 @@
+# PA 6182, page 1, items 2-3: the contribution deducted from cash GR
+# and the additional DPSS subsidy are both paid to the landlord.
+# https://dpss.lacounty.gov/content/dam/dpss/documents/en/gr/gr-housing-subsidy/PA%206182%20%28English%29%20ADA%20APPROVED.pdf#page=1
+# DPSS 46-103, Policy: single $475 + $100 = $575;
+# couple $950 + $200 = $1,150.
+# https://my.dpss.lacounty.gov/public/en/home/epolicy/program/gr/homelessness/housing-subsidy-management-program.html#custom-title-f75ca3f760
+- name: Single subsidy paid excludes the contribution when rent caps payment
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 6_000
+  output:
+    # Allowance = min(6,000 / 12, 475) = 475.
+    la_general_relief_housing_subsidy_amount: 475
+    la_general_relief_rent_contribution: 100
+    # Payment = min(500, 475 + 100) = 500; subsidy paid = 500 - 100 = 400.
+    la_general_relief_housing_subsidy: 500
+    la_general_relief_housing_subsidy_paid: 400
+    # Cash GR = 221 - 100 = 121.
+    la_general_relief: 121
+
+- name: Couple subsidy paid excludes both contributions when rent caps payment
+  period: 2024-01
+  input:
+    is_married: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 375
+    rent: 12_000
+  output:
+    # Allowance = min(12,000 / 12, 950) = 950.
+    la_general_relief_housing_subsidy_amount: 950
+    la_general_relief_rent_contribution: 200
+    # Payment = min(1,000, 950 + 200) = 1,000; paid = 1,000 - 200 = 800.
+    la_general_relief_housing_subsidy: 1_000
+    la_general_relief_housing_subsidy_paid: 800
+    # Cash GR = 375 - 200 = 175.
+    la_general_relief: 175
+
+- name: Supplied zero contribution leaves the entire payment as additional subsidy
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_rent_contribution: 0
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    la_general_relief_rent_contribution: 0
+    # Payment = min(600, 475 + 0) = 475; paid = 475 - 0 = 475.
+    la_general_relief_housing_subsidy: 475
+    la_general_relief_housing_subsidy_paid: 475
+    # Cash GR = 221 - 0 = 221.
+    la_general_relief: 221
+
+- name: Supplied contribution above schedule is subtracted from actual capped payment
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    # This tests the intermediate-input contract, not a policy contribution.
+    la_general_relief_rent_contribution: 150
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    la_general_relief_rent_contribution: 150
+    # Payment = min(600, 475 + 150) = 600; paid = 600 - 150 = 450.
+    la_general_relief_housing_subsidy: 600
+    la_general_relief_housing_subsidy_paid: 450
+    # Cash GR = 221 - 150 = 71.
+    la_general_relief: 71
+
+- name: Zero rent has no housing payment contribution or additional subsidy
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 0
+  output:
+    # Allowance = min(0, 475) = 0, so contribution = 0.
+    la_general_relief_housing_subsidy_amount: 0
+    la_general_relief_rent_contribution: 0
+    # Payment = min(0, 0 + 0) = 0; paid = max(0 - 0, 0) = 0.
+    la_general_relief_housing_subsidy: 0
+    la_general_relief_housing_subsidy_paid: 0
+    la_general_relief: 221
+
+- name: Housing ineligibility leaves cash GR without housing payments
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: false
+    la_general_relief_base_amount: 221
+    rent: 6_000
+  output:
+    # Housing ineligibility gives allowance/payment/contribution = 0;
+    # paid = max(0 - 0, 0) = 0 and cash GR = 221 - 0 = 221.
+    la_general_relief_housing_subsidy_amount: 0
+    la_general_relief_rent_contribution: 0
+    la_general_relief_housing_subsidy: 0
+    la_general_relief_housing_subsidy_paid: 0
+    la_general_relief: 221
+
+- name: Low rent retains the fixed contribution and floors additional subsidy at zero
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 600
+  output:
+    # Retain main's fixed contribution for positive rent; PA 6182 does not
+    # settle rent below that contribution. Allowance = min(600 / 12, 475) = 50.
+    la_general_relief_housing_subsidy_amount: 50
+    la_general_relief_rent_contribution: 100
+    # Payment = min(50, 50 + 100) = 50; paid = max(50 - 100, 0) = 0.
+    la_general_relief_housing_subsidy: 50
+    la_general_relief_housing_subsidy_paid: 0
+    # Cash GR = 221 - 100 = 121, preserving main's low-rent treatment.
+    la_general_relief: 121
+
+- name: Supplied legacy payment determines additional subsidy actually paid
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_housing_subsidy: 350
+  output:
+    # Allowance = min(600, 475) = 475, so calculated contribution = 100.
+    la_general_relief_housing_subsidy_amount: 475
+    la_general_relief_rent_contribution: 100
+    # Use the supplied payment: paid = 350 - 100 = 250.
+    la_general_relief_housing_subsidy: 350
+    la_general_relief_housing_subsidy_paid: 250
+    la_general_relief: 121
+
+- name: Supplied allowance propagates through payment into additional subsidy paid
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_housing_subsidy_amount: 200
+  output:
+    la_general_relief_housing_subsidy_amount: 200
+    la_general_relief_rent_contribution: 100
+    # Payment = min(600, 200 + 100) = 300; paid = 300 - 100 = 200.
+    la_general_relief_housing_subsidy: 300
+    la_general_relief_housing_subsidy_paid: 200
+    # Cash GR = 221 - 100 = 121.
+    la_general_relief: 121

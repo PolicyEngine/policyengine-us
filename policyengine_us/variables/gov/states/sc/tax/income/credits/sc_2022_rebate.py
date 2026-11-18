@@ -5,6 +5,12 @@ class sc_2022_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "South Carolina 2022 rebate"
+    documentation = (
+        "One-time South Carolina rebate paid in 2022 and determined from the 2021 "
+        "return, capped at $800 and eligible liability. PolicyEngine attributes it to "
+        "eligibility tax year 2021 through sc_non_refundable_credits. The amount is "
+        "zero outside 2021."
+    )
     defined_for = StateCode.SC
     unit = USD
     definition_period = YEAR

@@ -7,12 +7,30 @@ class mt_agi_indiv(Variable):
     label = "Montana Adjusted Gross Income for each individual"
     unit = USD
     definition_period = YEAR
+    reference = (
+        # Filing separately: each column is its own return
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=12",
+        # Borrowed for dependents' income: parents filing separately report a
+        # child's income on the return of the parent with the greater
+        # taxable income
+        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
+        "https://www.irs.gov/instructions/i8814",
+    )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        # Each spouse's federal AGI, with the return's business and capital
+        # losses divided equally between them (mt_loss_ald_reallocation).
+        agi = person("adjusted_gross_income_person", period) + person(
+            "mt_loss_ald_reallocation", period
+        )
         additions = person("mt_additions", period)
-        subtractions = person("mt_subtractions", period)
+        # The partial pension, annuity, and IRA income exemption is not in the
+        # subtractions list: on a separate return each spouse reduces it by
+        # their own federal AGI, and a joint return reduces it once.
+        subtractions = person("mt_subtractions", period) + person(
+            "mt_pension_exemption_indiv", period
+        )
         reduced_agi = max_(agi + additions - subtractions, 0)
         # Montana taxable social security benefits can be either addition or subtraction
         # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
@@ -28,9 +46,8 @@ class mt_agi_indiv(Variable):
             # 2024 and after: no longer apply the social security adjustment
             tax_unit_mt_agi = reduced_agi
 
-        # in all years
-        # allocate any dependent net_income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * tax_unit_mt_agi)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income
+        # The dependents' income the model counts here goes on the return of
+        # the spouse with the greater income (a modelling convention; see the
+        # helper). The instructions' Line 5 exclusion of a child's income
+        # reported on federal Form 8814 is not modelled.
+        return move_dependent_amounts_to_filer(person, period, tax_unit_mt_agi)

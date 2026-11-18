@@ -1,22 +1,27 @@
 name: Python tests
 on:
   workflow_call:
-# Group these jobs in the Actions view while retaining two independent runners.
+# RestPlan spreads the Rest Python groups over parallel shards by the latest
+# release run's times (policyengine_us/tests/rest_python_shards.py); each
+# process still runs files of one Makefile group. Rest runs no tests: it
+# fails unless the plan and every shard succeeded.
 # Only the guarded PR workflow calls this file; it has no automatic triggers.
 jobs:
-  Rest:
-    name: Full Suite - Rest (Python + variables)
+  RestPlan:
+    name: Plan Rest Python shards
     runs-on: ubuntu-latest
-    # Passing runs on 2026-10-04 took 42-55 minutes (#9653, #9766, #9769,
-    # #9777, #9784), so a 60-minute limit cancels PRs that add a few
-    # minutes of tests (#9695 was cancelled at 60 minutes twice).
-    timeout-minutes: 90
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -24,7 +29,71 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      # A successful release run on main has every shard's JUnit and GNU time
+      # reports; a failed one can lack a lost runner's, which would skew the
+      # estimates. Without any, the plan counts each file the same.
+      - name: Download recent Rest Python timings
+        id: timings
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          runs=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow push.yaml \
+            --branch main --status success --limit 40 \
+            --json databaseId,displayTitle \
+            --jq '.[] | select(.displayTitle == "Update PolicyEngine US") | .databaseId') || runs=""
+          for run in $(echo "$runs" | head -n 3); do
+            if gh run download "$run" --repo "$GITHUB_REPOSITORY" \
+              --dir "rest-timings/$run" \
+              --pattern 'rest-python-test-timings-*' \
+              --pattern rest-variables-test-timings; then
+              echo "source=release run $run" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            rm -rf "rest-timings/$run"
+          done
+          echo "::warning::No Rest Python timing reports found; the plan counts every file the same."
+      - name: Plan shards
+        id: plan
+        env:
+          TIMINGS_SOURCE: ${{ steps.timings.outputs.source }}
+        run: uv run --no-sync python policyengine_us/tests/rest_python_shards.py plan --timings rest-timings --source "$TIMINGS_SOURCE" --github-output "$GITHUB_OUTPUT" --summary "$GITHUB_STEP_SUMMARY"
+  RestPython:
+    needs: [RestPlan]
+    name: Full Suite - Rest (Python shard ${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    # Plans aim at 25 minutes a shard (26-30 from the October 2026 reports);
+    # one made without reports can run longer.
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.RestPlan.outputs.matrix) }}
+    env:
+      PYTHONUNBUFFERED: 1
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -32,30 +101,54 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Each Rest group runs in a separate process to release its heap.
-      # SPM simulation/API contracts run in the Microsimulation job instead.
+      # Each planned process runs files of one group, one process at a time.
+      # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
-        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
-      - name: Run tests/variables YAML tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
-        env:
-          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest timing and memory reports
+          REST_PYTHON_PROCESSES: ${{ matrix.processes }}
+        run: uv run --no-sync python policyengine_us/tests/rest_python_shards.py run --report-dir .
+      - name: Upload Rest Python timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-test-timings
+          name: rest-python-test-timings-shard-${{ matrix.shard }}
           path: |
             rest-python-*.xml
-            rest-variables.xml
             rest-python-*-resources.txt
+      - name: Run tests/variables YAML tests
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' && matrix.variables }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest variables timing and memory reports
+        if: ${{ always() && matrix.variables }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-variables-test-timings
+          path: |
+            rest-variables.xml
             rest-variables-resources.txt
+  Rest:
+    needs: [RestPlan, RestPython]
+    # Runs after a failed plan or shard but stops when the run is cancelled.
+    # always() kept this runner alive after cancellation.
+    if: ${{ !cancelled() }}
+    name: Check Rest Python shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check all Rest jobs succeeded
+        shell: bash
+        env:
+          PLAN_RESULT: ${{ needs.RestPlan.result }}
+          PYTHON_RESULT: ${{ needs.RestPython.result }}
+        run: |
+          if [[ "$PLAN_RESULT" != "success" || "$PYTHON_RESULT" != "success" ]]; then
+            echo "::error::Rest jobs did not all succeed: plan=$PLAN_RESULT, shards=$PYTHON_RESULT"
+            exit 1
+          fi
   Microsimulation:
     name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
@@ -66,6 +159,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Fetch Social Security differential reference
+        run: git fetch --no-tags --depth=1 origin 8986e05cab65d56435a23df1910e2d35f2c5f5bf
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -73,7 +171,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -90,7 +188,7 @@ jobs:
         run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
       - name: Run microsimulation tests
         # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation

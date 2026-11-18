@@ -3,7 +3,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_100
@@ -13,7 +13,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 3
+    me_fairness_credit_qualifying_children: 3
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_200
@@ -23,7 +23,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
    
   output:
     me_property_tax_fairness_credit_benefit_base: 2_750
@@ -33,7 +33,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
    
   output:
     me_property_tax_fairness_credit_benefit_base: 3_450
@@ -43,7 +43,7 @@
   input:
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
 
   output:
     me_property_tax_fairness_credit_benefit_base: 3_000
@@ -54,7 +54,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
   output:
     me_property_tax_fairness_credit_benefit_base: 2_550
 
@@ -63,7 +63,7 @@
   input:
     state_code: ME
     filing_status: JOINT
-    ctc_qualifying_children: 2
+    me_fairness_credit_qualifying_children: 2
   output:
     me_property_tax_fairness_credit_benefit_base: 4_050
 
@@ -72,6 +72,82 @@
   input:
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
   output:
     me_property_tax_fairness_credit_benefit_base: 3_300
+
+
+- name: 2025 joint return with one claimable spouse uses the base without qualifying children (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ME
+  output:
+    # The base counts children for whom the federal child tax credit may be
+    # claimed (36 MRSA 5219-KK); IRC 152(b)(1) leaves such a return none.
+    me_property_tax_fairness_credit_benefit_base: 3_300
+
+- name: 2025 joint return with one claimable spouse uses the base without qualifying children (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_benefit_base: 3_300
+
+- name: 2025 joint return with neither spouse claimable uses the base with qualifying children
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+      person_b:
+        age: 30
+      child:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_benefit_base: 4_050

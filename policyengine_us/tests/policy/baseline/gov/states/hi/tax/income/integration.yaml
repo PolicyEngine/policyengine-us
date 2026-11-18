@@ -311,3 +311,106 @@
     # Total = $268.80 + $307.20 + $528.00 + $614.40 + $1,632.00 + $1,728.00
     #         + $11,704.00 + $7,900.00 + $4,125.00 = $28,807.40
     hi_income_tax_before_non_refundable_credits: 28_807.40
+
+# Credit ordering: a single filer aged 30 with $8,000 of wages and no other
+# income, through Form N-11 lines 26 to 36. Refundable credits (line 33) come
+# off the tax (line 27) first; nonrefundable credits (line 35) are limited to
+# the adjusted tax liability that remains (line 34). HRS 235-91.5.
+# https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
+# https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=21
+
+- name: 2022 nonrefundable EITC limited to the tax left after the food/excise credit
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Line 26 = 8,000 - 2,200 standard deduction - 1,144 exemption.
+    hi_taxable_income: 4_656
+    # Line 27 by the rate schedule (the model does not use the Tax Table):
+    # 1.4% x 2,400 + 3.2% x (4,656 - 2,400) = 33.60 + 72.192.
+    hi_income_tax_before_non_refundable_credits: 105.792
+    # Line 28, Form N-311: AGI from 5,000 to 9,999 gives 100 per exemption.
+    hi_food_excise_credit: 100
+    hi_refundable_credits: 100
+    # Line 34 = 105.792 - 100.
+    hi_adjusted_tax_liability: 5.792
+    # Federal EITC = min(7.65% x 8,000, 560) = 560; Form N-356 line 3 = 20%.
+    hi_eitc_potential: 112
+    # N-356 line 13 = min(112, 5.792); Schedule CR and line 35.
+    hi_eitc: 5.792
+    hi_non_refundable_credits: 5.792
+    # Line 36 = 5.792 - 5.792.
+    hi_income_tax: 0
+
+- name: 2021 Act 115 refund paid on top of the return balance
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Lines 26 to 28 as in 2022.
+    hi_income_tax_before_non_refundable_credits: 105.792
+    hi_food_excise_credit: 100
+    # One exemption at 300 for federal AGI under 100,000, issued by the
+    # department apart from the return.
+    # https://files.hawaii.gov/tax/news/announce/ann22-03.pdf#page=2
+    hi_act_115_rebate: 300
+    hi_refundable_credits: 400
+    # Line 33 = 100 (the Act 115 refund is not on it); line 34 = 5.792.
+    hi_adjusted_tax_liability: 5.792
+    # Federal EITC = 15.3% x 8,000 = 1,224 (2021 phase-in); 20% = 244.80.
+    hi_eitc_potential: 244.8
+    hi_eitc: 5.792
+    hi_non_refundable_credits: 5.792
+    # Line 36 = 0, less the 300 Act 115 refund.
+    hi_income_tax: -300
+
+- name: 2025 refundable credits paid in full beyond the tax
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Line 26 = 8,000 - 4,400 standard deduction - 1,144 exemption.
+    hi_taxable_income: 2_456
+    # Line 27 by the rate schedule: 1.4% x 2,456.
+    hi_income_tax_before_non_refundable_credits: 34.384
+    # Line 28, Form N-311: AGI under 15,000 gives 220 per exemption.
+    hi_food_excise_credit: 220
+    # Federal EITC = 7.65% x 8,000 = 612; Hawaii EITC = 40% x 612 = 244.80,
+    # refundable on Schedule CR Part I (line 32).
+    hi_eitc: 244.8
+    # Line 33 = 220 + 244.80.
+    hi_refundable_credits: 464.8
+    # Line 34 = 34.384 - 464.80; line 35 = 0; line 36 = line 34.
+    hi_adjusted_tax_liability: -430.416
+    hi_non_refundable_credits: 0
+    hi_income_tax: -430.416

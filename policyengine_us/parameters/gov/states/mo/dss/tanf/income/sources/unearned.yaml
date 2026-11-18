@@ -10,7 +10,7 @@ values:
     # Annuities, pensions, retirement payments, and railroad retirement.
     - pension_income
     - retirement_distributions
-    - military_retirement_pay
+    - military_retirement_income
     - railroad_benefits
     # Rental income is unearned when management is less than 20 hours/week.
     - rental_income
@@ -24,7 +24,7 @@ values:
     - financial_assistance
     - gi_cash_assistance
     - dividend_income
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - gambling_winnings
     - miscellaneous_income

@@ -1,0 +1,18 @@
+description: Maine provides this benefit to tenants of subsidized housing whose heat is included in rent under the Low Income Home Energy Assistance Program.
+# Rule 4(C) of the 2025 edition and 4(B) of the June 29, 2026 replacement limit
+# these tenants to a benefit that maximizes SNAP benefits; the FY2026 plan sets
+# the nominal payment at $21.
+values:
+  2024-10-01: 21
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine HEAP subsidized heat-in-rent benefit
+  reference:
+    - title: Maine FY2026 LIHEAP State Plan, Section 1.7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ME_Plan_2026.pdf#page=5
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(C) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+    - title: 99-346 CMR ch. 24, section 4(B) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=17

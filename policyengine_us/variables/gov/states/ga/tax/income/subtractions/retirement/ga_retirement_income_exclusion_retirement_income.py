@@ -22,6 +22,14 @@ class ga_retirement_income_exclusion_retirement_income(Variable):
         countable_earned_income = max_(
             0, person("ga_retirement_exclusion_countable_earned_income", period)
         )
-        other_retirement_income = add(person, period, p.sources)
+        # Ga. Comp. R. & Regs. r. 560-7-4-.02(3): Only retirement income included
+        # in Georgia taxable income can be included. Subtract the military
+        # retirement exclusion already taken under O.C.G.A. § 48-7-27(a)(5)(E).
+        military_pay = person("military_retirement_pay", period)
+        military_exclusion = person("ga_military_retirement_exclusion_person", period)
+        remaining_military_pay = max_(0, military_pay - military_exclusion)
+        other_retirement_income = (
+            add(person, period, p.sources) + remaining_military_pay
+        )
         countable_other_retirement_income = max_(0, other_retirement_income)
         return countable_earned_income + countable_other_retirement_income

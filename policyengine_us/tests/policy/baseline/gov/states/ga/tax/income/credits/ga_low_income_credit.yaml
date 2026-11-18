@@ -5,7 +5,7 @@
     adjusted_gross_income: 14000
     age_head: 67
     age_spouse: 70
-    exemptions_count: 2
+    tax_unit_size: 2
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 32
@@ -16,7 +16,7 @@
     adjusted_gross_income: 4000
     age_head: 67
     age_spouse: 56
-    exemptions_count: 2
+    tax_unit_size: 2
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 78
@@ -27,7 +27,7 @@
     adjusted_gross_income: 15500
     age_head: 80
     age_spouse: 75
-    exemptions_count: 3
+    tax_unit_size: 3
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 25
@@ -38,7 +38,7 @@
     adjusted_gross_income: 4000
     age_head: 67
     age_spouse: 56
-    exemptions_count: 0
+    tax_unit_size: 0
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 26
@@ -49,7 +49,7 @@
     adjusted_gross_income: 10500
     age_head: 67
     age_spouse: 56
-    exemptions_count: 0
+    tax_unit_size: 0
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 8
@@ -60,7 +60,7 @@
     adjusted_gross_income: 10500
     age_head: 56
     age_spouse: 56
-    exemptions_count: 0
+    tax_unit_size: 0
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 0
@@ -71,7 +71,7 @@
     adjusted_gross_income: 10500
     age_head: 65
     age_spouse: 64
-    exemptions_count: 1
+    tax_unit_size: 1
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 16
@@ -82,7 +82,169 @@
     adjusted_gross_income: 10000
     age_head: 64
     age_spouse: 64
-    exemptions_count: 2
+    tax_unit_size: 2
     ga_income_tax_before_non_refundable_credits: 1000000
   output:
     ga_low_income_credit: 16
+
+
+- name: 2025 Georgia denies the low income credit to a claimed single filer
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: GA
+  output:
+    # O.C.G.A. 48-7A-3(a) excludes the claimed filer, so the
+    # filer receives no low income credit at federal AGI 5,000.
+    ga_low_income_credit_potential: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_low_income_credit_potential: 52
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: GA
+  output:
+    ga_low_income_credit_potential: 52
+
+- name: 2025 joint return with both spouses claimable as dependents, low income credit only through a spouse who cannot be claimed, with no child units
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_low_income_credit_potential: 0
+
+- name: 2025 joint return with neither spouse claimable, low income credit only through a spouse who cannot be claimed, with no child units
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    # 3 units x 26
+    ga_low_income_credit_potential: 78
+
+
+- name: 2025 single filer who can be claimed but is not claimed gets no low income credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 5_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: GA
+  output:
+    # Georgia lawmakers extended the exclusion to claimable filers
+    # in 2010, including those nobody actually claims.
+    ga_low_income_credit_potential: 0

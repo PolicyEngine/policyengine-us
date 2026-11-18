@@ -16,7 +16,13 @@ def create_va_dependent_exemption_reform() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # As in the baseline, a return on which the filer (or, if joint,
+            # either spouse) can be claimed as a dependent has no dependents
+            # (IRC 152(b)(1)), unless the would-be claimant meets the filing
+            # exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -83,7 +89,13 @@ def create_va_dependent_exemption_reform() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # As in the baseline, a return on which the filer (or, if joint,
+            # either spouse) can be claimed as a dependent has no dependents
+            # (IRC 152(b)(1)), unless the would-be claimant meets the filing
+            # exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "va_eligible_dependents_count", period
@@ -104,14 +116,14 @@ def create_va_dependent_exemption_reform() -> Reform:
             # Calculate personal exemptions base amount (filer + spouse + older dependents)
             filing_status = tax_unit("filing_status", period)
             older_dependents = tax_unit("va_older_dependents_count", period)
-            personal_count = (
-                where(
-                    filing_status == filing_status.possible_values.JOINT,
-                    2,
-                    1,
-                )
-                + older_dependents
+            # As in the baseline, a filer whom another taxpayer can claim has
+            # no exemption of their own (IRC 151(d)(2)).
+            filers = where(
+                tax_unit("head_or_spouse_is_dependent_elsewhere", period),
+                tax_unit("head_spouse_count_not_dependent_elsewhere", period),
+                where(filing_status == filing_status.possible_values.JOINT, 2, 1),
             )
+            personal_count = filers + older_dependents
             personal_exemption_amount = personal_count * p_base
 
             # Add dependent exemption (has its own phase-out logic)

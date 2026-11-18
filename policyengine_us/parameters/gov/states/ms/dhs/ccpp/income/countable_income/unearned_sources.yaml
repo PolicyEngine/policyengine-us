@@ -3,7 +3,7 @@ values:
   2021-11-01:
     - social_security  # SSA benefits for parent and child (umbrella; do not also add social_security_disability)
     - ssi  # SSI for parent and child (separate from the social_security umbrella)
-    - unemployment_compensation  # counted at redetermination only; simplified to always countable
+    - total_unemployment_compensation  # counted at redetermination only; simplified to always countable
     - workers_compensation
     - alimony_income
     - veterans_benefits

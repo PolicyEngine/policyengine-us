@@ -1,7 +1,8 @@
 """Arkansas regular income tax schedule: differential and invariant tests.
 
-`ar_main_income_tax` (shared by the indiv and joint tax variables and
-`ar_uses_low_income_tax_tables`) has two paths:
+`ar_main_income_tax` (the bracket formula that `ar_regular_income_tax` applies
+at Regular Income Tax Table row midpoints for the indiv and joint tax variables
+and `ar_uses_low_income_tax_tables`) has two paths:
 
 - Years with a published DFA Indexed Tax Brackets card (2021-2025) compute
   `rate.calc(ti) * ti - reduction.calc(ti)` from two single_amount scales
@@ -10,11 +11,11 @@
   threshold) silently shifts every later bracket.
 - Later years apply the statutory tables of A.C.A. 26-51-201(a)(4) (Act 1 of
   2026): (A) marginal rates up to the high-income threshold, and above it the
-  (B) marginal rates less the (C) bracket adjustment. 26-51-201(a)(5) and
-  (d)(1) index every bracket bound each year, "rounding to the nearest one
-  hundred dollars ($100)"; the (C) dollar amounts are not bracket bounds and
-  stay fixed. The reduction is derived from the same indexed tables, so it
-  moves with the thresholds (a stored reduction would not).
+  (B) marginal rates less the (C) bracket adjustment. Under
+  26-51-201(a)(5) and (d)(1), the secretary adjusts every bracket bound each
+  year and rounds it to the nearest $100. The (C) dollar amounts stay fixed.
+  The reduction is derived from the same indexed tables, so it moves with
+  the thresholds (a stored reduction would not).
 
 Differential tests compare every integer taxable income against an
 independent transcription of each year's source:
@@ -24,19 +25,22 @@ independent transcription of each year's source:
   Rows from the top of the flat rate bracket upward form a $100 ladder whose
   minus adjustment falls $10 per row. Asterisked rows span $200, so the next
   row's start is skipped.
-- 2026: Act 1 of 2026 (1st Extraordinary Session), A.C.A. 26-51-201(a)(4).
-- 2027-2035: Act 1 of 2026's tables with every bracket bound indexed from
-  2026 by PolicyEngine's uprating index and rounded to the nearest $100.
+- 2026-2035: Act 1 of 2026's (1st Extraordinary Session) A.C.A.
+  26-51-201(a)(4) tables with each preceding rounded bound adjusted annually
+  by Arkansas's capped CPI-U increase. PolicyEngine selects 2026 as the
+  first adjustment year, following its recorded reading and DFA's
+  2022-2024 cards. DFA's 2026 withholding formula retains unindexed bounds.
+  DFA rounded exact $50 ties down in its 2022 and 2024 cards.
 
 Invariants:
 - reduction.yaml rows carry strictly increasing finite thresholds, with every
   .inf row after them (published years).
 - At every integer taxable income, tax is non-negative and never falls as
   income rises (2021-2040, 2050, 2075, 2100), except where the statute's own
-  (A) and (B)-(C) tables meet. In 2026 that seam drops: (a)(4)(A) taxes
-  $94,700 at $3,136.70, while (a)(4)(B) less the $290 (a)(4)(C) adjustment
-  taxes $94,701 at $3,134.04. Once indexing raises the (A) bounds, the seam
-  rises instead.
+  (A) and (B)-(C) tables meet. In Act 1's unindexed tables that seam drops:
+  (a)(4)(A) taxes $94,700 at $3,136.70, while (a)(4)(B) less the $290
+  (a)(4)(C) adjustment taxes $94,701 at $3,134.04. Indexing moves the seam
+  to the indexed threshold, the only place tax may fall.
 - The (C) ladder starts at the high-income threshold, its bounds strictly
   increase, and its amounts stay Act 1's $290-$10 steps; the (B) top rate
   equals the (A) top rate (2026-2040, 2050, 2075, 2100).
@@ -46,6 +50,10 @@ Invariants:
 - A reform to the rate table in a projected year keeps tax from falling
   anywhere except where (A) meets (B)-(C), because the reduction is derived
   rather than stored.
+
+`ar_regular_income_tax` reproduces published Regular Income Tax Table rows for
+2014-2025, switches to the formula at each year's table threshold, and below
+it gives whole dollars that change only at a row start.
 """
 
 from types import SimpleNamespace
@@ -57,10 +65,12 @@ from policyengine_core.taxscales import MarginalRateTaxScale, SingleAmountTaxSca
 from policyengine_us.system import system
 from policyengine_us.variables.gov.states.ar.tax.income.ar_income_tax_helpers import (
     ar_main_income_tax,
+    ar_regular_income_tax,
 )
 
 P = system.parameters.gov.states.ar.tax.income.rates.main
-UPRATING = system.parameters.gov.irs.uprating
+CPI_U = system.parameters.gov.bls.cpi.cpi_u
+UPRATING_CAP = system.parameters.gov.states.ar.tax.income.uprating_cap
 PUBLISHED_YEARS = range(2021, 2026)
 SOURCE_YEARS = range(2021, 2036)
 LONG_RUN_YEARS = [2050, 2075, 2100]
@@ -182,29 +192,59 @@ ACT_1_LADDER = [(94_700 + 100 * k, 290 - 10 * k) for k in range(29)] + [(97_600,
 
 def nearest_100(amount):
     # 26-51-201(d)(1): "rounding to the nearest one hundred dollars ($100)".
-    return np.floor(amount / 100 + 0.5) * 100
+    # The statute names no tie rule; DFA rounded both observed exact $50
+    # ties down (2022: $5,150 to $5,100; 2024: $25,750 to $25,700).
+    hundreds = round(amount / 100, 6)
+    return (np.floor(hundreds) + (hundreds - np.floor(hundreds) > 0.5)) * 100
 
 
 def indexed_act_1_of_2026_tax(year, ti):
-    """Act 1 of 2026's tables, every bracket bound indexed from 2026."""
-    factor = UPRATING(f"{year}-01-01") / UPRATING("2026-01-01")
-    starts = [nearest_100(start * factor) for start, _ in ACT_1_TABLE_A]
+    """Adjust preceding rounded bounds annually, first in 2026."""
+
+    def calendar_cpi(calendar_year):
+        months = [(calendar_year - 1, month) for month in range(9, 13)] + [
+            (calendar_year, month) for month in range(1, 9)
+        ]
+        return np.mean([CPI_U(f"{year}-{month:02d}-01") for year, month in months])
+
+    annual_factors = [
+        1
+        + min(
+            UPRATING_CAP(f"{adjustment_year}-01-01"),
+            max(
+                calendar_cpi(adjustment_year) / calendar_cpi(adjustment_year - 1) - 1, 0
+            ),
+        )
+        for adjustment_year in range(2026, year + 1)
+    ]
+    return act_1_of_2026_tax_at(annual_factors, ti)
+
+
+def act_1_of_2026_tax_at(factor, ti):
+    """Apply one factor or a sequence of annual factors to each bound."""
+
+    def adjusted_bound(bound):
+        for annual_factor in np.atleast_1d(factor):
+            bound = nearest_100(bound * annual_factor)
+        return bound
+
+    starts = [adjusted_bound(start) for start, _ in ACT_1_TABLE_A]
     ends = starts[1:] + [np.inf]
     rates = [rate for _, rate in ACT_1_TABLE_A]
     table_a = sum(
         rate * np.clip(ti - start, 0, end - start)
         for start, end, rate in zip(starts, ends, rates)
     )
-    top_2_percent = nearest_100(ACT_1_TABLE_B_2_PERCENT_TOP * factor)
+    top_2_percent = adjusted_bound(ACT_1_TABLE_B_2_PERCENT_TOP)
     table_b = 0.02 * np.minimum(ti, top_2_percent) + 0.037 * np.maximum(
         ti - top_2_percent, 0
     )
-    bounds = np.array([nearest_100(bound * factor) for bound, _ in ACT_1_LADDER])
+    bounds = np.array([adjusted_bound(bound) for bound, _ in ACT_1_LADDER])
     amounts = np.array([amount for _, amount in ACT_1_LADDER])
     # Row k covers income above bounds[k] up to and including bounds[k + 1].
     row = np.searchsorted(bounds, ti, side="left") - 1
     adjustment = np.where(row >= 0, amounts[np.maximum(row, 0)], 0)
-    threshold = nearest_100(ACT_1_THRESHOLD * factor)
+    threshold = adjusted_bound(ACT_1_THRESHOLD)
     return np.where(ti <= threshold, table_a, table_b - adjustment)
 
 
@@ -215,8 +255,6 @@ def model_tax(year, ti, parameters=P):
 def source_tax(year, ti):
     if year in PUBLISHED_YEARS:
         return card_tax(year, ti)
-    if year == 2026:
-        return act_1_of_2026_tax(ti)
     return indexed_act_1_of_2026_tax(year, ti)
 
 
@@ -230,10 +268,8 @@ def test_ar_schedule_matches_source_at_every_integer_income(year):
     )
 
 
-def test_ar_indexed_reference_is_act_1_of_2026_in_2026():
-    diff = indexed_act_1_of_2026_tax(2026, TAXABLE_INCOME) - act_1_of_2026_tax(
-        TAXABLE_INCOME
-    )
+def test_ar_indexed_reference_with_no_increase_is_act_1_of_2026():
+    diff = act_1_of_2026_tax_at(1, TAXABLE_INCOME) - act_1_of_2026_tax(TAXABLE_INCOME)
     assert np.abs(diff).max() < 1e-6
 
 
@@ -246,7 +282,9 @@ def test_ar_published_reduction_applies_through_2025_only():
 @pytest.mark.parametrize("year", [2000, 2013])
 def test_ar_schedule_before_modeled_years_still_computes(year):
     # rate.yaml starts in 2014; earlier years must not hit the statutory path,
-    # whose parameters start in 2026.
+    # whose parameters start in 2026. This covers ar_main_income_tax only:
+    # ar_regular_income_tax reads the tax_table parameters, which start with
+    # the 2014 table, so it raises for earlier years (see its docstring).
     assert bool(P.use_published_reduction(f"{year}-01-01"))
     assert (model_tax(year, TAXABLE_INCOME) == 0).all()
 
@@ -257,7 +295,7 @@ def test_ar_schedule_before_modeled_years_still_computes(year):
 # $100,000 at $3,810.70, and its "$100,001 and over" rule taxes $100,001 at
 # $3,809.04. (The card's table is computed at row midpoints, where the
 # 99,901-100,001 row is $3,809; the model uses exact incomes.)
-STATUTORY_DROPS = {2025: {100_000: -1.66}, 2026: {94_700: -2.66}}
+STATUTORY_DROPS = {2025: {100_000: -1.66}}
 
 
 def invariant_grid(year):
@@ -394,3 +432,144 @@ def test_ar_rate_table_reform_keeps_projected_tax_from_falling():
     falls = ti[:-1][change < -1e-9]
     seam = reformed.high_income.threshold("2027-01-01")
     assert set(falls) <= {seam}, falls
+
+
+# Regular Income Tax Table: below the table threshold, filers look up their net
+# taxable income in $100 rows ("As Much As" / "But Less Than"), each computed
+# at the row midpoint and rounded to whole dollars. Rows start $1 above the
+# hundred from $75,000. Transcribed from each year's DFA table; the last
+# element of each row is the file page.
+TAX_TABLE_SOURCES = {
+    2014: "https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf",
+    2015: "https://www.dfa.arkansas.gov/wp-content/uploads/TaxTables_2015.pdf",
+    2016: "https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf",
+    2017: "https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf",
+    2018: "https://www.dfa.arkansas.gov/wp-content/uploads/2018_Final_TaxTable_with_Cover_Sheet.pdf",
+    **{
+        year: f"https://www.dfa.arkansas.gov/wp-content/uploads/{year}_AR1000F_and_AR1000NR_Instructions.pdf"
+        for year in range(2019, 2026)
+    },
+}
+# (As Much As, But Less Than, tax, file page). 2021 rounds its 50-cent
+# midpoints up ($40,250: $1,577.50 -> $1,578); 2022 and 2023 round them down
+# ($24,750: $584.50 -> $584; $34,550: $1,026.50 -> $1,026).
+TAX_TABLE_ROWS = {
+    2014: [(100, 200, 1, 28), (35_000, 35_100, 1_509, 30), (49_900, 50_000, 2_552, 30)],
+    2015: [(100, 200, 1, 4), (35_000, 35_100, 1_507, 6), (49_900, 50_000, 2_547, 6)],
+    2016: [
+        (100, 200, 1, 46),
+        (35_000, 35_100, 1_369, 48),
+        (74_900, 75_001, 3_762, 50),
+        (75_001, 75_101, 3_829, 50),
+        (85_901, 86_001, 5_021, 50),
+    ],
+    2017: [
+        (100, 200, 1, 46),
+        (35_000, 35_100, 1_356, 48),
+        (74_900, 75_001, 3_737, 50),
+        (75_001, 75_101, 3_743, 50),
+        (85_901, 86_001, 4_990, 50),
+    ],
+    2018: [
+        (100, 200, 1, 4),
+        (35_000, 35_100, 1_347, 6),
+        (74_900, 75_001, 3_719, 8),
+        (75_001, 75_101, 3_725, 8),
+        (85_901, 86_001, 4_968, 8),
+    ],
+    2019: [
+        (4_600, 4_700, 1, 28),
+        (35_000, 35_100, 1_331, 29),
+        (74_900, 75_001, 3_697, 31),
+        (75_001, 75_101, 3_703, 31),
+        (86_901, 87_001, 5_018, 32),
+    ],
+    2020: [
+        (4_700, 4_800, 1, 28),
+        (35_000, 35_100, 1_325, 29),
+        (74_900, 75_001, 3_648, 31),
+        (75_001, 75_101, 3_654, 31),
+        (87_901, 88_001, 4_989, 32),
+    ],
+    2021: [
+        (4_800, 4_900, 1, 28),
+        (35_000, 35_100, 1_313, 29),
+        (40_200, 40_300, 1_578, 30),
+        (74_900, 75_001, 3_625, 31),
+        (75_001, 75_101, 3_631, 31),
+        (90_901, 91_001, 5_119, 32),
+    ],
+    2022: [
+        (5_100, 5_200, 1, 31),
+        (24_700, 24_800, 584, 32),
+        (35_000, 35_100, 1_089, 32),
+        (74_900, 75_001, 3_044, 34),
+        (75_001, 75_101, 3_049, 34),
+        (93_901, 94_001, 4_436, 35),
+    ],
+    2023: [
+        (5_300, 5_400, 1, 31),
+        (34_500, 34_600, 1_026, 32),
+        (35_000, 35_100, 1_050, 32),
+        (74_900, 75_001, 2_925, 34),
+        (75_001, 75_101, 2_930, 34),
+        (99_901, 100_001, 4_544, 35),
+    ],
+    2024: [
+        (5_500, 5_600, 1, 30),
+        (35_000, 35_100, 957, 31),
+        (35_100, 35_200, 961, 31),
+        (74_900, 75_001, 2_513, 33),
+        (75_001, 75_101, 2_517, 33),
+        (99_901, 100_001, 3_811, 34),
+    ],
+    2025: [
+        (5_600, 5_700, 1, 30),
+        (35_000, 35_100, 947, 31),
+        (74_900, 75_001, 2_503, 33),
+        (75_001, 75_101, 2_507, 33),
+        (99_901, 100_001, 3_809, 34),
+    ],
+}
+
+
+@pytest.mark.parametrize(
+    "year, low, high, tax, page",
+    [(year, *row) for year, rows in TAX_TABLE_ROWS.items() for row in rows],
+)
+def test_ar_regular_income_tax_matches_published_table_rows(year, low, high, tax, page):
+    incomes = np.array([low, (low + high) / 2, high - 1, high - 0.01], dtype=float)
+    model = ar_regular_income_tax(incomes, P(f"{year}-01-01"))
+    assert (model == tax).all(), (
+        f"{TAX_TABLE_SOURCES[year]}#page={page}: row {low:,}-{high:,} is {tax:,}, "
+        f"model gives {model}"
+    )
+
+
+@pytest.mark.parametrize("year", range(2014, 2026))
+def test_ar_regular_income_tax_table_threshold_is_the_last_published_row(year):
+    # The last row's "But Less Than" bound is where the formula takes over.
+    p = P(f"{year}-01-01")
+    assert p.tax_table.threshold == TAX_TABLE_ROWS[year][-1][1]
+    at_and_above = np.array([0, 0.5, 10_000]) + p.tax_table.threshold
+    assert np.allclose(
+        ar_regular_income_tax(at_and_above, p), ar_main_income_tax(at_and_above, p)
+    )
+
+
+@pytest.mark.parametrize("year", list(range(2014, 2036)))
+def test_ar_regular_income_tax_is_whole_dollars_constant_within_each_table_row(year):
+    p = P(f"{year}-01-01")
+    threshold = p.tax_table.threshold
+    ti = np.arange(0, threshold, 0.25)
+    tax = ar_regular_income_tax(ti, p)
+    assert (tax == np.round(tax)).all()
+    # Tax changes only at a row start: a multiple of $100, plus $1 from $75,000.
+    changes = ti[1:][np.diff(tax) != 0]
+    offset = p.tax_table.band_offset.calc(changes)
+    row_start = (changes - offset) % p.tax_table.band_width == 0
+    # The one row wider than $100 ($74,900 to $75,001) is evaluated at
+    # midpoints a dollar apart on either side of $75,000, which can round
+    # differently.
+    offset_start = np.isin(changes, p.tax_table.band_offset.thresholds[1:])
+    assert (row_start | offset_start).all(), changes

@@ -3,11 +3,17 @@ values:
   2010-01-01:
     - pre_tax_health_insurance_premiums
     - health_savings_account_payroll_contributions
+    # Dependent care assistance the employer reasonably believes excludable
+    # under IRC 129 is not FICA wages (IRC 3121(a)(18)) or FUTA wages
+    # (IRC 3306(b)(13)). Form 2441 line 12 holds only those amounts.
+    - dependent_care_employer_benefits
 metadata:
   label: FICA pre-tax contributions
   reference:
-    - title: IRC §3121(a) — FICA wages definition
-      href: https://www.law.cornell.edu/uscode/text/26/3121
+    - title: IRC §3121(a) — FICA wages definition, including (a)(18), dependent care assistance
+      href: https://www.law.cornell.edu/uscode/text/26/3121#a
+    - title: IRC §3306(b)(13) — dependent care assistance excluded from FUTA wages
+      href: https://www.law.cornell.edu/uscode/text/26/3306#b_13
     - title: IRS Publication 15 (Employer's Tax Guide), Section 5
       href: https://www.irs.gov/publications/p15
     - title: IRS cafeteria plan FAQ

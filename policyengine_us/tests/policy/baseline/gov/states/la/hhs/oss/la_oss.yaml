@@ -18,7 +18,7 @@
       person1:
         la_oss_eligible: true
         ssi: 30  # full institutional FBR
-        ssi_countable_income: 0
+        ssi_countable_income: {2024: 0}
     households:
       household:
         members: [person1]
@@ -47,7 +47,7 @@
       person1:
         la_oss_eligible: true
         ssi: 30  # full institutional FBR
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
     households:
       household:
         members: [person1]
@@ -65,7 +65,7 @@
       person1:
         la_oss_eligible: true
         ssi: 25  # reduced institutional SSI
-        ssi_countable_income: 60
+        ssi_countable_income: {2024: 60}
     households:
       household:
         members: [person1]
@@ -82,7 +82,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 1_200
+        ssi_countable_income: {2024: 1_200}
     households:
       household:
         members: [person1]
@@ -99,7 +99,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 360
+        ssi_countable_income: {2024: 360}
     households:
       household:
         members: [person1]
@@ -116,7 +116,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 372
+        ssi_countable_income: {2024: 372}
     households:
       household:
         members: [person1]
@@ -133,7 +133,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 456
+        ssi_countable_income: {2024: 456}
     households:
       household:
         members: [person1]
@@ -150,7 +150,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: -1_000_000
+        ssi_countable_income: {2024: -1_000_000}
     households:
       household:
         members: [person1]
@@ -166,7 +166,7 @@
       person1:
         la_oss_eligible: true
         ssi: 30
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -181,7 +181,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: -1_000_000
+        ssi_countable_income: {2026: -1_000_000}
     households:
       household:
         members: [person1]
@@ -199,7 +199,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 540
+        ssi_countable_income: {2026: 540}
     households:
       household:
         members: [person1]
@@ -216,7 +216,7 @@
       person1:
         la_oss_eligible: true
         ssi: 0
-        ssi_countable_income: 360
+        ssi_countable_income: {2026: 360}
     households:
       household:
         members: [person1]

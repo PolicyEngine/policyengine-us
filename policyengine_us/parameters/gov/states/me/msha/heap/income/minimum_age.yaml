@@ -1,0 +1,16 @@
+description: Maine counts the income of household members at or above this age under the Low Income Home Energy Assistance Program.
+# Rule 3(C)(1) counts the income of "all Household Members over the age of 18"
+# in both the 2025 edition and the June 29, 2026 replacement. The model counts
+# members aged 18 and older.
+values:
+  2024-07-03: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Maine HEAP minimum income age
+  reference:
+    - title: 99-346 CMR ch. 24, section 3(C)(1) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: "99-346 CMR ch. 24, section 3(C)(1) (effective June 29, 2026) #page 11-12"
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=11

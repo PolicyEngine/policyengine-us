@@ -107,3 +107,260 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: false
+
+- name: Case 7, a self-employment loss does not count as unearned income.
+  # IRS Pub. 501 (2025), p. 4, Table 2: unearned income is interest,
+  # dividends, capital gain distributions, pensions and the like; earned
+  # income is wages and pay for work. Here unearned income is the 100 of
+  # interest, not 100 less the 5,000 loss, so it is not more than 1,350, and
+  # gross income, 100, is not more than 1,350. The dependent is not required
+  # to file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: -5_000
+        taxable_interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 8, wages deferred to a 401(k) plan do not hide unearned income.
+  # Box 1 wages leave out the 2,000 deferral, so gross income is 8,000 of
+  # wages and 1,500 of interest. Unearned income, 1,500, is more than 1,350
+  # (Pub. 501 (2025), Table 2), so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 9, a dependent's earned income is W-2 box 1 wages, after a 401(k) deferral.
+  # Form 1040 instructions (2025): line 1a is W-2 box 1, which leaves out
+  # the $6,000 elective deferral. Earned income is $4,000, so the Pub. 501
+  # (2025), Table 2 limit is the larger of $1,350 or $4,000 + $450 = $4,450.
+  # Gross income, $4,000 of wages and $600 of interest, is more than $4,450,
+  # so the dependent must file.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 10_000
+        traditional_401k_contributions: 6_000
+        taxable_interest_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 10, the same box 1 wages without a deferral give the same answer.
+  # Control for Case 9: $4,000 of wages and $600 of interest; $4,600 is more
+  # than $4,000 + $450 = $4,450.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 4_000
+        taxable_interest_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 11, wages over the regular amount before a deferral but not after it do not require a return.
+  # Box 1 wages are $17,000 - $3,000 = $14,000, not more than the $15,750
+  # single amount (Table 2, test 2), and gross income of $14,000 is not more
+  # than $14,000 + $450 = $14,450 (test 3).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 17_000
+        traditional_401k_contributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 12, farm income is earned income, not unearned income.
+  # The Form 1040 dependent worksheet counts Schedule 1 line 6 (farm income)
+  # as earned income, net of the deductible part of self-employment tax
+  # (line 15): $2,000 - $2,000 x 0.9235 x 15.3% / 2 = $1,858.70. $2,000 of
+  # farm income is not unearned income over $1,350, and gross income of
+  # $2,000 is not more than $1,858.70 + $450 = $2,308.70. The section 6017
+  # self-employment tax filing rule is not part of the section 6012(a)(1)
+  # test that 42 CFR 435.603(d)(2) uses.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        farm_operations_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: false
+
+- name: Case 13, farm income counts net of the deductible part of self-employment tax.
+  # Worksheet earned income is $15,000 - $15,000 x 0.9235 x 15.3% / 2 =
+  # $13,940.28, so the limit is $13,940.28 + $450 = $14,390.28, below the
+  # $15,750 single amount. Gross income of $15,000 is more than that, so the
+  # dependent must file, as the federal test finds for the same filer.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        farm_operations_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: Case 14, self-employment income counts net of the deductible part of self-employment tax.
+  # Same arithmetic as Case 13 for $15,000 of Schedule C income: the limit
+  # is $14,390.28 and gross income of $15,000 is more than that.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        self_employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    medicaid_person_is_required_to_file: true
+
+- name: A dependent's disability pension before minimum retirement age is earned income for the filing threshold.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 25_000
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Earned income 10,000 and no unearned income. Dependent standard
+    # deduction: max(1,300, 10,000 + 450) = 10,450, so gross income of
+    # 10,000 is under it and the dependent need not file. The parent's
+    # 25,000 of wages is over the 14,600 single amount.
+    medicaid_person_is_required_to_file: [true, false]
+
+# Positive-source gross income preserves the loss/deferral rules even
+# when a disability pension is also earned income (Pub. 501, Table 2).
+- name: Earned disability with a business loss does not become unearned Medicaid filing income
+  period: 2024
+  input:
+    age: 20
+    disability_benefits: 1300
+    disability_benefits_before_minimum_retirement_age: 1300
+    self_employment_income: -2000
+  output:
+    medicaid_irs_gross_income: 1300
+    medicaid_person_is_required_to_file: false
+- name: Deferred wages do not hide unearned income alongside earned disability benefits
+  period: 2024
+  input:
+    age: 20
+    employment_income: 3000
+    traditional_401k_contributions: 2000
+    disability_benefits: 3000
+    disability_benefits_before_minimum_retirement_age: 3000
+    taxable_interest_income: 1500
+  output:
+    medicaid_irs_gross_income: 5500
+    medicaid_person_is_required_to_file: true
+
+- name: H3a, deferred wages and partially earned disability preserve the Medicaid unearned filing test
+  # Pub. 501 (2025), Table 2: positive gross wages are $4,000 - $2,500 =
+  # $1,500. Gross income $6,500 less $1,500 wages and $3,500 earned
+  # disability leaves $1,500 unearned, over $1,350. Using wages before
+  # deferrals to net earned income would incorrectly remove this excess.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 3_500
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 3_500
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: true
+
+- name: H3b, deferred wages and fully earned disability do not require Medicaid filing
+  # All $5,000 is line 1h pay, leaving no unearned income. The dependent
+  # deduction used for this test is $1,500 + $5,000 + $450 = $6,950,
+  # above gross income $6,500 (2025 Form 1040 instructions, p. 35;
+  # Pub. 501, p. 4, Table 2). Earned wages exclude the $2,500 deferral.
+  period: 2025
+  input:
+    age: 20
+    employment_income: 4_000
+    traditional_401k_contributions: 2_500
+    disability_benefits: 5_000
+    disability_benefits_before_minimum_retirement_age: 5_000
+  output:
+    irs_employment_income: 1_500
+    taxable_disability_benefits: 5_000
+    earned_disability_benefits: 5_000
+    medicaid_irs_gross_income: 6_500
+    medicaid_person_is_required_to_file: false
+
+- name: Deferred wages and earned disability together stay below the Medicaid filing threshold
+  # 2025 Form 1040 instructions, pp. 25 and 35: line 1a wages are
+  # $18,000 - $6,000 = $12,000; line 1h disability adds $3,000, making
+  # worksheet earned income $15,000 and line 4a deduction $15,450.
+  # https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4
+  # Pub. 501, Table 2: unearned income is $0; earned income $15,000 is
+  # below $15,750; gross income $15,000 is below the larger of $1,350
+  # or min($15,000, $15,300) + $450 = $15,450. No return is required.
+  # Counting wages before deferrals, or omitting earned disability from
+  # worksheet earned income, would incorrectly require filing.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 18_000
+    traditional_401k_contributions: 6_000
+    disability_benefits: 3_000
+    disability_benefits_before_minimum_retirement_age: 3_000
+    claimed_as_dependent_on_another_return: true
+  output:
+    irs_employment_income: 12_000
+    earned_disability_benefits: 3_000
+    standard_deduction_worksheet_earned_income_person: 15_000
+    medicaid_irs_gross_income: 15_000
+    medicaid_person_is_required_to_file: false

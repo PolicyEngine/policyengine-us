@@ -6,32 +6,31 @@
   output:
     charitable_deduction_for_non_itemizers: 0
 
-- name: 2020 single filer more than limit
+- name: 2020 single filer, whose deduction is above the line instead
   period: 2020
   input:
     charitable_cash_donations: 400
     filing_status: SINGLE
-  # CARES Act §2204 set the non-itemizer cap at $300 for 2020, not $150.
-  # Per IRS Pub. 526 (2020) p.2, MFS was limited to $150 (sharing the
-  # joint $300 cap), but SINGLE/HoH/SURVIVING_SPOUSE get the full $300.
+  # 170(p) starts in 2021. The 2020 deduction for non-itemizers is the
+  # above-the-line charitable_contributions_ald (26 U.S.C. 62(a)(22)).
   output:
-    charitable_deduction_for_non_itemizers: 300
+    charitable_deduction_for_non_itemizers: 0
 
-- name: 2020 married filers more than limit
+- name: 2020 married filers, whose deduction is above the line instead
   period: 2020
   input:
     charitable_cash_donations: 700
     filing_status: JOINT
   output:
-    charitable_deduction_for_non_itemizers: 300
+    charitable_deduction_for_non_itemizers: 0
 
-- name: 2020 MFS filer capped at $150 (half of joint $300)
+- name: 2020 MFS filer, whose deduction is above the line instead
   period: 2020
   input:
     charitable_cash_donations: 400
     filing_status: SEPARATE
   output:
-    charitable_deduction_for_non_itemizers: 150
+    charitable_deduction_for_non_itemizers: 0
 
 - name: 2021 single filer less than limit
   period: 2021
@@ -72,3 +71,29 @@
     filing_status: SINGLE
   output:
     charitable_deduction_for_non_itemizers: 0
+
+- name: 2021 non-itemizer giving cash to non-50% org gets zero deduction under § 170(p)
+  period: 2021
+  input:
+    charitable_cash_donations_non_50_pct_orgs: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 0
+
+- name: 2021 non-itemizer giving cash to 50% org gets deduction under § 170(p)
+  period: 2021
+  input:
+    charitable_cash_donations_50_pct_orgs: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 300
+
+- name: 2021 non-itemizer mix of 50% and non-50% org cash
+  period: 2021
+  input:
+    charitable_cash_donations: 400
+    charitable_cash_donations_non_50_pct_orgs: 300
+    filing_status: SINGLE
+  output:
+    # 400 total - 300 non-50% = 100 to 50% orgs; min(100, 300 cap) = 100
+    charitable_deduction_for_non_itemizers: 100

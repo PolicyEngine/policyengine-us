@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class md_meap_income_limit(Variable):
@@ -28,10 +28,6 @@ class md_meap_income_limit(Variable):
         p = parameters(period).gov.states.md.dhs.meap.eligibility
         size = max_(spm_unit("md_meap_household_size", period), 1)
         state = spm_unit.household("state_code_str", period)
-        base = parameters(period).gov.hhs.smi.amount[state]
-        factor = smi(size, state, period, parameters) / base
-        # ACF LIHEAP IM 2025-02 Attachment 4 (page 5) floors 60% of the
-        # four-person SMI, then floors each size's share of it.
-        smi_limit = np.floor(factor * np.floor(base * p.smi_rate))
+        smi_limit = liheap_smi_limit(size, state, p.smi_rate, period, parameters)
         poverty_limit = spm_unit("md_meap_fpg", period) * p.fpg_rate
         return where(size >= p.smi_min_size, smi_limit, poverty_limit)

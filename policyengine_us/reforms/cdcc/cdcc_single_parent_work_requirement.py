@@ -30,7 +30,7 @@ def create_cdcc_single_parent_work_requirement() -> Reform:
         )
 
         def formula(tax_unit, period, parameters):
-            expenses = tax_unit("tax_unit_childcare_expenses", period)
+            expenses = tax_unit("cdcc_qualifying_childcare_expenses", period)
             cdcc_limit = tax_unit("cdcc_limit", period)
             eligible_capped_expenses = min_(expenses, cdcc_limit)
 

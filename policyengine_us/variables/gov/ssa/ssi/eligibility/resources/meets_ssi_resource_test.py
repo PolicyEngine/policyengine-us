@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_resource_couple,
+    _ssi_spouse_index,
+)
 
 
 class meets_ssi_resource_test(Variable):
@@ -25,9 +29,12 @@ class meets_ssi_resource_test(Variable):
                 "ssi_resources_deemed_from_ineligible_parent",
             ],
         )
+        # 416.1205(b): an eligible couple's combined resources. The couple
+        # is two spouses, so add the spouse rather than the marital unit.
+        spouse = np.maximum(_ssi_spouse_index(person, period), 0)
         countable_resources = where(
-            joint_claim,
-            person.marital_unit.sum(personal_resources),
+            _ssi_resource_couple(person, period),
+            personal_resources + personal_resources[spouse],
             personal_resources + deemed_resources,
         )
         # 416.1205(a): an individual living with an ineligible spouse counts

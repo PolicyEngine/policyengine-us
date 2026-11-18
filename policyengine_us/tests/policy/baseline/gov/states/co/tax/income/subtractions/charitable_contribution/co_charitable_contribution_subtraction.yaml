@@ -30,3 +30,15 @@
   output:
     co_charitable_contribution_subtraction: 0
 
+- name: Sub-boxes and total resolved without dropping dollars
+  period: 2024
+  input:
+    co_charitable_contribution_subtraction_eligible: true
+    charitable_non_cash_donations: 10_000
+    charitable_non_cash_donations_non_50_pct_orgs: 3_000
+    state_code: CO
+  output:
+    co_charitable_contribution_subtraction: 9_500
+    # Total non-cash = 10,000 (7,000 to 50% orgs + 3,000 to non-50% orgs).
+    # Subtraction = 10,000 - 500 adjustment = 9,500.
+

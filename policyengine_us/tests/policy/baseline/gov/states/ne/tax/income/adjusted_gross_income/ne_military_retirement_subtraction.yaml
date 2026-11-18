@@ -162,3 +162,39 @@
     # The head is under 67, and the dependent relative is excluded despite
     # being 67 or older, so only the spouse's 10,000 counts: 40% * 10,000.
     ne_military_retirement_subtraction: 4_000
+
+- name: NE 2021 military retirement survivor benefits are not eligible for subtraction (Form 1040N-MIL)
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 69
+        military_retirement_pay_survivors: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 0
+
+- name: NE 2022 military retirement survivor benefits are eligible for 100% subtraction (Info Guide 8-364)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 60
+        military_retirement_pay_survivors: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 20_000

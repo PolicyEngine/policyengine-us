@@ -1,0 +1,431 @@
+# Nontaxable employment disability benefits and unemployment compensation outside
+# federal AGI in gross household income. § 15-30-2337(9)(a) counts federal
+# AGI "plus all nontaxable income". The 2014-2023 instructions list
+# "Disability benefits including, but not limited to, veteran's disability,
+# SSI payments, and workers' compensation"; the 2014-2017 worksheets list
+# "Alimony, cash public assistance, unemployment"; 2024 Schedule 2EC line 14
+# counts "the total of unemployment compensation received". SSI is pinned to
+# zero so that each case tests only the item it names.
+
+- name: Case 1, 2016 Form 2EC, the claimant's disability benefits count.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 12_000
+        disability_benefits: 2_500
+        tax_exempt_disability_benefits: 2_500
+        rent: 6_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Gross Household Income Worksheet: line 8 pensions 12_000; line 9
+    # disability benefits 2_500; line 10 = 14_500, Form 2EC line 1.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_500
+    # Line 2 6_300; line 3 = 8_200; line 4 = 0.039; line 5 = 319.80.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 319.80
+    # Line 7 rent 6_000; line 8 = 900; line 9 = 900; line 10 = 900 - 319.80
+    # = 580.20; line 11 = 580.20; line 12 = 100%; line 13 = 580.20. Without
+    # the disability benefits, line 1 = 12_000, line 5 = 5_700 x 0.028 =
+    # 159.60 and the credit would be 740.40.
+    mt_elderly_homeowner_or_renter_credit: 580.20
+
+- name: Case 2, 2017 Form 2EC, a household member's disability benefits count.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 15_000
+        real_estate_taxes: 1_200
+        ssi: 0
+      person2:
+        age: 45
+        disability_benefits: 5_000
+        tax_exempt_disability_benefits: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult son files his own return. Gross Household Income
+    # Worksheet: line 6 pensions 15_000; line 7 his disability benefits
+    # 5_000; line 8 = 20_000, Form 2EC line 1.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 5_000]
+    # Line 2 6_300; line 3 = 13_700; line 4 = 0.05; line 5 = 685.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [685, 0]
+    # Line 6 = 1_200; line 9 = 1_200; line 10 = 515; line 11 = 515; line 12
+    # = 100%; line 13 = 515. Without his benefits, line 1 = 15_000, line 5 =
+    # 8_700 x 0.039 = 339.30 and the credit would be 860.70.
+    mt_elderly_homeowner_or_renter_credit: [515, 0]
+
+- name: Case 3, 2023 schedule line 8, a spouse's disability benefits count.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 18_000
+        real_estate_taxes: 1_000
+        ssi: 0
+      person2:
+        age: 64
+        disability_benefits: 4_000
+        tax_exempt_disability_benefits: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Joint return. Line 1 federal AGI 18_000; line 8 disability benefits
+    # 4_000; line 10 = 22_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_000, 4_000]
+    # Line 11 12_600; line 12 = 9_400; line 13 = 0.042; line 14 = 394.80.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [394.80, 0]
+    # Line 15 = 1_000; line 18 = 1_000; line 19 = 605.20; line 20 = 605.20;
+    # line 21 = 100%; line 22 = 605.20. Without the benefits, line 10 =
+    # 18_000, line 14 = 5_400 x 0.028 = 151.20 and the credit would be
+    # 848.80.
+    mt_elderly_homeowner_or_renter_credit: [605.20, 0]
+
+- name: Case 4, 2024 Schedule 2EC line 17, a household member's disability benefits count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 20_000
+        rent: 9_600
+        ssi: 0
+      person2:
+        age: 45
+        disability_benefits: 7_000
+        tax_exempt_disability_benefits: 7_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult son files his own return. Line 5 pensions 20_000;
+    # line 17 his disability benefits (line 1 or line 15 items for another
+    # member) 7_000; line 18 = 27_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 7_000]
+    # Line 19 12_600; line 20 = 14_400; line 21 = 0.05; line 22 = 720.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [720, 0]
+    # Line 24 rent 9_600; line 25 = 1_440; line 26 = 1_440; line 27 = 720;
+    # line 28 = 720; line 29 = 100%; line 30 = 720. Without his benefits,
+    # line 18 = 20_000, line 22 = 7_400 x 0.035 = 259 and the credit would
+    # be the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: [720, 0]
+
+- name: Case 5, 2025 Schedule 2EC, the claimant's own disability benefits count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_pension_income: 16_000
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 6_000
+        real_estate_taxes: 1_300
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 pensions 16_000; disability benefits 6_000 on line 1 if taxable
+    # and reported as wages, line 5 if a disability pension after minimum
+    # retirement age, line 15 if nontaxable; line 18 = 22_000 either way.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 22_000
+    # Line 19 12_600; line 20 = 9_400; line 21 = 0.042; line 22 = 394.80.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 394.80
+    # Line 23 = 1_300; line 26 = 1_300; line 27 = 905.20; line 28 = 905.20;
+    # line 29 = 100%; line 30 = 905.20. Without the benefits, line 18 =
+    # 16_000, line 22 = 3_400 x 0.016 = 54.40 and the credit would be the
+    # 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: 905.20
+
+- name: Case 6, 2020 schedule line 8, the claimant's unemployment compensation excluded from federal AGI counts.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 16_000
+        unemployment_compensation: 9_000
+        real_estate_taxes: 1_500
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # IRC 85(c) excludes the 9_000 from 2020 federal AGI (AGI without it is
+    # 16_000, under 150_000). Line 1 federal AGI 16_000; line 7 refundable
+    # credits received, the 2020 recovery rebate credit 1_200 + 600 = 1_800;
+    # line 8 other income not listed above, the excluded 9_000; line 10 =
+    # 26_800.
+    adjusted_gross_income_person: 16_000
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_800
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_800
+    # Line 11 6_300; line 12 = 20_500; line 13 = 0.05; line 14 = 1_025.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_025
+    # Line 15 = 1_500; line 18 = 1_500; line 19 = 475; line 20 = 475; line 21
+    # = 100%; line 22 = 475. Without line 8, line 10 = 17_800, line 14 =
+    # 11_500 x 0.048 = 552 and the credit would be 948.
+    mt_elderly_homeowner_or_renter_credit: 475
+
+- name: Case 7, 2020 schedule line 8, a household member's compensation above the exclusion limit counts in full.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 14_000
+        rent: 12_000
+        ssi: 0
+      person2:
+        age: 40
+        unemployment_compensation: 14_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's daughter files her own return. Of her 14_000, 10_200 is
+    # excluded and 14_000 - 10_200 = 3_800 is in her federal AGI. Line 1
+    # federal AGI 14_000 + 3_800 = 17_800; line 7 each return's 2020
+    # recovery rebate credit, 1_800 + 1_800 = 3_600; line 8 her excluded
+    # 10_200; line 10 = 31_600.
+    adjusted_gross_income_person: [14_000, 3_800]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_800, 15_800]
+    # Line 11 6_300; line 12 = 25_300; line 13 = 0.05; line 14 = 1_265.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [1_265, 0]
+    # Line 16 rent 12_000; line 17 = 1_800; line 18 = 1_800; line 19 = 535;
+    # line 20 = 535; line 21 = 100% (under 35_000); line 22 = 535. Without
+    # line 8, line 10 = 21_400, line 14 = 15_100 x 0.05 = 755 and the credit
+    # would be the 1_000 cap.
+    mt_elderly_homeowner_or_renter_credit: [535, 0]
+
+- name: Case 8, 2020 a dependent's compensation counts once, in their own gross income.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+        real_estate_taxes: 1_400
+        ssi: 0
+      person2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        unemployment_compensation: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's grandson, a student, is her dependent. All of his 4_000
+    # is excluded from federal AGI, and his own gross income counts it in
+    # full, so nothing more is added for it. Line 1 federal AGI 15_000; line
+    # 7 the recovery rebate credit 1_800; line 8 his 4_000; line 10 = 20_800.
+    mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: [0, 0]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [16_800, 4_000]
+    # Line 12 = 14_500; line 13 = 0.05; line 14 = 725.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [725, 0]
+    # Line 15 = 1_400; line 19 = 675; line 20 = 675; line 22 = 675.
+    mt_elderly_homeowner_or_renter_credit: [675, 0]
+
+- name: Case 9, 2021 taxable unemployment compensation counts once, in federal AGI.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 16_000
+        unemployment_compensation: 9_000
+        real_estate_taxes: 1_500
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # No exclusion in 2021. Line 1 federal AGI 25_000; line 7 the 2021
+    # recovery rebate credit 1_400; line 10 = 26_400.
+    mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: 0
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_400
+    # Line 12 = 20_100; line 13 = 0.05; line 14 = 1_005.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_005
+    # Line 19 = 1_500 - 1_005 = 495; line 20 = 495; line 22 = 495.
+    mt_elderly_homeowner_or_renter_credit: 495
+
+- name: Case 10, 2024 Schedule 2EC line 14, unemployment compensation counts once.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 15_000
+        unemployment_compensation: 6_000
+        real_estate_taxes: 1_200
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 pensions 15_000; line 14 unemployment compensation 6_000, all
+    # in federal AGI; line 18 = 21_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_000
+    # Line 20 = 8_400; line 21 = 0.039; line 22 = 327.60.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 327.60
+    # Line 27 = 1_200 - 327.60 = 872.40; line 28 = 872.40; line 30 = 872.40.
+    mt_elderly_homeowner_or_renter_credit: 872.40
+
+# The following cases preserve Cases 1-3's total disability income while
+# changing its tax treatment. Each parameter period must add only the
+# nontaxable portion to federal AGI, so the credit remains unchanged.
+- name: Case 11, 2016 fully taxable disability benefits count once through federal AGI.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 12_000
+        disability_benefits: 2_500
+        tax_exempt_disability_benefits: 0
+        rent: 6_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Federal AGI already includes all 2_500 of disability benefits.
+    adjusted_gross_income_person: 14_500
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_500
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 319.80
+    mt_elderly_homeowner_or_renter_credit: 580.20
+
+- name: Case 12, 2017 mixed disability benefits count each portion once for another household member.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 15_000
+        real_estate_taxes: 1_200
+        ssi: 0
+      person2:
+        age: 45
+        disability_benefits: 5_000
+        tax_exempt_disability_benefits: 2_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The adult son's own federal AGI holds 3_000; only 2_000 is added.
+    adjusted_gross_income_person: [15_000, 3_000]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 5_000]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [685, 0]
+    mt_elderly_homeowner_or_renter_credit: [515, 0]
+
+- name: Case 13, 2023 mixed disability benefits count each portion once for a spouse.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 18_000
+        real_estate_taxes: 1_000
+        ssi: 0
+      person2:
+        age: 64
+        disability_benefits: 4_000
+        tax_exempt_disability_benefits: 1_500
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 1 federal AGI 20_500; line 8 nontaxable disability 1_500;
+    # line 10 gross household income 22_000, as in Case 3.
+    adjusted_gross_income_person: [18_000, 2_500]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_000, 4_000]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [394.80, 0]
+    mt_elderly_homeowner_or_renter_credit: [605.20, 0]

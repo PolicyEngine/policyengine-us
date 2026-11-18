@@ -25,7 +25,9 @@ class unemployment_compensation_months(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/7/273.7#b_1_v"
 
     def formula(person, period, parameters):
-        receives = person("unemployment_compensation", period) > 0
+        # Reported unemployment compensation, or modeled state unemployment
+        # insurance when none is reported.
+        receives = person("total_unemployment_compensation", period) > 0
         weeks = person("weeks_unemployed", period)
         # NOTE: multiplying before dividing keeps whole weeks exact, so 13
         # weeks gives exactly 3 months before rounding up.

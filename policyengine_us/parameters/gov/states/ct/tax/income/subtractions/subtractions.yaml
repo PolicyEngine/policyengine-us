@@ -3,9 +3,11 @@ values:
   2021-01-01:
     - us_govt_interest #ln 39
     - ct_social_security_benefit_adjustment #ln 41
-    - military_retirement_pay #ln 44
+    - military_retirement_income #ln 44
+
     - ct_pension_annuity_subtraction #ln 48b
     - salt_refund_income #ln 38
+    - ct_other_subtractions
 
 metadata:
   unit: list

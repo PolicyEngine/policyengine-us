@@ -130,3 +130,127 @@
   output:
     # Line 11 cap is $7,500, so line 22 = 10_000 - 4_000 = 6_000; 6_000 * 22%.
     hi_cdcc: 1_320
+
+# Both spouses are incapable of self-care and one can be claimed as a dependent.
+# Only that spouse is a qualifying individual (of the spouse who cannot be
+# claimed), so only care expenses for that spouse count (HRS 235-55.6(b)(2)).
+- name: 2025 care expenses of the spouse who is not a qualifying individual do not count (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 45
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        employment_income: 10000
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_dependent_care_benefits: 0
+    hi_cdcc: 0
+
+- name: 2025 care expenses of the spouse who is not a qualifying individual do not count (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 45
+        employment_income: 10000
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_dependent_care_benefits: 0
+    hi_cdcc: 0
+
+- name: 2025 care expenses of the claimable incapacitated spouse count (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 45
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        employment_income: 10000
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # 25% x min(2,000 expenses, $10,000 limit, 10,000 earned)
+    hi_cdcc_qualifying_individuals: 1
+    hi_dependent_care_benefits: 2000
+    hi_cdcc: 500
+
+- name: 2025 care expenses of the claimable incapacitated spouse count (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 45
+        employment_income: 10000
+        is_incapable_of_self_care: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_dependent_care_benefits: 2000
+    hi_cdcc: 500

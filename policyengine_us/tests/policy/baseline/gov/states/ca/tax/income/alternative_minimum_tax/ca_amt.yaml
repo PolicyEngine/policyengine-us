@@ -53,6 +53,25 @@
   output:
     ca_amt: 0
 
+- name: The 2031 rate expiry exposes AMT for a single filer with $1 million of taxable income
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_taxable_income: 1_000_000
+    ca_amti: 1_400_000
+    ca_amt_exemption: 0
+    ca_non_refundable_credits: 0
+  output:
+    # Regular tax falls to 88,875.81 once the rates above 9.3% expire (see
+    # ca_income_tax_before_credits.yaml). Tentative minimum tax is .07 x 1,400,000 = 98,000,
+    # so AMT is 98,000 - 88,875.81 = 9,124.19 and total tax is 98,000.
+    # The regular tax uses the 2026 FTB schedule times 198.360243 / 177.11375.
+    ca_income_tax_before_credits: 88_875.81
+    ca_amt: 9_124.19
+    ca_income_tax_before_refundable_credits: 98_000
+
 
 - name: Excess employee deductions do not create California AMT below the exemption
   # Schedule P line 15 uses -99,000, not the zero on Form 540 line 19.

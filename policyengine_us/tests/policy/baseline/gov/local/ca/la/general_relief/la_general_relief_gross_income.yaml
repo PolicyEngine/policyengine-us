@@ -1,0 +1,63 @@
+- name: CalWORKs of a three-person SPM unit counts once, not once per member
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 25
+      sister:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      adult_tax_unit:
+        members: [adult]
+      sister_tax_unit:
+        members: [sister, child]
+    spm_units:
+      spm_unit:
+        members: [adult, sister, child]
+        tanf: 1_800
+    families:
+      family:
+        members: [adult, sister, child]
+    households:
+      household:
+        members: [adult, sister, child]
+        state_code: CA
+        in_la: true
+  output:
+    la_general_relief_gross_income: 1_800
+    la_general_relief_net_income: 1_800
+
+- name: Person sources sum over members and CalWORKs is added once
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 25
+        employment_income: 1_200
+      sister:
+        age: 30
+        veterans_benefits: 600
+      child:
+        age: 3
+    tax_units:
+      adult_tax_unit:
+        members: [adult]
+      sister_tax_unit:
+        members: [sister, child]
+    spm_units:
+      spm_unit:
+        members: [adult, sister, child]
+        tanf: 1_800
+    families:
+      family:
+        members: [adult, sister, child]
+    households:
+      household:
+        members: [adult, sister, child]
+        state_code: CA
+        in_la: true
+  output:
+    # 1,200 + 600 + 1,800
+    la_general_relief_gross_income: 3_600

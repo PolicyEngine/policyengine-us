@@ -1,17 +1,31 @@
-description: Indiana provides the following refundable income tax credits.
+description: Indiana provides these refundable income tax credits.
+values:
+  # The Indiana earned income credit and unified tax credit for the elderly
+  # count in every modeled year. This first block is backdated to 2015, the
+  # first modeled year, so the list without the rebate covers 2015-2019.
+  2019-01-01:
+    - in_eitc
+    - in_unified_elderly_tax_credit
+  # The automatic taxpayer refund (IC 4-10-22-4 and 4-10-22-4.5(a)) is booked
+  # to the 2020 eligibility year (see
+  # automatic_refund_rebate/amount/base.yaml), so it is listed in 2020 only.
+  2020-01-01:
+    - in_eitc
+    - in_unified_elderly_tax_credit
+    - in_automatic_refund_rebate
+  2021-01-01:
+    - in_eitc
+    - in_unified_elderly_tax_credit
 metadata:
   unit: list
   period: year
   label: Indiana refundable credits
   reference:
-    - title: Indiana General Assembly Laws
-      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1
-values:
-  2020-01-01:
-    - in_eitc  
-    - in_unified_elderly_tax_credit
-    - in_automatic_refund_rebate
-
-  2021-01-01:
-    - in_eitc
-    - in_unified_elderly_tax_credit
+    - title: Indiana Code, Title 6, Article 3.1, Chapter 21
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21
+    - title: Indiana Code, Title 6, Article 3, Chapter 3, Section 6-3-3-9
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3-3-9
+    - title: Indiana Code, Title 4, Article 10, Chapter 22, Section 4-10-22-4
+      href: https://iga.in.gov/laws/2022/ic/titles/4#4-10-22
+    - title: Indiana Department of Revenue Income Tax Information Bulletin 110, Eligibility for the $125 ATR and the $200 ATR Issued During 2022
+      href: https://www.in.gov/dor/files/ib110.pdf#page=2

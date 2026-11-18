@@ -123,3 +123,144 @@
   output:
     adjusted_gross_income: 47_000
     medicaid_adjusted_gross_income_person: 47_000
+
+- name: Case 6, a spouse's own deductions lower only that spouse's Medicaid AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 20_000
+        traditional_ira_contributions: 5_000
+        early_withdrawal_penalty: 200
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Head: 50,000. Spouse: 20,000 - 5,000 - 200 = 14,800. They add up to the
+    # joint AGI, 64,800.
+    adjusted_gross_income: 64_800
+    medicaid_adjusted_gross_income_person: [50_000, 14_800]
+
+- name: Case 7, a spouse's business loss lowers only that spouse's Medicaid AGI, below zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 10_000
+    medicaid_adjusted_gross_income_person: [30_000, -20_000]
+
+- name: Case 8, savings bond interest recorded on a dependent is the filer's exclusion.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 50_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        employment_income: 20_000
+        us_bonds_for_higher_ed: 1_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # gov.irs.ald.filer_amounts_recorded_on_dependents: the exclusion is the
+    # parent's (Form 8815), so it lowers the parent's AGI, 50,000 - 1,000,
+    # and not the student's own, 20,000.
+    adjusted_gross_income: 49_000
+    medicaid_adjusted_gross_income_person: [49_000, 20_000]
+
+- name: Case 9, a supplied spouse HSA deduction lowers only that spouse's AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+        health_savings_account_ald_person: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        health_savings_account_ald: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Each spouse figures their own Form 8889 deduction; the return combines
+    # the two line 13 amounts (2025 instructions, page 4).
+    # https://www.irs.gov/pub/irs-pdf/i8889.pdf#page=4
+    adjusted_gross_income: 96_000
+    above_the_line_deductions_person: [0, 4_000]
+    medicaid_adjusted_gross_income_person: [60_000, 36_000]
+
+- name: Case 10, unrecorded person HSA amounts preserve the equal filer fallback.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        health_savings_account_ald: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The return's 4,000 deduction is supplied without either person's
+    # amount, so the existing filer_share fallback allocates 2,000 each.
+    adjusted_gross_income: 96_000
+    above_the_line_deductions_person: [2_000, 2_000]
+    medicaid_adjusted_gross_income_person: [58_000, 38_000]

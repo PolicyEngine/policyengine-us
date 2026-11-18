@@ -35,6 +35,8 @@ def build_situation(cases, year, with_receipts):
                     },
                     "mt_refundable_credits_before_renter_credit": {year: 0},
                     "mt_elderly_homeowner_or_renter_credit_received": {year: 0},
+                    # No computed SSI; it has its own tests.
+                    "ssi": {year: 0},
                 }
                 if arrangement == "C":
                     people[name][

@@ -1,0 +1,252 @@
+- name: Case 1, eligible couple rounds each half up.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: &id001 [person1, person2]
+    households:
+      household:
+        members: *id001
+        state_code: NJ
+  output:
+    nj_ssp: [12.68, 12.68]
+
+- name: Case 2, congregate care couple in a small household-scale facility.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  # SI NY01415.025: couple status continues in a small Level 2 facility that
+  # is not an institution.
+  input:
+    people:
+      person1:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+      person2:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: &id002 [person1, person2]
+    households:
+      household:
+        members: *id002
+        state_code: NJ
+  output:
+    nj_ssp: [309.18, 309.18]
+
+- name: Case 3, special rate with only an ineligible spouse.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: &id003 [person1, person2]
+    households:
+      household:
+        members: *id003
+        state_code: NJ
+  output:
+    nj_ssp: [152.99, 0]
+
+- name: Case 4, deeming uses higher individual special rate.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 63
+        social_security_retirement: 19_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: &id004 [person1, person2]
+    households:
+      household:
+        members: *id004
+        state_code: NJ
+  output:
+    # person2 is 63, below the SSI aged threshold of 65, and not blind or disabled.
+    is_ssi_ineligible_spouse: [false, true]
+    # Spouse income 19_800 per year > (1_491 - 994) * 12 = 5_964, so deeming applies.
+    is_ssi_spousal_deeming_applies: [true, false]
+    # Deemed: 19_800 / 12 = 1_650 - 20 general exclusion = 1_630 per month.
+    ssi_income_deemed_from_ineligible_spouse: [1_630, 0]
+    # person1 has no own income: 0 + 1_630 deemed = 1_630.
+    ssi_countable_income: [1_630, 0]
+    # Deeming uses the couple FBR for person1; person2's 994 is not used.
+    ssi_amount_if_eligible: [1_491, 994]
+    # 1_491 - 1_630 = -139, so no federal SSI.
+    uncapped_ssi: [-139, 0]
+    ssi: [0, 0]
+    # Only the ineligible spouse shares the household: code C.
+    nj_ssp_living_arrangement: [LIVING_ONLY_WITH_INELIGIBLE_SPOUSE, LIVING_ONLY_WITH_INELIGIBLE_SPOUSE]
+    # Deemed: max(25.35, 152.99) - (1_630 - 1_491) = 152.99 - 139 = 13.99.
+    # Own: 152.99 - max(0 - 994, 0) = 152.99; the lower amount, 13.99, is paid.
+    nj_ssp: [13.99, 0]
+
+- name: Case 5, special rate ends when a child shares the household.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: &id005 [person1, person2, person3]
+    households:
+      household:
+        members: *id005
+        state_code: NJ
+  output:
+    nj_ssp: [31.25, 0, 0]
+
+- name: Case 6, explicit ineligible spouse code for a couple living only with a foster child.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  # SI NY01415.025 allows code C with foster children (effective 7/1/90); the
+  # state's household determination is entered directly.
+  input:
+    people:
+      person1:
+        age: 65
+        nj_ssp_living_arrangement: LIVING_ONLY_WITH_INELIGIBLE_SPOUSE
+      person2:
+        age: 40
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: &id006 [person1, person2, person3]
+    households:
+      household:
+        members: *id006
+        state_code: NJ
+  output:
+    nj_ssp: [152.99, 0, 0]
+
+- name: Case 7, annual state benefits and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 65
+  output:
+    nj_ssp: 375
+    household_state_benefits: 375
+    snap_unearned_income: 12_303
+    hud_unearned_income: 12_303
+    # SSI 994 * 12 = 11_928. SNAP: 298 - 245 = 53 a month, raised to New
+    # Jersey's 95 minimum, so 95 * 12 = 1_140. 11_928 + 375 + 1_140 = 13_443.
+    spm_unit_benefits: 13_443
+
+- name: Case 8, congregate care spouses claim as individuals after the month of entry.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+      person2:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+    # SI NY01415.025: after the month of entry, spouses in a congregate care
+    # facility are treated as two individuals, entered as separate marital units.
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: &id008 [person1, person2]
+    households:
+      household:
+        members: *id008
+        state_code: NJ
+  output:
+    ssi: [994, 994]
+    nj_ssp_living_arrangement: [CONGREGATE_CARE, CONGREGATE_CARE]
+    # J.2.a individual code A row: 150.05 each.
+    nj_ssp: [150.05, 150.05]
+
+- name: Case 9, deeming in the living alone or with others code uses the higher individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 45
+        # Full-time cashier (SOC 41-2011) at the New Jersey median wage, BLS
+        # OEWS May 2025: $16.63 an hour, published as $34,590 a year.
+        employment_income: 34_590
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: &id009 [person1, person2, person3]
+    households:
+      household:
+        members: *id009
+        state_code: NJ
+  output:
+    # 34_590 / 12 = 2_882.50 - 497 child allocation = 2_385.50 > 497, so
+    # deeming applies: (2_385.50 - 20 - 65) / 2 = 1_150.25 countable.
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_countable_income: [1_150.25, 0, 0]
+    # 1_491 couple FBR - 1_150.25 = 340.75.
+    ssi: [340.75, 0, 0]
+    # A child shares the household, so code B.
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    # Deemed: max(25.35, 31.25) - max(1_150.25 - 1_491, 0) = 31.25; own: 31.25.
+    # The lesser is 31.25; the couple rate would give 25.35 (SI 01320.430 D.2.c).
+    nj_ssp: [31.25, 0, 0]

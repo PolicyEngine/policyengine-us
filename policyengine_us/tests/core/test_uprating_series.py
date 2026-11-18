@@ -1,14 +1,18 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
-expenses and debts, CMS per-capita spending for health costs and CMS premiums
-per enrollee for employer plan premiums."""
+expenses and debts, CMS per-capita out-of-pocket spending for health costs,
+premiums per enrollee, or the prices that index them, for health insurance
+premiums, and the statutory limit for capped contributions."""
 
 from pathlib import Path
 
 import pytest
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
-from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
+from policyengine_us.data.economic_assumptions import (
+    MICRODATA_UPRATING_OVERRIDES,
+    get_parameter_last_year,
+)
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import DERIVED_FROM, per_capita_path
 
@@ -20,8 +24,14 @@ UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensatio
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
 CMS = "calibration.gov.hhs.cms.moop_per_capita"
 ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
+DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 COLA = "gov.ssa.uprating"
+HSA_FAMILY_LIMIT = (
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family"
+)
 
 EXPECTED = {
     # Pay, and amounts set as a share of pay.
@@ -39,9 +49,12 @@ EXPECTED = {
     "military_basic_pay": EMPLOYMENT,
     "military_service_income": EMPLOYMENT,
     "state_or_federal_salary": EMPLOYMENT,
+    "pa_philadelphia_wage_tax_taxable_wages": EMPLOYMENT,
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
@@ -60,18 +73,31 @@ EXPECTED = {
     "alimony_income": ALIMONY,
     "alimony_expense": ALIMONY,
     "unemployment_compensation": UNEMPLOYMENT,
-    # Health costs.
-    "health_insurance_premiums": CMS,
-    # Employer plan premiums: the employer's share and the employee's pre-tax
-    # share.
+    # Health costs paid out of pocket.
+    "other_medical_expenses": CMS,
+    "over_the_counter_health_expenses": CMS,
+    # Premiums for employer plans: the employer's share, the employee's
+    # pre-tax share, and the premiums people report, most of them paid by
+    # people with employer coverage.
     "employer_sponsored_insurance_premiums": ESI,
     "pre_tax_health_insurance_premiums": ESI,
+    "health_insurance_premiums_without_medicare_part_b": ESI,
+    "other_health_insurance_premiums": ESI,
+    # Premiums for plans bought directly.
+    "health_insurance_premiums": DIRECT_PURCHASE,
+    # Long-term care insurance premiums, whose deductible limits follow
+    # medical care prices.
+    "long_term_health_insurance_premiums": MEDICAL_CPI,
+    # Medicare Part B premiums.
+    "medicare_part_b_premiums_reported": PART_B,
+    # Contributions under a cap that 26 U.S.C. 223(g) indexes to chained
+    # CPI-U.
+    "health_savings_account_payroll_contributions": HSA_FAMILY_LIMIT,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
-    # structured first and second mortgage inputs stay on the default: two are
-    # deprecated (issue #9275) and the file's formulas are outside the
-    # selective coverage job.
+    # per-mortgage balance and origination-year inputs stay on the default:
+    # the file's formulas are outside the selective coverage job.
     "pre_subsidy_rent": CPI_U,
     "pre_subsidy_care_expenses": CPI_U,
     "spm_unit_pre_subsidy_childcare_expenses": CPI_U,
@@ -100,6 +126,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.
@@ -121,6 +152,26 @@ def test_variable_follows_expected_series(variable, series):
 def test_series_is_defined_across_the_projection_window(series):
     for year in (2024, 2025, 2030, 2035):
         assert _value(series, year) not in (None, 0)
+
+
+def test_default_series_has_a_value_for_every_year():
+    """A year with no value holds the previous one, so the per-capita index
+    drifts down with population and then jumps when values resume. CBO AGI
+    once held a tax-year 2013 total for 2015 and had nothing for 2016 to
+    2018. Inputs on the default series dated 2018 came out 29% too high by
+    2019, and Medicare IRMAA's lookback, which deflates income by the same
+    index, put a household entered for 2019 alone at 0.765 of its income
+    instead of 0.932. With the right 2015 total, the gap alone gives 14% and
+    0.864."""
+    total = get_parameter(system.parameters, _authored_series(DEFAULT))
+    years = sorted(
+        {
+            int(value.instant_str[:4])
+            for value in total.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+    assert years == list(range(years[0], years[-1] + 1))
 
 
 @pytest.mark.parametrize("year", (2025, 2030, 2035, 2036))
@@ -195,3 +246,68 @@ def test_methodology_page_links_every_series_an_input_follows(series):
         f"{METHODOLOGY_PAGE.name} does not link {series}, which uprates at "
         "least one input. Say on the page which inputs follow it."
     )
+
+
+def _january_years(parameter):
+    return sorted(
+        {
+            int(value.instant_str[:4])
+            for value in parameter.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+
+
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_series_has_a_january_value_for_every_year(series):
+    """A year with no value holds the previous one. The per-capita index then
+    drifts down with population across the gap and jumps when values resume,
+    and an input dated in or before the gap is uprated past it by the wrong
+    factor. The IRS SOI series once had nothing between 2015 and 2020 or
+    2021."""
+    years = _january_years(get_parameter(system.parameters, series))
+    missing = sorted(set(range(years[0], years[-1] + 1)) - set(years))
+    assert missing == [], f"{series} has no January 1 value for {missing}"
+
+
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_series_keeps_one_sign(series):
+    """An uprating factor is a ratio of the series, so a series that crossed
+    zero would turn every input projected across it from an income into a
+    loss. Farm income is a net loss in every year; short-term capital gains
+    held negative placeholders until it took SOI's net short-term capital
+    gain."""
+    parameter = get_parameter(system.parameters, series)
+    years = _january_years(parameter)
+    signs = {
+        (value > 0) - (value < 0)
+        for year in range(years[0], years[-1] + 1)
+        if (value := parameter(f"{year}-01-01")) is not None
+    }
+    assert len(signs) == 1 and 0 not in signs, f"{series}: signs {sorted(signs)}"
+
+
+SOI_SERIES_UPRATED_BY_CBO = sorted(
+    series
+    for series in _series_that_inputs_follow()
+    if series.startswith("calibration.gov.irs.soi.")
+    and get_parameter(system.parameters, series).metadata.get("uprating")
+)
+
+
+@pytest.mark.parametrize("series", SOI_SERIES_UPRATED_BY_CBO)
+def test_soi_series_follows_its_projection_from_its_last_authored_year(series):
+    """From its last authored value on, an SOI series grows with the series
+    in its uprating metadata, so values filled in before that year cannot
+    move the projection's growth."""
+    total = get_parameter(system.parameters, series)
+    uprating = total.metadata["uprating"]
+    uprater = get_parameter(
+        system.parameters,
+        uprating["parameter"] if isinstance(uprating, dict) else uprating,
+    )
+    last = get_parameter_last_year(total)
+    for year in range(last + 1, 2036):
+        assert total(f"{year}-01-01") / total(f"{last}-01-01") == pytest.approx(
+            uprater(f"{year}-01-01") / uprater(f"{last}-01-01"), rel=1e-12
+        )

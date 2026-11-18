@@ -1,0 +1,65 @@
+# Gross household income is federal adjusted gross income plus the items in
+# MCA 15-30-2337(9)(a), which include "nontaxable strike benefits"
+# (subsection (9)(a)(v)). Strike benefits count once: the taxable part
+# through federal adjusted gross income, the gift part as a listed item.
+
+- name: 2025, taxable strike benefits count once in Montana gross household income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        strike_benefits: 10_000
+        # Keeps the model from computing SSI, which also counts.
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+
+- name: 2025, taxable and gift strike benefits together count once
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        strike_benefits: 10_000
+        tax_exempt_strike_benefits: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # $6,000 in federal adjusted gross income plus $4,000 of nontaxable
+    # strike benefits.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+
+- name: 2025, a gift part above the total counts only the total
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        strike_benefits: 3_000
+        tax_exempt_strike_benefits: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # None is in federal adjusted gross income, and the nontaxable part is
+    # never more than the $3,000 received.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 3_000

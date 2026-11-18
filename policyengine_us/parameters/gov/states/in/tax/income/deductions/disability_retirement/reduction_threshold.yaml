@@ -1,0 +1,23 @@
+description: Indiana reduces the disability retirement deduction dollar for dollar by federal adjusted gross income above this amount, by filing status.
+metadata:
+  propagate_metadata_to_children: true
+  period: year
+  unit: currency-USD
+  label: Indiana disability retirement deduction reduction threshold
+  reference:
+    - title: IC 6-3-2-9
+      href: https://law.justia.com/codes/indiana/title-6/article-3/chapter-2/section-6-3-2-9/
+    - title: Indiana Income Tax Information Bulletin 70, Computation of Disability Deduction, step 3
+      href: https://www.in.gov/dor/files/reference/ib70.pdf#page=2
+  breakdown:
+    - filing_status
+SINGLE:
+  2021-01-01: 15_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 15_000
+JOINT:
+  2021-01-01: 15_000
+SURVIVING_SPOUSE:
+  2021-01-01: 15_000
+SEPARATE:
+  2021-01-01: 7_500

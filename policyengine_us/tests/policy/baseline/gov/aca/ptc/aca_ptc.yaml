@@ -10,18 +10,6 @@
   output:
     aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
 
-- name: ACA PTC remains zero before available rating-area premium data
-  absolute_error_margin: 0.01
-  period: 2017
-  input:
-    is_aca_ptc_eligible: true
-    slcsp: 1_200
-    aca_magi: 25_000
-    aca_required_contribution_percentage: 0.04
-    tax_unit_is_filer: true
-  output:
-    aca_ptc: 0
-
 - name: ACA PTC calculated for 2025
   absolute_error_margin: 0.01
   period: 2025
@@ -132,7 +120,7 @@
   output:
     aca_ptc: 200
 
-- name: ACA PTC is zero for non-filers (IRC 36B(a) requires filing Form 8962)
+- name: ACA PTC is zero for non-filers who do not take it up (IRC 36B(a) requires filing Form 8962)
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -141,8 +129,28 @@
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.04
     tax_unit_is_filer: false
+    # Nor does it take up the federal credit, so it files no return to claim it.
+    takes_up_aca_if_eligible: false
   output:
     aca_ptc: 0
+
+- name: A tax unit that takes up the PTC files to claim it, even if it would not file otherwise
+  # 26 CFR 1.6011-8(a): a taxpayer who receives advance payments "must file
+  # an income tax return for that taxable year ... and reconcile the advance
+  # credit payments"; a credit not paid in advance is claimed on Form 8962.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: true
+  output:
+    files_return_for_aca_ptc: true
+    aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
+    assigned_aca_ptc: 200
 
 - name: ACA PTC is paid to eligible filers (regression of filer gate)
   absolute_error_margin: 0.01
@@ -183,9 +191,9 @@
     is_aca_ptc_eligible: [true]
     aca_ptc: 200
 
-- name: ACA PTC remains zero in 2017 before available rating-area premium data
+- name: ACA PTC remains zero in 2013 before coverage began
   absolute_error_margin: 0.01
-  period: 2017
+  period: 2013
   input:
     is_aca_ptc_eligible: true
     slcsp: 1_200
@@ -256,3 +264,1606 @@
   output:
     is_aca_ptc_eligible: [false]
     aca_ptc: 0
+
+# 2027 cases derive aca_required_contribution_percentage from the Rev. Proc.
+# 2026-26 section 3.01 table. Household income is a multiple of the 2026 HHS
+# poverty guideline ($15,960 for one person), the prior-year guideline that
+# applies to 2027 coverage.
+- name: 2027 ACA PTC at 100 percent FPL uses the flat 2.15 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 15_960
+    aca_magi_fraction: 1.00
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0215
+    aca_ptc: 7_912.86  # 8_256 - 0.0215 * 15_960 = 8_256 - 343.14
+
+- name: 2027 ACA PTC at 133 percent FPL uses the 3.23 percent initial percentage.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 21_226.80
+    aca_magi_fraction: 1.33
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0323
+    aca_ptc: 7_570.37  # 8_256 - 0.0323 * 21_226.80 = 8_256 - 685.63
+
+- name: 2027 ACA PTC at 150 percent FPL uses 4.3 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 23_940
+    aca_magi_fraction: 1.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.043
+    aca_ptc: 7_226.58  # 8_256 - 0.043 * 23_940 = 8_256 - 1_029.42
+
+- name: 2027 ACA PTC at 200 percent FPL uses 6.78 percent (Covered California OE27 example).
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 31_920
+    aca_magi_fraction: 2.00
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0678
+    aca_ptc: 6_091.82  # 8_256 - 0.0678 * 31_920 = 8_256 - 2_164.18
+
+- name: 2027 ACA PTC at 275 percent FPL interpolates to 9.44 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 43_890
+    aca_magi_fraction: 2.75
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0944
+    aca_ptc: 4_112.78  # 8_256 - 0.0944 * 43_890 = 8_256 - 4_143.22
+
+- name: 2027 ACA PTC at 350 percent FPL uses the flat 10.22 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 8_256
+    aca_magi: 55_860
+    aca_magi_fraction: 3.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.1022
+    aca_ptc: 2_547.11  # 8_256 - 0.1022 * 55_860 = 8_256 - 5_708.89
+
+- name: 2027 ACA PTC floors at zero when the 10.22 percent contribution exceeds the benchmark.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    aca_magi: 62_244
+    aca_magi_fraction: 3.90
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.1022
+    aca_ptc: 0  # 0.1022 * 62_244 = 6_361.34 > 6_000
+
+- name: 2027 ACA PTC derives 200 percent FPL from income and the 2026 poverty guideline.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_920
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.00  # 31_920 / 15_960 (2026 guideline, one person)
+    aca_required_contribution_percentage: 0.0678
+    aca_ptc: 6_091.82  # 8_256 - 0.0678 * 31_920
+
+- name: 2027 ACA PTC for a married couple at 250 percent FPL uses 8.66 percent.
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 54_100
+        slcsp: 15_000
+        tax_unit_is_filer: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.50  # 54_100 / 21_640 (2026 guideline, two people)
+    aca_required_contribution_percentage: 0.0866
+    aca_ptc: 10_314.94  # 15_000 - 0.0866 * 54_100 = 15_000 - 4_685.06
+
+- name: ACA PTC uses the 2014 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2014
+  input:
+    filing_status: SINGLE
+    is_aca_marketplace_enrollee: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0805
+    aca_ptc_before_filing_gate: 9585.0000  # 12,000 - 30,000 * 0.0805 = 9585.0000.
+    aca_ptc: 9585.0000
+
+- name: ACA PTC uses the 2015 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.081
+    aca_ptc_before_filing_gate: 9570.000  # 12,000 - 30,000 * 0.081 = 9570.000.
+    aca_ptc: 9570.000
+
+- name: ACA PTC uses the 2016 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0818
+    aca_ptc_before_filing_gate: 9546.0000  # 12,000 - 30,000 * 0.0818 = 9546.0000.
+    aca_ptc: 9546.0000
+
+- name: ACA PTC uses the 2017 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0821
+    aca_ptc_before_filing_gate: 9537.0000  # 12,000 - 30,000 * 0.0821 = 9537.0000.
+    aca_ptc: 9537.0000
+
+- name: ACA PTC interpolates the 2017 percentage at 140 percent FPL.
+  # 0.0306 + (1.40 - 1.33) / (1.50 - 1.33) * (0.0408 - 0.0306) = 0.0348.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 16_800
+    aca_magi_fraction: 1.40
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0348
+    aca_ptc_before_filing_gate: 11_415.36  # 12,000 - 16,800 * 0.0348.
+    aca_ptc: 11_415.36
+
+- name: ACA PTC requires filing in 2017.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: false
+  output:
+    aca_ptc_before_filing_gate: 9_537  # 12,000 - 30,000 * 0.0821.
+    aca_ptc: 0
+
+- name: ACA PTC floors at zero when the 2016 contribution exceeds the premium.
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 2_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_before_filing_gate: 0  # 2,000 - 30,000 * 0.0818 = -454.
+    aca_ptc: 0
+
+- name: An Alaska adult receives the 2014 credit using the prior guideline and estimated benchmark.
+  period: 2014
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+        is_aca_marketplace_enrollee: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 35875.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2013: AK
+          2014: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14350; benchmark = 424 * 273 / 481 * 1.6706 * 12.
+    # Credit = 4824.331589 - 35875.0 * 0.0805 = 1936.394089.
+    aca_magi_fraction: 2.5
+    slcsp: 4824.331589
+    is_aca_ptc_eligible: true
+    aca_ptc: 1936.394089
+
+- name: An Alaska adult receives the 2015 credit using the prior guideline and estimated benchmark.
+  period: 2015
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36450.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2014: AK
+          2015: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14580; benchmark = 424 * 276 / 481 * 1.6706 * 12.
+    # Credit = 4877.346222 - 36450.0 * 0.081 = 1924.896222.
+    aca_magi_fraction: 2.5
+    slcsp: 4877.346222
+    is_aca_ptc_eligible: true
+    aca_ptc: 1924.896222
+
+- name: An Alaska adult receives the 2016 credit using the prior guideline and estimated benchmark.
+  period: 2016
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36800.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2015: AK
+          2016: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14720; benchmark = 424 * 299 / 481 * 1.6706 * 12.
+    # Credit = 5283.791741 - 36800.0 * 0.0818 = 2273.551741.
+    aca_magi_fraction: 2.5
+    slcsp: 5283.791741
+    is_aca_ptc_eligible: true
+    aca_ptc: 2273.551741
+
+- name: An Alaska adult receives the 2017 credit using the prior guideline and estimated benchmark.
+  period: 2017
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 37100.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2016: AK
+          2017: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14840; benchmark = 424 * 359 / 481 * 1.6706 * 12.
+    # Credit = 6344.084398 - 37100.0 * 0.0821 = 3298.174398.
+    aca_magi_fraction: 2.5
+    slcsp: 6344.084398
+    is_aca_ptc_eligible: true
+    aca_ptc: 3298.174398
+
+- name: An Alaska adult who supplies only 2016 residence receives the 2016 credit on Alaska's poverty line.
+  period: 2016
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36800.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        slcsp_rating_area: 1
+  output:
+    # IRS 2016 Form 8962 line 4 uses 2016 residence and the 2015 table:
+    # Alaska, one person = 14,720 (Table 1-2).
+    # https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6
+    # Line 5: floor(36,800 / 14,720 * 100) / 100 = 2.50, so the rate is 8.18%.
+    # Benchmark = 424 * 299 / 481 * 1.6706 * 12 = 5,283.791741.
+    # Credit = 5,283.791741 - 36,800 * 0.0818 = 5,283.791741 - 3,010.24
+    # = 2,273.551741.
+    aca_fpg: 14_720
+    aca_magi_fraction: 2.5
+    slcsp: 5283.791741
+    is_aca_ptc_eligible: true
+    aca_ptc: 2273.551741
+
+- name: An Alaska adult who supplies only 2017 residence receives the 2017 credit on Alaska's poverty line.
+  period: 2017
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 37100.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        slcsp_rating_area: 1
+  output:
+    # IRS 2017 Form 8962 line 4 uses 2017 residence and the 2016 table:
+    # Alaska, one person = 14,840 (Table 1-2).
+    # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
+    # Line 5: floor(37,100 / 14,840 * 100) / 100 = 2.50, so the rate is 8.21%.
+    # Benchmark = 424 * 359 / 481 * 1.6706 * 12 = 6,344.084398.
+    # Credit = 6,344.084398 - 37,100 * 0.0821 = 6,344.084398 - 3,045.91
+    # = 3,298.174398.
+    aca_fpg: 14_840
+    aca_magi_fraction: 2.5
+    slcsp: 6344.084398
+    is_aca_ptc_eligible: true
+    aca_ptc: 3298.174398
+
+- name: Income above 400 percent receives no credit in 2014.
+  period: 2014
+  input:
+    is_aca_marketplace_enrollee: true
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2015.
+  period: 2015
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2016.
+  period: 2016
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2017.
+  period: 2017
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: The 2014 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    is_aca_marketplace_enrollee: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2015 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2016 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2017 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+- name: "2025 joint return with one claimable spouse: credit for the other spouse's benchmark (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 150% FPL for one, 0% contribution: 6,000 - 0
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6000
+    aca_ptc: 6000
+
+- name: "2025 joint return with one claimable spouse: credit for the other spouse's benchmark (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6000
+    aca_ptc: 6000
+
+- name: 2025 single filer who can be claimed elsewhere gets no credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    # Form 8962 instructions: no one can claim you as a dependent.
+    aca_ptc: 0
+
+- name: 2025 joint return with both spouses claimable gets no credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc: 0
+
+- name: "2025 joint return with neither spouse claimable: credit for both benchmarks"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 2025: 110% FPL for two, 0% contribution.
+    aca_tax_family_size: 2
+    aca_ptc: 12_000
+
+- name: "2026 joint return with one claimable spouse: credit for the other spouse's benchmark (the claimable spouse is the head)"
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 150% FPL for one, 4.19% contribution: 6,000 - 0.0419 * 23,475
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6000
+    aca_ptc: 5016.4
+
+- name: "2026 joint return with one claimable spouse: credit for the other spouse's benchmark (the claimable spouse is the spouse)"
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6000
+    aca_ptc: 5016.4
+
+- name: 2026 single filer who can be claimed elsewhere gets no credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    # Form 8962 instructions: no one can claim you as a dependent.
+    aca_ptc: 0
+
+- name: 2026 joint return with both spouses claimable gets no credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc: 0
+
+- name: "2026 joint return with neither spouse claimable: credit for both benchmarks"
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 2026: 23,475 / 21,150 = 110%, 2.1%: 12,000 - 0.021 * 23,475
+    aca_tax_family_size: 2
+    aca_ptc: 11507.03
+
+- name: "2025 couple below the two-person line: the unclaimable spouse gets a credit (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 18_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 18,000 / 15,060 = 119% FPL for a family of one: 0% contribution.
+    aca_ptc: 6000
+
+- name: "2025 couple below the two-person line: the unclaimable spouse gets a credit (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 18_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    aca_ptc: 6000
+
+- name: 2025 couple below the two-person line with neither spouse claimable gets no credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 18_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc: 0
+
+- name: 2025 child's tax-exempt interest no longer cuts the credit of a return with a claimable spouse (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        employment_income: 10_000
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        employment_income: 10_000
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        tax_exempt_interest_income: 20_000
+        slcsp_age_curve_multiplier: 0.5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 20,000 / 15,060 = 132% FPL: 0% contribution; benchmark 6,000 (child out).
+    aca_magi: 20_000
+    aca_magi_fraction: 1.32
+    aca_ptc: 6000
+
+- name: 2025 child's tax-exempt interest no longer cuts the credit of a return with a claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        employment_income: 10_000
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        employment_income: 10_000
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        tax_exempt_interest_income: 20_000
+        slcsp_age_curve_multiplier: 0.5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    aca_magi: 20_000
+    aca_magi_fraction: 1.32
+    aca_ptc: 6000
+
+- name: "2025 refund-only exception: credit for the other spouse and the child (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 0.5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 30,000 / 20,440 = 146% FPL: 0% contribution; benchmark 6,000 + 3,000.
+    aca_tax_family_size: 2
+    aca_ptc_slcsp: 9000
+    aca_ptc: 9000
+
+- name: "2025 refund-only exception: credit for the other spouse and the child (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 0.5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 2
+    aca_ptc_slcsp: 9000
+    aca_ptc: 9000
+
+- name: 2025 claimable 17-year-old filing alone gets no credit
+  period: 2025
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [false]
+    aca_ptc: 0
+
+- name: 2025 unclaimed 17-year-old filing alone keeps the credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [true]
+    aca_ptc: 6000
+
+- name: 2025 claimable 17-year-old filing with an infant gets no credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    # Role inference makes the oldest adult the head, so this unit has none; the
+    # oldest member is taken as the filer (IRC 36B(c)(1)(D)).
+    aca_ptc: 0
+
+- name: 2025 unclaimed 17-year-old filing with an infant gets the credit for both
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    # 22,590 / 20,440 = 110% FPL: 0% contribution; 2 * 6,000.
+    aca_ptc: 12_000
+
+- name: 2025 TX joint filers aged 18 and 17, the 18-year-old claimable, roles inferred from age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        claimable_as_dependent_on_another_return: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [false, true]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: 2025 TX joint filers aged 18 and 17, the 18-year-old claimable, explicit head and spouse roles
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [false, true]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: 2025 TX joint filers aged 18 and 17, the 17-year-old claimable, roles inferred from age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [true, false]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: 2025 TX joint filers aged 18 and 17, the 17-year-old claimable, explicit head and spouse roles
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      older_spouse:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      younger_spouse:
+        age: 17
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_aca_marketplace_enrollee: true
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [older_spouse, younger_spouse]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [older_spouse, younger_spouse]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-1(d)(2) includes both joint filers regardless of age;
+    # the spouse claimable on another return is outside this tax family.
+    is_aca_tax_family_member: [true, false]
+    aca_ptc: 6000
+    is_aca_filer: [true, true]
+
+- name: "2017 joint return with one claimable spouse: credit for the other spouse's benchmark (the claimable spouse is the head)"
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 17_820
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000 and children cost 3,000.
+        slcsp_age_0: 6000
+  output:
+    # 150% FPL for one: 17,820 / 11,880 = 1.50.
+    # Credit = 6,000 - 17,820 * 0.0408 = 5,272.944.
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6000
+    aca_ptc: 5272.944
+
+
+- name: ACA PTC calculates the historical 2017 credit before the filing condition
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
+  output:
+    # 1,200 - 25,000 * 0.04 = 200 for both credit variables.
+    aca_ptc_before_filing_gate: 200
+    aca_ptc: 200
+
+- name: A supplied 2014 benchmark needs no enrollment calculation when everyone is in the tax family
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    is_aca_tax_family_member: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.5
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+  output:
+    # All possible enrollees belong to the coverage family, so its benchmark
+    # is the supplied 12,000 (26 CFR 1.36B-3(f)). At 250% FPL in 2014:
+    # 12,000 - 30,000 * 0.0805 = 9,585.
+    aca_ptc_slcsp: 12_000
+    aca_ptc: 9_585

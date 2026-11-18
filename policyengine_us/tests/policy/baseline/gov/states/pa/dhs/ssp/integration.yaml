@@ -1,0 +1,195 @@
+- name: Case 1, independent couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_ssp: [16.65, 16.65]
+
+- name: Case 2, household of another couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_ssp: [19.22, 19.22]
+
+- name: Case 3, annual benefits and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+  output:
+    pa_ssp: 265.2
+    household_state_benefits: 265.2
+    snap_unearned_income: 12_193.2
+    hud_unearned_income: 12_193.2
+
+- name: Case 4, domiciliary care couple keeps the couple rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        pa_ssp_care_home: DOMICILIARY_CARE
+      person2:
+        age: 65
+        pa_ssp_care_home: DOMICILIARY_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Both spouses are aged and live in their own household for SSI.
+    ssi_couple_computation_applies: [true, true]
+    # Couple FBR 1,491 / 2 = 745.50 each.
+    ssi_amount_if_eligible: [745.5, 745.5]
+    # No income: 745.50 - 0 = 745.50 each.
+    ssi: [745.5, 745.5]
+    # Domiciliary care couple rate 1,347.40 / 2 = 673.70 each.
+    pa_ssp: [673.7, 673.7]
+
+- name: Case 5, personal care home couple after the move month as separate claims.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        pa_ssp_care_home: PERSONAL_CARE
+        ssi_claim_is_joint: false
+      person2:
+        age: 65
+        pa_ssp_care_home: PERSONAL_CARE
+        ssi_claim_is_joint: false
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # From the month after the move both spouses are individual recipients
+    # (POMS SI 01415.058 K.2.b NOTE), entered as separate claims.
+    ssi_couple_computation_applies: [false, false]
+    # Individual FBR 994 each.
+    ssi_amount_if_eligible: [994, 994]
+    # No income: 994 - 0 = 994 each.
+    ssi: [994, 994]
+    # Individual personal care home rate 639.30 each.
+    pa_ssp: [639.3, 639.3]
+
+- name: Case 6, mixed independent and personal care home couple in the move month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+        pa_ssp_care_home: PERSONAL_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # A personal care home is not a medical facility, so the couple stays joint.
+    ssi_couple_computation_applies: [true, true]
+    # Couple FBR 1,491 / 2 = 745.50 each with no income.
+    ssi: [745.5, 745.5]
+    # Couple total 33.30 / 2 + 1,357.40 / 2 = 16.65 + 678.70 = 695.35; the
+    # shared helper gives each spouse 695.35 / 2 = 347.675. The independent
+    # spouse's state-administered amount stays 347.675; SSA rounds the
+    # personal care spouse's amount up to 347.68. POMS PHI01415.010 Chart 35
+    # note 2 splits the same total as 16.65 and 678.70 (documented limitation).
+    pa_ssp: [347.675, 347.68]
+
+- name: Case 7, aged person with an ineligible working spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 8_400
+      person2:
+        age: 60
+        # Pennsylvania minimum wage, 7.25 per hour x 40 hours x 52 weeks.
+        employment_income: 15_080
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # Spouse earnings 15,080 exceed (1,491 - 994) x 12 = 5,964, so deeming
+    # applies to person1; person2 is not aged, blind or disabled.
+    is_ssi_spousal_deeming_applies: [true, false]
+    # Combined countable (700 - 20) + (1,256.67 - 65) / 2 = 680 + 595.83
+    # = 1,275.83, less own countable 680 = 595.83 deemed.
+    ssi_income_deemed_from_ineligible_spouse: [595.83, 0]
+    # Own 680 + deemed 595.83 = 1,275.83.
+    ssi_countable_income: [1_275.83, 0]
+    # Couple FBR 1,491 - 1,275.83 = 215.17, below the 994 individual cap.
+    ssi: [215.17, 0]
+    # Own-income payment: 680 is below 994, so 22.10. Deemed payment: 1,275.83
+    # is below 1,491, so the 33.30 couple rate. The lower amount, 22.10, applies.
+    pa_ssp: [22.1, 0]

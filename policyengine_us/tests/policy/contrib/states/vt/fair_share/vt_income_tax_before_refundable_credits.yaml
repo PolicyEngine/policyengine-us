@@ -1,0 +1,110 @@
+# Vermont Fair Share surcharge: credit ordering and flow into the state totals.
+# Under the reform:
+#   vt_income_tax_before_refundable_credits
+#     = max(0, vt_income_tax_before_non_refundable_credits
+#              - vt_non_refundable_credits)
+#       + vt_fair_share_surcharge
+# Pre-credit tax and credits are inputs so the baseline part is easy to
+# hand-compute. No case has self-employment income, children, care expenses,
+# earnings or a veteran, so vt_child_care_contributions and
+# vt_refundable_credits are 0 and the state totals equal this variable.
+# Every case reuses the base combo {in_effect: true}.
+
+- name: Case 1, non-refundable credits above the pre-credit tax cannot offset the surcharge.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 300_000
+        vt_income_tax_before_non_refundable_credits: 5_000
+        vt_non_refundable_credits: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (300,000 - 250,000) = 1,000
+    vt_fair_share_surcharge: 1_000
+    # max(0, 5,000 - 8,000) + 1,000 = 0 + 1,000 = 1,000
+    # The surcharge is added after the credits, so the excess credit of 3,000
+    # does not reduce it. The baseline value here is 0.
+    vt_income_tax_before_refundable_credits: 1_000
+    vt_child_care_contributions: 0
+    vt_refundable_credits: 0
+    # vt_income_tax = 1,000 + 0 - 0
+    vt_income_tax: 1_000
+    # The cross-state totals pick it up. household_net_income reaches the
+    # surcharge separately: it subtracts household_tax_before_refundable_credits,
+    # which lists vt_income_tax_before_refundable_credits once.
+    state_income_tax_before_refundable_credits: 1_000
+    state_income_tax: 1_000
+
+- name: Case 2, surcharge is added on top of the baseline tax after credits.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 600_000
+        vt_income_tax_before_non_refundable_credits: 20_000
+        vt_non_refundable_credits: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 0.02 * (500,000 - 250,000) + 0.08 * (600,000 - 500,000)
+    # = 5,000 + 8,000 = 13,000
+    vt_fair_share_surcharge: 13_000
+    # Baseline value: max(0, 20,000 - 3,000) = 17,000
+    # 17,000 + 13,000 = 30,000
+    vt_income_tax_before_refundable_credits: 30_000
+    vt_child_care_contributions: 0
+    vt_refundable_credits: 0
+    # vt_income_tax = 30,000 + 0 - 0
+    vt_income_tax: 30_000
+    state_income_tax_before_refundable_credits: 30_000
+    state_income_tax: 30_000
+
+- name: Case 3, below the first threshold the tax equals the baseline value.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform.vt_fair_share
+  input:
+    gov.contrib.states.vt.fair_share.in_effect: true
+    people:
+      person1:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+        vt_income_tax_before_non_refundable_credits: 9_000
+        vt_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # 200,000 < 250,000, so the surcharge is 0.
+    vt_fair_share_surcharge: 0
+    # max(0, 9,000 - 1,000) + 0 = 8,000, the baseline value.
+    vt_income_tax_before_refundable_credits: 8_000
+    vt_income_tax: 8_000
+    state_income_tax: 8_000

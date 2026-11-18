@@ -1,0 +1,30 @@
+# Each spouse claims their own income and deductions on a combined return:
+# Form 740 instructions (2024), page 13, filing status 2; KRS 141.180(3).
+
+- name: The head's IRA deduction lowers only the head's Kentucky AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Form 740, line 5, columns B and A. Before: [57_000, 37_000].
+    adjusted_gross_income_person: [54_000, 40_000]
+    ky_agi: [54_000, 40_000]
+    # Line 11: line 9 less the $3,160 standard deduction.
+    ky_taxable_income_indiv: [50_840, 36_840]
+    # 4% of AGI less the standard deduction.
+    ky_withheld_income_tax: [2_033.60, 1_473.60]

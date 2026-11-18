@@ -1,0 +1,110 @@
+# Form N-11 applies refundable credits first: line 34 is line 27 (tax) minus
+# line 33 (total refundable credits), and the nonrefundable credits on line 35
+# "cannot be greater than your adjusted tax liability. If line 34 is zero or
+# less, no tax credit may be used." Line 36 is line 34 minus line 35.
+# https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
+# https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=21
+# Form N-356, lines 10 to 13, limits the 2018-2022 nonrefundable earned income
+# tax credit to the same adjusted tax liability.
+# https://files.hawaii.gov/tax/forms/2022/n356_i.pdf#page=1
+
+- name: Nonrefundable credits are limited to tax less refundable credits
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    hi_refundable_credits: 500
+    # Hawaii EITC = 20% x 4,000 = 800.
+    eitc: 4_000
+  output:
+    # Line 27 = 1,000; line 33 = 500; line 34 = 500.
+    hi_adjusted_tax_liability: 500
+    hi_eitc_potential: 800
+    # N-356 line 13 = min(800, 500); line 35 = 500.
+    hi_eitc: 500
+    hi_non_refundable_credits: 500
+    hi_income_tax_before_refundable_credits: 500
+    # Line 36 = 500 - 500. Capping at gross tax instead gave
+    # 1,000 - 800 - 500 = -300.
+    hi_income_tax: 0
+
+- name: No nonrefundable credit when refundable credits exceed tax
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 300
+    hi_refundable_credits: 500
+    eitc: 4_000
+  output:
+    # Line 34 = 300 - 500 = -200, so line 35 = 0.
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+    hi_income_tax_before_refundable_credits: 300
+    # Line 36 = -200: the refundable credits are paid in full.
+    hi_income_tax: -200
+
+- name: No nonrefundable credit when refundable credits equal tax
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 500
+    hi_refundable_credits: 500
+    eitc: 4_000
+  output:
+    # Line 34 = 0.
+    hi_non_refundable_credits: 0
+    hi_income_tax: 0
+
+- name: Full nonrefundable credit when the adjusted tax covers it
+  period: 2022
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 2_000
+    hi_refundable_credits: 500
+    eitc: 4_000
+  output:
+    # Line 34 = 1,500; line 35 = 800; line 36 = 700.
+    hi_non_refundable_credits: 800
+    hi_income_tax_before_refundable_credits: 1_200
+    hi_income_tax: 700
+
+- name: The 2025 earned income tax credit is refundable
+  period: 2025
+  input:
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    # Hawaii EITC = 40% x 4,000 = 1,600, on Schedule CR Part I.
+    eitc: 4_000
+    hi_food_excise_credit: 0
+    hi_cdcc: 0
+    hi_tax_credit_for_low_income_household_renters: 0
+  output:
+    hi_refundable_credits: 1_600
+    # Line 34 = 1,000 - 1,600; no nonrefundable credits in 2025.
+    hi_adjusted_tax_liability: -600
+    hi_non_refundable_credits: 0
+    hi_income_tax: -600
+
+- name: A nonrefundable 2025 credit is limited to tax less refundable credits
+  period: 2025
+  # Treat the 2025 earned income tax credit as nonrefundable, as it was
+  # before 2023, to apply the line 34 limit with 2025 parameters.
+  input:
+    gov.states.hi.tax.income.credits.non_refundable: [hi_eitc]
+    gov.states.hi.tax.income.credits.refundable:
+      [hi_food_excise_credit, hi_cdcc, hi_tax_credit_for_low_income_household_renters]
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000
+    hi_food_excise_credit: 300
+    hi_cdcc: 200
+    hi_tax_credit_for_low_income_household_renters: 0
+    # Hawaii EITC = 40% x 4,000 = 1,600.
+    eitc: 4_000
+  output:
+    hi_refundable_credits: 500
+    # Line 34 = 1,000 - 500; line 35 = min(1,600, 500).
+    hi_adjusted_tax_liability: 500
+    hi_eitc: 500
+    hi_non_refundable_credits: 500
+    # Line 36 = 500 - 500.
+    hi_income_tax: 0

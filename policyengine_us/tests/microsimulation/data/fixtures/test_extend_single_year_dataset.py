@@ -17,7 +17,7 @@ from policyengine_us.data.dataset_schema import USSingleYearDataset
 # ---------------------------------------------------------------------------
 
 BASE_YEAR = 2024
-END_YEAR_DEFAULT = 2035
+END_YEAR_EXPLICIT = 2035
 # END_YEAR_SHORT caps how far tests extend datasets.  The mock parameter
 # fixtures only define values through 2026-2027, so this is the furthest
 # the mock system can uprate to without hitting a missing key.

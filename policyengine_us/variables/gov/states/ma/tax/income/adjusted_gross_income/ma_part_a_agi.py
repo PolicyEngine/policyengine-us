@@ -14,11 +14,10 @@ class ma_part_a_agi(Variable):
         part_a_gross_income = tax_unit("ma_part_a_gross_income", period)
         short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
         nonnegative_short_term_capital_gains = max_(0, short_term_capital_gains)
-        # Massachusetts Schedule D, line 13 includes capital gain
-        # distributions reported without a federal Schedule D (line 6).
-        long_term_capital_gains = add(
-            tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
-        )
+        # Massachusetts Schedule D, line 13: long-term gains and losses,
+        # capital gain distributions without a federal Schedule D (line 6)
+        # and Form 4797, Part II (line 7).
+        long_term_capital_gains = tax_unit("ma_long_term_capital_gains", period)
         long_term_capital_loss = max_(0, -long_term_capital_gains)
 
         long_term_loss_against_short_term_gain = min_(

@@ -13,8 +13,10 @@ class health_savings_account_ald_person(Variable):
         "health_savings_account_ald remains the deduction its return claims; "
         "these amounts attribute it to the head and spouse where a state "
         "reports each spouse's adjustments separately. When they do not sum to "
-        "it, it is shared in proportion to them, and when they are all zero, "
-        "the head takes it."
+        "it, the return's amount is shared in proportion to them. With no "
+        "person amounts, above_the_line_deductions_person divides it equally "
+        "between the head and spouse; Mississippi's HSA adjustment attributes "
+        "it to the head."
     )
     definition_period = YEAR
     reference = (

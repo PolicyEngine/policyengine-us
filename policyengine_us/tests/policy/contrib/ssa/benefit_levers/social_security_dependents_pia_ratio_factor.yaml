@@ -1,0 +1,94 @@
+- name: An auxiliary recipient age cannot identify the worker PIA
+  period: 2026
+  input:
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    people:
+      child:
+        age: 10
+        social_security_dependents_reported: 6000
+      older_spouse:
+        age: 70
+        social_security_dependents_reported: 6000
+  output:
+    social_security_dependents_pia_ratio_factor: [1, 1]
+    social_security_dependents_pia_ratio_unmodeled: [true, true]
+    social_security_dependents_pia_ratio_own_record_retired_worker: [false, false]
+    social_security_dependents: [6000, 6000]
+
+- name: Linked dependent with an identified composite ratio uses the worker year
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    gov.contrib.ssa.pia.bend_point_multipliers.first: 1.15
+    people:
+      child:
+        age: 10
+        social_security_dependents_worker_id: worker
+        social_security_dependents_worker_benefit_ratio: 0.5
+        social_security_dependents_worker_ratio_identified: true
+        social_security_dependents_reported: 12940.8
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2026
+  output:
+    people:
+      child:
+        social_security_dependents_pia_ratio_eligibility_year: 2026
+        social_security_dependents_pia_ratio_factor: 1.0643082344
+        social_security_dependents_inferred_aime: 5000
+        social_security_dependents_pia_ratio_unmodeled: false
+        social_security_dependents: 13773
+      worker:
+        social_security_dependents_pia_ratio_factor: 1
+
+- name: A worker link without an identified share remains unmodeled
+  period: 2026
+  input:
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    people:
+      child:
+        age: 10
+        social_security_dependents_worker_id: worker
+        social_security_dependents_reported: 6000
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2026
+  output:
+    people:
+      child:
+        social_security_dependents_pia_ratio_factor: 1
+        social_security_dependents_pia_ratio_unmodeled: true
+        social_security_dependents: 6000
+
+- name: A supplied 80 percent composite ratio preserves the exact baseline dime
+  period: 2026
+  absolute_error_margin: 0.005
+  input:
+    gov.ssa.social_security.pia.bend_points.first: 960
+    gov.ssa.social_security.pia.bend_points.second: 5785
+    gov.contrib.ssa.pia.in_effect: true
+    gov.contrib.ssa.pia.factors.first: 0.95
+    people:
+      dependent:
+        age: 70
+        social_security_dependents_worker_id: worker
+        social_security_dependents_worker_benefit_ratio: 0.8
+        social_security_dependents_worker_ratio_identified: true
+        # 12 * 0.8 * 2156.8. The input ratio is stored in a float32 holder.
+        social_security_dependents_reported: 20705.28
+      worker:
+        age: 62
+        social_security_worker_computation_year: 2026
+  output:
+    people:
+      dependent:
+        social_security_dependents_inferred_aime: 5000
+        social_security_dependents_pia_ratio_factor: 1.0222552
+        social_security_dependents_pia_ratio_unmodeled: false
+        social_security_dependents: 21166.08

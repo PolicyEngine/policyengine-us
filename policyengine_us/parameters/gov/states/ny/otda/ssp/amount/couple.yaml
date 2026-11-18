@@ -1,0 +1,19 @@
+description: New York provides this amount as the monthly couple payment for couples living alone or with others under the State Supplement Program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New York SSP couple amount
+  reference:
+    - title: New York 2026 SSI and SSP maximum monthly benefit levels
+      href: https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf#page=1
+    - title: New York Social Services Law section 209(2)(a)-(b)
+      href: https://www.nysenate.gov/legislation/laws/SOS/209
+
+# Congregate care couples have two times the individual standard of need
+# (Social Services Law 209(2)(c)-(e)); ny_ssp computes those payments.
+LIVING_ALONE:
+  2026-01-01: 104
+
+LIVING_WITH_OTHERS:
+  2026-01-01: 46

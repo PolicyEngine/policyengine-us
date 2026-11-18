@@ -18,3 +18,56 @@
     sstb_self_employment_income: 100_000
   output:
     ssi_earned_income: 100_000
+
+- name: After-tax health premiums remain part of SSI wages.
+  period: 2025
+  input:
+    employment_income: 12_000
+    health_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 12_000
+
+- name: Pretax payroll health premiums are excluded from SSI wages.
+  period: 2025
+  input:
+    employment_income: 12_000
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 10_800
+
+- name: Only the pretax portion of disjoint premiums is excluded from SSI wages.
+  period: 2025
+  input:
+    employment_income: 12_000
+    health_insurance_premiums: 600
+    pre_tax_health_insurance_premiums: 600
+  output:
+    ssi_earned_income: 11_400
+
+- name: Excess pretax premiums cannot reduce SSI self-employment income.
+  period: 2025
+  input:
+    employment_income: 1_000
+    self_employment_income: 500
+    sstb_self_employment_income: 250
+    pre_tax_health_insurance_premiums: 2_000
+  output:
+    ssi_earned_income: 750
+
+- name: Traditional retirement deferrals remain SSI wages after excluding health premiums.
+  period: 2025
+  input:
+    employment_income: 12_000
+    traditional_401k_contributions: 2_400
+    traditional_403b_contributions: 1_200
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 10_800
+
+- name: Employer-paid premiums do not reduce SSI wages.
+  period: 2025
+  input:
+    employment_income: 12_000
+    employer_sponsored_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 12_000

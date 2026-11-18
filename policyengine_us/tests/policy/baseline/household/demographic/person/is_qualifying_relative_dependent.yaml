@@ -354,3 +354,50 @@
     # for each parent, not below 4,400 for 2022.
     dependent_gross_income: [0, 5_100, 5_100]
     is_qualifying_relative_dependent: [false, false, false]
+
+- name: A parent whose employer-paid disability pension exceeds the gross income limit is not a qualifying relative.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 62
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Taxable under IRC 105(a), so over the $5,050 limit for 2024.
+        disability_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    is_qualifying_relative_dependent: [false, false]
+
+- name: A parent whose disability insurance they paid for themselves stays a qualifying relative.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 62
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        # Excluded under IRC 104(a)(3), so not gross income.
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    is_qualifying_relative_dependent: [false, true]

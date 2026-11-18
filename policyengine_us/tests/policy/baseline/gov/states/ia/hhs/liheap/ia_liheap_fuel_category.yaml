@@ -1,0 +1,119 @@
+# Iowa LIHEAP fuel category derived from heating_type (REQ-028). Appendix I
+# p. 137 of the FY26 LIHEAP Policy and Procedures Manual lists natural gas,
+# electric, liquid propane, fuel oil and solid fuel (wood, coal, corn); the
+# primary heating fuel is the one used most (Definitions p. 84); vendors also
+# supply kerosene and "other fuels" (sections 12.00-12.20 pp. 46-47):
+# https://hhs.iowa.gov/media/17262/download?inline#page=137
+# Modeling: KEROSENE takes the fuel-oil category by inference (the manual
+# groups LP, heating oil, wood, kerosene and corn as deliverable fuels, p. 47,
+# and heating_expense already pairs fuel oil with kerosene); OTHER, SOLAR,
+# UNSPECIFIED and NONE have no published points and fall in OTHER.
+
+- name: Case 1, natural gas.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: NATURAL_GAS
+    gas_expense: 1_100
+  output:
+    ia_liheap_fuel_category: NATURAL_GAS
+
+- name: Case 2, electricity.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_500
+  output:
+    ia_liheap_fuel_category: ELECTRICITY
+
+- name: Case 3, propane.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: PROPANE
+    bottled_gas_expense: 2_200
+  output:
+    ia_liheap_fuel_category: PROPANE
+
+- name: Case 4, fuel oil.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_000
+  output:
+    ia_liheap_fuel_category: FUEL_OIL
+
+- name: Case 5, kerosene is treated as fuel oil.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: KEROSENE
+    fuel_oil_expense: 1_600
+  output:
+    # Inference: deliverable fuel grouped with heating oil (manual p. 47).
+    ia_liheap_fuel_category: FUEL_OIL
+
+- name: Case 6, wood is solid fuel.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: WOOD
+    wood_expense: 700
+  output:
+    ia_liheap_fuel_category: SOLID_FUEL
+
+- name: Case 7, coal is solid fuel.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: COAL
+    coal_expense: 900
+  output:
+    ia_liheap_fuel_category: SOLID_FUEL
+
+- name: Case 8, other fuel has no published category.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: OTHER
+    other_heating_fuel_expense: 700
+  output:
+    ia_liheap_fuel_category: OTHER
+
+- name: Case 9, solar falls in other.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 600
+  output:
+    ia_liheap_fuel_category: OTHER
+
+- name: Case 10, unspecified falls in other.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: UNSPECIFIED
+  output:
+    ia_liheap_fuel_category: OTHER
+
+- name: Case 11, no heating falls in other.
+  period: 2026
+  input:
+    state_code: IA
+    age: 40
+    heating_type: NONE
+  output:
+    ia_liheap_fuel_category: OTHER

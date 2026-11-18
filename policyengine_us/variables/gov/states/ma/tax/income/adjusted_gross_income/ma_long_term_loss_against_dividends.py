@@ -23,11 +23,10 @@ class ma_long_term_loss_against_dividends(Variable):
     def formula(tax_unit, period, parameters):
         short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
         nonnegative_short_term_capital_gains = max_(0, short_term_capital_gains)
-        # Massachusetts Schedule D, line 13 includes capital gain
-        # distributions reported without a federal Schedule D (line 6).
-        long_term_capital_gains = add(
-            tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
-        )
+        # Massachusetts Schedule D, line 13: long-term gains and losses,
+        # capital gain distributions without a federal Schedule D (line 6)
+        # and Form 4797, Part II (line 7).
+        long_term_capital_gains = tax_unit("ma_long_term_capital_gains", period)
         long_term_capital_loss = max_(0, -long_term_capital_gains)
         # Schedule B, line 25: long-term losses first offset short-term gains.
         remaining_long_term_loss = max_(

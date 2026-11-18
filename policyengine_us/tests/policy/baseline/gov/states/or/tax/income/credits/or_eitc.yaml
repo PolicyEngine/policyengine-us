@@ -153,3 +153,613 @@
     eitc: 0
   output:
     or_eitc: 0
+
+# ORS 315.266: the 12 percent rate needs "a dependent under the age of three". A
+# return on which a filer can be claimed as a dependent has no dependents (IRC
+# 152(b)(1)), so it gets 9 percent of its federal credit.
+- name: 2025 claimable filer with a child under 3 gets the 9% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 joint return with one claimable spouse and a child under 3 gets the 9% match (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        eitc: 100
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 joint return with one claimable spouse and a child under 3 gets the 9% match (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        eitc: 100
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 claimable filer within the filing exception with a child under 3 gets the 12% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 12
+
+- name: 2025 filer who cannot be claimed with a child under 3 gets the 12% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 12
+
+- name: Case 15, 2017 Oregon ordinary earned income credit match.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal EITC; no federal eligibility calculation.
+    # One adult, with no dependent under age three, takes the ordinary match.
+    state_code: OR
+    age: 35
+    is_tax_unit_dependent: false
+    eitc: 100
+  output:
+    # 2013 special-session HB 3601, sections 6d and 7(2): 8% from tax year 2014.
+    # https://olis.oregonlegislature.gov/liz/2013S1/Downloads/MeasureDocument/HB3601/Enrolled#page=7
+    # 2017 Publication OR-17, page 115, confirms the ordinary 8% match.
+    # Known federal credit 100 x 8% = 8. No full entitlement or population claim.
+    or_eitc: 8
+
+- name: Case 16, 2015 Oregon earned income credit age and zero controls.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credits isolate the state match; federal eligibility
+    # and full state entitlement are outside these component premises.
+    # Rows: dependent age two, dependent age three, no child, zero federal credit.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person6:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person7:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 100
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5]
+        eitc: 100
+      tax_unit4:
+        members: [person6, person7]
+        eitc: 0
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5]}
+      spm_unit4: {members: [person6, person7]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5]}
+      family4: {members: [person6, person7]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+      marital_unit7: {members: [person7]}
+    households:
+      household1: {members: [person1, person2], state_code: OR}
+      household2: {members: [person3, person4], state_code: OR}
+      household3: {members: [person5], state_code: OR}
+      household4: {members: [person6, person7], state_code: OR}
+  output:
+    # HB 3601 (2013 special session), sections 6d and 7(2), sets 8% from 2014.
+    # HB 4110 (2016), section 2, starts the young-dependent premium in 2017.
+    # 100 times 0.08 / 0.08 / 0.08; zero federal credit times 0.08.
+    or_eitc: [8, 8, 8, 0]
+
+- name: Case 17, 2016 Oregon earned income credit age and zero controls.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credits isolate the state match; federal eligibility
+    # and full state entitlement are outside these component premises.
+    # Rows: dependent age two, dependent age three, no child, zero federal credit.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person6:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person7:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 100
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5]
+        eitc: 100
+      tax_unit4:
+        members: [person6, person7]
+        eitc: 0
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5]}
+      spm_unit4: {members: [person6, person7]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5]}
+      family4: {members: [person6, person7]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+      marital_unit7: {members: [person7]}
+    households:
+      household1: {members: [person1, person2], state_code: OR}
+      household2: {members: [person3, person4], state_code: OR}
+      household3: {members: [person5], state_code: OR}
+      household4: {members: [person6, person7], state_code: OR}
+  output:
+    # HB 3601 (2013 special session), sections 6d and 7(2), sets 8% from 2014.
+    # HB 4110 (2016), section 2, starts the young-dependent premium in 2017.
+    # 100 times 0.08 / 0.08 / 0.08; zero federal credit times 0.08.
+    or_eitc: [8, 8, 8, 0]
+
+- name: Case 18, 2017 Oregon earned income credit age and zero controls.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credits isolate the state match; federal eligibility
+    # and full state entitlement are outside these component premises.
+    # Rows: dependent age two, dependent age three, no child, zero federal credit.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person6:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person7:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 100
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5]
+        eitc: 100
+      tax_unit4:
+        members: [person6, person7]
+        eitc: 0
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5]}
+      spm_unit4: {members: [person6, person7]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5]}
+      family4: {members: [person6, person7]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+      marital_unit7: {members: [person7]}
+    households:
+      household1: {members: [person1, person2], state_code: OR}
+      household2: {members: [person3, person4], state_code: OR}
+      household3: {members: [person5], state_code: OR}
+      household4: {members: [person6, person7], state_code: OR}
+  output:
+    # HB 4110 (2016), sections 1-2: 11% with a dependent under three;
+    # otherwise 8%, for tax years 2017-2019.
+    # 100 times 0.11 / 0.08 / 0.08; zero federal credit times 0.11.
+    or_eitc: [11, 8, 8, 0]
+
+- name: Case 19, 2019 Oregon earned income credit age and zero controls.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credits isolate the state match; federal eligibility
+    # and full state entitlement are outside these component premises.
+    # Rows: dependent age two, dependent age three, no child, zero federal credit.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person6:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person7:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 100
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5]
+        eitc: 100
+      tax_unit4:
+        members: [person6, person7]
+        eitc: 0
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5]}
+      spm_unit4: {members: [person6, person7]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5]}
+      family4: {members: [person6, person7]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+      marital_unit7: {members: [person7]}
+    households:
+      household1: {members: [person1, person2], state_code: OR}
+      household2: {members: [person3, person4], state_code: OR}
+      household3: {members: [person5], state_code: OR}
+      household4: {members: [person6, person7], state_code: OR}
+  output:
+    # HB 4110 (2016), sections 1-2: 11% with a dependent under three;
+    # otherwise 8%, for tax years 2017-2019.
+    # 100 times 0.11 / 0.08 / 0.08; zero federal credit times 0.11.
+    or_eitc: [11, 8, 8, 0]
+
+- name: Case 20, 2020 Oregon earned income credit age and zero controls.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credits isolate the state match; federal eligibility
+    # and full state entitlement are outside these component premises.
+    # Rows: dependent age two, dependent age three, no child, zero federal credit.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person6:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person7:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 100
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5]
+        eitc: 100
+      tax_unit4:
+        members: [person6, person7]
+        eitc: 0
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5]}
+      spm_unit4: {members: [person6, person7]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5]}
+      family4: {members: [person6, person7]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+      marital_unit7: {members: [person7]}
+    households:
+      household1: {members: [person1, person2], state_code: OR}
+      household2: {members: [person3, person4], state_code: OR}
+      household3: {members: [person5], state_code: OR}
+      household4: {members: [person6, person7], state_code: OR}
+  output:
+    # HB 2164 (2019), sections 31 and 32a: 12% with a dependent under three;
+    # otherwise 9%, beginning with tax year 2020.
+    # 100 times 0.12 / 0.09 / 0.09; zero federal credit times 0.12.
+    or_eitc: [12, 9, 9, 0]

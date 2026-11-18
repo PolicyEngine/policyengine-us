@@ -216,8 +216,10 @@ def _pre_extraction_reference(unit, threshold, capital_cap):
     for person, dependent in unit["members"]:
         if dependent:
             continue
+        # Each Schedule C category is its own source, as in irs_gross_income.
         business_sources = (
-            person["self_employment_income"] + person["sstb_self_employment_income"],
+            person["self_employment_income"],
+            person["sstb_self_employment_income"],
             person["farm_operations_income"],
             person["rental_income"],
             person["farm_rent_income"],

@@ -42,7 +42,8 @@ class mt_child_dependent_care_expense_deduction(Variable):
         # line 7 in their column; an unmarried filer enters all of it.
         married = person.tax_unit("tax_unit_married", period)
         head = person("is_tax_unit_head", period)
-        share = where(married, head_or_spouse * 0.5, head * 1.0)
+        p_itemized = parameters(period).gov.states.mt.tax.income.deductions.itemized
+        share = where(married, head_or_spouse * p_itemized.spouse_allocation_rate, head)
         # Married couples must file a joint return or file separately on the
         # same form (MCA 15-30-2131(1)(c)(vi)(A)); a spouse filing on a
         # separate form cannot take the deduction.

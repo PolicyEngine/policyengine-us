@@ -27,3 +27,12 @@
     state_code: PA
   output:
     pa_withheld_income_tax: 0
+
+- name: A negative AGI, as from a spouse's business loss, withholds nothing.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: -1_000
+    state_code: PA
+  output:
+    pa_withheld_income_tax: 0

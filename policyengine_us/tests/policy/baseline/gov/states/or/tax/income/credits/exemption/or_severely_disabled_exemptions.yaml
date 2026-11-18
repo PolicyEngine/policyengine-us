@@ -17,3 +17,25 @@
     is_severely_disabled: true
   output:
     or_severely_disabled_exemptions: 0
+
+
+- name: 2025 severely disabled filer who can be claimed as a dependent keeps the additional exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+        is_severely_disabled: true
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: OR
+  output:
+    # OR-17: "You may qualify for the additional exemption even if someone else
+    # can claim you as a dependent."
+    or_severely_disabled_exemptions: 1

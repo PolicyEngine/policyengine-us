@@ -28,7 +28,10 @@ class ar_federal_cdcc(Variable):
         # AR2441 header: the IRC § 21(e)(2) and (4) special rules apply.
         eligible = tax_unit("cdcc_filing_status_eligible", period)
         # AR2441 lines 2-3: qualified expenses, capped per qualifying person.
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        # Childcare counts only for a qualifying individual (IRC 21(b)(2)(A));
+        # cdcc_qualifying_childcare_expenses leaves it out when a filer can be
+        # claimed as a dependent and no child qualifies.
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         count_eligible = min_(

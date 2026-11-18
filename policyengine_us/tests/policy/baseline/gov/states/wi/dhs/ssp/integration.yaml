@@ -1,0 +1,270 @@
+- name: Case 1, eligible couple.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        wi_ssi_e_certified: false
+      person2:
+        age:
+          2026: 65
+        wi_ssi_e_certified: false
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    wi_ssp: [72.63, 72.63]
+
+- name: Case 2, one eligible spouse.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        wi_ssi_e_certified: false
+      person2:
+        age:
+          2026: 40
+        wi_ssi_e_certified: false
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    wi_ssp: [143.47, 0]
+
+- name: Case 3, one eligible spouse in another household.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        wi_ssi_e_certified: false
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age:
+          2026: 40
+        wi_ssi_e_certified: false
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    wi_ssp: [148.56, 0]
+
+- name: Case 4, both spouses certified.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        wi_ssi_e_certified: true
+      person2:
+        age:
+          2026: 65
+        wi_ssi_e_certified: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    wi_ssp: [262.58, 262.58]
+
+- name: Case 5, one spouse certified.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 65
+        wi_ssi_e_certified: true
+      person2:
+        age:
+          2026: 65
+        wi_ssi_e_certified: false
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    wi_ssp: [178.22, 72.63]
+
+- name: Case 6, annual benefits and SNAP income include both rates.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WI
+    age:
+      2026: 65
+  output:
+    wi_ssp: 1_072.4
+    household_state_benefits: 1_072.4
+    snap_unearned_income: 13_000.4
+
+- name: Case 7, Caretaker Supplement is included once in annual state and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 8
+        person_id: 2
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    families:
+      unit:
+        members: [person1, person2]
+    spm_units:
+      spm:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    wi_cts: [3_300, 0]
+    wi_ssp: [4_372.4, 0]
+    snap_unearned_income: 16_300.4
+
+- name: Case 8, Wisconsin excludes SSI-E from FoodShare but counts it for HUD.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 65
+    wi_ssi_e_certified: true
+  output:
+    wi_ssp: 2_301.08
+    wi_ssi_e: 1_228.68
+    snap_unearned_income: 13_000.4
+    hud_unearned_income: 14_229.08
+
+- name: Case 9, spouse in a Medicaid nursing home past 90 days leaves the other spouse on the individual rate.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 70
+      person2:
+        age:
+          2026: 70
+        # Medicaid-paid nursing home stay without an authorized continuation.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: WI
+  output:
+    # One spouse in a medical facility: benefits are computed separately
+    # (20 CFR 416.414(b)(3)).
+    ssi_couple_computation_applies: [false, false]
+    # person1 gets the individual FBR, 994; person2 gets the facility rate, 30.
+    ssi: [994, 30]
+    # person2's facility stay excludes them from the state payment.
+    wi_ssp_eligible: [true, false]
+    # Both spouses are aged, so neither is an SSI-ineligible spouse; one
+    # state-eligible spouse without an ineligible spouse gets the individual
+    # rate, 92.16, not the 143.47 ineligible-spouse rate.
+    wi_ssp_regular: [92.16, 0]
+    wi_ssi_e: [0, 0]
+    wi_cts: [0, 0]
+    wi_ssp: [92.16, 0]
+
+- name: Case 10, SPM-unit benefits include SSI, the regular supplement and SSI-E.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 70
+    wi_ssi_e_certified: true
+    # The household does not take up FoodShare, so the benefit total holds
+    # SSI and the state supplement only.
+    takes_up_snap_if_eligible: false
+  output:
+    # 994 * 12 = 11,928.
+    ssi: 11_928
+    # 4 * 83.78 + 8 * 92.16 = 335.12 + 737.28 = 1,072.40.
+    wi_ssp_regular: 1_072.4
+    # 4 * 95.99 + 8 * 105.59 = 383.96 + 844.72 = 1,228.68.
+    wi_ssi_e: 1_228.68
+    # No children, so no Caretaker Supplement.
+    wi_cts: 0
+    # 1,072.40 + 1,228.68 = 2,301.08.
+    wi_ssp: 2_301.08
+    household_state_benefits: 2_301.08
+    # FoodShare counts the regular supplement but not SSI-E:
+    # 11,928 + 1,072.40 = 13,000.40.
+    snap_unearned_income: 13_000.4
+    snap: 0
+    # 11,928 SSI + 2,301.08 state supplement = 14,229.08.
+    spm_unit_benefits: 14_229.08

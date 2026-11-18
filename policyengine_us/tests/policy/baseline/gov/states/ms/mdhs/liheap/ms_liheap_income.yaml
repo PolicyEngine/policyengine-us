@@ -207,3 +207,40 @@
     # Railroad Retirement benefits" as unearned income.
     # 21,600 Railroad Retirement + 9,600 Social Security = 31,200.
     ms_liheap_income: 31_200
+
+- name: Case 9, reported unemployment compensation counts as unearned income.
+  # The unearned source list reads total_unemployment_compensation.
+  # Mississippi has no modeled unemployment insurance program, so the total is
+  # the reported amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        unemployment_compensation: 6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    total_unemployment_compensation: 6_000
+    ms_liheap_income: 6_000
+
+- name: Case 10, military retirement pay and a Survivor Benefit Plan annuity count as unearned income.
+  # Two one-person households aged 70. Rule 6.11 C(8) (manual PDF page 29)
+  # counts retirement benefits and F(2)-(3) (page 31) count pensions and
+  # annuities. Household 1: 24,000 military retirement pay. Household 2: 9,600
+  # Survivor Benefit Plan annuity (800 a month).
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [70, 70]
+    military_retirement_pay: [24_000, 0]
+    military_retirement_pay_survivors: [0, 9_600]
+    ssi: [0, 0]
+  output:
+    ms_liheap_income: [24_000, 9_600]

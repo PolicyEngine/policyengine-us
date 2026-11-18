@@ -23,7 +23,7 @@
         uncapped_ssi: -940
         # $1,045.40/month * 12 = $12,544.80/year.
         # Formula: countable_income ($1,045.40) <= income_standard ($1,045.40) → true.
-        ssi_countable_income: 12_544.80
+        ssi_countable_income: {2025: 12_544.80}
     households:
       household:
         members: [person1]
@@ -49,7 +49,7 @@
         # ($1,045.40 + $0.01)/month * 12 = $12,544.92/year.
         # Formula: countable_income ($1,045.41) > income_standard ($1,045.40) → false.
         # Also uncapped_ssi < 0 → not SSI recipient. Both groups fail → ineligible.
-        ssi_countable_income: 12_544.92
+        ssi_countable_income: {2025: 12_544.92}
     households:
       household:
         members: [person1]
@@ -72,7 +72,7 @@
         uncapped_ssi: -930
         # ($1,045.40 - $0.01)/month * 12 = $12,544.68/year.
         # Formula: countable_income ($1,045.39) <= income_standard ($1,045.40) → true.
-        ssi_countable_income: 12_544.68
+        ssi_countable_income: {2025: 12_544.68}
     households:
       household:
         members: [person1]
@@ -102,7 +102,7 @@
         uncapped_ssi: 12
         # $1,151.40/month * 12 = $13,816.80/year.
         # Formula: max(0, $1,151.40 - $1,151.40) = $0.
-        ssi_countable_income: 13_816.80
+        ssi_countable_income: {2025: 13_816.80}
     households:
       household:
         members: [person1]
@@ -131,7 +131,7 @@
         uncapped_ssi: 12
         # $967/month * 12 = $11,604/year.
         # Formula: min(max(0, $1,151.40 - $967), $184.40) = min($184.40, $184.40) = $184.40.
-        ssi_countable_income: 11_604
+        ssi_countable_income: {2025: 11_604}
     households:
       household:
         members: [person1]
@@ -154,7 +154,7 @@
         uncapped_ssi: 12
         # ($967 + $0.01)/month * 12 = $11,604.12/year.
         # Formula: min(max(0, $1,151.40 - $967.01), $184.40) = min($184.39, $184.40) = $184.39.
-        ssi_countable_income: 11_604.12
+        ssi_countable_income: {2025: 11_604.12}
     households:
       household:
         members: [person1]
@@ -179,7 +179,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 11_604
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -202,7 +202,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 10_000
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
       person2:
         fl_oss_community_care_type: AFCH
         fl_oss_program_track: REDESIGN
@@ -210,7 +210,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 10_000
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -246,7 +246,7 @@
         # Still an SSI recipient (Group 1) but income very high.
         uncapped_ssi: 12
         # $5,000/month * 12 = $60,000/year.
-        ssi_countable_income: 60_000
+        ssi_countable_income: {2025: 60_000}
     households:
       household:
         members: [person1]
@@ -274,7 +274,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_916
-        ssi_countable_income: 8_400
+        ssi_countable_income: {2024: 8_400}
     households:
       household:
         members: [person1]
@@ -302,7 +302,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_004
-        ssi_countable_income: 8_400
+        ssi_countable_income: {2025: 8_400}
     households:
       household:
         members: [person1]
@@ -336,7 +336,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_916
-        ssi_countable_income: 8_400
+        ssi_countable_income: {2022: 8_400}
     households:
       household:
         members: [person1]
@@ -359,7 +359,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 2_000
-        ssi_countable_income: 7_200
+        ssi_countable_income: {2022: 7_200}
       person2:
         fl_oss_community_care_type: MHRTF
         fl_oss_program_track: PROTECTED
@@ -367,7 +367,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 2_000
-        ssi_countable_income: 7_200
+        ssi_countable_income: {2022: 7_200}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -399,7 +399,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 11_604
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -433,7 +433,7 @@
         uncapped_ssi: -200
         # $1,152/month * 12 = $13,824/year.
         # countable_income ($1,152) <= income_standard ($1,152) → Group 2 eligible.
-        ssi_countable_income: 13_824
+        ssi_countable_income: {2025: 13_824}
     households:
       household:
         members: [person1]
@@ -460,7 +460,7 @@
         # ($1,152 + $0.01)/month * 12 = $13,824.12/year.
         # countable_income ($1,152.01) > income_standard ($1,152) → Group 2 fails.
         # Also uncapped_ssi < 0 → not Group 1. Ineligible.
-        ssi_countable_income: 13_824.12
+        ssi_countable_income: {2025: 13_824.12}
     households:
       household:
         members: [person1]
@@ -485,7 +485,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 11_604
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -506,7 +506,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 11_604
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -531,7 +531,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 10_000
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
       person2:
         fl_oss_community_care_type: MHRTF
         fl_oss_program_track: PROTECTED
@@ -539,7 +539,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 10_000
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -583,7 +583,7 @@
         # Per-person max couple OSS = $368.80/2 = $184.40.
         # Target income = total_needs - max = $1,102.90 - $184.40 = $918.50/month.
         # $918.50/month * 12 = $11,022/year.
-        ssi_countable_income: 11_022
+        ssi_countable_income: {2025: 11_022}
       person2:
         fl_oss_community_care_type: AFCH
         fl_oss_program_track: REDESIGN
@@ -591,7 +591,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: 12
-        ssi_countable_income: 11_022
+        ssi_countable_income: {2025: 11_022}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -625,7 +625,7 @@
         ssi_claim_is_joint: true
         uncapped_ssi: -100
         # $996.90/month * 12 = $11,962.80/year.
-        ssi_countable_income: 11_962.80
+        ssi_countable_income: {2025: 11_962.80}
       person2:
         fl_oss_community_care_type: AFCH
         fl_oss_program_track: REDESIGN
@@ -633,7 +633,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: true
         uncapped_ssi: -100
-        ssi_countable_income: 11_962.80
+        ssi_countable_income: {2025: 11_962.80}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -667,7 +667,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_088
-        ssi_countable_income: 6_000
+        ssi_countable_income: {2011: 6_000}
     households:
       household:
         members: [person1]
@@ -697,7 +697,7 @@
         uncapped_ssi: 12
         # $1,050/month * 12 = $12,600/year.
         # Income standard = $1,045.40, but Group 1 (SSI recipient) so still eligible.
-        ssi_countable_income: 12_600
+        ssi_countable_income: {2025: 12_600}
     households:
       household:
         members: [person1]
@@ -728,7 +728,7 @@
         # Income = $1,050/month > income standard $1,045.40 (would fail Group 2).
         # But uncapped_ssi > 0 → SSI recipient → Group 1 eligible.
         uncapped_ssi: 12
-        ssi_countable_income: 12_600
+        ssi_countable_income: {2025: 12_600}
     households:
       household:
         members: [person1]
@@ -757,7 +757,7 @@
         is_ssi_eligible: false
         ssi_claim_is_joint: false
         uncapped_ssi: 0
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -781,7 +781,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_004
-        ssi_countable_income: 9_600
+        ssi_countable_income: {2025: 9_600}
     households:
       household:
         members: [person1]
@@ -805,7 +805,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_004
-        ssi_countable_income: 9_600
+        ssi_countable_income: {2025: 9_600}
     households:
       household:
         members: [person1]
@@ -831,7 +831,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 1_200
-        ssi_countable_income: 0
+        ssi_countable_income: {2024: 0}
     households:
       household:
         members: [person1]

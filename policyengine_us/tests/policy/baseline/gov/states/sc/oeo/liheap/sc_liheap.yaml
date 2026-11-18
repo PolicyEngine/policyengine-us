@@ -1,0 +1,1474 @@
+# Accepted FY 2026 plan: regular heating base 200 and seven supplements, cap 850.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+# Matrix used only for named fuels; its conflicting income/burden rules are not used.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
+# Agency's explicit LIHEAP household rule counts all income but qualified size.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/WAP%202026%20State%20Plan.pdf#page=23
+# OEO's 2024 guide limits supplements to eligible members and prorates mixed-status awards.
+# https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=537
+# Its draft 2026 guide measures the plan's 30% low-income tier against the 60% limit.
+# These are annual state-schedule awards, before unmodeled local funding discretion.
+
+- name: Case 1, source base and combined low-income high-burden examples.
+  period: 2026
+  # 40_000 income and 4_000 electric cost give only base 200. At 15_000 income,
+  # low-income 175 applies and 3_000/15_000=20% adds burden 175: total 550.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 40_000
+      person2:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 15_000
+      person6:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 4_000
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 3_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [4, 4]
+    sc_liheap_countable_income: [40_000, 15_000]
+    sc_liheap_income_limit: [61_525, 61_525]
+    sc_liheap_eligible: [true, true]
+    sc_liheap: [200, 550]
+
+- name: Case 2, thirty percent of the income limit is the supplement boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Four-person limit 61_525 x 30% = 18_457.50. At or below the boundary add 175
+  # to base 200; a cent above receives only 200, which rejects both 30% of the full
+  # SMI (30_762.60) and the older matrix's 70% of the limit (43_067.50).
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_457.49
+      person2:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_457.5
+      person6:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_457.51
+      person10:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person12:
+        age: 12
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit3:
+        members: [person9, person10, person11, person12]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: SC
+      household3:
+        members: [person9, person10, person11, person12]
+        state_code: SC
+  output:
+    sc_liheap: [375, 375, 200]
+
+- name: Case 3, twenty-percent burden sums energy bills and includes equality.
+  period: 2026
+  # Gas 500 + electric 3_499/3_500/3_501 gives costs 3_999/4_000/4_001.
+  # At income 20_000,20%=4_000. Base 200+gas-fuel 75 gains burden 175 at equality.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 500
+        pre_subsidy_electricity_expense: 3_499
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 500
+        pre_subsidy_electricity_expense: 3_500
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 500
+        pre_subsidy_electricity_expense: 3_501
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+  output:
+    sc_liheap: [275, 450, 450]
+
+- name: Case 4, nonenergy utility bills do not establish home-energy burden.
+  period: 2026
+  # Home energy 1_000/20_000=5%. Water, trash and phone bills do not earn 175.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        water_expense: 5_000
+        trash_expense: 2_000
+        phone_expense: 2_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_liheap: 200
+
+- name: Case 5, named supplement fuels and other heating fuels are distinguished.
+  period: 2026
+  # Matrix page 2 names gas, oil/kerosene and propane for 75. Every scenario has
+  # its actual matching bill 1_000 and income 20_000, so no low-income/burden
+  # supplement applies. Other represented heating fuels receive the base 200.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_000
+      spm_unit3:
+        members: [person3]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_000
+      spm_unit4:
+        members: [person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+      spm_unit5:
+        members: [person5]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit6:
+        members: [person6]
+        heating_type: WOOD
+        wood_expense: 1_000
+      spm_unit7:
+        members: [person7]
+        heating_type: COAL
+        coal_expense: 1_000
+      spm_unit8:
+        members: [person8]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit9:
+        members: [person9]
+        heating_type: OTHER
+        other_heating_fuel_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+      household6:
+        members: [person6]
+        state_code: SC
+      household7:
+        members: [person7]
+        state_code: SC
+      household8:
+        members: [person8]
+        state_code: SC
+      household9:
+        members: [person9]
+        state_code: SC
+  output:
+    sc_liheap: [275, 275, 275, 275, 200, 200, 200, 200, 200]
+
+- name: Case 6, age disability and veteran supplements apply once per category.
+  period: 2026
+  # Two-person income 30_000 exceeds its 12_551.10 low-income level and is below
+  # 41_837.
+  # Base 200 gains 75 at age 60; 50 for child <= 5, any disabled member, or any
+  # veteran. Two veterans still earn a single 50 supplement.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 59
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person4:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person6:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person8:
+        age: 6
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person10:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person12:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+      person14:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_veteran: true
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 30_000
+        is_veteran: true
+      person16:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_veteran: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit3:
+        members: [person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit5:
+        members: [person9, person10]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit6:
+        members: [person11, person12]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit7:
+        members: [person13, person14]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit8:
+        members: [person15, person16]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+      household3:
+        members: [person5, person6]
+        state_code: SC
+      household4:
+        members: [person7, person8]
+        state_code: SC
+      household5:
+        members: [person9, person10]
+        state_code: SC
+      household6:
+        members: [person11, person12]
+        state_code: SC
+      household7:
+        members: [person13, person14]
+        state_code: SC
+      household8:
+        members: [person15, person16]
+        state_code: SC
+  output:
+    sc_liheap: [200, 275, 250, 200, 250, 250, 250, 250]
+
+- name: Case 7, all supplements total eight hundred fifty without multiplying people.
+  period: 2026
+  # 200 base+75 elderly+50 disabled+50 young child+175 low income
+  # +175 high burden+75 propane+50 veteran=850. Repeated vulnerable members
+  # do not multiply categories. Negative net income cannot exceed the 850 cap.
+  input:
+    people:
+      person1:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 18_000
+      person6:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+      person8:
+        age: 38
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+      person9:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 4
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 65
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        self_employment_income: -1_000_000
+      person12:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+      person13:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 6_000
+      spm_unit2:
+        members: [person5, person6, person7, person8, person9, person10]
+        heating_type: PROPANE
+        bottled_gas_expense: 6_000
+      spm_unit3:
+        members: [person11, person12, person13, person14]
+        heating_type: PROPANE
+        bottled_gas_expense: 6_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+      household2:
+        members: [person5, person6, person7, person8, person9, person10]
+        state_code: SC
+      household3:
+        members: [person11, person12, person13, person14]
+        state_code: SC
+  output:
+    sc_liheap: [850, 850, 850]
+
+- name: Case 8, nonqualified residents earn no supplement and the award is prorated.
+  period: 2026
+  # Qualified size is one for each threshold. The 2024 guide counts only eligible
+  # members for the supplements, so the nonqualified elder, child, disabled person
+  # and veteran add nothing: base 200 / 2 members x 1 eligible member = 100.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 60
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 5
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        is_disabled: true
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person8:
+        age: 40
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        is_veteran: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit3:
+        members: [person5, person6]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit4:
+        members: [person7, person8]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+      household3:
+        members: [person5, person6]
+        state_code: SC
+      household4:
+        members: [person7, person8]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [1, 1, 1, 1]
+    sc_liheap_countable_income: [20_000, 20_000, 20_000, 20_000]
+    sc_liheap_income_limit: [31_993, 31_993, 31_993, 31_993]
+    sc_liheap: [100, 100, 100, 100]
+
+- name: Case 9, all resident income is compared with qualified-size limits.
+  period: 2026
+  # Qualified child gives size one and ceiling 31_993. Parent income 30_000
+  # qualifies: 200 base + 50 child + 75 gas = 325, / 2 members x 1 eligible = 162.50.
+  # Parent income 33_000 fails; an all-nonqualified household also receives zero.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 33_000
+      person4:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit3:
+        members: [person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+      household3:
+        members: [person5]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [1, 1, 0]
+    sc_liheap_countable_income: [30_000, 33_000, 0]
+    sc_liheap_eligible: [true, false, false]
+    sc_liheap: [162.5, 0, 0]
+
+- name: Case 10, housing treatment and low bills do not create an expense cap.
+  period: 2026
+  # Base 200 can exceed the actual 100 bill; housing subsidy does not exclude.
+  # Heat in rent permits aid without a separately quantified bill; known gas
+  # still adds 75. Zero income with unmeasured rent heat gets low-income 175,
+  # but zero measured energy cost does not prove burden.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 100
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 100
+        receives_housing_assistance: true
+      spm_unit3:
+        members: [person3]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+      spm_unit5:
+        members: [person5]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+  output:
+    sc_liheap: [200, 200, 200, 275, 375]
+
+- name: Case 11, a home with no energy bill and other states receive zero.
+  period: 2026
+  # Eligible SC gas heating earns 200+75; the same NC unit is state-guarded.
+  # NONE with no bill has no obligation to pay. An electric bill qualifies a gas-heated
+  # home with no gas bill: 200 + 175 low income + 175 burden on no income + 75 fuel = 625.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit3:
+        members: [person3]
+        heating_type: NONE
+      spm_unit4:
+        members: [person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: NC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+  output:
+    sc_liheap: [275, 0, 0, 625]
+
+# Recurring payments are countable; this does not represent a one-time withdrawal.
+# Income 40,000 exceeds the one-person 31,993 ceiling, so the award is 0.
+- name: Case 12, recurring IRA payments above the income ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        # Isolate recurring retirement receipts; no SSI is received.
+        ssi: 0
+        taxable_ira_distributions: 40000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 40000
+    sc_liheap: 0
+
+# Recurring payments are countable; this does not represent a one-time withdrawal.
+# Income 12,000 exceeds the one-person 9,597.90 low-income level: 200 base + 75
+# elderly = 275. The 1,000 annual bill is below 20 percent, so no burden supplement
+# applies.
+- name: Case 13, recurring IRA payments without high energy burden.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        # Isolate recurring retirement receipts; no SSI is received.
+        ssi: 0
+        taxable_ira_distributions: 12000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_liheap_countable_income: 12000
+    sc_liheap: 275
+
+# Military retirement is a separate receipt; a rental loss cannot cancel a 33,000
+# pension. The last two rows are existing-aggregate unemployment controls because
+# there is no SC state unemployment model. Reported unemployment replaces the
+# fallback, never adds to it. Every row exceeds the one-person 31,993 ceiling.
+- name: Case 14, distinct received income prevents excess regular awards.
+  period: 2026
+  input:
+    state_code: [SC, SC, SC, SC]
+    age: [55, 55, 35, 35]
+    is_citizen_or_legal_immigrant: [true, true, true, true]
+    ssi: [0, 0, 0, 0]
+    military_retirement_pay: [40_000, 0, 0, 0]
+    is_veteran: [true, false, false, false]
+    taxable_pension_income: [0, 33_000, 0, 0]
+    rental_income: [0, -10_000, 0, 0]
+    unemployment_compensation: [0, 0, 0, 45_000]
+    modeled_state_unemployment_compensation: [0, 0, 40_000, 40_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000]
+  output:
+    sc_liheap_countable_income: [40_000, 33_000, 40_000, 45_000]
+    sc_liheap_income_limit: [31_993, 31_993, 31_993, 31_993]
+    sc_liheap_eligible: [false, false, false, false]
+    sc_liheap: [0, 0, 0, 0]
+
+# Age five and under includes 5.5 until the sixth birthday. With two qualified
+# members, 30,000 income is above the 12,551.10 low-income level but below the
+# 41,837 ceiling. Electric 1,000 is below the 20% burden and has no fuel supplement:
+# 200 base + 50 child =
+# 250; the same household at age 6 receives 200.
+- name: Case 15, the young-child supplement lasts until the sixth birthday.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income: 30_000, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 5.5, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 35, employment_income: 30_000, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 6, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3, person4]}
+    households:
+      household1: {members: [person1, person2], state_code: SC}
+      household2: {members: [person3, person4], state_code: SC}
+  output:
+    sc_liheap_household_size: [2, 2]
+    sc_liheap_countable_income: [30_000, 30_000]
+    sc_liheap_income_limit: [41_837, 41_837]
+    sc_liheap_eligible: [true, true]
+    sc_liheap: [250, 200]
+
+# Qualified size 25 uses the 2025 FPG 15,650 + 24 x 5,500 = 147,650. The strict
+# 110% floor of 162,415 protects 150,000 income above the ordinary SMI limit of
+# 116,282. No vulnerable member, veteran, fuel or burden supplement applies, and
+# income exceeds 34,884.60, 30% of the limit: base 200 is the award. Exactly 162,415
+# is unprotected.
+- name: Case 16, large households retain strict federal income protection.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 150_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person7:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person8:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person9:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person10:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person11:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person12:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person13:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person14:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person15:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person16:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person17:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person18:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person19:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person20:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person21:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person22:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person23:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person24:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person25:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person26:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 162_415
+      person27:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person28:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person29:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person30:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person31:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person32:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person33:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person34:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person35:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person36:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person37:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person38:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person39:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person40:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person41:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person42:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person43:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person44:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person45:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person46:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person47:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person48:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person49:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person50:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+      tax_unit30: {members: [person30]}
+      tax_unit31: {members: [person31]}
+      tax_unit32: {members: [person32]}
+      tax_unit33: {members: [person33]}
+      tax_unit34: {members: [person34]}
+      tax_unit35: {members: [person35]}
+      tax_unit36: {members: [person36]}
+      tax_unit37: {members: [person37]}
+      tax_unit38: {members: [person38]}
+      tax_unit39: {members: [person39]}
+      tax_unit40: {members: [person40]}
+      tax_unit41: {members: [person41]}
+      tax_unit42: {members: [person42]}
+      tax_unit43: {members: [person43]}
+      tax_unit44: {members: [person44]}
+      tax_unit45: {members: [person45]}
+      tax_unit46: {members: [person46]}
+      tax_unit47: {members: [person47]}
+      tax_unit48: {members: [person48]}
+      tax_unit49: {members: [person49]}
+      tax_unit50: {members: [person50]}
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25]
+        state_code: SC
+      household2:
+        members: [person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42, person43, person44, person45, person46, person47, person48, person49, person50]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [25, 25]
+    sc_liheap_countable_income: [150_000, 162_415]
+    sc_liheap_income_limit: [116_282, 116_282]
+    sc_liheap_eligible: [true, false]
+    sc_liheap: [200, 0]
+
+- name: Case 17, heating fuel bills reach the burden supplement and cooking fuel does not.
+  period: 2026
+  # At income 20_000, 20% = 4_000 and the one-person low-income level is 9_597.90.
+  # Fuel oil: 200 + 75 fuel + 175 burden = 450. Wood, coal and other fuel: 200 + 175
+  # = 375. Electric 3_000 plus cooking fuel 1_000 stays below 4_000: 200.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 4_000
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 4_000
+      spm_unit3:
+        members: [person3]
+        heating_type: COAL
+        coal_expense: 4_000
+      spm_unit4:
+        members: [person4]
+        heating_type: OTHER
+        other_heating_fuel_expense: 4_000
+      spm_unit5:
+        members: [person5]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 3_000
+        cooking_fuel_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+  output:
+    sc_liheap: [450, 375, 375, 375, 200]
+
+- name: Case 18, state-placed foster children are not household members.
+  period: 2026
+  # Each foster child is left out of size, income and the supplements, so both
+  # adults are one-person households with the 31_993 ceiling. Wages 35_000 fail
+  # the ceiling. Wages 20_000 pass, the disabled child's 10_000 survivor benefits
+  # do not count, and neither child supplement applies: 200 + 75 gas = 275. The
+  # child also leaves the proration count, so one eligible of one member keeps 275.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 35_000
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_in_foster_care:
+          2026-01: true
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        social_security_survivors: 10_000
+        is_in_foster_care:
+          2026-01: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+  output:
+    sc_liheap_household_size: [1, 1]
+    sc_liheap_countable_income: [35_000, 20_000]
+    sc_liheap_income_limit: [31_993, 31_993]
+    sc_liheap_eligible: [false, true]
+    sc_liheap: [0, 275]
+
+- name: Case 19, the 2024 guide's prorated example pays eligible members only.
+  period: 2026
+  # Guide page 537: 425 / 4 members = 106.25, x 3 eligible = 318.75. Here 200 base +
+  # 50 child + 175 low income = 425. The nonqualified adult's 15_000 wages count and
+  # stay below the three-person low-income level of 15_504.30; 1_000 is under 20%.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+        employment_income: 15_000
+      person2:
+        age: 33
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+      person4:
+        age: 10
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: SC
+  output:
+    sc_liheap_household_size: 3
+    sc_liheap_countable_income: 15_000
+    sc_liheap_income_limit: 51_681
+    sc_liheap: 318.75
+
+- name: Case 20, an electric bill pays a home without heating or with gathered wood.
+  period: 2026
+  # OEO asks for an obligation to pay a home energy bill. 20_000 is above the low-income
+  # tier, 1_000 is under 20% of it, and neither fuel earns the supplement: base 200.
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        wood_expense: 0
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+  output:
+    sc_liheap: [200, 200]

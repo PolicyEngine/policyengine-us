@@ -11,7 +11,9 @@ class ar_medical_expense_deduction_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        agi = add(tax_unit, period, ["ar_agi_joint"])
+        # A spouse's loss can make the joint AGI total negative; floor it at
+        # zero so a negative AGI cannot enlarge the deduction.
+        agi = max_(add(tax_unit, period, ["ar_agi_joint"]), 0)
         floor = tax_unit("ar_medical_expense_deduction_floor", period)
         medical_expenses = tax_unit("itemized_medical_expenses", period)
         return max_(0, medical_expenses - floor * agi)

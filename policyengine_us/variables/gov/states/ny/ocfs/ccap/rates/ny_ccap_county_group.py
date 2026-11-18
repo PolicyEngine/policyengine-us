@@ -17,17 +17,17 @@ class ny_ccap_county_group(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
     documentation = (
-        "New York keys rates to the child care provider's county. "
-        "Because provider location is not represented, this variable uses "
-        "household county as a proxy and defaults unknown counties to group "
-        "3. Group 3 carries the lowest rates in the current schedule, so any "
-        "household whose county does not resolve is understated by 10 to 19 "
-        "percent against group 2, 24 to 34 percent against group 1 (Nassau, "
-        "Putnam, Rockland, Suffolk, Westchester), and 21 to 37 percent "
-        "against group 4 (the five New York City boroughs). Groups 1 and 4 "
-        "hold the large majority of New York's child population, so the "
-        "default biases microsimulation results downward wherever county is "
-        "unimputed."
+        "New York sets market rates by the child care provider's county. "
+        "The model has no provider location, so this variable reads the "
+        "household's county instead. Without a county or county FIPS input, "
+        "the county variable falls back to the state's alphabetically first "
+        "county, Albany County, in group 2. A county outside the four group "
+        "lists, such as UNKNOWN, falls to group 3. Wherever OCFS publishes a "
+        "nonzero rate in the October 2024 schedule, group 3 has the lowest "
+        "rate and group 2 the next lowest. So the Albany fallback "
+        "overstates rates for households in group 3 and understates them in "
+        "group 1 (Nassau, Putnam, Rockland, Suffolk, Westchester) and group 4 "
+        "(the five New York City boroughs)."
     )
     reference = (
         "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=14"

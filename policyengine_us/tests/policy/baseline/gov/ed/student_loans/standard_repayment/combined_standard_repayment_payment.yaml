@@ -1,0 +1,210 @@
+# One $50 minimum on all of a borrower's payments under the standard repayment
+# plan (34 CFR 685.208(b)(1)(ii)), with Direct and parent PLUS loans amortized
+# separately and added: min(max(direct x f + parent PLUS x f, 50), direct +
+# parent PLUS). f is the 120-month factor at 6 percent:
+# .005 / (1 - 1.005 ^ -120) = .0111021. A parent PLUS Direct Consolidation Loan
+# that entered repayment on or after July 1, 2006 repays under 685.208(b)(2), a
+# separate plan with its own (b)(2)(ii) minimum, so its payment is added to the
+# Direct Loan payment as is.
+
+- name: Case 1, a small Direct balance and a large parent PLUS balance share one 50 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 1_000
+        federal_parent_plus_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 1,000 x .0111021 = 11.10 and 20,000 x .0111021 = 222.04. Separately:
+    # max(11.10, 50) = 50 and 222.04. Together: max(11.10 + 222.04 = 233.14,
+    # 50) = 233.14, under the 21,000 balance.
+    standard_repayment_payment: 50
+    parent_plus_standard_repayment_payment: 222.04
+    combined_standard_repayment_payment: 233.14
+
+- name: Case 2, two small balances owe one 50 dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 1_000
+        federal_parent_plus_loan_balance: 1_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 11.10 + 11.10 = 22.20, below 50, so one minimum of 50, under the 2,000 balance;
+    # each separate variable is 50.
+    standard_repayment_payment: 50
+    parent_plus_standard_repayment_payment: 50
+    combined_standard_repayment_payment: 50
+
+- name: Case 3, payments above the minimum add up as before.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 5_000
+        federal_parent_plus_loan_balance: 5_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 5,000 x .0111021 = 55.51 each, both above 50: 55.51 + 55.51 = 111.02.
+    standard_repayment_payment: 55.51
+    parent_plus_standard_repayment_payment: 55.51
+    combined_standard_repayment_payment: 111.02
+
+- name: Case 4, a consolidated parent PLUS loan keeps its own minimum under 685.208(b)(2).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 1_000
+        federal_parent_plus_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+        federal_parent_plus_loan_is_consolidated: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Consolidation total 20,000 + min(1,000, 20,000) = 21,000, in the 20,000 to
+    # 40,000 tier: 20 years. 20,000 x .005 / (1 - 1.005 ^ -240) = 143.29. Direct
+    # Loans under (b)(1): max(11.10, 50) = 50. Two plans, two minimums:
+    # 50 + 143.29 = 193.29.
+    standard_repayment_payment: 50
+    parent_plus_standard_repayment_payment: 143.29
+    combined_standard_repayment_payment: 193.29
+
+- name: Case 5, balances below the minimum cap the payment at the total balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 30
+        federal_parent_plus_loan_balance: 10
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 30 x .0111021 + 10 x .0111021 = 0.44, raised to 50, then capped at the
+    # 40 total balance. Separately 30 and 10.
+    standard_repayment_payment: 30
+    parent_plus_standard_repayment_payment: 10
+    combined_standard_repayment_payment: 40
+
+- name: Case 6, parent PLUS loans alone match the parent PLUS variable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 0
+        federal_parent_plus_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 20,000 x .0111021 = 222.04; no Direct Loans.
+    standard_repayment_payment: 0
+    parent_plus_standard_repayment_payment: 222.04
+    combined_standard_repayment_payment: 222.04
+
+- name: Case 7, Direct Loans alone match the Direct Loan variable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 20_000
+        federal_parent_plus_loan_balance: 0
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 20,000 x .0111021 = 222.04; no parent PLUS loans.
+    standard_repayment_payment: 222.04
+    parent_plus_standard_repayment_payment: 0
+    combined_standard_repayment_payment: 222.04
+
+- name: Case 8, a Direct Loan made on or after July 1, 2026 moves the borrower to the tiered plan.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 1_000
+        federal_parent_plus_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # 20 U.S.C. 1087e(d)(1), (d)(7)(A): the borrower repays under the tiered
+    # standard plan, so each standard plan payment is 0.
+    standard_repayment_payment: 0
+    parent_plus_standard_repayment_payment: 0
+    combined_standard_repayment_payment: 0

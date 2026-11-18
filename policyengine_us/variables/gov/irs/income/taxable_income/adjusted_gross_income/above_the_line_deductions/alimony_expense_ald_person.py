@@ -7,15 +7,18 @@ class alimony_expense_ald_person(Variable):
     label = "Alimony expense ALD for each person"
     unit = USD
     documentation = (
-        "Each person's own above-the-line deduction for alimony paid under a "
-        "divorce or separation instrument executed before 2019 (Schedule 1, "
-        "line 19a), on that person's own return."
+        "The alimony each person pays under a divorce or separation instrument "
+        "executed before 2019, which they deduct on their own return. "
+        "alimony_expense_ald adds the head's and spouse's amounts for the tax "
+        "unit's return."
     )
     definition_period = YEAR
-    reference = "https://www.irs.gov/taxtopics/tc452"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/215",
+        "https://www.irs.gov/taxtopics/tc452",
+    )
 
     def formula(person, period, parameters):
-        divorce_year = person("divorce_year", period)
-        alimony_expense = person("alimony_expense", period)
         p = parameters(period).gov.irs.ald.alimony_expense
-        return alimony_expense * p.divorce_year_threshold.calc(divorce_year)
+        eligible = p.divorce_year_threshold.calc(person("divorce_year", period))
+        return person("alimony_expense", period) * eligible

@@ -137,3 +137,57 @@
   # 50,594. Wis. Stat. 71.06(1r): 3.5% x 14,680 + 4.4% x (50,480 - 14,680)
   # + 5.3% x (50,594 - 50,480) = 2,095.04 (baseline 2,032.42).
   output: {wi_income_tax: 2095.04}
+
+# As in the baseline, a filer who can be claimed as a dependent has no exemption of
+# their own and, outside the claimant filing exception, no dependents.
+- name: WI dependent exemption reform - claimable single filer has no exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.states.wi.dependent_exemption.wi_dependent_exemption_reform.wi_dependent_exemption_reform
+  input:
+    gov.contrib.states.wi.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000, claimable_as_dependent_on_another_return: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: WI}}
+  output: {wi_base_exemption: 0}
+
+- name: WI dependent exemption reform - the filing exception keeps the dependents only
+  period: 2025
+  reforms: policyengine_us.reforms.states.wi.dependent_exemption.wi_dependent_exemption_reform.wi_dependent_exemption_reform
+  input:
+    gov.contrib.states.wi.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000, claimable_as_dependent_on_another_return: true, dependent_claimant_filing_exception: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: WI}}
+  output: {wi_base_exemption: 1_400}
+
+- name: WI dependent exemption reform - joint return with one claimable spouse keeps the other spouse only (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.wi.dependent_exemption.wi_dependent_exemption_reform.wi_dependent_exemption_reform
+  input:
+    gov.contrib.states.wi.dependent_exemption.in_effect: true
+    people:
+      person_a: {age: 40, claimable_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 40, employment_income: 60_000, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child1], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child1], state_name: WI}}
+  output: {wi_base_exemption: 700}
+
+- name: WI dependent exemption reform - joint return with one claimable spouse keeps the other spouse only (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.wi.dependent_exemption.wi_dependent_exemption_reform.wi_dependent_exemption_reform
+  input:
+    gov.contrib.states.wi.dependent_exemption.in_effect: true
+    people:
+      person_b: {age: 40, employment_income: 60_000, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 40, claimable_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child1], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child1], state_name: WI}}
+  output: {wi_base_exemption: 700}

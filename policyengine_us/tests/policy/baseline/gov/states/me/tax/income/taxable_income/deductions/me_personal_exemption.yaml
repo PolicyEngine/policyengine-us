@@ -47,3 +47,1027 @@
     me_agi: 404_500 # $279,500 + $125,000 = $404,500
   output:
     me_personal_exemption_deduction: 0
+
+- name: 2025 single filer who may be claimed as a dependent gets no personal exemption
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        me_agi: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ME
+  output:
+    # Form 1040ME line 13: 0 if you may be claimed as a dependent.
+    me_personal_exemption_deduction: 0
+
+- name: 2025 joint return with only one spouse claimable gets one exemption (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        me_agi: 16_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    # Form 1040ME line 13: 1 if married filing jointly and only one spouse may
+    # be claimed as a dependent; 1 x $5,150.
+    me_personal_exemption_deduction: 5_150
+
+- name: 2025 joint return with only one spouse claimable gets one exemption (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        me_agi: 16_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: ME
+  output:
+    me_personal_exemption_deduction: 5_150
+
+- name: 2025 joint return with both spouses claimable gets no exemption
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        me_agi: 16_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    me_personal_exemption_deduction: 0
+
+- name: 2025 joint return with neither spouse claimable gets two exemptions
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        me_agi: 16_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ME
+  output:
+    me_personal_exemption_deduction: 10_300
+
+- name: Maine 2017 personal exemption imports known lawful federal allowances
+  period: 2017
+  # Component premises: the adult may claim their own federal exemption and the
+  # qualifying child, including the required TINs and all federal dependency facts.
+  # exemptions_count is the independently known lawful count, not a test of the
+  # model's federal dependency, TIN or married-filing-separately count rules.
+  # P.L. 2017, c. 474, Part B-6 imports IRC 151 for 2013-2017.
+  # Rev. Proc. 2016-55, section 3.24: 2 * $4,050 = $8,100; federal AGI
+  # $50,000 is below the HOH phaseout threshold, so no rounding is involved.
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 50_000
+        me_agi: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: ME
+  output:
+    me_personal_exemption_deduction: 8_100
+
+- name: Maine 2015 federal exemption phaseout boundaries and federal AGI routing
+  period: 2015
+  absolute_error_margin: 0.01
+  # Known lawful exemptions_count is a component premise; required TINs and all
+  # allowance criteria are assumed satisfied, not inferred from family membership.
+  # No federal count-rule, MFS-spouse-exception or full Maine-return coverage is claimed.
+  # P.L. 2017, c. 474, Part B-6 imports IRC 151; section 151(d)(3) uses
+  # 2 percentage points per $2,500 or fraction ($1,250 for separate returns).
+  # Federal and Maine AGI are distinct known inputs; Maine AGI is held at the
+  # federal threshold while federal AGI moves. Boundary excesses use whole dollars.
+  # Rev. Proc. 2014-61, section 3.24 (PDF page 16).
+  # Expected retention fractions by row: 100%, 98%, 98%, 96%, 2%, 0%.
+  input:
+    people:
+      row_01_single_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_02_single_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_03_single_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_04_single_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_05_single_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_06_single_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      row_01_single_start:
+        members: [row_01_single_start_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 258250
+        me_agi: 258250
+      row_02_single_first_dollar:
+        members: [row_02_single_first_dollar_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 258251
+        me_agi: 258250
+      row_03_single_one_step:
+        members: [row_03_single_one_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 260750
+        me_agi: 258250
+      row_04_single_next_step:
+        members: [row_04_single_next_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 260751
+        me_agi: 258250
+      row_05_single_last_retained:
+        members: [row_05_single_last_retained_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 380750
+        me_agi: 258250
+      row_06_single_first_zero:
+        members: [row_06_single_first_zero_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 380751
+        me_agi: 258250
+    households:
+      row_01_single_start_household:
+        members: [row_01_single_start_head]
+        state_code: ME
+      row_02_single_first_dollar_household:
+        members: [row_02_single_first_dollar_head]
+        state_code: ME
+      row_03_single_one_step_household:
+        members: [row_03_single_one_step_head]
+        state_code: ME
+      row_04_single_next_step_household:
+        members: [row_04_single_next_step_head]
+        state_code: ME
+      row_05_single_last_retained_household:
+        members: [row_05_single_last_retained_head]
+        state_code: ME
+      row_06_single_first_zero_household:
+        members: [row_06_single_first_zero_head]
+        state_code: ME
+  output:
+    # Tax-unit order follows the explicit row names above.
+    me_personal_exemption_deduction: [4000, 3920, 3920, 3840, 80, 0]
+
+- name: Maine 2016 federal exemption phaseout boundaries and federal AGI routing
+  period: 2016
+  absolute_error_margin: 0.01
+  # Known lawful exemptions_count is a component premise; required TINs and all
+  # allowance criteria are assumed satisfied, not inferred from family membership.
+  # No federal count-rule, MFS-spouse-exception or full Maine-return coverage is claimed.
+  # P.L. 2017, c. 474, Part B-6 imports IRC 151; section 151(d)(3) uses
+  # 2 percentage points per $2,500 or fraction ($1,250 for separate returns).
+  # Federal and Maine AGI are distinct known inputs; Maine AGI is held at the
+  # federal threshold while federal AGI moves. Boundary excesses use whole dollars.
+  # Rev. Proc. 2015-53, section 3.24 (PDF pages 16-17).
+  # Expected retention fractions by row: 100%, 98%, 98%, 96%, 2%, 0%.
+  input:
+    people:
+      row_01_single_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_02_single_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_03_single_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_04_single_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_05_single_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_06_single_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      row_01_single_start:
+        members: [row_01_single_start_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 259400
+        me_agi: 259400
+      row_02_single_first_dollar:
+        members: [row_02_single_first_dollar_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 259401
+        me_agi: 259400
+      row_03_single_one_step:
+        members: [row_03_single_one_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 261900
+        me_agi: 259400
+      row_04_single_next_step:
+        members: [row_04_single_next_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 261901
+        me_agi: 259400
+      row_05_single_last_retained:
+        members: [row_05_single_last_retained_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 381900
+        me_agi: 259400
+      row_06_single_first_zero:
+        members: [row_06_single_first_zero_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 381901
+        me_agi: 259400
+    households:
+      row_01_single_start_household:
+        members: [row_01_single_start_head]
+        state_code: ME
+      row_02_single_first_dollar_household:
+        members: [row_02_single_first_dollar_head]
+        state_code: ME
+      row_03_single_one_step_household:
+        members: [row_03_single_one_step_head]
+        state_code: ME
+      row_04_single_next_step_household:
+        members: [row_04_single_next_step_head]
+        state_code: ME
+      row_05_single_last_retained_household:
+        members: [row_05_single_last_retained_head]
+        state_code: ME
+      row_06_single_first_zero_household:
+        members: [row_06_single_first_zero_head]
+        state_code: ME
+  output:
+    # Tax-unit order follows the explicit row names above.
+    me_personal_exemption_deduction: [4050, 3969, 3969, 3888, 81, 0]
+
+- name: Maine 2017 federal phaseout boundaries for each filing status
+  period: 2017
+  absolute_error_margin: 0.01
+  # Known lawful exemptions_count is a component premise; required TINs and all
+  # allowance criteria are assumed satisfied, not inferred from family membership.
+  # No federal count-rule, MFS-spouse-exception or full Maine-return coverage is claimed.
+  # P.L. 2017, c. 474, Part B-6 imports IRC 151; section 151(d)(3) uses
+  # 2 percentage points per $2,500 or fraction ($1,250 for separate returns).
+  # Federal and Maine AGI are distinct known inputs; Maine AGI is held at the
+  # federal threshold while federal AGI moves. Boundary excesses use whole dollars.
+  # Rev. Proc. 2016-55, section 3.24 (PDF page 18), supplies annual amounts
+  # and thresholds. IRS 2017 Form 1040 instructions, page 41, round steps up.
+  # Joint rows assume two unclaimable spouses. HOH and surviving-spouse rows
+  # assume one lawful dependent and a qualifying status. Separate-return rows
+  # contain only the filer; the outside spouse has positive gross income, so
+  # the independently known count of one does not claim the unmodeled spouse exception.
+  input:
+    people:
+      row_01_single_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_02_single_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_03_single_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_04_single_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_05_single_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_06_single_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_07_joint_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_07_joint_start_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_08_joint_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_08_joint_first_dollar_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_09_joint_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_09_joint_one_step_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_10_joint_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_10_joint_next_step_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_11_joint_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_11_joint_last_retained_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_12_joint_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_12_joint_first_zero_spouse:
+        age: 35
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_13_surviving_spouse_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_13_surviving_spouse_start_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_14_surviving_spouse_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_14_surviving_spouse_first_dollar_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_15_surviving_spouse_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_15_surviving_spouse_one_step_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_16_surviving_spouse_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_16_surviving_spouse_next_step_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_17_surviving_spouse_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_17_surviving_spouse_last_retained_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_18_surviving_spouse_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_18_surviving_spouse_first_zero_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_19_head_of_household_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_19_head_of_household_start_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_20_head_of_household_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_20_head_of_household_first_dollar_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_21_head_of_household_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_21_head_of_household_one_step_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_22_head_of_household_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_22_head_of_household_next_step_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_23_head_of_household_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_23_head_of_household_last_retained_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_24_head_of_household_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_24_head_of_household_first_zero_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+      row_25_separate_start_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_26_separate_first_dollar_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_27_separate_one_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_28_separate_next_step_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_29_separate_last_retained_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_30_separate_first_zero_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      row_01_single_start:
+        members: [row_01_single_start_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 261500
+        me_agi: 261500
+      row_02_single_first_dollar:
+        members: [row_02_single_first_dollar_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 261501
+        me_agi: 261500
+      row_03_single_one_step:
+        members: [row_03_single_one_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 264000
+        me_agi: 261500
+      row_04_single_next_step:
+        members: [row_04_single_next_step_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 264001
+        me_agi: 261500
+      row_05_single_last_retained:
+        members: [row_05_single_last_retained_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 384000
+        me_agi: 261500
+      row_06_single_first_zero:
+        members: [row_06_single_first_zero_head]
+        filing_status: SINGLE
+        exemptions_count: 1
+        adjusted_gross_income: 384001
+        me_agi: 261500
+      row_07_joint_start:
+        members: [row_07_joint_start_head, row_07_joint_start_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 313800
+        me_agi: 313800
+      row_08_joint_first_dollar:
+        members: [row_08_joint_first_dollar_head, row_08_joint_first_dollar_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 313801
+        me_agi: 313800
+      row_09_joint_one_step:
+        members: [row_09_joint_one_step_head, row_09_joint_one_step_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 316300
+        me_agi: 313800
+      row_10_joint_next_step:
+        members: [row_10_joint_next_step_head, row_10_joint_next_step_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 316301
+        me_agi: 313800
+      row_11_joint_last_retained:
+        members: [row_11_joint_last_retained_head, row_11_joint_last_retained_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 436300
+        me_agi: 313800
+      row_12_joint_first_zero:
+        members: [row_12_joint_first_zero_head, row_12_joint_first_zero_spouse]
+        filing_status: JOINT
+        exemptions_count: 2
+        adjusted_gross_income: 436301
+        me_agi: 313800
+      row_13_surviving_spouse_start:
+        members: [row_13_surviving_spouse_start_head, row_13_surviving_spouse_start_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 313800
+        me_agi: 313800
+      row_14_surviving_spouse_first_dollar:
+        members: [row_14_surviving_spouse_first_dollar_head, row_14_surviving_spouse_first_dollar_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 313801
+        me_agi: 313800
+      row_15_surviving_spouse_one_step:
+        members: [row_15_surviving_spouse_one_step_head, row_15_surviving_spouse_one_step_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 316300
+        me_agi: 313800
+      row_16_surviving_spouse_next_step:
+        members: [row_16_surviving_spouse_next_step_head, row_16_surviving_spouse_next_step_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 316301
+        me_agi: 313800
+      row_17_surviving_spouse_last_retained:
+        members: [row_17_surviving_spouse_last_retained_head, row_17_surviving_spouse_last_retained_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 436300
+        me_agi: 313800
+      row_18_surviving_spouse_first_zero:
+        members: [row_18_surviving_spouse_first_zero_head, row_18_surviving_spouse_first_zero_child]
+        filing_status: SURVIVING_SPOUSE
+        exemptions_count: 2
+        adjusted_gross_income: 436301
+        me_agi: 313800
+      row_19_head_of_household_start:
+        members: [row_19_head_of_household_start_head, row_19_head_of_household_start_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 287650
+        me_agi: 287650
+      row_20_head_of_household_first_dollar:
+        members: [row_20_head_of_household_first_dollar_head, row_20_head_of_household_first_dollar_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 287651
+        me_agi: 287650
+      row_21_head_of_household_one_step:
+        members: [row_21_head_of_household_one_step_head, row_21_head_of_household_one_step_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 290150
+        me_agi: 287650
+      row_22_head_of_household_next_step:
+        members: [row_22_head_of_household_next_step_head, row_22_head_of_household_next_step_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 290151
+        me_agi: 287650
+      row_23_head_of_household_last_retained:
+        members: [row_23_head_of_household_last_retained_head, row_23_head_of_household_last_retained_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 410150
+        me_agi: 287650
+      row_24_head_of_household_first_zero:
+        members: [row_24_head_of_household_first_zero_head, row_24_head_of_household_first_zero_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 410151
+        me_agi: 287650
+      row_25_separate_start:
+        members: [row_25_separate_start_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 156900
+        me_agi: 156900
+      row_26_separate_first_dollar:
+        members: [row_26_separate_first_dollar_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 156901
+        me_agi: 156900
+      row_27_separate_one_step:
+        members: [row_27_separate_one_step_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 158150
+        me_agi: 156900
+      row_28_separate_next_step:
+        members: [row_28_separate_next_step_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 158151
+        me_agi: 156900
+      row_29_separate_last_retained:
+        members: [row_29_separate_last_retained_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 218150
+        me_agi: 156900
+      row_30_separate_first_zero:
+        members: [row_30_separate_first_zero_head]
+        filing_status: SEPARATE
+        exemptions_count: 1
+        adjusted_gross_income: 218151
+        me_agi: 156900
+    households:
+      row_01_single_start_household:
+        members: [row_01_single_start_head]
+        state_code: ME
+      row_02_single_first_dollar_household:
+        members: [row_02_single_first_dollar_head]
+        state_code: ME
+      row_03_single_one_step_household:
+        members: [row_03_single_one_step_head]
+        state_code: ME
+      row_04_single_next_step_household:
+        members: [row_04_single_next_step_head]
+        state_code: ME
+      row_05_single_last_retained_household:
+        members: [row_05_single_last_retained_head]
+        state_code: ME
+      row_06_single_first_zero_household:
+        members: [row_06_single_first_zero_head]
+        state_code: ME
+      row_07_joint_start_household:
+        members: [row_07_joint_start_head, row_07_joint_start_spouse]
+        state_code: ME
+      row_08_joint_first_dollar_household:
+        members: [row_08_joint_first_dollar_head, row_08_joint_first_dollar_spouse]
+        state_code: ME
+      row_09_joint_one_step_household:
+        members: [row_09_joint_one_step_head, row_09_joint_one_step_spouse]
+        state_code: ME
+      row_10_joint_next_step_household:
+        members: [row_10_joint_next_step_head, row_10_joint_next_step_spouse]
+        state_code: ME
+      row_11_joint_last_retained_household:
+        members: [row_11_joint_last_retained_head, row_11_joint_last_retained_spouse]
+        state_code: ME
+      row_12_joint_first_zero_household:
+        members: [row_12_joint_first_zero_head, row_12_joint_first_zero_spouse]
+        state_code: ME
+      row_13_surviving_spouse_start_household:
+        members: [row_13_surviving_spouse_start_head, row_13_surviving_spouse_start_child]
+        state_code: ME
+      row_14_surviving_spouse_first_dollar_household:
+        members: [row_14_surviving_spouse_first_dollar_head, row_14_surviving_spouse_first_dollar_child]
+        state_code: ME
+      row_15_surviving_spouse_one_step_household:
+        members: [row_15_surviving_spouse_one_step_head, row_15_surviving_spouse_one_step_child]
+        state_code: ME
+      row_16_surviving_spouse_next_step_household:
+        members: [row_16_surviving_spouse_next_step_head, row_16_surviving_spouse_next_step_child]
+        state_code: ME
+      row_17_surviving_spouse_last_retained_household:
+        members: [row_17_surviving_spouse_last_retained_head, row_17_surviving_spouse_last_retained_child]
+        state_code: ME
+      row_18_surviving_spouse_first_zero_household:
+        members: [row_18_surviving_spouse_first_zero_head, row_18_surviving_spouse_first_zero_child]
+        state_code: ME
+      row_19_head_of_household_start_household:
+        members: [row_19_head_of_household_start_head, row_19_head_of_household_start_child]
+        state_code: ME
+      row_20_head_of_household_first_dollar_household:
+        members: [row_20_head_of_household_first_dollar_head, row_20_head_of_household_first_dollar_child]
+        state_code: ME
+      row_21_head_of_household_one_step_household:
+        members: [row_21_head_of_household_one_step_head, row_21_head_of_household_one_step_child]
+        state_code: ME
+      row_22_head_of_household_next_step_household:
+        members: [row_22_head_of_household_next_step_head, row_22_head_of_household_next_step_child]
+        state_code: ME
+      row_23_head_of_household_last_retained_household:
+        members: [row_23_head_of_household_last_retained_head, row_23_head_of_household_last_retained_child]
+        state_code: ME
+      row_24_head_of_household_first_zero_household:
+        members: [row_24_head_of_household_first_zero_head, row_24_head_of_household_first_zero_child]
+        state_code: ME
+      row_25_separate_start_household:
+        members: [row_25_separate_start_head]
+        state_code: ME
+      row_26_separate_first_dollar_household:
+        members: [row_26_separate_first_dollar_head]
+        state_code: ME
+      row_27_separate_one_step_household:
+        members: [row_27_separate_one_step_head]
+        state_code: ME
+      row_28_separate_next_step_household:
+        members: [row_28_separate_next_step_head]
+        state_code: ME
+      row_29_separate_last_retained_household:
+        members: [row_29_separate_last_retained_head]
+        state_code: ME
+      row_30_separate_first_zero_household:
+        members: [row_30_separate_first_zero_head]
+        state_code: ME
+  output:
+    # Tax-unit order follows the explicit row names above.
+    me_personal_exemption_deduction: [4050, 3969, 3969, 3888, 81, 0, 8100, 7938, 7938, 7776, 162, 0, 8100, 7938, 7938, 7776, 162, 0, 8100, 7938, 7938, 7776, 162, 0, 4050, 3969, 3969, 3888, 81, 0]
+
+- name: Maine 2017 deduction is zero for a known zero lawful federal allowance count
+  period: 2017
+  absolute_error_margin: 0.01
+  # IRC 151(d)(2): this claimable filer has no own exemption and no dependents.
+  # Known lawful exemptions_count zero is supplied; the federal count algorithm
+  # and claimant filing-exception behavior are outside this routing component.
+  # P.L. 2017, c. 474, Part B-6 imports the resulting federal deduction of zero.
+  input:
+    people:
+      row_01_single_claimable_filer_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      row_01_single_claimable_filer:
+        members: [row_01_single_claimable_filer_head]
+        filing_status: SINGLE
+        exemptions_count: 0
+        adjusted_gross_income: 10000
+        me_agi: 10000
+    households:
+      row_01_single_claimable_filer_household:
+        members: [row_01_single_claimable_filer_head]
+        state_code: ME
+  output:
+    # Tax-unit order follows the explicit row names above.
+    me_personal_exemption_deduction: [0]
+
+- name: Maine 2018 retains the separate filer deduction after federal suspension
+  period: 2018
+  absolute_error_margin: 0.01
+  # P.L. 2017, c. 474, Part B-7, 36 MRSA 5126-A(1): $4,150 for the
+  # unclaimable filer from 2018. The child does not add a second Maine allowance.
+  # Federal IRC 151(d)(5)(A) suspends the federal exemption amount in 2018.
+  # This control asserts the named Maine deduction only and preserves its existing
+  # 2018-and-later formula and parameter semantics; no final deduction is an input.
+  input:
+    people:
+      row_01_head_of_household_separate_maine_rule_head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      row_01_head_of_household_separate_maine_rule_child:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      row_01_head_of_household_separate_maine_rule:
+        members: [row_01_head_of_household_separate_maine_rule_head, row_01_head_of_household_separate_maine_rule_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions_count: 2
+        adjusted_gross_income: 50000
+        me_agi: 50000
+    households:
+      row_01_head_of_household_separate_maine_rule_household:
+        members: [row_01_head_of_household_separate_maine_rule_head, row_01_head_of_household_separate_maine_rule_child]
+        state_code: ME
+  output:
+    # Tax-unit order follows the explicit row names above.
+    me_personal_exemption_deduction: [4150]

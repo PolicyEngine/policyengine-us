@@ -1,0 +1,122 @@
+- name: Case 1, own household is independent living.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+  output:
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    pa_ssp_living_arrangement: INDEPENDENT
+
+- name: Case 2, household of another.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+    pa_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 3, Medicaid pays more than half of facility care.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+    pa_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 4, private medical facility counts as independent living.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    # SSA 2011: "Living alone" includes recipients in private medical
+    # facilities where Medicaid pays no more than half of the cost of care.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    pa_ssp_living_arrangement: INDEPENDENT
+
+- name: Case 5, disabled child living with a parent counts as independent living.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        own_children_in_household: 1
+      person2:
+        age: 10
+        meets_ssi_disability_criteria: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    ssi_federal_living_arrangement: [OWN_HOUSEHOLD, CHILD_IN_PARENTAL_HOUSEHOLD]
+    pa_ssp_living_arrangement: [INDEPENDENT, INDEPENDENT]
+
+- name: Case 6, certified domiciliary care home input.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: DOMICILIARY_CARE
+  output:
+    pa_ssp_living_arrangement: DOMICILIARY_CARE
+
+- name: Case 7, Medicaid facility takes precedence over a care home input.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # 55 Pa. Code § 299.21(b)(3); POMS SI 01415.058 K.1 care homes are
+    # non-medical.
+    pa_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 8, a care home input takes precedence over the household of another.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    pa_ssp_living_arrangement: PERSONAL_CARE
+
+- name: Case 9, certified personal care home input.
+  period: 2026-01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+  output:
+    pa_ssp_living_arrangement: PERSONAL_CARE
+
+- name: Case 10, nonresident with a care home input has no Pennsylvania arrangement.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 65
+    pa_ssp_care_home: PERSONAL_CARE
+  output:
+    pa_ssp_living_arrangement: NONE

@@ -9,20 +9,19 @@ class aca_ptc(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/36B"
     documentation = (
-        "IRC section 36B applies before 2018, but PolicyEngine applies the "
-        "ACA PTC formula from 2018 onward because rating-area SLCSP premium "
-        "data currently begins in 2018."
+        "The premium tax credit from 2014 onward, subject to filing a return. "
+        "For 2014 through 2017, benchmark premiums use 2018 rating-area "
+        "premiums scaled by the national benchmark premium index."
     )
     defined_for = "is_aca_ptc_eligible"
 
     def formula(tax_unit, period, parameters):
         return 0
 
-    def formula_2018(tax_unit, period, parameters):
-        plan_cost = tax_unit("slcsp", period)
-        income = tax_unit("aca_magi", period)
-        applicable_figure = tax_unit("aca_required_contribution_percentage", period)
-        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962).
-        # Gate on tax_unit_is_filer so non-filers receive $0.
-        is_filer = tax_unit("tax_unit_is_filer", period)
-        return max_(0, plan_cost - income * applicable_figure) * is_filer
+    def formula_2014(tax_unit, period, parameters):
+        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962), so
+        # a tax unit that neither files nor takes up the credit receives $0.
+        # Taking up the credit means filing to claim or reconcile it.
+        credit = tax_unit("aca_ptc_before_filing_gate", period)
+        files = tax_unit("files_return_for_aca_ptc", period)
+        return credit * files

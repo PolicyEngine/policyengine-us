@@ -1,0 +1,45 @@
+- name: A dependent's Montana subtraction stays off the filer's joint Montana AGI
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      dependent:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        unemployment_compensation: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: MT
+  output:
+    # The dependent's unemployment compensation is not in the filer's federal
+    # AGI, so its Montana subtraction does not reduce the filer's Montana AGI.
+    mt_agi_joint: 50_000
+
+- name: A spouse's Montana subtraction still offsets the joint return's income
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      spouse:
+        is_tax_unit_spouse: true
+        unemployment_compensation: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Federal AGI 53,000 includes the spouse's 3,000 of unemployment
+    # compensation, which Montana subtracts: 53,000 - 3,000 = 50,000.
+    mt_agi_joint: 50_000

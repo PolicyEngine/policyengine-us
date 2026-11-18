@@ -1,0 +1,543 @@
+# Virginia EAP countable income: gross earned and unearned income of every
+# member, including members left out of the household size (Complete EAP
+# Manual B.6, B.7, C.5.a.3). Earned income of members under 18 is exempt
+# (B.6.b item 20). Each self-employment source, rental income and farm rent
+# income is floored at zero per person. Each member's out-of-pocket Medicare
+# Part B premium is deducted from gross income (B.6.b item 15). $50 a month
+# ($600 a year) is deducted once per member who is 60 or older or disabled
+# (B.6.c), and the result is floored at zero. ssi and tanf are set where the
+# model would otherwise compute a payment the household does not receive.
+
+- name: Case 1, full-time wages count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_eap_countable_income: 30_000
+
+- name: Case 2, earnings of a 17-year-old are exempt while an 18-year-old's count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 28_000
+      child1:
+        age: 18
+        employment_income: 5_000
+      child2:
+        age: 17
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+  output:
+    # 28,000 + 5,000; the 17-year-old's 6,000 is exempt.
+    va_eap_countable_income: 33_000
+
+- name: Case 3, a self-employment loss does not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 22_000
+        self_employment_income: -4_000
+      spouse:
+        age: 43
+        self_employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # 22,000 + max(-4,000, 0) + 6,000 = 28,000.
+    va_eap_countable_income: 28_000
+
+- name: Case 4, interest and dividends count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        employment_income: 20_000
+        taxable_interest_income: 300
+        qualified_dividend_income: 450
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # The manual counts all gross unearned income; 20,000 + 300 + 450.
+    va_eap_countable_income: 20_750
+
+- name: Case 5, retiree with Social Security and a pension receives one elderly deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 72
+        social_security_retirement: 15_600
+        taxable_private_pension_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 15,600 + 2,400 - 600 = 17,400.
+    va_eap_countable_income: 17_400
+
+- name: Case 6, member reported as disabled receives the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_disabled: true
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 12,000 - 600 = 11,400.
+    va_eap_countable_income: 11_400
+
+- name: Case 7, Social Security disability counts as income and earns the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 52
+        social_security_disability: 18_960
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 18,960 - 600 = 18,360.
+    va_eap_countable_income: 18_360
+
+- name: Case 8, SSI counts as income and SSI disability earns the deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        ssi: 11_928
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 994 x 12 = 11,928 SSI; 11,928 - 600 = 11,328.
+    va_eap_countable_income: 11_328
+
+- name: Case 9, member who is both elderly and disabled receives one deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 68
+        is_disabled: true
+        social_security_retirement: 14_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 14,400 - 600 = 13,800, not 14,400 - 1,200.
+    va_eap_countable_income: 13_800
+
+- name: Case 10, elderly couple receives one deduction per member.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 18_000
+        ssi: 0
+      spouse:
+        age: 67
+        social_security_retirement: 9_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # 18,000 + 9,600 - 2 x 600 = 26,400.
+    va_eap_countable_income: 26_400
+
+- name: Case 11, member aged 60 receives the deduction and a member aged 59 does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 30_000
+      spouse:
+        age: 59
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # 30,000 + 10,000 - 600 = 39,400.
+    va_eap_countable_income: 39_400
+
+- name: Case 12, the deduction cannot push countable income below zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 75
+        taxable_interest_income: 300
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # max(300 - 600, 0) = 0.
+    va_eap_countable_income: 0
+
+- name: Case 13, income of an undocumented parent counts though the parent is not in the size.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 38
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_000
+      spouse:
+        age: 35
+        employment_income: 8_000
+      child1:
+        age: 9
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VA
+  output:
+    # 32,000 + 8,000 = 40,000 with a household size of 3.
+    va_eap_household_size: 3
+    va_eap_countable_income: 40_000
+
+- name: Case 14, child support received counts with wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 31
+        employment_income: 18_000
+        child_support_received: 4_800
+      child1:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        tanf: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: VA
+  output:
+    # 18,000 + 4,800 = 22,800.
+    va_eap_countable_income: 22_800
+
+- name: Case 15, household outside Virginia is not computed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap_countable_income: 0
+
+- name: Case 16, recurring cash help from a relative outside the household counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        financial_assistance: 4_000
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Manual C.5.a.4 counts contributions: 20,000 + 4,000 = 24,000.
+    va_eap_countable_income: 24_000
+
+- name: Case 17, a fully disabled service-connected veteran receives the disability deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        veterans_benefits: 47_256
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 2026 100 percent VA compensation for a veteran alone is about 3,938 a
+    # month (47,256 a year); the rating makes the member disabled:
+    # 47,256 - 600 = 46,656.
+    va_eap_countable_income: 46_656
+
+- name: Case 18, military retired pay counts as unearned retirement income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Retirement benefits are gross unearned income; no deduction under 60.
+    va_eap_countable_income: 18_000
+
+- name: Case 19, a surviving spouse's military annuity and Social Security survivor benefits both count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 62
+        military_retirement_pay_survivors: 9_600
+        social_security_survivors: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 9,600 + 12,000 - 600 elderly deduction = 21,000.
+    va_eap_countable_income: 21_000
+
+- name: Case 20, a farm rent loss does not offset rental income or wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 24_000
+        rental_income: 4_800
+        farm_rent_income: -2_500
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Each rental source is floored per person: 24,000 + 4,800 +
+    # max(-2,500, 0) = 28,800. Netting the loss against the rental income or
+    # the unearned total would give 26,300.
+    va_eap_countable_income: 28_800
+
+- name: Case 21, every income source not set in another case counts, including TANF and the Auxiliary Grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        # Earned sources.
+        sstb_self_employment_income: 2_100
+        farm_operations_income: 1_300
+        partnership_s_corp_income: 1_700
+        # Unearned sources. Unemployment compensation is reported, so
+        # total_unemployment_compensation passes it through.
+        unemployment_compensation: 3_100
+        strike_benefits: 900
+        railroad_benefits: 4_200
+        # The Part B premium is deducted from household gross income;
+        # pinning it at 0 means no deduction applies here.
+        medicare_part_b_premium: 0
+        retirement_distributions: 1_500
+        survivor_benefits: 2_400
+        general_assistance: 600
+        rental_income: 3_600
+        farm_rent_income: 1_100
+        alimony_income: 2_700
+        workers_compensation: 3_300
+        disability_benefits: 2_900
+        # va_ag is MONTH-defined: 100 a month, summed back over the year.
+        va_ag: 1_200
+      child1:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        tanf: 1_800
+    households:
+      household:
+        members: [head, child1]
+        state_code: VA
+  output:
+    # Person-level: head, child1.
+    total_unemployment_compensation: [3_100, 0]
+    # Earned 2,100 + 1,300 + 1,700 = 5,100. Unearned 3,100 + 900 + 4,200 +
+    # 1,500 + 2,400 + 600 + 1,800 TANF + 3,600 + 1,100 + 2,700 + 3,300 +
+    # 2,900 + 1,200 = 29,300. No member is elderly or disabled (employer
+    # disability benefits are not a B.6.c disability), so 5,100 + 29,300 =
+    # 34,400.
+    va_eap_countable_income: 34_400
+
+- name: Case 22, a retiree's Medicare Part B premium is deducted when the household has no Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_private_pension_income: 24_000
+        # 2026 standard Part B premium 202.90 x 12 = 2,434.80, paid by the
+        # member; the pension is above the Medicare Savings Program limits.
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Exemption 15 covers a premium the member is responsible for, not only
+    # one withheld from Social Security: 24,000 - 2,434.80 - 600 elderly
+    # deduction = 20,965.20.
+    va_eap_countable_income: 20_965.20
+
+- name: Case 23, a retiree's Medicare Part A premium is deducted along with Part B.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_private_pension_income: 24_000
+        # 30 to 39 quarters of coverage: the 2026 reduced Part A premium
+        # 311 x 12 = 3,732, paid by the member.
+        medicare_part_a_premium: 3_732
+        medicare_part_b_premium: 2_434.80
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # Exemption 15 covers "Medicare Premiums": 24,000 - 3,732 - 2,434.80 -
+    # 600 elderly deduction = 17,233.20.
+    va_eap_countable_income: 17_233.20

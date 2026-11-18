@@ -48,8 +48,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         # AGI; they report it on their own return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         public_pension_amount = (
-            person("taxable_public_pension_income", period) * head_or_spouse
-        )
+            person("taxable_public_pension_income", period)
+            + person("military_retirement_pay_survivors", period)
+        ) * head_or_spouse
         max_social_security_benefit = (
             p.mo_max_social_security_benefit
         )  # Seen on Line 7, Section A

@@ -20,3 +20,47 @@
     salt_deduction: 0
   output:
     taxable_income_less_qbid: 36_000
+
+# Section 199A(e)(1), as amended by P.L. 119-21, sec. 70111(b)(1), computes
+# taxable income "without regard to section 68" from 2026, so an itemizer
+# subtracts the itemized deductions before the section 68 reduction.
+- name: 2026 itemizer - itemized deductions before the section 68 reduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    charitable_deduction: 200_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Section 68 reduces the itemized deductions by 2 / 37 * 200_000 =
+    # 10_810.81, which taxable income for section 199A ignores.
+    itemized_taxable_income_deductions_reduction: 10_810.81
+    taxable_income_less_qbid: 700_000
+
+- name: 2026 without the P.L. 119-21 section 68 - itemized deductions after the reduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.deductions.itemized.limitation.obbb.applies: false
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    charitable_deduction: 10_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Before P.L. 119-21, section 199A(e)(1) did not set section 68 aside.
+    # The prior-law reduction is the lesser of 80 percent of the 10_000 of
+    # charitable deductions (8_000) and 3 percent of AGI over the applicable
+    # amount (over 8_000 at this income), so 8_000.
+    itemized_taxable_income_deductions_reduction: 8_000
+    taxable_income_less_qbid: 898_000

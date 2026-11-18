@@ -1,0 +1,47 @@
+description: The Bureau of Labor Statistics estimates this medical care component of the Consumer Price Index for All Urban Consumers, averaged over each calendar year.
+values:
+  # BLS: the mean of the 12 published monthly indexes, series CUUR0000SAM
+  # (not seasonally adjusted), rounded to three decimals.
+  2015-01-01: 446.752
+  2016-01-01: 463.675
+  2017-01-01: 475.322
+  2018-01-01: 484.707
+  2019-01-01: 498.413
+  2020-01-01: 518.875
+  2021-01-01: 525.276
+  2022-01-01: 546.553
+  # CBO February 2026 forecast, calendar years: actual values (BLS data
+  # released as of December 3, 2025) for 2023 and 2024, projections after.
+  2023-01-01: 549.081
+  2024-01-01: 563.841
+  2025-01-01: 581.279
+  2026-01-01: 600.332
+  2027-01-01: 617.675
+  2028-01-01: 636.697
+  2029-01-01: 656.371
+  2030-01-01: 676.782
+  2031-01-01: 697.848
+  2032-01-01: 719.546
+  2033-01-01: 741.904
+  2034-01-01: 764.927
+  2035-01-01: 788.642
+  2036-01-01: 813.07
+  # 2037 to 2100 grow at the 2035-2036 rate (813.07 / 788.642, 3.1% a year)
+  # and later years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.
+metadata:
+  unit: /1
+  label: CPI-U medical care
+  economy: false
+  reference:
+    - title: BLS | CPI-U, U.S. city average, medical care, not seasonally adjusted (CUUR0000SAM)
+      href: https://data.bls.gov/timeseries/CUUR0000SAM
+    - title: CBO | Economic Projections | February 2026
+      # Sheet "2. Calendar Year", row 59: "CPI-U, medical care", 1982-84=100.
+      # cbo.gov refuses automated downloads; the copy read is the Wayback
+      # capture of 2026-09-22 (sha256
+      # ae8f4920702fabf8fb3136bc94a42c53466cff5e890dec22396d8dc49dc2f776),
+      # whose values match CBO's data repository, variable
+      # cpiu_medical_price_index in
+      # https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/calendar_2026-02.csv
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx

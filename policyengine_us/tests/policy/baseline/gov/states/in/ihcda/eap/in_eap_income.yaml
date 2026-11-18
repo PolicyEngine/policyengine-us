@@ -188,3 +188,32 @@
   output:
     medicare_part_b_premium: [0, 2_434.8, 0]
     in_eap_income: [12_000, 24_000, 12_000]
+
+- name: Case 10, reported unemployment compensation counts as income.
+  # The source list reads total_unemployment_compensation. Indiana has no
+  # modeled unemployment insurance program, so the total is the reported
+  # amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    state_code: IN
+    age: 40
+    unemployment_compensation: 6_000
+    ssi: 0
+  output:
+    total_unemployment_compensation: 6_000
+    in_eap_income: 6_000
+
+- name: Case 11, a military Survivor Benefit Plan annuity counts as retirement funds paid to a surviving spouse.
+  # Section 6.1 (page 54) counts retirement funds paid to a surviving spouse.
+  # A widow receives a $700 monthly Survivor Benefit Plan annuity from her late
+  # husband's military retirement ($700 x 12 = $8,400), recorded in
+  # military_retirement_pay_survivors, and earns $9,360.
+  # Income: $8,400 + $9,360 = $17,760.
+  period: 2026
+  input:
+    state_code: IN
+    age: 58
+    military_retirement_pay_survivors: 8_400
+    employment_income: 9_360
+  output:
+    in_eap_income: 17_760

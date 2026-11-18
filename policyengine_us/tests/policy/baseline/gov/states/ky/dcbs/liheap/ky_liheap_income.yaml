@@ -204,3 +204,18 @@
   output:
     medicare_part_b_premium: 2_220
     ky_liheap_income: 22_700
+
+- name: Case 10, reported unemployment compensation is counted as unearned income.
+  # The unearned source list reads total_unemployment_compensation. Kentucky
+  # has no modeled unemployment insurance program, so the total is the
+  # reported amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    state_code: KY
+    age: 40
+    unemployment_compensation: 6_000
+    ssi: 0
+    tanf: 0
+  output:
+    total_unemployment_compensation: 6_000
+    ky_liheap_income: 6_000

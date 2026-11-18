@@ -23,7 +23,9 @@ def create_al_dependent_exemption() -> Reform:
             else:
                 eligible = is_dependent
             count = tax_unit.sum(eligible)
-            per_dependent = where(p.amount < 0, p_base.dependent.calc(al_agi), p.amount)
+            per_dependent = where(
+                p.amount < 0, p_base.dependent.calc(al_agi, right=True), p.amount
+            )
             return count * per_dependent
 
     class reform(Reform):

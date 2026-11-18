@@ -1,0 +1,114 @@
+- name: Head is claimed elsewhere
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 1
+
+- name: Spouse is claimed elsewhere
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 1
+
+- name: Both spouses are claimed elsewhere
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 0
+
+- name: Neither spouse is claimed elsewhere
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 2
+
+- name: A dependent claimed elsewhere is not a filer
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 1
+
+- name: Single filer claimed elsewhere
+  period: 2025
+  input:
+    people:
+      head:
+        age: 19
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    head_spouse_count_not_dependent_elsewhere: 0

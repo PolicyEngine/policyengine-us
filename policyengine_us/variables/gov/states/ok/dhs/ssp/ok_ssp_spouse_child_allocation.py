@@ -1,0 +1,29 @@
+from policyengine_us.model_api import *
+
+
+class ok_ssp_spouse_child_allocation(Variable):
+    value_type = float
+    entity = Person
+    label = "Oklahoma SSP ineligible spouse allocation for dependent children"
+    definition_period = MONTH
+    unit = USD
+    reference = (
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5",
+        # OAC 340:15-1-2, as proposed in OKDHS circulation WF 22-15.
+        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/okdhs-pdf-library/policy/proposed-policy/2022-perms/22-15%20Circulation.pdf#page=7",
+    )
+    documentation = (
+        "The total allocation for the family's unmarried SSI-ineligible children "
+        "who are not household heads and are younger than 18 (OAC 340:15-1-2). "
+        "Each allocation is reduced by the child's own income. Blended families "
+        "and children in a TANF case are not modeled separately."
+    )
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.ok.dhs.ssp
+        child = person("ok_ssp_ineligible_child", period)
+        child_income = max_(person("ssi_earned_income", period), 0) + max_(
+            person("ssi_unearned_income", period), 0
+        )
+        allocation = child * max_(p.child_allocation - child_income, 0)
+        return person.family.sum(allocation)

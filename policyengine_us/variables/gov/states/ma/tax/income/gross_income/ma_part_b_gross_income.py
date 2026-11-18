@@ -7,7 +7,10 @@ class ma_part_b_gross_income(Variable):
     label = "MA Part B gross income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2",
+        "https://taxsim.nber.org/historical_state_tax_forms/MA/2023/dor-2023-inc-form1-instructions.pdf#page=27",
+    )
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
@@ -25,9 +28,16 @@ class ma_part_b_gross_income(Variable):
         dividends = max_(0, person("dividend_income", period))
         capital_gains = max_(0, person("capital_gains", period))
         # Capital gain distributions reported without a federal Schedule D
-        # go on Massachusetts Schedule D, line 6.
+        # go on Massachusetts Schedule D, line 6, and Form 4797, Part II
+        # gains on line 7. other_net_gain_gross_income is already the
+        # filers' positive share.
         distributions = max_(0, person("non_sch_d_capital_gains", period))
-        part_a_and_c_income = tax_unit.sum(
-            where(is_dependent, 0, dividends + capital_gains + distributions)
+        form_4797_gains = person("other_net_gain_gross_income", period)
+        filer_dividends_and_gains = tax_unit.sum(
+            where(
+                is_dependent,
+                0,
+                dividends + capital_gains + distributions + form_4797_gains,
+            )
         )
-        return max_(0, ma_gross_income - part_a_and_c_income)
+        return max_(0, ma_gross_income - filer_dividends_and_gains)

@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ky_tuition_tax_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Eligible for the Kentucky tuition tax credit"  # Form 8863-K
-    unit = USD
     definition_period = YEAR
     reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=29060"  # KRS 141.069(4)
     defined_for = StateCode.KY

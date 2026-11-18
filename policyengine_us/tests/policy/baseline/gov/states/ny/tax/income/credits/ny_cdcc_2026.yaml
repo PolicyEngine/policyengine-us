@@ -121,8 +121,126 @@
   period: 2026
   input:
     state_code: NY
-    head_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere: true
     ny_agi: 20_000
     ny_cdcc_qualifying_expenses: 3_000
+  output:
+    ny_cdcc: 0
+
+# Tax Law 606(c-2)(2)(A): the credit is for a taxpayer who is not a dependent
+# of another taxpayer; a joint return is one taxpayer, so either spouse who can
+# be claimed bars it. IRC 152(b)(1) also leaves such a return no qualifying child.
+- name: Case 10, a joint return with one claimable spouse gets no 2026 credit (the claimable spouse is the head)
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 20000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 20000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, person_c]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3000
+        ny_agi: 40000
+    households:
+      household:
+        members: [person_a, person_b, person_c]
+        state_code: NY
+  output:
+    ny_cdcc_qualifying_expenses: 0
+    ny_cdcc: 0
+
+- name: Case 10, a joint return with one claimable spouse gets no 2026 credit (the claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 20000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, person_c]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3000
+        ny_agi: 40000
+    households:
+      household:
+        members: [person_b, person_a, person_c]
+        state_code: NY
+  output:
+    ny_cdcc_qualifying_expenses: 0
+    ny_cdcc: 0
+
+- name: Case 11, the same joint return with nobody claimable gets the credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 20000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_c:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, person_c]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3000
+        ny_agi: 40000
+    households:
+      household:
+        members: [person_a, person_b, person_c]
+        state_code: NY
+  output:
+    # 3,000 x (0.55 - 0.0000025 x (40,000 - 15,000)) = 3,000 x 0.4875
+    ny_cdcc_qualifying_expenses: 3000
+    ny_cdcc: 1462.5
+
+- name: Case 12, a single filer who can be claimed gets no 2026 credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 19
+        employment_income: 20000
+        claimed_as_dependent_on_another_return: true
+      person_c:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_c]
+        tax_unit_childcare_expenses: 3000
+        ny_agi: 20000
+    households:
+      household:
+        members: [person_a, person_c]
+        state_code: NY
   output:
     ny_cdcc: 0

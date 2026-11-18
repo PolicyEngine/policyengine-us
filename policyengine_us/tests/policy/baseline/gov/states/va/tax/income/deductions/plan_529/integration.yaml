@@ -1,0 +1,100 @@
+# Form 760 line-by-line cases for the Commonwealth Savers (529) deduction.
+# The deduction is code 104 on Schedule ADJ line 8, totaled on Schedule ADJ
+# line 9 and entered on Form 760 line 13, a deduction from Virginia adjusted
+# gross income (line 9). It is not one of the subtractions on lines 4-7.
+# Sources: 2024 Form 760 (PDF p. 1), 2024 Form 760 instructions (PDF pp. 17,
+# 18, 28), Va. Code § 58.1-322.03(7).
+
+- name: Form 760 lines 1-15, the 529 deduction is taken on line 13 after VAGI
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        investment_in_529_plan_indv: 5_000
+        count_529_contribution_beneficiaries: 1
+      person2:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Line 1 federal AGI 100_000; lines 2-8 zero; line 9 VAGI 100_000.
+    va_agi: 100_000
+    # Line 11 standard deduction (Filing Status 2) 17_000; line 12 exemptions
+    # 2 * 930 = 1_860; line 13 deductions, code 104: min(5_000, 4_000) = 4_000.
+    va_529_plan_deduction: 4_000
+    # Line 15 = 100_000 - (17_000 + 1_860 + 4_000) = 77_140.
+    va_taxable_income: 77_140
+    # Line 16 = 720 + 5.75% * (77_140 - 17_000) = 4_178.05.
+    va_income_tax_before_non_refundable_credits: 4_178.05
+
+- name: Spouse Tax Adjustment worksheet uses each spouse's VAGI before the 529 deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 45
+        employment_income: 12_000
+        investment_in_529_plan_indv: 4_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Separate VAGI worksheet: line 11 FAGI 60_000 / 12_000; lines 14-17 hold
+    # the subtractions of Form 760 lines 4-7, which exclude line 13
+    # deductions; line 19 separate VAGI 60_000 / 12_000.
+    va_agi_person: [60_000, 12_000]
+    # Form 760 line 15 = 72_000 - 17_000 - 1_860 - 4_000 = 49_140.
+    va_taxable_income: 49_140
+    # STA worksheet:
+    # Line 3: 60_000 - 930 = 59_070; 12_000 - 930 = 11_070.
+    # Line 4: 49_140. Line 5: 11_070. Line 6: 49_140 - 11_070 = 38_070.
+    # Line 7: 49_140 / 2 = 24_570.
+    # Line 8: tax on 11_070 = 120 + 5% * 6_070 = 423.50.
+    # Line 9: tax on 38_070 = 720 + 5.75% * 21_070 = 1_931.525.
+    # Line 10: 2_355.025.
+    # Line 11: tax on 49_140 = 720 + 5.75% * 32_140 = 2_568.05.
+    # Line 12: 2_568.05 - 2_355.025 = 213.025 (below the 259 cap).
+    va_spouse_tax_adjustment: 213.025
+
+- name: The filing threshold on line 9 is tested before the 529 deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 13_000
+        investment_in_529_plan_indv: 2_000
+        count_529_contribution_beneficiaries: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # Line 9 VAGI 13_000 is not below the 11_950 Filing Status 1 threshold.
+    va_agi: 13_000
+    va_must_file: true
+    # Line 15 = 13_000 - 8_500 - 930 - 2_000 = 1_570; tax = 2% * 1_570.
+    va_taxable_income: 1_570
+    va_income_tax_before_non_refundable_credits: 31.40

@@ -1,0 +1,50 @@
+# Tests for nd_ccap_categorical_copay_waiver (SPMUnit, MONTH, bool).
+# North Dakota added the ARSEN waiver on April 1, 2021.
+
+# North Dakota starts the ARSEN categorical waiver on April 1, 2021.
+- name: North Dakota withholds the ARSEN categorical waiver before April 2021
+  period: 2021-03
+  input:
+    people:
+      parent:
+        age:
+          2021: 30
+      child:
+        age:
+          2021: 3
+    spm_units:
+      family:
+        members: [parent, child]
+        is_tanf_enrolled: false
+        nd_ccap_arsen_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2021: ND
+  output:
+    nd_ccap_categorical_copay_waiver: false
+
+# North Dakota starts the ARSEN categorical waiver on April 1, 2021.
+- name: North Dakota starts the ARSEN categorical waiver in April 2021
+  period: 2021-04
+  input:
+    people:
+      parent:
+        age:
+          2021: 30
+      child:
+        age:
+          2021: 3
+    spm_units:
+      family:
+        members: [parent, child]
+        is_tanf_enrolled: false
+        nd_ccap_arsen_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2021: ND
+  output:
+    nd_ccap_categorical_copay_waiver: true

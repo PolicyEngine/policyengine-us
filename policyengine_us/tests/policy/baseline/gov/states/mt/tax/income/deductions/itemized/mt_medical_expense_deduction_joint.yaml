@@ -158,3 +158,601 @@
     # Form 2 line 2, Worksheet A, takes federal Schedule A:
     # 10,000 - 7.5% x 100,000 = 2,500.
     mt_medical_expense_deduction_joint: 2_500
+
+- name: Montana joint medical deduction excludes spouses' self-employed premiums
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+        other_medical_expenses: 500
+      spouse:
+        age: 40
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mt_agi_joint: 40_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Line 1: max(0, (500 + 500) - 7.5% x 40,000) = 0.
+    # Line 2: (6,000 - 1,000) + (3,000 - 2,000) = 6,000, in full.
+    # The self-employed deductions are netted once, on line 2.
+    mt_medical_expense_deduction_joint: [6_000, 0]
+
+- name: Medical insurance premiums are deducted in full on line 2, not under the floor
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 4_000
+        other_medical_expenses: 2_000
+      person2:
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: max(0, 2,000 - 7.5% x 60,000) = max(0, 2,000 - 4,500) = 0.
+    # Line 2: 4,000 in full. Line 3: 0.
+    # Flooring the premiums with the other expenses would give
+    # 6,000 - 4,500 = 1,500.
+    mt_medical_expense_deduction_joint: [4_000, 0]
+
+- name: Long-term care insurance premiums are deducted in full on line 3
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        other_medical_expenses: 5_000
+        long_term_health_insurance_premiums: 3_000
+      person2:
+        is_tax_unit_head: false
+        long_term_health_insurance_premiums: 2_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: 5,000 - 7.5% x 40,000 = 2,000.
+    # Line 3: 3,000 + 2,500 = 5,500.
+    # Total: 2,000 + 5,500 = 7,500, held by the head.
+    mt_medical_expense_deduction_joint: [7_500, 0]
+
+- name: Premiums taken as the self-employed health insurance deduction are not deducted again
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+        other_medical_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The self-employed health insurance deduction takes all 6,000 of the
+    # premiums in federal and so in Montana AGI, so line 2 is 0.
+    self_employed_health_insurance_ald: 6_000
+    # Line 1: 10,000 - 7.5% x 40,000 = 7,000.
+    mt_medical_expense_deduction_joint: 7_000
+
+- name: Only filer-paid premiums count on line 2 while line 1 is below the floor
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 3_000
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_200
+        other_medical_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_agi_joint: 50_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Line 1: max(0, 1,000 - 7.5% x 50,000) = 0.
+    # Line 2: the head's 3,000. The dependent paid their own 1,200,
+    # so it is not a payment made by either filer.
+    mt_medical_expense_deduction_joint: [3_000, 0, 0]
+
+- name: Dependent-paid qualified long-term care premiums do not become the filers' deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        health_insurance_premiums: 0
+        long_term_health_insurance_premiums: 0
+      spouse:
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 0
+        long_term_health_insurance_premiums: 0
+      dependent:
+        is_tax_unit_dependent: true
+        long_term_health_insurance_premiums: 1_000
+        self_employed_health_insurance_ald_person: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        mt_agi_joint: 50_000
+        self_employed_health_insurance_ald: 0
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+  output:
+    # Former MCA 15-30-2131(1)(g) allows premiums paid by the taxpayer.
+    # These premiums were paid by the dependent, so neither filer claims them.
+    mt_medical_expense_deduction_joint: [0, 0, 0]
+    mt_medical_expense_deduction_indiv: [0, 0, 0]
+    mt_premium_deduction_joint: 0
+
+- name: Joint return computed from wages, with premiums and other medical expenses
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        health_insurance_premiums: 6_000
+        other_medical_expenses: 3_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_agi_joint: 80_000
+    # Line 1: max(0, 3,000 - 7.5% x 80,000) = max(0, 3,000 - 6,000) = 0.
+    # Line 2: 6,000.
+    # Flooring the premiums with the other expenses would give
+    # 9,000 - 6,000 = 3,000.
+    mt_medical_expense_deduction_joint: [6_000, 0]
+
+- name: From 2024 medical insurance premiums stay under the federal floor
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        health_insurance_premiums: 4_000
+        other_medical_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    adjusted_gross_income: 60_000
+    # Federal Schedule A: (4,000 + 2,000) - 7.5% x 60,000 = 1,500.
+    medical_expense_deduction: 1_500
+    mt_medical_expense_deduction_joint: 1_500
+
+- name: The self-employed deduction left after medical premiums reduces long-term care premiums
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 2_000
+        long_term_health_insurance_premiums: 1_500
+        self_employed_health_insurance_ald_person: 3_000
+        other_medical_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The 3,000 deduction in Montana AGI covers the 2,000 of medical premiums
+    # and 1,000 of the long-term care premiums.
+    # Line 1: 4,000 - 7.5% x 40,000 = 1,000.
+    # Line 2: 2,000 - 2,000 = 0. Line 3: 1,500 - 1,000 = 500.
+    mt_medical_expense_deduction_joint: 1_500
+
+- name: A self-employed deduction supplied only for the return still comes off line 2
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        self_employed_health_insurance_ald: 2_000
+        mt_agi_joint: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: 0. Line 2: 6,000 - 2,000 = 4,000. Ignoring the supplied
+    # deduction would give 6,000.
+    mt_medical_expense_deduction_joint: [4_000, 0]
+
+- name: A supplied federal medical expense subtotal reaches line 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: 10,000 - 7.5% x 40,000 = 7,000.
+    mt_medical_expense_deduction_joint: [7_000, 0]
+
+- name: A supplied subtotal with premiums moves the premiums to line 2
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The supplied subtotal is the medical expenses paid, as North Dakota and
+    # New Mexico use it; no federal exclusion was applied to it.
+    itemized_medical_expenses_applied_exclusion: 0
+    # Line 1: (10,000 - 6,000) - 7.5% x 30,000 = 1,750.
+    # Line 2: 6,000 - 1,000 = 5,000.
+    mt_medical_expense_deduction_joint: 6_750
+
+- name: Long-term care premiums inside a supplied subtotal are not deducted twice
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        long_term_health_insurance_premiums: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1: 10,000 of other expenses + the 400 of premiums.
+        itemized_medical_expenses: 10_400
+        itemized_medical_expenses_long_term_care_premiums: 400
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: (10,400 - 400) - 7.5% x 40,000 = 7,000. Line 3: 400.
+    mt_medical_expense_deduction_joint: 7_400
+
+- name: Only the part of long-term care premiums inside a supplied subtotal leaves line 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        medicare_enrolled: false
+        long_term_health_insurance_premiums: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1 counts 4,510 of the premiums (the 2022 limit for
+        # ages 61-70, Rev. Proc. 2021-45).
+        itemized_medical_expenses: 14_510
+        itemized_medical_expenses_long_term_care_premiums: 4_510
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: (14,510 - 4,510) - 3,000 = 7,000. Line 3 deducts all 6,000,
+    # without the federal limit.
+    mt_medical_expense_deduction_joint: 13_000
+
+- name: Long-term care premiums taken as the self-employed deduction are neither in the subtotal nor on line 3
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1 leaves out the 400 of premiums deducted under
+        # 162(l), and says so.
+        itemized_medical_expenses: 10_000
+        itemized_medical_expenses_applied_exclusion: 400
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: 10,000 - 3,000 = 7,000. Line 3: 400 - 400 = 0.
+    mt_medical_expense_deduction_joint: 7_000
+
+- name: A filer's premiums for an older parent's long-term care policy
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        # Payer attribution: the filer paid the parent's 5,000 policy.
+        long_term_health_insurance_premiums: 5_000
+      person2:
+        is_tax_unit_dependent: true
+        age: 75
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Schedule A line 1: 10,000 + all 5,000, within the parent's age-75
+        # limit of 5,640.
+        itemized_medical_expenses: 15_000
+        itemized_medical_expenses_long_term_care_premiums: 5_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 1: (15,000 - 5,000) - 3,000 = 7,000. Line 3: 5,000.
+    mt_medical_expense_deduction_joint: [12_000, 0]
+
+- name: A supplied subtotal with no long-term care premiums keeps them on line 3 only
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        long_term_health_insurance_premiums: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Same contents as the computed subtotal: no long-term care premiums.
+        itemized_medical_expenses: 10_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    itemized_medical_expenses_long_term_care_premiums: 0
+    # Line 1: 10,000 - 3,000 = 7,000. Line 3: 400.
+    mt_medical_expense_deduction_joint: 7_400
+
+- name: A net Schedule A subtotal with its self-employed exclusion keeps all other expenses on line 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 6_400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1: 10,000 of other expenses; the 6,000 of medical
+        # premiums and the 400 of long-term care premiums were taken as the
+        # self-employed deduction, so all 6,400 are the excluded amount.
+        itemized_medical_expenses: 10_000
+        itemized_medical_expenses_applied_exclusion: 6_400
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Medical premiums left in the subtotal: max(0, 6,000 - 6,400) = 0; the
+    # other 400 of the exclusion covered long-term care premiums, which are
+    # not in it. Line 1: 10,000 - 3,000 = 7,000. Lines 2 and 3: 0.
+    mt_premium_deduction_joint: 0
+    mt_medical_expense_deduction_joint: 7_000
+
+- name: A net Schedule A subtotal with a return-level self-employed deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        self_employed_health_insurance_ald: 6_000
+        itemized_medical_expenses: 10_000
+        itemized_medical_expenses_applied_exclusion: 6_000
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: 10,000 - 3,000 = 7,000. Line 2: 6,000 - 6,000 = 0.
+    mt_medical_expense_deduction_joint: 7_000
+
+- name: A net Schedule A subtotal with part of the premiums taken as the self-employed deduction
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Schedule A line 1: (6,000 - 1,000) of premiums + 5,000 of other
+        # expenses. Compare the gross-cost case above, where the same 10,000
+        # includes all 6,000 of the premiums.
+        itemized_medical_expenses: 10_000
+        itemized_medical_expenses_applied_exclusion: 1_000
+        mt_agi_joint: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Medical premiums left in the subtotal: 6,000 - min(6,000, 1,000) = 5,000.
+    # Line 1: (10,000 - 5,000) - 7.5% x 30,000 = 2,750.
+    # Line 2: 6,000 - 1,000 = 5,000.
+    mt_medical_expense_deduction_joint: 7_750
+
+- name: A supplied exclusion above the filers' medical premiums is not taken from a dependent's premiums
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 6_400
+      person2:
+        is_tax_unit_dependent: true
+        age: 10
+        health_insurance_premiums: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Schedule A line 1: 10,000 of other expenses + the dependent's 1,000;
+        # the head's 6,000 and 400 of long-term care were taken as the
+        # self-employed deduction.
+        itemized_medical_expenses: 11_000
+        itemized_medical_expenses_applied_exclusion: 6_400
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Medical premiums left in the subtotal: 7,000 - min(6,000, 6,400) = 1,000.
+    # Line 1: (11,000 - 1,000) - 3,000 = 7,000. The filer's premiums were
+    # already deducted, and the dependent's own payments do not enter line 2.
+    mt_premium_deduction_joint: 0
+    mt_medical_expense_deduction_joint: [7_000, 0]
+
+- name: A partial self-employed deduction leaves part of the long-term care premiums in the subtotal
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 6_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # The 6,200 deduction covers the 6,000 of medical premiums and 200 of
+        # the long-term care premiums (medical first); Schedule A line 1 is
+        # 10,000 of other expenses + the other 200.
+        itemized_medical_expenses: 10_200
+        itemized_medical_expenses_applied_exclusion: 6_200
+        itemized_medical_expenses_long_term_care_premiums: 200
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 1: (10,200 - 0 - 200) - 3,000 = 7,000.
+    # Line 3: 400 - (6,200 - 6,000) = 200.
+    mt_medical_expense_deduction_joint: 7_200

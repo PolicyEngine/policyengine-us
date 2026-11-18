@@ -23,4 +23,10 @@ class nyc_school_tax_credit_fixed_amount_eligible(Variable):
         # Get income that counts towards the NYC School Tax Credit.
         nyc_stc_income = tax_unit("nyc_school_credit_income", period)
 
-        return nyc_stc_income <= p.income_limit
+        # A filer who can be claimed as a dependent does not qualify (IT-201
+        # line 69). Form NYC-210 asks about each spouse and allows "the credit
+        # amount of the eligible spouse" when only one qualifies.
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        return (nyc_stc_income <= p.income_limit) & (independent_filers > 0)

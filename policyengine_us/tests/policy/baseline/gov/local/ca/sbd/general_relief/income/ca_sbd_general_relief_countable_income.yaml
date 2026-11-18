@@ -72,13 +72,12 @@
         age: 65
         social_security: 3_600
         ssi: 0
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member and bar them.
+        ca_state_supplement_person: 0
     spm_units:
       spm_unit:
         members: [person1]
-        # Pin the CA state supplement off: state_code defaults to CA, so it
-        # would otherwise self-compute for the aged member and count as
-        # unit income.
-        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -167,11 +166,11 @@
         self_employment_income: -12_000
         social_security: 3_600
         ssi: 0
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement_person: 0
     spm_units:
       spm_unit:
         members: [person1]
-        # Pin the CA state supplement off (see Case 4).
-        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -251,8 +250,6 @@
         members: [person1]
         # $2,400 per year is $200 per month of CAPI.
         ca_capi: 2_400
-        # Pin the CA state supplement off (see Case 4).
-        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -270,11 +267,11 @@
       person1:
         age: 68
         ssi: 0
+        # $200 per month of state supplement (an SSP-only case).
+        ca_state_supplement_person: 200
     spm_units:
       spm_unit:
         members: [person1]
-        # $200 per month of state supplement (an SSP-only case).
-        ca_state_supplement: 200
     households:
       household:
         members: [person1]

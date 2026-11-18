@@ -17,3 +17,16 @@
   output:
     al_medical_expense_deduction: 3_400
 #7000-0.04 * 90,000=3400
+
+- name: Alabama excludes premiums already deducted for self-employed health insurance
+  period: 2025
+  input:
+    state_code: AL
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    al_agi: 30_000
+  output:
+    # Alabama follows federal eligible expenses, with its own 4% floor.
+    itemized_medical_expenses: 5_500
+    al_medical_expense_deduction: 4_300

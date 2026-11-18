@@ -1,0 +1,76 @@
+# The IRMAA brackets apply to MAGI from two years before the benefit year
+# unless gov.simulation.medicare_irmaa_uses_current_year_income is true, when
+# they apply to the benefit year's own MAGI.
+
+- name: By default the 2025 charges use 2023 income.
+  period: 2025
+  input:
+    age: 66
+    employment_income:
+      2023: 50_000
+      2025: 300_000
+  output:
+    medicare_irmaa_magi: 50_000
+    # Below 106,001: the $185 standard premium only.
+    gross_medicare_part_b_premium: 2_220
+    income_adjusted_part_d_premium_surcharge: 0
+
+- name: With the switch on the 2025 charges use 2025 income.
+  period: 2025
+  input:
+    gov.simulation.medicare_irmaa_uses_current_year_income: true
+    age: 66
+    employment_income:
+      2023: 50_000
+      2025: 300_000
+  output:
+    medicare_irmaa_magi: 300_000
+    # 2025 single, 200,001 up to 500,000: 12 x (185 + 406.90) = 7,102.80.
+    gross_medicare_part_b_premium: 7_102.8
+    # Part D: 12 x 78.60.
+    income_adjusted_part_d_premium_surcharge: 943.2
+
+- name: With the switch on a provided lag MAGI does not set the charges.
+  period: 2025
+  input:
+    gov.simulation.medicare_irmaa_uses_current_year_income: true
+    people:
+      person:
+        age: 66
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        medicare_irmaa_magi_two_years_prior: 300_000
+    households:
+      household:
+        members: [person]
+  output:
+    medicare_irmaa_magi: 50_000
+    gross_medicare_part_b_premium: 2_220
+
+- name: A joint return's MAGI applies to both spouses with the switch on.
+  period: 2026
+  input:
+    gov.simulation.medicare_irmaa_uses_current_year_income: true
+    people:
+      head:
+        age: 70
+        employment_income: 150_000
+      spouse:
+        age: 68
+        employment_income: 150_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    medicare_irmaa_magi: 300_000
+    # 2026 joint, 274,001 up to 342,001: $202.90 + $202.90 a month each.
+    gross_medicare_part_b_premium: [4_869.6, 4_869.6]

@@ -1,0 +1,87 @@
+# He-W 658.03(b): one person, plus a spouse or a needy essential person in an
+# independent living arrangement (2), or both (3).
+- name: Case 1, a single person living independently is a group of one.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 70
+  output:
+    nh_ssp_assistance_group_size: 1
+
+- name: Case 2, a single person with a needy essential person is a group of two.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 70
+    nh_ssp_has_essential_person: true
+  output:
+    nh_ssp_assistance_group_size: 2
+
+- name: Case 3, an independent couple is a group of two.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ssp_assistance_group_size: [2, 2]
+
+- name: Case 4, an independent couple with a needy essential person is a group of three.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        nh_ssp_has_essential_person: true
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ssp_assistance_group_size: [3, 3]
+
+- name: Case 5, spouses in residential care are separate groups of one.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        nh_ssp_living_arrangement: RESIDENTIAL_CARE
+        ssi_claim_is_joint: false
+      person2:
+        age: 65
+        nh_ssp_living_arrangement: RESIDENTIAL_CARE
+        ssi_claim_is_joint: false
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ssp_assistance_group_size: [1, 1]
+
+- name: Case 6, an essential person does not enlarge a residential care group.
+  period: 2026-01
+  input:
+    state_code: NH
+    age: 70
+    nh_ssp_living_arrangement: RESIDENTIAL_CARE
+    nh_ssp_has_essential_person: true
+  output:
+    nh_ssp_assistance_group_size: 1

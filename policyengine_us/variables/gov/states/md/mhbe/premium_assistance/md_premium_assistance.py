@@ -29,7 +29,8 @@ class md_premium_assistance(Variable):
     # A non-filer has aca_ptc = 0, which would inflate the post-APTC premium
     # balance and over-grant the state subsidy. COMAR 14.35.21.03A(1)
     # conditions the subsidy on APTC eligibility, which requires filing, so
-    # the subsidy is gated on tax_unit_is_filer below.
+    # the subsidy is gated below on filing a return that claims the federal
+    # credit (files_return_for_aca_ptc).
     #
     # The display name "Premium Assistance" follows the MHBE consumer-facing
     # site ("Maryland Premium Assistance"); the statute and COMAR title the
@@ -46,13 +47,15 @@ class md_premium_assistance(Variable):
         md_percentage = tax_unit(
             "md_premium_assistance_target_contribution_percentage", period
         )
-        # slcsp is a MONTH-period variable; core sums the 12 months when
-        # called from this YEAR formula.
-        slcsp = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, a MONTH variable that
+        # core sums over the year here: COMAR 14.35.21.03A(1) limits the
+        # subsidy to members of an APTC-eligible tax filer's tax household.
+        slcsp = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         # Premium balance remaining after the federal APTC (COMAR .04B).
         premium_after_aptc = max_(0, slcsp - aca_ptc)
         subsidy = max_(0, premium_after_aptc - md_percentage * income)
-        # Gate on filing: non-filers are not APTC-eligible (COMAR .03A(1)).
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        # Gate on filing: non-filers are not APTC-eligible (COMAR .03A(1)). A
+        # tax unit that takes up the federal credit files to claim it.
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         return where(is_filer, subsidy, 0)

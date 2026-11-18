@@ -119,3 +119,68 @@
         state_code: AZ
   output:
     az_military_retirement_subtraction: 9_000
+
+- name: Arizona excludes a surviving spouse's military survivor benefits.
+  period: 2024
+  input:
+    state_code: AZ
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 10_000
+
+- name: Arizona leaves a non-spouse survivor's SBP payments off line 29b and counts them toward the $2,500 public pension subtraction.
+  period: 2024
+  input:
+    state_code: AZ
+    age: 20
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 0
+    az_public_pension_exclusion: 2_500
+
+- name: Arizona subtracts own military retirement pay in full and a non-spouse survivor's SBP payments up to $2,500.
+  period: 2024
+  input:
+    state_code: AZ
+    is_surviving_spouse: false
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    az_military_retirement_subtraction: 30_000
+    az_public_pension_exclusion: 2_500
+
+- name: In 2021, Arizona counts a surviving spouse's SBP payments toward the $2,500 public pension subtraction.
+  period: 2021
+  input:
+    state_code: AZ
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 6_000
+  output:
+    az_military_retirement_subtraction: 0
+    # min(6,000, 2,500) = 2,500 under 43-1022(2) and ITR 11-3. ADOR moved a surviving spouse's payments to line 29b in 2023.
+    az_public_pension_exclusion: 2_500
+
+- name: In 2022, Arizona counts a surviving spouse's SBP payments and public pension toward one $2,500 subtraction.
+  period: 2022
+  input:
+    state_code: AZ
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 1_000
+    taxable_public_pension_income: 2_000
+  output:
+    az_military_retirement_subtraction: 0
+    # min(1,000 + 2,000, 2,500) = 2,500.
+    az_public_pension_exclusion: 2_500
+
+- name: In 2023, Arizona subtracts a surviving spouse's SBP payments in full on line 29b.
+  period: 2023
+  input:
+    state_code: AZ
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 6_000
+  output:
+    # Arizona sets no line 29b cap from 2021 (43-1022(26)) and leaves these payments out of the $2,500 subtraction.
+    az_military_retirement_subtraction: 6_000
+    az_public_pension_exclusion: 0

@@ -1,0 +1,27 @@
+# Spouses filing combined separate returns each report their own income,
+# losses and deductions: PIT-RES instructions (2025), page 5, line 1;
+# 30 Del. C. 1162(b)(1).
+
+- name: The head's IRA deduction lowers only the head's Delaware AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # PIT-RES line 1, columns B and A. Before: [57_000, 37_000].
+    de_pre_exclusions_agi: [54_000, 40_000]
+    de_agi_indiv: [54_000, 40_000]

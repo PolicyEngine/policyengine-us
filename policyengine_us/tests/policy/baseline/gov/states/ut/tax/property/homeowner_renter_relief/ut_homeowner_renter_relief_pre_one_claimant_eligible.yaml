@@ -1,0 +1,21 @@
+- name: Utah property relief retains an unclaimed claimable filer
+  period: 2025
+  input:
+    state_code: UT
+    age: 66
+    rent: 12_000
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    ut_homeowner_renter_relief_pre_one_claimant_eligible: true
+
+- name: Utah property relief excludes an actually claimed filer
+  period: 2025
+  input:
+    state_code: UT
+    age: 66
+    rent: 12_000
+    claimed_as_dependent_on_another_return: true
+    claimable_as_dependent_on_another_return: true
+  output:
+    ut_homeowner_renter_relief_pre_one_claimant_eligible: false

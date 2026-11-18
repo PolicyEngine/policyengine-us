@@ -19,8 +19,9 @@ def ar_main_income_tax(taxable_income, p):
     - (C) less the fixed bracket adjustment for the row the income falls in.
     Taxing at marginal rates keeps tax continuous at every (A) and (B) row bound
     wherever indexing moves them; a stored reduction would not move with them.
-    As in the statute, tax still steps where (A) meets (B)-(C) (down $2.66 at
-    2026's $94,700) and rises by the $10 adjustment step at each (C) row bound.
+    Before indexing, filers pay $2.66 less when income crosses the statutory
+    $94,700 boundary between (A) and (B)-(C). They pay the $10 adjustment step
+    at each (C) row bound.
     """
     if p.use_published_reduction:
         rate = p.rate.calc(taxable_income)
@@ -34,6 +35,43 @@ def ar_main_income_tax(taxable_income, p):
         taxable_income <= high_income.threshold,
         table_a_tax,
         table_b_tax - bracket_adjustment,
+    )
+
+
+def ar_regular_income_tax(taxable_income, p):
+    """Arkansas regular income tax as the Regular Income Tax Table gives it.
+
+    `p` is `parameters(period).gov.states.ar.tax.income.rates.main`.
+
+    Below the table threshold, filers look up their net taxable income in the
+    Regular Income Tax Table. DFA computes each row by applying the bracket
+    formula at the midpoint of the row's income band and rounding to whole
+    dollars. At and above the threshold, the formula applies to the exact
+    income. The result is not floored at zero.
+
+    The `tax_table` parameters start with the 2014 table, so unlike
+    `ar_main_income_tax` (which returns 0 there), this helper has no parameter
+    values before 2014 and raises `ParameterNotFoundError`. Computed from
+    household inputs, the Arkansas income tax never reaches those years: the
+    standard deduction has no value before 2015, the first year the model
+    computes.
+    """
+    table = p.tax_table
+    width = table.band_width
+    offset = table.band_offset.calc(taxable_income)
+    band_start = np.floor((taxable_income - offset) / width) * width + offset
+    band_end = band_start + width
+    if table.whole_dollar_midpoint:
+        # Rows cover whole-dollar incomes from band_start up to one dollar
+        # below the next row.
+        band_end = band_end - 1
+    midpoint = (band_start + band_end) / 2
+    # Round half up to whole dollars.
+    table_tax = np.floor(ar_main_income_tax(midpoint, p) + 0.5)
+    return where(
+        taxable_income < table.threshold,
+        table_tax,
+        ar_main_income_tax(taxable_income, p),
     )
 
 

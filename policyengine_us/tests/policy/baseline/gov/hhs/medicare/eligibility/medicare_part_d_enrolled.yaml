@@ -1,0 +1,38 @@
+- name: Case 1, a Medicare enrollee takes up Part D by default.
+  period: 2026
+  input:
+    age: 70
+  output:
+    medicare_part_d_enrolled: true
+
+- name: Case 2, a Medicare enrollee without Part D.
+  period: 2026
+  input:
+    age: 70
+    takes_up_medicare_part_d_if_eligible: false
+  output:
+    medicare_part_d_enrolled: false
+
+- name: Case 3, no Part D without Part A or Part B.
+  period: 2026
+  input:
+    age: 70
+    takes_up_medicare_if_eligible: false
+  output:
+    medicare_part_d_enrolled: false
+
+- name: Case 4, no Part D below Medicare age without disability entitlement.
+  period: 2026
+  input:
+    age: 50
+  output:
+    medicare_part_d_enrolled: false
+
+- name: Case 5, disability entitlement under 65 opens Part D.
+  period: 2026
+  input:
+    age: 50
+    social_security_disability: 20_000
+    months_receiving_social_security_disability: 24
+  output:
+    medicare_part_d_enrolled: true

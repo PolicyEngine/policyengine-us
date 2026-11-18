@@ -1,0 +1,86 @@
+description: Workforce Solutions Panhandle sets this monthly parent share of cost for the first child in care, by income as a share of state median income, under the Texas Child Care Services program.
+
+# Each bracket covers income more than its threshold share of state median
+# income and not more than the next threshold, with the limits rounded to
+# whole dollars as in TWC's income ranges.
+# Panhandle's BCY 2024 chart misprints 4 of its 252 income limits. For a
+# family of 5, the 30% to 40% upper and 40% to 50% lower limits read $2,653
+# and $2,654 for TWC's $3,653 and $3,654; for 6, the 70% to 75% lower limit
+# reads $7,252 for $7,275; for 13, the 20% to 30% upper limit reads $6,313
+# for $3,613. Board policy CC 3.1, effective December 6, 2023, has staff
+# abide by TWC's income ranges (page 100 of the Panhandle Workforce
+# Development Consortium's Governing Body packet for December 7, 2023), so
+# the model uses TWC's limits.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Panhandle Board first child parent share of cost
+  reference:
+    - title: Workforce Solutions Panhandle, Panhandle Parent Share of Cost, effective 10/01/2023 - 9/30/2024
+      href: https://wspanhandle.com/wp-content/uploads/2023/10/PSoC-2023-2024.png
+    - title: Workforce Solutions Panhandle, Panhandle Parent Share of Cost, effective 10/01/2024 - 09/30/2025
+      href: https://wspanhandle.com/wp-content/uploads/2024/09/PSoC-2024-2025-1.png
+    - title: Workforce Solutions Panhandle, Child Care - For Parents, February 25, 2024 capture (links the 2023-2024 chart)
+      href: https://web.archive.org/web/20240225083637/https://wspanhandle.com/child-care/for-parents/
+    - title: Workforce Solutions Panhandle, Child Care - For Parents, October 6, 2024 capture (links the 2024-2025 chart)
+      href: https://web.archive.org/web/20241006070549/https://wspanhandle.com/child-care/for-parents/
+    - title: Panhandle Workforce Development Consortium's Governing Body, agenda packet for December 7, 2023, item 6(i) - Panhandle Workforce Development Board Policy CC 3.1 Child Care Services, effective December 6, 2023 (TWC income ranges)
+      href: https://theprpc.org/Programs/WorkforceDevelopment/documents/12-7-2023%20WFDCGB%20Agenda%20Packet.pdf#page=100
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 30
+      2024-10-01: 30
+  - threshold:
+      2023-10-01: 0.2
+      2024-10-01: 0.2
+    amount:
+      2023-10-01: 65
+      2024-10-01: 65
+  - threshold:
+      2023-10-01: 0.3
+      2024-10-01: 0.3
+    amount:
+      2023-10-01: 110
+      2024-10-01: 110
+  - threshold:
+      2023-10-01: 0.4
+      2024-10-01: 0.4
+    amount:
+      2023-10-01: 150
+      2024-10-01: 150
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 190
+      2024-10-01: 190
+  - threshold:
+      2023-10-01: 0.6
+      2024-10-01: 0.6
+    amount:
+      2023-10-01: 240
+      2024-10-01: 240
+  - threshold:
+      2023-10-01: 0.7
+      2024-10-01: 0.7
+    amount:
+      2023-10-01: 270
+      2024-10-01: 270
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 290
+      2024-10-01: 290
+  - threshold:
+      2023-10-01: 0.8
+      2024-10-01: 0.8
+    amount:
+      2023-10-01: 310
+      2024-10-01: 310

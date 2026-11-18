@@ -1,0 +1,15 @@
+description: Colorado deducts this amount from monthly gross earned income when counting income for the Old Age Pension.
+
+values:
+  # OAP rules moved from 9 CCR 2503-3 to 9 CCR 2503-5 on March 2, 2014.
+  2014-03-02: 65
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado OAP earned income disregard
+  reference:
+    - title: "9 CCR 2503-5, Sections 3.533(A)(1)(a), 3.534(A)(1) #page 76-77"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=76
+    - title: 9 CCR 2503-5, Sections 3.533(A)(1)(a), 3.534(A)(1) (effective March 2, 2014)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=5597#page=47

@@ -177,3 +177,57 @@
     disability_benefits: 1_400
   output:
     nj_liheap_countable_income_person: 10_500
+
+- name: Case 7, modeled New Jersey unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 40
+    social_security: 0
+    ssi: 0
+    # Average weekly wage = 10,000 / 20 = 500; weekly benefit rate =
+    # floor(0.6 * 500) = 300; weeks = min(26 claimed, 20 base weeks) = 20;
+    # nj_unemployment_insurance = 300 * 20 = 6,000.
+    nj_unemployment_insurance_base_period_weeks: 20
+    nj_unemployment_insurance_base_period_wages: 10_000
+    nj_unemployment_insurance_weeks_claimed: 26
+  output:
+    nj_unemployment_insurance: 6_000
+    # No reported UC, so total UC falls back to the modeled NJ UI.
+    total_unemployment_compensation: 6_000
+    nj_liheap_countable_income_person: 6_000
+
+- name: Case 8, reported unemployment compensation counts as unearned income, as the control for modeled UI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 40
+    social_security: 0
+    ssi: 0
+    unemployment_compensation: 6_000
+  output:
+    total_unemployment_compensation: 6_000
+    nj_liheap_countable_income_person: 6_000
+
+- name: Case 9, military retirement pay and a Survivor Benefit Plan annuity count as unearned income.
+  # Two one-person households aged 70. Handbook 2.3.D (page 8) counts pensions
+  # and annuities; the Department of Defense pays both, so the 2.3.E.10
+  # veterans' benefits exclusion does not apply. Household 1: 24,000 military
+  # retirement pay. Household 2: 9,600 Survivor Benefit Plan annuity (800 a
+  # month).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NJ, NJ]
+    age: [70, 70]
+    military_retirement_pay: [24_000, 0]
+    military_retirement_pay_survivors: [0, 9_600]
+    social_security: [0, 0]
+    ssi: [0, 0]
+    tanf: [0, 0]
+  output:
+    nj_liheap_countable_income_person: [24_000, 9_600]
+    # 2,000 and 800 a month are whole dollars, so rounding changes nothing.
+    nj_liheap_countable_income: [24_000, 9_600]

@@ -1,0 +1,138 @@
+# FFY2026 limit is 60% of the Louisiana state median income (Notice LHP-2025-01).
+# Four-person limit: floor(98,137 x 0.6) = 58,882; each size uses
+# floor(58,882 x factor), with factors 0.52 + 0.16 per person through six
+# and 0.03 for each person above six (sizes 11 and up are not published).
+
+- name: Case 1, an undocumented member is excluded from household size so the size-one limit applies.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_liheap_household_size: 1
+    # floor(58,882 x 0.52) = floor(30,618.64)
+    la_liheap_income_limit: 30_618
+
+- name: Case 2, a four-person household uses the published 58,882 limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: LA
+  output:
+    # floor(58,882 x 1.00)
+    la_liheap_income_limit: 58_882
+
+- name: Case 3, a ten-person household uses the published 84,790 limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 42}
+      person2: {age: 40}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 14}
+      person6: {age: 12}
+      person7: {age: 10}
+      person8: {age: 8}
+      person9: {age: 7}
+      person10: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: LA
+  output:
+    # floor(58,882 x 1.44) = floor(84,790.08)
+    la_liheap_income_limit: 84_790
+
+- name: Case 4, a fourteen-person household extends the federal size adjustment to 91,855.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45}
+      person2: {age: 43}
+      person3: {age: 17}
+      person4: {age: 16}
+      person5: {age: 15}
+      person6: {age: 14}
+      person7: {age: 13}
+      person8: {age: 12}
+      person9: {age: 11}
+      person10: {age: 10}
+      person11: {age: 9}
+      person12: {age: 8}
+      person13: {age: 7}
+      person14: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: LA
+  output:
+    # floor(58,882 x 1.56) = floor(91,855.92)
+    la_liheap_income_limit: 91_855
+
+- name: Case 5, a household of only undocumented members has size zero and no income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_liheap_household_size: 0
+    la_liheap_income_limit: 0

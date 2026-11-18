@@ -57,3 +57,89 @@
     ssi_countable_income: [1_776, 0] # 148 * 12
 
 # Example 4 skipped as it relates to sponsored aliens.
+
+- name: Spousal deeming excludes spouse and child's qualified pretax premiums before allocations.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 2_400
+      child:
+        age: 14
+        # Isolate pretax premiums from the student earned-income exclusion.
+        is_in_k12_school: false
+        employment_income: 2_400
+        pre_tax_health_insurance_premiums: 1_200
+    tax_units:
+      tax_unit:
+        members: [recipient, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [recipient, spouse]
+  output:
+    # POMS SI 00820.102C.2: spouse wages 21,600; child wages 1,200.
+    # 20 CFR 416.1163(b): child allocation = (1,450 - 967) * 12
+    # - 1,200 = 4,596; spouse's remaining wages = 21,600 - 4,596 = 17,004.
+    # Under (d)(2), 17,004 > 5,796 and couple exclusions apply:
+    # (17,004 - 20 * 12 - 65 * 12) / 2 = 7,992.
+    ssi_earned_income: [0, 21_600, 1_200]
+    ssi_ineligible_child_allocation: [0, 0, 4_596]
+    ssi_earned_income_deemed_from_ineligible_spouse: [17_004, 0, 0]
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
+    ssi_countable_income: [7_992, 0, 0]
+
+- name: Monthly child allocations floor each spouse income pool before annual aggregation
+  # With $1,000 monthly student wages, the allocations are $497 in
+  # January-September, $227 in October, then zero. The spouse has $100
+  # unearned and $300 earned a month: both pools are exhausted in the
+  # first nine months; October leaves $173 earned; November-December
+  # leave $100 unearned and $300 earned each. An annual floor would
+  # incorrectly leave only $100 earned and no unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 50
+        person_id: 1
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        employment_income: 300 * 12
+        ssi_unearned_income: 100 * 12
+      student:
+        age: 16
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        employment_income: 1_000 * 12
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: TX
+  output:
+    people:
+      claimant:
+        ssi_earned_income_deemed_from_ineligible_spouse: 773
+        ssi_unearned_income_deemed_from_ineligible_spouse: 200
+        ssi: 11_928

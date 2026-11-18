@@ -144,3 +144,106 @@
         state_code: TX
   output:
     tx_ccs: 0  # Not eligible for CCS
+
+- name: Case 6 - Panhandle registered home preschool across the BCY24 to BCY25 boundary, zero copay
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 0  # No countable income, so no copay
+      child1:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 21
+        tx_ccs_provider_type: RCCH
+        tx_ccs_provider_rating: REG
+        tx_ccs_care_schedule: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # $1,000/month, above both rates
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+        county: POTTER_COUNTY_TX  # Panhandle board
+  output:
+    # January to September 2024 (BCY24): $27.33/day * 21 days = $573.93/month
+    # October to December 2024 (BCY25): $30.40/day * 21 days = $638.40/month
+    # 9 * $573.93 + 3 * $638.40 = $7,080.57
+    tx_ccs: 7_080.57
+
+- name: Case 7 - Panhandle registered home preschool with a copay, either side of October 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000/month
+      child1:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 21
+        tx_ccs_provider_type: RCCH
+        tx_ccs_provider_rating: REG
+        tx_ccs_care_schedule: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+        county: POTTER_COUNTY_TX
+  output:
+    # Panhandle's scale charges $110 for one child from more than 30% to 40% of
+    # SMI. September uses FY 2024 SMI for 2 people, $94,466 * 0.68 / 12 =
+    # $5,353.07 a month, so that range runs from $1,607 to $2,141. October
+    # uses FY 2025 SMI, $103,213 * 0.68 / 12 = $5,848.74, so it runs from
+    # $1,756 to $2,339. $2,000 falls in it both months.
+    # September (BCY24): $27.33 * 21 = $573.93 - $110 = $463.93
+    # October (BCY25): $30.40 * 21 = $638.40 - $110 = $528.40
+    tx_ccs_copay:
+      2024-09: 110
+      2024-10: 110
+    tx_ccs:
+      2024-09: 463.93
+      2024-10: 528.40
+
+- name: Case 8 - Panhandle registered home preschool with a copay, 2024 annual
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000/month
+      child1:
+        age: 4
+        is_disabled: false
+        is_citizen_or_legal_immigrant: true
+        childcare_attending_days_per_month: 21
+        tx_ccs_provider_type: RCCH
+        tx_ccs_provider_rating: REG
+        tx_ccs_care_schedule: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [parent1, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    households:
+      household:
+        members: [parent1, child1]
+        state_code: TX
+        county: POTTER_COUNTY_TX
+  output:
+    # 9 months at $463.93 + 3 months at $528.40 (Case 7) = $5,760.57
+    tx_ccs: 5_760.57

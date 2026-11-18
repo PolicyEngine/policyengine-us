@@ -1,0 +1,316 @@
+# R&TC 17072(b) disallows IRC 62(a)(2)(D), with no sunset.
+# FTB 2025 Schedule CA (540), Section C, line 11, requires restoring the
+# federal deduction claimed: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=64
+# Thus $50,000 wages less a $300 federal deduction gives $49,700 federal AGI
+# and $49,700 + $300 = $50,000 California AGI. Over-cap expenses and dependent
+# expenses are not added back unless claimed on this federal return.
+# Federal per-educator caps: $250 through 2021, $300 in 2022-2025, $350 in 2026;
+# see the IRS references on educator_expense_ald_person.
+
+- name: 2015, California restores the claimed deduction for $200 of expenses
+  period: 2015
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 200
+    tax_units:
+      tax_unit:
+        members: &id001
+        - teacher
+    households:
+      household:
+        members: *id001
+        state_code: CA
+  output:
+    educator_expense_ald: 200
+    adjusted_gross_income: 49800
+    ca_educator_expense_addition: 200
+    ca_additions: 200
+    ca_agi: 50000
+- name: 2021, California restores the claimed deduction for $600 of expenses
+  period: 2021
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 600
+    tax_units:
+      tax_unit:
+        members: &id002
+        - teacher
+    households:
+      household:
+        members: *id002
+        state_code: CA
+  output:
+    educator_expense_ald: 250
+    adjusted_gross_income: 49750
+    ca_educator_expense_addition: 250
+    ca_additions: 250
+    ca_agi: 50000
+- name: 2022, California restores the claimed deduction for $600 of expenses
+  period: 2022
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 600
+    tax_units:
+      tax_unit:
+        members: &id003
+        - teacher
+    households:
+      household:
+        members: *id003
+        state_code: CA
+  output:
+    educator_expense_ald: 300
+    adjusted_gross_income: 49700
+    ca_educator_expense_addition: 300
+    ca_additions: 300
+    ca_agi: 50000
+- name: 2025, California restores the claimed deduction for $600 of expenses
+  period: 2025
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 600
+    tax_units:
+      tax_unit:
+        members: &id004
+        - teacher
+    households:
+      household:
+        members: *id004
+        state_code: CA
+  output:
+    educator_expense_ald: 300
+    adjusted_gross_income: 49700
+    ca_educator_expense_addition: 300
+    ca_additions: 300
+    ca_agi: 50000
+- name: 2026, California restores the claimed deduction for $600 of expenses
+  period: 2026
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 600
+    tax_units:
+      tax_unit:
+        members: &id005
+        - teacher
+    households:
+      household:
+        members: *id005
+        state_code: CA
+  output:
+    educator_expense_ald: 350
+    adjusted_gross_income: 49650
+    ca_educator_expense_addition: 350
+    ca_additions: 350
+    ca_agi: 50000
+- name: 2025, California restores the claimed deduction for $0 of expenses
+  period: 2025
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 0
+    tax_units:
+      tax_unit:
+        members: &id006
+        - teacher
+    households:
+      household:
+        members: *id006
+        state_code: CA
+  output:
+    educator_expense_ald: 0
+    adjusted_gross_income: 50000
+    ca_educator_expense_addition: 0
+    ca_additions: 0
+    ca_agi: 50000
+- name: 2025, joint return with educator expenses only on the spouse
+  period: 2025
+  input:
+    people:
+      head:
+        age: 42
+        is_tax_unit_head: true
+        employment_income: 50000
+      spouse:
+        age: 41
+        is_tax_unit_spouse: true
+        employment_income: 50000
+        educator_expense: 900
+    tax_units:
+      tax_unit:
+        members: &id007
+        - head
+        - spouse
+        filing_status: JOINT
+    households:
+      household:
+        members: *id007
+        state_code: CA
+  output:
+    educator_expense_ald: 300
+    adjusted_gross_income: 99700
+    ca_educator_expense_addition: 300
+    ca_additions: 300
+    ca_agi: 100000
+- name: 2026, joint return with educator expenses only on the spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 42
+        is_tax_unit_head: true
+        employment_income: 50000
+      spouse:
+        age: 41
+        is_tax_unit_spouse: true
+        employment_income: 50000
+        educator_expense: 337.5
+    tax_units:
+      tax_unit:
+        members: &id008
+        - head
+        - spouse
+        filing_status: JOINT
+    households:
+      household:
+        members: *id008
+        state_code: CA
+  output:
+    educator_expense_ald: 337.5
+    adjusted_gross_income: 99662.5
+    ca_educator_expense_addition: 337.5
+    ca_additions: 337.5
+    ca_agi: 100000
+- name: 2025, two educators restore their separately capped deductions
+  period: 2025
+  input:
+    people:
+      head:
+        age: 42
+        is_tax_unit_head: true
+        employment_income: 50000
+        educator_expense: 500
+      spouse:
+        age: 41
+        is_tax_unit_spouse: true
+        employment_income: 50000
+        educator_expense: 150
+    tax_units:
+      tax_unit:
+        members: &id009
+        - head
+        - spouse
+        filing_status: JOINT
+    households:
+      household:
+        members: *id009
+        state_code: CA
+  output:
+    educator_expense_ald: 450
+    adjusted_gross_income: 99550
+    ca_educator_expense_addition: 450
+    ca_additions: 450
+    ca_agi: 100000
+- name: 2025, a dependent expense is not claimed on the parent return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 42
+        is_tax_unit_head: true
+        employment_income: 50000
+        educator_expense: 100
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 5000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: &id010
+        - head
+        - dependent
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: *id010
+        state_code: CA
+  output:
+    educator_expense_ald: 100
+    adjusted_gross_income: 49900
+    ca_educator_expense_addition: 100
+    ca_additions: 100
+    ca_agi: 50000
+- name: 2025, educator and HSA additions both restore federal deductions
+  period: 2025
+  input:
+    people:
+      teacher:
+        health_savings_account_payroll_contributions: 1000
+    tax_units:
+      tax_unit:
+        members:
+        - teacher
+        adjusted_gross_income: 45000
+        educator_expense_ald: 200
+        health_savings_account_ald: 2000
+    households:
+      household:
+        members:
+        - teacher
+        state_code: CA
+  output:
+    ca_educator_expense_addition: 200
+    ca_hsa_addition: 3000
+    ca_additions: 3200
+    ca_agi: 48200
+- name: 2025, the addition does not apply outside California
+  period: 2025
+  input:
+    people:
+      teacher:
+        age: 40
+        employment_income: 50000
+        educator_expense: 200
+    tax_units:
+      tax_unit:
+        members:
+        - teacher
+    households:
+      household:
+        members:
+        - teacher
+        state_code: NY
+  output:
+    educator_expense_ald: 200
+    adjusted_gross_income: 49800
+    ca_educator_expense_addition: 0
+    ca_additions: 0
+    ca_agi: 0
+- name: 2025, the full claimed deduction is restored even with negative federal AGI
+  period: 2025
+  input:
+    state_code: CA
+    adjusted_gross_income: -50
+    educator_expense_ald: 200
+  output:
+    ca_educator_expense_addition: 200
+    ca_additions: 200
+    ca_agi: 150

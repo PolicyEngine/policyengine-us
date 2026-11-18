@@ -117,7 +117,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             maximum = tax_unit("eitc_younger_maximum", period)
             phase_in_rate = tax_unit("eitc_younger_phase_in_rate", period)
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             phased_in_amount = earnings * phase_in_rate
             return min_(maximum, phased_in_amount)
 
@@ -161,7 +161,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
         def formula(tax_unit, period, parameters):
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_younger_phase_out_start", period)
@@ -187,23 +187,15 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
         def formula(tax_unit, period, parameters):
-            eitc = parameters.gov.irs.credits.eitc(period)
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
             )
             demographic_eligible = tax_unit("eitc_younger_demographic_eligible", period)
             no_older_children = tax_unit("eitc_older_children_count", period) == 0
-            # Define eligibility before considering separate filer limitation.
             eligible = (
                 demographic_eligible & investment_income_eligible & no_older_children
             )
-            # This parameter is true if separate filers are eligible.
-            if eitc.eligibility.separate_filer:
-                return eligible
-            # If separate filers are not eligible, check if the filer is separate.
-            filing_status = tax_unit("filing_status", period)
-            separate = filing_status == filing_status.possible_values.SEPARATE
-            return eligible & ~separate
+            return eligible & tax_unit("eitc_marital_eligible", period)
 
     class younger_eitc(Variable):
         value_type = float
@@ -298,7 +290,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             maximum = tax_unit("eitc_older_maximum", period)
             phase_in_rate = tax_unit("eitc_older_phase_in_rate", period)
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             phased_in_amount = earnings * phase_in_rate
             return min_(maximum, phased_in_amount)
 
@@ -346,7 +338,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#a_2"
 
         def formula(tax_unit, period, parameters):
-            earnings = tax_unit("filer_adjusted_earnings", period)
+            earnings = tax_unit("eitc_earned_income", period)
             agi = tax_unit("adjusted_gross_income", period)
             highest_income_variable = max_(earnings, agi)
             phase_out_start = tax_unit("eitc_older_phase_out_start", period)
@@ -382,25 +374,17 @@ def create_ny_working_families_tax_credit() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
 
         def formula(tax_unit, period, parameters):
-            eitc = parameters.gov.irs.credits.eitc(period)
             investment_income_eligible = tax_unit(
                 "eitc_investment_income_eligible", period
             )
             demographic_eligible = tax_unit("eitc_older_demographic_eligible", period)
             younger_eitc_eligible = tax_unit("younger_eitc_eligible", period)
-            # Define eligibility before considering separate filer limitation.
             eligible = (
                 demographic_eligible
                 & investment_income_eligible
                 & ~younger_eitc_eligible
             )
-            # This parameter is true if separate filers are eligible.
-            if eitc.eligibility.separate_filer:
-                return eligible
-            # If separate filers are not eligible, check if the filer is separate.
-            filing_status = tax_unit("filing_status", period)
-            separate = filing_status == filing_status.possible_values.SEPARATE
-            return eligible & ~separate
+            return eligible & tax_unit("eitc_marital_eligible", period)
 
     class older_eitc(Variable):
         value_type = float
@@ -468,7 +452,17 @@ def create_ny_working_families_tax_credit() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-            count_dependents = add(tax_unit, period, ["ny_exemptions_dependent"])
+            # As in the baseline, a return on which a filer (or, if joint,
+            # either spouse) can be claimed as a dependent has no dependents
+            # (Tax Law 616(a), IRC 152(b)(1)).
+            dependent_filer = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            count_dependents = where(
+                dependent_filer,
+                0,
+                add(tax_unit, period, ["ny_exemptions_dependent"]),
+            )
             dependent_exemption = parameters(
                 period
             ).gov.states.ny.tax.income.exemptions.dependent

@@ -17,17 +17,30 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         listed_sources = add(person, period, p.nontaxable_income.sources)
         social_security = person("social_security", period)
         ssdi = person("social_security_disability", period)
-        taxable_social_security = person("taxable_social_security", period)
+        # A tax unit dependent's taxable Social Security is on their own return
+        # (dependent_adjusted_gross_income); taxable_social_security holds only
+        # the head's and spouse's.
+        is_dependent = person("is_tax_unit_dependent", period)
+        taxable_social_security = where(
+            is_dependent,
+            person("dependent_taxable_social_security", period),
+            person("taxable_social_security", period),
+        )
         nontaxable_social_security = max_(
             0, social_security - ssdi - taxable_social_security
         )
-        unemployment_compensation = person("unemployment_compensation", period)
+        total_unemployment_compensation = person(
+            "total_unemployment_compensation", period
+        )
         taxable_unemployment_compensation = person(
             "taxable_unemployment_compensation", period
         )
+        # The compensation federal adjusted gross income leaves out (the IRC
+        # 85(c) exclusion of 2020), for dependents, whose own return excludes
+        # it (dependent_adjusted_gross_income), and filers alike.
         nontaxable_unemployment_compensation = max_(
             0,
-            unemployment_compensation - taxable_unemployment_compensation,
+            total_unemployment_compensation - taxable_unemployment_compensation,
         )
         return (
             listed_sources

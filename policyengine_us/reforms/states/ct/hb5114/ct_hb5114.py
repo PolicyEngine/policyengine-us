@@ -19,11 +19,12 @@ def create_ct_hb5114() -> Reform:
             rent = add(tax_unit, period, ["rent"])
             pays_rent = rent > 0
 
-            # Must not be claimed as a dependent on another return
-            head_is_dependent_elsewhere = tax_unit(
-                "head_is_dependent_elsewhere", period
-            )
-            not_dependent = ~head_is_dependent_elsewhere
+            # Preserve the modeled actual-claim gate; the cited bill does
+            # not state this restriction.
+            person = tax_unit.members
+            claimed = person("claimed_as_dependent_on_another_return", period)
+            head = person("is_tax_unit_head", period)
+            not_dependent = ~tax_unit.any(claimed & head)
 
             # Income eligibility
             filing_status = tax_unit("filing_status", period)

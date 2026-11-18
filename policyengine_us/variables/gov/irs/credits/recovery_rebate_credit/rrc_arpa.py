@@ -26,9 +26,17 @@ class rrc_arpa(Variable):
         )
         is_joint = tax_unit("tax_unit_is_joint", period)
         adults_with_ssn = tax_unit("rrc_adult_count_with_valid_ssn", period)
+        # The exception waives the identification rule, not the exclusion of
+        # a spouse who is another taxpayer's dependent.
+        person = tax_unit.members
+        dependent_filers = tax_unit.sum(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("claimable_as_dependent_on_another_return", period)
+        )
         count_adults = where(
             armed_forces_exception,
-            2,  # Joint filers always have 2 adults (structural constant)
+            # Joint filers always have 2 adults (structural constant)
+            max_(2 - dependent_filers, 0),
             where(is_joint, adults_with_ssn, min_(adults_with_ssn, 1)),
         )
         max_payment = (
@@ -39,4 +47,8 @@ class rrc_arpa(Variable):
         excess = max_(0, agi - rrc.arpa.phase_out.threshold[filing_status])
         payment_reduction_percent = excess / phase_out_length
         payment_reduction = max_payment * payment_reduction_percent
-        return max_(0, max_payment - payment_reduction)
+        # IRC 6428B(a) allows the credit to "an eligible individual", so a
+        # return whose every filer is a dependent of another taxpayer gets
+        # none, even for its own dependents.
+        no_eligible_filer = tax_unit("every_filer_is_dependent_elsewhere", period)
+        return where(no_eligible_filer, 0, max_(0, max_payment - payment_reduction))

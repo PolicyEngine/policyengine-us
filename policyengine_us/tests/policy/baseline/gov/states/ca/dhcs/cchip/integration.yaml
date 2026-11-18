@@ -941,3 +941,118 @@
     is_chip_eligible: [false, false, false]
     chip: [0, 0, 0]
     is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 25, a CCHIP child and MCAP parent receive different health coverage values in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+        is_pregnant: true
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 8
+        takes_up_chip_if_eligible: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, PREGNANT_FCEP, CHILD_CCHIP]
+    chip_enrolled: [false, true, true]
+    per_capita_chip: [0, 13_119.89, 4_128]
+    per_capita_chip_gross: [0, 13_119.89, 4_128]
+    chip: [0, 13_119.89, 4_128]
+    chip_gross: [0, 13_119.89, 4_128]
+    # CA enhanced FMAP is 65%; 4,128 x 65% = 2,683.20.
+    chip_federal_cost: [0, 8_527.93, 2_683.20]
+    chip_state_cost: [0, 4_591.96, 1_444.80]
+
+- name: Case 26, the CCHIP child estimate changes in 2027 while the MCAP value stays pooled.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+        is_pregnant: true
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 8
+        takes_up_chip_if_eligible: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, PREGNANT_FCEP, CHILD_CCHIP]
+    chip_enrolled: [false, true, true]
+    per_capita_chip: [0, 13_119.89, 4_637]
+    per_capita_chip_gross: [0, 13_119.89, 4_637]
+    chip: [0, 13_119.89, 4_637]
+    chip_gross: [0, 13_119.89, 4_637]
+    chip_federal_cost: [0, 8_527.93, 3_014.05]
+    chip_state_cost: [0, 4_591.96, 1_622.95]
+
+- name: Case 27, an eligible CCHIP child declining coverage has gross value but no enrolled spending.
+  period: 2026
+  input:
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    age: 8
+    medicaid_household_size: 4
+    medicaid_household_income: 100_000
+    takes_up_chip_if_eligible: false
+  output:
+    is_medicaid_eligible: false
+    ca_cchip_eligible: true
+    chip_category: CHILD_CCHIP
+    is_chip_eligible: true
+    chip_enrolled: false
+    per_capita_chip: 4_128
+    per_capita_chip_gross: 4_128
+    chip: 0
+    chip_gross: 4_128
+    chip_federal_cost: 0
+    chip_state_cost: 0

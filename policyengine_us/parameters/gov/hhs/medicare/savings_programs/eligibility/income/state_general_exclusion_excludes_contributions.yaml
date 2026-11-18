@@ -1,0 +1,29 @@
+description: States exclude contributions from the income that the state general income exclusion applies to under the Medicare Savings Programs, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: MSP state general income exclusion excludes contributions
+  breakdown:
+    - state_code
+  reference:
+    - title: Illinois Department of Human Services Policy Manual PM 15-04-03-a - AABD Income Disregard (Community Cases)
+      href: https://www.dhs.state.il.us/page.aspx?item=16387
+    - title: Illinois Department of Human Services Policy Manual PM 06-12-01-b - QMB Income Limit
+      href: https://www.dhs.state.il.us/page.aspx?item=14177
+    - title: Illinois Department of Human Services Policy Manual PM 15-05-03 - AABD Community
+      href: https://www.dhs.state.il.us/page.aspx?item=16446
+    - title: 89 Illinois Administrative Code 120.74 - Qualified Medicare Beneficiary (QMB) Income Standard
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200D00740R.html
+    - title: 89 Illinois Administrative Code 120.335(a)(1) - Exempt Unearned Income
+      href: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+    - title: "23 Mississippi Administrative Code Part 104, Rule 4.2(C)(1) and (C)(5) - General Income Exclusion #page 22-23"
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000278c.pdf#page=22
+
+IL:
+  0000-01-01: false
+  # Same start as state_general_exclusion.
+  1997-03-01: true
+MS:
+  # Rule 4.2(C)(5) withholds the exclusion only from income based on need,
+  # so alimony and other contributions keep it.
+  0000-01-01: false

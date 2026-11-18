@@ -4,13 +4,13 @@
     people:
       person1:
         is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
       person2:
         is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         az_filing_status: JOINT
-        head_is_dependent_elsewhere: false
-        spouse_is_dependent_elsewhere: true
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -24,13 +24,13 @@
     people:
       person1:
         is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
       person2:
         is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         az_filing_status: JOINT
-        head_is_dependent_elsewhere: true
-        spouse_is_dependent_elsewhere: true
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -44,13 +44,13 @@
     people:
       person1:
         is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
       person2:
         is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
     tax_units:
       tax_unit:
         az_filing_status: SEPARATE
-        head_is_dependent_elsewhere: false
-        spouse_is_dependent_elsewhere: false
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -64,19 +64,41 @@
     people:
       person1:
         is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
       person2:
         is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
       person3:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         az_filing_status: SEPARATE
-        head_is_dependent_elsewhere: false
-        spouse_is_dependent_elsewhere: false
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]
       state_code: AZ
   output:
     az_aged_exemption_eligible_person: [true, false, false]
+
+- name: Arizona aged exemption retains an unclaimed claimable filer
+  period: 2025
+  input:
+    state_code: AZ
+    age: 70
+    is_tax_unit_head: true
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    az_aged_exemption_eligible_person: true
+
+- name: Arizona aged exemption excludes an actually claimed filer
+  period: 2025
+  input:
+    state_code: AZ
+    age: 70
+    is_tax_unit_head: true
+    claimed_as_dependent_on_another_return: true
+    claimable_as_dependent_on_another_return: true
+  output:
+    az_aged_exemption_eligible_person: false

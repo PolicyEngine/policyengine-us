@@ -1,7 +1,7 @@
 description: Vermont limits the partial renter credit to filers with income below this amount, based on the county and household size.
 metadata:
   propagate_metadata_to_children: true
-  unit: /1
+  unit: currency-USD
   period: year
   breakdown:
   - list(range(1,9))
@@ -10,8 +10,30 @@ metadata:
   label: Vermont partial renter credit income limit
   reference:
     # The table is derived from the official Vermont government website. The legal code refers to area median income.
+    # The published tables equal HUD's very low-income (l50) limit for 2021-2023 and
+    # 1.3 times it for 2024-2025, rounded to the nearest $10. For Franklin and Grand
+    # Isle they use the average across Vermont's twelve HUD income-limit areas, rounded
+    # to the nearest $10 before the multiplier (32 V.S.A. § 6061(20)).
   - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(B)
     href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
+  - title: 32 V.S.A. § 6061(20), very low-income limit
+    href: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - title: 2025 Renter Credit Website Calculator, 2025 Income Limits sheet
+    href: https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+  - title: 2024 Renter Credit Website Calculator, 2024 Income Limits sheet
+    href: https://tax.vermont.gov/sites/tax/files/documents/2024%20Renter%20Credit%20Website%20Calculator.xlsx
+  - title: 2023 Renter Credit Website Calculator, 2023 Income Limits sheet
+    href: https://web.archive.org/web/20250526044955/https://tax.vermont.gov/document/2023-renter-credit-website-calculator
+  - title: HUD FY2025 Section 8 income limits (l50 columns)
+    href: https://www.huduser.gov/portal/datasets/il/il25/Section8-FY25.xlsx
+  - title: HUD FY2024 Section 8 income limits (l50 columns)
+    href: https://www.huduser.gov/portal/datasets/il/il24/Section8-FY24.xlsx
+  - title: HUD FY2023 Section 8 income limits (l50 columns)
+    href: https://www.huduser.gov/portal/datasets/il/il23/Section8-FY23.xlsx
+  - title: HUD FY2022 Section 8 income limits (l50 columns)
+    href: https://www.huduser.gov/portal/datasets/il/il22/Section8-FY22.xlsx
+  - title: HUD FY2021 Section 8 income limits (l50 columns)
+    href: https://www.huduser.gov/portal/datasets/il/il21/Section8-FY21.xlsx
   - title: 2021 Vermont instruction booklet
     href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=34
   - title: 2022 Vermont instruction booklet
@@ -187,7 +209,7 @@ metadata:
     2024-01-01: 49_400
     2025-01-01: 53_950
   WINDSOR_COUNTY_VT:
-    2021-01-01: 31_350
+    2021-01-01: 31_550
     2022-01-01: 35_250
     2023-01-01: 37_350
     2024-01-01: 52_260
@@ -263,7 +285,7 @@ metadata:
     2021-01-01: 37_000
     2022-01-01: 41_150
     2023-01-01: 43_600
-    2024-01-01: 61_960
+    2024-01-01: 61_690
     2025-01-01: 64_610
   WINDHAM_COUNTY_VT:
     2021-01-01: 35_250
@@ -566,7 +588,7 @@ metadata:
   FRANKLIN_COUNTY_VT:
     2021-01-01: 49_980
     2022-01-01: 55_100
-    2023-01-01: 56_250
+    2023-01-01: 58_320
     2024-01-01: 80_510
     2025-01-01: 87_390
   GRAND_ISLE_COUNTY_VT:
@@ -578,7 +600,7 @@ metadata:
   LAMOILLE_COUNTY_VT:
     2021-01-01: 48_550
     2022-01-01: 53_150
-    2023-01-01: 58_320
+    2023-01-01: 56_250
     2024-01-01: 76_570
     2025-01-01: 83_590
   ORANGE_COUNTY_VT:
@@ -604,7 +626,9 @@ metadata:
     2022-01-01: 56_700
     2023-01-01: 60_050
     2024-01-01: 84_960
-    2025-01-01: 88_880
+    # The TY2025 booklet prints $88,880. The 2025 calculator has $88,990, which is
+    # 1.3 times HUD's FY2025 limit of $68,450 ($88,985), rounded to the nearest $10.
+    2025-01-01: 88_990
   WINDHAM_COUNTY_VT:
     2021-01-01: 48_550
     2022-01-01: 53_150
@@ -640,7 +664,7 @@ metadata:
     2021-01-01: 63_300
     2022-01-01: 70_850
     2023-01-01: 75_000
-    2024-01-01: 102_850
+    2024-01-01: 102_050
     2025-01-01: 111_410
   ESSEX_COUNTY_VT:
     2021-01-01: 51_700

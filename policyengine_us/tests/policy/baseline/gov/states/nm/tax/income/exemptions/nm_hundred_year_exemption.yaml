@@ -51,3 +51,110 @@
     filing_status: SINGLE
   output:
     nm_hundred_year_exemption: 10_000
+
+
+- name: 2025 claimable spouse aged 100 or older gets no exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 100
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # NMSA 7-2-5.7: an individual 100 or older "who is not a dependent of
+    # another individual".
+    nm_hundred_year_exemption: 0
+
+- name: 2025 claimable spouse aged 100 or older gets no exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 100
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # NMSA 7-2-5.7: an individual 100 or older "who is not a dependent of
+    # another individual".
+    nm_hundred_year_exemption: 0
+
+- name: 2025 spouse aged 100 or older keeps the exemption when the other spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 100
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # Half of the joint income, as for any one eligible spouse.
+    nm_hundred_year_exemption: 5_000
+
+- name: 2025 spouse aged 100 or older keeps the exemption when the other spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 100
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # Half of the joint income, as for any one eligible spouse.
+    nm_hundred_year_exemption: 5_000

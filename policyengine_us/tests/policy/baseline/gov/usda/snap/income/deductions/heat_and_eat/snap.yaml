@@ -1,0 +1,122 @@
+# PolicyBench snapshot facts and takeup defaults. Leaf input aliases mirror
+# the US Simulation adapter, which Core's YAML SimulationBuilder bypasses.
+- name: Case 1, PolicyBench scenario_080 PA household receives SNAP without the heat-and-eat SUA.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income_before_lsr: 0
+        bank_account_assets: 19_827.646484375
+        financial_assistance: 3_600
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains_before_response: 924
+        other_medical_expenses: 12
+        over_the_counter_health_expenses: 100
+        qualified_dividend_income: 16
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        first_home_mortgage_balance: 93_000
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_energy_subsidy: 2_000
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+        household_vehicles_value: 3_570
+  output:
+    snap: 3_270
+
+- name: Case 2, PolicyBench scenario_100 MT household receives SNAP without the heat-and-eat SUA.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income_before_lsr: 5_914.720703125
+        bank_account_assets: 2_800
+        employer_sponsored_insurance_premiums: 20_643.525390625
+        fsla_overtime_premium: 709.7664794921875
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 564
+        hourly_wage: 2.319999933242798
+        hours_worked_last_week: 55
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 564
+        other_medical_expenses: 500
+        over_the_counter_health_expenses: 480
+        roth_401k_contributions_desired: 681
+        roth_ira_contributions_desired: 279.67999267578125
+        traditional_401k_contributions_desired: 3_859
+        traditional_ira_contributions_desired: 180.32000732421875
+        weekly_hours_worked_before_lsr: 55
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      person2:
+        age: 6
+        employment_income_before_lsr: 0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      person3:
+        age: 5
+        employment_income_before_lsr: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members: [person1]
+      marital_unit_2:
+        members: [person2]
+      marital_unit_3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+        household_vehicles_value: 1_980.88232421875
+  output:
+    snap: 7_002

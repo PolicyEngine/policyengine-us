@@ -15,7 +15,11 @@ class dc_deduction_indiv(Variable):
 
     def formula(person, period, parameters):
         tax_unit_deduction = person.tax_unit("dc_deduction_joint", period)
-        person_agi = person("dc_agi", period)
+        # Each spouse's DC AGI when filing separately. The parts add up to the
+        # joint deduction, so the joint computation is unaffected.
+        person_agi = person("dc_agi", period) + person(
+            "dc_separate_capital_loss_adjustment", period
+        )
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         tax = parameters(period).gov.states.dc.tax.income
