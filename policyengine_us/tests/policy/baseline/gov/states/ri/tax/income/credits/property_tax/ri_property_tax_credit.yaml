@@ -78,9 +78,8 @@
   output:
     ri_property_tax_credit: 300
 
-- name: 2025 - No credit for income above cutoff ($40,731)
-  # Income above $40,731 makes filer ineligible
-  absolute_error_margin: 0.3
+- name: 2025 - No credit for income above cutoff ($40,730)
+  # 2025 RI-1040H Part 1E: household income must be $40,730 or less.
   period: 2025
   input:
     state_code: RI
@@ -1963,3 +1962,56 @@
   output:
     ri_property_tax_credit_eligible: [true, true]
     ri_property_tax_credit: [100, 100]
+
+# Public final-credit controls use known program income only to isolate the
+# precise financial boundary. Eligibility is derived, never forced.
+# 2025 RI-1040H, Part 1E and physical page 3: household income is
+# $40,730.00 or less. These fractional cases preserve the existing raw
+# engine precision; they do not assert a rule for rounding a filed return.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%201040H_w.pdf
+- name: Case 14, at-ceiling program income reaches the public maximum credit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_730
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # 4000 - 6% * 40730 = 1556.20; the 2025 maximum limits this to 700.
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
+
+- name: Case 15, cent-above program income fails the public credit despite positive tentative arithmetic.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_730.01
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    # Above the inclusive 40730 ceiling, eligibility fails even though
+    # 4000 - 6% * 40730.01 = 1556.1994 would exceed the maximum.
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
