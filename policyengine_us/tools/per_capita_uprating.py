@@ -215,7 +215,10 @@ def add_per_capita_uprating(system) -> None:
     for path in sorted(totals):
         _add_per_capita_parameter(system.parameters, path)
     for variable in system.variables.values():
-        if is_national_total_path(variable.uprating):
+        # A reform can replace an input with a computed variable, which inherits
+        # the input's uprating but never uses it. Assigning it would count as
+        # declaring uprating on a computed variable, which core rejects.
+        if variable.is_input_variable() and is_national_total_path(variable.uprating):
             variable.uprating = per_capita_path(variable.uprating)
 
 

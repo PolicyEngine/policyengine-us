@@ -89,7 +89,7 @@ def create_ut_hb210_s2() -> Reform:
     class reform(Reform):
         def apply(self):
             self.modify_parameters(modify_parameters)
-            self.add_variable(ut_hb210_s2_marriage_credit)
+            self.update_variable(ut_hb210_s2_marriage_credit)
 
     return reform
 
