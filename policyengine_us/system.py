@@ -18,6 +18,7 @@ from policyengine_us.variables.household.demographic.geographic.state_code impor
     StateCode,
 )
 from policyengine_us.tools.parameters import (
+    EARLIEST_STRUCTURAL_REFORM_YEAR,
     FIRST_MODELED_YEAR,
     backdate_parameters,
 )
@@ -68,8 +69,10 @@ install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2024
-DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
+CURRENT_YEAR = 2026
+# Structural-reform checks start here rather than at CURRENT_YEAR, so moving the
+# default calculation year does not stop reforms from earlier years applying.
+DEFAULT_START_DATE = f"{EARLIEST_STRUCTURAL_REFORM_YEAR}-01-01"
 
 # Certified Microcosm build (primary-source US microdata), pinned by build id.
 # Microcosm ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
@@ -98,11 +101,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         If no reform is applied, the system will be initialized with the
         default tax/benefit parameters.
 
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     variables_dir = COUNTRY_DIR / "variables"
@@ -327,11 +330,11 @@ class Simulation(TobCalculationMixin, SPMSimulationMixin, CoreSimulation):
     does not include society-wide microdata.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -494,11 +497,11 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     thus suitable for society-level impacts.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
         dataset_end_year(int | None): Optional; The final year to create when
         automatically extending an entity-level single-year dataset. Defaults
         to the latest supported economic-assumption year. This option applies

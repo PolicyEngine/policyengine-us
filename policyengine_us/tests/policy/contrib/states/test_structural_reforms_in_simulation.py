@@ -9,13 +9,22 @@ them.
 """
 
 from functools import lru_cache
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
+from policyengine_us.reforms.states.nd.eitc.nd_eitc_reform import (
+    create_nd_eitc_reform,
+)
 from policyengine_us.reforms.states.ut.ut_hb210_s2 import ut_hb210_s2
+from policyengine_us.system import DEFAULT_START_DATE, system
+from policyengine_us.tools.parameters import (
+    EARLIEST_STRUCTURAL_REFORM_YEAR,
+    STRUCTURAL_REFORM_CHECK_YEARS,
+)
 from policyengine_us.tools.per_capita_uprating import (
     is_national_total_path,
     per_capita_path,
@@ -105,6 +114,43 @@ def _baseline_utah_non_refundable_credits():
         "ut_non_refundable_credits", PERIOD
     )
     return float(np.asarray(baseline_credits)[0])
+
+
+def _parameters_with_north_dakota_eitc_on_only_in(year):
+    # Clone only the states subtree, so the test builds no full parameter tree.
+    states = system.parameters.gov.contrib.states.clone()
+    states.parent = None
+    states.nd.child_poverty_impact_dashboard.eitc.in_effect.update(
+        period=f"year:{year}:1", value=True
+    )
+    return SimpleNamespace(gov=SimpleNamespace(contrib=SimpleNamespace(states=states)))
+
+
+LAST_CHECKED_YEAR = EARLIEST_STRUCTURAL_REFORM_YEAR + STRUCTURAL_REFORM_CHECK_YEARS - 1
+
+
+@pytest.mark.parametrize(
+    "switch_year",
+    [
+        EARLIEST_STRUCTURAL_REFORM_YEAR,
+        EARLIEST_STRUCTURAL_REFORM_YEAR + 1,
+        LAST_CHECKED_YEAR,
+    ],
+)
+def test_reform_is_found_when_switch_is_on_in_a_checked_year(switch_year):
+    parameters = _parameters_with_north_dakota_eitc_on_only_in(switch_year)
+
+    assert create_nd_eitc_reform(parameters, DEFAULT_START_DATE) is not None
+
+
+@pytest.mark.parametrize(
+    "switch_year",
+    [EARLIEST_STRUCTURAL_REFORM_YEAR - 1, LAST_CHECKED_YEAR + 1],
+)
+def test_reform_is_not_found_when_switch_is_on_outside_checked_years(switch_year):
+    parameters = _parameters_with_north_dakota_eitc_on_only_in(switch_year)
+
+    assert create_nd_eitc_reform(parameters, DEFAULT_START_DATE) is None
 
 
 def test_eitc_reforms_that_replace_input_credits_build_and_calculate():

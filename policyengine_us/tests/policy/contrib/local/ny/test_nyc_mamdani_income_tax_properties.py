@@ -18,7 +18,7 @@ switching the reform on through ``gov.local.ny.mamdani_income_tax.in_effect``
 - it is zero outside NYC; and
 - it is zero in years before ``in_effect`` turns on, even though the factory
   installs the reform for the whole simulation when ``in_effect`` is true on
-  January 1 of any of the five years from the simulation's start instant.
+  January 1 of any year checked from the simulation's start instant.
 """
 
 import functools

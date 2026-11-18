@@ -65,7 +65,7 @@ def create_nc_cdcc_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         p_at_period = p(current_period)
         if p_at_period.in_effect:
             reform_active = True

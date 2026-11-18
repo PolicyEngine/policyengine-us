@@ -16,7 +16,7 @@ def create_nyc_mamdani_income_tax() -> Reform:
             taxable_income = tax_unit("nyc_taxable_income", period)
             p = parameters(period).gov.local.ny.mamdani_income_tax
             # The factory installs the reform for the whole simulation when
-            # in_effect is true on January 1 of any of the five years from the
+            # in_effect is true on January 1 of any year checked from the
             # simulation's start instant, so gate each period on its own
             # in_effect value.
             return where(p.in_effect, p.rate.calc(taxable_income), 0)
@@ -70,7 +70,7 @@ def create_nyc_mamdani_income_tax_reform(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
