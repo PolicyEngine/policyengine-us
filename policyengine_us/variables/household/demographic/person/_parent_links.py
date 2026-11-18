@@ -20,6 +20,9 @@ Rules shared by every formula that reads the links:
 - Input that breaks the contract gets a defined, member-order-free fallback,
   not a legal identity: an id that matches two members of one group
   resolves to neither, so it acts as an absent parent.
+- An id that names a parent outside the simulation must be unique to that
+  parent and the same for each of their children, because the SSI spousal
+  allocation compares ids to find siblings.
 - A person is a parent when own_children_in_household is positive or when a
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep
@@ -127,9 +130,14 @@ def tax_unit_parent_indices(person, period):
     )
 
 
-def linked_child_count(person, period):
-    """Count the co-resident people whose parent ids name each person."""
+def linked_child_count(person, period, children=None):
+    """Count the co-resident people whose parent ids name each person.
+
+    ``children`` limits the count to a boolean selection of people.
+    """
     first, second = co_resident_parent_indices(person, period)
+    if children is not None:
+        first, second = first[children], second[children]
     parents = np.concatenate((first, second))
     return np.bincount(parents[parents >= 0], minlength=person.count)
 
@@ -143,4 +151,18 @@ def unlinked_parent(person, period):
     linked = linked_child_count(person, period)
     return is_parent & (
         (linked == 0) | (person("own_children_in_household", period) > linked)
+    )
+
+
+def is_parent_of_any(person, period, children):
+    """Whether any of a boolean selection of people is each person's child.
+
+    A child with ids belongs to the co-resident parents they name. A child
+    without ids may belong to any unlinked parent in their tax unit, which
+    cannot tell a grandparent or an unrelated parent from the child's parent.
+    """
+    children_without_ids = children & ~has_parent_ids(person, period)
+    return (linked_child_count(person, period, children) > 0) | (
+        unlinked_parent(person, period)
+        & (person.tax_unit.sum(children_without_ids) > 0)
     )

@@ -1,0 +1,18 @@
+description: Iowa uses federal poverty guidelines from this many years before the modeled heating season for the income limit and poverty-level points under the Low Income Home Energy Assistance Program.
+# Verified for FY26 only: the October 1, 2025 to September 30, 2026 limits
+# ($31,300 for one person plus $11,000 per additional member) equal exactly
+# 200% of the 2025 HHS guideline. Model period 2026 therefore reads the 2025
+# guideline. This is a relative year selection, not a fixed guideline year;
+# earlier and later Iowa policy remains unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Iowa LIHEAP federal poverty guideline year lag
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix B Poverty Guidelines (FY26 October 1, 2025, to September 30, 2026 annual gross income table)
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=89
+    - title: Iowa HHS Low-Income Home Energy Assistance program page (200% of the 2025 federal poverty guidelines for October 1, 2025 to September 30, 2026)
+      href: https://hhs.iowa.gov/programs/programs-and-services/liheap

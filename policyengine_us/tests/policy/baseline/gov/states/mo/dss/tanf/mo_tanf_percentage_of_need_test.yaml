@@ -1,53 +1,71 @@
-- name: Passes when countable income below 34.526% of need
+- name: Passes when countable income falls below the printed need row
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_countable_income: 200
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
   output:
-    mo_tanf_percentage_of_need_test: true  # 200 < 846 * 0.34526 = 292.09
+    mo_tanf_percentage_of_need_test: true  # $200 < $292.
 
-- name: Passes when countable income just below limit
+- name: Passes when countable income falls just below the limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 291.99
+    mo_tanf_assistance_unit_size: 3
+  output:
+    mo_tanf_percentage_of_need_test: true  # $291.99 < $292.
+
+- name: Fails when countable income equals the limit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_countable_income: 292
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
   output:
-    mo_tanf_percentage_of_need_test: true  # 292 < 292.09
+    mo_tanf_percentage_of_need_test: false  # $292 equals the printed row.
 
-- name: Fails when countable income equals limit
-  period: 2024-01
-  input:
-    state_code: MO
-    mo_tanf_countable_income: 293
-    mo_tanf_standard_of_need: 846
-  output:
-    mo_tanf_percentage_of_need_test: false  # 293 > 292.09
-
-- name: Fails when countable income exceeds limit
+- name: Fails when countable income exceeds the limit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_countable_income: 300
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
   output:
     mo_tanf_percentage_of_need_test: false
 
-- name: Passes for family of 1 below limit
+- name: Passes for family of one below the printed limit
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_countable_income: 100
-    mo_tanf_standard_of_need: 393
+    mo_tanf_countable_income: 135.99
+    mo_tanf_assistance_unit_size: 1
   output:
-    mo_tanf_percentage_of_need_test: true  # 100 < 393 * 0.34526 = 135.67
+    mo_tanf_percentage_of_need_test: true  # $135.99 < $136.
 
-- name: Fails for family of 1 above limit
+- name: Fails for family of one at the printed limit
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_countable_income: 140
-    mo_tanf_standard_of_need: 393
+    mo_tanf_countable_income: 136
+    mo_tanf_assistance_unit_size: 1
   output:
-    mo_tanf_percentage_of_need_test: false  # 140 > 135.67
+    mo_tanf_percentage_of_need_test: false
+
+- name: Passes for family of sixteen below the printed limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 834.99
+    mo_tanf_assistance_unit_size: 16
+  output:
+    mo_tanf_percentage_of_need_test: true  # $834.99 < $835.
+
+- name: Fails for family of sixteen at the printed limit
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_countable_income: 835
+    mo_tanf_assistance_unit_size: 16
+  output:
+    mo_tanf_percentage_of_need_test: false

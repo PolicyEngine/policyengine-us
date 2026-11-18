@@ -1,0 +1,9 @@
+description: "Income threshold group for joint filers under the COLA means test: 0 = single; 1 = joint. OACT A9 uses 1; scenarios may supply another mapping."
+values:
+  0000-01-01: 1
+metadata:
+  label: Social Security COLA means-test joint filer group
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

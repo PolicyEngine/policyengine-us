@@ -1,0 +1,13 @@
+description: Iowa excludes these federal interest components from its itemized deductions.
+values:
+  1900-01-01: []
+  2018-01-01:
+    - deductible_mortgage_insurance_premiums
+  2020-01-01: []
+metadata:
+  unit: list
+  period: year
+  label: Iowa disallowed federal interest components
+  reference:
+    - title: Iowa DOR Nonconformity, Taxpayer Certainty and Disaster Tax Relief Act of 2019, section 102
+      href: https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/iowa-nonconformity-taxpayer-certainty-and-disaster-tax-relief-act-2019

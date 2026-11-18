@@ -92,3 +92,45 @@
   output:
     foreign_earned_income_exclusion: 0
     refundable_ctc_barred_by_section_911_exclusion: true
+
+# Section 911(c)(4)(A) treats the housing amount of a filer without
+# employer-provided housing as "a deduction allowable in computing adjusted
+# gross income". A filer who claims only that deduction (Form 2555 line 50)
+# excludes nothing, so section 24(d)(3) does not bar the refundable credit,
+# although the Schedule 8812 instructions bar every Form 2555 filer. The model
+# follows the statute.
+- name: A housing deduction alone does not bar the refundable credit
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: false
+
+- name: A housing deduction alone did not bar the credit in 2015 either
+  period: 2015
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: false
+
+- name: A housing exclusion with a housing deduction is still barred
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 2_000
+    foreign_housing_deduction: 1_000
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: true
+
+# The legacy aggregates include the housing deduction, so without Form 2555
+# leaves a positive aggregate is treated as an exclusion.
+- name: A positive legacy aggregate is still treated as an exclusion
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 1_000
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: true

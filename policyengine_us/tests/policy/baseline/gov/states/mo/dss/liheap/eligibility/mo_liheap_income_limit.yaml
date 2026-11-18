@@ -1,0 +1,37 @@
+# Missouri LIHEAP annual income limit: 12 x the published monthly 60% state
+# median income limit, which equals the HHS LIHEAP 60% SMI amount for the
+# household size divided by 12 and rounded to the nearest dollar.
+# FFY2026 (model year 2026) uses Missouri SMI 109,229: floor(109,229 x 0.6) =
+# 65,537 for four people. FFY2027 (model year 2027) uses SMI 113,137:
+# floor(113,137 x 0.6) = 67,882.
+
+- name: Case 1, FFY2026 published limits for household sizes 1, 4, 16 and 20.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO, MO, MO]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    mo_liheap_household_size: [1, 4, 16, 20]
+  output:
+    # Size 1: floor(65,537 x 0.52) = 34,079; 34,079 / 12 = 2,839.92 -> 2,840
+    #   monthly (Appendix K) -> 34,080.
+    # Size 4: 65,537 / 12 = 5,461.42 -> 5,461 -> 65,532.
+    # Size 16: floor(65,537 x 1.62) = 106,169; / 12 = 8,847.42 -> 8,847
+    #   -> 106,164.
+    # Size 20: floor(65,537 x 1.74) = 114,034; / 12 = 9,502.83 -> 9,503
+    #   -> 114,036.
+    mo_liheap_income_limit: [34_080, 65_532, 106_164, 114_036]
+
+- name: Case 2, FFY2027 published limits for household sizes 1 and 10.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MO, MO]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    mo_liheap_household_size: [1, 10]
+  output:
+    # Size 1: floor(67,882 x 0.52) = 35,298; 35,298 / 12 = 2,941.50 -> 2,942
+    #   monthly (MO 886-4576) -> 35,304.
+    # Size 10: floor(67,882 x 1.44) = 97,750; / 12 = 8,145.83 -> 8,146
+    #   -> 97,752.
+    mo_liheap_income_limit: [35_304, 97_752]

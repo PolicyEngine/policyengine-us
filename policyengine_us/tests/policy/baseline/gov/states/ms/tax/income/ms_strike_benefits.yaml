@@ -1,0 +1,23 @@
+# Line 38 includes "strike and lockout benefits paid by a union from union
+# dues, including both cash and the fair market value of goods received,
+# unless the facts clearly show that such benefits were intended as a
+# gift" (2025 Mississippi resident income tax instructions, page 10).
+
+- name: 2025, strike benefits are Mississippi income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: MS
+  output:
+    ms_agi: 60_000

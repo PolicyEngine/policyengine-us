@@ -30,7 +30,12 @@
     foreign_earned_income_exclusion: 0
     ctc_credit_limit_worksheet_b_applies: false
 
-- name: Housing deduction filer cannot use Worksheet B when worksheet deductions offset the stacking amount.
+- name: A filer claiming only the housing deduction is not barred, so Worksheet B applies.
+  # Section 24(d)(3) bars a taxpayer who "elects to exclude any amount from
+  # gross income under section 911"; the section 911(c)(4)(A) housing
+  # deduction is a deduction, not an exclusion. The Schedule 8812
+  # instructions would bar every Form 2555 filer; the model follows the
+  # statute, and Worksheet B reads the statutory bar.
   period: 2025
   input:
     ctc_qualifying_children: 2
@@ -38,7 +43,8 @@
     foreign_earned_income_exclusion_disallowed_deductions: 500
   output:
     foreign_earned_income_exclusion: 0
-    ctc_credit_limit_worksheet_b_applies: false
+    refundable_ctc_barred_by_section_911_exclusion: false
+    ctc_credit_limit_worksheet_b_applies: true
 
 - name: Does not apply in 2021, when the CTC was fully refundable.
   period: 2021

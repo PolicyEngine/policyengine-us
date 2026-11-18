@@ -186,3 +186,21 @@
   output:
     total_unemployment_compensation: 7_982
     ny_heap_countable_income: 7_980
+
+- name: Case 8, military retirement pay and a Survivor Benefit Plan annuity count as unearned income.
+  # Two one-person households aged 70. Chapter 8 D.12(a)(13) pensions and (14)
+  # payments from annuities (page 38); D.13 excludes neither. Household 1:
+  # 24,000 military retirement pay. Household 2: 9,600 Survivor Benefit Plan
+  # annuity (800 a month).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NY, NY]
+    age: [70, 70]
+    military_retirement_pay: [24_000, 0]
+    military_retirement_pay_survivors: [0, 9_600]
+    ssi: [0, 0]
+  output:
+    # D.14(c): floor(24,000 / 12) = 2,000 and floor(9,600 / 12) = 800 a month,
+    # annualized 24,000 and 9,600.
+    ny_heap_countable_income: [24_000, 9_600]

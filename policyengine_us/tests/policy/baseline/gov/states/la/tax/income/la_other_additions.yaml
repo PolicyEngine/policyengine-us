@@ -1,0 +1,18 @@
+- name: Case 1, default la_other_additions is zero
+  period: 2024
+  input:
+    state_code: LA
+    adjusted_gross_income: 50_000
+  output:
+    la_other_additions: 0
+    la_agi: 50_000
+
+- name: Case 2, la_other_additions increases LA AGI
+  period: 2024
+  input:
+    state_code: LA
+    adjusted_gross_income: 50_000
+    la_other_additions: 2_000
+  output:
+    la_other_additions: 2_000
+    la_agi: 52_000

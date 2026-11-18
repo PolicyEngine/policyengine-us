@@ -12,21 +12,31 @@ rates:
     reference:
       # TCJA adjustments applied in (j)
       # Rate reductions applied in (i)
-      - title: 26 U.S. Code § 1 - Tax imposed (a-d) 
+      # Before 2018: the (a)-(d) tables as modified by (i)(1)-(3).
+      - title: 26 U.S. Code § 1 - Tax imposed (a-d)
         href: https://www.law.cornell.edu/uscode/text/26/1#i
+      - title: 26 U.S. Code § 1(j)(2) - Rate tables for 2018 and later
+        href: https://www.law.cornell.edu/uscode/text/26/1#j_2
   1:
+    2015-01-01: 0.1
     2018-01-01: 0.1
   2:
+    2015-01-01: 0.15
     2018-01-01: 0.12
   3:
+    2015-01-01: 0.25
     2018-01-01: 0.22
   4:
+    2015-01-01: 0.28
     2018-01-01: 0.24
   5:
+    2015-01-01: 0.33
     2018-01-01: 0.32
   6:
+    2015-01-01: 0.35
     2018-01-01: 0.35
   7:
+    2015-01-01: 0.396
     2018-01-01: 0.37
 thresholds:
   description: The upper threshold for each income tax bracket, for each tax filer type.
@@ -44,6 +54,8 @@ thresholds:
     reference:
       - title: 26 U.S. Code § 1(j) - Tax rate tables
         href: https://www.law.cornell.edu/uscode/text/26/1#j
+      - title: "2027 IRS data release #page 4-6"
+        href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=4
       - title: 2026 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=10
       - title: 2025 IRS data release
@@ -60,6 +72,12 @@ thresholds:
         href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
       - title: 2019 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+      - title: "2017 IRS data release, Rev. Proc. 2016-55 section 3.01 #page 7-8"
+        href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=7
+      - title: "2016 IRS data release, Rev. Proc. 2015-53 section 3.01 #page 5-7"
+        href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf#page=5
+      - title: "2015 IRS data release, Rev. Proc. 2014-61 section 3.01 #page 5-6"
+        href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf#page=5
       - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
         # 1. Tax Parameters.
         href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
@@ -69,6 +87,9 @@ thresholds:
   1:
     SINGLE:
       values:
+        2015-01-01: 9_225
+        2016-01-01: 9_275
+        2017-01-01: 9_325
         2018-01-01: 9_525
         2019-01-01: 9_700
         2020-01-01: 9_875
@@ -78,6 +99,7 @@ thresholds:
         2024-01-01: 11_600
         2025-01-01: 11_925
         2026-01-01: 12_400
+        2027-01-01: 12_800
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -86,6 +108,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 18_450
+        2016-01-01: 18_550
+        2017-01-01: 18_650
         2018-01-01: 19_050
         2019-01-01: 19_400
         2020-01-01: 19_750
@@ -95,6 +120,7 @@ thresholds:
         2024-01-01: 23_200
         2025-01-01: 23_850
         2026-01-01: 24_800
+        2027-01-01: 25_600
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -103,6 +129,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 9_225
+        2016-01-01: 9_275
+        2017-01-01: 9_325
         2018-01-01: 9_525
         2019-01-01: 9_700
         2020-01-01: 9_875
@@ -112,6 +141,7 @@ thresholds:
         2024-01-01: 11_600
         2025-01-01: 11_925
         2026-01-01: 12_400
+        2027-01-01: 12_800
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -120,6 +150,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 13_150
+        2016-01-01: 13_250
+        2017-01-01: 13_350
         2018-01-01: 13_600
         2019-01-01: 13_850
         2020-01-01: 14_100
@@ -129,6 +162,7 @@ thresholds:
         2024-01-01: 16_550
         2025-01-01: 17_000
         2026-01-01: 17_700
+        2027-01-01: 18_250
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -137,6 +171,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 18_450
+        2016-01-01: 18_550
+        2017-01-01: 18_650
         2018-01-01: 19_050
         2019-01-01: 19_400
         2020-01-01: 19_750
@@ -146,6 +183,7 @@ thresholds:
         2024-01-01: 23_200
         2025-01-01: 23_850
         2026-01-01: 24_800
+        2027-01-01: 25_600
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -155,6 +193,9 @@ thresholds:
   2:
     SINGLE:
       values:
+        2015-01-01: 37_450
+        2016-01-01: 37_650
+        2017-01-01: 37_950
         2018-01-01: 38_700
         2019-01-01: 39_475
         2020-01-01: 40_125
@@ -164,6 +205,7 @@ thresholds:
         2024-01-01: 47_150
         2025-01-01: 48_475
         2026-01-01: 50_400
+        2027-01-01: 52_025
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -172,6 +214,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 74_900
+        2016-01-01: 75_300
+        2017-01-01: 75_900
         2018-01-01: 77_400
         2019-01-01: 78_950
         2020-01-01: 80_250
@@ -181,6 +226,7 @@ thresholds:
         2024-01-01: 94_300
         2025-01-01: 96_950
         2026-01-01: 100_800
+        2027-01-01: 104_050
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -189,6 +235,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 37_450
+        2016-01-01: 37_650
+        2017-01-01: 37_950
         2018-01-01: 38_700
         2019-01-01: 39_475
         2020-01-01: 40_125
@@ -198,6 +247,7 @@ thresholds:
         2024-01-01: 47_150
         2025-01-01: 48_475
         2026-01-01: 50_400
+        2027-01-01: 52_025
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -206,6 +256,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 50_200
+        2016-01-01: 50_400
+        2017-01-01: 50_800
         2018-01-01: 51_800
         2019-01-01: 52_850
         2020-01-01: 53_700
@@ -215,6 +268,7 @@ thresholds:
         2024-01-01: 63_100
         2025-01-01: 64_850
         2026-01-01: 67_450
+        2027-01-01: 69_650
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -223,6 +277,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 74_900
+        2016-01-01: 75_300
+        2017-01-01: 75_900
         2018-01-01: 77_400
         2019-01-01: 78_950
         2020-01-01: 80_250
@@ -232,6 +289,7 @@ thresholds:
         2024-01-01: 94_300
         2025-01-01: 96_950
         2026-01-01: 100_800
+        2027-01-01: 104_050
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -241,6 +299,9 @@ thresholds:
   3:
     SINGLE:
       values:
+        2015-01-01: 90_750
+        2016-01-01: 91_150
+        2017-01-01: 91_900
         2018-01-01: 82_500
         2019-01-01: 84_200
         2020-01-01: 85_525
@@ -250,6 +311,7 @@ thresholds:
         2024-01-01: 100_525
         2025-01-01: 103_350
         2026-01-01: 105_700
+        2027-01-01: 109_125
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -258,6 +320,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 151_200
+        2016-01-01: 151_900
+        2017-01-01: 153_100
         2018-01-01: 165_000
         2019-01-01: 168_400
         2020-01-01: 171_050
@@ -267,6 +332,7 @@ thresholds:
         2024-01-01: 201_050
         2025-01-01: 206_700
         2026-01-01: 211_400
+        2027-01-01: 218_250
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -275,6 +341,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 75_600
+        2016-01-01: 75_950
+        2017-01-01: 76_550
         2018-01-01: 82_500
         2019-01-01: 84_200
         2020-01-01: 85_525
@@ -284,6 +353,7 @@ thresholds:
         2024-01-01: 100_525
         2025-01-01: 103_350
         2026-01-01: 105_700
+        2027-01-01: 109_125
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -292,6 +362,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 129_600
+        2016-01-01: 130_150
+        2017-01-01: 131_200
         2018-01-01: 82_500
         2019-01-01: 84_200
         2020-01-01: 85_500
@@ -301,6 +374,7 @@ thresholds:
         2024-01-01: 100_500
         2025-01-01: 103_350
         2026-01-01: 105_700
+        2027-01-01: 109_100
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -309,6 +383,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 151_200
+        2016-01-01: 151_900
+        2017-01-01: 153_100
         2018-01-01: 165_000
         2019-01-01: 168_400
         2020-01-01: 171_050
@@ -318,6 +395,7 @@ thresholds:
         2024-01-01: 201_050
         2025-01-01: 206_700
         2026-01-01: 211_400
+        2027-01-01: 218_250
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -327,6 +405,9 @@ thresholds:
   4:
     SINGLE:
       values:
+        2015-01-01: 189_300
+        2016-01-01: 190_150
+        2017-01-01: 191_650
         2018-01-01: 157_500
         2019-01-01: 160_725
         2020-01-01: 163_300
@@ -336,6 +417,7 @@ thresholds:
         2024-01-01: 191_950
         2025-01-01: 197_300
         2026-01-01: 201_775
+        2027-01-01: 208_325
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -344,6 +426,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 230_450
+        2016-01-01: 231_450
+        2017-01-01: 233_350
         2018-01-01: 315_000
         2019-01-01: 321_450
         2020-01-01: 326_600
@@ -353,6 +438,7 @@ thresholds:
         2024-01-01: 383_900
         2025-01-01: 394_600
         2026-01-01: 403_550
+        2027-01-01: 416_650
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -361,6 +447,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 115_225
+        2016-01-01: 115_725
+        2017-01-01: 116_675
         2018-01-01: 157_500
         2019-01-01: 160_725
         2020-01-01: 163_300
@@ -370,16 +459,7 @@ thresholds:
         2024-01-01: 191_950
         2025-01-01: 197_300
         2026-01-01: 201_775
-        # Internal forecast, will update when CBO forecast is released.
-        2027-01-01: 203_700
-        2028-01-01: 207_950
-        2029-01-01: 212_100
-        2030-01-01: 216_350
-        2031-01-01: 220_600
-        2032-01-01: 224_950
-        2033-01-01: 229_400
-        2034-01-01: 233_950
-        2035-01-01: 238_550  
+        2027-01-01: 208_325
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -388,6 +468,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 209_850
+        2016-01-01: 210_800
+        2017-01-01: 212_500
         2018-01-01: 157_500
         2019-01-01: 160_700
         2020-01-01: 163_300
@@ -397,6 +480,7 @@ thresholds:
         2024-01-01: 191_950
         2025-01-01: 197_300
         2026-01-01: 201_750
+        2027-01-01: 208_300
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -405,6 +489,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 230_450
+        2016-01-01: 231_450
+        2017-01-01: 233_350
         2018-01-01: 315_000
         2019-01-01: 321_450
         2020-01-01: 326_600
@@ -414,6 +501,7 @@ thresholds:
         2024-01-01: 383_900
         2025-01-01: 394_600
         2026-01-01: 403_550
+        2027-01-01: 416_650
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -423,6 +511,9 @@ thresholds:
   5:
     SINGLE:
       values:
+        2015-01-01: 411_500
+        2016-01-01: 413_350
+        2017-01-01: 416_700
         2018-01-01: 200_000
         2019-01-01: 204_100
         2020-01-01: 207_350
@@ -432,6 +523,7 @@ thresholds:
         2024-01-01: 243_725
         2025-01-01: 250_525
         2026-01-01: 256_225
+        2027-01-01: 264_550
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -440,6 +532,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 411_500
+        2016-01-01: 413_350
+        2017-01-01: 416_700
         2018-01-01: 400_000
         2019-01-01: 408_200
         2020-01-01: 414_700
@@ -449,6 +544,7 @@ thresholds:
         2024-01-01: 487_450
         2025-01-01: 501_050
         2026-01-01: 512_450
+        2027-01-01: 529_100
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -457,6 +553,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 205_750
+        2016-01-01: 206_675
+        2017-01-01: 208_350
         2018-01-01: 200_000
         2019-01-01: 204_100
         2020-01-01: 207_350
@@ -466,16 +565,7 @@ thresholds:
         2024-01-01: 243_725
         2025-01-01: 250_525
         2026-01-01: 256_225
-        # Internal forecast, will update when CBO forecast is released.
-        2027-01-01: 262_800
-        2028-01-01: 268_250
-        2029-01-01: 273_600
-        2030-01-01: 279_050
-        2031-01-01: 284_550
-        2032-01-01: 290_150
-        2033-01-01: 295_900
-        2034-01-01: 301_750
-        2035-01-01: 307_750      
+        2027-01-01: 264_550
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -484,6 +574,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 411_500
+        2016-01-01: 413_350
+        2017-01-01: 416_700
         2018-01-01: 200_000
         2019-01-01: 204_100
         2020-01-01: 207_350
@@ -493,16 +586,7 @@ thresholds:
         2024-01-01: 243_700
         2025-01-01: 250_500
         2026-01-01: 256_200
-        # Internal forecast, will update when CBO forecast is released.
-        2027-01-01: 262_800
-        2028-01-01: 268_250
-        2029-01-01: 273_600
-        2030-01-01: 279_050
-        2031-01-01: 284_550
-        2032-01-01: 290_150
-        2033-01-01: 295_900
-        2034-01-01: 301_750
-        2035-01-01: 307_750
+        2027-01-01: 264_550
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -511,6 +595,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 411_500
+        2016-01-01: 413_350
+        2017-01-01: 416_700
         2018-01-01: 400_000
         2019-01-01: 408_200
         2020-01-01: 414_700
@@ -520,6 +607,7 @@ thresholds:
         2024-01-01: 487_450
         2025-01-01: 501_050
         2026-01-01: 512_450
+        2027-01-01: 529_100
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -529,6 +617,9 @@ thresholds:
   6:
     SINGLE:
       values:
+        2015-01-01: 413_200
+        2016-01-01: 415_050
+        2017-01-01: 418_400
         2018-01-01: 500_000
         2019-01-01: 510_300
         2020-01-01: 518_400
@@ -538,6 +629,7 @@ thresholds:
         2024-01-01: 609_350
         2025-01-01: 626_350
         2026-01-01: 640_600
+        2027-01-01: 661_375
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -546,6 +638,9 @@ thresholds:
             interval: 25
     JOINT:
       values:
+        2015-01-01: 464_850
+        2016-01-01: 466_950
+        2017-01-01: 470_700
         2018-01-01: 600_000
         2019-01-01: 612_350
         2020-01-01: 622_050
@@ -555,6 +650,7 @@ thresholds:
         2024-01-01: 731_200
         2025-01-01: 751_600
         2026-01-01: 768_700
+        2027-01-01: 793_650
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -563,6 +659,9 @@ thresholds:
             interval: 50
     SEPARATE:
       values:
+        2015-01-01: 232_425
+        2016-01-01: 233_475
+        2017-01-01: 235_350
         2018-01-01: 300_000
         2019-01-01: 306_175
         2020-01-01: 311_025
@@ -572,6 +671,7 @@ thresholds:
         2024-01-01: 365_600
         2025-01-01: 375_800
         2026-01-01: 384_350
+        2027-01-01: 396_825
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -580,6 +680,9 @@ thresholds:
             interval: 25
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: 439_000
+        2016-01-01: 441_000
+        2017-01-01: 444_550
         2018-01-01: 500_000
         2019-01-01: 510_300
         2020-01-01: 518_400
@@ -589,6 +692,7 @@ thresholds:
         2024-01-01: 609_350
         2025-01-01: 626_350
         2026-01-01: 640_600
+        2027-01-01: 661_350
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -597,6 +701,9 @@ thresholds:
             interval: 50
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: 464_850
+        2016-01-01: 466_950
+        2017-01-01: 470_700
         2018-01-01: 600_000
         2019-01-01: 612_350
         2020-01-01: 622_050
@@ -606,6 +713,7 @@ thresholds:
         2024-01-01: 731_200
         2025-01-01: 751_600
         2026-01-01: 768_700
+        2027-01-01: 793_650
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -615,16 +723,21 @@ thresholds:
   7:
     SINGLE:
       values:
+        2015-01-01: .inf
         2018-01-01: .inf
     JOINT:
       values:
+        2015-01-01: .inf
         2018-01-01: .inf
     SEPARATE:
       values:
+        2015-01-01: .inf
         2018-01-01: .inf
     HEAD_OF_HOUSEHOLD:
       values:
+        2015-01-01: .inf
         2018-01-01: .inf
     SURVIVING_SPOUSE:
       values:
+        2015-01-01: .inf
         2018-01-01: .inf

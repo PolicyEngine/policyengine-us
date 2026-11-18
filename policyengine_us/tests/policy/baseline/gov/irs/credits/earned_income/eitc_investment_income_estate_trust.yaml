@@ -358,3 +358,150 @@
     adjusted_gross_income: 31_601
     # 4,213 - 15.98% x (31,601 - 22,720) = 4,213 - 1,419.1838.
     eitc: 2_793.8162
+
+# Royalties received through an estate or trust. Section 32(i)(2)(C) counts
+# "gross income from rents or royalties not derived in the ordinary course of
+# a trade or business" over the deductions and interest allocable to it, and
+# section 662(b) keeps the trust's character for the beneficiary. A
+# beneficiary reports these Schedule K-1 (Form 1041) box 5 royalties in
+# Schedule E Part III column (f). Publication 596 (2025) Worksheet 1 line 8
+# takes royalties only from Schedule E line 23b, so it leaves them out; the
+# model follows the statute. The 2025 limit is 11,950 (Rev. Proc. 2024-40,
+# section 2.06(2)).
+
+- name: Trust royalties alone exceed the 2025 investment income limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    estate_income: 12_000
+    estate_royalty_income: 12_000
+  output:
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false
+    # Worksheet 1 would count none of it, so the test would pass.
+
+- name: Trust royalties at the 2025 limit pass
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 950
+    estate_income: 11_000
+    estate_royalty_income: 11_000
+  output:
+    eitc_relevant_investment_income: 11_950
+    eitc_investment_income_eligible: true
+
+- name: A net royalty loss floors its basket at zero and never offsets interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 11_950
+    estate_income: -2_000
+    estate_royalty_income: -2_000
+  output:
+    eitc_relevant_investment_income: 11_950
+    eitc_investment_income_eligible: true
+
+- name: Royalties and passive estate income are separate baskets
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    estate_income: 1_000
+    estate_royalty_income: 3_000
+    passive_estate_income: -2_000
+  output:
+    # max(0, 3,000) royalties + max(0, -2,000) passive: the passive loss
+    # cannot reduce the royalty basket.
+    eitc_relevant_investment_income: 3_000
+
+- name: Trust royalties end the credit for an otherwise eligible couple with one child
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        estate_income: 12_000
+        estate_royalty_income: 12_000
+      spouse:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # AGI is below the 2025 joint phase-out start of 30,470, so with
+    # estate_royalty_income of zero the model gives the one-child maximum,
+    # 4,328.
+    eitc_relevant_investment_income: 12_000
+    eitc: 0
+
+# Where rental real estate goes. Section 32(i)(2)(C) counts rents and
+# royalties "not derived in the ordinary course of a trade or business", and
+# (E) counts passive activity income. The statute does not say whether
+# rental real estate is a (C) rent or an (E) passive activity, so the model
+# takes the IRS's reading: Publication 596 Worksheet 1 lines 8-10 (the (C)
+# basket) take Schedule E line 23b royalties and Schedule 1 line 8l personal
+# property rents, while lines 11-12 (the (E) basket) take Schedule E line 26
+# rental real estate, which section 469(c)(2) treats as passive. Trust
+# royalties stay in the (C) basket under sections 652(b) and 662(b). So a
+# rental real estate loss offsets other passive income, not trust royalties.
+
+- name: A rental real estate loss does not offset trust royalties, so the couple loses the credit
+  # If the rental were a (C) rent, the basket would net to 12,000 - 5,000 =
+  # 7,000, under the 11,950 limit, and the couple would keep the one-child
+  # maximum of 4,328 (AGI 15,000 + 12,000 - 5,000 = 22,000 is below the 2025
+  # joint phase-out start of 30,470).
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        estate_income: 12_000
+        estate_royalty_income: 12_000
+        rental_income: -5_000
+      spouse:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # max(0, 12,000) royalties + max(0, -5,000) passive = 12,000 > 11,950.
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false
+    eitc_eligible: false
+    eitc: 0
+
+- name: A rental real estate loss with interest and trust royalties stays in the passive basket
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 9_000
+    estate_income: 3_000
+    estate_royalty_income: 3_000
+    rental_income: -2_000
+  output:
+    # 9,000 interest + max(0, 3,000) royalties + max(0, -2,000) passive =
+    # 12,000 > 11,950. Netting the rental against the royalties as a (C) rent
+    # would give 9,000 + 1,000 = 10,000.
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false

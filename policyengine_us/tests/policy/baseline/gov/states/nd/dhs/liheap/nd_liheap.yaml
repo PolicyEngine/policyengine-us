@@ -1,0 +1,1620 @@
+# ND regular heating only. No intermediate eligibility overrides.
+# https://www.nd.gov/dhs/policymanuals/415/415_20_05_05.htm
+# https://www.nd.gov/dhs/policymanuals/415/415_30_30.htm
+- name: Case 1, a worker receives 95 percent of a direct gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_income: 14600
+    nd_liheap_share: 0.95
+    nd_liheap_eligible: true
+    nd_liheap: 950
+- name: Case 2, pension 33786 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 33786
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 650
+- name: Case 3, pension 33787 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 33787
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 450
+- name: Case 4, pension 40530 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 40530
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 450
+- name: Case 5, pension 40531 preserves the published boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 40531
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 0
+- name: Case 6, no actual heating expense gives no direct grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 7, NONE fuel gives no grant despite another positive bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        gas_expense: 1000
+        nd_tanf: 0
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 0
+- name: Case 8, electric heat uses the same share without the repealed reduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 950
+- name: Case 9, a subsidized direct gas household keeps the full share.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap: 850
+- name: Case 10, subsidized heat in rent without an own electric bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 11, the program is restricted to North Dakota.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        nd_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+- name: Case 12, unsubsidized heat in rent fuel_oil at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 2196
+- name: Case 13, unsubsidized heat in rent fuel_oil at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 2088
+- name: Case 14, unsubsidized heat in rent fuel_oil at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1872
+- name: Case 15, unsubsidized heat in rent fuel_oil at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1428
+- name: Case 16, unsubsidized heat in rent fuel_oil at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 996
+- name: Case 17, unsubsidized heat in rent propane at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1750
+- name: Case 18, unsubsidized heat in rent propane at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1668
+- name: Case 19, unsubsidized heat in rent propane at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1488
+- name: Case 20, unsubsidized heat in rent propane at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1140
+- name: Case 21, unsubsidized heat in rent propane at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 792
+- name: Case 22, unsubsidized heat in rent electricity at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1500
+- name: Case 23, unsubsidized heat in rent electricity at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1428
+- name: Case 24, unsubsidized heat in rent electricity at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 1272
+- name: Case 25, unsubsidized heat in rent electricity at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 972
+- name: Case 26, unsubsidized heat in rent electricity at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 672
+- name: Case 27, unsubsidized heat in rent natural_gas at income 0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 696
+- name: Case 28, unsubsidized heat in rent natural_gas at income 15000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 660
+- name: Case 29, unsubsidized heat in rent natural_gas at income 25000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 25000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 600
+- name: Case 30, unsubsidized heat in rent natural_gas at income 30000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 30000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 456
+- name: Case 31, unsubsidized heat in rent natural_gas at income 35000.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 35000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        nd_tanf: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: true
+    nd_liheap: 312
+
+# A positive health_insurance_premiums input takes precedence. Otherwise the
+# deduction is the non-Medicare premiums (floored at zero) plus the computed
+# out-of-pocket Medicare Part A and Part B premiums, net of Medicare Savings
+# Program coverage. 2026 Part B: 202.90 * 12 = 2,434.80 (no IRMAA at these
+# incomes); Part A is premium free at the default 40 quarters of coverage.
+# MSP: a 34,000 pension gives 34,000 / 12 - 20 = 2,813.33 a month, above the
+# QI limit of 1.35 * 15,960 / 12 = 1,795.50, so MSP pays nothing.
+# Source: ND manual 415-25-05-05-05, Medicare premiums except those MSP pays.
+# https://www.nd.gov/dhs/policymanuals/415/415_25_05_05_05.htm
+
+# A reported 2,400 total replaces the computed 2,434.80 Part B premium:
+# 34,000 - 2,400 = 31,600; the 65% band yields 650 on a 1,000 gas bill.
+- name: "Case 32, a reported premium total replaces the computed Part B premium."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 2_400
+        health_insurance_premiums_without_medicare_part_b: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+  output:
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 31_600
+    nd_liheap_share: 0.65
+    nd_liheap: 650
+    msp_part_b_premium_coverage: 0
+
+# 34,000 - (1,200 + 2,434.80 Part B) - 600 = 29,765.20; the 65% share yields 650.
+- name: "Case 33, premium components with the computed Part B premium preserve other medical deductions."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        other_medical_expenses: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+  output:
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 29_765.2
+    nd_liheap_share: 0.65
+    nd_liheap: 650
+
+# 37,000 - 1,200 aggregate - 600 other medical = 35,200; the 45% share yields 450.
+# Neither the 1,200 component nor the computed 2,434.80 Part B premium is added.
+- name: "Case 34, a positive premium aggregate replaces the components and the computed Part B premium."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 37_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 1_200
+        other_medical_expenses: 600
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+  output:
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 35_200
+    nd_liheap_share: 0.45
+    nd_liheap: 450
+
+# With no reported premium, the computed Part B premium is deducted:
+# 34,000 - 2,434.80 = 31,565.20, within the 65% band (27,031-33,786);
+# 1,000 * 0.65 = 650. Without the deduction 34,000 is in the 45% band.
+- name: "Case 35, Medicare enrollment deducts the computed Part B premium."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: "CITIZEN"
+        pension_income: 34_000
+        ssi: 0
+        medicare_enrolled: true
+        health_insurance_premiums: 0
+        health_insurance_premiums_without_medicare_part_b: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        nd_tanf: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "ND"
+  output:
+    medicare_part_a_premium: 0
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 31_565.2
+    nd_liheap_share: 0.65
+    nd_liheap: 650
+    msp_part_b_premium_coverage: 0
+
+# Section 415-25-05-20-20 counts primary retirement pay separately from pension/VA.
+# 50,000 exceeds the one-person maximum of 40,530. The 30,000 control is
+# between 27,030 and 33,786: a 65% share of the 3,000 oil bill is 1,950.
+- name: "Case 36, primary military retirement counts without excluding eligible retirees."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_veteran: true
+        years_in_military: 20
+        military_retirement_pay: 50_000
+        pension_income: 0
+        veterans_benefits: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_veteran: true
+        years_in_military: 20
+        military_retirement_pay: 30_000
+        pension_income: 0
+        veterans_benefits: 0
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1], state_code: ND}
+      household2: {members: [person2], state_code: ND}
+  output:
+    nd_liheap_countable_income: [50_000, 30_000]
+    nd_liheap_share: [0, 0.65]
+    nd_liheap_eligible: [false, true]
+    nd_liheap: [0, 1_950]
+
+# Sections 415-25-05-20-20 and 415-25-05-15 count actual cash receipts.
+# Without TANF take-up only adult SSI of 9,600 counts. A separate family's
+# reported TANF receipt of 3,600 counts once: 9,600 + 3,600 = 13,200.
+# Both are below the two-person first ceiling of 17,670 and receive 100%.
+# No counterfactual ND TANF entitlement is supplied or asserted as payable.
+- name: "Case 37, TANF nonreceipt and reported household receipts determine countable income."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, is_disabled: true, ssi: 9_600}
+      person2: {age: 10, immigration_status: CITIZEN}
+      person3: {age: 40, immigration_status: CITIZEN, is_disabled: true, ssi: 9_600}
+      person4: {age: 10, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3, person4]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        takes_up_tanf_if_eligible: false
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person3, person4]
+        tanf: 3_600
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2], state_code: ND}
+      household2: {members: [person3, person4], state_code: ND}
+  output:
+    tanf: [0, 3_600]
+    nd_liheap_countable_income: [9_600, 13_200]
+    nd_liheap_share: [1, 1]
+    nd_liheap: [3_000, 3_000]
+
+# Sections 415-25-05-05 and 415-25-05-05-05 allow the 27% earnings deduction
+# and household-paid premiums. Pretax premiums are disjoint from nonpretax bills.
+# 28,000 * 0.73 = 20,440; less 1,200 pretax = 19,240, at the 95% share.
+# A further nonpretax aggregate of 1,200 gives 18,040 without counting its
+# duplicate component. Negative pretax reports give no deduction: 20,440, 85%.
+- name: "Case 38, disjoint pretax premiums are nonnegative and retain aggregate precedence."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 28_000
+        pre_tax_health_insurance_premiums: 1_200
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 28_000
+        pre_tax_health_insurance_premiums: 1_200
+        health_insurance_premiums: 1_200
+        health_insurance_premiums_without_medicare_part_b: 1_200
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 28_000
+        pre_tax_health_insurance_premiums: -1_200
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1], state_code: ND}
+      household2: {members: [person2], state_code: ND}
+      household3: {members: [person3], state_code: ND}
+  output:
+    nd_liheap_countable_earned_income: [20_440, 20_440, 20_440]
+    nd_liheap_countable_income: [19_240, 18_040, 20_440]
+    nd_liheap_share: [0.95, 0.95, 0.85]
+    nd_liheap: [2_850, 2_850, 2_550]
+
+# 42 USC 8624(b)(2)(B) protects income strictly below 110% FPG. FY2026 uses
+# season-start 2025 guidelines: 15,650 + 20 * 5,500 = 125,650; floor 138,215.
+# Each household has 21 adult relatives and separate tax units. Pension of
+# 138,000 or a cent below the floor exceeds the native maximum of 137,970
+# but retains the 45% minimum from section 415-30-05: 3,000 * 0.45 = 1,350.
+# Exact equality and income above the floor remain ineligible.
+- name: "Case 39, the strict federal floor preserves the minimum share for large households."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, pension_income: 138_000}
+      person2: {age: 40, immigration_status: CITIZEN}
+      person3: {age: 40, immigration_status: CITIZEN}
+      person4: {age: 40, immigration_status: CITIZEN}
+      person5: {age: 40, immigration_status: CITIZEN}
+      person6: {age: 40, immigration_status: CITIZEN}
+      person7: {age: 40, immigration_status: CITIZEN}
+      person8: {age: 40, immigration_status: CITIZEN}
+      person9: {age: 40, immigration_status: CITIZEN}
+      person10: {age: 40, immigration_status: CITIZEN}
+      person11: {age: 40, immigration_status: CITIZEN}
+      person12: {age: 40, immigration_status: CITIZEN}
+      person13: {age: 40, immigration_status: CITIZEN}
+      person14: {age: 40, immigration_status: CITIZEN}
+      person15: {age: 40, immigration_status: CITIZEN}
+      person16: {age: 40, immigration_status: CITIZEN}
+      person17: {age: 40, immigration_status: CITIZEN}
+      person18: {age: 40, immigration_status: CITIZEN}
+      person19: {age: 40, immigration_status: CITIZEN}
+      person20: {age: 40, immigration_status: CITIZEN}
+      person21: {age: 40, immigration_status: CITIZEN}
+      person22: {age: 40, immigration_status: CITIZEN, pension_income: 138_214.99}
+      person23: {age: 40, immigration_status: CITIZEN}
+      person24: {age: 40, immigration_status: CITIZEN}
+      person25: {age: 40, immigration_status: CITIZEN}
+      person26: {age: 40, immigration_status: CITIZEN}
+      person27: {age: 40, immigration_status: CITIZEN}
+      person28: {age: 40, immigration_status: CITIZEN}
+      person29: {age: 40, immigration_status: CITIZEN}
+      person30: {age: 40, immigration_status: CITIZEN}
+      person31: {age: 40, immigration_status: CITIZEN}
+      person32: {age: 40, immigration_status: CITIZEN}
+      person33: {age: 40, immigration_status: CITIZEN}
+      person34: {age: 40, immigration_status: CITIZEN}
+      person35: {age: 40, immigration_status: CITIZEN}
+      person36: {age: 40, immigration_status: CITIZEN}
+      person37: {age: 40, immigration_status: CITIZEN}
+      person38: {age: 40, immigration_status: CITIZEN}
+      person39: {age: 40, immigration_status: CITIZEN}
+      person40: {age: 40, immigration_status: CITIZEN}
+      person41: {age: 40, immigration_status: CITIZEN}
+      person42: {age: 40, immigration_status: CITIZEN}
+      person43: {age: 40, immigration_status: CITIZEN, pension_income: 138_215}
+      person44: {age: 40, immigration_status: CITIZEN}
+      person45: {age: 40, immigration_status: CITIZEN}
+      person46: {age: 40, immigration_status: CITIZEN}
+      person47: {age: 40, immigration_status: CITIZEN}
+      person48: {age: 40, immigration_status: CITIZEN}
+      person49: {age: 40, immigration_status: CITIZEN}
+      person50: {age: 40, immigration_status: CITIZEN}
+      person51: {age: 40, immigration_status: CITIZEN}
+      person52: {age: 40, immigration_status: CITIZEN}
+      person53: {age: 40, immigration_status: CITIZEN}
+      person54: {age: 40, immigration_status: CITIZEN}
+      person55: {age: 40, immigration_status: CITIZEN}
+      person56: {age: 40, immigration_status: CITIZEN}
+      person57: {age: 40, immigration_status: CITIZEN}
+      person58: {age: 40, immigration_status: CITIZEN}
+      person59: {age: 40, immigration_status: CITIZEN}
+      person60: {age: 40, immigration_status: CITIZEN}
+      person61: {age: 40, immigration_status: CITIZEN}
+      person62: {age: 40, immigration_status: CITIZEN}
+      person63: {age: 40, immigration_status: CITIZEN}
+      person64: {age: 40, immigration_status: CITIZEN, pension_income: 138_216}
+      person65: {age: 40, immigration_status: CITIZEN}
+      person66: {age: 40, immigration_status: CITIZEN}
+      person67: {age: 40, immigration_status: CITIZEN}
+      person68: {age: 40, immigration_status: CITIZEN}
+      person69: {age: 40, immigration_status: CITIZEN}
+      person70: {age: 40, immigration_status: CITIZEN}
+      person71: {age: 40, immigration_status: CITIZEN}
+      person72: {age: 40, immigration_status: CITIZEN}
+      person73: {age: 40, immigration_status: CITIZEN}
+      person74: {age: 40, immigration_status: CITIZEN}
+      person75: {age: 40, immigration_status: CITIZEN}
+      person76: {age: 40, immigration_status: CITIZEN}
+      person77: {age: 40, immigration_status: CITIZEN}
+      person78: {age: 40, immigration_status: CITIZEN}
+      person79: {age: 40, immigration_status: CITIZEN}
+      person80: {age: 40, immigration_status: CITIZEN}
+      person81: {age: 40, immigration_status: CITIZEN}
+      person82: {age: 40, immigration_status: CITIZEN}
+      person83: {age: 40, immigration_status: CITIZEN}
+      person84: {age: 40, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+      tax_unit30: {members: [person30]}
+      tax_unit31: {members: [person31]}
+      tax_unit32: {members: [person32]}
+      tax_unit33: {members: [person33]}
+      tax_unit34: {members: [person34]}
+      tax_unit35: {members: [person35]}
+      tax_unit36: {members: [person36]}
+      tax_unit37: {members: [person37]}
+      tax_unit38: {members: [person38]}
+      tax_unit39: {members: [person39]}
+      tax_unit40: {members: [person40]}
+      tax_unit41: {members: [person41]}
+      tax_unit42: {members: [person42]}
+      tax_unit43: {members: [person43]}
+      tax_unit44: {members: [person44]}
+      tax_unit45: {members: [person45]}
+      tax_unit46: {members: [person46]}
+      tax_unit47: {members: [person47]}
+      tax_unit48: {members: [person48]}
+      tax_unit49: {members: [person49]}
+      tax_unit50: {members: [person50]}
+      tax_unit51: {members: [person51]}
+      tax_unit52: {members: [person52]}
+      tax_unit53: {members: [person53]}
+      tax_unit54: {members: [person54]}
+      tax_unit55: {members: [person55]}
+      tax_unit56: {members: [person56]}
+      tax_unit57: {members: [person57]}
+      tax_unit58: {members: [person58]}
+      tax_unit59: {members: [person59]}
+      tax_unit60: {members: [person60]}
+      tax_unit61: {members: [person61]}
+      tax_unit62: {members: [person62]}
+      tax_unit63: {members: [person63]}
+      tax_unit64: {members: [person64]}
+      tax_unit65: {members: [person65]}
+      tax_unit66: {members: [person66]}
+      tax_unit67: {members: [person67]}
+      tax_unit68: {members: [person68]}
+      tax_unit69: {members: [person69]}
+      tax_unit70: {members: [person70]}
+      tax_unit71: {members: [person71]}
+      tax_unit72: {members: [person72]}
+      tax_unit73: {members: [person73]}
+      tax_unit74: {members: [person74]}
+      tax_unit75: {members: [person75]}
+      tax_unit76: {members: [person76]}
+      tax_unit77: {members: [person77]}
+      tax_unit78: {members: [person78]}
+      tax_unit79: {members: [person79]}
+      tax_unit80: {members: [person80]}
+      tax_unit81: {members: [person81]}
+      tax_unit82: {members: [person82]}
+      tax_unit83: {members: [person83]}
+      tax_unit84: {members: [person84]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person22, person23, person24, person25, person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit3:
+        members: [person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60, person61, person62, person63]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit4:
+        members: [person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21], state_code: ND}
+      household2: {members: [person22, person23, person24, person25, person26, person27, person28, person29, person30, person31, person32, person33, person34, person35, person36, person37, person38, person39, person40, person41, person42], state_code: ND}
+      household3: {members: [person43, person44, person45, person46, person47, person48, person49, person50, person51, person52, person53, person54, person55, person56, person57, person58, person59, person60, person61, person62, person63], state_code: ND}
+      household4: {members: [person64, person65, person66, person67, person68, person69, person70, person71, person72, person73, person74, person75, person76, person77, person78, person79, person80, person81, person82, person83, person84], state_code: ND}
+  output:
+    nd_liheap_household_size: [21, 21, 21, 21]
+    nd_liheap_countable_income: [138_000, 138_214.99, 138_215, 138_216]
+    nd_liheap_share: [0.45, 0.45, 0, 0]
+    nd_liheap_eligible: [true, true, false, false]
+    nd_liheap: [1_350, 1_350, 0, 0]
+
+# Sections 415-20-10 and 415-20-10-30 exclude public housing with included
+# heat even when the separate assistance flag is false. The same public-housing
+# status permits a separately paid 3,000 oil bill at the full income share.
+- name: "Case 40, explicit public housing excludes included heat while retaining direct bills."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN}
+      person2: {age: 40, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: true
+        fuel_oil_expense: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        heat_expense_included_in_rent: false
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1], state_code: ND, is_in_public_housing: true}
+      household2: {members: [person2], state_code: ND, is_in_public_housing: true}
+  output:
+    receives_housing_assistance: [false, false]
+    nd_liheap_share: [1, 1]
+    nd_liheap_eligible: [false, true]
+    nd_liheap: [0, 3_000]
+
+# Section 415-25-05-20-20 counts military retirement income, which includes
+# survivor annuities. The 70-year-old is enrolled in Medicare by default; MSP
+# income is 30,000 / 12 - 20 = 2,480 a month, above the 1,795.50 QI limit, so
+# the 2,434.80 Part B premium is deducted: 30,000 - 2,434.80 = 27,565.20. That
+# is above the one-person 85% limit of 27,030 and within the 65% limit of
+# 33,786: 3,000 * 0.65 = 1,950.
+- name: "Case 41, a military survivor annuity counts as unearned income."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        military_retirement_pay_survivors: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_countable_unearned_income: 30_000
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 27_565.2
+    nd_liheap_share: 0.65
+    nd_liheap_eligible: true
+    nd_liheap: 1_950
+
+# Above the 28-person table, nd_liheap_share uses SMI bands. FY2026 four-person
+# North Dakota SMI is 129,911; the 45 CFR 96.85(b) factor for 29 people is
+# 0.52 + 5 * 0.16 + 23 * 0.03 = 2.01, so SMI is 261,121.11. Pension of 130,000
+# is above the 40% limit of 104,448.44 and within the 50% limit of 130,560.56:
+# 65% share, 3,000 * 0.65 = 1,950. The 28-person 50% limit of 128,622 would
+# give 45%. The 110% FPG floor of 186,615 applies only when no band matches.
+- name: "Case 42, a 29-person household uses state median income bands."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, pension_income: 130_000}
+      person2: {age: 40, immigration_status: CITIZEN}
+      person3: {age: 40, immigration_status: CITIZEN}
+      person4: {age: 40, immigration_status: CITIZEN}
+      person5: {age: 40, immigration_status: CITIZEN}
+      person6: {age: 40, immigration_status: CITIZEN}
+      person7: {age: 40, immigration_status: CITIZEN}
+      person8: {age: 40, immigration_status: CITIZEN}
+      person9: {age: 40, immigration_status: CITIZEN}
+      person10: {age: 40, immigration_status: CITIZEN}
+      person11: {age: 40, immigration_status: CITIZEN}
+      person12: {age: 40, immigration_status: CITIZEN}
+      person13: {age: 40, immigration_status: CITIZEN}
+      person14: {age: 40, immigration_status: CITIZEN}
+      person15: {age: 40, immigration_status: CITIZEN}
+      person16: {age: 40, immigration_status: CITIZEN}
+      person17: {age: 40, immigration_status: CITIZEN}
+      person18: {age: 40, immigration_status: CITIZEN}
+      person19: {age: 40, immigration_status: CITIZEN}
+      person20: {age: 40, immigration_status: CITIZEN}
+      person21: {age: 40, immigration_status: CITIZEN}
+      person22: {age: 40, immigration_status: CITIZEN}
+      person23: {age: 40, immigration_status: CITIZEN}
+      person24: {age: 40, immigration_status: CITIZEN}
+      person25: {age: 40, immigration_status: CITIZEN}
+      person26: {age: 40, immigration_status: CITIZEN}
+      person27: {age: 40, immigration_status: CITIZEN}
+      person28: {age: 40, immigration_status: CITIZEN}
+      person29: {age: 40, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+      tax_unit16: {members: [person16]}
+      tax_unit17: {members: [person17]}
+      tax_unit18: {members: [person18]}
+      tax_unit19: {members: [person19]}
+      tax_unit20: {members: [person20]}
+      tax_unit21: {members: [person21]}
+      tax_unit22: {members: [person22]}
+      tax_unit23: {members: [person23]}
+      tax_unit24: {members: [person24]}
+      tax_unit25: {members: [person25]}
+      tax_unit26: {members: [person26]}
+      tax_unit27: {members: [person27]}
+      tax_unit28: {members: [person28]}
+      tax_unit29: {members: [person29]}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20, person21, person22, person23, person24, person25, person26, person27, person28, person29]
+        state_code: ND
+  output:
+    nd_liheap_household_size: 29
+    nd_liheap_countable_income: 130_000
+    nd_liheap_share: 0.65
+    nd_liheap_eligible: true
+    nd_liheap: 1_950
+
+# 42 U.S.C. 8624(b)(2)(B) caps income at the greater of 150% of the 2025
+# guideline, 1.5 * (15,650 + 3 * 5,500) = 48,225, and HHS's 60% of SMI,
+# floor(floor(0.6 * 129,911) * 1.00) = 77,946 for four people. The printed 60%
+# limit of 77,958 is capped at 77,946. A pension of 77,946 keeps the 45% share:
+# 3,000 * 0.45 = 1,350. A pension of 77,947 is one dollar above the cap and not
+# below the 110% floor of 1.1 * 32,150 = 35,365, so it gets 0.
+- name: "Case 43, a four-person household above HHS's 60% of state median income gets nothing."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, pension_income: 77_946}
+      person2: {age: 45, immigration_status: CITIZEN}
+      person3: {age: 12, immigration_status: CITIZEN}
+      person4: {age: 9, immigration_status: CITIZEN}
+      person5: {age: 45, immigration_status: CITIZEN, pension_income: 77_947}
+      person6: {age: 45, immigration_status: CITIZEN}
+      person7: {age: 12, immigration_status: CITIZEN}
+      person8: {age: 9, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1, person2, person3, person4]}
+      tax_unit2: {members: [person5, person6, person7, person8]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2, person3, person4], state_code: ND}
+      household2: {members: [person5, person6, person7, person8], state_code: ND}
+  output:
+    nd_liheap_household_size: [4, 4]
+    nd_liheap_countable_income: [77_946, 77_947]
+    nd_liheap_share: [0.45, 0]
+    nd_liheap_eligible: [true, false]
+    nd_liheap: [1_350, 0]
+
+# Manual 415-25-05-05-05 bars Part A and B premiums that a Medicare Savings
+# Program pays. MSP income: 15,000 / 12 - 20 = 1,230 a month, within the QMB
+# limit of 15,960 / 12 = 1,330; no countable resources, under the 9,950 limit.
+# MSP pays the full 2,434.80 Part B premium, so nothing is deducted and the
+# 15,000 pension is in the 95% band (13,519-20,274): 1,000 * 0.95 = 950.
+# Deducting 2,434.80 would give 12,565.20 and the 100% share.
+- name: "Case 44, a Part B premium that a Medicare Savings Program pays is not deducted."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        pension_income: 15_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    msp_part_b_premium_coverage: 2_434.8
+    medicare_part_b_premium: 0
+    nd_liheap_countable_income: 15_000
+    nd_liheap_share: 0.95
+    nd_liheap: 950
+
+# With 35 quarters of coverage, Part A costs the 2026 reduced premium of
+# 311 * 12 = 3,732. MSP income of 38,000 / 12 - 20 = 3,146.67 a month is above
+# the QMB and QI limits, so the enrollee pays both premiums:
+# 38,000 - 3,732 - 2,434.80 = 31,833.20, within the 65% band (27,031-33,786):
+# 1,000 * 0.65 = 650. Deducting Part B alone (35,565.20) gives the 45% share.
+- name: "Case 45, a premium-paying Part A enrollee deducts the Part A premium."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        pension_income: 38_000
+        medicare_quarters_of_coverage: 35
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    medicare_part_a_premium: 3_732
+    medicare_part_b_premium: 2_434.8
+    nd_liheap_countable_income: 31_833.2
+    nd_liheap_share: 0.65
+    nd_liheap: 650
+
+# Manual 415-20-10: a subsidized household with heat in its rent and "the
+# opposite (heat or electricity) bill in their name" is "eligible for only the
+# heat or electric bill in their name". A 15,000 pension is in the 95% band
+# (13,519-20,274), so the 1,200 electric bill pays 1,200 * 0.95 = 1,140. The
+# first tenant receives housing assistance; the second lives in public housing
+# without other assistance and is paid the same way. Without public housing
+# counting as subsidized housing, the second would take the unsubsidized renter
+# payment: 700 * 0.95 / 12 = 55.42, rounded to 55 a month; 55 * 12 = 660.
+- name: "Case 46, subsidized and public housing heat-in-rent tenants are paid the share of their own electric bills."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household1:
+        members: [person1]
+        state_code: ND
+        is_in_public_housing: false
+      household2:
+        members: [person2]
+        state_code: ND
+        is_in_public_housing: true
+  output:
+    nd_liheap_share: [0.95, 0.95]
+    nd_liheap_eligible: [true, true]
+    nd_liheap: [1_140, 1_140]
+
+# Manual 415-30-15-01 puts kerosene, wood, coal and remaining fuels in the
+# "Other" column, whose 415-30-30 yearly cap is 700; solar is a remaining fuel.
+# A 15,000 pension gives the 95% share: 700 * 0.95 / 12 = 55.42, rounded to 55
+# a month; 55 * 12 = 660, under the cap.
+- name: "Case 47, unsubsidized kerosene, wood, coal, solar and other heat-in-rent renters use the 700 Other cap."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: KEROSENE
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: WOOD
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: COAL
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit4:
+        members: [person4]
+        heating_type: SOLAR
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+      spm_unit5:
+        members: [person5]
+        heating_type: OTHER
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: ND
+      household2:
+        members: [person2]
+        state_code: ND
+      household3:
+        members: [person3]
+        state_code: ND
+      household4:
+        members: [person4]
+        state_code: ND
+      household5:
+        members: [person5]
+        state_code: ND
+  output:
+    nd_liheap_share: [0.95, 0.95, 0.95, 0.95, 0.95]
+    nd_liheap_eligible: [true, true, true, true, true]
+    nd_liheap: [660, 660, 660, 660, 660]
+
+- name: "Case 48, a subsidized heat-in-rent tenant with UNSPECIFIED heating type and an electric bill is not paid."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_liheap_eligible: false
+    nd_liheap: 0
+
+# Two-person cap edge. HHS's 60% of SMI for two people is
+# floor(77,946 * 0.68) = floor(53,003.28) = 53,003, below the printed 60% limit
+# of 53,010 and above 150% of the 2025 guideline, 1.5 * 21,150 = 31,725.
+# A pension of 53,003 keeps the 45% share: 3,000 * 0.45 = 1,350. A pension of
+# 53,004 is above the cap and not below the 110% floor of 1.1 * 21,150 = 23,265,
+# so it gets 0.
+- name: "Case 49, a two-person household at HHS's 60% of state median income keeps the 45% share."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, pension_income: 53_003}
+      person2: {age: 45, immigration_status: CITIZEN}
+      person3: {age: 45, immigration_status: CITIZEN, pension_income: 53_004}
+      person4: {age: 45, immigration_status: CITIZEN}
+    tax_units:
+      tax_unit1: {members: [person1, person2]}
+      tax_unit2: {members: [person3, person4]}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 3_000
+    households:
+      household1: {members: [person1, person2], state_code: ND}
+      household2: {members: [person3, person4], state_code: ND}
+  output:
+    nd_liheap_household_size: [2, 2]
+    nd_liheap_countable_income: [53_003, 53_004]
+    nd_liheap_share: [0.45, 0]
+    nd_liheap_eligible: [true, false]
+    nd_liheap: [1_350, 0]

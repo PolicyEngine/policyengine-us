@@ -1,6 +1,7 @@
 - name: Income integration test ineligible
   period: 2019
   input:
+    takes_up_csfp_if_eligible: true
     employment_income: 3_248
     self_employment_income: 3_248
     rental_income: 3_248
@@ -13,6 +14,7 @@
 - name: Income integration test eligible
   period: 2019
   input:
+    takes_up_csfp_if_eligible: true
     employment_income: 3_247
     self_employment_income: 3_247
     rental_income: 3_247
@@ -25,6 +27,7 @@
 - name: Child support received counts toward CSFP income, pushing over the limit
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     employment_income: 21_600
     child_support_received: 3_000
     age: 62
@@ -34,6 +37,7 @@
 - name: Same earnings without child support stay under the limit
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     employment_income: 21_600
     age: 62
   output:

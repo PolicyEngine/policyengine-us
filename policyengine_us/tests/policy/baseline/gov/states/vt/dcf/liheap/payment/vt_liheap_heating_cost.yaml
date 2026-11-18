@@ -1,0 +1,240 @@
+# Standard heating costs come from the P-2916 Standard Heating Cost Tables for the
+# 2025-26 heating season (procedure 7/1/25, Bulletin 25-16):
+# https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2916.pdf
+# Rules 2914(a)(6) and 2916 (fuel type, housing type and bedrooms), "#page 39,43":
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=39
+# The table has rows for natural gas, propane, oil, kerosene and electricity, plus one
+# "Firewood, Wood Pellets and Coal" row. Columns are 1, 2, 3 and 4+ bedrooms. Zero
+# bedrooms (a studio) uses the smallest, 1-bedroom column (modeling assumption). SOLAR
+# uses the electricity row: rule 2901(a)(14) makes the primary heating fuel the listed
+# type providing the most heat, electricity for a grid-tied solar home with electric
+# heat. OTHER, NONE and UNSPECIFIED have no row.
+
+- name: Case 1, natural gas in a two-bedroom home uses the single-family default.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # vt_liheap_dwelling_type is not supplied, so the single-family and mobile home
+    # table applies: natural gas, 2 bedrooms = 1,454.
+    vt_liheap_heating_cost: 1_454
+
+- name: Case 2, propane in a three-bedroom apartment matches the P-2914D example.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: PROPANE
+        vt_liheap_dwelling_type: MULTI_FAMILY
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 3
+  output:
+    # Multi-family, propane, 3 bedrooms = 2,347 (also the P-2914D worked example).
+    vt_liheap_heating_cost: 2_347
+
+- name: Case 3, oil in a five-bedroom house uses the four-or-more-bedroom column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 5
+  output:
+    # Single-family, oil, 4+ bedrooms = 4,552 (5 bedrooms falls in the 4+ column).
+    vt_liheap_heating_cost: 4_552
+
+- name: Case 4, kerosene in a studio apartment uses the one-bedroom column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: KEROSENE
+        vt_liheap_dwelling_type: MULTI_FAMILY
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 0
+  output:
+    # Multi-family, kerosene, 0 bedrooms -> 1-bedroom column = 1,610.
+    vt_liheap_heating_cost: 1_610
+
+- name: Case 5, electricity in a two-bedroom apartment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: ELECTRICITY
+        vt_liheap_dwelling_type: MULTI_FAMILY
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # Multi-family, electricity, 2 bedrooms = 1,060.
+    vt_liheap_heating_cost: 1_060
+
+- name: Case 6, wood in a two-bedroom apartment uses the firewood, pellets and coal row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: WOOD
+        vt_liheap_dwelling_type: MULTI_FAMILY
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # Multi-family, firewood, wood pellets and coal, 2 bedrooms = 1,231.
+    vt_liheap_heating_cost: 1_231
+
+- name: Case 7, coal in a four-bedroom house uses the same row as wood.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: COAL
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 4
+  output:
+    # Single-family, firewood, wood pellets and coal, 4+ bedrooms = 1,711.
+    vt_liheap_heating_cost: 1_711
+
+- name: Case 8, a solar home uses the electricity row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: SOLAR
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # A grid-tied solar home heats with electricity (rule 2901(a)(14)):
+    # single-family, electricity, 2 bedrooms = 1,785.
+    vt_liheap_heating_cost: 1_785
+
+- name: Case 9, a fuel outside the table has no standard heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: OTHER
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # OTHER has no row in P-2916: 0.
+    vt_liheap_heating_cost: 0
+
+- name: Case 10, a home with no heating has no standard heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NONE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # NONE has no row in P-2916: 0.
+    vt_liheap_heating_cost: 0
+
+- name: Case 11, an unspecified fuel has no standard heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # UNSPECIFIED has no row in P-2916: 0.
+    vt_liheap_heating_cost: 0

@@ -31,8 +31,32 @@
         state_code: ID
         qualified_passenger_vehicle_loan_interest: 10_000
   output:
-    tip_income_deduction: 10_000
-    overtime_income_deduction: 10_000
+    # 26 U.S.C. 224(h) and 225(g) allow no tips or overtime deduction after 2028.
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
     additional_senior_deduction: 3_300
     auto_loan_interest_deduction: 6_000
     id_qualified_business_income_and_federal_schedule_1a_deductions: 0
+
+- name: Idaho includes the computed federal tips and overtime deductions in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+        fsla_overtime_premium: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    tip_income_deduction: 10_000
+    overtime_income_deduction: 5_000
+    id_qualified_business_income_and_federal_schedule_1a_deductions: 15_000

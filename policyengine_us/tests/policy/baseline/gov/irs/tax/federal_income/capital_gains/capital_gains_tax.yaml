@@ -186,6 +186,25 @@
     income_tax_main_rates: 69_034.75
     capital_gains_tax: 13_250
 
+# 2017 Schedule D Tax Worksheet, PDF page 16, lines 38 and 41 use 25%
+# for unrecaptured section 1250 gain and 28% for the remaining rate gain.
+# https://www.irs.gov/pub/irs-prior/i1040sd--2017.pdf#page=16
+- name: Case 1, 2017 special capital gains retain their 25 and 28 percent rates.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    taxable_income: 500_000
+    net_capital_gain: 20_000
+    adjusted_net_capital_gain: 0
+    capital_gains_28_percent_rate_gain: 10_000
+    unrecaptured_section_1250_gain: 10_000
+    foreign_earned_income_exclusion: 0
+  output:
+    # The $480,000 ordinary portion fills the brackets below 25%.
+    # Special-gain tax = 10,000 * 0.25 + 10,000 * 0.28.
+    capital_gains_tax: 5_300
+
 - name: 2026, losses move gain from 28 and 25 percent (Axiom companion N10)
   absolute_error_margin: 0.01
   period: 2026

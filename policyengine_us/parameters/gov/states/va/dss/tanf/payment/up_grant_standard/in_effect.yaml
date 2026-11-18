@@ -1,0 +1,27 @@
+description: Virginia pays two-parent families the separate Unemployed Parent standards of assistance, instead of the regular standards, under the Temporary Assistance for Needy Families program if this is true.
+
+metadata:
+  unit: bool
+  period: month
+  label: Virginia TANF-UP separate standards of assistance in effect
+  reference:
+    - title: 2020 Appropriation Act (HB 30, Chapter 1289), Item 350 C
+      href: https://budget.lis.virginia.gov/item/2020/1/HB30/Chapter/1/350/
+    - title: 2024 Appropriation Act (HB 6001, Chapter 2), Item 325 C
+      href: https://budget.lis.virginia.gov/item/2024/2/HB6001/Chapter/1/325/
+    - title: Virginia TANF Manual Transmittal 68 (July 1, 2020), Section 304, Appendix 3 added
+      href: https://web.archive.org/web/20210202151340/https://www.dss.virginia.gov/files/division/bp/tanf/manual/Transmittal_68.pdf#page=6
+    - title: Virginia TANF Manual Transmittal 71 (July 1, 2021), Section 304, Appendix 3 removed, page 3-4
+      href: https://web.archive.org/web/20210720071052/https://www.dss.virginia.gov/files/division/bp/tanf/manual/Transmittal_71.pdf#page=3
+    - title: Virginia TANF Manual (7/24), Section 304.1 - Standards of Assistance
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=19
+
+values:
+  # The Appropriation Act (Item 350 C in 2020, Item 325 C in 2024) requires
+  # that the basic benefit payment for two-parent families "shall not be less
+  # than what they would have received under TANF". The separate TANF-UP
+  # schedule (Section 304, Appendix 3) existed only from July 2020 to June 2021
+  # (added by Transmittal 68, removed by Transmittal 71), and it was below the
+  # TANF schedule. Two-parent units therefore get the TANF standards in every
+  # year.
+  1996-01-01: false

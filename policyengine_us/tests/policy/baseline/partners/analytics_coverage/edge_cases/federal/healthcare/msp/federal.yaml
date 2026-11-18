@@ -514,7 +514,7 @@
         # SSI recipient -> Medicaid. TX per-capita aged cost (calibration.gov.hhs.medicaid.totals
         # spending[TX] x cost index / state denominator); the previous pin 9_236.48 was the CA-default
         # artifact of setting state_code_str instead of state_code (wiring fix)
-        medicaid: 13_708.5
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0.0
         is_aca_ptc_eligible: false

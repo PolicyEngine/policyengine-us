@@ -19,8 +19,8 @@
         state_name: UT
   output:
     # vt_renter_credit-style structural pattern: the credit is non-zero
-    # but it does not appear on the income tax return — it flows through
-    # the household-level state_property_tax_credits aggregate instead.
+    # but it does not appear on the income tax return. The renter's credit
+    # reaches household and SPM benefits through state_property_tax_refunds.
     ut_homeowner_renter_relief: 429
     ut_refundable_credits: 0
     ut_income_tax: 0

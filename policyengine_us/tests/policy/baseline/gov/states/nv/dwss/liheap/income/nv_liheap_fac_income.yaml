@@ -1,0 +1,64 @@
+# FAC income is the eligibility income plus income disregarded for eligibility but
+# counted for the Fixed Annual Credit: TANF and the earned income of children under 18
+# who attend school (EAP Manual 702 II note, 705 "Eligibility No / FAC Yes", 707 N).
+# Wages are at the Nevada minimum wage of 12.00 an hour (9,360 at 15 hours a week;
+# 6,240 at 10 hours a week; 24,960 full time). Gas of 600 is 50 a month and
+# electricity of 1,320 is 110 a month.
+
+- name: Case 1, a 17-year-old student's wages and TANF are added to eligibility income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 9_360
+      person2:
+        age: 17
+        is_in_k12_school: true
+        employment_income: 6_240
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Nevada TANF three-person payment allowance of 386 a month.
+        tanf: 4_632
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_liheap_countable_income: 9_360
+    # 9,360 + 6,240 + 4,632
+    nv_liheap_fac_income: 20_232
+
+- name: Case 2, wages of a 17-year-old who is not in school are counted once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_960
+      person2:
+        age: 17
+        is_in_k12_school: false
+        employment_income: 12_480
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 24,960 + 12,480, already in eligibility income; nothing is added again
+    nv_liheap_fac_income: 37_440

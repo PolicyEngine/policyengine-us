@@ -1,3 +1,5 @@
+# Component arithmetic assumes no carryovers, forfeitures or disallowed
+# public reimbursement. Costs are independent IRC 129/FTB 3506 line 17 facts.
 # FTB 3506 Part IV line 22 caps California's excluded dependent care benefits
 # at $5,000 ($2,500 for a separate return). California did not adopt the 2021
 # federal cap of $10,500 ($5,250) (ARPA section 9632) or the 2026 federal cap
@@ -8,7 +10,11 @@
   input:
     state_code: CA
     filing_status: JOINT
-    dependent_care_assistance_exclusion: 4_000
+    # Isolated cap component; sufficient independently known costs/earnings.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 20_000
+    ca_cdcc_min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 4_000
   output:
     ca_dependent_care_assistance_exclusion: 4_000
 
@@ -17,10 +23,13 @@
   input:
     state_code: CA
     filing_status: JOINT
-    dependent_care_assistance_exclusion: 9_000
+    # Isolated cap component; sufficient independently known costs/earnings.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 20_000
+    ca_cdcc_min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 9_000
   output:
-    # Federal exclusion $9,000 under the $10,500 cap; California line 22 is
-    # $5,000, so min($9,000, $5,000) = $5,000.
+    # min(9,000 benefits, 20,000 costs, 50,000 earnings, 5,000 cap).
     ca_dependent_care_assistance_exclusion: 5_000
 
 - name: California keeps the $2,500 separate-return cap in 2021
@@ -28,9 +37,13 @@
   input:
     state_code: CA
     filing_status: SEPARATE
-    dependent_care_assistance_exclusion: 5_250
+    # Isolated cap component; sufficient independently known costs/earnings.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 20_000
+    ca_cdcc_min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 5_250
   output:
-    # min($5,250 federal exclusion, $2,500) = $2,500.
+    # min(5,250 benefits, 20,000 costs, 50,000 earnings, 2,500 cap).
     ca_dependent_care_assistance_exclusion: 2_500
 
 - name: A separate filer living apart from their spouse uses the $5,000 cap in 2021
@@ -48,6 +61,7 @@
     tax_units:
       tax_unit:
         members: [head, child]
+        dependent_care_assistance_qualified_expenses: 6_000
         filing_status: SEPARATE
     households:
       household:
@@ -64,7 +78,165 @@
   input:
     state_code: CA
     filing_status: JOINT
-    dependent_care_assistance_exclusion: 7_000
+    # Isolated cap component; sufficient independently known costs/earnings.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 20_000
+    ca_cdcc_min_head_spouse_earned: 50_000
+    dependent_care_employer_benefits: 7_000
   output:
-    # min($7,000 federal exclusion under the $7,500 cap, $5,000) = $5,000.
+    # min(7,000 benefits, 20,000 costs, 50,000 earnings, 5,000 cap).
     ca_dependent_care_assistance_exclusion: 5_000
+
+- name: California earned income limit on the exclusion counts payroll HSA contributions
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        dependent_care_assistance_qualified_expenses: 5_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # Federal: spouse earns 4,000 - 1,000 HSA = 3,000, so the IRC 129(b)
+    # exclusion is min(5,000 benefits, 5,000 cap, 3,000) = 3,000.
+    dependent_care_assistance_exclusion: 3_000
+    # California taxes the HSA contribution: spouse earns 4,000.
+    ca_cdcc_min_head_spouse_earned: 4_000
+    # min(5,000 benefits, 5,000 California cap, 4,000) = 4,000.
+    ca_dependent_care_assistance_exclusion: 4_000
+
+- name: A self-employment loss that offsets the California wages does not raise the exclusion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+        self_employment_income: -4_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        dependent_care_assistance_qualified_expenses: 5_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # Federal: max(3,000 - 4,000, 0) = 0, so the IRC 129(b) exclusion is 0.
+    dependent_care_assistance_exclusion: 0
+    # California: max(4,000 - 4,000, 0) = 0, so the exclusion stays at 0.
+    ca_cdcc_min_head_spouse_earned: 0
+    ca_dependent_care_assistance_exclusion: 0
+
+# FTB3506 (2017) instructions line17: benefits2,000, qualified costs900.
+# https://www.ftb.ca.gov/forms/2017/17-3506-instructions.html
+- name: California's 2017 exclusion uses $900 of costs against $2,000 benefits.
+  period: 2017
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 2_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        dependent_care_assistance_qualified_expenses: 900
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    dependent_care_assistance_exclusion: 900
+    ca_dependent_care_assistance_exclusion: 900
+
+# FTB3506 (2025) PartIV lines17–26 and ScheduleCA line1h HSA addback.
+# https://www.ftb.ca.gov/forms/2025/2025-3506-instructions.html
+- name: California's HSA earnings difference preserves the $900 qualified-cost ceiling.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 2_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        dependent_care_assistance_qualified_expenses: 900
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    min_head_spouse_earned: 3_000
+    ca_cdcc_min_head_spouse_earned: 4_000
+    # Independent costs bind despite the1,000 California earnings increase.
+    dependent_care_assistance_exclusion: 900
+    ca_dependent_care_assistance_exclusion: 900
+
+# FTB3506 (2025) PartIV lines17–26 and ScheduleCA line1h HSA addback.
+# https://www.ftb.ca.gov/forms/2025/2025-3506-instructions.html
+- name: California's HSA earnings difference preserves the $0 qualified-cost ceiling.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 2_000
+      spouse:
+        age: 38
+        employment_income: 4_000
+        health_savings_account_payroll_contributions: 1_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        dependent_care_assistance_qualified_expenses: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    min_head_spouse_earned: 3_000
+    ca_cdcc_min_head_spouse_earned: 4_000
+    # Independent costs bind despite the1,000 California earnings increase.
+    dependent_care_assistance_exclusion: 0
+    ca_dependent_care_assistance_exclusion: 0

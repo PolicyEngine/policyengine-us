@@ -1,13 +1,13 @@
 # Test that TOB revenue split uses double-branching methodology
 # Per 42 U.S.C. 401 note (Section 121(e) of PL 98-21):
-#   - OASDI receives tax on "first 50%" of gross SS benefits
+#   - OASDI receives tax attributable to pre-1993 IRC section 86
 #   - Medicare HI receives tax on remaining portion (1993 amendments)
 #
 # The split depends on marginal tax rates, so varies by income level
 
 - name: TOB tier split - single retiree in tier 2
   period: 2024
-  absolute_error_margin: 500
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -18,6 +18,10 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
@@ -30,7 +34,7 @@
 
 - name: TOB revenue split using branching methodology
   period: 2024
-  absolute_error_margin: 100
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -41,13 +45,18 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
   output:
     # Using double-branching per 42 U.S.C. 401 note
-    # OASDI = tax(with 50% cap) - tax(with 0% SS)
-    # HI = tax(with full SS) - tax(with 50% cap)
+    # Old-law inclusion = min($15,000, 50% * ($65,000 - $25,000)) = $15,000.
+    # OASDI = $5,712 old-law tax - $3,782 tax without SS.
+    # HI = $8,022 current-law tax - $5,712 old-law tax.
     tob_revenue_total: 4_240
     tob_revenue_oasdi: 1_930
     tob_revenue_medicare_hi: 2_310
@@ -64,6 +73,10 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]

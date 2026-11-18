@@ -101,3 +101,63 @@
         members: [parent, child]
   output:
     household_market_income: 75_000
+
+- name: Partnership, S corporation and farm rental income are market income, with their signs.
+  period: 2026
+  input:
+    people:
+      person:
+        partnership_income: 40_000
+        s_corp_income: -5_000
+        farm_rent_income: 3_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 38_000
+
+- name: Capital gain distributions reported without Schedule D are market income.
+  period: 2026
+  input:
+    people:
+      person:
+        non_sch_d_capital_gains: 2_500
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 2_500
+
+- name: Employer disability benefits are market income, taxable or not.
+  period: 2026
+  input:
+    people:
+      person:
+        disability_benefits: 9_000
+        tax_exempt_disability_benefits: 9_000
+    households:
+      household:
+        members: [person]
+  output:
+    taxable_disability_benefits: 0
+    household_market_income: 9_000
+
+- name: Form 4797 gains are market income for the household as a whole.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        other_net_gain: 8_000
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    household_market_income: 8_000

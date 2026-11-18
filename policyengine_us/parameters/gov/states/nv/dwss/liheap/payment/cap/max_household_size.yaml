@@ -1,0 +1,14 @@
+description: Nevada prints benefit cap table rows through this household size, with larger households using the last row, under the Low Income Home Energy Assistance Program.
+# The last row is printed as "8+".
+values:
+  2025-07-01: 8
+
+metadata:
+  unit: person
+  period: year
+  label: Nevada LIHEAP benefit cap table maximum household size
+  reference:
+    - title: Nevada SFY2026 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=111
+    - title: Nevada SFY2027 Energy Assistance Program Manual, Appendix A benefit cap tables
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=111

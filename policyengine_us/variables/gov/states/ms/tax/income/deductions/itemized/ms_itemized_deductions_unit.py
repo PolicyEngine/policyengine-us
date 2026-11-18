@@ -12,14 +12,32 @@ class ms_itemized_deductions_unit(Variable):
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=15",
         "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80108228.pdf",  # Line 7
         "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-17/",
+        # Miss. Code Ann. 27-7-17(4), 2016 and 2020 editions.
+        "https://law.justia.com/codes/mississippi/2016/title-27/chapter-7/article-1/section-27-7-17/",
+        "https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-17/",
+        # 2017 instructions, Form 80-108 lines 7a to 7d.
+        "https://taxsim.nber.org/historical_state_tax_forms/MS/2017/80100178.pdf#page=15",
+        # 2025 instructions: Schedule A line 7b (gaming losses), and the 3%
+        # tax on winnings reported by Mississippi casinos
+        # PDF pages 16, 25
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=16",
     )
     defined_for = StateCode.MS
 
+    # itemized_deductions_less_salt already includes the federal miscellaneous
+    # deduction above the 2% floor (Form 80-108 lines 7a to 7d before 2018), so
+    # misc_deduction is not added again: Miss. Code Ann. 27-7-17(4) bars
+    # deducting the same item more than once.
     adds = [
         "itemized_deductions_less_salt",
-        "misc_deduction",
         "ms_real_estate_tax_deduction",
     ]
+    # Winnings reported by Mississippi casinos bear a separate 3% tax and are
+    # not Mississippi income, and Mississippi gaming losses come off the
+    # itemized deductions (Schedule A line 7b). Mississippi income here
+    # leaves out all gambling winnings, including those from other states,
+    # so the federal wagering losses deduction is left out as well.
+    subtracts = ["wagering_losses_deduction"]
 
     # Mississippi allows itemized deductions for gaming establishments and gender transition procedures
     # which are currently not modeled

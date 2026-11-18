@@ -5,6 +5,12 @@ class claimed_ma_covid_19_essential_employee_premium_pay_program_2020(Variable):
     value_type = bool
     entity = Person
     label = "Claimed MA COVID 19 Essential Employee Premium Pay Program for 2020"
+    documentation = (
+        "Whether this person received the first Massachusetts essential employee "
+        "premium-pay payment, based on 2020 earnings and paid in 2022. Set this input "
+        "for eligibility tax year 2021 to exclude a prior-round recipient from the "
+        "second modeled $500 payment."
+    )
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program"
     defined_for = StateCode.MA

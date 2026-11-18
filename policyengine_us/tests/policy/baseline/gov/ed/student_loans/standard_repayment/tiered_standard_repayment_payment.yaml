@@ -1,0 +1,190 @@
+# Tiered standard plan (20 U.S.C. 1087e(d)(7)(A)(i); 34 CFR 685.208(b)(8),
+# (c)(1)) for a borrower with a Direct Loan made on or after July 1, 2026.
+# The balance is federal_student_loan_balance plus
+# federal_parent_plus_loan_balance:
+#   balance less than 25,000 -> 10 years; 25,000 to less than 50,000 -> 15;
+#   50,000 to less than 100,000 -> 20; 100,000 or more -> 25.
+#   payment = balance x i / (1 - (1 + i) ^ -n), i = rate / 12, n = 12 x years,
+#   at least 50 dollars, or the balance if it is less than 50 dollars.
+
+- name: Case 1, just below 25,000 dollars repays over 10 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 24_999
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 24,999 x 0.005 / (1 - 1.005 ^ -120) = 277.54.
+    tiered_standard_repayment_payment: 277.54
+
+- name: Case 2, exactly 25,000 dollars repays over 15 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 25_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 25,000 x 0.005 / (1 - 1.005 ^ -180) = 210.96.
+    tiered_standard_repayment_payment: 210.96
+
+- name: Case 3, just below 50,000 dollars repays over 15 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 49_999
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 49,999 x 0.005 / (1 - 1.005 ^ -180) = 421.92.
+    tiered_standard_repayment_payment: 421.92
+
+- name: Case 4, exactly 50,000 dollars repays over 20 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 50_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 50,000 x 0.005 / (1 - 1.005 ^ -240) = 358.22.
+    tiered_standard_repayment_payment: 358.22
+
+- name: Case 5, just below 100,000 dollars repays over 20 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 99_999
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 99,999 x 0.005 / (1 - 1.005 ^ -240) = 716.42.
+    tiered_standard_repayment_payment: 716.42
+
+- name: Case 6, exactly 100,000 dollars repays over 25 years.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 100_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 100,000 x 0.005 / (1 - 1.005 ^ -300) = 644.30.
+    tiered_standard_repayment_payment: 644.30
+
+- name: Case 7, a small balance pays the 50 dollar minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 3_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 3,000 x 0.005 / (1 - 1.005 ^ -120) = 33.31, below the 50 minimum.
+    tiered_standard_repayment_payment: 50
+
+- name: Case 8, a balance below 50 dollars is paid in full.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    tiered_standard_repayment_payment: 30
+
+- name: Case 9, a zero interest rate spreads the balance evenly.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 15-year tier: 30,000 / 180 = 166.67.
+    tiered_standard_repayment_payment: 166.67
+
+- name: Case 10, a borrower with no loan made on or after July 1, 2026 uses the 10-year plan instead.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+  output:
+    tiered_standard_repayment_payment: 0
+    standard_repayment_payment: 333.06
+
+- name: Case 11, several borrowers in different tiers.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 24_999
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+      person2:
+        age: 30
+        federal_student_loan_balance: 50_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+      person3:
+        age: 30
+        federal_student_loan_balance: 100_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+      person4:
+        age: 30
+        federal_student_loan_balance: 100_000
+        federal_student_loan_interest_rate: 0.06
+  output:
+    tiered_standard_repayment_payment: [277.54, 358.22, 644.30, 0]
+
+- name: Case 12, Parent PLUS loans count toward the tier and are repaid under the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        federal_student_loan_balance: 20_000
+        federal_parent_plus_loan_balance: 10_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+  output:
+    # 20,000 + 10,000 = 30,000 is in the 15-year tier (20,000 alone would be in
+    # the 10-year tier, at 222.04).
+    # 30,000 x 0.005 / (1 - 1.005 ^ -180) = 253.16.
+    tiered_standard_repayment_payment: 253.16

@@ -1,0 +1,139 @@
+# Hawaii: section 1341 operative from 2022 (Act 56, SLH 2023, sections 2 and
+# 7(1)), with the credit figured on Form N-364 from prior-year Hawaii tax and
+# "whichever results in the least tax". Before 2022, and for repayments of
+# $3,000 or less, a repayment is a miscellaneous itemized deduction above 2% of
+# Hawaii AGI (Worksheet A-6) while Hawaii allows those (through 2025; Act 35,
+# SLH 2026). This file follows the statute for 2022-2025; the 2022-2025 N-11
+# instructions list the items the other way round (see the PR).
+
+# Wages $50,000, so Hawaii AGI $50,000 and the 2% floor is $1,000.
+- name: Case 3, a repayment of $3,000 is a miscellaneous deduction above 2% of Hawaii AGI.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_agi: 50_000
+    hi_claim_of_right_section_1341_eligible: false
+    hi_claim_of_right_deduction: 2_000
+    hi_claim_of_right_credit: 0
+
+# Before 2022 section 1341 is excluded in Hawaii; the 2018-2021 N-11
+# instructions: "Repayments under a claim of right over $3,000 are subject to
+# the 2% limitation for Hawaii income tax purposes."
+- name: Case 4, in 2021 a $10,000 repayment is floored at 2% of Hawaii AGI and gets no credit.
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_claim_of_right_section_1341_eligible: false
+    hi_claim_of_right_credit_applies: false
+    hi_claim_of_right_deduction: 9_000
+    hi_claim_of_right_credit: 0
+
+- name: Case 5, from 2026 a repayment of $3,000 or less is not deductible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_claim_of_right_deduction: 0
+
+- name: Case 6, a repayment of income Hawaii never taxed gets neither a deduction nor a credit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 10_000
+        hi_claim_of_right_repayment_excluded_from_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_claim_of_right_repayment: 0
+    hi_claim_of_right_deduction: 0
+    hi_claim_of_right_credit: 0
+
+- name: Case 7, a joint return counts both spouses' repayments toward $3,000 but not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_000
+      spouse:
+        age: 40
+        claim_of_right_repayment: 2_000
+      child:
+        age: 17
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        hi_claim_of_right_credit_applies: false
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: HI
+  output:
+    hi_claim_of_right_repayment: 4_000
+    hi_claim_of_right_section_1341_eligible: true
+    hi_claim_of_right_deduction: 4_000
+
+- name: Case 10, outside Hawaii.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_claim_of_right_prior_year_tax_decrease: 600
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    hi_claim_of_right_deduction: 0
+    hi_claim_of_right_credit: 0

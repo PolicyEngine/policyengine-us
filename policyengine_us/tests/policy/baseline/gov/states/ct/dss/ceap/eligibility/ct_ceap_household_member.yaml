@@ -1,0 +1,28 @@
+# PDF page 5
+# - https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/winter-heating-assistance/09012026/ffy-27-liheap-allocation-plan.pdf#page=5
+
+- name: Case 1, foster and incarcerated people are outside the household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 10
+        is_in_foster_care:
+          2026-01: true
+      person3:
+        age: 40
+        is_incarcerated:
+          2026-01: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_ceap_household_member: [true, false, false]

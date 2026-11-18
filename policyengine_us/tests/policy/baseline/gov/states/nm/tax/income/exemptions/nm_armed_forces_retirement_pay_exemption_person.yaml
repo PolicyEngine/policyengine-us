@@ -33,3 +33,67 @@
     is_tax_unit_head_or_spouse: false
   output:
     nm_armed_forces_retirement_pay_exemption_person: 0
+
+- name: New Mexico does not exempt a nonspouse survivor annuity in 2024.
+  period: 2024
+  input:
+    state_code: NM
+    age: 20
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 0
+
+- name: New Mexico does not exempt a surviving spouse's annuity before 2025.
+  period: 2024
+  input:
+    state_code: NM
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 0
+
+- name: New Mexico exempts a surviving spouse's annuity starting in 2025.
+  period: 2025
+  input:
+    state_code: NM
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 10_000
+
+- name: New Mexico does not extend the 2025 survivor exemption to nonspouses.
+  period: 2025
+  input:
+    state_code: NM
+    age: 20
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 0
+
+- name: New Mexico keeps own retirement pay separate from nonspouse survivor benefits.
+  period: 2025
+  input:
+    state_code: NM
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 25_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 25_000
+
+- name: New Mexico applies one cap to own pay and eligible surviving spouse benefits.
+  period: 2025
+  input:
+    state_code: NM
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 25_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 30_000

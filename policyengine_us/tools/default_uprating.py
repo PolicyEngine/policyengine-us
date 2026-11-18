@@ -96,11 +96,22 @@ INPUT_VARIABLES = [
     "long_term_capital_gains",
     "traditional_401k_contributions_desired",
     "strike_benefits",
+    "tax_exempt_strike_benefits",
     "other_medical_expenses",
     "over_the_counter_health_expenses",
     "health_insurance_premiums_without_medicare_part_b",
     "other_health_insurance_premiums",
 ]
+
+
+# Federal student loan balances are stocks held at their dataset value: no
+# price or income index applies, and repayment is not rolled forward. Other
+# debts, such as auto loan balances, keep their uprating.
+NO_DEFAULT_UPRATING_VARIABLES = {
+    "federal_student_loan_balance",
+    "federal_parent_plus_loan_balance",
+    "federal_ffel_loan_balance",
+}
 
 
 def _is_float_dollar_input(variable) -> bool:
@@ -113,8 +124,10 @@ def _is_float_dollar_input(variable) -> bool:
 
 def add_default_uprating(system):
     for variable in system.variables.values():
-        should_default = variable.is_input_variable() and (
-            variable.name in INPUT_VARIABLES or _is_float_dollar_input(variable)
+        should_default = (
+            variable.name not in NO_DEFAULT_UPRATING_VARIABLES
+            and variable.is_input_variable()
+            and (variable.name in INPUT_VARIABLES or _is_float_dollar_input(variable))
         )
         if should_default and variable.uprating is None:
             variable.uprating = DEFAULT_DOLLAR_INPUT_UPRATING

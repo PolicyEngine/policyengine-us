@@ -23,6 +23,6 @@ class la_oss(Variable):
         # $0.50/$0.49 round-up rule are not modeled at the moment.
         p = parameters(period).gov.states.la.hhs.oss
         ssi = person("ssi", period)
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         raw = p.personal_care_needs_allowance - ssi - countable_income
         return min_(max_(raw, 0), p.maximum_payment)

@@ -6,13 +6,16 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from policyengine_core.enums import Enum
-from policyengine_core.charts import (
-    LIGHTER_BLUE,
-    LIGHT_BLUE,
-    BLUE,
-    DARK_BLUE,
-    format_fig,
-    display_fig,
+from policyengine_core.charts import format_fig, display_fig
+
+# Core's chart palette has no LIGHTER_BLUE, LIGHT_BLUE or DARK_BLUE, and
+# the package exports only BLUE and the three-shade BLUE_COLOUR_SCALE, so
+# take four blues, light to dark, from the module that defines them.
+from policyengine_core.charts.formatting import (
+    BLUE_LIGHT,
+    BLUE_PRIMARY,
+    BLUE_PRESSED,
+    DARKEST_BLUE,
 )
 from policyengine_us.system import system
 from policyengine_us import Simulation
@@ -117,7 +120,12 @@ def variation_chart(
         color="Children",
         facet_col="Adults",
         facet_col_spacing=0.1,
-        color_discrete_sequence=[LIGHTER_BLUE, LIGHT_BLUE, BLUE, DARK_BLUE],
+        color_discrete_sequence=[
+            BLUE_LIGHT,
+            BLUE_PRIMARY,
+            BLUE_PRESSED,
+            DARKEST_BLUE,
+        ],
     )
     fig.update_xaxes(
         tickformat="$,.0f",

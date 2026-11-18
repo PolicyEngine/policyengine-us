@@ -1,0 +1,110 @@
+# Iowa LIHEAP poverty guideline for the household (REQ-003). The FY26 season
+# (October 1, 2025 to April 30, 2026) uses the 2025 HHS guideline: 15,650 for
+# one person plus 5,500 per additional person in the contiguous states
+# (parameters/gov/hhs/fpg.yaml at 2025-01-01). Period 2026 reads it through a
+# one-year lag. The FY26 table of 2 x the guideline is Appendix B p. 89 of the
+# FY26 LIHEAP Policy and Procedures Manual:
+# https://hhs.iowa.gov/media/17262/download?inline#page=89
+# The guideline uses ia_liheap_household_size (citizen or qualified members,
+# section 7.30 p. 34) and is zero when that size is zero.
+
+- name: Case 1, one-person household reads the 2025 guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 2025 guideline, size 1 = 15,650.
+    ia_liheap_fpg: 15_650
+
+- name: Case 2, family of four adds 5,500 per additional person.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 42_000
+      person2:
+        age: 36
+        employment_income: 18_000
+      person3:
+        age: 9
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_250
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:
+    # 15,650 + 3 x 5,500 = 32,150.
+    ia_liheap_fpg: 32_150
+
+- name: Case 3, mixed-status household of three uses the size-two guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 24_000
+      person2:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income: 14_000
+      person3:
+        age: 5
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    # Size 2 (the undocumented adult is not counted): 15,650 + 5,500 = 21,150.
+    ia_liheap_household_size: 2
+    ia_liheap_fpg: 21_150
+
+- name: Case 4, household with no counted member has a zero guideline.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 22_000
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Size 0 is guarded to zero rather than 15,650 - 5,500 = 10,150.
+    ia_liheap_household_size: 0
+    ia_liheap_fpg: 0

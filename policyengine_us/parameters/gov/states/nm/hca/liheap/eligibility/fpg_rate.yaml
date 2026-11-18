@@ -1,0 +1,27 @@
+description: New Mexico limits household income to this multiple of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# The FFY2026 guide prints monthly limits of $1,956 to $6,769 for household
+# sizes 1-8 (150% of the 2025 guideline over 12 months, rounded to the nearest
+# dollar), and the FFY2027 guide $1,995 to $6,965 (2026 guideline). The 110%
+# floor of 42 U.S.C. 8624(b)(2)(B) lies below this limit for every size.
+values:
+  2025-10-01: 1.5
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico LIHEAP poverty guideline income limit rate
+  reference:
+    - title: 8.150.100.9 D NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0100.html
+    - title: 8.150.520.14 and 8.150.520.15 NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0520.html
+    - title: New Mexico FY2026 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=9
+    - title: New Mexico FY2027 LIHEAP State Plan, Section 2.1
+      href: https://www.hca.nm.gov/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026-4.pdf#page=8
+    - title: New Mexico LIHEAP FFY2026 Heating and Cooling Point and Income Guide, income eligibility guidelines
+      href: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+    - title: New Mexico LIHEAP FFY2027 Point and Income Guidelines, income guidelines
+      href: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+    - title: New Mexico ISD 017 Income Eligibility Guidelines, October 1, 2025 to September 30, 2026, LIHEAP 111%-150% FPG
+      href: https://www.hca.nm.gov/wp-content/uploads/ISD-017-FPG-Cards-FY-2026-10.01.25-to-09.30.2026-final-1.pdf#page=1

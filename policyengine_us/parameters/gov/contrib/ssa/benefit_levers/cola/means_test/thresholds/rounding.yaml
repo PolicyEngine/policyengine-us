@@ -1,0 +1,10 @@
+description: Dollar increment for half-up rounding of CPI-U-indexed COLA means-test thresholds. The example increment of 100 dollars is a modeling convention reflecting the precision of OACT A9's displayed estimates; it is configurable for scenarios.
+values:
+  0000-01-01: 100
+metadata:
+  unit: currency-USD
+  label: Social Security COLA means-test threshold rounding increment
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

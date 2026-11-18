@@ -1,0 +1,39 @@
+description: Tennessee assigns this benefit matrix household size group from the number of counted household members under the Low Income Home Energy Assistance Program.
+# The FY2026 matrix prints identical benefit rows for sizes 1-2, 3-5, 6-8 and
+# 9-12, and the FY2027 LI-12 matrix for sizes 1-2, 3-5, 6-8 and 9-16. Larger
+# households use the last group.
+brackets:
+  # Household size 1-2.
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  # Household size 3-5.
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 2
+  # Household size 6-8.
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 3
+  # Household size 9 and over.
+  - threshold:
+      2025-10-01: 9
+    amount:
+      2025-10-01: 4
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Tennessee LIHEAP benefit matrix household size group
+  reference:
+    - title: Tennessee LIHEAP 2026 Benefit Matrix, household members
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+    - title: Tennessee LIHEAP 2026 Workshop, Benefit Matrix Adjustments 2026
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-26-Workshop-Powerpoint-09.16.25.pdf#page=29
+    - title: "Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), household members #page 1-4"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=1

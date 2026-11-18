@@ -1,34 +1,40 @@
 description: New Mexico counts these income sources under the Child Care Assistance Program.
 values:
   2016-10-01:
+    # Rule numbers: 8.9.3 NMAC (ECECD, effective 2022-11-01) replaced 8.15.2
+    # NMAC (CYFD). Subsection 8.9.3.11.C keeps the paragraph numbers of
+    # 8.15.2.11.C, and paragraphs (3) and (5) count the same income. The
+    # current (6) also exempts Tribal per capita payments, which have no
+    # PolicyEngine variable. The comments in this file cite 8.9.3.11; read
+    # 8.15.2.11 before 2022-11-01.
     - employment_income
     - self_employment_income
     # PolicyEngine records farm income separately from self-employment, so
-    # include it under the 8.15.2.11.C(5) self-employment category.
+    # include it under the 8.9.3.11.C(5) self-employment category.
     - farm_operations_income
     - alimony_income
-    # VA payments are counted except those exempted under 8.15.2.11.C(6).
+    # VA payments are counted except those exempted under 8.9.3.11.C(6).
     - veterans_benefits
     - workers_compensation
     - railroad_benefits
     - pension_income
     # PolicyEngine records military retirement separately from pension_income,
-    # so include it under the 8.15.2.11.C(5) pensions category.
-    - military_retirement_pay
+    # so include it under the 8.9.3.11.C(5) pensions category.
+    - military_retirement_income
     - rental_income
     # Social Security retirement, survivors, and dependents benefits are
-    # counted; SSDI is exempt (8.15.2.11.C(6)), so the aggregate social_security
+    # counted; SSDI is exempt (8.9.3.11.C(6)), so the aggregate social_security
     # variable is split into its non-disability components here. (Social
     # Security received by household children is also exempt, but that is
     # handled by the caretaker filter below, not by omission.)
     - social_security_retirement
     - social_security_survivors
     - social_security_dependents
-    # Overtime is counted only if CYFD finds it is paid regularly
-    # (8.15.2.11.C(5)); the regularity condition is captured within
-    # employment_income and not separately modeled.
+    # Overtime is counted only if the department (CYFD, now ECECD) finds it
+    # is paid regularly (8.9.3.11.C(5)); the regularity condition is captured
+    # within employment_income and not separately modeled.
     #
-    # Whose income counts: 8.15.2.11.C(3) excludes the earned and unearned
+    # Whose income counts: 8.9.3.11.C(3) excludes the earned and unearned
     # income of legal dependents and of grandparents who are not legal
     # guardians. nm_ccap_countable_income applies this by counting only the
     # income of caretakers (tax unit head/spouse), so household children's
@@ -37,8 +43,8 @@ values:
     # excluded at the moment.
     #
     # Provisions we don't model at the moment:
-    # - Royalties (8.15.2.11.C(5)) — no corresponding PolicyEngine variable.
-    # The other ~30 exempt categories in 8.15.2.11.C(6) (SNAP, TANF, SSI,
+    # - Royalties (8.9.3.11.C(5)) — no corresponding PolicyEngine variable.
+    # The other ~30 exempt categories in 8.9.3.11.C(6) (SNAP, TANF, SSI,
     # unemployment, child support, energy assistance, foster care payments,
     # etc.) are excluded by omission from this positive list. Omitting TANF
     # also avoids a CCAP <-> TANF circular dependency; the is_tanf_enrolled
@@ -50,5 +56,7 @@ metadata:
   period: year
   label: New Mexico CCAP countable income sources
   reference:
-    - title: 8.15.2.11.C(3) and (5) NMAC
+    - title: 8.15.2.11.C(3) and (5) NMAC (before 2022-11-01)
       href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+    - title: 8.9.3.11.C(3), (5) and (6) NMAC (from 2022-11-01)
+      href: https://www.srca.nm.gov/parts/title08/08.009.0003.html

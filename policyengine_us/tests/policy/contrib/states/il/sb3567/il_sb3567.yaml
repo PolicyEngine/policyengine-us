@@ -13,7 +13,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -32,6 +31,37 @@
   output:
     il_ctc: 346.24
 
+- name: SB3567 boosts an ITIN filer to the maximum one-child credit in 2025
+  # The Illinois EITC accepts ITIN filers, so the federal CTC filer SSN rule
+  # does not remove the child (issue #9403).
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    ctc_qualifying_children: 0
+    il_ctc: 346.24
+
 - name: SB3567 preserves the 2024 flat-credit formula
   period: 2024
   absolute_error_margin: 0.01
@@ -43,7 +73,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -72,25 +101,21 @@
         age: 32
       child1:
         age: 9
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child2:
         age: 7
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child3:
         age: 5
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child4:
         age: 3
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -120,7 +145,6 @@
         age: 33
       child:
         age: 6
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -150,7 +174,6 @@
         age: 34
       child:
         age: 4
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -179,7 +202,6 @@
         age: 35
       child:
         age: 12
-        ctc_qualifying_child: true
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -209,7 +231,6 @@
         age: 36
       child:
         age: 5
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -249,7 +270,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -281,7 +301,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -310,13 +329,11 @@
         age: 31
       child1:
         age: 7
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child2:
         age: 5
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -346,13 +363,11 @@
         age: 32
       child1:
         age: 6
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child2:
         age: 4
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -382,13 +397,11 @@
         age: 32
       child1:
         age: 6
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child2:
         age: 4
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -417,7 +430,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -447,7 +459,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -479,7 +490,6 @@
         age: 30
       child:
         age: 8
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
@@ -532,13 +542,11 @@
         age: 28
       child1:
         age: 7
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
       child2:
         age: 5
-        ctc_qualifying_child: true
         is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
         meets_eitc_identification_requirements: true
