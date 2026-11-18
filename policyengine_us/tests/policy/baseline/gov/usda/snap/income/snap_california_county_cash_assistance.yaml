@@ -1,0 +1,169 @@
+- name: CalFresh counts Alameda County General Assistance.
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: ALAMEDA_COUNTY_CA
+    age: 30
+    employment_income: 3_600
+  output:
+    ca_ala_general_assistance: 36
+    snap_unearned_income: 36
+
+- name: CalFresh counts Contra Costa County General Assistance.
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: CONTRA_COSTA_COUNTY_CA
+    age: 30
+    employment_income: 3_600
+  output:
+    ca_cc_general_assistance: 36
+    snap_unearned_income: 36
+
+- name: CalFresh counts the regular Los Angeles GR grant including its rent contribution.
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    age: 40
+    rent: 6_000
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+  output:
+    la_general_relief: 121
+    la_general_relief_rent_contribution: 100
+    la_general_relief_housing_subsidy_paid: 400
+    snap_unearned_income: 221
+
+- name: CalFresh counts Marin County General Relief.
+  period: 2026-01
+  input:
+    state_code: CA
+    county_str: MARIN_COUNTY_CA
+    age: 40
+  output:
+    ca_marin_general_relief: 387
+    snap_unearned_income: 387
+
+- name: CalFresh counts Orange County General Relief.
+  period: 2026-01
+  input:
+    state_code: CA
+    county_str: ORANGE_COUNTY_CA
+    age: 30
+  output:
+    ca_oc_general_relief: 355
+    snap_unearned_income: 355
+
+- name: CalFresh counts Riverside County General Relief.
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+      senior:
+        age: 65
+        takes_up_ssi_if_eligible: false
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [adult, senior]
+        state_code: CA
+        county_str: RIVERSIDE_COUNTY_CA
+    spm_units:
+      unit:
+        members: [adult, senior]
+        housing_cost: 3_600
+  output:
+    ca_riv_general_relief: 438.5
+    snap_unearned_income: 438.5
+
+- name: CalFresh counts San Bernardino County General Relief.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 2_400
+      child:
+        age: 8
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+        county_str: SAN_BERNARDINO_COUNTY_CA
+    spm_units:
+      unit:
+        members: [parent, child]
+        tanf: 0
+  output:
+    ca_sbd_general_relief: 420
+    snap_unearned_income: 420
+
+- name: CalFresh counts Santa Clara County General Assistance.
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: SANTA_CLARA_COUNTY_CA
+    age: 30
+    personal_property: 100
+    ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 343
+    snap_unearned_income: 343
+
+- name: CalFresh counts San Francisco CAAP cash after in-kind support.
+  period: 2026-01
+  input:
+    state_code: CA
+    county_str: SAN_FRANCISCO_COUNTY_CA
+    age: 30
+    ca_sf_caap_income_in_kind: 600
+  output:
+    ca_sf_caap: 59
+    snap_unearned_income: 59
+
+- name: CalFresh counts San Mateo General Assistance for independent living.
+  period: 2026-01
+  input:
+    state_code: CA
+    county_str: SAN_MATEO_COUNTY_CA
+    age: 30
+  output:
+    ca_smc_general_assistance: 732
+    snap_unearned_income: 732
+
+- name: CalFresh excludes San Mateo General Assistance paid to a care facility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    county_str: SAN_MATEO_COUNTY_CA
+    age: 30
+    ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance: 1_626.07
+    snap_unearned_income: 0
+
+- name: A California address without a county gets no Alameda General Assistance.
+  period: 2026-01
+  input:
+    state_code: CA
+    age: 30
+  output:
+    county_str: ALAMEDA_COUNTY_CA
+    in_ala: false
+    snap_unearned_income: 0
+
+- name: Alameda FIPS identifies an Alameda General Assistance recipient.
+  period: 2024-01
+  input:
+    state_code: CA
+    county_fips: "06001"
+    age: 30
+    employment_income: 3_600
+  output:
+    in_ala: true
+    ca_ala_general_assistance: 36
+    snap_unearned_income: 36

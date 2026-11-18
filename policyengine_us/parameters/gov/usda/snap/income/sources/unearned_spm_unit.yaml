@@ -11,6 +11,20 @@ values:
     - ma_eaedc
     - ny_safety_net_assistance
     - wa_sfa
+    # Ordinary California county GA/GR cash grants.
+    - ca_ala_general_assistance
+    - ca_cc_general_assistance
+    - ca_marin_general_relief
+    - ca_oc_general_relief
+    - ca_riv_general_relief
+    - ca_sbd_general_relief
+    - ca_scc_general_assistance
+    - ca_sf_caap
+    - ca_smc_general_assistance_countable_for_snap
+    # Count the regular LA grant, including any part sent to the landlord.
+    # CalFresh MPP 63-502.2(b)(2) excludes the separate county subsidy.
+    - la_general_relief
+    - la_general_relief_rent_contribution
 
 metadata:
   reference:
@@ -24,3 +38,7 @@ metadata:
       href: https://otda.ny.gov/programs/snap/snapsb.pdf
     - title: WAC 388-450-0025, Washington Basic Food unearned income
       href: https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0025
+    - title: California CalFresh MPP 63-502.141 and 63-502.2(b)(2)
+      href: https://cdss.ca.gov/Portals/9/Regs/Man/Fsman/fsman05.docx
+    - title: Los Angeles CalFresh 63-502.14, Unearned Income
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/calfresh/unearned-income.html
