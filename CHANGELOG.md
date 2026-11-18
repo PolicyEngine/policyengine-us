@@ -1,3 +1,10 @@
+## [2.145.11] - 2026-11-18
+
+### Fixed
+
+- Apply South Carolina's FY2027 LIHEAP heating amounts and stop requiring a heating fuel for South Carolina cooling eligibility.
+
+
 ## [2.145.10] - 2026-11-18
 
 ### Fixed
