@@ -1024,11 +1024,13 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/parameters/gov/hhs/tanf/non_cash/asset_limit.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11124
   state: ruled
   note: 'PE-US follows the manual: the $5,500 limit applies to every Arkansas household within the BBCE income limits,
     at application and while enrolled. The model has no input that separates an applicant from an enrolled household
-    or that tracks the twelve months. Ruled by the project lead, 2026-11-18.'
+    or that tracks the twelve months. Ruled by the project lead, 2026-11-18:
+    https://github.com/PolicyEngine/policyengine-us/pull/11124'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
