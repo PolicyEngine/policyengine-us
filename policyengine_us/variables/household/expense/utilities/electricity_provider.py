@@ -35,14 +35,39 @@ class electricity_provider(Variable):
         "the utility bill. Report the distribution utility even when a separate "
         "retailer supplies the energy. UNSPECIFIED means the company was not "
         "reported; OTHER means a reported company outside the listed choices. "
-        "The choices initially cover named utilities needed for Idaho, Illinois "
-        "and Rhode Island heating assistance and can be extended for other "
-        "programs. This input does not imply program enrollment or bill receipt."
+        "Named companies support Idaho, Illinois and Rhode Island heating "
+        "assistance. The state mapping includes their service in other states. "
+        "This input does not imply program enrollment or bill receipt."
     )
+    # A null territory makes the choice available in every state.
+    metadata = {
+        "states_by_value": {
+            "UNSPECIFIED": None,
+            "AMEREN_ILLINOIS": ["IL"],
+            "AVISTA": ["ID", "MT", "WA"],
+            "BLOCK_ISLAND_UTILITY_DISTRICT": ["RI"],
+            "BONNERS_FERRY_LIGHT_AND_WATER": ["ID"],
+            "CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT": ["RI"],
+            "CLEARWATER_POWER": ["ID", "OR", "WA"],
+            "COMED": ["IL"],
+            "IDAHO_COUNTY_LIGHT_AND_POWER": ["ID"],
+            "IDAHO_POWER": ["ID", "OR"],
+            "INLAND_POWER_AND_LIGHT": ["ID", "WA"],
+            "KOOTENAI_ELECTRIC": ["ID", "WA"],
+            "NORTHERN_LIGHTS": ["ID", "MT", "WA"],
+            "PLUMMER_ELECTRIC": ["ID"],
+            "RHODE_ISLAND_ENERGY": ["RI"],
+            "ROCKY_MOUNTAIN_POWER": ["ID", "UT", "WY"],
+            "OTHER": None,
+        }
+    }
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1",
         "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html",
         "https://webserver.rilegislature.gov/Statutes/TITLE39/39-1/39-1-27.12.htm",
         "https://oemr.idaho.gov/utilities/",
-        "https://www.inlandpower.com/",
+        # Form EIA-861, 2025 final, Service_Territory_2025 (utility by county).
+        "https://www.eia.gov/electricity/data/eia861/",
+        # EIA lists PacifiCorp as a whole. This is its Rocky Mountain Power brand.
+        "https://www.rockymountainpower.net/about.html",
     )

@@ -1,1 +1,1 @@
-Add shared electricity and natural gas provider inputs for utility-dependent benefit rules.
+Add electricity and natural gas provider inputs with state service territories for filtering household choices by fuel.
