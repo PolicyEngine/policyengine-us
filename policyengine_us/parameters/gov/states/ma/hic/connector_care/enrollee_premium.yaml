@@ -16,10 +16,11 @@ metadata:
       href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=13
 
 brackets:
-  # Household income measured as ACA MAGI as a share of the prior-year federal
-  # poverty guideline, the exact ratio. Band boundaries are lower-exclusive /
-  # upper-inclusive per 956 CMR 12.04(3)(b) ("at or below 150%", "over 150% and
-  # not over 200%"), so each threshold is the band's lower edge and
+  # Household income measured as ACA MAGI as a share of aca_fpg (the prior-year
+  # federal poverty guideline for the section 36B tax family), the exact ratio.
+  # Band boundaries are lower-exclusive / upper-inclusive per 956 CMR
+  # 12.04(3)(b) ("at or below 150%", "over 150% and not over 200%"), so each
+  # threshold is the band's lower edge and
   # ma_connector_care evaluates the scale with right-closed brackets: a ratio
   # exactly at a threshold stays in the band below it. The schedule is a flat
   # dollar step function decoupled from the affordability percent-of-income

@@ -9,10 +9,16 @@ class ma_connector_care(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (
+        # 956 CMR 12.03 defines Household, Federal Poverty Level and MAGI.
+        "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=4",
         "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=5",
         "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6",
         "https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1",
         "https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=2",
+        # The Health Connector uses the 2025 guidelines for plan year 2026 and
+        # the 2026 guidelines for plan year 2027.
+        "https://www.mahealthconnector.org/wp-content/uploads/ConsumerGuideToSubsidies-2026.pdf#page=1",
+        "https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1",
     )
     documentation = (
         "Massachusetts ConnectorCare, the Health Connector's state premium "
@@ -49,9 +55,13 @@ class ma_connector_care(Variable):
         # include their upper edge: "at or below 150%" is 2A, "over 150% and
         # not over 200%" is 2B, and so on. Look up the exact ratio, not the
         # truncated aca_magi_fraction (which put 150.00%-150.99% in 2A), with
-        # each bracket closed on the right.
+        # each bracket closed on the right. ma_connector_care_eligible explains
+        # the choice of aca_fpg as the poverty line.
         magi = max_(tax_unit("aca_magi", period), 0)
-        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
         per_person_monthly = p.enrollee_premium.calc(exact_magi_frac, right=True)
         enrollee_contribution = MONTHS_IN_YEAR * per_person_monthly * n_members
         # The benchmark for the federal coverage family (a MONTH variable

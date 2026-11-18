@@ -2,15 +2,15 @@
 #
 # ma_connector_care (TaxUnit, YEAR, USD, defined_for StateCode.MA):
 #   n_members         = count of ma_connector_care_member_eligible (= is_aca_ptc_eligible)
-#   ratio             = max(aca_magi, 0) / tax_unit_fpg(prior year)  # exact, not truncated
+#   ratio             = max(aca_magi, 0) / aca_fpg                 # exact, not truncated
 #   per_person_month  = enrollee_premium.calc(ratio, right=True)   # single_amount bracket
 #   contribution      = MONTHS_IN_YEAR (12) * per_person_month * n_members
-#   slcsp_annual      = add(tax_unit, period, ["slcsp"])           # MONTH var summed to year
+#   slcsp_annual      = add(tax_unit, period, ["aca_ptc_slcsp"])   # MONTH var summed to year
 #   subsidy           = max(0, slcsp_annual - aca_ptc - contribution)
 #   amount            = where(ma_connector_care_eligible, subsidy, 0)
 #
 # slcsp / aca_ptc / is_aca_ptc_eligible are supplied directly, and income is
-# aca_magi against a prior-year tax_unit_fpg pinned to $10,000, so each expected
+# aca_magi against an aca_fpg pinned to $10,000, so each expected
 # value is hand-verifiable. Income-derived cases at the end use the actual 2025
 # one-person guideline, $15,650. slcsp is a MONTH variable;
 # supplying it at the YEAR period sets the annual total, so the values below are
@@ -43,8 +43,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_500
     households:
@@ -67,8 +66,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
     households:
@@ -91,8 +89,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 22_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 5_000
     households:
@@ -115,8 +112,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 27_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 4_000
     households:
@@ -139,8 +135,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 4_000
     households:
@@ -167,8 +162,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -191,8 +185,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -215,8 +208,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -239,8 +231,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -263,8 +254,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -287,8 +277,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -311,8 +300,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 30_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -335,8 +323,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 30_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -365,8 +352,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
     households:
@@ -393,8 +379,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 22_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 5_000
     households:
@@ -418,8 +403,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 5_000
         aca_ptc: 3_000
     households:
@@ -442,8 +426,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 0
     households:
@@ -466,8 +449,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 0
     households:
@@ -490,8 +472,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 0
     households:
@@ -518,8 +499,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -545,8 +525,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 5_636
         aca_ptc: 5_000
     households:
@@ -583,8 +562,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 0
     households:
@@ -609,8 +587,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 10_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_500
     households:
@@ -988,3 +965,52 @@
   output:
     # Neither spouse is in a federal tax family.
     ma_connector_care: 0
+
+- name: Case 33, a joint return with one claimable spouse takes its Plan Type from the one-person guideline.
+  # The claimable spouse is outside the section 36B tax family, so aca_fpg is
+  # the one-person guideline: 31_300 / 15_650 = 2.00, Plan Type 2B ($53/mo).
+  # Against the whole tax unit's two-person guideline ($21,150) the ratio would
+  # be 1.48, Plan Type 2A ($0/mo). 956 CMR 12.03 doesn't say whether this filer
+  # counts; this pins the model's use of aca_fpg.
+  # aca_ptc = 6_000 - 0.066 * 31_300 = 3_934.20. Only the other spouse is a
+  # member: contribution = 12 * 53 * 1 = 636.
+  # subsidy = 6_000 - 3_934.20 - 636 = 1_429.80.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 31_300
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    ma_connector_care: 1_429.8

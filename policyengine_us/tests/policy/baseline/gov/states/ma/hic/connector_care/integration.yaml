@@ -1,14 +1,14 @@
 # Integration tests for Massachusetts ConnectorCare (PY2026 premium wrap).
 #
-# These exercise the full chain: the exact ratio of ACA MAGI to the prior-year
-# guideline (income gate and Plan Type band) and
+# These exercise the full chain: the exact ratio of ACA MAGI to aca_fpg
+# (income gate and Plan Type band) and
 # is_aca_ptc_eligible (member gate) -> ma_connector_care_member_eligible ->
 # ma_connector_care_eligible -> ma_connector_care (residual subsidy) ->
 # healthcare_benefit_value (household resource aggregation).
 #
 # In Scenarios 1-5 slcsp and aca_ptc are supplied directly (slcsp as an annual
-# value), and income is aca_magi against a prior-year tax_unit_fpg pinned to
-# $10,000, so every expected value is fully hand-verifiable.
+# value), and income is aca_magi against an aca_fpg pinned to $10,000, so every
+# expected value is fully hand-verifiable.
 # slcsp is a MONTH variable; supplying it at the YEAR period sets the annual sum.
 # Scenario 6 instead derives aca_magi_fraction, aca_ptc, and is_aca_ptc_eligible
 # from raw employment_income (only slcsp is supplied), per the Code Integrity note
@@ -22,7 +22,7 @@
 #
 # Amount formula recap:
 #   n_members      = count of ma_connector_care_member_eligible (= is_aca_ptc_eligible)
-#   per_person_mo  = enrollee_premium.calc(ACA MAGI / prior-year FPG, right=True)
+#   per_person_mo  = enrollee_premium.calc(ACA MAGI / aca_fpg, right=True)
 #   contribution   = 12 * per_person_mo * n_members
 #   subsidy        = max(0, slcsp_annual - aca_ptc - contribution)
 #   amount         = where(ma_connector_care_eligible, subsidy, 0)
@@ -43,8 +43,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -73,8 +72,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_500
         assigned_aca_ptc: 5_500
@@ -107,8 +105,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -138,8 +135,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 4_000
         assigned_aca_ptc: 4_000
@@ -170,8 +166,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 5_000
         aca_ptc: 3_000
         assigned_aca_ptc: 3_000
@@ -234,8 +229,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_200
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -276,8 +270,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         aca_magi: 35_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 0
         assigned_aca_ptc: 0
