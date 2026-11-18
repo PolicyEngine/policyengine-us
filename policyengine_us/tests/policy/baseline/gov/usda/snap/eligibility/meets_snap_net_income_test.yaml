@@ -354,3 +354,34 @@
           2026: VI
   output:
     meets_snap_net_income_test: true
+
+# USDA FY 2017 Income Eligibility Standards, PDF pages 1-2.
+# https://fns-prod.azureedge.us/sites/default/files/resource-files/FY17-Income-Eligibility-Standards.pdf
+# Effective October 1, 2016 through September 30, 2017; ordinary gross/net
+# tables and separately rounded additional-person increments. HHS raw rows:
+# https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=1
+- name: Case 21, FY 2017 published net standards are inclusive in all guideline geographies
+    and above size eight.
+  period: 2017-01
+  input:
+    snap_unit_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 12, 12, 1, 1, 2,
+      2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 12, 12, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6,
+      6, 7, 7, 8, 8, 9, 9, 12, 12]
+    state_group_str:
+      2017: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US,
+        CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US,
+        CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US,
+        CONTIGUOUS_US, CONTIGUOUS_US, AK, AK, AK, AK, AK, AK, AK, AK, AK, AK, AK, AK, AK,
+        AK, AK, AK, AK, AK, AK, AK, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI,
+        HI, HI, HI, HI, HI, HI]
+    snap_net_income: [990, 991, 1335, 1336, 1680, 1681, 2025, 2026, 2370, 2371, 2715, 2716,
+      3061, 3062, 3408, 3409, 3755, 3756, 4796, 4797, 1237, 1238, 1669, 1670, 2100, 2101,
+      2532, 2533, 2964, 2965, 3395, 3396, 3827, 3828, 4260, 4261, 4694, 4695, 5996, 5997,
+      1140, 1141, 1536, 1537, 1933, 1934, 2330, 2331, 2726, 2727, 3123, 3124, 3520, 3521,
+      3918, 3919, 4317, 4318, 5514, 5515]
+  output:
+    meets_snap_net_income_test: [true, false, true, false, true, false, true, false, true,
+      false, true, false, true, false, true, false, true, false, true, false, true, false,
+      true, false, true, false, true, false, true, false, true, false, true, false, true,
+      false, true, false, true, false, true, false, true, false, true, false, true, false,
+      true, false, true, false, true, false, true, false, true, false, true, false]

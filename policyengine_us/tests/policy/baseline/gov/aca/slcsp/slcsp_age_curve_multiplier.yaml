@@ -36,3 +36,72 @@
         state_code: NY
   output:
     slcsp_age_curve_multiplier: 1
+
+- name: Children share the federal age curve before 2018.
+  period: 2017-12
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [0, 14, 15, 20, 21, 40, 64]
+    state_code:
+      2017: [TX, TX, TX, TX, TX, TX, TX]
+  output:
+    # CMS 2013 child ratio / the 2018 base ratio = 0.635 / 0.765.
+    # Adult multipliers retain the model's 2018 normalization.
+    slcsp_age_curve_multiplier: [0.8300653595, 0.8300653595, 0.8300653595, 0.8300653595, 1.3072, 1.6706, 3.9216]
+
+- name: Federal age curves support the first marketplace year.
+  period: 2014-01
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [20, 21, 40]
+    state_code: [TX, TX, TX]
+  output:
+    # 0.635 / 0.765 = 0.8300653595 for every child under 21.
+    slcsp_age_curve_multiplier: [0.8300653595, 1.3072, 1.6706]
+
+- name: Children move to the revised federal age curve in 2018.
+  period: 2018-01
+  input:
+    monthly_age: [0, 14, 15, 20, 21, 40, 64]
+    state_code: [TX, TX, TX, TX, TX, TX, TX]
+  output:
+    slcsp_age_curve_multiplier: [1, 1, 1.0889, 1.268, 1.3072, 1.6706, 3.9216]
+
+- name: New Jersey individual premiums use the federal curve before 2018.
+  period: 2017-12
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
+    state_code:
+      2017: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+  output:
+    # CMS 2013 Default column: child factor = 0.635 / 0.765.
+    # Adults retain federal factors / 0.765, rounded to four decimals.
+    # CMS labels its separate NJ column Small Group in the 2017 table.
+    slcsp_age_curve_multiplier: [0.8300653595, 0.8300653595, 1.3072, 1.3072, 1.3072, 1.3072, 1.3124, 1.3386, 1.3699, 1.4209, 1.4627, 1.4837, 1.515, 1.5464, 1.566, 1.5869, 1.5974, 1.6078, 1.6183, 1.6288, 1.6497, 1.6706, 1.702, 1.732, 1.7739, 1.8261, 1.8876, 1.9608, 2.0431, 2.1373, 2.2301, 2.3346, 2.4379, 2.5516, 2.6667, 2.7908, 2.915, 3.0497, 3.1856, 3.3307, 3.4026, 3.5477, 3.6732, 3.7556, 3.8588, 3.9216, 3.9216]
+
+- name: New Jersey individual premiums use the federal curve in 2014.
+  period: 2014-01
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [20, 21, 40]
+    state_code: [NJ, NJ, NJ]
+  output:
+    # Default child = 0.635 / 0.765; ages 21 and 40 retain 1.3072 and 1.6706.
+    slcsp_age_curve_multiplier: [0.8300653595, 1.3072, 1.6706]
+
+- name: New Jersey individual premiums retain the federal age curve in 2018.
+  period: 2018-01
+  input:
+    monthly_age: [0, 20, 21, 40, 64]
+    state_code: [NJ, NJ, NJ, NJ, NJ]
+  output:
+    slcsp_age_curve_multiplier: [1, 1.268, 1.3072, 1.6706, 3.9216]
+
+- name: State age curves retain their historical adult factors.
+  period: 2014-01
+  input:
+    monthly_age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    state_code: [AL, DC, MA, MN, MS, NY, OR, UT, VT]
+  output:
+    slcsp_age_curve_multiplier: [2.0126, 1.4908, 1.8549, 1.436, 2.0126, 1, 2.0126, 1.8651, 1]

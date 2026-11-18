@@ -238,3 +238,14 @@
     is_in_k12_school: [true, true, true, true, true, true]
   output:
     reduced_price_school_meals: [1_184.40, 567.00, 0, 936.00, 444.60, 0]
+
+- name: Take-up gates reduced price school meals even with a supplied net subsidy.
+  period: 2025
+  input:
+    school_meal_breakfast_tier: [REDUCED, REDUCED]
+    school_meal_lunch_tier: [REDUCED, REDUCED]
+    school_meal_net_subsidy: [100, 100]
+    takes_up_school_meals_if_eligible: [true, false]
+  output:
+    # Both meals use the same tier, so its share of the net subsidy is one.
+    reduced_price_school_meals: [100, 0]

@@ -1,0 +1,414 @@
+# New York counts public assistance under 18 NYCRR 404.5(b)(5)(vi).
+# Annual grant inputs below isolate each source from benefit eligibility.
+
+- name: New York counts Family Assistance income.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 6_000
+    tanf: 99_000
+    ny_ssp: 0
+    state_code: NY
+  output:
+    # $10,000 earnings + $6,000 New York grant = $16,000.
+    ny_ccap_countable_income: 16_000
+
+- name: New York counts a Safety Net Assistance amount without reported receipt.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 0
+    ny_safety_net_assistance: 2_400
+    ny_ssp: 0
+    state_code: NY
+  output:
+    # $10,000 earnings + $2,400 assistance = $12,400.
+    ny_ccap_countable_income: 12_400
+
+- name: New York counts an adult's state supplement.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 0
+    ssi: 0
+    ny_ssp: 1_200
+    state_code: NY
+  output:
+    # $10,000 earnings + $1,200 state supplement = $11,200.
+    ny_ccap_countable_income: 11_200
+
+- name: New York adds Family Assistance, Safety Net Assistance, and an adult supplement.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 6_000
+    ny_safety_net_assistance: 2_400
+    ssi: 0
+    ny_ssp: 1_200
+    state_code: NY
+  output:
+    # $10,000 + $6,000 + $2,400 + $1,200 = $19,600.
+    ny_ccap_countable_income: 19_600
+
+- name: New York converts an adult's annual SSI and supplement into monthly income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    is_disabled: true
+    employment_income: 12_000
+    ny_tanf: {2025: 0}
+    ssi: {2025: 10_800}
+    ny_ssp: {2025: 1_200}
+    state_code: NY
+  output:
+    # $12,000 earnings + $10,800 SSI + $1,200 supplement = $24,000/year.
+    # $24,000 / 12 = $2,000/month.
+    ny_ccap_countable_income:
+      2025: 24_000
+      2025-01: 2_000
+
+- name: New York excludes a child's SSI and state supplement.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ny_ssp: 0
+      child:
+        age: 5
+        ssi: 4_800
+        ny_ssp: 1_200
+    spm_units:
+      unit:
+        members: [parent, child]
+        ny_tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # $10,000 earnings + $0 child SSI + $0 child supplement = $10,000.
+    ny_ccap_countable_income: 10_000
+
+- name: New York counts only the adult's SSI and supplement in a mixed family.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ssi: 6_000
+        ny_ssp: 1_200
+      child:
+        age: 5
+        ssi: 4_800
+        ny_ssp: 600
+    spm_units:
+      unit:
+        members: [parent, child]
+        ny_tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # $10,000 earnings + $6,000 adult SSI + $1,200 adult supplement = $17,200.
+    ny_ccap_countable_income: 17_200
+
+- name: New York counts SSI and the supplement for an eighteen year old.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+        ny_ssp: 0
+      adult_child:
+        age: 18
+        ssi: 4_800
+        ny_ssp: 1_200
+    spm_units:
+      unit:
+        members: [parent, adult_child]
+        ny_tanf: 0
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: NY
+  output:
+    # $10,000 earnings + $4,800 adult SSI + $1,200 supplement = $16,000.
+    ny_ccap_countable_income: 16_000
+
+- name: Declining TANF removes Family Assistance while other assistance still counts.
+  period: 2025
+  input:
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 6_000
+    takes_up_tanf_if_eligible: false
+    ny_safety_net_assistance: 2_400
+    ny_ssp: 1_200
+    state_code: NY
+  output:
+    # $10,000 earnings + $2,400 assistance + $1,200 supplement = $13,600.
+    ny_ccap_countable_income: 13_600
+
+- name: A Family Assistance family receives child care with its computed grant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 0
+        pre_subsidy_rent: 0
+        ssi: {2025: 0}
+        ny_ssp: {2025: 0}
+      child:
+        age: 5
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        ny_ccap_market_rate: {2025: 12_000}
+        ssi: {2025: 0}
+        ny_ssp: {2025: 0}
+    spm_units:
+      unit:
+        members: [parent, child]
+        is_tanf_enrolled: {2025: true}
+        takes_up_tanf_if_eligible: true
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        county_str: NEW_YORK_COUNTY_NY
+  output:
+    # Two people receive $252 + $22.50 + $17 = $291.50/month before shelter.
+    # Zero earnings, other income, housing costs, and assets leave the full grant.
+    ny_tanf:
+      2025-01: 291.50
+      2025: 3_498
+    ny_ccap_countable_income:
+      2025-01: 291.50
+      2025: 3_498
+    # $3,498 falls below the 2025 state income standard for two,
+    # $15,650 + $5,500 = $21,150, so no income-based share applies.
+    ny_ccap_family_share: 0
+    # min($24,000 / 12 expenses, $1,000 rate) - $0 share = $1,000/month.
+    ny_ccap: 1_000
+    # $24,000 expenses - 12 * $1,000 CCAP = $12,000/year after subsidy.
+    childcare_expenses:
+      2025: 12_000
+
+# New York waives the family share under 415.3(e)(1) when a parent or
+# caretaker relative receives public assistance. Income exceeds the state
+# income standard in the next two cases, so the waiver decides the share.
+- name: Reported Family Assistance waives a share above the state income standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 12_000
+        pre_subsidy_rent: 12_000
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        ny_ccap_market_rate: {2026: 12_000}
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+      grandparent:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: {2026: 11_928}
+        ny_ssp: {2026: 0}
+    spm_units:
+      unit:
+        members: [parent, child, grandparent]
+        is_tanf_enrolled: {2026: true}
+        takes_up_tanf_if_eligible: true
+        meets_ccdf_activity_test: true
+        spm_unit_cash_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, child, grandparent]
+        state_code: NY
+        county_str: NEW_YORK_COUNTY_NY
+  output:
+    # Need for three: $336 + $30 + $23 + min($1,000 rent, $400) = $789.
+    # Countable earnings: $1,000 * (1 - 0.64) - $150 = $210.
+    # Grant: $789 - $210 = $579/month, $6,948/year. SSI is not TANF income.
+    ny_tanf:
+      2026-01: 579
+      2026: 6_948
+    # $12,000 earnings + $6,948 grant + $11,928 SSI = $30,876.
+    ny_ccap_countable_income:
+      2026: 30_876
+    # The 2026 standard for three, $15,960 + 2 * $5,680 = $27,320, falls
+    # short of $30,876, so only the waiver keeps the share at zero.
+    ny_ccap_family_share: 0
+    # min($24,000 / 12 expenses, $1,000 rate) - $0 share = $1,000/month.
+    ny_ccap: 1_000
+
+- name: A computed Family Assistance grant waives the share without reported enrollment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 12_000
+        pre_subsidy_rent: 12_000
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        ny_ccap_market_rate: {2026: 12_000}
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+      grandparent:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: {2026: 11_928}
+        ny_ssp: {2026: 0}
+    spm_units:
+      unit:
+        members: [parent, child, grandparent]
+        is_tanf_enrolled: {2026: false}
+        takes_up_tanf_if_eligible: true
+        meets_ccdf_activity_test: true
+        spm_unit_cash_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, child, grandparent]
+        state_code: NY
+        county_str: NEW_YORK_COUNTY_NY
+  output:
+    # The same $579/month grant and $30,876 of income as the case above.
+    ny_ccap_family_assistance: 579
+    ny_ccap_countable_income:
+      2026: 30_876
+    # Without the waiver the share would be max(($30,876 - $27,320) / 12
+    # * 1%, $1 * 52 / 12) = $4.33/month. The grant the family takes up
+    # waives it.
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap: 1_000
+
+- name: A declined Family Assistance grant neither counts as income nor waives the share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income_before_lsr: 30_000
+        pre_subsidy_rent: 12_000
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+        ny_ccap_market_rate: {2026: 12_000}
+        ssi: {2026: 0}
+        ny_ssp: {2026: 0}
+    spm_units:
+      unit:
+        members: [parent, child]
+        ny_tanf: {2026: 2_400}
+        is_tanf_enrolled: {2026: false}
+        takes_up_tanf_if_eligible: false
+        meets_ccdf_activity_test: true
+        spm_unit_cash_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+        county_str: NEW_YORK_COUNTY_NY
+  output:
+    ny_ccap_family_assistance: 0
+    # $30,000 earnings; the declined $2,400 grant is not counted.
+    ny_ccap_countable_income:
+      2026: 30_000
+    ny_ccap_family_share_exempt: false
+    # The 2026 standard for two is $15,960 + $5,680 = $21,640.
+    # ($30,000 - $21,640) / 12 * 1% = $6.97 exceeds $1 * 52 / 12 = $4.33.
+    ny_ccap_family_share: 6.97
+    # $1,000 - $6.97 = $993.03/month.
+    ny_ccap: 993.03
+
+# OCFS added the child SSI exclusion on October 1, 2023. Before then, OCFS
+# counted a child's SSI and state supplement under 404.5(b)(5)(vi).
+- name: New York counts a child's SSI and state supplement in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ny_ssp: 0
+      child:
+        age: 5
+        ssi: 4_800
+        ny_ssp: 1_200
+    spm_units:
+      unit:
+        members: [parent, child]
+        ny_tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # $10,000 earnings + $4,800 child SSI + $1,200 child supplement = $16,000.
+    ny_ccap_countable_income: 16_000
+
+- name: New York counts a child's 2023 SSI and supplement through September only.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ny_ssp: 0
+      child:
+        age: 5
+        ssi: 4_800
+        ny_ssp: 1_200
+    spm_units:
+      unit:
+        members: [parent, child]
+        ny_tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # $400 SSI + $100 supplement per month, counted January to September:
+    # $10,000 + 9 * $500 = $14,500.
+    ny_ccap_countable_income: 14_500

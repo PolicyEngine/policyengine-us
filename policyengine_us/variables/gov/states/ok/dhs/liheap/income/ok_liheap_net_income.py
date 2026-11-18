@@ -6,7 +6,7 @@ class ok_liheap_net_income(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "Oklahoma LIHEAP net income for regular heating assistance"
+    label = "Oklahoma LIHEAP net income for regular heating and cooling assistance"
     defined_for = StateCode.OK
     reference = (
         # OAC 340:20-1-11(a)(4), (c): do not repeat deductions already

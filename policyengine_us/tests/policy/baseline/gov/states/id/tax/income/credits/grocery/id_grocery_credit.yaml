@@ -94,3 +94,247 @@
         snap: 0
   output:
     id_grocery_credit: 310
+
+
+- name: 2025 claimed single filer receives no food tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+        id_grocery_credit_qualified_months: 12
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024A: a credit per taxpayer, spouse and claimed
+    # dependent; a claimed filer gets none and the return
+    # has no dependents (IRC 152(b)(1)).
+    id_grocery_credit: 0
+
+- name: 2025 joint return keeps the unclaimed spouse's food tax credit when the head is claimed
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        id_grocery_credit_qualified_months: 12
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    id_grocery_credit: 155
+
+- name: 2025 joint return keeps the unclaimed head's food tax credit when the spouse is claimed
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+        id_grocery_credit_qualified_months: 12
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: ID
+  output:
+    id_grocery_credit: 155
+
+- name: 2025 joint return with both spouses claimed receives no food tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+        id_grocery_credit_qualified_months: 12
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    id_grocery_credit: 0
+
+- name: 2025 joint return with neither spouse claimed counts both filers and a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        id_grocery_credit_qualified_months: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        id_grocery_credit_qualified_months: 12
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    # 3 x 155
+    id_grocery_credit: 465
+
+
+- name: 2025 single filer who can be claimed but is not claimed keeps the food tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024A(1), (4): 1 x $155, with no duplicate claim.
+    id_grocery_credit: 155
+
+
+- name: 2021 single filer who can be claimed but is not claimed keeps the food tax credit
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024A(1): 1 x $100 x 12/12, with no duplicate claim.
+    id_grocery_credit: 100
+
+
+- name: 2022 claimed single filer receives no food tax credit
+  period: 2022
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024A(4) allows one credit per personal exemption:
+    # the taxpayer who claims this filer takes the $100, so 0 x $100 = 0.
+    id_grocery_credit: 0
+
+
+- name: 2023 single filer who can be claimed but is not claimed keeps the food tax credit
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ID
+  output:
+    id_grocery_credit: 120

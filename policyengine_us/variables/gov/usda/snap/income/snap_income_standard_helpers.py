@@ -5,16 +5,8 @@ from policyengine_us.model_api import *
 SNAP_CONTIGUOUS_US_GUIDELINE_AREAS = ["GU", "VI"]
 
 
-def snap_monthly_fpg_amounts(spm_unit, period, parameters):
-    """Monthly poverty guideline for the first person and for each additional
-    person, from the guidelines SNAP adopts each October 1 (7 CFR 273.9(a)(3)).
-
-    Guam and the Virgin Islands use the guidelines for the 48 contiguous
-    States and the District of Columbia (7 CFR 273.9(a)(1)(i) and (a)(2)(i)),
-    so they read the contiguous-US guideline rather than their own zero
-    placeholders. This mapping is specific to SNAP income standards; the
-    households keep their own state group elsewhere.
-    """
+def _snap_fpg_context(spm_unit, period):
+    """Return SNAP's guideline area and October reference date."""
     state_group = spm_unit.household("state_group_str", period.this_year)
     state_group = np.where(
         np.isin(state_group, SNAP_CONTIGUOUS_US_GUIDELINE_AREAS),
@@ -27,6 +19,20 @@ def snap_monthly_fpg_amounts(spm_unit, period, parameters):
         instant_str = f"{year}-10-01"
     else:
         instant_str = f"{year - 1}-10-01"
+    return state_group, instant_str
+
+
+def snap_monthly_fpg_amounts(spm_unit, period, parameters):
+    """Monthly poverty guideline for the first person and for each additional
+    person, from the guidelines SNAP adopts each October 1 (7 CFR 273.9(a)(3)).
+
+    Guam and the Virgin Islands use the guidelines for the 48 contiguous
+    States and the District of Columbia (7 CFR 273.9(a)(1)(i) and (a)(2)(i)),
+    so they read the contiguous-US guideline rather than their own zero
+    placeholders. This mapping is specific to SNAP income standards; the
+    households keep their own state group elsewhere.
+    """
+    state_group, instant_str = _snap_fpg_context(spm_unit, period)
     p_fpg = parameters(instant_str).gov.hhs.fpg
     first_person = p_fpg.first_person[state_group] / MONTHS_IN_YEAR
     additional_person = p_fpg.additional_person[state_group] / MONTHS_IN_YEAR

@@ -8,7 +8,8 @@ class sc_tanf_countable_earned_income_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.SC
-    reference = "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=130"  # Section 8.12
+    # PDF pages 131-132
+    reference = "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=131"  # Section 8.12
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income.earned.disregard

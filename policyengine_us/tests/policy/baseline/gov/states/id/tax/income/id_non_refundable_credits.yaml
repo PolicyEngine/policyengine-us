@@ -1,0 +1,189 @@
+# Component test: the Idaho qualifying-child count and precredit liability are
+# independent known premises. This does not test federal or child eligibility.
+# 2018 HB463 section 6 created the credit for taxable years beginning in 2018:
+# https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2018/legislation/H0463.pdf#page=7
+# HB675 section 2 subsequently increased the 2018 amount retroactively to $205:
+# https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2018/legislation/H0675.pdf#page=1
+- name: Case 1, Idaho child tax credit is absent before its 2018 enactment.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_ctc: 0
+    id_non_refundable_credits: 0
+
+# Same component premises in the constructor's earliest modeled years. The
+# enacted credit begins in 2018, so neither year has a worksheet or applied credit.
+
+- name: Case 2, Idaho child tax credit is absent in the first modeled year.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_ctc: 0
+    id_non_refundable_credits: 0
+
+- name: Case 3, Idaho child tax credit is absent in the year before 2017.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_ctc: 0
+    id_non_refundable_credits: 0
+
+# Four independent tax units and households isolate the 2018 amount and
+# nonrefundability. Counts and precredit liability are known upstream facts.
+# HB675 section 2: $205 per qualifying child, retroactive to January 1, 2018.
+# Raw amounts: [0, 1, 2, 3] * $205 = [0, 205, 410, 615].
+# Applied amounts: min(raw, known liability) = [0, 205, 100, 0].
+- name: Case 4, Idaho child tax credit starts in 2018 and cannot exceed liability.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 35
+      person5:
+        age: 8
+      person6:
+        age: 10
+      person7:
+        age: 35
+      person8:
+        age: 8
+      person9:
+        age: 10
+      person10:
+        age: 12
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        id_ctc_qualifying_children: 0
+        id_income_tax_before_non_refundable_credits: 1_000
+      tax_unit2:
+        members: [person2, person3]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+      tax_unit3:
+        members: [person4, person5, person6]
+        id_ctc_qualifying_children: 2
+        id_income_tax_before_non_refundable_credits: 100
+      tax_unit4:
+        members: [person7, person8, person9, person10]
+        id_ctc_qualifying_children: 3
+        id_income_tax_before_non_refundable_credits: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+      household2:
+        members: [person2, person3]
+        state_code: ID
+      household3:
+        members: [person4, person5, person6]
+        state_code: ID
+      household4:
+        members: [person7, person8, person9, person10]
+        state_code: ID
+  output:
+    id_ctc: [0, 205, 410, 615]
+    id_non_refundable_credits: [0, 205, 100, 0]
+
+# The enacted credit remains available through tax year 2025.
+
+- name: Case 5, Idaho child tax credit still applies in its final enacted year.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_ctc: 205
+    id_non_refundable_credits: 205
+
+# Preserve the current worksheet/revival contract after the enacted credit ends:
+# raw worksheet stays $205, but the applied credit list and TAXSIM registry omit it.
+# This tests the current component routing, not a claim of an allowed 2026 credit.
+
+- name: Case 6, Idaho child tax credit worksheet survives while applied credit expires.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_ctc_qualifying_children: 1
+        id_income_tax_before_non_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_ctc: 205
+    id_non_refundable_credits: 0
+    taxsim_state_ctc: 0

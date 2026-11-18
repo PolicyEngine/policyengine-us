@@ -1,0 +1,32 @@
+description: Coverage sources that count as a child's Medicaid, Children's Health Insurance Program, Marketplace or other minimum essential coverage for a parent's or caretaker relative's eligibility for the Medicaid adult group.
+values:
+  2014-01-01:
+    # Modeled enrollment: eligible and taking up.
+    - medicaid_enrolled
+    - chip_enrolled
+    # Reported coverage.
+    - receives_medicaid
+    - has_medicaid_health_coverage_at_interview
+    - has_chip_health_coverage_at_interview
+    - has_marketplace_health_coverage_at_interview
+    - has_esi
+    - has_health_coverage_other_than_chip
+    - has_non_marketplace_direct_purchase_health_coverage_at_interview
+    - has_other_means_tested_health_coverage_at_interview
+    - has_tricare_health_coverage_at_interview
+    - has_champva_health_coverage_at_interview
+    - has_va_health_coverage_at_interview
+    - medicare_enrolled
+metadata:
+  unit: list
+  period: year
+  label: Medicaid adult group child coverage sources
+  reference:
+    - title: 42 CFR 435.119(c)(1) - coverage for dependent children
+      href: https://www.law.cornell.edu/cfr/text/42/435.119#c_1
+    - title: 42 CFR 435.4 - definition of minimum essential coverage
+      href: https://www.law.cornell.edu/cfr/text/42/435.4
+    - title: 26 U.S. Code § 5000A(f)(1) - Minimum essential coverage
+      href: https://www.law.cornell.edu/uscode/text/26/5000A#f_1
+    - title: New Jersey approved state plan S32 (NJ-13-0011-MM1), adult group child coverage condition
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=16
