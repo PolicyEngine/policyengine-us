@@ -1,0 +1,86 @@
+- name: Illinois AABD cash counts as unearned income for the recipient.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 30
+        is_blind: true
+        employment_income: 9_600
+        weekly_hours_worked_before_lsr: 40
+        takes_up_ssi_if_eligible: false
+    households:
+      household:
+        members: [recipient]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_aabd_person: 521.21
+    snap_unearned_income_person: 521.21
+    snap_unearned_income: 521.21
+    snap_gross_income: 1_321.21
+
+- name: District of Columbia General Assistance for Children counts as unearned income.
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 4_000
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    households:
+      household:
+        members: [adult, child]
+        state_code: DC
+  output:
+    tanf: 0
+    dc_gac: 450
+    snap_unearned_income: 450
+
+- name: District of Columbia POWER counts as unearned income.
+  period: 2024-01
+  input:
+    state_code: DC
+    dc_power_eligible: true
+    dc_tanf_standard_payment: 450
+    dc_tanf_countable_income: 0
+  output:
+    dc_power: 450
+    snap_unearned_income: 450
+
+- name: Massachusetts EAEDC is counted at its monthly amount.
+  period: 2022-01
+  input:
+    state_code: MA
+    age: 67
+    is_ssi_eligible: false
+    ma_eaedc_living_arrangement: A
+    ma_tcap_gross_earned_income: 0
+    ma_tcap_gross_unearned_income: 0
+  output:
+    ma_eaedc: 401
+    snap_unearned_income: 401
+
+- name: New York counts reported Safety Net Assistance in SNAP unearned income.
+  period: 2026-01
+  input:
+    state_code: NY
+    age: 30
+    ny_safety_net_assistance: 500
+  output:
+    snap_unearned_income: 500
+    snap_gross_income: 500
+
+- name: Washington State Family Assistance counts as unearned income.
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_sfa: 706
+    snap_unearned_income: 706

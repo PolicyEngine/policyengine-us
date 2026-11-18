@@ -5,6 +5,8 @@ values:
     # (i)
     - ssi
     - general_assistance
+    # Illinois counts AABD Cash in SNAP under IDHS PM 08-04-04-c.
+    - il_aabd_person
     # (i) State SSI supplements. 273.9(b)(2)(i) counts "assistance payments
     # from Federal or federally aided public assistance programs, such as
     # supplemental security income (SSI) ... or other assistance programs
@@ -122,3 +124,5 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9
     - title: POMS SI 01401.001 General Information about State Supplementation
       href: https://secure.ssa.gov/poms.nsf/lnx/0501401001
+    - title: Illinois IDHS PM 08-04-04-c, Nonexempt Unearned Income
+      href: https://www.dhs.state.il.us/page.aspx?item=15627
