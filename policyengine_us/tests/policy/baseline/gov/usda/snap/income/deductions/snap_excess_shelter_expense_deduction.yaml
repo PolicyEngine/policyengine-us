@@ -50,6 +50,7 @@
     state_code: TX
     is_homeless: true
     housing_cost: 1
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_shelter_expense_deduction: 159.73
 
@@ -62,6 +63,8 @@
       2016: true
     housing_cost:
       2016: 1
+    weekly_hours_worked_before_lsr:
+      2016: 40
   output:
     snap_excess_shelter_expense_deduction: 143
 
@@ -74,6 +77,8 @@
       2020: true
     housing_cost:
       2020: 1
+    weekly_hours_worked_before_lsr:
+      2020: 40
   output:
     snap_excess_shelter_expense_deduction: 156.74
 
