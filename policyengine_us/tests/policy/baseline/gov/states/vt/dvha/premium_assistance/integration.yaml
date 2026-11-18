@@ -221,7 +221,7 @@
 
 # ---- Scenario 6: ineligible, above 300% FPL ----
 - name: Scenario 6, Vermont enrollee above 300% FPL yields no VPA.
-  # aca_magi_fraction 3.10 > 3.0 -> above the ceiling -> not eligible ->
+  # 48_600 / 15_650 = 3.105 > 3.0 -> above the ceiling -> not eligible ->
   #   VPA = 0 (REQ-2 boundary), even though the member is APTC-eligible.
   period: 2026
   absolute_error_margin: 0.01

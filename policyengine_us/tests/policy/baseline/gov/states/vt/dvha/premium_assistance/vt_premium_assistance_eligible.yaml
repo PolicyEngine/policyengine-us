@@ -2,11 +2,12 @@
 # REQ-8). A tax unit is eligible when the program is in effect (2026+), at least
 # one member is federal-ACA-PTC-eligible (is_aca_ptc_eligible), and ACA MAGI is
 # at or below 300% of the federal poverty line (33 V.S.A. 1812(a)(1): "less
-# than or equal to 300 percent"), on the exact ratio of ACA MAGI to the
-# prior-year guideline, not the truncated aca_magi_fraction:
-#   eligible = in_effect & any(is_aca_ptc_eligible) & (aca_magi / FPG <= 3.0)
-# Supplied-income cases pin the prior-year guideline to $10,000 and set
-# aca_magi to the target ratio, so each expectation is hand-verifiable.
+# than or equal to 300 percent"), on the exact ratio of ACA MAGI to aca_fpg
+# (the prior-year guideline for the section 36B tax family), not the truncated
+# aca_magi_fraction:
+#   eligible = in_effect & any(is_aca_ptc_eligible) & (aca_magi / aca_fpg <= 3.0)
+# Supplied-income cases pin aca_fpg to $10,000 and set aca_magi to the target
+# ratio, so each expectation is hand-verifiable.
 # Income-derived cases use the actual 2025 one-person guideline, $15,650.
 # There is no minimum-income floor.
 
@@ -22,8 +23,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -43,8 +43,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 29_900
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -64,8 +63,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 30_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -85,8 +83,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 30_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -106,8 +103,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -130,8 +126,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1, person2]
@@ -151,8 +146,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -172,8 +166,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -193,8 +186,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -215,8 +207,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 30_001
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -300,3 +291,87 @@
   output:
     aca_magi_fraction: 2.99
     vt_premium_assistance_eligible: true
+
+- name: Case 15, a joint return with one claimable spouse at 300% of the one-person guideline is eligible.
+  # The claimable spouse is outside the section 36B tax family, so aca_fpg is
+  # the one-person guideline: 46_950 / 15_650 = 3.00.
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 46_950
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    is_aca_ptc_eligible: [false, true]
+    vt_premium_assistance_eligible: true
+
+- name: Case 16, the same return above 300% of the one-person guideline is ineligible.
+  # 50_000 / 15_650 = 3.19 > 3.0. Against the two-person guideline of the whole
+  # tax unit ($21,150) the ratio would be 2.36.
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 50_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    is_aca_ptc_eligible: [false, true]
+    vt_premium_assistance_eligible: false

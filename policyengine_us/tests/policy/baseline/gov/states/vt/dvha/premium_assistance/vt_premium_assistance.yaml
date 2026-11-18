@@ -136,7 +136,7 @@
 # ---- Ineligible: above the 300% FPL ceiling ----
 
 - name: Case 5, 301% FPL above the ceiling yields no VPA.
-  # aca_magi_fraction 3.01 > 3.0 -> not eligible -> VPA = 0 (defined_for gate).
+  # 47_100 / 15_650 = 3.0096 > 3.0 -> not eligible -> VPA = 0 (defined_for gate).
   period: 2026
   absolute_error_margin: 0.01
   input:
