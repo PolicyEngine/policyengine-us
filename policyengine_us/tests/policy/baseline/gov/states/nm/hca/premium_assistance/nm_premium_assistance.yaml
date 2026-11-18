@@ -10,7 +10,7 @@
 # the YEAR period sets the annual total, so the values below are annual SLCSP.
 #
 # Base band, target_pct from the NM schedule keyed on aca_magi_fraction:
-#   benchmark = slcsp_annual * (1.1 if aca_magi_fraction <= 2.0 else 1.0)
+#   benchmark = slcsp_annual * (1.1 if aca_magi / aca_fpg <= 2.0 else 1.0)
 #   amount    = max(0, benchmark - aca_ptc - target_pct * aca_magi)
 # The 1.1 gross-up applies ONLY at or below 200% FPL (PY2026, inclusive) and
 # does NOT change the federal APTC.
@@ -116,8 +116,7 @@
         tax_unit_is_filer: true
         aca_magi: 45_000
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -144,8 +143,7 @@
         tax_unit_is_filer: true
         aca_magi: 60_000
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 4.00
         slcsp: 10_000
         aca_ptc: 4_000
@@ -173,8 +171,7 @@
         members: [person1]
         aca_magi: 39_000
         # The case's arithmetic assumes a $15,600 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_600
+        aca_fpg: 15_600
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 6_000
@@ -235,8 +232,7 @@
         filing_status: SINGLE
         aca_magi: 120_000
         # The case's arithmetic assumes a $24,000 prior-year guideline.
-        tax_unit_fpg:
-          2025: 24_000
+        aca_fpg: 24_000
         aca_magi_fraction: 5.00
         slcsp: 8_000
         aca_ptc: 0
@@ -293,8 +289,7 @@
         members: [person1]
         aca_magi: 39_000
         # The case's arithmetic assumes a $15,600 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_600
+        aca_fpg: 15_600
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 3_000
@@ -424,8 +419,7 @@
         tax_unit_is_filer: true
         aca_magi: 60_000
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 4.00
         slcsp: 10_000
         aca_ptc: 0
@@ -552,8 +546,7 @@
         tax_unit_is_filer: true
         aca_magi: 45_000
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2026: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -586,8 +579,7 @@
         tax_unit_is_filer: true
         aca_magi: 45_000
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2027: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 3.00
         slcsp: 9_000
         aca_ptc: 4_000
@@ -617,8 +609,7 @@
         filing_status: SINGLE
         tax_unit_is_filer: true
         aca_magi: 63_382.50  # 405% of the pinned $15,650 guideline
-        tax_unit_fpg:
-          2027: 15_650
+        aca_fpg: 15_650
         aca_magi_fraction: 4.05
         slcsp: 10_000
         aca_ptc: 0
@@ -1233,3 +1224,110 @@
   output:
     # Neither spouse is in a federal tax family.
     nm_premium_assistance: 0
+
+- name: Case 37, a joint return with one claimable spouse just above 200% of the one-person guideline gets no PY2026 gross-up.
+  # The claimable spouse is outside the section 36B tax family, so aca_fpg is
+  # the one-person guideline: 31_300.47 / 15_650 = 2.00003. Against the
+  # two-person guideline of the whole tax unit ($21,150) the ratio would be
+  # 1.48, inside the gross-up. No New Mexico source defines family size; this
+  # pins the model's use of aca_fpg. Eligibility and a 0% target are supplied,
+  # so the amount shows only the gross-up: 6_000 - 4_000 = 2_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_300.47
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    nm_premium_assistance: 2_000
+
+- name: Case 38, the same return at exactly 200% of the 2026 one-person guideline gets no PY2027 gross-up.
+  # 31_920 / 15_960 = 2.00, and PY2027 is strict ("under 200% (< 200%)").
+  # Against the two-person guideline of the whole tax unit ($21,640) the ratio
+  # would be 1.48, inside the gross-up. 6_000 - 4_000 = 2_000.
+  # The adults have no earnings here, so the work requirement that starts in
+  # 2027 is switched off to keep them enrolled and the benchmark at 6_000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+        nm_premium_assistance_eligible: true
+        nm_premium_assistance_mih_eligible: false
+        nm_premium_assistance_target_contribution_percentage: 0
+        aca_magi: 31_920
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_960
+    nm_premium_assistance: 2_000

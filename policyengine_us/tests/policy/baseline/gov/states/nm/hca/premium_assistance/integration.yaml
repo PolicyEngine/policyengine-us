@@ -12,7 +12,7 @@
 # each scenario asserts the intermediate values so a reviewer can follow the
 # arithmetic:
 #   target% = NM schedule keyed on aca_magi_fraction (base band only)
-#   benchmark = slcsp_annual * (1.1 if aca_magi_fraction <= 2.0 else 1.0)
+#   benchmark = slcsp_annual * (1.1 if aca_magi / aca_fpg <= 2.0 else 1.0)
 #   base amount = max(0, benchmark - aca_ptc - target% * aca_magi)
 #   MIH amount  = max(0, slcsp_annual - aca_ptc - 0.085 * aca_magi)
 #
@@ -36,8 +36,7 @@
         tax_unit_is_filer: true
         aca_magi: 22_500
         # The case's arithmetic assumes a $15,000 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg: 15_000
         aca_magi_fraction: 1.50
         slcsp: 6_000
         aca_ptc: 3_500
@@ -132,8 +131,7 @@
         tax_unit_is_filer: true
         aca_magi: 93_900
         # The case's arithmetic assumes a $31,300 prior-year guideline.
-        tax_unit_fpg:
-          2025: 31_300
+        aca_fpg: 31_300
         aca_magi_fraction: 3.00
         slcsp: 18_000
         aca_ptc: 8_000
@@ -278,8 +276,7 @@
         tax_unit_is_filer: true
         aca_magi: 39_000
         # The case's arithmetic assumes a $15,600 prior-year guideline.
-        tax_unit_fpg:
-          2025: 15_600
+        aca_fpg: 15_600
         aca_magi_fraction: 2.50
         slcsp: 0
         aca_ptc: 0
@@ -310,8 +307,7 @@
         tax_unit_is_filer: true
         aca_magi: 39_125
         # Pinned to the 2025 guideline so the inputs match the PY2026 Scenario 3.
-        tax_unit_fpg:
-          2026: 15_650
+        aca_fpg: 15_650
         aca_magi_fraction: 2.50
         slcsp: 6_000
         aca_ptc: 2_500
