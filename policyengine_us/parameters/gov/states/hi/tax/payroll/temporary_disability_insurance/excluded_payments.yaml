@@ -1,0 +1,37 @@
+description: Hawaii leaves these payments out of wages for the temporary disability insurance contribution.
+values:
+  # HRS 383-11(1)(C) covers what an employer pays under a plan for medical or
+  # hospitalization expenses, including amounts paid for insurance or into a fund.
+  # HRS 392-5(6) leaves service in the employ of the United States government
+  # out of employment.
+  0000-01-01:
+    - pre_tax_health_insurance_premiums
+    - health_savings_account_payroll_contributions
+    - military_basic_pay
+  # The law did not change in 2004. The federal elective deferral limit that the
+  # contribution variables below read starts then, as does the contribution rate.
+  2004-01-01:
+    - pre_tax_health_insurance_premiums
+    - health_savings_account_payroll_contributions
+    - military_basic_pay
+    # HRS 383-11(4)(A) covers what an employer pays on an individual's behalf to
+    # a trust described in IRC 401(a). It sets no condition on income tax
+    # treatment, so Roth deferrals come out with traditional ones.
+    - traditional_401k_contributions
+    - roth_401k_contributions
+    # HRS 383-11(1)(A) covers what an employer pays for annuities under a plan
+    # on account of retirement.
+    - traditional_403b_contributions
+    - roth_403b_contributions
+
+metadata:
+  period: year
+  unit: list
+  label: Hawaii TDI payments excluded from wages
+  reference:
+    - title: Hawaii Revised Statutes Section 392-3
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0003.htm
+    - title: Hawaii Revised Statutes Section 392-5
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0005.htm
+    - title: Hawaii Revised Statutes Section 383-11
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0011.htm

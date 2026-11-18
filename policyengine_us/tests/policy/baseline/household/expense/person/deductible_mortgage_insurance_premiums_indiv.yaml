@@ -1,0 +1,83 @@
+- name: Both residences' premiums are allocated to filers after the federal phase-out
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        mortgage_insurance_premiums: 1_000
+      spouse:
+        age: 40
+        second_residence_mortgage_insurance_premiums: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 103_000
+  output:
+    # Federal deduction: 3,000 * (1 - 30%) = 2,100, then split 1/3 and 2/3.
+    deductible_mortgage_insurance_premiums: 2_100
+    deductible_mortgage_insurance_premiums_indiv: [700, 1_400, 0]
+
+- name: Dependent-only premiums are split equally between filers
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        mortgage_insurance_premiums: 2_000
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+  output:
+    # Matches the federal mortgage-interest convention: dependent expenses
+    # never give a dependent an individual deduction; the unit total is kept.
+    deductible_mortgage_insurance_premiums: 2_000
+    deductible_mortgage_insurance_premiums_indiv: [1_000, 1_000, 0]
+
+- name: A tax-unit premium override with no reported expenses uses only filers
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        deductible_mortgage_insurance_premiums: 2_000
+  output:
+    deductible_mortgage_insurance_premiums_indiv: [1_000, 1_000, 0]
+
+- name: Zero premiums give zero allocations for single and married filers
+  period: 2021
+  input:
+    people:
+      single:
+        age: 40
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      single_unit:
+        members: [single]
+      couple:
+        members: [head, spouse]
+  output:
+    deductible_mortgage_insurance_premiums: [0, 0]
+    deductible_mortgage_insurance_premiums_indiv: [0, 0, 0]

@@ -1,0 +1,76 @@
+description: Texas uses federal poverty guideline income ranges, instead of state median income ranges, for the Local Workforce Development Board's parent share of cost scale under the Child Care Services program for the Boards where this is true.
+
+# TWC gave Boards income ranges by both measures for BCY 2024 (WD 24-23,
+# Attachment 2), and WD 20-24 let each Board use either the SMI or the FPG
+# ranges for BCY 2025. A Board's ranges matter only while its own scale
+# applies (applies.yaml).
+PANHANDLE:
+  2023-10-01: false
+SOUTH_PLAINS:
+  2023-10-01: false
+NORTH_TEXAS:
+  2023-10-01: false
+NORTH_CENTRAL:
+  2023-10-01: false
+TARRANT_COUNTY:
+  2023-10-01: false
+DALLAS_COUNTY:
+  2023-10-01: true
+  2024-10-01: true
+NORTHEAST_TEXAS:
+  2023-10-01: false
+EAST_TEXAS:
+  2023-10-01: false
+WEST_CENTRAL:
+  2023-10-01: false
+BORDERPLEX:
+  2023-10-01: false
+PERMIAN_BASIN:
+  2023-10-01: false
+CONCHO_VALLEY:
+  2023-10-01: false
+HEART_OF_TEXAS:
+  2023-10-01: false
+CAPITAL_AREA:
+  2023-10-01: false
+RURAL_CAPITAL:
+  2023-10-01: false
+BRAZOS_VALLEY:
+  2023-10-01: false
+DEEP_EAST:
+  2023-10-01: false
+SOUTHEAST:
+  2023-10-01: false
+GOLDEN_CRESCENT:
+  2023-10-01: false
+ALAMO:
+  2023-10-01: false
+SOUTH_TEXAS:
+  2023-10-01: false
+COASTAL_BEND:
+  2023-10-01: false
+LOWER_RIO:
+  2023-10-01: false
+CAMERON_COUNTY:
+  2023-10-01: false
+TEXOMA:
+  2023-10-01: false
+CENTRAL_TEXAS:
+  2023-10-01: false
+MIDDLE_RIO:
+  2023-10-01: false
+GULF_COAST:
+  2023-10-01: false
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: bool
+  period: month
+  label: Texas CCS Board scale uses federal poverty guideline income ranges
+  breakdown:
+    - tx_ccs_workforce_board_region
+  reference:
+    - title: TWC WD Letter 24-23 - Board Contract Year 2024 Federal Poverty Guidelines and State Median Income Amounts for Determining Eligibility and Parent Share of Cost for Child Care Services
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
+    - title: TWC WD Letter 20-24 - Board Contract Year Federal Poverty Guidelines and State Median Income Amounts for Determining Eligibility and Parent Share of Cost for Child Care Services
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=2

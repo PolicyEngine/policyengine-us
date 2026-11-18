@@ -1,0 +1,69 @@
+# Idaho Code 63-3029L(1) gives "qualifying child" the meaning in IRC 24(c) and does
+# not require the federal credit to be allowed, so a child whose filer fails the
+# federal filer identification requirements still counts (issue #9403).
+- name: Idaho counts the child of a filer without an SSN in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        ssn_card_type: NONE
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    ctc_qualifying_children: 0
+    id_ctc_qualifying_children: 1
+    id_ctc: 205
+
+- name: Idaho counts the child of a filer with an SSN in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    ctc_qualifying_children: 1
+    id_ctc_qualifying_children: 1
+    id_ctc: 205
+
+- name: Idaho does not count a child aged 17 in 2021
+  # The 2021 federal expansion to age 17 is in IRC 24(i)(1), not 24(c).
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 45
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    ctc_qualifying_children: 1
+    id_ctc_qualifying_children: 0

@@ -89,3 +89,12 @@
   output:
     # The 22 percent bracket ends at $103,350.
     taxable_income_taxed_below_25_percent: 103_350
+
+- name: 2017 single filer, the pre-2018 schedule taxes income below 25 percent only to the 15 percent bracket top
+  period: 2017
+  input:
+    filing_status: SINGLE
+    taxable_income_plus_section_911_exclusion: 43_950
+  output:
+    # Rev. Proc. 2016-55 ends the 2017 single 15 percent bracket at $37,950.
+    taxable_income_taxed_below_25_percent: 37_950

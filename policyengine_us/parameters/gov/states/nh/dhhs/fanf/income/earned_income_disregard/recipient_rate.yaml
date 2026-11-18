@@ -1,17 +1,28 @@
-description: New Hampshire excludes this share of earnings from countable income for recipients under the Financial Assistance to Needy Families program.
-
+description: New Hampshire excludes this share of earnings from countable income for recipients' eligibility and for the benefit amount of every eligible unit under the Financial Assistance to Needy Families program.
+# He-W 654.13(d) and (e)(3) also apply this rate to the benefit amount of an
+# applicant who passed the eligibility test with the applicant rate.
+# The Cliff Effect Initiative's 75% (and 100% for high-demand jobs) earned
+# income disregard was a two-year pilot (October 2022 - September 2024) for
+# participants who started or moved to full-time work. It did not amend
+# He-W 654.13(e), which keeps the 50% rate for recipients, and it is not
+# modeled here.
 values:
   1997-02-01: 0.5
-  2022-09-01: 0.75
 
 metadata:
   unit: /1
   period: month
   label: New Hampshire FANF recipient earned income disregard rate
   reference:
+    - title: N.H. Admin. Rules He-W 654.13(d)-(e) - Earned Income Disregard for FANF
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
+    - title: "N.H. Rulemaking Notice 2025-271, Initial Proposal, He-W 654.13 (readopted as #14518, eff. 2-25-26)"
+      href: https://gc.nh.gov/rules/register/2025/1204/2025-271%20IP%20Rule%20He-W%20654.13.pdf#page=1
+    - title: "N.H. Rulemaking Register No. 10, March 12, 2026 - Final adoption of He-W 654.13 (#14518)"
+      href: https://gc.nh.gov/rules/register/2026/No%2010%20March%2012%202026.pdf#page=6
     - title: FAM 603.01 - Earned Income Disregards (EID)
+      href: https://www.dhhs.nh.gov/fam_htm/html/603_01_earned_income_disregards_eid_fam.htm
+    - title: FAM 603.01 - Earned Income Disregards (EID), SR 97-03
       href: https://www.dhhs.nh.gov/famar_htm/html/603_01_earned_income_disregards_eid_sr_97-03_02_97_fam_a.htm
     - title: SR 97-03 Dated 02/97 - TANF Implementation
       href: https://www.dhhs.nh.gov/sr_htm/html/sr_97-03_dated_02_97.htm
-    - title: New Hampshire TANF State Plan - Cliff Effect Initiative
-      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/tanf-state-plan.pdf#page=29

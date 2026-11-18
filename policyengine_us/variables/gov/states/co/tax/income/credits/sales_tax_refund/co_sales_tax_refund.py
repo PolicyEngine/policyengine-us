@@ -5,6 +5,14 @@ class co_sales_tax_refund(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado sales tax refund"
+    documentation = (
+        "Colorado TABOR state sales tax refund for the modeled eligibility tax year. "
+        "PolicyEngine includes this refund in co_refundable_credits for that tax "
+        "year, even when the return is filed and the refund is paid later. This is "
+        "the residual sales tax refund mechanism and is separate from the one-time "
+        "Colorado Cash Back payment. The in_effect parameter controls years with a "
+        "refund."
+    )
     unit = USD
     definition_period = YEAR
     reference = (

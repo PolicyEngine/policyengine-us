@@ -1,7 +1,7 @@
 # Washington Medicaid expansion case with a negative-income robustness pin
 # (output differs from the federal.yaml TX non-expansion baseline: the
 # identical household is ineligible in TX at any of these income levels).
-# WA Medicaid per capita: $29,197,626,447 / 1,837,170 enrolled = $15,892.72.
+# WA Medicaid per capita: $21,500,482,060 / 1,912,013 enrolled = $11,244.95.
 - name: medicaid_adult_negative_self_employment_income_magi (wa)
   period: 2026
   absolute_error_margin: 0.1
@@ -53,8 +53,8 @@
         # (30,000 - 12,000) / 15,960 = 1.128 FPL < 1.38 -> ADULT (wages
         # alone would be 1.88 FPL and ineligible). The benefit stays at the
         # flat per-capita amount - the loss does not inflate it.
-        # Single enrollee: medicaid = WA per capita 15,892.72.
-        medicaid: 15_892.72
+        # Single enrollee: medicaid = WA per capita 11,244.95.
+        medicaid: 11_244.95
         is_medicaid_eligible: true
         medicaid_category: 4  # ADULT
         chip: 0.0

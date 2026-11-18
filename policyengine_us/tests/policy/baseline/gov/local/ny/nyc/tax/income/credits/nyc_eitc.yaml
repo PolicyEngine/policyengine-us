@@ -67,3 +67,28 @@
     #    0.18
     # 3. Allowable NYC EIC (multiply line 1 by line 2)
     nyc_eitc: 18
+
+- name: 2020 NYC EITC matches the federal credit recomputed with line 19a
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_800
+        taxable_interest_income: 1_000
+        charitable_cash_donations: 300
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Recomputed federal AGI 41,800 is over the $41,756 one-child limit.
+    ny_recomputed_federal_agi: 41_800
+    nyc_eitc: 0

@@ -12,6 +12,8 @@ metadata:
       href: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1rent-25.pdf#page=5
     - title: Minnesota Department of Revenue, Tax Year 2026 Inflation-Adjusted Amounts, 290.0693 Subd. 3 Renter's Credit, Maximum Credit column
       href: https://www.revenue.state.mn.us/sites/default/files/2025-12/inflation-adjusted-amounts-2026.pdf#page=5
+    - title: Minnesota Department of Revenue, Tax Year 2025 Inflation-Adjusted Amounts, 290.0693 Subd. 3 Renter's Credit, Maximum Credit column
+      href: https://www.revenue.state.mn.us/sites/default/files/2024-12/inflation-adjusted-amounts-2025.pdf#page=5
 
 brackets:
   - threshold:
@@ -19,6 +21,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_640
+        2025-01-01: 2_720
+        2026-01-01: 2_780
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -28,6 +32,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 8_610
+        2025-01-01: 8_860
+        2026-01-01: 9_060
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -37,6 +43,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_570
+        2025-01-01: 2_640
+        2026-01-01: 2_700
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -46,6 +54,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 10_760
+        2025-01-01: 11_070
+        2026-01-01: 11_320
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -55,6 +65,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_510
+        2025-01-01: 2_580
+        2026-01-01: 2_640
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -64,6 +76,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 15_090
+        2025-01-01: 15_530
+        2026-01-01: 15_880
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -73,6 +87,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_430
+        2025-01-01: 2_500
+        2026-01-01: 2_560
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -82,6 +98,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 19_400
+        2025-01-01: 19_960
+        2026-01-01: 20_410
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -91,6 +109,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_370
+        2025-01-01: 2_440
+        2026-01-01: 2_490
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -100,6 +120,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 21_540
+        2025-01-01: 22_160
         2026-01-01: 22_670
       metadata:
         uprating:
@@ -110,6 +131,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_310
+        2025-01-01: 2_380
+        2026-01-01: 2_430
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -119,6 +142,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 23_680
+        2025-01-01: 24_360
         2026-01-01: 24_920
       metadata:
         uprating:
@@ -129,6 +153,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_240
+        2025-01-01: 2_300
+        2026-01-01: 2_360
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -138,6 +164,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 28_010
+        2025-01-01: 28_820
+        2026-01-01: 29_470
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -147,6 +175,8 @@ brackets:
     amount:
       values:
         2024-01-01: 2_180
+        2025-01-01: 2_240
+        2026-01-01: 2_290
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -156,6 +186,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 60_320
+        2025-01-01: 62_060
+        2026-01-01: 63_470
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -165,6 +197,8 @@ brackets:
     amount:
       values:
         2024-01-01: 1_980
+        2025-01-01: 2_040
+        2026-01-01: 2_080
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -174,6 +208,8 @@ brackets:
   - threshold:
       values:
         2024-01-01: 62_460
+        2025-01-01: 64_260
+        2026-01-01: 65_720
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -183,6 +219,8 @@ brackets:
     amount:
       values:
         2024-01-01: 1_780
+        2025-01-01: 1_830
+        2026-01-01: 1_870
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -192,6 +230,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 64_620
+        2025-01-01: 66_480
         2026-01-01: 68_000
       metadata:
         uprating:
@@ -202,6 +241,8 @@ brackets:
     amount:
       values:
         2024-01-01: 1_510
+        2025-01-01: 1_550
+        2026-01-01: 1_590
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -211,6 +252,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 66_790
+        2025-01-01: 68_720
         2026-01-01: 70_280
       metadata:
         uprating:
@@ -221,6 +263,8 @@ brackets:
     amount:
       values:
         2024-01-01: 1_320
+        2025-01-01: 1_360
+        2026-01-01: 1_390
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -230,6 +274,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 68_930
+        2025-01-01: 70_920
         2026-01-01: 72_530
       metadata:
         uprating:
@@ -240,6 +285,8 @@ brackets:
     amount:
       values:
         2024-01-01: 1_190
+        2025-01-01: 1_220
+        2026-01-01: 1_250
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -249,6 +296,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 71_090
+        2025-01-01: 73_140
         2026-01-01: 74_810
       metadata:
         uprating:
@@ -259,6 +307,8 @@ brackets:
     amount:
       values:
         2024-01-01: 660
+        2025-01-01: 680
+        2026-01-01: 690
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -268,6 +318,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 73_240
+        2025-01-01: 75_350
         2026-01-01: 77_070
       metadata:
         uprating:
@@ -278,6 +329,8 @@ brackets:
     amount:
       values:
         2024-01-01: 260
+        2025-01-01: 270
+        2026-01-01: 270
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -287,6 +340,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 75_390
+        2025-01-01: 77_570
         2026-01-01: 79_330
       metadata:
         uprating:

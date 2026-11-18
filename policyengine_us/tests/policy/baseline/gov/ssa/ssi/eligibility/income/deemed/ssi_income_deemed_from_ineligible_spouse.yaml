@@ -154,3 +154,43 @@
         members: [person1, person2]
   output:
     ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
+# 416.1160(d): 'Ineligible spouse means someone who lives with you as your
+# husband or wife and is not eligible for SSI benefits.' Tax-unit roles do
+# not decide it: here the model makes the elder head and the claimant the
+# tax-unit spouse, and the claimant's husband a dependent.
+# 2026 rates: $994 individual, $1,491 couple.
+- name: Income of an ineligible spouse who is a tax-unit dependent is deemed
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      elder:
+        age: 90
+        social_security_retirement: 900 * 12
+      claimant:
+        age: 70
+        social_security_retirement: 600 * 12
+      husband:
+        age: 60
+        employment_income: 2_000 * 12
+    tax_units:
+      tax_unit:
+        members: [elder, claimant, husband]
+    marital_units:
+      elder_unit:
+        members: [elder]
+      couple:
+        members: [claimant, husband]
+    households:
+      household:
+        members: [elder, claimant, husband]
+        state_code: FL
+  output:
+    is_ssi_ineligible_spouse: [false, false, true]
+    # $2,000 > $497, so income is deemed (416.1163(d)(2)). Couple countable
+    # income: ($600 - $20) + ($2,000 - $65) / 2 = $1,547.50; alone $580;
+    # deemed $967.50. $1,547.50 exceeds the $1,491 couple rate, so the
+    # claimant is ineligible on income.
+    ssi_income_deemed_from_ineligible_spouse: [0, 967.50, 0]
+    ssi: [114, 0, 0]

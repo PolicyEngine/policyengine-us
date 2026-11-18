@@ -1,4 +1,4 @@
-description: The IRS caps the overtime income exemption at this amount, based on filing status.
+description: The IRS caps the overtime income deduction at this amount, based on filing status.
 
 metadata:
   propagate_metadata_to_children: true
@@ -6,10 +6,12 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  label: Overtime income exemption cap
+  label: Overtime income deduction cap
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 225(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/225#b_1
+    - title: 2025 Schedule 1-A (Form 1040), line 15
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1
 
 JOINT:
   2025-01-01: 25_000
@@ -19,5 +21,6 @@ SURVIVING_SPOUSE:
   2025-01-01: 12_500
 SINGLE:
   2025-01-01: 12_500
+# Unused: married filing separately can't take the deduction (26 U.S.C. 225(e)).
 SEPARATE:
   2025-01-01: 12_500

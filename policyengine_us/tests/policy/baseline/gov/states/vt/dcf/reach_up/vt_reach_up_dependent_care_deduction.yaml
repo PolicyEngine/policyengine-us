@@ -1,8 +1,10 @@
 # Vermont Reach Up Dependent Care Deduction
 # Max $175/month per participant (head or spouse)
-# Source: Code Vt. R. 13-170-220-X Section 2252.2
+# Covers care of a disabled or seriously ill adult household member;
+# child care for children in the Reach Up household is not deducted.
+# Source: Code Vt. R. 13-170-220-X Section 2252.2; ESD Procedure P-2230A
 
-- name: Case 1, zero childcare expenses.
+- name: Case 1, zero care expenses.
   period: 2024-01
   input:
     people:
@@ -22,97 +24,151 @@
   output:
     vt_reach_up_dependent_care_deduction: 0
 
-- name: Case 2, one participant childcare below max.
+- name: Case 2, child care for a Reach Up child is not deducted.
   period: 2024-01
   input:
     people:
       person1:
+        age: 30
         is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
-        members: [person1]
+        members: [person1, person2]
         childcare_expenses: 1_200  # $100/month
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2]
     households:
       household:
-        members: [person1]
+        members: [person1, person2]
         state_code: VT
   output:
-    # min($100, $175) = $100
-    vt_reach_up_dependent_care_deduction: 100
+    # Rule 2252.2(b) covers only a child who is not a member of the
+    # Reach Up household; P-2230A step 2: "incapacitated adult or
+    # non-Reach Up member". The child here is in the unit, so $0.
+    vt_reach_up_dependent_care_deduction: 0
 
-- name: Case 3, one participant childcare above max.
+- name: Case 3, one participant, disabled adult care below max.
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
+        age: 30
         is_tax_unit_head_or_spouse: true
+      person2:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        care_expenses: 1_200  # $100/month
     spm_units:
       spm_unit:
-        members: [person1]
-        childcare_expenses: 3_600  # $300/month
+        members: [person1, person2]
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2]
     households:
       household:
-        members: [person1]
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Rule 2252.2(a): care of a disabled or seriously ill adult.
+    # min($100, 1 participant x $175) = $100
+    vt_reach_up_dependent_care_deduction: 100
+
+- name: Case 4, one participant, disabled adult care above max.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        care_expenses: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
         state_code: VT
   output:
     # min($300, $175) = $175 (capped)
     vt_reach_up_dependent_care_deduction: 175
 
-- name: Case 4, two participants childcare below double max.
+- name: Case 5, two participants, disabled adult care below double max.
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
+        age: 30
         is_tax_unit_head_or_spouse: true
       person2:
+        age: 30
         is_tax_unit_head_or_spouse: true
+      person3:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        care_expenses: 3_000  # $250/month
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 3_000  # $250/month
+        members: [person1, person2, person3]
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: VT
   output:
     # 2 participants = $350 max
     # min($250, $350) = $250
     vt_reach_up_dependent_care_deduction: 250
 
-- name: Case 5, two participants childcare above double max.
+- name: Case 6, two participants, disabled adult care above double max.
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
+        age: 30
         is_tax_unit_head_or_spouse: true
       person2:
+        age: 30
         is_tax_unit_head_or_spouse: true
+      person3:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        care_expenses: 6_000  # $500/month
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        childcare_expenses: 6_000  # $500/month
+        members: [person1, person2, person3]
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1, person2, person3]
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: VT
   output:
     # 2 participants = $350 max
     # min($500, $350) = $350 (capped)
     vt_reach_up_dependent_care_deduction: 350
 
-- name: Case 6, disabled adult care expenses count toward the deduction.
+- name: Case 7, disabled adult care expenses count toward the deduction.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -123,8 +179,7 @@
         age: 35
         # Describe the legal scenario (Rule 2252.2(a) covers a disabled or
         # seriously ill adult); the formula pools care_expenses without a
-        # disability filter and caps per participant, symmetric with the
-        # childcare side.
+        # disability filter and caps per participant.
         is_disabled: true
         is_incapable_of_self_care: true
         care_expenses: 1_200
@@ -139,4 +194,35 @@
     # Per Reach Up rule 2252.2(a): care of a disabled or seriously ill
     # adult household member, capped at $175/month per participant.
     # Expenses = 1,200 / 12 = 100/month, below the cap.
+    vt_reach_up_dependent_care_deduction: 100
+
+- name: Case 8, child care and disabled adult care, only the adult care counts.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+      person3:
+        age: 60
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        care_expenses: 1_200  # $100/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_600  # $300/month, not deductible
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # Adult care only: min($100, 1 participant x $175) = $100
     vt_reach_up_dependent_care_deduction: 100

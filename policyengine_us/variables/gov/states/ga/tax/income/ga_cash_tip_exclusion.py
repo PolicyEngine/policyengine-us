@@ -34,11 +34,17 @@ class ga_cash_tip_exclusion(Variable):
         # the Treasury list and excludes Specified Service Trades or
         # Businesses (via `~is_sstb`) — the IRC § 199A SSTB list is the
         # standard federal proxy for the occupation-exclusion clause.
+        #
+        # § 48-7-27(a) subtracts the exclusion from the taxpayer's federal
+        # adjusted gross income. A dependent's tips are the dependent's own
+        # income (26 U.S.C. 73(a) for a child's services), left out of the
+        # filer's federal AGI (see irs_gross_income), so they never count.
         person = tax_unit.members
         tip_income = person("tip_income", period)
         occupation_eligible = person(
             "tip_income_deduction_occupation_requirement_met", period
         )
-        qualified_tips = tip_income * occupation_eligible
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        qualified_tips = tip_income * occupation_eligible * not_dependent
         cap = parameters(period).gov.states.ga.tax.income.agi.exclusions.tips.cap
         return tax_unit.sum(min_(qualified_tips, cap))

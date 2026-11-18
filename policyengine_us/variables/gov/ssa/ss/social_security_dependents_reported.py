@@ -1,0 +1,10 @@
+from policyengine_us.model_api import *
+
+
+class social_security_dependents_reported(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    label = "Social Security dependents benefits"
+    unit = USD
+    uprating = "calibration.gov.irs.soi.social_security"

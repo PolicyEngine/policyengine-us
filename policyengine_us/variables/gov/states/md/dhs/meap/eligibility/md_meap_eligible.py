@@ -12,6 +12,7 @@ class md_meap_eligible(Variable):
         "https://regs.maryland.gov/us/md/exec/comar/07.03.21.06",
         # PDF pages 11, 12, 16, 38, 39, 108.
         "https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=11",
+        "https://www.law.cornell.edu/uscode/text/42/8624",
     )
     documentation = (
         "Regular heating has no resource test. Application documentation, emancipation "
@@ -28,11 +29,19 @@ class md_meap_eligible(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
+        income = spm_unit("md_meap_countable_income", period)
+        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+        # of the poverty guideline. The 60% SMI limit falls below that floor from
+        # household size 29 in FY2025 to FY2027. md_meap_fpg already uses the
+        # guideline of the calendar year before the model year.
+        p_hhs = parameters(period).gov.hhs.liheap
+        floor = np.round(spm_unit("md_meap_fpg", period) * p_hhs.fpg_floor, 2)
         # Manual page 38: categorical eligibility waives the income test but
         # not the other denials.
-        income_eligible = spm_unit("md_meap_categorically_eligible", period) | (
-            spm_unit("md_meap_countable_income", period)
-            <= spm_unit("md_meap_income_limit", period)
+        income_eligible = (
+            spm_unit("md_meap_categorically_eligible", period)
+            | (income <= spm_unit("md_meap_income_limit", period))
+            | (income < floor)
         )
         # Manual page 108: the household must have at least one eligible
         # (citizen or qualified alien) member.

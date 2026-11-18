@@ -66,8 +66,14 @@
         state_code: ID
         household_vehicles_value: 2660.0
   output:
-    id_income_tax_before_refundable_credits: 645.54
-    state_income_tax_before_refundable_credits: 655.54  # Includes the $10 PBF tax.
+    # Single filer. Idaho subtracts the taxable Social Security, so Idaho
+    # taxable income = 35,280 taxable pension - 2,080 health insurance
+    # premiums subtraction - 16,100 standard deduction = 17,100.
+    # The model uprates the 2025 threshold of 4,811 by gov.irs.uprating:
+    # 4,811 x 177.113750 / 173.093417 = 4,922.74.
+    # Tax = 5.3% x (17,100 - 4,922.74) = 5.3% x 12,177.26 = 645.39.
+    id_income_tax_before_refundable_credits: 645.39
+    state_income_tax_before_refundable_credits: 655.39  # Includes the $10 PBF tax.
 - name: PolicyBench scenario_053 Idaho paid health insurance premiums
   absolute_error_margin: 0.01
   period: 2026
@@ -119,5 +125,10 @@
         auto_loan_interest: 950.0
         household_vehicles_value: 7410.0
   output:
-    id_income_tax_before_refundable_credits: 2170.28
-    state_income_tax_before_refundable_credits: 2180.28  # Includes the $10 PBF tax.
+    # Single filer. Idaho taxable income = 66,968.68 wages - 5,000 health
+    # insurance premiums subtraction - 16,100 standard deduction = 45,868.68.
+    # The model uprates the 2025 threshold of 4,811 by gov.irs.uprating:
+    # 4,811 x 177.113750 / 173.093417 = 4,922.74.
+    # Tax = 5.3% x (45,868.68 - 4,922.74) = 5.3% x 40,945.94 = 2,170.13.
+    id_income_tax_before_refundable_credits: 2170.13
+    state_income_tax_before_refundable_credits: 2180.13  # Includes the $10 PBF tax.

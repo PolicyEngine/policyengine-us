@@ -1,0 +1,31 @@
+description: Iowa awards these payment matrix points by primary heating fuel category under the Low Income Home Energy Assistance Program.
+# Appendix I item 3, Fuel/Energy Type: Natural Gas 4, Electric 4, Liquid
+# Propane (LP) 5, Fuel Oil 5, Solid Fuel (Wood/Coal/Corn) 2. The matrix
+# publishes no points for kerosene or other fuels; kerosene is mapped to the
+# fuel oil category in ia_liheap_fuel_category (an inference), and OTHER
+# carries zero points.
+metadata:
+  propagate_metadata_to_children: true
+  unit: /1
+  period: year
+  label: Iowa LIHEAP fuel type points
+  breakdown:
+    - ia_liheap_fuel_category
+  reference:
+    - title: Iowa LIHEAP FY26 Policy and Procedures Manual, Appendix I Benefit Maximums, Regular Assistance Payment Matrix, item 3 Fuel/Energy Type
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=137
+    - title: Iowa FY2026 Benefit Matrix Heat-Crisis (LIHEAP Clearinghouse copy of Appendix I)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IA_BenefitMatrix_Heat-Crisis_2026.pdf#page=1
+
+NATURAL_GAS:
+  2025-10-01: 4
+ELECTRICITY:
+  2025-10-01: 4
+PROPANE:
+  2025-10-01: 5
+FUEL_OIL:
+  2025-10-01: 5
+SOLID_FUEL:
+  2025-10-01: 2
+OTHER:
+  2025-10-01: 0

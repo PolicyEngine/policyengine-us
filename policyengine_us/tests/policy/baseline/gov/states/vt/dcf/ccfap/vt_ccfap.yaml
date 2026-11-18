@@ -335,3 +335,180 @@
     # Monthly rate = $439 * 52 / 12 = $1,902.33
     # Benefit = max(1,902.33 - 0, 0) = $1,902.33
     vt_ccfap: 1_902.33
+
+- name: A child with no care hours and no bill draws no payment.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_ccfap_eligible: true
+    vt_ccfap: 0
+
+- name: A bill below the state rate still draws the state rate.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # No hours reads as part time, so $240 a week for a preschooler at a licensed
+    # center, less a $100 weekly family share: $140 * 52 / 12 = $606.67.
+    vt_ccfap: 606.67
+
+- name: Only the child in care draws the rate.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # $439 a week for one full-time preschooler: $439 * 52 / 12 = $1,902.33.
+    vt_ccfap: 1_902.33
+
+- name: Before December 17, 2023, the family's bill caps the state rate.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 325
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # $10,000 / 52 = $192.31 a week, below the $325 state rate: $10,000 / 12.
+    vt_ccfap: 833.33
+
+- name: Before December 17, 2023, care hours with no bill leave the charge unknown.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 325
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Nothing caps the rate: $325 * 52 / 12 = $1,408.33.
+    vt_ccfap: 1_408.33
+
+- name: Before December 17, 2023, a child with no hours and no bill draws nothing.
+  absolute_error_margin: 0.01
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 325
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_ccfap: 0
+
+- name: From December 17, 2023, the state rate stands above the bill.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        vt_ccfap_eligible_child: true
+        vt_ccfap_state_rate: 439
+        pre_subsidy_childcare_expenses: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # $439 * 52 / 12 = $1,902.33.
+    vt_ccfap: 1_902.33

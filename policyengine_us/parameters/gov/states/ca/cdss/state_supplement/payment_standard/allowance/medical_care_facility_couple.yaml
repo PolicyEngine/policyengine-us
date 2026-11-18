@@ -1,0 +1,34 @@
+description: California adds this state share to the federal payment cap for a couple in a Title XIX medical facility under the State Supplementary Payment program.
+metadata:
+  unit: currency-USD
+  period: month
+  label: California state supplement medical care facility couple state share
+  reference:
+    - title: California Welfare and Institutions Code Division 9, Part 3, Chapter 3, Article 5, Section 12200 (h)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
+    - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2b
+    - title: SSA POMS SI 01415.057 - Federally Administered Optional Supplementary Payment Programs for January 2025, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415057#b2b
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#b2b
+    - title: SSA POMS SI 01415.045 - Federally Administered Optional Supplementary Payment Programs for January 2013, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415045#b2b
+    - title: SSA POMS SI 01415.049 - Federally Administered Optional Supplementary Payment Programs for January 2017, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049#b2b
+    - title: SSA POMS SI 01415.054 - Federally Administered Optional Supplementary Payment Programs for January 2022, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415054#b2b
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplementary Payment Programs for January 2023, California couple payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#b2b
+    - title: California Department of Social Services, All County Information Notice I-71-22
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2022/I-71_22.pdf#page=5
+values:
+  1991-01-01: 24 # $84 - $60
+  # Shares for 1992 through 2012 are not added yet, so the 1991 share carries forward (issue 10480).
+  2013-01-01: 40
+  2017-01-01: 42
+  2022-01-01: 52
+  # The $117 couple total is one dollar less than twice the $59 individual total.
+  2023-01-01: 57
+  # The share holds for January 2024 through 2026.
+  2024-01-01: 64

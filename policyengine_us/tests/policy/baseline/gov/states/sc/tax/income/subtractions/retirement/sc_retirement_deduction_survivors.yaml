@@ -3,6 +3,7 @@
   input:
     pension_survivors: 1_000
     military_retirement_pay_survivors: 4_000
+    is_surviving_spouse: true
     age: 70
     state_code: SC
   output:
@@ -13,6 +14,7 @@
   input:
     pension_survivors: 4_000
     military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
     age: 64
     state_code: SC
   output:
@@ -23,20 +25,41 @@
   input:
     pension_survivors: 2_000
     military_retirement_pay_survivors: 4_000
+    is_surviving_spouse: true
     age: 70
     state_code: SC
   output:
     sc_retirement_deduction_survivors: 2_000
 
+# 12-6-1170(C)(1) excludes a military retiree's surviving spouse from the
+# 2021 worksheet's reduction for military retirement, so the $6,000 military
+# survivor deduction does not reduce the $3,000 maximum.
 - name: Case 4, in 2021, below age threshold
   period: 2021
   input:
     pension_survivors: 4_000
     military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
     age: 64
     state_code: SC
   output:
-    sc_retirement_deduction_survivors: 0
+    sc_military_deduction_survivors: 6_000
+    # min(4_000, 3_000)
+    sc_retirement_deduction_survivors: 3_000
+
+- name: Military survivor income that was not deducted does not reduce the general pension cap.
+  period: 2021
+  input:
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    # Isolate the worksheet offset from the separately tested military
+    # eligibility calculation; line p-6 contains only an allowed deduction.
+    sc_military_deduction_survivors: 0
+    is_surviving_spouse: true
+    age: 64
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 3_000
 
 # Only the head's and spouse's survivor benefits are in the filer's federal
 # AGI; a dependent reports their own on their own return.
@@ -65,3 +88,84 @@
         state_code: SC
   output:
     sc_retirement_deduction_survivors: [0, 0]
+
+- name: A 2021 filer who is not a surviving spouse gets no survivor deduction.
+  period: 2021
+  input:
+    employment_income: 40_000
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: false
+    age: 64
+    state_code: SC
+  output:
+    sc_military_deduction_survivors: 0
+    sc_retirement_deduction_survivors: 0
+
+- name: The same 2021 filer as a surviving spouse keeps the survivor deduction.
+  period: 2021
+  input:
+    employment_income: 40_000
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
+    age: 64
+    state_code: SC
+  output:
+    sc_military_deduction_survivors: 6_000
+    # min(4_000, 3_000); no military reduction for a surviving spouse.
+    sc_retirement_deduction_survivors: 3_000
+
+- name: A 2021 surviving spouse over 65 is not reduced by military survivor benefits.
+  period: 2021
+  input:
+    pension_survivors: 12_000
+    military_retirement_pay_survivors: 6_000
+    is_surviving_spouse: true
+    age: 70
+    state_code: SC
+  output:
+    sc_military_deduction_survivors: 6_000
+    # min(12_000, 10_000). The 2021 worksheet would give
+    # min(12_000, 10_000 - 6_000) = 4_000.
+    sc_retirement_deduction_survivors: 10_000
+    sc_retirement_deduction: 10_000
+    sc_military_deduction: 6_000
+
+- name: The survivor maximum follows the deceased spouse's age, below 65.
+  period: 2022
+  input:
+    pension_survivors: 5_000
+    is_surviving_spouse: true
+    age: 70
+    deceased_spouse_age: 60
+    state_code: SC
+  output:
+    # The deceased spouse would be 60, so the maximum is $3,000 though the
+    # survivor is 70.
+    sc_retirement_deduction_survivors: 3_000
+
+- name: The survivor maximum follows the deceased spouse's age, 65 or older.
+  period: 2022
+  input:
+    pension_survivors: 5_000
+    is_surviving_spouse: true
+    age: 60
+    deceased_spouse_age: 66
+    state_code: SC
+  output:
+    # The deceased spouse would be 66, so the maximum is $10,000 though the
+    # survivor is 60.
+    sc_retirement_deduction_survivors: 5_000
+
+- name: A survivor gets the $10,000 maximum when the deceased spouse would have reached 65.
+  period: 2022
+  input:
+    pension_survivors: 12_000
+    is_surviving_spouse: true
+    age: 60
+    deceased_spouse_age: 65
+    state_code: SC
+  output:
+    # min(12_000, 10_000)
+    sc_retirement_deduction_survivors: 10_000

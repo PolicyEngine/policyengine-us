@@ -1,0 +1,16 @@
+description: West Virginia allows the IRC 1341 repayments decreasing modification when the income repaid on the return is more than this amount.
+values:
+  2017-01-01: 3_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: West Virginia IRC 1341 repayments modification threshold
+  reference:
+    - title: "West Virginia 2025 Personal Income Tax Forms and Instructions, Schedule M line 42 #page 5,29"
+      href: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=5
+    - title: West Virginia 2020 Personal Income Tax Forms and Instructions, Schedule M line 40
+      href: https://tax.wv.gov/Documents/TaxForms/2020/it140.booklet.pdf#page=24
+    - title: West Virginia 2017 Personal Income Tax Forms and Instructions, Schedule M line 50 (money paid back under IRC 1341)
+      href: https://tax.wv.gov/Documents/TaxForms/2017/it140.booklet.pdf#page=23
+    - title: "IRS Publication 525 (2025), Repayments: consider the total amount being repaid on the return #page 36-37"
+      href: https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=36

@@ -182,15 +182,17 @@ GROUP_4:
       2024-10-01: 42
     SCHOOL_AGE:
       2024-10-01: 39
+  # Group 4 contains only New York City. ACS chose 75% of the
+  # registered family day care rate for enhanced informal providers.
   LE_ENH:
     INFANT:
-      2024-10-01: 56
+      2024-10-01: 60
     TODDLER:
-      2024-10-01: 49
+      2024-10-01: 53
     PRESCHOOLER:
-      2024-10-01: 46
+      2024-10-01: 49
     SCHOOL_AGE:
-      2024-10-01: 42
+      2024-10-01: 45
 
 metadata:
   propagate_metadata_to_children: true
@@ -204,3 +206,5 @@ metadata:
   reference:
     - title: 24-OCFS-LCM-22 Attachment A, daily market rates for county Groups 1-4 (file pages 15-18), effective October 1, 2024
       href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=15
+    - title: NYC ACS FS-023, revised October 2024
+      href: https://www.nyc.gov/assets/acs/pdf/earlycare/2024/FS023.pdf#page=2

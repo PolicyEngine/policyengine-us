@@ -128,3 +128,73 @@
     # (0.8 x 10,000 = 8,000) and 3% of AGI over $220,650 (53,380.50).
     # 10,000 + 49,900 - 8,000
     mn_itemized_deductions: 51_900
+
+- name: Minnesota HF1938 repeal exempts wagering losses from the itemized deduction offset.
+  absolute_error_margin: 0.01
+  period: 2023
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    age: 40
+    filing_status: SINGLE
+    employment_income: 1_900_000
+    gambling_winnings: 100_000
+    gambling_losses: 50_000
+    salt_deduction: 0
+    state_code: MN
+  output:
+    adjusted_gross_income: 2_000_000
+    wagering_losses_deduction: 50_000
+    # All 50,000 of itemized deductions qualify for the exemption.
+    mn_itemized_deductions: 50_000
+
+# The Legislature amended only subdivision 2 of section 290.0122 in House File
+# 1938, so the repeal keeps the property tax cap in subd. 3(a)(1) and the
+# charitable floor in subd. 4(a).
+# https://www.revisor.mn.gov/statutes/cite/290.0122
+# https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/64/
+
+- name: The repeal keeps Minnesota's property tax cap in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    age: 40
+    employment_income: 200_000
+    real_estate_taxes: 18_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    # The federal cap of 40,000 leaves all 18,000 of real estate taxes.
+    capped_property_taxes: 18_000
+    # min(18,000, 10,000)
+    mn_property_tax_deduction: 10_000
+    # 12,000 of mortgage interest + 10,000. Income of 200,000 lies below the
+    # 2025 threshold of 238,950, so the offset is the lesser of 80% of 22,000
+    # and 3% of zero.
+    mn_itemized_deductions: 22_000
+
+- name: The repeal keeps Minnesota's charitable floor in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    deductible_mortgage_interest: 14_000
+    real_estate_taxes: 6_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    # 4,000 - 0.5% x 100,000 under section 70425 of Public Law 119-21
+    charitable_deduction: 3_500
+    # 4,000 - 1% x 100,000
+    mn_charitable_deduction: 3_000
+    # (14,000 of mortgage interest + 3,500) + 6,000 + (3,000 - 3,500). Income
+    # of 100,000 lies below the 2026 threshold of 244,400, so the offset is
+    # the lesser of 80% of 23,000 and 3% of zero.
+    mn_itemized_deductions: 23_000

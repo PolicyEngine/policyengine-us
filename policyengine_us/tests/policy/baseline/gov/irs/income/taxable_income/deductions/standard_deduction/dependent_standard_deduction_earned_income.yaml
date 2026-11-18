@@ -1,0 +1,159 @@
+# Standard Deduction Worksheet for Dependents (2025 Form 1040 instructions,
+# p.35): earned income is Form 1040 line 1z plus Schedule 1 lines 3, 6, 8r,
+# 8t and 8u, less Schedule 1 line 15 (the deductible part of
+# self-employment tax), for the filers only.
+
+- name: 2025 wages count in full
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+  output:
+    dependent_standard_deduction_earned_income: 2_000
+
+- name: 2025 farm income counts, less the deductible part of self-employment tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 19
+        farm_operations_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+  output:
+    # $2,000 x 0.9235 x 0.153 / 2 = $141.30 deductible.
+    dependent_standard_deduction_earned_income: 1_858.70
+
+- name: 2025 joint return adds both spouses' earnings and leaves out a dependent's (person_a is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 1_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 16
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+  output:
+    dependent_standard_deduction_earned_income: 2_500
+
+- name: 2025 joint return adds both spouses' earnings and leaves out a dependent's (person_a is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 1_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 16
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+  output:
+    dependent_standard_deduction_earned_income: 2_500
+
+- name: 2025 a farm loss larger than wages leaves zero
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 1_000
+        farm_operations_income: -3_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+  output:
+    dependent_standard_deduction_earned_income: 0
+
+- name: 2025 wages count after elective 401(k) deferrals
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        traditional_401k_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+  output:
+    # Form 1040 line 1z (W-2 box 1) leaves out elective deferrals.
+    dependent_standard_deduction_earned_income: 1_000
+
+- name: 2025 joint return counts each spouse's taxable wages (person_a is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2_000
+        traditional_401k_contributions: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+  output:
+    # $1,000 + $500.
+    dependent_standard_deduction_earned_income: 1_500
+
+- name: 2025 joint return counts each spouse's taxable wages (person_a is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 2_000
+        traditional_401k_contributions: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+  output:
+    # $500 + $1,000.
+    dependent_standard_deduction_earned_income: 1_500

@@ -3,6 +3,8 @@ first_person:
   CONTIGUOUS_US:
     1992-01-01: 6_810
     2011-01-01: 10_890
+    2013-01-01: 11_490
+    2014-01-01: 11_670
     2015-01-01: 11_770
     2016-01-01: 11_880
     2017-01-01: 12_060
@@ -18,6 +20,8 @@ first_person:
   AK:
     1992-01-01: 8_500
     2011-01-01: 13_600
+    2013-01-01: 14_350
+    2014-01-01: 14_580
     2015-01-01: 14_720
     2016-01-01: 14_840
     2017-01-01: 15_060
@@ -33,6 +37,8 @@ first_person:
   HI:
     1992-01-01: 7_830
     2011-01-01: 12_540
+    2013-01-01: 13_230
+    2014-01-01: 13_420
     2015-01-01: 13_550
     2016-01-01: 13_670
     2017-01-01: 13_860
@@ -56,11 +62,14 @@ first_person:
   VI:
     2024-01-01: 0
 additional_person:
-  # Calculated by subtracting a two-person household's line from a one-person's.
-  # This difference is always the same for larger households.
+  # HHS publishes these amounts for each additional person. In 2016, the
+  # difference between the first two rows does not define a uniform increment:
+  # use fpg_table for sizes 1-8 and these amounts for each person beyond eight.
   CONTIGUOUS_US:
     1992-01-01: 2_380
     2011-01-01: 3_820
+    2013-01-01: 4_020
+    2014-01-01: 4_060
     2015-01-01: 4_160
     2016-01-01: 4_160
     2017-01-01: 4_180
@@ -76,6 +85,8 @@ additional_person:
   AK:
     1992-01-01: 2_980
     2011-01-01: 4_780
+    2013-01-01: 5_030
+    2014-01-01: 5_080
     2015-01-01: 5_200
     2016-01-01: 5_200
     2017-01-01: 5_230
@@ -91,10 +102,12 @@ additional_person:
   HI:
     1992-01-01: 2_740
     2011-01-01: 4_390
+    2013-01-01: 4_620
+    2014-01-01: 4_670
     2015-01-01: 4_780
     2016-01-01: 4_780
     2017-01-01: 4_810
-    2018-01-01: 4_810
+    2018-01-01: 4_970
     2019-01-01: 5_080
     2020-01-01: 5_150
     2021-01-01: 5_220
@@ -114,6 +127,10 @@ additional_person:
 metadata:
   unit: currency-USD
   reference:
+    - title: HHS 2013 Annual Update of the Poverty Guidelines
+      href: https://www.govinfo.gov/content/pkg/FR-2013-01-24/pdf/2013-01422.pdf#page=2
+    - title: "HHS 2014 Annual Update of the Poverty Guidelines #page 1-2"
+      href: https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=1
     - title: 2026 Poverty Guidelines
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
     - title: 2015 Poverty Guidelines
@@ -124,9 +141,11 @@ metadata:
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
     - title: Poverty Guidelines
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
+    - title: Annual Update of the HHS Poverty Guidelines, 83 FR 2642-2644
+      href: https://www.govinfo.gov/content/pkg/FR-2018-01-18/pdf/2018-00814.pdf#page=2
   period: year
   label: Federal poverty guidelines
   breakdown:
     - [first_person, additional_person]
     - state_group
-  uprating: gov.hhs.uprating
+  uprating: gov.hhs.fpg_uprating

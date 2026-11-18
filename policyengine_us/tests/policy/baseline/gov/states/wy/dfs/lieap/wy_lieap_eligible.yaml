@@ -1,0 +1,49 @@
+- name: Case 1, income exactly at the ceiling qualifies.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 35829
+    heating_expense: 100
+  output:
+    wy_lieap_eligible: true
+
+- name: Case 2, income above the ceiling is ineligible.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 35830
+    heating_expense: 100
+  output:
+    wy_lieap_eligible: false
+
+- name: Case 3, zero qualifying members is ineligible.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 0
+    wy_lieap_countable_income: 0
+    heating_expense: 100
+  output:
+    wy_lieap_eligible: false
+
+- name: Case 4, no heating responsibility is ineligible.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 0
+    heating_expense: 0
+  output:
+    wy_lieap_eligible: false
+
+- name: Case 5, negative reported expense is ineligible.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 0
+    heating_expense: -100
+  output:
+    wy_lieap_eligible: false

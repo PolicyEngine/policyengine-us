@@ -51,11 +51,11 @@
         msp: 0
         msp_eligible: false
         # TX is a Section 1634 state: positive SSI confers Medicaid
-        # (SSI_RECIPIENT category). $13,708.50 is the calibration-derived
+        # (SSI_RECIPIENT category). $11,867.90 is the calibration-derived
         # TX adult per-capita cost (calibration/gov/hhs/medicaid/totals/
         # spending[TX] scaled by the person's cost index); the same value
         # recurs in every TX adult enrollee case below.
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -109,7 +109,7 @@
         meets_ssi_disability_criteria: false
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -168,7 +168,7 @@
         ssi_countable_income: 0
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -225,7 +225,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -282,18 +282,20 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        # Despite $0 SSI, still Medicaid-eligible via TX's optional
-        # senior-or-disabled pathway: SSI-method countable income $11,928
-        # <= 75% of FPG (0.75 x $15,960 = $11,970), so the calibration-
-        # derived TX adult per-capita cost applies.
-        medicaid: 13_708.50
-        is_medicaid_eligible: true
+        # $0 SSI, so not an SSI recipient. Texas covers aged, blind and
+        # disabled people at home only if they receive SSI; its optional
+        # groups are institutional, waiver and buy-in groups (MEPD A-3000),
+        # with no 75% FPG group, so no Medicaid.
+        medicaid: 0
+        is_medicaid_eligible: false
         chip: 0
-        is_aca_ptc_eligible: false
+        # Without Medicaid, Medicare or an ESI offer, the PTC applies at
+        # 158% FPL: SLCSP $19,482.51 - 4.58% x $24,876 MAGI ($1,138.23).
+        is_aca_ptc_eligible: true
     tax_units:
       tax_unit:
-        aca_ptc: 0
-        premium_tax_credit: 0
+        aca_ptc: 18_344.29
+        premium_tax_credit: 18_344.29
 - name: ssi_unearned_income_reduction (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -345,7 +347,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -404,7 +406,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -458,7 +460,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -578,7 +580,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -588,7 +590,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false
@@ -694,9 +696,9 @@
         msp_eligible: false
         # TX is a Section 1634 state: the child's positive SSI confers
         # Medicaid (SSI_RECIPIENT category). Calibration-derived TX child
-        # per-capita cost: spending[TX] $57,284,033,548 x cost index 414
-        # / state denominator 2,400,882,400 = $9,877.86.
-        medicaid: 9_877.86
+        # per-capita cost: spending[TX] $50,974,507,372 x cost index 414
+        # / state denominator (4,295,157 x 574.55 = 2,467,782,454) = $8,551.59.
+        medicaid: 8_551.59
         is_medicaid_eligible: true
         # Medicaid-eligible child is not CHIP-eligible.
         chip: 0
@@ -860,7 +862,7 @@
         is_ssi_aged: true
         msp: 0
         msp_eligible: false
-        medicaid: 13_708.50
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0
         is_aca_ptc_eligible: false

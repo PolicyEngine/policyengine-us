@@ -1,0 +1,34 @@
+description: Iowa treats these income sources as fixed income for the fixed-income-only targeting factor under the Low Income Home Energy Assistance Program.
+# Definitions, Fixed Income Household: "A household that receives only one or
+# more of the following income types ... Social Security Administration (SSA)
+# Benefits, Supplemental Security Income (SSI), Social Security Disability
+# Insurance (SSDI), Veterans' Assistance, VA Service-Connected Disability
+# Pension, VA Non-Service-Connected Disability Pension, and pensions. Only mark
+# 'fixed income' when that is the ONLY source(s) of income." Appendix C notes
+# that child support, alimony and variable annuities are not fixed income.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    # The Definitions (page 81) name SSA benefits, SSI and SSDI. Appendix C
+    # (page 114) puts "SSA (State Supplementary Assistance)" in the same
+    # Social Security Benefits row as SSI, and that row records a minor's
+    # payment "to capture source of income for AE fixed income criteria".
+    - ia_ssa
+    - pension_income
+    # Military retirement pay and survivor benefit payments are pensions.
+    - military_retirement_income
+    # Appendix C defines Pensions as assistance "paid at regular intervals ...
+    # in consideration of past services, age" and labels Form RRB-1099-R
+    # "Annuities or Pensions by the Railroad Retirement Board", so railroad
+    # retirement annuities are pensions in the Definitions' fixed income list.
+    - railroad_benefits
+    - veterans_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa LIHEAP fixed income sources
+  reference:
+    - title: "Iowa LIHEAP FY26 Policy and Procedures Manual, Definitions, Fixed Income Household, Appendix C Pensions, Railroad Retirement and Social Security Benefits rows, and Appendix I Payment Matrix, Fixed Income Only targeting factor #page 81,109-110,114,137"
+      href: https://hhs.iowa.gov/media/17262/download?inline#page=81

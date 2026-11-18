@@ -1,0 +1,130 @@
+- name: 2021 claimable filer keeps personal and dependent exemptions under the filing exception
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: LA
+  output:
+    # 2021 IT-540 instructions, PDF p. 3, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3
+    # RR 18-001, PDF p. 2, quotes pre-2025 R.S. 47:294(A) and (B):
+    # https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf#page=2
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
+    # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
+    # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
+    la_personal_exemption: 4_500
+    la_dependents_exemption: 1_000
+    la_exemptions: 5_500
+
+- name: 2022 claimable filer keeps personal and dependent exemptions under the filing exception
+  period: 2022
+  input:
+    people:
+      filer:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: LA
+  output:
+    # 2022 IT-540 instructions, PDF p. 2, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2
+    # 2022 Louisiana Tax Table, PDF p. 1, single or married filing separately:
+    # https://dam.ldr.la.gov/taxforms/IT540(2022)%20Tax%20Table.pdf#page=1
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
+    # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
+    # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
+    la_personal_exemption: 4_500
+    la_dependents_exemption: 1_000
+    la_exemptions: 5_500
+
+- name: 2023 claimable filer keeps personal and dependent exemptions under the filing exception
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: LA
+  output:
+    # 2023 IT-540 instructions, PDF p. 3, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+    # 2023 Louisiana Tax Table, PDF p. 1, single or married filing separately:
+    # https://dam.ldr.la.gov/taxforms/IT540(2023)%20TT.pdf#page=1
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
+    # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
+    # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
+    la_personal_exemption: 4_500
+    la_dependents_exemption: 1_000
+    la_exemptions: 5_500
+
+- name: 2024 claimable filer keeps personal and dependent exemptions under the filing exception
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: LA
+  output:
+    # 2024 IT-540 instructions, PDF pp. 3 and 18, Lines 6A/6C and single tax table:
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=18
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
+    # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
+    # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
+    la_personal_exemption: 4_500
+    la_dependents_exemption: 1_000
+    la_exemptions: 5_500

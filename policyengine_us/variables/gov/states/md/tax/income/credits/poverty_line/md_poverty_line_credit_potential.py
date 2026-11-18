@@ -34,6 +34,7 @@ class md_poverty_line_credit_potential(Variable):
         # (2)    an amount equal to 5% of the eligible low income taxpayer’s
         # earned income, as defined under § 32(c)(2) of the Internal Revenue
         # Code.
+        # Source conflict us-md:poverty-credit-earned-income-losses
         # § 32(c)(2) earned income "is reduced by any net loss in earnings
         # from self-employment" (26 CFR 1.32-2(c)(2)), so it can be zero or
         # less. eitc_earned_income floors it at zero: a credit the taxpayer

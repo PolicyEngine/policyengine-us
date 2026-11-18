@@ -14,8 +14,9 @@ dependents, joint with and without dependents), and a seeded population of
 with the dependents' income and deduction inputs as drawn and with them set
 to zero. For every tax unit:
 
-1. The dependents' inputs never change Alabama AGI, the standard deduction
-   or the personal and dependent exemptions. Alabama income tax is unchanged
+1. The dependents' inputs never change Alabama AGI, the standard deduction,
+   the personal and dependent exemptions or the miscellaneous itemized
+   deduction. Alabama income tax is unchanged
    too wherever the itemized deductions and the federal income tax deduction
    are. Two leaks outside AGI remain, and are left out here: Alabama
    itemized deductions still count a dependent's FICA and self-employment
@@ -57,24 +58,29 @@ DEPENDENT_INPUTS = [
     "rental_income",
     "long_term_capital_gains",
     "taxable_public_pension_income",
+    # Alabama miscellaneous itemized deduction sources.
+    "unreimbursed_business_employee_expenses",
+    "tax_preparation_fees",
 ]
 UNIT_OUTPUTS = [
     "al_agi",
     "al_standard_deduction",
     "al_personal_exemption",
     "al_dependent_exemption",
+    "al_misc_deduction",
     "al_itemized_deductions",
     "al_federal_income_tax_deduction",
     "al_income_tax",
     "tax_unit_dependents",
 ]
-# Outputs that depend on Alabama AGI but not on federal tax or itemized
-# deductions.
+# Outputs that depend on Alabama AGI but not on federal tax, and on no
+# itemized deduction that still leaks a dependent's items (#9941).
 INVARIANT_OUTPUTS = [
     "al_agi",
     "al_standard_deduction",
     "al_personal_exemption",
     "al_dependent_exemption",
+    "al_misc_deduction",
 ]
 
 amount = st.integers(1, 40_000).map(float)
@@ -110,6 +116,8 @@ def person_amounts(draw):
         # A public pension is both in pension income and subtracted from
         # Alabama gross income.
         "taxable_public_pension_income": public_pension,
+        "unreimbursed_business_employee_expenses": draw(small),
+        "tax_preparation_fees": draw(st.integers(0, 1_000).map(float)),
     }
 
 
@@ -156,6 +164,8 @@ def _seeded_amounts(rng):
         "rental_income": some(-5_000, 20_000, 0.3),
         "long_term_capital_gains": some(1, 5_000, 0.3),
         "taxable_public_pension_income": public_pension,
+        "unreimbursed_business_employee_expenses": some(1, 5_000, 0.3),
+        "tax_preparation_fees": some(1, 1_000, 0.3),
     }
 
 

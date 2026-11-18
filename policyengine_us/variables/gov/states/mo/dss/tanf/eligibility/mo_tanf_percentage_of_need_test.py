@@ -13,8 +13,6 @@ class mo_tanf_percentage_of_need_test(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.mo.dss.tanf
-        standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
         income = spm_unit("mo_tanf_countable_income", period)
-        limit = standard_of_need * p.maximum_benefit.percentage
+        limit = spm_unit("mo_tanf_maximum_benefit", period)
         return income < limit

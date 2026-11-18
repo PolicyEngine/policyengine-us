@@ -16,6 +16,10 @@ values:
     - estate_income
     - dividend_income
     - pension_income
+    # OAC 710:50-15-96(c) and Form 538-S line 6: pensions and annuities, taxable
+    # or not, including military retired pay and survivor annuities, which
+    # pension_income leaves out.
+    - military_retirement_income
     - debt_relief
     - total_unemployment_compensation
     - workers_compensation
@@ -40,8 +44,8 @@ metadata:
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2023/511-Pkt.pdf
     - title: 2024 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2024/511-Pkt-2024.pdf
-    - title: 2025 Form 511 packet, Form 538-S, Part 3 (gross income lines 9 to 14)
-      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=51
+    - title: "2025 Form 511 packet, Form 538-S, Part 3 (taxable and nontaxable gross income, lines 1 to 14; line 6 other pensions and annuities) #page 50-51"
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=50
     - title: 2025 Form 538-H, lines 10 (public assistance) and 11 (gross positive income from rentals, royalties, partnerships, estates and trusts)
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-H.pdf#page=1
     - title: Okla. Admin. Code 710:50-15-96(c) (gross household income is the gross income of every type)

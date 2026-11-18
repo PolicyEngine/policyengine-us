@@ -1,0 +1,1026 @@
+# FY2026 worksheet example and independently calculated cases under the
+# modeled intermediate-rounding and final actual-cost-cap conventions.
+- name: Case 1, Published worksheet example pays 336 after intermediate rounding.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 2, Zero countable income pays ninety percent before the benefit bounds.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 360
+- name: Case 3, Printed household adjuster for size 1 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 4, Printed household adjuster for size 2 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 2
+    wa_liheap_countable_income: 8160
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 5, Printed household adjuster for size 3 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 3
+    wa_liheap_countable_income: 10260
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 6, Printed household adjuster for size 4 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 4
+    wa_liheap_countable_income: 12420
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 7, Printed household adjuster for size 5 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 5
+    wa_liheap_countable_income: 14580
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 8, Printed household adjuster for size 6 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 6
+    wa_liheap_countable_income: 16740
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 9, Printed household adjuster for size 7 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 7
+    wa_liheap_countable_income: 18840
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 10, Printed household adjuster for size 8 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 8
+    wa_liheap_countable_income: 21000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 11, Printed household adjuster for size 9 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 9
+    wa_liheap_countable_income: 23160
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 12, Printed household adjuster for size 10 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 10
+    wa_liheap_countable_income: 25260
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 13, Printed household adjuster for size 11 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 11
+    wa_liheap_countable_income: 27420
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 14, Printed household adjuster for size 12 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 12
+    wa_liheap_countable_income: 29580
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 15, Printed household adjuster for size 13 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 13
+    wa_liheap_countable_income: 31740
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 16, Printed household adjuster for size 14 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 14
+    wa_liheap_countable_income: 33840
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 17, Printed household adjuster for size 15 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 15
+    wa_liheap_countable_income: 36000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 18, Printed household adjuster for size 16 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 16
+    wa_liheap_countable_income: 38160
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 19, Printed household adjuster for size 17 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 17
+    wa_liheap_countable_income: 40260
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 20, Printed household adjuster for size 18 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 18
+    wa_liheap_countable_income: 42420
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 21, Printed household adjuster for size 19 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 19
+    wa_liheap_countable_income: 44580
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 22, Printed household adjuster for size 20 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 20
+    wa_liheap_countable_income: 46740
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 23, Printed household adjuster for size 21 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 21
+    wa_liheap_countable_income: 48840
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 24, Printed household adjuster for size 22 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 22
+    wa_liheap_countable_income: 51000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 25, Printed household adjuster for size 23 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 23
+    wa_liheap_countable_income: 53160
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 26, Printed household adjuster for size 24 preserves the worksheet example.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 24
+    wa_liheap_countable_income: 55260
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 336
+- name: Case 27, Annual countable wages of 19200 produce a 590 award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 19200
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 590
+- name: Case 28, Two-person countable income of 24000 produces a 630 award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 2
+    wa_liheap_countable_income: 24000
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 630
+- name: Case 29, Unemployment after the ten percent allowance produces a 308 award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 10800
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 308
+- name: Case 30, Income at the annual poverty limit remains eligible for 440.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 23475
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 440
+    wa_liheap_eligible: true
+- name: Case 31, Income one dollar above the limit produces no award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 23476
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 0
+    wa_liheap_eligible: false
+- name: Case 32, Annual heating cost 0 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 0
+  output:
+    wa_liheap: 0
+- name: Case 33, Annual heating cost -100 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: -100
+  output:
+    wa_liheap: 0
+- name: Case 34, Annual heating cost 249.5 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 249.5
+  output:
+    wa_liheap: 249.5
+- name: Case 35, Annual heating cost 250 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 250
+  output:
+    wa_liheap: 250
+- name: Case 36, Annual heating cost 277 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 277
+  output:
+    wa_liheap: 250
+- name: Case 37, Annual heating cost 405 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 405
+  output:
+    wa_liheap: 365
+- name: Case 38, Annual heating cost 1388 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1388
+  output:
+    wa_liheap: 1249
+- name: Case 39, Annual heating cost 1389 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1389
+  output:
+    wa_liheap: 1250
+- name: Case 40, Annual heating cost 1390 applies the minimum, maximum and final cost cap.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 0
+    heating_type: ELECTRICITY
+    heating_expense: 1390
+  output:
+    wa_liheap: 1250
+- name: Case 41, Monthly income below the quotient rounding transition pays 840.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6079.08
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 840
+- name: Case 42, Monthly income above the quotient rounding transition pays 830.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6079.2
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 830
+- name: Case 43, Adjusted income just below a cent rounding transition pays 840.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6079.128
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 840
+- name: Case 44, Adjusted income just above a cent rounding transition pays 830.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6079.152
+    heating_type: ELECTRICITY
+    heating_expense: 1000
+  output:
+    wa_liheap: 830
+- name: Case 45, Negative countable income does not increase the maximum multiplier.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: -1000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 360
+- name: Case 46, Household size beyond the printed table has an unsupported award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 25
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 0
+    wa_liheap_eligible: true
+- name: Case 47, No qualified members produces no award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 0
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 0
+    wa_liheap_eligible: false
+- name: Case 48, Heat included in rent uses the reported heating cost.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+    heat_expense_included_in_rent: true
+  output:
+    wa_liheap: 336
+    wa_liheap_eligible: true
+- name: Case 49, Subsidized rent with a supported heating cost is not categorically excluded.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+  output:
+    wa_liheap: 336
+    wa_liheap_eligible: true
+- name: Case 50, Unspecified fuel with heat included in rent pays zero because callers must send heating_type.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: UNSPECIFIED
+    heating_expense: 0
+    heat_expense_included_in_rent: true
+  output:
+    wa_liheap: 0
+    wa_liheap_eligible: true
+- name: Case 51, Fuel oil bill feeds the worksheet.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 400
+  output:
+    heating_expense: 400
+    wa_liheap: 336
+- name: Case 52, Explicit NONE heating type produces no award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: NONE
+    heating_expense: 400
+  output:
+    wa_liheap: 0
+- name: Case 53, Out-of-state household produces no award.
+  period: 2026
+  input:
+    state_code: OR
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+  output:
+    wa_liheap: 0
+- name: Case 54, Unsupported extrapolation with a nonpositive denominator returns zero.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 50000
+    heating_type: ELECTRICITY
+    heating_expense: 400
+    wa_liheap_eligible: true
+  output:
+    wa_liheap: 0
+- name: Case 55, Canonical ELECTRICITY primary heating bill feeds the award.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 6000
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 400
+  output:
+    heating_expense: 400
+    wa_liheap: 336
+- name: Case 56, Single adult wages flow through eligibility and the final heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24000
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WA
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 19200
+    wa_liheap_income_limit: 23475
+    wa_liheap_eligible: true
+    wa_liheap: 590
+- name: Case 57, Two adult earners use the household adjuster after their wage deductions.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 15000
+        ssi: 0
+      person2:
+        age: 42
+        immigration_status: CITIZEN
+        employment_income: 15000
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: WA
+  output:
+    wa_liheap_household_size: 2
+    wa_liheap_countable_income: 24000
+    wa_liheap_income_limit: 31725
+    wa_liheap_eligible: true
+    wa_liheap: 630
+- name: Case 58, Mixed-status household retains parent income and has no extra benefit proration.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 24000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 1000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: WA
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 19200
+    wa_liheap_income_limit: 23475
+    wa_liheap_eligible: true
+    wa_liheap: 590
+- name: Case 59, Minor wages are excluded while child support, SSI and the state supplement affect the final award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        employment_income: 2000
+        child_support_received: 3000
+        ssi: 1200
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit1:
+        members:
+        - person1
+      marital_unit2:
+        members:
+        - person2
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: WOOD
+        wood_expense: 1000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: WA
+  output:
+    # The disabled child's SSI brings the STANDARD state supplement,
+    # 35.50 * 12 = 426. Countable: 9,600 + 3,000 + 1,200 + 426 = 14,226.
+    # 14,226 / 12 / 1.36 = 871.69; 3,648.10 - 871.69 = 2,776.41.
+    # 1,460.80 / 2,776.41 = 0.52615 rounds to .53; (1.30 - .53) * 1,000 = 770.
+    wa_ssp: [0, 426]
+    wa_liheap_household_size: 2
+    wa_liheap_countable_income: 14226
+    wa_liheap_income_limit: 31725
+    wa_liheap_eligible: true
+    wa_liheap: 770
+- name: Case 60, Separate SPM units and an out-of-state household remain independent in one
+    simulation.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24000
+        ssi: 0
+      person2:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 50
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+      spm_unit2:
+        members:
+        - person2
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 100
+      spm_unit3:
+        members:
+        - person3
+        wa_tanf: 0
+        wa_sfa: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: WA
+      household2:
+        members:
+        - person3
+        state_code: OR
+  output:
+    wa_liheap_household_size:
+    - 1
+    - 1
+    - 0
+    wa_liheap_countable_income:
+    - 19200
+    - 0
+    - 0
+    wa_liheap_eligible:
+    - true
+    - true
+    - false
+    wa_liheap:
+    - 590
+    - 100
+    - 0
+
+- name: Case 61, one cent below the adjusted-income rounding tie retains the lower quotient.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.21
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # 3,479.21 / 12 = 289.934 rounds to 289.93; 3,648.10 - 289.93 = 3,358.17.
+    # 1,460.80 / 3,358.17 = 0.43499 rounds to .43, giving (1.30 - .43) * 1,000.
+    wa_liheap: 870
+
+- name: Case 62, an exact adjusted-income half-cent tie rounds upward.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.22
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
+    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    wa_liheap: 860
+
+- name: Case 63, one cent above the adjusted-income rounding tie retains the upper quotient.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.23
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # 3,479.23 / 12 = 289.936 rounds to 289.94; 3,648.10 - 289.94 = 3,358.16.
+    # 1,460.80 / 3,358.16 = 0.43500 rounds to .44, giving (1.30 - .44) * 1,000.
+    wa_liheap: 860
+
+# Commerce Policy 1.1.2 counts cash actually received, not untaken entitlement.
+# No TANF: 1460.80 / 3648.10 rounds to .40; (1.30 - .40) * 1000 = 900.
+# Received TANF: 6840 / 12 / 1.36 rounds to 419.12; denominator 3228.98,
+# quotient .45, and (1.30 - .45) * 1000 = 850. SFA is a separate program.
+- name: Case 64, TANF take-up changes received income once per household and the final award.
+  period: 2026
+  input:
+    people:
+      nonrecipient_parent: {age: 40, immigration_status: CITIZEN, ssi: 0}
+      nonrecipient_child: {age: 10, immigration_status: CITIZEN, ssi: 0}
+      recipient_parent: {age: 40, immigration_status: CITIZEN, ssi: 0}
+      recipient_child: {age: 10, immigration_status: CITIZEN, ssi: 0}
+    tax_units:
+      nonrecipient_family: {members: [nonrecipient_parent, nonrecipient_child]}
+      recipient_family: {members: [recipient_parent, recipient_child]}
+    spm_units:
+      nonrecipient_unit:
+        members: [nonrecipient_parent, nonrecipient_child]
+        takes_up_tanf_if_eligible: false
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+      recipient_unit:
+        members: [recipient_parent, recipient_child]
+        takes_up_tanf_if_eligible: true
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1000
+    households:
+      nonrecipient_home:
+        members: [nonrecipient_parent, nonrecipient_child]
+        state_code: WA
+      recipient_home:
+        members: [recipient_parent, recipient_child]
+        state_code: WA
+  output:
+    wa_tanf: [6840, 6840]
+    tanf: [0, 6840]
+    wa_sfa: [0, 0]
+    wa_liheap_household_size: [2, 2]
+    wa_liheap_countable_income: [0, 6840]
+    wa_liheap_eligible: [true, true]
+    wa_liheap: [900, 850]
+
+# Ordinary DoD retirement is separate from pension/VA income. Apply the
+# Commerce retirement deduction: 26000 * .90 = 23400 (limit 23475).
+# Monthly income 1950 gives denominator 1698.10, quotient .86, multiplier .44.
+- name: Case 65, Ordinary military retirement receives the retirement deduction before the final award.
+  period: 2026
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    is_veteran: true
+    years_in_military: 20
+    military_retirement_pay: 26000
+    pension_income: 0
+    veterans_benefits: 0
+    ssi: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1000
+  output:
+    military_retirement_income: 26000
+    pension_income: 0
+    veterans_benefits: 0
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23475
+    wa_liheap_countable_income: 23400
+    wa_liheap_eligible: true
+    wa_liheap: 440
+
+# Military Survivor Benefit Plan annuities count through military retirement
+# income with the 10% retirement deduction: 26,000 * .90 = 23,400 (limit 23,475).
+# Monthly 23,400 / 12 = 1,950.00; denominator 3,648.10 - 1,950.00 = 1,698.10.
+# 1,460.80 / 1,698.10 = 0.86026 rounds to .86; (1.30 - .86) * 1,000 = 440.
+- name: Case 66, Military survivor annuity receives the retirement deduction.
+  period: 2026
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    military_retirement_pay_survivors: 26_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    military_retirement_income: 26_000
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 23_400
+    wa_liheap_eligible: true
+    wa_liheap: 440
+
+# Plan section 1.9: Social Security counts net of the Medicare Part B premium.
+# MSP income (24,000 - 240) / 12 = 1,980 exceeds 1.35 * 15,960 / 12 = 1,795.50,
+# so the person pays the full 12 * 202.90 = 2,434.80 premium.
+# Countable: 24,000 - 2,434.80 = 21,565.20 (limit 23,475).
+# Monthly 21,565.20 / 12 = 1,797.10; denominator 3,648.10 - 1,797.10 = 1,851.00.
+# 1,460.80 / 1,851.00 = 0.78919 rounds to .79; (1.30 - .79) * 1,000 = 510.
+- name: Case 67, Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    social_security_retirement: 24_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    medicare_part_b_premium: 2_434.8
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 21_565.2
+    wa_liheap_eligible: true
+    wa_liheap: 510
+
+# Plan section 2.6 sets a $250 minimum benefit. With heat in rent, a known
+# fuel and no reported cost, the household receives the minimum with no cost
+# cap. Countable: 12,000 * 0.80 = 9,600 (limit 23,475).
+# The worksheet multiplier would be 1.30 - .51 = .79 (1,460.80 / 2,848.10 =
+# 0.51290), applied to a heat cost that is not reported.
+- name: Case 68, Heat included in rent with a known fuel and no bill pays the minimum benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 12_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    heating_expense: 0
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 9_600
+    wa_liheap_eligible: true
+    wa_liheap: 250
+
+# Paid child support is deducted. Before the deduction 30,000 * 0.80 = 24,000
+# exceeds the 23,475 limit; after it 24,000 - 1,200 = 22,800 qualifies.
+# Monthly 22,800 / 12 = 1,900.00; denominator 3,648.10 - 1,900.00 = 1,748.10.
+# 1,460.80 / 1,748.10 = 0.83565 rounds to .84; (1.30 - .84) * 1,000 = 460.
+- name: Case 69, Child support paid brings wages under the income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 30_000
+    child_support_expense: 1_200
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 22_800
+    wa_liheap_eligible: true
+    wa_liheap: 460
+
+# Workers' compensation counts with no deduction: 12,000 (limit 23,475).
+# Monthly 12,000 / 12 = 1,000.00; denominator 3,648.10 - 1,000.00 = 2,648.10.
+# 1,460.80 / 2,648.10 = 0.55164 rounds to .55; (1.30 - .55) * 1,000 = 750.
+- name: Case 70, Workers compensation counts as unearned income in the award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 45
+    immigration_status: CITIZEN
+    workers_compensation: 12_000
+    ssi: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_liheap_household_size: 1
+    wa_liheap_countable_income: 12_000
+    wa_liheap_eligible: true
+    wa_liheap: 750
+
+# An aged SSI recipient at the 2026 federal rate, 994 * 12 = 11,928, also gets
+# the STANDARD state supplement, 35.50 * 12 = 426. Both count as cash income:
+# 11,928 + 426 = 12,354 (limit 23,475).
+# Monthly 12,354 / 12 = 1,029.50; denominator 3,648.10 - 1,029.50 = 2,618.60.
+# 1,460.80 / 2,618.60 = 0.55786 rounds to .56; (1.30 - .56) * 1,000 = 740.
+- name: Case 71, The Washington state supplement to SSI counts as cash income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    age: 70
+    immigration_status: CITIZEN
+    ssi: 11_928
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    wa_ssp: 426
+    wa_liheap_household_size: 1
+    wa_liheap_income_limit: 23_475
+    wa_liheap_countable_income: 12_354
+    wa_liheap_eligible: true
+    wa_liheap: 740

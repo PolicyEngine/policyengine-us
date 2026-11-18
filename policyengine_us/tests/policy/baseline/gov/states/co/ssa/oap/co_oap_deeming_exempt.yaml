@@ -10,12 +10,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 4_800
         co_oap_own_countable_income: 7_200
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -35,12 +35,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 1_200
         co_oap_own_countable_income: 12_000
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -60,12 +60,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 12_384
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: true
+        co_adult_financial_medicaid_enrolled: true
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -84,12 +84,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 12_396
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: true
+        co_adult_financial_medicaid_enrolled: true
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -111,12 +111,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 12_372
         co_oap_eligible: true
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -137,12 +137,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 12_384
         co_oap_eligible: true
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -161,12 +161,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 0
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]
@@ -185,12 +185,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 0
         co_oap_eligible: false
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
         receives_ssi: true
     marital_units:
       marital_unit:
@@ -212,12 +212,12 @@
         co_oap_eligible: true
         co_oap_own_countable_income: 0
         ssi: 0
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
       spouse:
         ssi: 0
         co_oap_own_countable_income: 12_383.9988
         co_oap_eligible: true
-        co_oap_medicaid_enrolled: false
+        co_adult_financial_medicaid_enrolled: false
     marital_units:
       marital_unit:
         members: [client, spouse]

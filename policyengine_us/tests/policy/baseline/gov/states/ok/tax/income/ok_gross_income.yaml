@@ -70,3 +70,15 @@
     ok_ssp: 480
     ok_gross_income: 12_408
     ok_ptc: 0
+
+- name: OK gross income counts military retired pay and survivor annuities
+  period: 2025
+  input:
+    irs_employment_income: 10_000
+    military_retirement_pay: 15_000
+    military_retirement_pay_survivors: 2_000
+    state_code: OK
+  output:
+    # Form 538-S Part 3 counts taxable and nontaxable income, line 6 other
+    # pensions and annuities: 10,000 + 15,000 + 2,000.
+    ok_gross_income: 27_000

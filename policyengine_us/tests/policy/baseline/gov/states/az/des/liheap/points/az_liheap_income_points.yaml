@@ -1,0 +1,334 @@
+# Arizona LIHEAP income points: monthly gross income divided by the monthly
+# income limit for the eligible household size; 0%-20% 5 points, 21%-40% 4,
+# 41%-60% 3, 61%-80% 2, 81%-100% 1, above 100% none (LIHEAP Eligibility
+# Worksheet, $640 Limit, eff. 2024-10-12, section 1,
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/AZ_BenefitMatrix_Heating_2026.pdf#page=1;
+# DES program page formula and example "2,000 / 4,535 = 44%, three points",
+# https://des.az.gov/liheap). Annual income over the annual limit gives the
+# same ratio as the monthly figures. The ratio is continuous and a band top
+# belongs to its band (exactly 20% is 5 points). Household of three (two
+# adults and a child aged 4): limit 4,535 x 12 = 54,420.
+
+- name: Case 1, the program-page example of 2,000 a month against the 4,535 limit gives 3 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 14_000
+      person2:
+        age: 37
+        employment_income: 10_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 24,000 / 54,420 = 0.441 (2,000 / 4,535 = 44%): 41%-60% band.
+    az_liheap_income_points: 3
+
+- name: Case 2, a household with no income has 5 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 37
+        employment_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 0 / 54,420 = 0: 0%-20% band.
+    az_liheap_income_points: 5
+
+- name: Case 3, income at exactly 20 percent of the limit keeps 5 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 10_884
+      person2:
+        age: 37
+        employment_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 10,884 / 54,420 = 0.20 exactly: top of the 0%-20% band.
+    az_liheap_income_points: 5
+
+- name: Case 4, one dollar above 20 percent of the limit drops to 4 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 10_885
+      person2:
+        age: 37
+        employment_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 10,885 / 54,420 = 0.20002 > 0.20: 21%-40% band.
+    az_liheap_income_points: 4
+
+- name: Case 5, income at exactly 40 percent of the limit keeps 4 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 21_768
+      person2:
+        age: 37
+        employment_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 21,768 / 54,420 = 0.40 exactly.
+    az_liheap_income_points: 4
+
+- name: Case 6, one dollar above 40 percent of the limit drops to 3 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 21_769
+      person2:
+        age: 37
+        employment_income: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 21,769 / 54,420 = 0.40002 > 0.40.
+    az_liheap_income_points: 3
+
+- name: Case 7, income at exactly 60 percent of the limit keeps 3 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 37
+        employment_income: 12_652
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 20,000 + 12,652 = 32,652; 32,652 / 54,420 = 0.60 exactly.
+    az_liheap_income_points: 3
+
+- name: Case 8, one dollar above 60 percent of the limit drops to 2 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 37
+        employment_income: 12_653
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 32,653 / 54,420 = 0.60002 > 0.60.
+    az_liheap_income_points: 2
+
+- name: Case 9, income at exactly 80 percent of the limit keeps 2 points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 26_000
+      person2:
+        age: 37
+        employment_income: 17_536
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 26,000 + 17,536 = 43,536; 43,536 / 54,420 = 0.80 exactly.
+    az_liheap_income_points: 2
+
+- name: Case 10, one dollar above 80 percent of the limit drops to 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 26_000
+      person2:
+        age: 37
+        employment_income: 17_537
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 43,537 / 54,420 = 0.80002 > 0.80.
+    az_liheap_income_points: 1
+
+- name: Case 11, income at exactly the limit keeps 1 point.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 37
+        employment_income: 24_420
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 0
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 30,000 + 24,420 = 54,420; 54,420 / 54,420 = 1.00: 81%-100% band.
+    az_liheap_income_points: 1
+
+- name: Case 12, a SNAP household above the limit has no income points.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 34_000
+      person2:
+        age: 37
+        employment_income: 26_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+        snap: 2_400
+        az_tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # 60,000 / 54,420 = 1.10 > 1.00: no worksheet row.
+    az_liheap_income_points: 0

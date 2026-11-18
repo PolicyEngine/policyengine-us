@@ -1,0 +1,22 @@
+description: Florida sets the alternative heating income limit to this percentage of the federal poverty guidelines under the Low Income Home Energy Assistance Program.
+# The heating maximum income value is the greater of the state median income
+# limit and this share of the poverty guidelines. In FY2025 this gives 60% of
+# state median income for sizes 1-8 and 150% of the guidelines for sizes 9 and
+# above. FY2026 uses 60% of state median income for every size, so the
+# poverty-guideline alternative is zero.
+values:
+  2024-10-01: 1.5
+  2025-10-01: 0
+metadata:
+  unit: /1
+  period: year
+  label: Florida LIHEAP heating federal poverty guideline rate
+  reference:
+    - title: Florida FY2025 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8
+    - title: Florida FY2025 LIHEAP Payment Matrix, maximum income value footnote
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf
+    - title: Florida FY2026 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8
+    - title: Florida FY2026 LIHEAP Payment Matrix, maximum income value footnote
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf

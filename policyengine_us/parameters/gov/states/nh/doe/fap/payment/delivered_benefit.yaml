@@ -1,0 +1,63 @@
+description: New Hampshire provides this annual delivered-fuel scheduled benefit by heating cost band and income band under the Fuel Assistance Program.
+DD:
+  A:
+    2026-10-01: 750
+  B:
+    2026-10-01: 650
+  C:
+    2026-10-01: 550
+  D:
+    2026-10-01: 500
+  E:
+    2026-10-01: 440
+  F:
+    2026-10-01: 400
+CC:
+  A:
+    2026-10-01: 1_460
+  B:
+    2026-10-01: 1_270
+  C:
+    2026-10-01: 1_150
+  D:
+    2026-10-01: 950
+  E:
+    2026-10-01: 730
+  F:
+    2026-10-01: 525
+BB:
+  A:
+    2026-10-01: 2_350
+  B:
+    2026-10-01: 2_040
+  C:
+    2026-10-01: 1_720
+  D:
+    2026-10-01: 1_410
+  E:
+    2026-10-01: 1_100
+  F:
+    2026-10-01: 800
+AA:
+  A:
+    2026-10-01: 2_500
+  B:
+    2026-10-01: 2_150
+  C:
+    2026-10-01: 1_825
+  D:
+    2026-10-01: 1_500
+  E:
+    2026-10-01: 1_200
+  F:
+    2026-10-01: 825
+
+# The operative PY2027 matrix supersedes inconsistent illustrative amounts
+# in the manual's older examples. No actual-heating-cost cap is applied.
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Hampshire FAP delivered-fuel scheduled benefit
+  reference:
+    - title: PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Fuel Assistance Program Benefits
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=78

@@ -303,3 +303,33 @@
     # Clark center preschool rate $51.50; max rate = 51.50 * 21.67 = 1_116.01.
     # benefit = max(1_116.01 - 90, 0) = 1_026.01.
     nv_ccdp: 1_026.01
+
+- name: Case 9, a working parent gets the subsidy without the activity input.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    nv_ccdp_activity_eligible: true
+    nv_ccdp_eligible: true
+    # Family of 2: monthly SMI = 96_026 * 0.68 / 12 = 5_441.47, so 2_000/mo is
+    # a ratio of 0.3675 and a $90 copay. Clark center infant max rate = 1_354.38.
+    nv_ccdp_copay: 90
+    nv_child_care_subsidies: 1_264.38

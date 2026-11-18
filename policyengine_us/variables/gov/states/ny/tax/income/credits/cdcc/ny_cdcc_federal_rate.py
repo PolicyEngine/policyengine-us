@@ -20,6 +20,6 @@ class ny_cdcc_federal_rate(Variable):
         # AGI for all years. New York does not use the federal Form 2441
         # rate, so the 2021 ARPA rates do not apply.
         p = parameters(period).gov.states.ny.tax.income.credits.cdcc.federal_rate
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         steps = np.ceil(max_(0, agi - p.start) / p.increment)
         return max_(p.min, p.max - steps * p.step)

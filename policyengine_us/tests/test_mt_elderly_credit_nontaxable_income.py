@@ -211,7 +211,10 @@ def results():
                 "mt_elderly_homeowner_or_renter_credit_federal_refundable_credits",
                 year,
             )
-            + by_household("mt_refundable_credits_before_renter_credit", year),
+            + by_household(
+                "mt_elderly_homeowner_or_renter_credit_state_refundable_credits",
+                year,
+            ),
         }
         for year in YEARS
     }

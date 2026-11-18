@@ -1,0 +1,15 @@
+from policyengine_us.model_api import *
+
+
+class ri_liheap(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    unit = USD
+    label = "Rhode Island LIHEAP regular heating assistance"
+    defined_for = "ri_liheap_eligible"
+    reference = (
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf",
+        "https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=5",
+    )
+    adds = ["ri_liheap_base_payment"]
