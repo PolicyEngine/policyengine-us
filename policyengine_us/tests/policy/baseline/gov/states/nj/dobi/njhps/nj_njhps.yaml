@@ -170,9 +170,9 @@
   output:
     nj_njhps: 480
 
-- name: Case 7, just above 150% FPL moves to the $40 band.
-  # frac 1.51 >= 1.5 -> pmpm 40. base = 12*40 = 480.
-  # residual = max(0, 6_000 - 5_000) = 1_000 -> annual = min(480, 1_000) = 480.
+- name: Case 7, just below 150% FPL stays in the $20 band.
+  # frac 1.49 < 1.5 -> pmpm 20. base = 12*20 = 240.
+  # residual = max(0, 6_000 - 5_000) = 1_000 -> annual = min(240, 1_000) = 240.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -183,7 +183,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 15_100
+        aca_magi: 14_999
         aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
@@ -192,7 +192,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_njhps: 480
+    nj_njhps: 240
 
 - name: Case 8, exactly 200% FPL is in the $50 band.
   # "At least 200% FPL but less than 250% FPL" -> pmpm 50. base = 12*50 = 600.
@@ -218,9 +218,9 @@
   output:
     nj_njhps: 600
 
-- name: Case 9, just above 200% FPL moves to the $50 band.
-  # frac 2.01 >= 2.0 -> pmpm 50. base = 12*50 = 600.
-  # residual = max(0, 8_000 - 5_000) = 3_000 -> annual = min(600, 3_000) = 600.
+- name: Case 9, just below 200% FPL stays in the $40 band.
+  # frac 1.99 < 2.0 -> pmpm 40. base = 12*40 = 480.
+  # residual = max(0, 8_000 - 5_000) = 3_000 -> annual = min(480, 3_000) = 480.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -231,7 +231,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 20_100
+        aca_magi: 19_999
         aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 5_000
@@ -240,7 +240,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_njhps: 600
+    nj_njhps: 480
 
 - name: Case 10, exactly 250% FPL is in the $100 band.
   # "At least 250% FPL but less than 400% FPL" -> pmpm 100. base = 12*100 = 1_200.
@@ -266,9 +266,9 @@
   output:
     nj_njhps: 1_200
 
-- name: Case 11, just above 250% FPL moves to the $100 band.
-  # frac 2.51 >= 2.5 -> pmpm 100. base = 12*100 = 1_200.
-  # residual = max(0, 9_000 - 4_000) = 5_000 -> annual = min(1_200, 5_000) = 1_200.
+- name: Case 11, just below 250% FPL stays in the $50 band.
+  # frac 2.49 < 2.5 -> pmpm 50. base = 12*50 = 600.
+  # residual = max(0, 9_000 - 4_000) = 5_000 -> annual = min(600, 5_000) = 600.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -279,7 +279,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 25_100
+        aca_magi: 24_999
         aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 4_000
@@ -288,7 +288,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_njhps: 1_200
+    nj_njhps: 600
 
 - name: Case 12, exactly 400% FPL is in the $50 band.
   # "At least 400% FPL but less than 450% FPL" -> pmpm 50. base = 12*50 = 600.
@@ -314,9 +314,9 @@
   output:
     nj_njhps: 600
 
-- name: Case 13, just above 400% FPL moves to the $50 band.
-  # frac 4.01 >= 4.0 -> pmpm 50. Above the APTC cliff aca_ptc is 0.
-  # base = 12*50 = 600. residual = max(0, 7_000 - 0) = 7_000 -> annual = 600.
+- name: Case 13, just below 400% FPL stays in the $100 band.
+  # frac 3.99 < 4.0 -> pmpm 100. aca_ptc is supplied as 0.
+  # base = 12*100 = 1_200. residual = max(0, 7_000 - 0) = 7_000 -> annual = 1_200.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -327,7 +327,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi: 40_100
+        aca_magi: 39_999
         aca_fpg: 10_000
         slcsp: 7_000
         aca_ptc: 0
@@ -336,7 +336,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_njhps: 600
+    nj_njhps: 1_200
 
 - name: Case 14, exactly 600% FPL stays in the $50 band.
   # frac 6.0 is NOT > 6.0001 (the ceiling is inclusive), so pmpm 50. base = 12*50 = 600.

@@ -2,10 +2,10 @@
 #
 # nj_njhps_eligible (TaxUnit, bool, YEAR) returns:
 #   in_effect
-#   & (fpl_floor <= ratio <= fpl_limit)   [1.38 <= ratio <= 6.0]
+#   & (count of nj_njhps_member_eligible > 0)
+# The member gate applies fpl_floor <= ratio <= fpl_limit [1.38 <= ratio <= 6.0],
 # where ratio = max(aca_magi, 0) / aca_fpg, the exact ratio, not the truncated
 # aca_magi_fraction. Supplied-income cases pin aca_fpg to $10,000.
-#   & (count of nj_njhps_member_eligible > 0)
 #
 # in_effect is false before 2026-01-01 and true (open-ended) from 2026-01-01.
 # pays_aca_premium is supplied per person to control which members qualify.
@@ -232,7 +232,7 @@
     people:
       person1:
         age: 40
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -251,7 +251,7 @@
     people:
       person1:
         age: 40
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -270,7 +270,7 @@
     people:
       person1:
         age: 40
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -289,7 +289,7 @@
     people:
       person1:
         age: 40
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -311,13 +311,13 @@
     people:
       person_a:
         age: 30
-        nj_njhps_member_eligible: false
+        pays_aca_premium: true
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -342,13 +342,13 @@
     people:
       person_a:
         age: 30
-        nj_njhps_member_eligible: false
+        pays_aca_premium: true
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -374,13 +374,13 @@
     people:
       person_a:
         age: 30
-        nj_njhps_member_eligible: false
+        pays_aca_premium: true
         claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
-        nj_njhps_member_eligible: true
+        pays_aca_premium: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:

@@ -21,29 +21,20 @@ class nj_njhps_eligible(Variable):
     )
     documentation = (
         "A tax unit is eligible for New Jersey Health Plan Savings when the "
-        "program is in effect, household income (ACA MAGI per 26 U.S.C. "
-        "36B(d)(2)) is at least 138% and at most 600% of the federal poverty "
-        "line (aca_fpg, the prior-year guideline for the section 36B tax "
-        "family), measured as the exact ratio rather than the truncated "
-        "aca_magi_fraction, and at least one member is an NJHPS enrollee. "
-        "Households below 138% FPL are routed to NJ FamilyCare/Medicaid rather "
-        "than NJHPS; the 138% floor is inclusive and the 600% ceiling is "
-        "inclusive. New Jersey residency is enforced by defined_for."
+        "program is in effect and at least one member is eligible under "
+        "nj_njhps_member_eligible, which requires household income (ACA MAGI "
+        "per 26 U.S.C. 36B(d)(2)) of at least 138% and at most 600% of the "
+        "federal poverty line (aca_fpg, the prior-year guideline for the "
+        "section 36B tax family), measured as the exact ratio rather than the "
+        "truncated aca_magi_fraction. Households below 138% FPL are routed to "
+        "NJ FamilyCare/Medicaid rather than NJHPS; the 138% floor is inclusive "
+        "and the 600% ceiling is inclusive. New Jersey residency is enforced "
+        "by defined_for."
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.nj.dobi.njhps
-        in_effect = p.in_effect
-        # The exact ratio, not the truncated aca_magi_fraction, which maps
-        # 600.00%-600.99% to 6.00. nj_njhps_member_eligible explains the choice
-        # of aca_fpg as the poverty line.
-        magi = max_(tax_unit("aca_magi", period), 0)
-        fpg = tax_unit("aca_fpg", period)
-        # Divide in float64: a float32 quotient can round a ratio just above
-        # a limit down onto it.
-        exact_magi_frac = magi.astype(np.float64) / fpg
-        income_eligible = (exact_magi_frac >= p.fpl_floor) & (
-            exact_magi_frac <= p.fpl_limit
-        )
+        in_effect = parameters(period).gov.states.nj.dobi.njhps.in_effect
+        # nj_njhps_member_eligible applies the 138-600% income band, so a unit
+        # with an eligible member has already passed it.
         has_eligible_member = add(tax_unit, period, ["nj_njhps_member_eligible"]) > 0
-        return in_effect & income_eligible & has_eligible_member
+        return in_effect & has_eligible_member
