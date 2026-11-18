@@ -231,3 +231,43 @@
     # A joint federal return is one return for the couple, as ky_files_separately also treats it.
     ky_filing_status: JOINT
     ky_tuition_tax_credit_eligible: true
+
+- name: A separated dependent does not stop an inferred couple filing jointly.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_dependent: false
+      spouse:
+        age: 38
+        is_tax_unit_dependent: false
+      dependent:
+        age: 18
+        is_tax_unit_dependent: true
+        is_separated: true
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      dependent_marital_unit:
+        members: [dependent]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        american_opportunity_credit: 2_000
+        lifetime_learning_credit: 0
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: KY
+  output:
+    # No head or spouse role is an input, so the model infers the spouse from
+    # the head's marital unit. The dependent's separation does not remove the
+    # spouse, because IRC 7703 concerns the filers' own marriage.
+    tax_unit_married: true
+    filing_status: JOINT
+    ky_filing_status: JOINT
+    # KRS 141.069(4) allows the credit on a joint return.
+    ky_tuition_tax_credit_eligible: true
+    # 25% of the 2,000 federal education credit.
+    ky_tuition_tax_credit_potential: 500
