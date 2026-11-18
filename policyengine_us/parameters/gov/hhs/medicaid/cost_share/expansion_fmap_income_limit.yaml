@@ -1,0 +1,132 @@
+description: The federal government pays the Medicaid expansion FMAP for adult-group enrollees with income at or below this multiple of the federal poverty guideline, in states that do not cover a higher-income optional adult group.
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid expansion FMAP income limit
+  breakdown:
+  - state_code
+  reference:
+  - title: 42 U.S.C. § 1396a(a)(10)(A)(i)(VIII) — adult group with income not exceeding 133 percent of the poverty line
+    href: https://www.law.cornell.edu/uscode/text/42/1396a#a_10_A_i_VIII
+  - title: 42 U.S.C. § 1396a(e)(14)(I) — 5 percentage point income disregard
+    href: https://www.law.cornell.edu/uscode/text/42/1396a#e_14_I
+  - title: 42 U.S.C. § 1396d(y)(1) — expansion FMAP for newly eligible individuals described in subclause (VIII)
+    href: https://www.law.cornell.edu/uscode/text/42/1396d#y_1
+  - title: 42 CFR § 435.218 — optional group for adults with income above 133 percent FPL (section 1902(a)(10)(A)(ii)(XX))
+    href: https://www.ecfr.gov/current/title-42/section-435.218
+  - title: KFF, Medicaid and CHIP Eligibility as of January 2019, Table 5 — Indiana other adults at 139 percent FPL, with a state-specific disregard of five percent of the income threshold (note 5)
+    href: https://files.kff.org/attachment/Report-Medicaid-and-CHIP-Eligibility-as-of-Jan-2019-Table-5
+  - title: Indiana FSSA, 5% Federal Poverty Level (FPL) Disregard (May 16, 2016) — the disregard is 5 percent of the income standard
+    href: https://web.archive.org/web/20230517153228/https://www.in.gov/fssa/thehub/files/5-per-disregard.pdf
+  - title: Indiana FSSA, HIP income limits (archived February 7, 2015) — $1,358.10 a month for one person, 133 percent plus the 5 percent disregard, not rounded
+    href: https://web.archive.org/web/20150207102809/http://www.in.gov/fssa/hip/2460.htm
+  - title: Indiana FSSA, HIP income limits (archived May 3, 2020) — $1,486 a month for one person, 133 percent plus the 5 percent disregard, not rounded
+    href: https://web.archive.org/web/20200503200959/http://www.in.gov/fssa/hip/2460.htm
+# 133 percent of the poverty line plus the 5 percentage point MAGI disregard,
+# in the same units as gov.hhs.medicaid.eligibility.categories.adult.income_limit.
+# Indiana applied a disregard of 5 percent of the 133 percent standard, about
+# 139.65 percent (its HIP charts show the unrounded limit in February 2015 and
+# May 2020); its values match that adult income limit, 1.39 through 2020.
+AL:
+  2014-01-01: 1.38
+AK:
+  2014-01-01: 1.38
+AZ:
+  2014-01-01: 1.38
+AR:
+  2014-01-01: 1.38
+CA:
+  2014-01-01: 1.38
+CO:
+  2014-01-01: 1.38
+CT:
+  2014-01-01: 1.38
+DE:
+  2014-01-01: 1.38
+DC:
+  2014-01-01: 1.38
+FL:
+  2014-01-01: 1.38
+GA:
+  2014-01-01: 1.38
+HI:
+  2014-01-01: 1.38
+ID:
+  2014-01-01: 1.38
+IL:
+  2014-01-01: 1.38
+IN:
+  2014-01-01: 1.39
+  2021-01-01: 1.38
+IA:
+  2014-01-01: 1.38
+KS:
+  2014-01-01: 1.38
+KY:
+  2014-01-01: 1.38
+LA:
+  2014-01-01: 1.38
+ME:
+  2014-01-01: 1.38
+MD:
+  2014-01-01: 1.38
+MA:
+  2014-01-01: 1.38
+MI:
+  2014-01-01: 1.38
+MN:
+  2014-01-01: 1.38
+MS:
+  2014-01-01: 1.38
+MO:
+  2014-01-01: 1.38
+MT:
+  2014-01-01: 1.38
+NE:
+  2014-01-01: 1.38
+NV:
+  2014-01-01: 1.38
+NH:
+  2014-01-01: 1.38
+NJ:
+  2014-01-01: 1.38
+NM:
+  2014-01-01: 1.38
+NY:
+  2014-01-01: 1.38
+NC:
+  2014-01-01: 1.38
+ND:
+  2014-01-01: 1.38
+OH:
+  2014-01-01: 1.38
+OK:
+  2014-01-01: 1.38
+OR:
+  2014-01-01: 1.38
+PA:
+  2014-01-01: 1.38
+RI:
+  2014-01-01: 1.38
+SC:
+  2014-01-01: 1.38
+SD:
+  2014-01-01: 1.38
+TN:
+  2014-01-01: 1.38
+TX:
+  2014-01-01: 1.38
+UT:
+  2014-01-01: 1.38
+VT:
+  2014-01-01: 1.38
+VA:
+  2014-01-01: 1.38
+WA:
+  2014-01-01: 1.38
+WV:
+  2014-01-01: 1.38
+WI:
+  2014-01-01: 1.38
+WY:
+  2014-01-01: 1.38
