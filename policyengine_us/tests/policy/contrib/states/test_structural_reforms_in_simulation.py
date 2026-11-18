@@ -21,10 +21,6 @@ from policyengine_us.reforms.states.nd.eitc.nd_eitc_reform import (
 )
 from policyengine_us.reforms.states.ut.ut_hb210_s2 import ut_hb210_s2
 from policyengine_us.system import DEFAULT_START_DATE, system
-from policyengine_us.tools.parameters import (
-    EARLIEST_STRUCTURAL_REFORM_YEAR,
-    STRUCTURAL_REFORM_CHECK_YEARS,
-)
 from policyengine_us.tools.per_capita_uprating import (
     is_national_total_path,
     per_capita_path,
@@ -65,7 +61,7 @@ def _eitc_reform_parameters():
     return reform_parameters
 
 
-def _one_filer_per_state(state_codes):
+def _one_filer_per_state(state_codes, year=PERIOD):
     def groups_of_one(group_name):
         return {
             f"{group_name}_{state_code}": {"members": [state_code]}
@@ -75,10 +71,10 @@ def _one_filer_per_state(state_codes):
     tax_units = groups_of_one("tax_unit")
     households = groups_of_one("household")
     for state_code in state_codes:
-        tax_units[f"tax_unit_{state_code}"]["eitc"] = {PERIOD: FEDERAL_EITC}
-        households[f"household_{state_code}"]["state_code"] = {PERIOD: state_code}
+        tax_units[f"tax_unit_{state_code}"]["eitc"] = {year: FEDERAL_EITC}
+        households[f"household_{state_code}"]["state_code"] = {year: state_code}
     return {
-        "people": {state_code: {"age": {PERIOD: 35}} for state_code in state_codes},
+        "people": {state_code: {"age": {year: 35}} for state_code in state_codes},
         "tax_units": tax_units,
         "families": groups_of_one("family"),
         "spm_units": groups_of_one("spm_unit"),
@@ -126,31 +122,34 @@ def _parameters_with_north_dakota_eitc_on_only_in(year):
     return SimpleNamespace(gov=SimpleNamespace(contrib=SimpleNamespace(states=states)))
 
 
-LAST_CHECKED_YEAR = EARLIEST_STRUCTURAL_REFORM_YEAR + STRUCTURAL_REFORM_CHECK_YEARS - 1
-
-
-@pytest.mark.parametrize(
-    "switch_year",
-    [
-        EARLIEST_STRUCTURAL_REFORM_YEAR,
-        EARLIEST_STRUCTURAL_REFORM_YEAR + 1,
-        LAST_CHECKED_YEAR,
-    ],
-)
+@pytest.mark.parametrize("switch_year", [2024, 2025, 2033])
 def test_reform_is_found_when_switch_is_on_in_a_checked_year(switch_year):
     parameters = _parameters_with_north_dakota_eitc_on_only_in(switch_year)
 
     assert create_nd_eitc_reform(parameters, DEFAULT_START_DATE) is not None
 
 
-@pytest.mark.parametrize(
-    "switch_year",
-    [EARLIEST_STRUCTURAL_REFORM_YEAR - 1, LAST_CHECKED_YEAR + 1],
-)
+@pytest.mark.parametrize("switch_year", [2023, 2034])
 def test_reform_is_not_found_when_switch_is_on_outside_checked_years(switch_year):
     parameters = _parameters_with_north_dakota_eitc_on_only_in(switch_year)
 
     assert create_nd_eitc_reform(parameters, DEFAULT_START_DATE) is None
+
+
+def test_reform_on_only_before_the_default_year_applies_in_a_simulation():
+    year = "2025"
+    dates = "2025-01-01.2025-12-31"
+    eitc_parameters = "gov.contrib.states.nd.child_poverty_impact_dashboard.eitc"
+    simulation = Simulation(
+        situation=_one_filer_per_state(["ND"], year=year),
+        reform={
+            f"{eitc_parameters}.in_effect": {dates: True},
+            f"{eitc_parameters}.match": {dates: EITC_MATCH_RATE},
+        },
+    )
+
+    credit = simulation.calculate("nd_refundable_credits", year)
+    assert np.asarray(credit) == pytest.approx([FEDERAL_EITC * EITC_MATCH_RATE])
 
 
 def test_eitc_reforms_that_replace_input_credits_build_and_calculate():

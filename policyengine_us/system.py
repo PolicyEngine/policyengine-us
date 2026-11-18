@@ -52,6 +52,7 @@ from .tools.per_capita_uprating import (
     add_per_capita_uprating,
 )
 from policyengine_us.data.dataset_schema import (
+    _DEFAULT_TIME_PERIOD,
     US_ENTITIES,
     USSingleYearDataset,
     USMultiYearDataset,
@@ -512,10 +513,12 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_dataset = DEFAULT_DATASET
-    default_dataset_year = CURRENT_YEAR
+    # Microdata stays in its base year: core labels a dataset without its own
+    # year with the default input period, and values are not uprated for it.
+    default_dataset_year = _DEFAULT_TIME_PERIOD
     default_role = "member"
-    default_calculation_period = CURRENT_YEAR
-    default_input_period = CURRENT_YEAR
+    default_calculation_period = _DEFAULT_TIME_PERIOD
+    default_input_period = _DEFAULT_TIME_PERIOD
 
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
