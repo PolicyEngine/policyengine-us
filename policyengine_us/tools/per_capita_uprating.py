@@ -219,6 +219,92 @@ def add_per_capita_uprating(system) -> None:
             variable.uprating = per_capita_path(variable.uprating)
 
 
+def derived_per_capita_series(parameters) -> dict[str, Parameter]:
+    """The per-capita series this module has added to the tree, by path."""
+    series = {}
+    for prefix in NATIONAL_TOTAL_PREFIXES:
+        family = _find(parameters, prefix.rstrip("."))
+        if family is None:
+            continue
+        for node in family.get_descendants():
+            if getattr(node, "metadata", {}).get(DERIVED_FROM):
+                series[node.name] = node
+    return series
+
+
+def detached_copy(series: Parameter) -> Parameter:
+    """A copy of a series that belongs to no tree."""
+    copied = series.clone()
+    copied.parent = None
+    return copied
+
+
+def _derived_series_and_parent(parameters, path: str):
+    parent_path, _, name = path.rpartition(".")
+    parent = _find(parameters, parent_path)
+    series = parent.children[name]
+    if series.metadata.get(DERIVED_FROM) is None:
+        raise ValueError(f"{path} was not derived by this module.")
+    return parent, name, series
+
+
+def remove_per_capita_series(parameters, path: str) -> None:
+    """Remove a series this module added, so that the tree is as it was
+    before ``add_per_capita_uprating`` added it."""
+    parent, name, series = _derived_series_and_parent(parameters, path)
+    del parent.children[name]
+    if parent.__dict__.get(name) is series:
+        delattr(parent, name)
+    series.parent = None
+    parent.clear_parent_cache()
+
+
+def restore_per_capita_series(parameters, path: str, earlier: Parameter) -> None:
+    """Put back, in place of the series at ``path``, an earlier version of it
+    that ``add_per_capita_uprating`` replaced when it refreshed the series.
+
+    ``earlier`` must belong to no tree (``detached_copy``).
+    """
+    parent, name, series = _derived_series_and_parent(parameters, path)
+    # Assigning to the same key keeps the child's position.
+    parent.children[name] = earlier
+    if parent.__dict__.get(name) is series:
+        setattr(parent, name, earlier)
+    series.parent = None
+    earlier.parent = parent
+    parent.clear_parent_cache()
+
+
+def per_capita_nodes_unchanged(parameters, series_paths, children_by_parent) -> bool:
+    """Whether each of ``series_paths`` holds a series this module derived,
+    and each parent in ``children_by_parent`` holds exactly the children
+    named there: what removing and restoring series needs."""
+    for path in series_paths:
+        series = _find(parameters, path)
+        if series is None or getattr(series, "metadata", {}).get(DERIVED_FROM) is None:
+            return False
+    for parent_path, names in children_by_parent.items():
+        parent = _find(parameters, parent_path)
+        if parent is None or set(getattr(parent, "children", {})) != names:
+            return False
+    return True
+
+
+def restore_child_order(parameters, parent_path: str, order) -> None:
+    """Put a node's children back in ``order``.
+
+    Refreshing a series deletes it and adds it again, which moves it to the
+    end of its parent's children, so restoring the earlier version in its
+    key leaves it there.
+    """
+    parent = _find(parameters, parent_path)
+    if set(parent.children) != set(order):
+        raise ValueError(f"{parent_path} no longer holds the children recorded for it.")
+    reordered = {name: parent.children[name] for name in order}
+    parent.children.clear()
+    parent.children.update(reordered)
+
+
 def check_per_capita_series_is_current(parameters, total_path: str, period: str):
     """Raise if a derived series no longer equals its total over population.
 
@@ -251,6 +337,12 @@ __all__ = [
     "add_per_capita_parameters_for_parameter_uprating",
     "add_per_capita_uprating",
     "check_per_capita_series_is_current",
+    "derived_per_capita_series",
+    "detached_copy",
     "is_national_total_path",
+    "per_capita_nodes_unchanged",
     "per_capita_path",
+    "remove_per_capita_series",
+    "restore_child_order",
+    "restore_per_capita_series",
 ]
