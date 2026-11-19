@@ -8,6 +8,7 @@ class sc_state_tax_addback(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=4",
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
         "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2",
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1130 (2)
@@ -34,11 +35,17 @@ class sc_state_tax_addback(Variable):
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         # line 5
-        real_estate_and_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        real_estate_and_property_taxes = tax_unit("real_estate_taxes", period)
+        if period.start.year == 2025:
+            limit = tax_unit("salt_cap", period)
+            real_estate_and_property_taxes = real_estate_and_property_taxes + tax_unit(
+                "sc_federal_itemized_personal_property_taxes", period
+            )
+        else:
+            limit = p_us.itemized.salt_and_real_estate.cap[filing_status]
         less_income_amount = max_(
             0,
-            p_us.itemized.salt_and_real_estate.cap[filing_status]
-            - real_estate_and_property_taxes,
+            limit - real_estate_and_property_taxes,
         )
         # compare line 3,4,5. get the minimum
         salt_or_income = min_(salt, less_income_amount)
