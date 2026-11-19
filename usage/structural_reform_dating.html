@@ -334,7 +334,7 @@
           <section class="tex2jax_ignore mathjax_ignore" id="inputting-dates-for-structural-reforms">
 <h1>Inputting Dates for Structural Reforms<a class="headerlink" href="#inputting-dates-for-structural-reforms" title="Link to this heading">¶</a></h1>
 <p>“Structural” reforms are those reforms that modify not only set values in the tax-benefit system, but also the formulas used to calculate taxes and benefits. These are typcially larger, more involved reforms that require custom coding.</p>
-<p>Due to the current limitations of the <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> class, a code patch is required when running structural reforms with parameters that begin at any date other than January 1st of the current year.</p>
+<p>Most structural reforms are found by checking their parameters on January 1 of ten consecutive years from <code class="docutils literal notranslate"><span class="pre">start_instant</span></code>, which defaults to January 1, 2024. Some reforms check only <code class="docutils literal notranslate"><span class="pre">start_instant</span></code> itself. A code patch is required when a reform’s parameters begin outside the dates it checks.</p>
 <p>For example, the code cell below illustrates a standard way to instantiating a structural reform, without the patch, when simulating in 2024:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -379,7 +379,7 @@
 </div>
 </div>
 </div>
-<p>The cell below shows a series of reforms that begin in 2026, later than the current year. To effectively handle this case, we need to add an argument to the <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> classes that we call.</p>
+<p>The cell below shows a series of reforms that begin in 2026. To start the check on that date, which reforms that check a single date require, we add an argument to the <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> classes that we call.</p>
 <p>This argument, called <code class="docutils literal notranslate"><span class="pre">start_instant</span></code>, should be set to the same date as the start of the reforms, in ISO date format. In the case of the example below, this is <code class="docutils literal notranslate"><span class="pre">2026-01-01</span></code>, so our altered call to <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> looks like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">baseline_sim_2</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">start_instant</span><span class="o">=</span><span class="s2">"2026-01-01"</span><span class="p">)</span>
 <span class="n">reformed_sim_2</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">reform</span><span class="o">=</span><span class="n">reform_2</span><span class="p">,</span> <span class="n">start_instant</span><span class="o">=</span><span class="s2">"2026-01-01"</span><span class="p">)</span>
