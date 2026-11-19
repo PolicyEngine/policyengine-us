@@ -1,0 +1,31 @@
+description: Connecticut provides Temporary Premium Assistance to Access Health CT enrollees when this is true.
+values:
+  # Plan year 2026: the Governor's December 18, 2025 plan under November
+  # Special Session Special Act 25-1, Section 2, funds the replacement of the
+  # lost enhanced federal credits "during calendar year 2026".
+  # Plan year 2027: Public Act 26-68, Section 453(e), directs OPM to design a
+  # premium subsidy for Access Health CT enrollees "until December 31, 2027",
+  # and the Governor's November 5, 2026 release says the state is continuing
+  # Temporary Premium Assistance in 2027.
+  # 2028 onward: no act authorizes it. Section 453(e) stops at December 31,
+  # 2027, and Special Act 26-1, Section 1(b), closes the Federal Cuts Response
+  # Fund after the fiscal year ending June 30, 2027.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Connecticut Temporary Premium Assistance in effect
+  reference:
+    - title: November Special Session, Special Act No. 25-1 (2025), Sec. 2
+      href: https://www.cga.ct.gov/2025/ACT/SA/PDF/2025SA-00001-R00HB-08003SS1-SA.PDF#page=2
+    - title: Governor Lamont, plan to tap into the emergency state response reserve (December 18, 2025)
+      href: https://portal.ct.gov/governor/news/press-releases/2025/12-2025/governor-lamont-submits-plan-to-tap-into-emergency-state-response-reserve
+    - title: "Public Act No. 26-68 (2026), Sec. 453(a)(8), (b)(2) and (e) #page 691,693"
+      href: https://www.cga.ct.gov/2026/ACT/PA/PDF/2026PA-00068-R00SB-00001-PA.PDF#page=691
+    - title: Special Act No. 26-1 (2026), Sec. 1(b)
+      href: https://www.cga.ct.gov/2026/ACT/SA/PDF/2026SA-00001-R00SB-00083-SA.PDF#page=1
+    - title: Governor Lamont and Insurance Commissioner Hershman, financial assistance for 2027 health coverage (November 5, 2026)
+      href: https://portal.ct.gov/governor/news/press-releases/2026/11-2026/governor-lamont-and-insurance-commissioner-hershman-encourage-residents-to-review-health-coverage

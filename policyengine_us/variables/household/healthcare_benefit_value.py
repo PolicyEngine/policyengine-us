@@ -23,6 +23,7 @@ class healthcare_benefit_value(Variable):
         "co_omnisalud",
         "assigned_co_premium_assistance",
         "ct_covered_connecticut",
+        "assigned_ct_temporary_premium_assistance",
         "ma_connector_care",
         "md_premium_assistance",
         "nj_njhps",

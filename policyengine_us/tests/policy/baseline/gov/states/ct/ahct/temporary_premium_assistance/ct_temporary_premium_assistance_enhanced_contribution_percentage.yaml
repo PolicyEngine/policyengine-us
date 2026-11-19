@@ -1,0 +1,216 @@
+# The expired enhanced applicable percentage, 26 U.S.C. 36B(b)(3)(A)(iii):
+#   up to 150%: 0%; 150-200%: 0 -> 2%; 200-250%: 2 -> 4%; 250-300%: 4 -> 6%;
+#   300-400%: 6 -> 8.5%; above 400%: 8.5%, with no income cap.
+# Read at aca_magi_fraction (truncated to whole percentage points), with
+# aca_fpg pinned to $10,000.
+
+- name: 140% FPL is in the 0% bracket.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 14_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0
+
+- name: 150% FPL starts the 150-200% bracket at 0%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0
+
+- name: 175% FPL is halfway from 0% to 2%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 17_500
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.01
+
+- name: 190.5% FPL truncates to 190%, 1.6%.
+  # aca_magi_fraction drops the decimals: 1.905 -> 1.90; 0.8 x 2% = 1.6%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_050
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.9
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.016
+
+- name: 200% FPL starts the 200-250% bracket at 2%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.02
+
+- name: 225% FPL is halfway from 2% to 4%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_500
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.03
+
+- name: 275% FPL is halfway from 4% to 6%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_500
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.05
+
+- name: 350% FPL is halfway from 6% to 8.5%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 35_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.0725
+
+- name: 400% FPL is 8.5%.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.085
+
+- name: 650% FPL stays at 8.5%, with no income cap.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 65_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.085
+
+- name: 2026 uses the same fixed table, 190% FPL is 1.6%.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.016
