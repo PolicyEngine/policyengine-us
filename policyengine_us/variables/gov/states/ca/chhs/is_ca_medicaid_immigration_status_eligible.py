@@ -17,10 +17,12 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     status based on age brackets. The formula applies the schedule in
     eligible_regardless_of_immigration_status to undocumented residents,
     the one in eligible_with_daca to DACA recipients and the one in
-    eligible_with_tps to TPS holders. DACA recipients qualify at every age
-    through permanent residence under color of law (PRUCOL), which
-    Medi-Cal counts as a satisfactory immigration status, not through
-    Section 14007.8. This
+    eligible_with_tps to TPS holders. The model covers DACA recipients at
+    every age from 2015, its first year, through permanent residence under
+    color of law (PRUCOL), which Medi-Cal counts as a satisfactory
+    immigration status, not through Section 14007.8. That start rests on
+    the earlier statewide PRUCOL rule and later guidance that names DACA.
+    This
     variable is YEAR-defined and reads each schedule at January 1. So the
     expansion to children that starts May 1, 2016 applies in the model from
     2017, and the expansion to ages 50 and over that starts May 1, 2022

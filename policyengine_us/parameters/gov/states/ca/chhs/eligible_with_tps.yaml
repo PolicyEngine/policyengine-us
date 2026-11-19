@@ -18,9 +18,12 @@ metadata:
 # this way. Los Angeles County's manual gives TPS holders restricted scope
 # unless they declare PRUCOL, and full scope to minors under 19 through SB
 # 75. Both point to the undocumented schedule for TPS holders who declare
-# no PRUCOL. DACA recipients read eligible_with_daca.
-# The formula never reads the 2026-01-01 values at baseline: from 2026 it
-# returns true for TPS holders at every age.
+# no PRUCOL, under the rules of 2016 and 2019. Neither shows how the later
+# expansions or the freeze treat TPS holders. DACA recipients read
+# eligible_with_daca.
+# The formula evaluates the TPS schedule before checking the enrollment
+# freeze. From 2026 the freeze branch returns true for TPS holders at every
+# age at baseline.
 brackets:
   - threshold:
       2016-01-01: 0

@@ -567,10 +567,10 @@
     # that first value to 2015.
     is_ca_medicaid_immigration_status_eligible: true
 
-- name: Case 45, DACA 45-year-old is eligible in 2023.
+- name: Case 45, DACA 40-year-old is eligible in 2023.
   period: 2023
   input:
-    age: 45
+    age: 40
     is_pregnant: false
     immigration_status: DACA
     state_code: CA
@@ -654,7 +654,7 @@
 # Emergency Medicaid covers a person who meets Medicaid's rules but for
 # immigration status. A DACA adult who passes the immigration test no longer
 # reads it.
-- name: Case 51, DACA 30-year-old with an emergency condition is not on emergency Medicaid in 2019.
+- name: Case 51, DACA 30-year-old with an emergency condition is ineligible for emergency Medicaid in 2019.
   period: 2019
   input:
     age: 30
