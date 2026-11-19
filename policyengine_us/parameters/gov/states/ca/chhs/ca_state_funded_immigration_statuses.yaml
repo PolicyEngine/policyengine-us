@@ -7,6 +7,9 @@ description: California includes these immigration statuses as eligible for stat
 # - DHCS interpretation: move to Medi-Cal with no dental + premiums
 # - Governor's proposed budget (Jan 9, 2026): restricted-scope only
 # Update this parameter when legislation clarifies the outcome.
+# A status added to this list also needs a schedule choice in
+# is_ca_medicaid_immigration_status_eligible, whose default branch takes
+# every status the formula does not name.
 
 values:
   2016-01-01:
