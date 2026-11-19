@@ -1,1 +1,1 @@
-Add electricity and natural gas provider inputs with state service territories for filtering household choices by fuel.
+Add electricity and natural gas provider inputs and a packaged JSON catalog of provider choices by fuel and state.

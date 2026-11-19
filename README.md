@@ -28,6 +28,15 @@ bundle installer published by `policyengine`, for example:
 uvx --from policyengine policyengine bundle install --country us --venv .venv
 ```
 
+## Utility provider choices
+
+Household forms can load the electricity and natural gas provider lists from
+[the model’s JSON file](policyengine_us/data/utility_providers.json) once per
+model version. Select the input (`electricity_provider` or `natural_gas_provider`)
+and display each choice whose `states` list includes the household’s state or whose
+`states` is `null`. Show the `label` and submit the selected `value` on the SPM unit.
+`OTHER` covers an unlisted distributor and `UNSPECIFIED` covers an unknown one.
+
 ## Statutes, forms and agency practice
 
 When a statute conflicts with a regulation, form, instructions, manual or
