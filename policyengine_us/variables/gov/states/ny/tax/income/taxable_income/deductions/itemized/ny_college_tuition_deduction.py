@@ -18,4 +18,5 @@ class ny_college_tuition_deduction(Variable):
             period
         ).gov.states.ny.tax.income.deductions.itemized.college_tuition
         allowable_expenses = tax_unit("ny_allowable_college_tuition_expenses", period)
-        return allowable_expenses * p.applicable_percentage
+        elects_credit = tax_unit("ny_elects_tuition_credit_when_itemizing", period)
+        return where(elects_credit, 0, allowable_expenses * p.applicable_percentage)
