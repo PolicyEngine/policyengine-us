@@ -6,7 +6,8 @@
 # not the truncated aca_magi_fraction. is_aca_ptc_eligible is provided directly
 # so the gate logic is tested in isolation from the premium-data lookup.
 # Supplied-income cases pin aca_fpg to $10,000; income-derived cases use the
-# actual 2025 one-person guideline, $15,650.
+# actual 2025 one-person guideline, $15,650, for 2026 and the 2026 guideline,
+# $15,960, for 2027 (2027 deck slide 12: 400% FPL for 1 person = $63,840).
 
 - name: Case 1, MD APTC-eligible unit at 250% FPL in 2026 is eligible.
   period: 2026
@@ -438,4 +439,66 @@
   output:
     aca_tax_family_size: 1
     aca_fpg: 15_650
+    md_premium_assistance_eligible: false
+
+# ---- 2027: the 400% FPL limit on the 2026 guideline ----
+
+- name: 2027 Case 1, $63,839 (399.994% of the 2026 guideline) is eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_839
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_fpg: 15_960
+    aca_magi_fraction: 3.99
+    md_premium_assistance_eligible: true
+
+- name: 2027 Case 2, $63,840 (exactly 400% of the 2026 guideline) is eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_fpg: 15_960
+    aca_magi_fraction: 4.00
+    md_premium_assistance_eligible: true
+
+- name: 2027 Case 3, $63,840.47 (400.003%) is ineligible though truncated to 4.00.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840.47
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    aca_fpg: 15_960
+    aca_magi_fraction: 4.00
     md_premium_assistance_eligible: false

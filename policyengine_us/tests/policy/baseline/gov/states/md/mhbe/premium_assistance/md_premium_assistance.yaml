@@ -21,6 +21,13 @@
 #   150% -> 0.0419, 200% -> 0.066, 250% -> 0.0844, 300% -> 0.0996, 400% -> 0.0996
 # MD target percentages:
 #   150% -> 0, 200% -> 0.02, 250% -> 0.0622, 300% -> 0.0798, 400% -> 0.0923
+#
+# 2027 (MHBE 2027 Final State Subsidy Parameters, slide 21, Scenario 1, adopted
+# 8-4-2026). Federal expected contribution: 150% -> 0.043, 200% -> 0.0678,
+# 250% -> 0.0866, 300% -> 0.1022, 400% -> 0.1022. MD target: 150% -> 0,
+# 200% -> 0.02, 250% -> 0.0633, 300% -> 0.0811, 400% -> 0.0936. The 2027 cases
+# at the end of this file supply aca_fpg = 15_960, the 2026 one-person
+# guideline that PY2027 uses (slide 12: 400% FPL for 1 person = $63,840).
 
 - name: Case 1, single age 40 at 150% FPL -> 2500 (full replacement band).
   # COMAR .04B: max(0, (slcsp - aca_ptc) - md_pct * income). md_pct = 0 in the
@@ -501,11 +508,16 @@
   output:
     md_premium_assistance: 742.20  # self-consistent APTC: equals the old reading
 
-- name: Case 19, second in-effect year (2027) mirrors the 2026 250% FPL case -> 18.22.
+- name: Case 19, second in-effect year (2027) at 250% FPL -> 474.33.
   # Same forced-input shape as Case 3 but at period 2027, proving the program is
   # still in effect in its second plan year (distinct from the 2028 sunset).
   # 250% of the 2026 one-person guideline ($15,960), the prior year for 2027, is
-  # 39_900. COMAR .04B: max(0, (6_000 - 3_500) - 0.0622 * 39_900) = 2_500 - 2_481.78 = 18.22.
+  # 39_900. The 2027 MD target at 250% is 6.33% (slide 21), so the earlier
+  # aca_ptc of 3_500 left a 2_500 balance below the 2_525.67 MD contribution and
+  # a $0 subsidy; aca_ptc is lowered to 3_000 so the case keeps a positive amount.
+  # COMAR .04B: max(0, (6_000 - 3_000) - 0.0633 * 39_900) = 3_000 - 2_525.67
+  # = 474.33. The federal percentage is the 2027 one at 250% (8.66%); the formula
+  # does not read it because aca_ptc is supplied.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -518,16 +530,16 @@
         members: [person1]
         aca_magi: 39_900
         aca_magi_fraction: 2.50
-        aca_required_contribution_percentage: 0.0844
+        aca_required_contribution_percentage: 0.0866
         slcsp: 6_000
-        aca_ptc: 3_500
+        aca_ptc: 3_000
         tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 18.22
+    md_premium_assistance: 474.33
 
 - name: Case 20, negative aca_magi -> income floored before multiplying (no sign-flip).
   # The formula floors income at 0 (max_(aca_magi, 0)), so a negative aca_magi
@@ -981,3 +993,222 @@
   output:
     # Neither spouse is in a federal tax family.
     md_premium_assistance: 0
+
+# ---- 2027 parameters (MHBE Board 8-4-2026, Scenario 1) ----
+
+- name: 2027 Case A, single age 40 at 250% FPL -> 929.67.
+  # aca_magi 39_900 = 2.50 x 15_960. Self-consistent federal credit:
+  # 7_000 - 0.0866 x 39_900 = 7_000 - 3_455.34 = 3_544.66, leaving a
+  # 3_455.34 balance. MD target 6.33% (start of the 250-300% band):
+  # 0.0633 x 39_900 = 2_525.67. Subsidy = 3_455.34 - 2_525.67 = 929.67
+  # = (8.66% - 6.33%) x 39_900.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+        slcsp: 7_000
+        aca_ptc: 3_544.66
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 929.67
+
+- name: 2027 Case B, single age 40 at 300% FPL -> 1_010.27.
+  # aca_magi 47_880 = 3.00 x 15_960. Federal credit: 7_000 - 0.1022 x
+  # 47_880 = 7_000 - 4_893.34 = 2_106.66. MD target 8.11% (start of the
+  # 300-400% band): 0.0811 x 47_880 = 3_883.07. Subsidy = 4_893.34 -
+  # 3_883.07 = 1_010.27.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_880
+        aca_fpg: 15_960
+        slcsp: 7_000
+        aca_ptc: 2_106.66
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 1_010.27
+
+- name: 2027 Case C, single age 40 at exactly 400% FPL is eligible -> 549.03.
+  # aca_magi 63_840 = 4.00 x 15_960. Federal credit: 8_000 - 0.1022 x
+  # 63_840 = 8_000 - 6_524.45 = 1_475.55. MD target 9.36% (end of the
+  # 300-400% band): 0.0936 x 63_840 = 5_975.42. Subsidy = 6_524.45 -
+  # 5_975.42 = 549.03.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840
+        aca_fpg: 15_960
+        slcsp: 8_000
+        aca_ptc: 1_475.55
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 549.03
+
+- name: 2027 Case D, just above 400% FPL (400.003%) is ineligible -> 0.
+  # aca_magi 63_840.47 / 15_960 = 4.00003 > 4, so the unit is above the
+  # "400% FPL or below" limit (slide 25) on the exact ratio, though
+  # aca_magi_fraction truncates to 4.00. Same inputs as Case C otherwise.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840.47
+        aca_fpg: 15_960
+        slcsp: 8_000
+        aca_ptc: 1_475.55
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 0
+
+- name: 2027 Case H, just below 400% FPL (3.99) -> 557.00.
+  # aca_magi 63_839 / 15_960 = 3.99994, truncated to 3.99. Federal credit:
+  # 8_000 - 0.1022 x 63_839 = 8_000 - 6_524.35 = 1_475.65. MD target:
+  # 0.0811 + 0.99 x (0.0936 - 0.0811) = 0.093475; 0.093475 x 63_839 =
+  # 5_967.35. Subsidy = 6_524.35 - 5_967.35 = 557.00.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_839
+        aca_fpg: 15_960
+        slcsp: 8_000
+        aca_ptc: 1_475.65
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 557.00
+
+- name: 2027 Case E, young adult age 25 at 250% FPL -> 1_927.17.
+  # Same household as Case A. The 2026 young adult schedule continues in
+  # 2027 (8-4-2026 motion): MD target 6.33% - 2.5pp = 3.83%; 0.0383 x
+  # 39_900 = 1_528.17. Subsidy = 3_455.34 - 1_528.17 = 1_927.17.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+        slcsp: 7_000
+        aca_ptc: 3_544.66
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 1_927.17
+
+- name: 2027 Case F, age 36 at 300% FPL keeps the Board's 1.0pp taper -> 1_489.07.
+  # Same household as Case B. The Board's schedule reduces the target by
+  # 1.0pp at age 36 (2027 deck, slides 21 and 34), which PolicyEngine
+  # follows rather than COMAR 14.35.19.03A(4)'s under-35 cap (project-lead
+  # ruling 2026-11-18; source_conflicts/candidates.yaml). MD target 8.11% -
+  # 1.0pp = 7.11%; 0.0711 x 47_880 = 3_404.27. Subsidy = 4_893.34 - 3_404.27
+  # = 1_489.07. Under the under-35 cap it would be Case B's 1_010.27.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_880
+        aca_fpg: 15_960
+        slcsp: 7_000
+        aca_ptc: 2_106.66
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 1_489.07
+
+- name: 2027 Case G, single age 40 at 175% FPL -> 1_268.02.
+  # aca_magi 27_930 = 1.75 x 15_960. Federal percentage at 175%: 4.30% +
+  # 0.5 x (6.78% - 4.30%) = 5.54%; credit 7_000 - 0.0554 x 27_930 = 7_000 -
+  # 1_547.32 = 5_452.68. MD target 0 + 0.5 x 2% = 1.00%; 0.01 x 27_930 =
+  # 279.30. Subsidy = 1_547.32 - 279.30 = 1_268.02.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_930
+        aca_fpg: 15_960
+        slcsp: 7_000
+        aca_ptc: 5_452.68
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 1_268.02
