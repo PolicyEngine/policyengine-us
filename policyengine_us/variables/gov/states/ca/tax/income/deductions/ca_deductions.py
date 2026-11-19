@@ -16,4 +16,4 @@ class ca_deductions(Variable):
     def formula(tax_unit, period, parameters):
         std_ded = tax_unit("ca_standard_deduction", period)
         itm_ded = tax_unit("ca_itemized_deductions", period)
-        return where(itm_ded > std_ded, itm_ded, std_ded)
+        return where(tax_unit("ca_itemizes", period), itm_ded, std_ded)
