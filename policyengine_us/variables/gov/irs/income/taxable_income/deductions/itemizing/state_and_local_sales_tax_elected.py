@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_itemization import (
-    JOINT_METHOD_COUNT,
     joint_federal_itemizes,
     joint_itemization_is_enabled,
+    joint_uses_alternative,
 )
 
 
@@ -34,7 +34,7 @@ class state_and_local_sales_tax_elected(Variable):
                 choices = tax_unit("tax_unit_joint_itemization", period)
                 return where(
                     virginia & joint_federal_itemizes(choices),
-                    choices >= JOINT_METHOD_COUNT,
+                    joint_uses_alternative(choices),
                     default,
                 )
         return default

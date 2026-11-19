@@ -12,6 +12,7 @@ ITEMIZED = StateDeductionMethod.ITEMIZED.index
 AUTOMATIC = StateDeductionMethod.AUTOMATIC.index
 STATE_METHOD_COUNT = len(StateDeductionMethod)
 JOINT_METHOD_COUNT = 2 * STATE_METHOD_COUNT
+JOINT_FILING_CHOICE_COUNT = 2 * JOINT_METHOD_COUNT
 CENT = 0.01
 NATIVE_STATE_ELECTION_INPUTS = {
     "AR": "ar_tax_unit_itemizes",
@@ -36,6 +37,10 @@ def joint_itemization_is_enabled(period, parameters):
 
 def joint_federal_itemizes(choices):
     return choices % JOINT_METHOD_COUNT >= STATE_METHOD_COUNT
+
+
+def joint_uses_alternative(choices):
+    return choices % JOINT_FILING_CHOICE_COUNT >= JOINT_METHOD_COUNT
 
 
 def state_itemization_uses_itemized(method, automatic):
@@ -96,6 +101,7 @@ def joint_itemization(tax_unit, period, parameters):
     known_salt_components = not has_input(
         sim, "state_and_local_sales_or_income_tax", period
     )
+    any_claim_of_right = tax_unit("claim_of_right_section_1341_eligible", period).any()
     choices = []
     federal_methods = []
     costs = []
@@ -176,6 +182,11 @@ def joint_itemization(tax_unit, period, parameters):
             total = np.asarray(branch.calculate("income_tax", period), dtype=float)
             total = total + branch.calculate("state_income_tax", period)
             total += branch.calculate("local_tax", period)
+            claim_of_right_credit = (
+                branch.calculate("claim_of_right_credit_applies", period)
+                if any_claim_of_right
+                else False
+            )
             if prefer_federal_itemized is None:
                 prefer_federal_itemized = branch.calculate(
                     "itemized_taxable_income_deductions", period
@@ -193,7 +204,9 @@ def joint_itemization(tax_unit, period, parameters):
             | (native_supplied == AUTOMATIC)
             | (native_supplied == methods)
         )
-        choices.append(method_code + methods)
+        choices.append(
+            method_code + methods + JOINT_FILING_CHOICE_COUNT * claim_of_right_credit
+        )
         federal_methods.append(federal_itemizes)
         costs.append(np.where(allowable, total, np.inf))
 

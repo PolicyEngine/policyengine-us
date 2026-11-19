@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_itemization import (
-    JOINT_METHOD_COUNT,
     joint_itemization_is_enabled,
+    joint_uses_alternative,
 )
 
 
@@ -23,5 +23,7 @@ class ny_elects_tuition_credit_when_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         if joint_itemization_is_enabled(period, parameters):
-            return tax_unit("tax_unit_joint_itemization", period) >= JOINT_METHOD_COUNT
+            return joint_uses_alternative(
+                tax_unit("tax_unit_joint_itemization", period)
+            )
         return False

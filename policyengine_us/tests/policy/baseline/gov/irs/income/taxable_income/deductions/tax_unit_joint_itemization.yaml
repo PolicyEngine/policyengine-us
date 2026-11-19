@@ -97,3 +97,33 @@
     # https://www.ftb.ca.gov/forms/2025/2025-540-p.pdf#page=1
     ca_amti_adjustments: [5_706, 250, 5_706, 500]
     income_tax: [25_067, 25_067, 25_007, 21_167]
+
+- name: Case 5, the chosen filing methods retain the section 1341 repayment deduction.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: GA
+    age: 40
+    employment_income: 145_000
+    deductible_mortgage_interest: 10_000
+    state_and_local_sales_or_income_tax: 0
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 0
+  output:
+    # Under 26 USC 1341(a)(4)–(5), use the less expensive tax calculation
+    # for the filed return. With itemization, the $5,000 repayment deduction
+    # saves federal tax while the alternate method grants no credit.
+    # https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapQ-partV-sec1341.htm
+    # Georgia follows federal itemization and carries the $15,000 federal
+    # itemized deductions. Its tax is $130,000 x 5.19% minus $300 = $6,447.
+    # https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=18
+    # Federal tax on $130,000 taxable income is $24,047. The combined bill
+    # of $30,494 is less than under the two standard deductions ($30,769.70).
+    # https://www.irs.gov/instructions/i1040gi
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    income_tax: 24_047
+    state_income_tax: 6_447
+    federal_state_income_tax: 30_494
