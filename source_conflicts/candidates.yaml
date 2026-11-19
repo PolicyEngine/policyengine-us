@@ -12829,6 +12829,42 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
     tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
+- id: us-tn:elderly-relief-nontaxable-retirement-benefits
+  program: property-tax-relief
+  years:
+    from: 2020
+    type: tax
+  question: Does Tennessee's property tax relief for elderly homeowners count the part of retirement and pension
+    benefits that is not taxable by IRS standards, which Rule 0600-03-.08(3) adds to adjusted gross income, or only
+    the taxable amount, as Comptroller Bulletin 2019-01 directs?
+  sources:
+  - kind: regulation
+    citation: Tenn. Comp. R. & Regs. 0600-03-.08(3)
+    url: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-0600-03-.08
+  - kind: guidance
+    citation: Tennessee Comptroller Bulletin 2019-01, Counting Income for Tax Relief and Tax Freeze, item 4 (PDF page 1)
+    url: https://www.comptroller.tn.gov/content/dam/cot/pa/documents/manualsandreports/bulletins-and-summaries/Bulletin2019-01CountingIncomeforTaxReliefandTaxFreeze(12-9-2019).pdf#page=1
+  readings:
+    statute: 'T.C.A. 67-5-702(a)(2) tests "annual income from all sources" without defining it. Rule 0600-03-.08(3)
+      lists "retirement and pension benefits after deduction of healthcare insurance premiums" and says the adjusted
+      gross income amount "is added to any income sources specified above which may not be taxable by IRS standards."'
+    other: 'Bulletin 2019-01 item 4 counts "Retirement and pension benefits after deduction of healthcare insurance
+      premiums" and says "Look to the amount listed in box 4b of IRS Form 1040." The bulletin cites 2018 form
+      numbering (Schedule 1 lines 23 through 36), on which Form 1040 line 4b is the taxable amount of IRAs, pensions
+      and annuities.'
+  example: 'In 2026 a homeowner aged 70 whose $40,000 pension includes $10,000 of nontaxable return of after-tax
+    contributions has income of $40,000 under the rule, above the $38,470 limit, and $30,000 under the bulletin,
+    which is under it.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml
+    prs: []
+  state: unreviewed
+  note: 'PolicyEngine adds tax_exempt_pension_income and tax_exempt_retirement_distributions to adjusted gross income
+    through gov.states.tn.tax.property.elderly_property_tax_relief.nontaxable_income.sources. PolicyEngine has
+    recorded no ruling. The rule text was read on Cornell LII; the Secretary of State''s copy refused automated
+    access.'
 - id: us-tx:ccs-board-psoc-before-tx3c
   program: child-care-assistance
   years:
