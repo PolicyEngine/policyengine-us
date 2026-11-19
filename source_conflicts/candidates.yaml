@@ -12859,7 +12859,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11166
   state: unreviewed
   note: 'PolicyEngine adds tax_exempt_pension_income and tax_exempt_retirement_distributions to adjusted gross income
     through gov.states.tn.tax.property.elderly_property_tax_relief.nontaxable_income.sources. PolicyEngine has
