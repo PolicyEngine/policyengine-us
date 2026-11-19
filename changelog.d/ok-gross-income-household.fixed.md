@@ -1,0 +1,1 @@
+Oklahoma's gross household income for the sales tax and property tax credits now counts the income of everyone in the household, not just the tax unit, and adds dependent care benefits, retirement account distributions, TANF, veterans' and disability benefits, scholarships, gambling winnings, excluded foreign earned income and the Oklahoma earned income credit.
