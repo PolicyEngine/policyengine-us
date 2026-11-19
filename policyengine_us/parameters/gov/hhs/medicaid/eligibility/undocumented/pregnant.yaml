@@ -14,6 +14,8 @@ metadata:
       href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
     - title: New York Social Services Law section 366
       href: https://www.nysenate.gov/legislation/laws/SOS/366
+    - title: "New York Laws of 2022, chapter 56, part CCC"
+      href: https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=A09006&term=2021&Summary=Y&Actions=Y&Text=Y
 
 AL:
   2021-01-01: false
@@ -83,9 +85,12 @@ NY:
   # The Department of Health's notice D61-C0332, dated October 10, 2014,
   # gives people without satisfactory immigration status Medicaid "for
   # medical services provided to pregnant women" and ends it when "the
-  # sixty-day postpartum period has ended". Social Services Law section
-  # 366(4)(b)(1) now continues a pregnant woman's eligibility for one year
-  # after the pregnancy ends. The 2021 date follows the all-ages flag this
+  # sixty-day postpartum period has ended". From March 1, 2023, part CCC of
+  # chapter 56 of the Laws of 2022 continues for one year the eligibility of
+  # a pregnant woman eligible under Social Services Law section 366(1)(b)(2)
+  # or (4) (section 366(4)(b)(1)). The formula applies the state's postpartum
+  # period to undocumented residents too, which the notice supports for the
+  # sixty-day period only. The 2021 date follows the all-ages flag this
   # value replaces, and backdating carries it to 2015.
   2021-01-01: true
 NC:

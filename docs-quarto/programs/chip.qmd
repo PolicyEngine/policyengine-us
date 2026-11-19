@@ -12,7 +12,7 @@ PolicyEngine US models CHIP eligibility, per-capita benefit value, and household
 - They are age-eligible: under the state's CHIP age cap (typically 18 or 19), or pregnant in FCEP / standard-pregnant-person states.
 - Household MAGI (as a fraction of the federal poverty line) is at or below the state's CHIP income limit. Limits vary from ~190 % in Idaho to ~405 % in New York.
 - They are not income-eligible for Medicaid.
-- Immigration status is eligible. Undocumented children pass only in New Jersey and New York.
+- Immigration status is eligible. Undocumented children pass only in New Jersey, from 2023, and in New York.
 
 State-specific eligibility is driven by `parameters/gov/hhs/chip/child/income_limit.yaml`.
 

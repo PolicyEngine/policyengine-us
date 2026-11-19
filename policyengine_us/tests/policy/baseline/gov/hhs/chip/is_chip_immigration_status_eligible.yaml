@@ -392,6 +392,7 @@
     age: 8
     state_code: NY
   output:
+    # New York's child term is true, and 8 < 19: true. No Medicaid term applies.
     is_chip_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: false
 
@@ -402,6 +403,7 @@
     age: 8
     state_code: NY
   output:
+    # Backdating carries the child term's true value to 2015, and 8 < 19: true.
     is_chip_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: false
 
@@ -412,6 +414,7 @@
     age: 18
     state_code: NY
   output:
+    # 18 < 19: true.
     is_chip_immigration_status_eligible: true
 
 - name: Case 22, undocumented 19-year-old in New York is past the CHIP age limit.
@@ -421,6 +424,7 @@
     age: 19
     state_code: NY
   output:
+    # 19 < 19 is false.
     is_chip_immigration_status_eligible: false
 
 # Massachusetts limits undocumented residents to emergency services.
@@ -431,5 +435,6 @@
     age: 8
     state_code: MA
   output:
+    # Massachusetts's child term is false, and so is the Medicaid flag.
     is_chip_immigration_status_eligible: false
     is_medicaid_immigration_status_eligible: false
