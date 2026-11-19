@@ -230,3 +230,42 @@
         state_code: ID
   output:
     meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado ECE household above the FY 2024 net standard meets the net income test before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $285 above the one-person FY 2024 net standard of $1,215.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Expanded Categorical Eligibility households need only gross income
+    # within 200% of the poverty level (10 CCR 2506-1 4.401(A)(1)).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado ECE elderly or disabled household above the FY 2024 net standard meets the net income test before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    meets_tanf_non_cash_net_income_test: true

@@ -155,3 +155,49 @@
     # categorical eligibility and does not receive the minimum allotment.
     is_snap_eligible: false
     snap: 0
+
+- name: Colorado person aged 70 under 200% of the poverty level with net income above the limit is eligible before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person_1:
+        age: 70
+        social_security_retirement:
+          2024: 28_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code: CO
+  output:
+    # Gross income of $2,333 a month is within the $2,430 limit for Expanded
+    # Categorical Eligibility, which has no net income limit (10 CCR 2506-1
+    # 4.401(A)(1)), so this one-person household receives the FY 2024
+    # minimum allotment.
+    is_snap_eligible: true
+    snap: 23
+
+- name: Colorado full-time worker under 200% of the poverty level with net income above the limit is eligible before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person_1:
+        age: 40
+        weekly_hours_worked_before_lsr: 40
+        employment_income:
+          2024: 26_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code: CO
+  output:
+    # Gross income of $2,167 a month is within the $2,430 limit, and net
+    # income of $1,535 is above the $1,215 net standard, which Expanded
+    # Categorical Eligibility does not apply.
+    is_snap_eligible: true
+    snap: 23

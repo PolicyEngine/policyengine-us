@@ -21,8 +21,13 @@ CA:
   # this flag alone does not establish modeled eligibility in 2011.
   2015-10-01: false
 CO:
+  # Expanded Categorical Eligibility households need only gross income
+  # within 200% of the poverty level (10 CCR 2506-1 4.401(A)(1)); the net
+  # income standard applies under Standard Eligibility (4.401(A)(3)). That
+  # is the text of the version effective 11/30/2022. Dated from the start
+  # of the 200% limit in gross.yaml, when 4.206 and 4.401 took this form.
   2015-10-01: true
-  2024-07-01: false
+  2018-06-01: false
 CT:
   2015-10-01: false
 DC:
@@ -145,6 +150,10 @@ metadata:
       href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=51
     - title: IDAPA 16.03.04.010, Idaho Food Stamp Program definition of Broad-Based Categorical Eligibility
       href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=10
+    - title: Code of Colorado Regulations 10 CCR 2506-1, section 4.401(A), income eligibility standards
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1#page=81
+    - title: Code of Colorado Regulations 10 CCR 2506-1, section 4.206(C)(2), Expanded Categorical Eligibility
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1#page=34
     - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions
       href: https://www.law.cornell.edu/cfr/text/7/273.2#j_2_xi
     - title: 7 CFR 273.9(a), income eligibility standards
