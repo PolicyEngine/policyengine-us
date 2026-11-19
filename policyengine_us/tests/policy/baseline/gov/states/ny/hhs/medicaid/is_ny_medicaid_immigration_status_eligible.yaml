@@ -156,3 +156,48 @@
     is_medicaid_immigration_status_eligible: false
     is_medicaid_eligible: false
     is_basic_health_program_eligible: true
+
+# Pregnancy. The model's CHIP unborn-child route for New York starts in 2024
+# and covers a pregnant person who is not eligible for Medicaid. A pregnant
+# DACA recipient reaches Medicaid while DACA is on the list and the
+# unborn-child route while it is not.
+- name: Case 13, pregnant DACA 30-year-old with no income gets Medicaid in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: DACA
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # DACA is on the list at 2024-01-01, so the person is Medicaid eligible and
+    # the unborn-child route does not apply.
+    is_medicaid_immigration_status_eligible: true
+    is_medicaid_eligible: true
+    is_chip_fcep_eligible_person: false
+
+- name: Case 14, pregnant DACA 30-year-old with no income keeps the unborn-child route in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: DACA
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # The list is empty at 2025-01-01, so the person fails the Medicaid
+    # immigration test and the unborn-child route applies, as it did before.
+    is_medicaid_immigration_status_eligible: false
+    is_medicaid_eligible: false
+    is_chip_fcep_eligible_person: true
+    chip_category: PREGNANT_FCEP
