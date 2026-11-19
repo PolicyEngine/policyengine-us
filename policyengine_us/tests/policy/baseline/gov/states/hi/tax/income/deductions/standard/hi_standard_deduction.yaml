@@ -13,3 +13,104 @@
     filing_status: JOINT
   output:
     hi_standard_deduction: 4_400
+
+- name: A dependent with no worksheet earnings receives the $500 minimum
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+    hi_itemized_deductions: 510
+  output:
+    hi_standard_deduction: 500
+    hi_itemized_deductions_eligible: true
+    hi_itemizes: true
+    hi_deductions: 510
+
+- name: Dependent worksheet earnings can limit the standard deduction
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 2_800
+    hi_itemized_deductions: 2_800
+  output:
+    hi_standard_deduction: 2_800
+    hi_itemized_deductions_eligible: false
+    hi_itemizes: false
+    hi_deductions: 2_800
+
+- name: High dependent earnings cannot raise the standard deduction above the filing-status amount
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 15_000
+    hi_itemized_deductions: 8_799
+  output:
+    hi_standard_deduction: 8_800
+    hi_itemized_deductions_eligible: false
+    hi_itemizes: false
+
+- name: Head of household itemization starts above the updated regular standard
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    hi_itemized_deductions: 6_425
+  output:
+    hi_standard_deduction: 6_424
+    hi_itemized_deductions_eligible: true
+    hi_itemizes: true
+
+- name: Separate filer required to itemize on Hawaii's return may deduct less than the usual threshold
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    hi_required_to_itemize: true
+    hi_itemized_deductions: 275
+  output:
+    hi_standard_deduction: 0
+    hi_itemized_deductions_eligible: true
+    hi_itemizes: true
+    hi_deductions: 275
+
+- name: A taxpayer who could itemize can elect the Hawaii standard deduction
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_itemized_deductions: 7_000
+    hi_itemizes: false
+  output:
+    hi_itemized_deductions_eligible: true
+    hi_deductions: 4_400
+
+- name: Claimable Hawaii filer uses actual wage earnings for the dependent worksheet
+  period: 2025
+  input:
+    state_code: HI
+    age: 20
+    claimed_as_dependent_on_another_return: true
+    employment_income: 2_375
+    hi_itemized_deductions: 2_376
+  output:
+    standard_deduction_worksheet_earned_income: 2_375
+    hi_standard_deduction: 2_375
+    hi_itemized_deductions_eligible: true
+    hi_itemizes: true
+
+- name: A qualifying surviving spouse must exceed the joint threshold to elect itemization
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    hi_itemized_deductions: 8_800
+  output:
+    hi_standard_deduction: 8_800
+    hi_itemized_deductions_eligible: false
+    hi_itemizes: false
