@@ -588,7 +588,9 @@
     state_code: CA
   output:
     # The one bracket is true at 2021-01-01. The shared schedule covered ages
-    # 50 and over from 2022.
+    # 50 and over from 2022. USCIS requires DACA recipients to be born on or
+    # after June 16, 1981 (https://www.uscis.gov/DACA), so none was 55 in 2021.
+    # This case pins the schedule's lack of an upper age, not a real recipient.
     is_ca_medicaid_immigration_status_eligible: true
 
 # TPS holders keep the shared schedule's dates.
@@ -648,3 +650,22 @@
     is_medicaid_immigration_status_eligible: true
     # No income is below California's adult limit of 138% of the poverty line.
     is_medicaid_eligible: true
+
+# Emergency Medicaid covers a person who meets Medicaid's rules but for
+# immigration status. A DACA adult who passes the immigration test no longer
+# reads it.
+- name: Case 51, DACA 30-year-old with an emergency condition is not on emergency Medicaid in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+    medicaid_category: ADULT
+    has_emergency_medical_condition: true
+  output:
+    # eligible_with_daca is true at 2019-01-01, so the immigration test passes.
+    is_medicaid_immigration_status_eligible: true
+    # Emergency condition AND a Medicaid category AND NOT immigration eligible:
+    # true AND true AND NOT true = false.
+    is_emergency_medicaid_eligible: false

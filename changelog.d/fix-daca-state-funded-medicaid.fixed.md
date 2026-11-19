@@ -1,1 +1,1 @@
-Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015, where the model left out ages 26 to 49 before 2024 and ages 50 and over before 2022.
+Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015. The model had left out ages 26 to 49 before 2024. It had also left out ages 50 and over before 2022, an age no recipient had reached: USCIS requires birth on or after June 16, 1981.
