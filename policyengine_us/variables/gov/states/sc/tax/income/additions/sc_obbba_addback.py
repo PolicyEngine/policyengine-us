@@ -41,4 +41,5 @@ class sc_obbba_addback(Variable):
             + tip_deduction
             + overtime_deduction
             + auto_loan_deduction
+            + tax_unit("sc_salt_conformity_addback", period)
         )
