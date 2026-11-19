@@ -1,3 +1,16 @@
+# RSMo 135.010(5): "Income" is Missouri adjusted gross income as defined in
+# section 143.121, less the spouse exemption, "and increased, where
+# necessary, to reflect the following: (a) Social Security, railroad
+# retirement, and veterans payments and benefits ...; (b) The total amount of
+# all other public and private pensions and annuities; (c) Public relief,
+# public assistance, and unemployment benefits received in cash ...; (d) No
+# deduction being allowed for losses not incurred in a trade or business;
+# (e) Interest on the obligations of the United States, any state, or any of
+# their subdivisions and instrumentalities".
+# Line numbers refer to the 2025 Form MO-PTS. Pensions of 15,000 or more, or
+# Social Security of 14,000, keep the modeled SSI at zero in the 2023 and
+# 2025 cases.
+
 - name: Unit test for MO property tax credit gross income that includes employment income, OASDI, SSI, and TANF, but not veterans benefits
   absolute_error_margin: 0.01
   period: 2021
@@ -26,3 +39,291 @@
         state_code: MO
   output:
     mo_ptc_gross_income: 29_000  # 29 = 13 + 9 + 4 + 3
+
+- name: Military retirement benefits subtracted from Missouri AGI count as a public pension.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 15_000
+    military_retirement_pay: 20_000
+  output:
+    # Federal AGI 35,000. RSMo 143.121.3(12) subtracts the 20,000 of
+    # military retirement benefits (Form MO-A, Part 1, line 10), so Missouri
+    # AGI is 15,000. 135.010(5)(b) adds back the total amount of all public
+    # pensions; Form MO-PTS line 3 takes pensions "not included in Line 1".
+    # 15,000 + 20,000 = 35,000.
+    mo_ptc_gross_income: 35_000
+
+- name: Interest on U.S. obligations subtracted from Missouri AGI is added back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    taxable_interest_income: 3_000
+    # The 3,000 is Treasury interest: in federal AGI, subtracted for
+    # Missouri AGI (RSMo 143.121.3(1); Form MO-A, Part 1, line 8).
+    us_govt_interest_person: 3_000
+  output:
+    # Missouri AGI: 23,000 - 3,000 = 20,000. 135.010(5)(e) and Form MO-PTS
+    # line 3 ("Include tax exempt interest from MO-A, Part 1, Line 8") add
+    # the interest back: 20,000 + 3,000 = 23,000.
+    mo_ptc_gross_income: 23_000
+
+- name: General assistance is public assistance received in cash.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    general_assistance: 2_400
+  output:
+    # 135.010(5)(c); Form MO-PTS line 6, "public assistance". The line 6
+    # instructions add: "This includes any payments received from the
+    # government." 20,000 + 2,400 = 22,400.
+    mo_ptc_gross_income: 22_400
+
+- name: Missouri state supplementary payments are public assistance received in cash.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    # 100 a month of Supplemental Nursing Care.
+    mo_ssp: 1_200
+  output:
+    # 135.010(5)(c); Form MO-PTS line 6. 20,000 + 1,200 = 21,200.
+    mo_ptc_gross_income: 21_200
+
+- name: A rental loss is a nonbusiness loss and is added back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    rental_income: -6_000
+  output:
+    # Federal and Missouri AGI: 20,000 - 6,000 = 14,000. 135.010(5)(d)
+    # allows no deduction for losses not incurred in a trade or business,
+    # and the MO-1040 instructions for Form MO-PTS line 7 treat only
+    # Schedule C and Schedule F losses as business losses.
+    # 14,000 + 6,000 = 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: Partnership, estate and farm rental losses are nonbusiness losses and are added back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    partnership_s_corp_income: -2_000
+    estate_income: -1_000
+    farm_rent_income: -500
+  output:
+    # Federal and Missouri AGI: 20,000 - 2,000 - 1,000 - 500 = 16,500.
+    # None of these losses comes from Schedule C or Schedule F, so line 7
+    # adds back 3,500: 16,500 + 3,500 = 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: Schedule C and Schedule F losses are business losses and stay deducted.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    self_employment_income: -3_000
+    farm_operations_income: -1_000
+  output:
+    # Federal and Missouri AGI: 20,000 - 3,000 - 1,000 = 16,000. The
+    # instructions for line 7: "Losses from Federal Form 1040 or 1040-SR,
+    # Schedule F and Schedule C are considered business losses and should
+    # not be included here." Nothing is added back: 16,000.
+    mo_ptc_gross_income: 16_000
+
+- name: A capital loss that pushes federal AGI below zero is added back only down to zero.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: MO
+    social_security_retirement: 14_000
+    taxable_interest_income: 1_000
+    capital_losses: 3_000
+  output:
+    # Federal AGI: 1,000 - 3,000 = -2,000; none of the Social Security is
+    # taxable. From 2024 Missouri starts from zero instead of a negative
+    # federal AGI, so line 1 is 0. The 2025 instructions for Form MO-PTS
+    # line 7: "Only the portion of the nonbusiness loss that actually
+    # reduced FAGI down to $0 ... must be added back." That portion is
+    # 1,000, which took federal AGI from 1,000 to 0.
+    # Line 2: 14,000. 0 + 14,000 + 1,000 = 15,000.
+    mo_ptc_gross_income: 15_000
+
+- name: A capital loss that brings federal AGI to exactly zero is added back in full.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: MO
+    social_security_retirement: 14_000
+    taxable_interest_income: 1_000
+    capital_losses: 1_000
+  output:
+    # Federal AGI: 1,000 - 1,000 = 0, so the whole 1,000 loss reduced it.
+    # 0 + 14,000 + 1,000 = 15,000.
+    mo_ptc_gross_income: 15_000
+
+- name: Rental and capital losses below zero federal AGI are added back together only down to zero.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: MO
+    social_security_retirement: 14_000
+    taxable_interest_income: 1_000
+    rental_income: -2_000
+    capital_losses: 3_000
+  output:
+    # Federal AGI: 1,000 - 2,000 - 3,000 = -4,000, so line 1 is 0. Of the
+    # 5,000 of nonbusiness losses, the 4,000 below zero never reduced line 1.
+    # Line 7: 5,000 - 4,000 = 1,000. 0 + 14,000 + 1,000 = 15,000.
+    mo_ptc_gross_income: 15_000
+
+- name: Before 2024 a negative Missouri AGI keeps the whole capital loss, which is added back in full.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    age: 70
+    state_code: MO
+    social_security_retirement: 14_000
+    taxable_interest_income: 1_000
+    capital_losses: 3_000
+  output:
+    # Through 2023 Missouri AGI can be negative: line 1 is -2,000, which the
+    # whole 3,000 loss reduced. -2,000 + 14,000 + 3,000 = 15,000, the same
+    # household income as the 2025 case.
+    mo_ptc_gross_income: 15_000
+
+- name: Only the part of a partnership loss that section 461(l) lets reduce federal AGI is added back.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    partnership_s_corp_income: -400_000
+  output:
+    # With no business income, section 461(l) caps the deductible business
+    # loss at the 2023 single threshold of 289,000, so federal AGI is
+    # 20,000 - 289,000 = -269,000; through 2023 Missouri AGI keeps the
+    # negative amount. The other 111,000 was never deducted. Line 7 adds back
+    # the 289,000 deducted: -269,000 + 289,000 = 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: A tax-exempt 401(k) distribution counts as a pension outside Missouri AGI.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    # The whole 4,000 is earnings, none of it the excludable cost (the
+    # employee's own contributions), which Form MO-PTS line 3 leaves out.
+    tax_exempt_401k_distributions: 4_000
+  output:
+    # 135.010(5)(b); MO-1040 instructions, Form MO-PTS line 3: "Form(s)
+    # 1099-R - Total amount before deduction not included on Form MO-1040,
+    # Line 6". 20,000 + 4,000 = 24,000.
+    mo_ptc_gross_income: 24_000
+
+- name: The spouse of a 100 percent service-connected disabled veteran does not list veterans benefits.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      veteran:
+        is_tax_unit_head: true
+        age: 67
+        taxable_private_pension_income: 20_000
+        veterans_benefits: 40_000
+        is_fully_disabled_service_connected_veteran: true
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        veterans_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [veteran, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [veteran, spouse]
+        state_code: MO
+  output:
+    # 135.010(5)(a) adds veterans payments and benefits "unless the claimant
+    # is a one hundred percent service-connected, disabled veteran or a
+    # spouse of" one. Neither spouse's benefits count: 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: When the spouse is the 100 percent service-connected disabled veteran, the head's veterans benefits don't count either.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 67
+        taxable_private_pension_income: 20_000
+        veterans_benefits: 5_000
+      veteran:
+        is_tax_unit_spouse: true
+        age: 66
+        veterans_benefits: 30_000
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        members: [head, veteran]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, veteran]
+        state_code: MO
+  output:
+    # The head is "a spouse of a one hundred percent service-connected,
+    # disabled veteran" (135.010(5)(a)), and Form MO-PTS line 5 leaves out
+    # all veteran payments and benefits. 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: Veterans benefits count when neither spouse is a 100 percent service-connected disabled veteran.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 67
+        taxable_private_pension_income: 20_000
+        veterans_benefits: 10_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        veterans_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MO
+  output:
+    # Form MO-PTS line 5: 10,000 + 6,000 = 16,000. 20,000 + 16,000 = 36,000.
+    mo_ptc_gross_income: 36_000

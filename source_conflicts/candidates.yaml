@@ -7572,6 +7572,39 @@ candidates:
   state: unreviewed
   note: 'The open PR applies the regulation from 2024; main''s source choice is unspecified, and no statute is supplied.
     Code not yet on main: mo_federal_adjusted_gross_income, gov.states.mo.tax.income.federal_agi.negative_floor_applies.'
+- id: us-mo:property-tax-credit-nonbusiness-loss
+  program: property-tax-credit
+  years:
+    from: 2008
+    type: tax
+  question: Does the Missouri property tax credit add back every loss outside Schedule C and Schedule F, including
+    rental, farm rental, estate or trust, and partnership or S corporation losses, as losses "not incurred in a trade
+    or business"?
+  sources:
+  - kind: statute
+    citation: RSMo 135.010(5)(d)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=135.010
+  - kind: instructions
+    citation: 2025 MO-1040 instructions, Form MO-PTS line 7, PDF page 18
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=18
+  readings:
+    statute: Income is increased to reflect "no deduction being allowed for losses not incurred in a trade or
+      business". Section 135.010 doesn't define a trade or business, and under federal usage a rental activity or a
+      partnership's active business can be one, so some of these losses could stay deducted.
+    other: The line 7 instructions define a nonbusiness loss as "a loss of income that did not result from a trade or
+      business" and add "Losses from Federal Form 1040 or 1040-SR, Schedule F and Schedule C are considered business
+      losses and should not be included here." Form MO-PTS line 7 says to include capital losses.
+  example: In 2025 a claimant with a $20,000 pension and a $6,000 rental loss has household income of $20,000 when the
+    rental loss is a nonbusiness loss, or $14,000 when the rental activity is a trade or business.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mo/tax/income/credits/property_tax/nonbusiness_loss_sources.yaml
+    - policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py
+  state: unreviewed
+  note: PolicyEngine adds back the deducted part of rental, farm rental, estate and partnership or S corporation
+    losses, with the net capital loss deduction, and leaves Schedule C and Schedule F losses deducted. The model has
+    no input that separates a partnership's or a rental's trade or business losses from its other losses.
 - id: us-mo:property-tax-credit-rounding
   program: property-tax-credit
   years:
