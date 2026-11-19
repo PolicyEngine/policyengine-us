@@ -1,1 +1,1 @@
-Stop the pinned tax-benefit system test requiring scale brackets without a parent, so it passes whether or not policyengine-core links a loaded tree's brackets to their scale.
+Stop `test_an_edit_to_a_loaded_tree_reaches_the_next_simulation` requiring policyengine-core to load scale brackets without a parent. The test now detaches the bracket it edits, so it checks the same case whether or not core links a loaded tree's brackets to their scale.

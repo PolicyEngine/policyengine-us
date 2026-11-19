@@ -545,12 +545,16 @@ def test_an_edit_to_the_source_tree_reaches_the_next_simulation(monkeypatch):
 def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
     """An edit to a scale bracket on a loaded tree reaches a pin.
 
-    Whether the edit clears the caches above the bracket depends on whether this
-    version of core links a loaded tree's brackets to their scale, so a pin has
-    to read the parameter itself. The EITC's 2021 pin keeps this amount, so its
-    result moves with the edit.
+    The test detaches the bracket from its scale before the edit, so the edit
+    clears no cache above the bracket on any version of core, and the source
+    tree's cached views stay stale. A pin has to read the parameter itself. The
+    EITC's 2021 pin keeps this amount, so its result moves with the edit.
     """
     loaded = CountryTaxBenefitSystem()
+    edited_bracket = loaded.parameters.gov.irs.credits.eitc.max.brackets[1]
+    # Older versions of core load a bracket without a parent, and newer ones
+    # link it to its scale. Detaching it gives the same case on both.
+    edited_bracket.parent = None
 
     def result():
         situation = household(2021, earnings=15_000, interest=0)
@@ -558,8 +562,7 @@ def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
         return simulation.calculate("ny_eitc", 2021)[0]
 
     before = result()
-    amount = loaded.parameters.gov.irs.credits.eitc.max.brackets[1].amount
-    amount.update(period="year:2021:1", value=5_000)
+    edited_bracket.amount.update(period="year:2021:1", value=5_000)
     edited = result()
 
     assert edited != before
