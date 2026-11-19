@@ -14,7 +14,9 @@
     # 2,400 / 12 = 200
     il_tanf_gross_unearned_income: 200
 
-- name: Case 2, exempt veterans benefits and pensions do not count.
+# 89 Ill. Adm. Code 112.100 counts all unearned income that 112.110 doesn't
+# exempt, and 112.110 has no exemption for pensions or veterans benefits.
+- name: Case 2, veterans benefits and pensions count as unearned income.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -23,6 +25,68 @@
         age: 30
         veterans_benefits: 2_400
         pension_income: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # (2,400 + 1,200) / 12 = 200 + 100 = 300
+    il_tanf_gross_unearned_income: 300
+
+# IDHS PM 08-01-07-c budgets private pensions as nonexempt income; public and
+# military pensions are government benefits that 112.110 doesn't exempt.
+- name: Case 3, private, public and military pensions count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_private_pension_income: 6_000
+        tax_exempt_public_pension_income: 1_200
+        military_retirement_pay: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # (6,000 + 1,200 + 2,400) / 12 = 500 + 100 + 200 = 800
+    il_tanf_gross_unearned_income: 800
+
+# 112.110 exempts none of these. PM 08-01-07-c budgets union benefits as
+# nonexempt income, and PM 08-01-07-e budgets contributions from relatives
+# and non-relatives as nonexempt unearned income.
+- name: Case 4, Railroad Retirement, survivor benefits, strike benefits and contributions count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        railroad_benefits: 6_000
+        survivor_benefits: 1_200
+        strike_benefits: 600
+        financial_assistance: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # (6,000 + 1,200 + 600 + 1,200) / 12 = 500 + 100 + 50 + 100 = 750
+    il_tanf_gross_unearned_income: 750
+
+# 112.110(ee) exempts total child support payments made to an assistance
+# unit, and 112.110(mm) exempts assistance from a research program on poverty
+# or financial stability for up to 60 months.
+- name: Case 5, child support and guaranteed income pilot payments stay exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_received: 2_400
+        gi_cash_assistance: 1_200
     households:
       household:
         members: [person1]

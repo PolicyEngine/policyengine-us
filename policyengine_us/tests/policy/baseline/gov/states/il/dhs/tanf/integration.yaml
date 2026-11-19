@@ -852,3 +852,166 @@
     # $5,649.67 > $318 -> ineligible
     il_tanf_eligible: false
     il_tanf: 0
+
+# ===================================================================
+# 18. PENSIONS, VETERANS BENEFITS AND RAILROAD RETIREMENT (FPG era)
+# ===================================================================
+# 89 Ill. Adm. Code 112.100 counts all unearned income that 112.110 doesn't
+# exempt, and 112.110 has no exemption for pensions, veterans benefits or
+# Railroad Retirement. Payment level for a parent and 2 children in 2026-01:
+# AU FPG (Oct-lagged = 2025): (15,650 + 5,500 * 2) / 12 = 2,220.83
+# Payment level = 0.35 * 2,220.83 = 777.29
+
+- name: Case 25, parent with a $1,000 monthly pension is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_private_pension_income: 12_000 # $1,000 per month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_assistance_unit_size: 3
+    il_tanf_payment_level_for_initial_eligibility: 777.29
+    il_tanf_gross_unearned_income: [1_000, 0, 0]
+    il_tanf_countable_unearned_income: 1_000
+    # 777.29 - 1,000 < 1 -> not income eligible (was eligible for $777
+    # when pensions were left out).
+    il_tanf_eligible: false
+    il_tanf: 0
+
+- name: Case 26, veterans benefits reduce the grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        veterans_benefits: 3_600 # $300 per month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_countable_unearned_income: 300
+    il_tanf_countable_income_for_grant_calculation: 300
+    il_tanf_eligible: true
+    # 777.29 - 300 = 477.29, rounded down to $477 (was $777).
+    il_tanf: 477
+
+- name: Case 27, Railroad Retirement $2.29 below the payment level is still eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        railroad_benefits: 9_300 # $775 per month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_countable_income_for_initial_eligibility: 775
+    # 777.29 - 775 = 2.29 >= $1 minimum -> eligible.
+    il_tanf_eligible: true
+    # 2.29 rounded down to $2.
+    il_tanf: 2
+
+- name: Case 28, Railroad Retirement $0.29 below the payment level is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        railroad_benefits: 9_324 # $777 per month
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    il_tanf_countable_income_for_initial_eligibility: 777
+    # 777.29 - 777 = 0.29 < $1 minimum (IDHS PM 10-01-02) -> not eligible.
+    il_tanf_eligible: false
+    il_tanf: 0
