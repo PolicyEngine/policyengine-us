@@ -1,0 +1,1 @@
+Cite the 2027 sources for California Premium Subsidy, Covered Connecticut and Vermont Premium Assistance, whose values carry into 2027 unchanged, and note that Covered Connecticut's dental and transportation benefits become optional in 2027.

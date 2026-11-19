@@ -11,6 +11,12 @@ class vt_premium_assistance(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
+        # PDF page 2 in Adobe Reader (the 2027 APTC worksheet is a dynamic XFA
+        # form). Section VII step 3 computes VPA as the federal required
+        # share, capped at the benchmark, minus income times the Vermont
+        # percentage; that equals 1.5% of income whenever the federal credit
+        # is positive.
+        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/205APTC-EW-2027.pdf#page=2",
     )
     documentation = (
         "Vermont state top-up to the federal ACA premium tax credit, an "
@@ -47,9 +53,10 @@ class vt_premium_assistance(Variable):
         # already below 1.5%, the Vermont percentage bottoms out at 0 so the
         # gap factor below becomes the FULL federal percentage (VPA then covers
         # the entire enrollee contribution). This branch is organically
-        # unreachable in the 2026 baseline because the federal applicable
-        # percentage floors at 2.10% > 1.5%, but is retained for robustness and
-        # future contribution schedules.
+        # unreachable in the 2026 and 2027 baselines because the federal
+        # applicable percentage floors at 2.10% (2026) and 2.15% (2027), both
+        # above 1.5%, but is retained for robustness and future contribution
+        # schedules.
         vt_percentage = max_(0, federal_percentage - reduction)
         # Incremental contribution gap between the federal applicable
         # percentage and the lower Vermont percentage.
