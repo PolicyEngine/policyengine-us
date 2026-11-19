@@ -1,0 +1,1 @@
+New Jersey wages now leave out 401(k) elective deferrals (N.J.S.A. 54A:6-21), which lowers New Jersey income tax and the income that ANCHOR, property tax relief and the other retirement income exclusion read for 401(k) contributors; 403(b), 457 and other deferrals stay taxable.
