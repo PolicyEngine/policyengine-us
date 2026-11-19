@@ -15,3 +15,9 @@ class ny_itemizes(Variable):
         standard_deduction = tax_unit("ny_standard_deduction", period)
         itemized_deductions = tax_unit("ny_itemized_deductions", period)
         return federal_itemizes & (itemized_deductions >= standard_deduction)
+
+    def formula_2018(tax_unit, period, parameters):
+        # NY Tax Law 615(a) allows either federal method from 2018.
+        itemized = tax_unit("ny_itemized_deductions", period)
+        standard = tax_unit("ny_standard_deduction", period)
+        return itemized > standard

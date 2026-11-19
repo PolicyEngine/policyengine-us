@@ -15,3 +15,10 @@ class ny_deductions(Variable):
             tax_unit("ny_itemized_deductions", period),
             tax_unit("ny_standard_deduction", period),
         )
+
+    def formula_2018(tax_unit, period, parameters):
+        return where(
+            tax_unit("ny_itemizes", period),
+            tax_unit("ny_itemized_deductions", period),
+            tax_unit("ny_standard_deduction", period),
+        )

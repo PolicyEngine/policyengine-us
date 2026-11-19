@@ -10,4 +10,6 @@ class ny_college_tuition_credit_eligible(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        return ~tax_unit("ny_itemizes", period)
+        itemizes = tax_unit("ny_itemizes", period)
+        elects_credit = tax_unit("ny_elects_tuition_credit_when_itemizing", period)
+        return ~itemizes | elects_credit

@@ -14,4 +14,7 @@ class ny_allowable_college_tuition_expenses(Variable):
         p = parameters(period).gov.states.ny.tax.income.college_tuition
         person = tax_unit.members
         capped = min_(person("qualified_tuition_expenses", period), p.cap)
-        return tax_unit.sum(capped)
+        # IT-272 Part 1: a filer claimed on another state return cannot
+        # claim either tuition benefit. This release records the head's claim.
+        claimed = tax_unit("head_is_dependent_elsewhere", period)
+        return where(claimed, 0, tax_unit.sum(capped))
