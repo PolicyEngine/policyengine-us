@@ -463,3 +463,41 @@
     # assigned_aca_ptc (12_310.752) + vt_premium_assistance (585.00) = 12_895.752.
     vt_premium_assistance: 585.00
     healthcare_benefit_value: 12_895.752
+
+- name: Case 23, Rhode Island Marketplace Affordability Program flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned_ri_rimap, which is
+  # defined for Rhode Island. Take-up follows takes_up_aca_if_eligible (default
+  # true), so the assigned amount equals the raw 1,000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+    ri_rimap: 1_000
+  output:
+    assigned_ri_rimap: 1_000
+    healthcare_benefit_value: 1_000
+
+- name: Case 24, take-up false zeroes the Rhode Island Marketplace Affordability Program health value.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+    ri_rimap: 1_000
+    takes_up_ri_rimap_if_eligible: false
+  output:
+    assigned_ri_rimap: 0
+    healthcare_benefit_value: 0

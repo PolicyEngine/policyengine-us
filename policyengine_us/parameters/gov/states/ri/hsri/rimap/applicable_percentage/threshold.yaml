@@ -1,0 +1,18 @@
+description: Rhode Island sets these federal poverty line thresholds for the applicable percentage bands under the Marketplace Affordability Program.
+values:
+  # Bands: 100-133%, 133-150% and 150-200% of the poverty line. Each band
+  # includes its lower edge ("at least") and excludes its upper edge ("less
+  # than").
+  2027-01-01:
+    - 1
+    - 1.33
+    - 1.5
+    - 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Rhode Island Marketplace Affordability Program applicable percentage band thresholds
+  reference:
+    - title: "HealthSource RI, Rhode Island Marketplace Affordability Program Annual Program Parameters for Plan Year 2027, Plan Year 2027 Rhode Island Applicable Percentage Table and interpolation rule #page 2-3"
+      href: https://healthsourceri.com/wp-content/uploads/2027-RIMAP-Final-Parameters.pdf#page=2
