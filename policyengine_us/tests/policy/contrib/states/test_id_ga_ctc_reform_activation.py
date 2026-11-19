@@ -8,7 +8,7 @@ gap:
 
 * ``ga_refundable_ctc`` had no per-period ``in_effect`` gate, so once the reform
   was installed (the factory installs it for the whole simulation whenever the
-  toggle is true in any of the next five years) it paid the refund in every
+  toggle is true in any year of its lookahead window) it paid the refund in every
   year, including pre-activation ones.
 * the Idaho reform's ``modify_parameters`` revived ``id_ctc`` in the ordered
   nonrefundable list from a hardcoded ``2026-01-01`` regardless of the actual

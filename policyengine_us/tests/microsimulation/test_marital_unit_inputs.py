@@ -342,14 +342,17 @@ def test_fallback_stops_at_a_false_is_married_or_another_household():
     ],
 )
 def test_inputs_dated_after_the_default_input_year_keep_the_couple(order):
-    # Simulation's default input year is 2024; a payload dated 2026 must
-    # still pair its couple wherever they are listed.
+    # With a default input year of 2024, a payload dated 2026 must still pair
+    # its couple wherever they are listed.
     people = {
         "grandchild": {"age": {"2026": 10}},
         "husband": {"age": {"2026": 70}},
         "wife": {"age": {"2026": 68}},
     }
-    sim = Simulation(situation={"people": {name: people[name] for name in order}})
+    sim = Simulation(
+        situation={"people": {name: people[name] for name in order}},
+        default_input_period=2024,
+    )
     units = sim.marital_unit.members_entity_id.tolist()
     index = {name: position for position, name in enumerate(order)}
     assert units[index["husband"]] == units[index["wife"]]
@@ -653,6 +656,6 @@ def test_undated_role_inputs_set_units_for_the_default_input_year():
         "wife": {"age": 68},
         "grandchild": {"age": 10, "is_tax_unit_spouse": False},
     }
-    sim = Simulation(situation={"people": people})
+    sim = Simulation(situation={"people": people}, default_input_period=2024)
     assert len(set(sim.marital_unit.members_entity_id.tolist())) == 3
     assert sim.calculate("is_tax_unit_spouse", 2026).tolist() == [False, True, False]

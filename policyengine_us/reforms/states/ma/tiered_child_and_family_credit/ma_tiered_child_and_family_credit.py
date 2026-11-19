@@ -66,7 +66,7 @@ def create_ma_tiered_child_and_family_credit() -> Reform:
             person = tax_unit.members
             dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
-            # The 5-year lookahead in the reform factory can apply this
+            # The lookahead in the reform factory can apply this
             # reform to years before it takes effect; gate on the scalar
             # in_effect parameter so pre-effective years return the baseline
             # flat-amount credit.
@@ -131,7 +131,7 @@ def create_ma_tiered_child_and_family_credit_reform(
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

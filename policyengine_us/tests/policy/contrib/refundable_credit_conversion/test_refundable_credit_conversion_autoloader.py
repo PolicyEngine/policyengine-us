@@ -5,7 +5,7 @@ bypasses `create_refundable_credit_conversion_reform`. These tests
 exercise the autoloader directly for its two cheapest properties: the
 bypass flag and the default-inactive return-None path.
 
-The 5-year forward-lookahead window itself is not unit-tested here:
+The forward-lookahead window itself is not unit-tested here:
 constructing parameter trees with `in_effect` true at specific future
 years requires a `copy.deepcopy(system.parameters)` per case, which
 pushes peak memory past the CI runner cap when this directory's batch

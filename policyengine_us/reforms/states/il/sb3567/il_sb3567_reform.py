@@ -98,7 +98,7 @@ def create_il_sb3567_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_il_sb3567()
     # Idiomatic single-period activation check, matching sibling contrib
-    # reforms (pa_ctc_match, ct_sb100, ny/wftc). No 5-year forward
+    # reforms (pa_ctc_match, ct_sb100, ny/wftc). No forward
     # lookahead: that pattern can retroactively activate the reform in
     # earlier years when the toggle later flips, which is not desired here.
     if parameters(period).gov.contrib.states.il.sb3567.in_effect:
