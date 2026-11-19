@@ -1,0 +1,61 @@
+description: Illinois adds these amounts that federal adjusted gross income leaves out to household income under the Senior Citizens Real Estate Tax Deferral program.
+values:
+  # 320 ILCS 30/2(h) gives household income the meaning in the Senior
+  # Citizens and Persons with Disabilities Property Tax Relief Act. Its
+  # section 3.07 (from Ill. Rev. Stat. ch. 67 1/2, par. 403.07) starts from
+  # federal adjusted gross income and adds items (A) to (H) "to the extent
+  # deducted or excluded from gross income in the computation of adjusted
+  # gross income". Dated from the earliest income limit modelled.
+  2006-01-01:
+    # (A) Interest and dividends: tax-exempt interest, and savings bond
+    # interest excluded under IRC 135, which the federal list subtracts as an
+    # above-the-line deduction. IL-1017 Worksheet A line 8 counts all
+    # "Interest and dividends received".
+    - tax_exempt_interest_income
+    - us_bonds_for_higher_ed
+    # (C) "All amounts received during the taxable year as an annuity under
+    # an annuity, endowment or life insurance contract or under any other
+    # contract or agreement": the part of pension and annuity payments left
+    # out of gross income as a return of the recipient's cost (Form 1040
+    # line 5a less line 5b). IL-1017 line 3 counts Civil Service benefits and
+    # line 4 annuity benefits in full, but line 4 and PIO-64 count only the
+    # federally taxable part of other pension and IRA benefits. Section
+    # 3.07(C) reaches every annuity received under a contract or agreement,
+    # so the excluded part of all pension annuities counts. Nontaxable IRA
+    # and Roth distributions are not annuities and are not added.
+    - tax_exempt_pension_income
+    # (D) Benefits paid under the Social Security Act, including Medicare
+    # premiums withheld (IL-1017 line 1, "Social Security, SSI benefits").
+    # filer_tax_exempt_social_security is the head's and spouse's Social
+    # Security that AGI leaves out. SSI is paid under title XVI of that Act.
+    - filer_tax_exempt_social_security
+    - ssi
+    # (E) Benefits paid under the Railroad Retirement Act, including Medicare
+    # premiums withheld (IL-1017 line 2). railroad_benefits is not in federal
+    # gross income in PolicyEngine, so all of it is added.
+    - railroad_benefits
+    # (F) Cash public assistance from any governmental agency (IL-1017
+    # line 6): TANF, Illinois Aid to the Aged, Blind or Disabled, and general
+    # assistance.
+    - tanf
+    - il_aabd_person
+    - general_assistance
+    # (H) Benefits under the Workers' Compensation Act or the Workers'
+    # Occupational Diseases Act.
+    - workers_compensation
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois SCRETD household income additions
+  reference:
+    - title: 320 ILCS 30/2(h) - Senior Citizens Real Estate Tax Deferral Act, household income
+      href: https://www.ilga.gov/Documents/legislation/ilcs/documents/032000300K2.htm
+    - title: 320 ILCS 25/3.07 - Senior Citizens and Persons with Disabilities Property Tax Relief Act, income
+      href: https://www.ilga.gov/Documents/legislation/ilcs/documents/032000250K3.07.htm
+    - title: Form IL-1017 (R-11/25), Application for Deferral of Real Estate/Special Assessment Taxes for Tax Year 2025, Worksheet A
+      href: https://cookcountytreasurer.com/pdfs/seniordeferral/IL-1017%20Form%20TY%202025.pdf#page=2
+    - title: Form IL-1017 (R-11/25), General Information, What is included in household income
+      href: https://cookcountytreasurer.com/pdfs/seniordeferral/IL-1017%20Form%20TY%202025.pdf#page=3
+    - title: Illinois Department of Revenue PIO-64, What is included in household income
+      href: https://tax.illinois.gov/research/publications/pio-64.html
