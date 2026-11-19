@@ -60,7 +60,9 @@ def choose_joint_itemization(costs, federal_methods, prefer_federal_itemized):
     if not np.isfinite(minimum).all():
         raise ValueError("Every tax unit needs a legal finite deduction election.")
     within_cent = costs - minimum <= CENT
-    same_as_preferred = np.asarray(federal_methods)[:, None] == prefer_federal_itemized
+    same_as_preferred = np.asarray(federal_methods)[:, None] == np.asarray(
+        prefer_federal_itemized
+    )
     preferred = within_cent & same_as_preferred
     return np.where(preferred.any(axis=0), preferred, within_cent).argmax(axis=0)
 

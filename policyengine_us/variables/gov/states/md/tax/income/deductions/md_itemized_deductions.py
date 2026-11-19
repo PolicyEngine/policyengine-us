@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import has_input
+from policyengine_us.tools.state_itemization import joint_itemization_is_enabled
 
 
 class md_itemized_deductions(Variable):
@@ -34,6 +36,23 @@ class md_itemized_deductions(Variable):
         return _limit_deductions(tax_unit, period, parameters, base_itemized)
 
     def formula_2025(tax_unit, period, parameters):
+        simulation = tax_unit.simulation
+        if (
+            has_input(simulation, "capped_property_taxes", period)
+            and not joint_itemization_is_enabled(period, parameters)
+            and not any(
+                has_input(simulation, variable, period)
+                for variable in (
+                    "state_and_local_sales_tax_elected",
+                    "state_sales_tax",
+                    "local_sales_tax",
+                )
+            )
+        ):
+            # A supplied capped property amount can stand in for the entire
+            # eligible SALT component when no sales-tax detail was supplied.
+            return md_itemized_deductions.formula(tax_unit, period, parameters)
+
         # Form 502 line 17b removes only income taxes. The Comptroller
         # accepts counting property taxes first under the federal SALT cap.
         property_tax = min_(

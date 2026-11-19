@@ -5,6 +5,7 @@ from math import isclose, isfinite
 import numpy as np
 import pytest
 from hypothesis import assume, example, given, settings, strategies as st
+from microdf import MicroSeries
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
@@ -60,6 +61,14 @@ def test_joint_election_requires_a_finite_choice_for_every_unit():
         choose_joint_itemization(
             np.array([[0.0, np.inf], [1.0, np.inf]]), (False, True), [False, True]
         )
+
+
+def test_joint_election_accepts_microsimulation_federal_tie_preferences():
+    preferences = MicroSeries([False, True, False], weights=[2, 8, 15])
+    costs = np.array([[10.0, 10.0, 10.0], [10.0, 10.0, 9.0]])
+    np.testing.assert_array_equal(
+        choose_joint_itemization(costs, (False, True), preferences), [0, 1, 1]
+    )
 
 
 def test_warm_joint_choice_is_recomputed_for_a_filed_election_in_a_branch():
