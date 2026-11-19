@@ -1,0 +1,19 @@
+description: New Mexico limits Puente Health to household income at or below this share of the federal poverty line.
+values:
+  # PY2026: "at or below 100% of the FPL" (Addendum 2, Section I.A(3)). The
+  # Section 71302 group it serves is below 100% by definition, since the
+  # repealed 26 U.S.C. 36B(c)(1)(B) covered income under the poverty line.
+  # PY2027: "household income <= 400% of the FPL" (manual p.7, eligibility
+  # item 3), with no Puente Health above 400% (manual p.8).
+  2026-01-01: 1
+  2027-01-01: 4
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Puente Health income limit as fraction of FPL
+  reference:
+    - title: Addendum 2 to the PY2026 MAP Policy and Procedures Manual, The Puente Health Program, Section I.A(3)
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/3527710a-f9f6-4e8f-9cd7-d9ea1010b653/Addendum%202_%20MAP%20P%26P%20Puente%20Health.pdf#page=2
+    - title: "FINAL PY2027 MAP Policy and Procedures Manual, Eligibility for Puente Health Program item 3 and the note on income above 400% #page 7-8"
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=7
