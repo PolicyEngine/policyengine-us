@@ -8,6 +8,8 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC",
+        "https://www.ebudget.ca.gov/2015-16/pdf/Revised/BudgetSummary/HealthandHumanServices.pdf#page=1",
+        "https://smcgov.org/media/63316/download#page=2",
     )
     documentation = """
     California Welfare and Institutions Code Section 14007.8 provides
