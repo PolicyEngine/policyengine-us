@@ -24,9 +24,11 @@ metadata:
 # with the false values at ages 26 to 49 before 2024.
 # TPS: the county's manual gives TPS holders restricted scope unless they
 # declare PRUCOL, and full scope to minors under 19 through SB 75. Both point
-# to the undocumented schedule for TPS holders who declare no PRUCOL.
-# The formula never reads the 2026-01-01 values at baseline: from 2026 it
-# returns true for DACA and TPS holders at every age.
+# to the undocumented schedule for TPS holders who declare no PRUCOL, under
+# the rules of 2016 and 2019. Neither shows how the later expansions or the
+# freeze treat TPS holders.
+# From 2026, the freeze branch ignores the calculated age result for DACA
+# and TPS holders.
 brackets:
   - threshold:
       2016-01-01: 0
