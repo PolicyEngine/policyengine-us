@@ -22,8 +22,9 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     for adults 19+ are frozen for certain statuses (undocumented), but:
     - Existing enrollees retain coverage (continuous coverage)
     - DACA/TPS holders are NOT affected by the freeze
-    - After October 2026, refugees/asylees losing federal coverage are
-      picked up by CA state-funded coverage
+    - The model does not yet cover refugees and asylees who lose federal
+      coverage after October 2026 (see the note in
+      ca_state_funded_immigration_statuses.yaml)
     """
     defined_for = StateCode.CA
 
