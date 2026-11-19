@@ -3,8 +3,10 @@
 # ma_connector_care_eligible (TaxUnit, YEAR, bool, defined_for StateCode.MA) is:
 #   in_effect
 #   & (ratio >= fpl_floor)      # fpl_floor = 1.0 for PY2026
-#   & (ratio <= fpl_limit)      # fpl_limit = 4.0 for PY2026 (956 CMR 12.04(3)(b):
-#                               # Plan Type 3C is "not over 400% of the FPL")
+#   & (ratio <= fpl_limit)      # fpl_limit = 4.0 for PY2026-PY2027 (956 CMR
+#                               # 12.04(3)(b): Plan Type 3C is "not over 400% of
+#                               # the FPL"), 3.0 from PY2028 once the pilot ends
+#                               # (M.G.L. c.176Q s.3(b))
 # where ratio = max(aca_magi, 0) / aca_fpg, the exact ratio, not
 # the truncated aca_magi_fraction.
 #   & (count of ma_connector_care_member_eligible members > 0)
@@ -164,7 +166,7 @@
     ma_connector_care_eligible: false
 
 - name: Case 8, program is in effect open-ended in 2027 so the household is eligible.
-  # in_effect has no end date, so PY2027 carries the PY2026 design forward.
+  # in_effect has no end date, and 200% FPL is inside the PY2027 band (100% to 400%).
   period: 2027
   input:
     people:
@@ -363,3 +365,127 @@
     aca_tax_family_size: 1
     aca_fpg: 15_650
     ma_connector_care_eligible: true
+
+# --- The 400% limit in its last year (PY2027) and the 300% limit from PY2028 ---
+# St. 2026 c.137 s.92 makes the 300% to 400% FPL pilot a 4-year pilot, through
+# plan year 2027. From 2028 fpl_limit is 3.0 (M.G.L. c.176Q s.3(b)).
+
+- name: Case 16, 2027 exactly 400% FPL is eligible in the pilot's last year.
+  # ratio 4.0 <= fpl_limit 4.0 -> eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true
+
+- name: Case 17, 2027 just above 400% FPL is ineligible.
+  # ratio 4.0001 > fpl_limit 4.0 -> ineligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_001
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+- name: Case 18, 2027 305% FPL is eligible (Plan Type 3C pilot tier).
+  # ratio 3.05 <= fpl_limit 4.0 -> eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_500
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true
+
+- name: Case 19, 2028 exactly 300% FPL is eligible.
+  # ratio 3.0 <= fpl_limit 3.0 (inclusive) -> eligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true
+
+- name: Case 20, 2028 just above 300% FPL is ineligible.
+  # ratio 3.0001 > fpl_limit 3.0 -> ineligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_001
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+- name: Case 21, 2028 305% FPL is ineligible after the pilot ends.
+  # ratio 3.05 > fpl_limit 3.0 -> ineligible (eligible in 2027, Case 18).
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_500
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false

@@ -14,6 +14,8 @@ metadata:
       href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
     - title: 956 CMR 12.12(9)
       href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=13
+    - title: "Health Connector 2027 Guide to Subsidies, lowest monthly premium per person by Plan Type #page 1-2"
+      href: https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1
 
 brackets:
   # Household income measured as ACA MAGI as a share of aca_fpg (the prior-year
@@ -26,35 +28,42 @@ brackets:
   # dollar step function decoupled from the affordability percent-of-income
   # schedule (Board-set, 956 CMR 12.12(9)); every band is $0 before the PY2026
   # effective date.
-  # Plan Type 2A, 100% to 150% FPL -> $0 per person per month.
+  # Plan Type 2A, 100% to 150% FPL -> $0 per person per month (2026 and 2027).
   - threshold:
       2026-01-01: 1
     amount:
       0000-01-01: 0
       2026-01-01: 0
-  # Plan Type 2B, over 150% to 200% FPL -> $53.
+      2027-01-01: 0
+  # Plan Type 2B, over 150% to 200% FPL -> $53 (2026), $55 (2027).
   - threshold:
       2026-01-01: 1.5
     amount:
       0000-01-01: 0
       2026-01-01: 53
-  # Plan Type 3A, over 200% to 250% FPL -> $103.
+      2027-01-01: 55
+  # Plan Type 3A, over 200% to 250% FPL -> $103 (2026), $107 (2027).
   - threshold:
       2026-01-01: 2
     amount:
       0000-01-01: 0
       2026-01-01: 103
-  # Plan Type 3B, over 250% to 300% FPL -> $152.
+      2027-01-01: 107
+  # Plan Type 3B, over 250% to 300% FPL -> $152 (2026), $158 (2027).
   - threshold:
       2026-01-01: 2.5
     amount:
       0000-01-01: 0
       2026-01-01: 152
-  # Plan Type 3C, over 300% to 400% FPL -> $235. This tier is a pilot extended through
-  # FY2026 in the state budget and may lapse in out-years; it is carried forward
-  # without end-dating as a current-law assumption.
+      2027-01-01: 158
+  # Plan Type 3C, over 300% to 400% FPL -> $235 (2026), $242 (2027). This tier
+  # exists only under the ConnectorCare Expansion Pilot (St. 2023 c.28 s.81),
+  # which St. 2026 c.137 s.92 makes a 4-year pilot, so it runs through plan
+  # year 2027. fpl_limit falls to 300% FPL from 2028, so this amount can't be
+  # reached after 2027.
   - threshold:
       2026-01-01: 3
     amount:
       0000-01-01: 0
       2026-01-01: 235
+      2027-01-01: 242
