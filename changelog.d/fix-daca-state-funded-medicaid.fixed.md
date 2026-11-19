@@ -1,1 +1,1 @@
-Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015, where the model left out ages 26 to 49 before 2024 and ages 50 and over before 2022. Give them New York's state-funded Medicaid from 2015 through 2024, before the Essential Plan covered them.
+Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015, where the model left out ages 26 to 49 before 2024 and ages 50 and over before 2022.
