@@ -83,6 +83,9 @@ class va_reduced_itemized_deductions(Variable):
         adjustment_fraction = np.zeros_like(excess_ded)
         mask = excess_ded != 0
         adjustment_fraction[mask] = va_itm_deds_adjustment[mask] / excess_ded[mask]
+        if p_va.worksheet_allows_sales_tax:
+            scale = p_va.reduction.income_tax_fraction_scale
+            adjustment_fraction = np.floor(adjustment_fraction * scale + 0.5) / scale
         # Part B Line 13 - capped state and local income tax
 
         # Line 14 - Multiply line 11 by line 13
@@ -95,4 +98,9 @@ class va_reduced_itemized_deductions(Variable):
         reduced_state_and_local_tax = max_(
             capped_state_and_local_tax - state_and_local_tax_adj, 0
         )
+        if p_va.worksheet_allows_sales_tax:
+            elects_sales_tax = tax_unit("state_and_local_sales_tax_elected", period)
+            reduced_state_and_local_tax = where(
+                elects_sales_tax, 0, reduced_state_and_local_tax
+            )
         return max_(reduced_selected_ded - reduced_state_and_local_tax, 0)
