@@ -1,7 +1,8 @@
 # New York gives DACA recipients state-funded Medicaid as residents
-# permanently residing under color of law. The Essential Plan covered them
-# from August 1, 2024 to June 30, 2026, and annual calculations read the
-# status list at January 1.
+# permanently residing under color of law. The Essential Plan was due to
+# take recipients aged 19 to 64 with income up to 250% of the poverty line
+# from August 1, 2024, and covered them to June 30, 2026. Annual
+# calculations read the status list at January 1.
 
 - name: Case 1, DACA 30-year-old is eligible in 2019.
   period: 2019
@@ -70,10 +71,10 @@
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
-- name: Case 7, DACA 10-year-old is eligible in 2019.
+- name: Case 7, DACA 17-year-old is eligible in 2019.
   period: 2019
   input:
-    age: 10
+    age: 17
     immigration_status: DACA
     state_code: NY
   output:
@@ -203,3 +204,37 @@
     is_medicaid_eligible: false
     is_chip_fcep_eligible_person: true
     chip_category: PREGNANT_FCEP
+
+# The list empties at every age, though the Essential Plan took ages 19 to 64.
+- name: Case 15, DACA 18-year-old is ineligible in 2025.
+  period: 2025
+  input:
+    age: 18
+    immigration_status: DACA
+    state_code: NY
+  output:
+    # The list is empty at 2025-01-01 (from 2024-08-01), whatever the age.
+    is_ny_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+
+# From 2027 the Medicaid work requirement applies to the adult group.
+- name: Case 16, DACA 30-year-old with no work activity fails the work requirement in 2027.
+  period: 2027
+  input:
+    age: 30
+    immigration_status: DACA
+    state_code: NY
+    medicaid_category: ADULT
+    monthly_hours_worked: 0
+    employment_income: 0
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    # DACA is on the list at 2027-01-01 (from 2026-07-01).
+    is_medicaid_immigration_status_eligible: true
+    # An adult-group member aged 19 to 64 with 0 hours (under 80), no income
+    # and no exemption does not meet the requirement.
+    medicaid_work_requirement_eligible: false
+    is_medicaid_ineligible_due_to_work_requirement: true
+    # Category AND immigration test AND work requirement: true AND true AND
+    # false = false.
+    is_medicaid_eligible: false

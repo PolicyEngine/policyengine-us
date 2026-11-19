@@ -13,16 +13,18 @@ values:
   # the PRUCOL statuses.
   2015-01-01:
     - DACA
-  # The Essential Plan covers DACA recipients aged 19 to 64 with income up
-  # to 250% of the poverty level from August 1, 2024. YEAR-defined formulas
-  # read January 1, so this value first applies in 2025. The list empties
-  # for every age, though the Essential Plan covers ages 19 to 64 only.
+  # The Essential Plan was due to take DACA recipients aged 19 to 64 with
+  # income up to 250% of the poverty level from August 1, 2024, and covered
+  # them to June 30, 2026. YEAR-defined formulas read January 1, so this
+  # value first applies in 2025. The list empties for every age, though the
+  # Essential Plan covered ages 19 to 64 only.
   2024-08-01:
     []
   # NY State of Health ends Essential Plan coverage for DACA recipients on
-  # June 30, 2026, and those in Essential Plan 3 or 4 become eligible for
-  # Medicaid on July 1, 2026. YEAR-defined formulas read January 1, so this
-  # value first applies in 2027.
+  # June 30, 2026. Those in Essential Plan 3 or 4, and pregnant or
+  # postpartum recipients at any level, become eligible for Medicaid on
+  # July 1, 2026. YEAR-defined formulas read January 1, so this value first
+  # applies in 2027.
   2026-07-01:
     - DACA
 

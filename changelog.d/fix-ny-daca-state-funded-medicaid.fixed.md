@@ -1,1 +1,1 @@
-Give Deferred Action for Childhood Arrivals recipients New York's state-funded Medicaid before August 1, 2024 and from July 1, 2026, the months around their Essential Plan coverage. Annual calculations apply it from 2015 through 2024 and from 2027.
+Give Deferred Action for Childhood Arrivals recipients New York's state-funded Medicaid before August 1, 2024 and from July 1, 2026. Between those dates the Essential Plan covered recipients aged 19 to 64 with income up to 250% of the poverty line. Annual calculations apply the Medicaid route from 2015 through 2024 and from 2027.
