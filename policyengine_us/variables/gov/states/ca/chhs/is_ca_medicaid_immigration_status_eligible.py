@@ -45,21 +45,24 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
 
         age = person("age", period)
         pregnant = person("is_pregnant", period)
-        # Undocumented residents follow the Section 14007.8 age schedule and
-        # DACA recipients a schedule that covers every age. Every other
-        # status reads the TPS schedule, and the status test above passes
-        # only TPS holders among them.
+        # Undocumented residents follow the Section 14007.8 age schedule,
+        # DACA recipients a schedule that covers every age, and TPS holders
+        # their own. The formula names each status it covers: a status added
+        # to ca_state_funded_immigration_statuses gets false until this
+        # formula names it and gives it a schedule.
         statuses = immigration_status.possible_values
+        undocumented = immigration_status == statuses.UNDOCUMENTED
+        daca = immigration_status == statuses.DACA
+        tps = immigration_status == statuses.TPS
+        status_eligible = is_ca_state_funded_status & (undocumented | daca | tps)
         age_eligible = select(
-            [
-                immigration_status == statuses.UNDOCUMENTED,
-                immigration_status == statuses.DACA,
-            ],
+            [undocumented, daca, tps],
             [
                 p.eligible_regardless_of_immigration_status.calc(age),
                 p.eligible_with_daca.calc(age),
+                p.eligible_with_tps.calc(age),
             ],
-            default=p.eligible_with_tps.calc(age),
+            default=False,
         )
         # Standard eligibility based on age or pregnancy
         standard_eligible = age_eligible | pregnant
@@ -79,10 +82,10 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
             #   continuous coverage (already enrolled)
             # Not freeze-affected (DACA, TPS): always eligible. The freeze
             #   names neither status.
-            return is_ca_state_funded_status & where(
+            return status_eligible & where(
                 is_freeze_affected,
                 standard_eligible | current_medicaid_coverage,
                 True,
             )
 
-        return is_ca_state_funded_status & standard_eligible
+        return status_eligible & standard_eligible
