@@ -1,0 +1,75 @@
+# 2025 Montana Form 2 and Schedule I Worksheet B, lines 1–9.
+- name: A federal standard filer cannot deduct a larger hypothetical Montana Schedule A
+  period: 2025
+  input:
+    state_code: MT
+    age: 40
+    tax_unit_itemizes: false
+    adjusted_gross_income: 80_000
+    standard_deduction: 15_750
+    itemized_taxable_income_deductions: 21_750
+    state_withheld_income_tax: 8_000
+    salt_deduction: 13_000
+    real_estate_taxes: 5_000
+    mt_additions: 0
+    mt_subtractions: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_taxable_income_joint: 64_250
+
+- name: Federal itemization allows only the state income tax above the hypothetical standard
+  period: 2025
+  input:
+    state_code: MT
+    age: 40
+    tax_unit_itemizes: true
+    adjusted_gross_income: 80_000
+    standard_deduction: 15_750
+    itemized_taxable_income_deductions: 21_750
+    state_withheld_income_tax: 8_000
+    salt_deduction: 13_000
+    real_estate_taxes: 5_000
+    state_and_local_sales_tax_elected: false
+    mt_additions: 0
+    mt_subtractions: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 6_000
+    mt_taxable_income_joint: 64_250
+
+- name: Federal sales-tax election excludes income taxes even when income tax paid is larger
+  period: 2025
+  input:
+    state_code: MT
+    age: 40
+    tax_unit_itemizes: true
+    adjusted_gross_income: 80_000
+    standard_deduction: 15_750
+    itemized_taxable_income_deductions: 21_750
+    state_withheld_income_tax: 8_000
+    local_income_tax: 1_000
+    state_sales_tax: 3_000
+    local_sales_tax: 0
+    real_estate_taxes: 5_000
+    salt_deduction: 8_000
+    state_and_local_sales_tax_elected: true
+    mt_additions: 0
+    mt_subtractions: 0
+  output:
+    mt_state_income_tax_itemized_add_back: 0
+    mt_taxable_income_joint: 58_250
+
+- name: Real property, personal property and local income tax get priority inside the SALT cap
+  period: 2025
+  input:
+    state_code: MT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 25_750
+    standard_deduction: 15_750
+    state_and_local_sales_tax_elected: false
+    state_withheld_income_tax: 8_000
+    local_income_tax: 1_000
+    real_estate_taxes: 3_000
+    mt_federal_itemized_personal_property_taxes: 2_000
+    salt_deduction: 10_000
+  output:
+    mt_state_income_tax_itemized_add_back: 4_000
