@@ -541,8 +541,9 @@
     is_ca_medicaid_immigration_status_eligible: true
 
 # DACA recipients at the ages and years the shared schedule left out.
-# California counts deferred action as PRUCOL and gives PRUCOL residents
-# state-funded full-scope Medi-Cal at every age.
+# California counts deferred action as PRUCOL. Its general PRUCOL sources
+# give PRUCOL residents state-funded full-scope Medi-Cal and state no age
+# ceiling.
 
 - name: Case 43, DACA 30-year-old is eligible in 2019.
   period: 2019
