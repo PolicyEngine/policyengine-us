@@ -1,0 +1,255 @@
+# R.I. Gen. Laws 44-33-3(7): income is federal adjusted gross income plus "all
+# non-taxable income including, but not limited to ... alimony, support money
+# ... cash public assistance and relief ... the gross amount of any pension or
+# annuity (including ... all payments received under the federal Social
+# Security Act ... and veterans' disability pensions) ... and the gross amount
+# of 'loss of time' insurance", and "shall not include any deductions for
+# rental losses, business losses, capital losses, exclusion for foreign income,
+# and any losses received from pass-through entities".
+# 44-33-3(6): household income is "all income received by all persons of a
+# household".
+# 2025 Form RI-1040H, Part 5, lines 14-32:
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%201040H_w.pdf#page=2
+
+- name: A business loss is not deducted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 20_000
+    self_employment_income: -5_000
+  output:
+    # RI-1040H line 28 (federal AGI) 15,000 + line 31 (addback of losses)
+    # 5,000 = 20,000.
+    ri_property_tax_household_income: 20_000
+
+- name: A capital loss is not deducted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 20_000
+    long_term_capital_gains: -4_000
+  output:
+    # Federal AGI deducts 3,000 of the loss (IRC 1211(b)): 17,000. Rhode
+    # Island allows no deduction for capital losses, so the 3,000 is added
+    # back: 20,000. The other 1,000 never reduced AGI.
+    ri_property_tax_household_income: 20_000
+
+- name: A capital loss exactly at the federal 3,000 limit is added back in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 20_000
+    long_term_capital_gains: -3_000
+  output:
+    # Federal AGI 20,000 - 3,000 = 17,000; RI-1040H line 31 adds back the
+    # 3,000 loss on line 19: 20,000.
+    ri_property_tax_household_income: 20_000
+
+- name: A capital loss that only offsets capital gain distributions is not added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 20_000
+    non_sch_d_capital_gains: 2_000
+    long_term_capital_gains: -2_000
+  output:
+    # Schedule D line 13 nets the 2,000 of distributions against the 2,000
+    # loss, so Form 1040 line 7a (RI-1040H line 19) is zero and no capital
+    # loss is deducted from other income: AGI 20,000, nothing to add back.
+    ri_property_tax_household_income: 20_000
+
+- name: A rental loss is added back even when it nets against estate income on the same form line.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 10_000
+    rental_income: -4_000
+    estate_income: 6_000
+  output:
+    # Schedule 1 line 5 (RI-1040H line 21) is 6,000 - 4,000 = 2,000, so
+    # federal AGI is 10,000 + 2,000 = 12,000. The statute allows no
+    # deduction for rental losses, so line 31 adds back the 4,000:
+    # 12,000 + 4,000 = 16,000.
+    ri_property_tax_household_income: 16_000
+
+- name: Alimony from a pre-2019 divorce counts once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    alimony_income: 4_000
+    divorce_year: 2010
+  output:
+    # Federal AGI already holds the alimony (RI-1040H line 17):
+    # 10,000 + 4,000 = 14,000, with no non-taxable alimony to add.
+    ri_property_tax_household_income: 14_000
+
+- name: Alimony from a post-2018 divorce counts as non-taxable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    alimony_income: 4_000
+    divorce_year: 2020
+  output:
+    # Federal AGI leaves the alimony out: 10,000 + non-taxable alimony
+    # 4,000 = 14,000.
+    ri_property_tax_household_income: 14_000
+
+- name: Veterans' disability benefits count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    veterans_benefits: 5_000
+  output:
+    # 10,000 + veterans' disability pension 5,000 = 15,000.
+    ri_property_tax_household_income: 15_000
+
+- name: A Roth IRA distribution counts at its gross amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    tax_exempt_ira_distributions: 3_000
+  output:
+    # RI-1040H line 20 takes IRA distributions from Form 1040 line 4a (the
+    # gross amount): 10,000 + 3,000 = 13,000.
+    ri_property_tax_household_income: 13_000
+
+- name: General assistance counts as cash public assistance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    general_assistance: 2_400
+  output:
+    # 10,000 + line 29 (cash public assistance) 2,400 = 12,400.
+    ri_property_tax_household_income: 12_400
+
+- name: SSI and the Rhode Island state supplement count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    ssi: 6_000
+    ri_ssp: 480
+  output:
+    # SSI is paid under title XVI of the Social Security Act, and the state
+    # supplement is supplementary cash assistance to it
+    # (R.I. Gen. Laws 40-6-27(a)(1)): 10,000 + 6,000 + 480 = 16,480.
+    ri_property_tax_household_income: 16_480
+
+- name: Tax-exempt disability insurance benefits count at their gross amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    taxable_private_pension_income: 10_000
+    disability_benefits: 3_000
+    tax_exempt_disability_benefits: 3_000
+  output:
+    # 10,000 + gross "loss of time" insurance 3,000 = 13,000.
+    ri_property_tax_household_income: 13_000
+
+- name: Foreign earned income excluded under section 911 counts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    employment_income: 10_000
+    foreign_earned_income_exclusion: 4_000
+  output:
+    # PolicyEngine income inputs are net of the exclusion, so federal AGI is
+    # 10,000. No "exclusion for foreign income" is allowed: 14,000.
+    ri_property_tax_household_income: 14_000
+
+- name: Another household member's income counts, though they file their own return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 64
+        taxable_private_pension_income: 10_000
+      child:
+        age: 40
+        employment_income: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    # 44-33-3(6): all income received by all persons of the household:
+    # 10,000 + 6,000 = 16,000 for either claimant.
+    ri_property_tax_household_income: [16_000, 16_000]
+
+- name: Cash assistance paid to a family that spans two tax units counts once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 64
+        taxable_private_pension_income: 10_000
+      child:
+        age: 40
+        employment_income: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 3_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    # Each tax unit counts its members' share of the 3,000 (1,500 each), and
+    # the household total adds both: 10,000 + 6,000 + 3,000 = 19,000.
+    ri_property_tax_household_income: [19_000, 19_000]
+
+- name: A homeowner aged 70 with a pension and veterans' benefits gets a smaller credit once the benefits count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        taxable_private_pension_income: 12_000
+        veterans_benefits: 6_000
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit:
+        members: [claimant]
+    households:
+      household:
+        members: [claimant]
+        state_code: RI
+  output:
+    # Unearned income of 1,500 a month is above the SSI benefit rate, so no
+    # SSI is paid. Household income: 12,000 + 6,000 = 18,000, in the 6% band
+    # for one person (13,971 and up). Threshold 18,000 x 6% = 1,080; credit
+    # min(1,500 - 1,080, 700) = 420.
+    ri_property_tax_household_income: 18_000
+    ri_property_tax_credit: 420
