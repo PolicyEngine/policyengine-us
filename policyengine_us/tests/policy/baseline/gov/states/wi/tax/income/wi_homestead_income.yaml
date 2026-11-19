@@ -847,6 +847,23 @@
     # 16,000 + 0 = 16,000.
     wi_homestead_income: 16_000
 
+- name: Case 23b, under a reform that takes alimony out of federal gross income, all maintenance counts on line 9i.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    # The 2025 federal gross income sources without taxable_alimony_income.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, salt_refund_income, military_retirement_income]
+    age: 50
+    state_code: WI
+    employment_income: 10_000
+    alimony_income: 6_000
+    divorce_year: 2015
+  output:
+    wi_homestead_nontaxable_alimony: 6_000
+    adjusted_gross_income: 10_000
+    # 10,000 + 6,000 = 16,000.
+    wi_homestead_income: 16_000
+
 - name: Case 24, workers' compensation is household income (line 11b).
   # 71.52(6): "worker's compensation, unemployment insurance, the gross
   # amount of 'loss of time' insurance". Line 11b (page 14): "Workers'
