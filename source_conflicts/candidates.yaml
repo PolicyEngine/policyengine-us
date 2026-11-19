@@ -11253,6 +11253,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit_disallowed_losses.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11174
   state: ruled
   note: A 2026-11-19 ruling under the statute-first rule follows ORS 316.157(2)(c)(B). Household income starts from
     federal adjusted gross income, where long_term_capital_gains is net of long_term_capital_loss_carryover, and the
