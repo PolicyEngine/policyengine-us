@@ -9,8 +9,10 @@ class chip_federal_share(Variable):
         "Enhanced federal medical assistance percentage (eFMAP) applied to "
         "CHIP expenditures: regular state FMAP plus 30 percent of the gap "
         "between regular FMAP and 100 percent, capped at 85 percent "
-        "(42 U.S.C. 1397ee(b)(1)). A child enrolled through a state's "
-        "undocumented-child route gets no federal share (8 U.S.C. 1611)."
+        "(42 U.S.C. 1397ee(b)(1)). An undocumented child enrolled through the "
+        "route that gov.hhs.chip.undocumented.child opens, New York's alone so "
+        "far, gets no federal share (8 U.S.C. 1611). An undocumented child "
+        "whom New Jersey's all-children route admits keeps the match here."
     )
     unit = "/1"
     definition_period = YEAR
@@ -27,10 +29,13 @@ class chip_federal_share(Variable):
         regular_fmap = fmap[state]
         efmap = min_(regular_fmap + 0.30 * (1 - regular_fmap), 0.85)
         # 8 U.S.C. 1611 bars federal payment for a child with no federal
-        # immigration route. A child enrolled through a state's
-        # undocumented-child route (gov.hhs.chip.undocumented.child) is state
-        # funded and gets no match. The unborn-child route tests no
-        # immigration status and keeps its match.
+        # immigration route. An undocumented child enrolled through the route
+        # that gov.hhs.chip.undocumented.child opens (New York's alone so far)
+        # is state funded and gets no match. This formula does not apply
+        # that to other state routes: an undocumented child whom New Jersey
+        # admits through regardless_of_immigration_status.child_age_limit
+        # keeps the match. The unborn-child route tests no immigration
+        # status and keeps its match.
         status = person("immigration_status", period)
         state_str = person.household("state_code_str", period)
         category = person("chip_category", period)
