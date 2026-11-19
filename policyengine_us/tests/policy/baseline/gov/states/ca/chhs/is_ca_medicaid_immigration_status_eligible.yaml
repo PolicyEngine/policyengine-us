@@ -388,10 +388,10 @@
     # true at 2024-01-01.
     is_ca_medicaid_immigration_status_eligible: true
 
-# DACA and TPS holders: these cases guard that the change to the undocumented
-# schedule leaves their results as they were. The dates they pin come from
-# the schedule the three statuses shared, not from a source (see the
-# comment in eligible_with_daca_or_tps.yaml).
+# DACA and TPS holders: DACA recipients read eligible_with_daca, which covers
+# every age. TPS holders read eligible_with_tps. Its dates come from the
+# schedule the three statuses shared, not from a source (see the comment in
+# eligible_with_tps.yaml).
 
 - name: Case 33, DACA 22-year-old is eligible in 2019.
   period: 2019
@@ -401,8 +401,8 @@
     immigration_status: DACA
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
-    # Its age-19 bracket is true at 2019-01-01 (true from 2016-01-01).
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket is true at 2019-01-01 (true from 2016-01-01).
     is_ca_medicaid_immigration_status_eligible: true
 
 - name: Case 34, TPS 22-year-old is eligible in 2017.
@@ -413,7 +413,7 @@
     immigration_status: TPS
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
     # Its age-19 bracket is true at 2017-01-01 (true from 2016-01-01).
     is_ca_medicaid_immigration_status_eligible: true
 
@@ -425,8 +425,8 @@
     immigration_status: DACA
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
-    # Its age-19 bracket's first value is true at 2016-01-01, and backdating
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket's first value is true at 2016-01-01, and backdating
     # copies that first value to 2015.
     is_ca_medicaid_immigration_status_eligible: true
 
@@ -438,7 +438,7 @@
     immigration_status: TPS
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
     # Its age-0 bracket's first value is true at 2016-01-01, and backdating
     # copies that first value to 2015.
     is_ca_medicaid_immigration_status_eligible: true
@@ -451,8 +451,8 @@
     immigration_status: DACA
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
-    # Its age-0 bracket is true at 2016-01-01.
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket is true at 2016-01-01.
     is_ca_medicaid_immigration_status_eligible: true
 
 - name: Case 38, TPS 55-year-old is eligible in 2022.
@@ -463,7 +463,7 @@
     immigration_status: TPS
     state_code: CA
   output:
-    # DACA and TPS holders read eligible_with_daca_or_tps, not the undocumented schedule.
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
     # Its age-50 bracket is true at 2022-01-01.
     is_ca_medicaid_immigration_status_eligible: true
 
@@ -494,7 +494,8 @@
         state_code: CA
   output:
     # Undocumented, 22: age-19 bracket of the undocumented schedule, false at 2019-01-01.
-    # DACA, 22 and TPS, 22: age-19 bracket of eligible_with_daca_or_tps, true at 2019-01-01.
+    # DACA, 22: the one bracket of eligible_with_daca, true at 2019-01-01.
+    # TPS, 22: age-19 bracket of eligible_with_tps, true at 2019-01-01.
     # Undocumented, 10: age-0 bracket of the undocumented schedule, true at 2019-01-01.
     is_ca_medicaid_immigration_status_eligible: [false, true, true, true]
 
@@ -525,7 +526,7 @@
     # current Medicaid coverage: false OR true = true.
     is_ca_medicaid_immigration_status_eligible: true
 
-# Pregnancy covers a DACA holder at an age the DACA and TPS schedule leaves out.
+# A pregnant DACA recipient qualifies by age and by pregnancy.
 
 - name: Case 42, pregnant DACA 30-year-old is eligible in 2019.
   period: 2019
@@ -535,6 +536,115 @@
     immigration_status: DACA
     state_code: CA
   output:
-    # The age-26 bracket of eligible_with_daca_or_tps is false at 2019-01-01;
-    # the formula adds pregnancy: false OR true = true.
+    # The one bracket of eligible_with_daca is true at 2019-01-01, and the
+    # person is pregnant: true OR true = true.
     is_ca_medicaid_immigration_status_eligible: true
+
+# DACA recipients at the ages and years the shared schedule left out.
+# California counts deferred action as PRUCOL and gives PRUCOL residents
+# state-funded full-scope Medi-Cal at every age.
+
+- name: Case 43, DACA 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # eligible_with_daca has one bracket, from age 0: true at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 44, DACA 30-year-old is eligible in 2015.
+  period: 2015
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The bracket's first value is true at 2016-01-01, and backdating copies
+    # that first value to 2015.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 45, DACA 45-year-old is eligible in 2023.
+  period: 2023
+  input:
+    age: 45
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The one bracket is true at 2023-01-01. The shared schedule covered ages
+    # 26 to 49 from 2024.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 46, DACA 55-year-old is eligible in 2021.
+  period: 2021
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The one bracket is true at 2021-01-01. The shared schedule covered ages
+    # 50 and over from 2022.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# TPS holders keep the shared schedule's dates.
+
+- name: Case 47, TPS 30-year-old is ineligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-26 bracket of eligible_with_tps is false at 2019-01-01 (true
+    # from 2024-01-01).
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 48, TPS 55-year-old is ineligible in 2021.
+  period: 2021
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-50 bracket of eligible_with_tps is false at 2021-01-01 (true
+    # from 2022-01-01).
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 49, pregnant TPS 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: true
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-26 bracket of eligible_with_tps is false at 2019-01-01; the
+    # formula adds pregnancy: false OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# A DACA adult with no income reaches Medi-Cal through the state-funded route.
+- name: Case 50, DACA 30-year-old with no income is Medicaid eligible in 2019.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: DACA
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+    # No income is below California's adult limit of 138% of the poverty line.
+    is_medicaid_eligible: true

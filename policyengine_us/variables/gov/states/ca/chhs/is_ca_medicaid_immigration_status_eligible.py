@@ -13,8 +13,10 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     California Welfare and Institutions Code Section 14007.8 provides
     state-funded Medi-Cal to individuals without satisfactory immigration
     status based on age brackets. The formula applies the schedule in
-    eligible_regardless_of_immigration_status to undocumented residents and
-    the one in eligible_with_daca_or_tps to DACA and TPS holders. This
+    eligible_regardless_of_immigration_status to undocumented residents,
+    the one in eligible_with_daca to DACA recipients, who qualify at every
+    age as permanently residing under color of law, and the one in
+    eligible_with_tps to TPS holders. This
     variable is YEAR-defined and reads each schedule at January 1. So the
     expansion to children that starts May 1, 2016 applies in the model from
     2017, and the expansion to ages 50 and over that starts May 1, 2022
@@ -39,16 +41,21 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
 
         age = person("age", period)
         pregnant = person("is_pregnant", period)
-        # Undocumented residents follow the Section 14007.8 age schedule.
-        # Every other status reads the DACA and TPS schedule, and the status
-        # test above passes only DACA and TPS holders among them.
-        undocumented = (
-            immigration_status == immigration_status.possible_values.UNDOCUMENTED
-        )
-        age_eligible = where(
-            undocumented,
-            p.eligible_regardless_of_immigration_status.calc(age),
-            p.eligible_with_daca_or_tps.calc(age),
+        # Undocumented residents follow the Section 14007.8 age schedule and
+        # DACA recipients a schedule that covers every age. Every other
+        # status reads the TPS schedule, and the status test above passes
+        # only TPS holders among them.
+        statuses = immigration_status.possible_values
+        age_eligible = select(
+            [
+                immigration_status == statuses.UNDOCUMENTED,
+                immigration_status == statuses.DACA,
+            ],
+            [
+                p.eligible_regardless_of_immigration_status.calc(age),
+                p.eligible_with_daca.calc(age),
+            ],
+            default=p.eligible_with_tps.calc(age),
         )
         # Standard eligibility based on age or pregnancy
         standard_eligible = age_eligible | pregnant

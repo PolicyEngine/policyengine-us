@@ -1,0 +1,1 @@
+Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015, where the model left out ages 26 to 49 before 2024 and ages 50 and over before 2022.
