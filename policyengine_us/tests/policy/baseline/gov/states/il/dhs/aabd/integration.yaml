@@ -532,3 +532,139 @@
     il_aabd_eligible_person: [false, false]
     il_aabd_person: [0, 0]
     il_aabd: 0
+
+- name: Integration 8, a pensioner with a $40,000 pension is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # SSI: 40,000 / 12 - 20 = 3,313.33 of countable income exceeds the
+    # 2026 federal benefit rate of 994, so SSI is 0.
+    ssi: 0
+    # Pensions are nonexempt unearned income (89 Ill. Adm. Code 113.100,
+    # 113.113; IDHS PM 08-02-06-c): 40,000 / 12 = 3,333.33 a month.
+    il_aabd_gross_unearned_income: 3_333.33
+    il_aabd_countable_unearned_income: 3_308.33 # 3,333.33 - 25
+    il_aabd_need_standard_person: 851.33 # 788.90 grant + 62.43 personal allowance
+    il_aabd_countable_income: 3_308.33
+    il_aabd_non_financial_eligible_person: true
+    # 3,308.33 > 851.33. Before pensions were counted, countable income was 0
+    # and this person got the full 851.33 a month.
+    il_aabd_financial_eligible_person: false
+    il_aabd_eligible_person: false
+    il_aabd_person: 0
+    il_aabd: 0
+
+- name: Integration 9, an SSI recipient's pension counts against the need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 3_600 # $300 a month
+        rent: 7_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        electricity_expense: 1_200
+        gas_expense: 900
+        water_expense: 480
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # SSI: 994 federal benefit rate - (300 pension - 20 general exclusion) = 714.
+    ssi: 714
+    il_aabd_gross_unearned_income: 1_014 # 300 pension + 714 SSI
+    il_aabd_countable_unearned_income: 989 # 1,014 - 25
+    # 788.90 grant + 62.43 personal allowance + 97 rent allowance cap
+    # + 21.25 utilities (Cook County = Area 1: 5.55 electricity + 11.90
+    # metered gas + 3.80 water) = 969.58.
+    il_aabd_need_standard_person: 969.58
+    # 989 > 969.58. Without the pension, countable income was 714 - 25 = 689
+    # and AABD paid 969.58 - 689 = 280.58 a month, restoring the SSI the
+    # pension had reduced.
+    il_aabd_financial_eligible_person: false
+    il_aabd_person: 0
+    il_aabd: 0
+
+- name: Integration 10, a pension just under the need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_512 # $876 a month
+        takes_up_ssi_if_eligible: false # Not receiving SSI
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    ssi: 0
+    il_aabd_countable_income: 851 # 876 - 25
+    il_aabd_need_standard_person: 851.33 # 788.90 + 62.43
+    # 851 <= 851.33, so the person is eligible for 851.33 - 851 = 0.33.
+    il_aabd_financial_eligible_person: true
+    il_aabd_eligible_person: true
+    il_aabd_person: 0.33
+    il_aabd: 0.33
+
+- name: Integration 11, a pension just over the need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_524 # $877 a month
+        takes_up_ssi_if_eligible: false # Not receiving SSI
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    ssi: 0
+    il_aabd_countable_income: 852 # 877 - 25
+    il_aabd_need_standard_person: 851.33
+    # 852 > 851.33: income ends eligibility.
+    il_aabd_financial_eligible_person: false
+    il_aabd_eligible_person: false
+    il_aabd_person: 0
+    il_aabd: 0
