@@ -14520,7 +14520,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_income.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11178
   state: unreviewed
   note: 'PolicyEngine adds back limited_business_loss, which holds each head''s and spouse''s loss in each income
     input (self-employment, farm, rental, farm rental, estate or trust, partnership or S corporation, and Form 4797
