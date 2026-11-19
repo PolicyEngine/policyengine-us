@@ -9,14 +9,18 @@
 # add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
 # annual total, so the values below are annual SLCSP.
 #
-# Formula (final PY2026 policy, Section 5(1)(c)-(d)):
+# Formula (final PY2026 policy, Section 5(1)(c)-(d); the final PY2027 policy
+# keeps the build-up and the cap):
 #   n_group1 = count of is_aca_ptc_eligible members
 #   n_group3 = count of (immigration_status UNDOCUMENTED and NOT
 #              wa_apple_health_expansion_eligible) members
-#   base_annual = 12 * (55*n_group1 + 250*n_group3)
+#   base_annual = 12 * (a1*n_group1 + a3*n_group3)
+#     PY2026: a1 = 55, a3 = 250.
+#     PY2027: a1 = 35 if aca_magi / aca_fpg <= 2.00, else 20; a3 = 185.
 #   cap         = max(0, slcsp_annual - aca_ptc)
 #   annual      = eligible * min(base_annual, cap)
-# There is NO income banding inside the 250% FPL ceiling and NO benchmark
+# In PY2026 there is NO income banding inside the 250% FPL ceiling (PY2027
+# splits only the Group 1 amount, at 200% FPL), and there is NO benchmark
 # premium expectation: the final policy's Attachment 1 lists the expectation
 # ($0 / $0 / $15 a month by band) among the concepts "included in the final
 # draft PY 2026 Cascade Care Savings policy, but not included in the final
@@ -652,11 +656,11 @@
 
 # --- Temporal: open-ended in_effect carries the PY2026 design into PY2027 ---
 
-- name: Case 16, program still in effect in 2027 with unchanged amounts.
-  # in_effect has no end date (2026-01-01 true, open-ended), and both amounts
-  # are open-ended from 2026, so 2027 mirrors Case 1.
-  # base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000.
-  # annual = min(660, 1_000) = 660.
+- name: Case 16, program still in effect in 2027 with the PY2027 amount.
+  # in_effect has no end date (2026-01-01 true, open-ended). Same inputs as
+  # Case 1, but PY2027 pays $35 PMPM to a Group 1 member at or below 200% FPL
+  # (was $55 in PY2026): frac 1.4 <= 2.00 -> base_annual = 12*35 = 420.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(420, 1_000) = 420.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -676,7 +680,7 @@
         members: [person1]
         state_code: WA
   output:
-    wa_cascade_care_savings: 660
+    wa_cascade_care_savings: 420
 
 - name: Case 23, married-filing-separately couple is excluded via real filing_status.
   # MFS exclusion driven end-to-end, not stubbed: filing_status SEPARATE makes
@@ -994,3 +998,332 @@
     # Four Group 1 enrollees plus the Group 2 spouse: 4 * 660 + 3,000.
     # The household residual premium cap of 6,693.12 does not bind.
     wa_cascade_care_savings: 5_640
+
+# --- PY2027: $35 / $20 PMPM with federal subsidies, split at 200% FPL, and ---
+# --- $185 PMPM without (WAHBE memo of 2026-10-01, p.1; Policy 5(1)(b)) ---
+# The split uses the exact ratio aca_magi / aca_fpg: a ratio at or below 2.00
+# gets $35 and any ratio above 2.00 gets $20 (project lead's ruling of
+# 2026-11-18 for incomes above 200% but below 201% of FPL, which the policy
+# leaves unassigned).
+
+- name: Case 26, 2027, Group 1 member at 140% FPL, the cap binds below the $35 base.
+  # frac 1.4 <= 2.00 -> base_annual = 12*35 = 420.
+  # cap = max(0, 6_000 - 5_700) = 300. annual = min(420, 300) = 300.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 14_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_700
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 300
+
+- name: Case 27, 2027, Group 1 member at exactly 200% FPL gets $35.
+  # 20_000 / 10_000 = 2.00 <= 2.00 -> base_annual = 12*35 = 420.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(420, 1_000) = 420.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 420
+
+- name: Case 28, 2027, Group 1 member one cent above 200% FPL gets $20.
+  # 20_000.01 / 10_000 = 2.000001 > 2.00 -> base_annual = 12*20 = 240.
+  # cap = 1_000. annual = min(240, 1_000) = 240. The truncated
+  # aca_magi_fraction is 2.00, so the split must read the exact ratio.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000.01
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2
+    wa_cascade_care_savings: 240
+
+- name: Case 29, 2027, Group 1 member at 200.5% FPL gets $20 under the 200% ruling.
+  # 20_050 / 10_000 = 2.005 > 2.00 -> base_annual = 12*20 = 240.
+  # cap = 1_000. annual = 240. The policy's bands are "up to 200%" and
+  # "201 - 250%"; by the project lead's ruling (2026-11-18) a ratio above 2.00
+  # takes the second amount. A whole-percent reading would have given 420.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_050
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 240
+
+- name: Case 30, 2027, Group 1 member at 201% FPL gets $20.
+  # 20_100 / 10_000 = 2.01 -> base_annual = 12*20 = 240. cap = 1_000.
+  # annual = min(240, 1_000) = 240.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_100
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 240
+
+- name: Case 31, 2027, two Group 1 members and one Group 3 member at 180% FPL.
+  # frac 1.8 <= 2.00 -> base_annual = 12*(2*35 + 185) = 12*255 = 3_060.
+  # cap = max(0, 15_000 - 6_000) = 9_000. annual = min(3_060, 9_000) = 3_060.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person3:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi: 18_000
+        aca_fpg: 10_000
+        slcsp: 15_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_060
+
+- name: Case 32, 2027, the same household at 220% FPL, only the Group 1 amount changes.
+  # frac 2.2 > 2.00 -> base_annual = 12*(2*20 + 185) = 12*225 = 2_700.
+  # cap = 9_000. annual = min(2_700, 9_000) = 2_700. The Group 3 amount has
+  # no income split.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person3:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi: 22_000
+        aca_fpg: 10_000
+        slcsp: 15_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 2_700
+
+- name: Case 33, 2027, Group 1 member at exactly 250% FPL is eligible for $20.
+  # 25_000 / 10_000 = 2.50 <= 2.5 (fpl_limit, inclusive) -> eligible.
+  # 2.50 > 2.00 -> base_annual = 12*20 = 240. cap = max(0, 6_000 - 4_000)
+  # = 2_000. annual = min(240, 2_000) = 240.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 25_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+    wa_cascade_care_savings: 240
+
+- name: Case 34, 2027, Group 1 member just above 250% FPL gets nothing.
+  # 25_000.5 / 10_000 = 2.50005 > 2.5 -> ineligible -> 0, though the
+  # truncated aca_magi_fraction is 2.50. (25_000.5 is exact in float32.)
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 25_000.5
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.5
+    wa_cascade_care_savings_eligible: false
+    wa_cascade_care_savings: 0
+
+- name: Case 35, 2027, Group 3 member at 150% FPL gets $185.
+  # base_annual = 12*185 = 2_220 (was 12*250 = 3_000 in PY2026).
+  # cap = max(0, 12_000 - 0) = 12_000. annual = min(2_220, 12_000) = 2_220.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_000
+        aca_fpg: 10_000
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 2_220
+
+- name: Case 36, 2027, Group 3 member at 240% FPL gets the same $185.
+  # No income split for members without federal subsidies: base_annual =
+  # 12*185 = 2_220. cap = 12_000. annual = 2_220.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 24_000
+        aca_fpg: 10_000
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 2_220
+
+- name: Case 37, 2026, Group 1 member at 240% FPL still gets $55.
+  # PY2026 has one amount, so both bands carry $55: base_annual = 12*55 =
+  # 660. cap = max(0, 6_000 - 5_000) = 1_000. annual = min(660, 1_000) = 660.
+  # Pairs with Case 3 (exactly 200% FPL, also 660).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 24_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
