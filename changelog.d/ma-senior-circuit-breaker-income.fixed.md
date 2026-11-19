@@ -1,0 +1,1 @@
+Massachusetts Senior Circuit Breaker total income now starts from Massachusetts AGI, so deductions allowed in reaching AGI reduce it, and adds back capital losses, U.S. obligation interest, the 2021 unemployment deduction, tax-exempt retirement account distributions, EAEDC, workers' compensation and tax-exempt disability pay.

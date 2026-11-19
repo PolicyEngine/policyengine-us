@@ -1339,3 +1339,54 @@
     - 1_150
     - 1_150
     - 0
+
+- name: Case 17, 2025 single filer whose HSA deduction brings total income exactly to the limit is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 77_700
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        health_savings_account_ald: 2_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Massachusetts AGI: 77,700 wages - 2,000 HSA deduction = 75,700.
+    # Total income: 75,700 - 700 aged exemption = 75,000, not above the
+    # 75,000 single limit.
+    ma_scb_total_income: 75_000
+    # Income threshold: 75,000 * 0.10 = 7,500; 10,000 - 7,500 = 2,500;
+    # credit: min(2,500, 2,820) = 2,500.
+    ma_senior_circuit_breaker: 2_500
+
+- name: Case 18, 2025 single filer one dollar over the limit after the HSA deduction is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 77_701
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        health_savings_account_ald: 2_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Total income: 77,701 - 2,000 HSA deduction - 700 aged exemption =
+    # 75,001, above the 75,000 single limit.
+    ma_scb_total_income: 75_001
+    ma_senior_circuit_breaker: 0
