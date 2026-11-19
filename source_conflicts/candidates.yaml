@@ -33,6 +33,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/irs/income/taxable_income/deductions/tip_income/tip_income_deduction_occupation_requirement_met.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11145
   state: ruled
   note: The model applies the statutory exclusion by default. A study may explicitly enable the administrative transition for a covered period. Treasury Decision 10044 reserved the applicable paragraph and did not end the transition.
 - id: us-ca:expectant-parent-payment-residential-rate
