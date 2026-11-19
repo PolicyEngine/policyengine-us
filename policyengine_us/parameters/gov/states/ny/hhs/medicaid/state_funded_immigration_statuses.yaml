@@ -11,21 +11,10 @@ values:
   # them eligible after the federal plan to end DACA. The Department of
   # Health's client notice of October 10, 2014 lists deferred action among
   # the PRUCOL statuses.
+  # From August 1, 2024 the Essential Plan took recipients aged 19 to 64.
+  # daca_in_essential_plan holds those ages, and
+  # is_ny_medicaid_immigration_status_eligible takes them out of this route.
   2015-01-01:
-    - DACA
-  # The Essential Plan was due to take DACA recipients aged 19 to 64 with
-  # income up to 250% of the poverty level from August 1, 2024, and covered
-  # them to June 30, 2026. YEAR-defined formulas read January 1, so this
-  # value first applies in 2025. The list empties for every age, though the
-  # Essential Plan covered ages 19 to 64 only.
-  2024-08-01:
-    []
-  # NY State of Health ends Essential Plan coverage for DACA recipients on
-  # June 30, 2026. Those in Essential Plan 3 or 4, and pregnant or
-  # postpartum recipients at any level, become eligible for Medicaid on
-  # July 1, 2026. YEAR-defined formulas read January 1, so this value first
-  # applies in 2027.
-  2026-07-01:
     - DACA
 
 metadata:
@@ -39,7 +28,3 @@ metadata:
       href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
     - title: New York State Department of Health, client notice D61-C0332
       href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
-    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens for a Qualified Health Plan through an Exchange, Advance Payments of the Premium Tax Credit, Cost-Sharing Reductions, and a Basic Health Program"
-      href: https://www.govinfo.gov/content/pkg/FR-2024-05-08/pdf/2024-09661.pdf#page=1
-    - title: "NY State of Health, Changes for 2026 (webinar, June 17, 2026)"
-      href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15

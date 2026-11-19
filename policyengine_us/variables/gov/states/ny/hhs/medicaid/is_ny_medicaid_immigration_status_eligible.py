@@ -16,16 +16,24 @@ class is_ny_medicaid_immigration_status_eligible(Variable):
     permanently residing under color of law, Deferred Action for Childhood
     Arrivals recipients among them. The Essential Plan was due to take
     those aged 19 to 64 with income up to 250% of the poverty level from
-    August 1, 2024, and covered them to June 30, 2026. This variable is
-    YEAR-defined and reads the status list at January 1, so the model
-    applies the Medicaid route through 2024 and again from 2027.
+    August 1, 2024, so from then on this route covers DACA recipients
+    under 19 or aged 65 or older. This variable is YEAR-defined and reads
+    its parameters at January 1, so every DACA recipient passes through
+    2024. The model does not apply the return of some adults to Medicaid
+    on July 1, 2026.
     """
     defined_for = StateCode.NY
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.hhs.medicaid
         immigration_status = person("immigration_status", period)
-        return np.isin(
+        state_funded_status = np.isin(
             immigration_status.decode_to_str(),
             p.state_funded_immigration_statuses,
         )
+        # The Essential Plan took DACA recipients by age. The test reads age
+        # alone, because Essential Plan eligibility itself reads Medicaid.
+        daca = immigration_status == immigration_status.possible_values.DACA
+        age = person("age", period)
+        in_essential_plan_ages = p.daca_in_essential_plan.calc(age).astype(bool)
+        return state_funded_status & ~(daca & in_essential_plan_ages)

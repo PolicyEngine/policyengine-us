@@ -1,90 +1,93 @@
 # New York gives DACA recipients state-funded Medicaid as residents
 # permanently residing under color of law. The Essential Plan was due to
 # take recipients aged 19 to 64 with income up to 250% of the poverty line
-# from August 1, 2024, and covered them to June 30, 2026. Annual
-# calculations read the status list at January 1.
+# from August 1, 2024, so from then on the route covers recipients under 19
+# or aged 65 or older. Annual calculations read the parameters at January
+# 1: every recipient passes through 2024. The model does not apply the
+# return of some adults to Medicaid on July 1, 2026.
 
-- name: Case 1, DACA 30-year-old is eligible in 2019.
+- name: Case 1, DACA 30-year-old passes both immigration tests in 2019.
   period: 2019
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # DACA is on the list at 2019-01-01 (from 2015-01-01).
+    # DACA is on the list, and no age is in the Essential Plan at 2019-01-01.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
-- name: Case 2, DACA 30-year-old is eligible in 2015.
+- name: Case 2, DACA 30-year-old passes both immigration tests in 2015.
   period: 2015
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # The list's first value starts on 2015-01-01.
+    # The list and the age schedule both start on 2015-01-01.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
-- name: Case 3, DACA 30-year-old is eligible in 2024.
+- name: Case 3, DACA 30-year-old passes both immigration tests in 2024.
   period: 2024
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # The list empties on 2024-08-01, after 2024-01-01.
+    # The age-19 bracket turns true on 2024-08-01, after 2024-01-01.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
-- name: Case 4, DACA 30-year-old is ineligible in 2025.
+- name: Case 4, DACA 30-year-old fails both immigration tests in 2025.
   period: 2025
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # The list is empty at 2025-01-01 (from 2024-08-01).
+    # The age-19 bracket is true at 2025-01-01 (from 2024-08-01): the Essential
+    # Plan took ages 19 to 64.
     is_ny_medicaid_immigration_status_eligible: false
     is_medicaid_immigration_status_eligible: false
 
-- name: Case 5, DACA 30-year-old is ineligible in 2026.
+- name: Case 5, DACA 30-year-old fails both immigration tests in 2026.
   period: 2026
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # The list is empty at 2026-01-01. DACA returns on 2026-07-01, which annual
-    # calculations read from 2027.
+    # The age-19 bracket is true at 2026-01-01. The model applies no return to
+    # Medicaid on July 1, 2026.
     is_ny_medicaid_immigration_status_eligible: false
     is_medicaid_immigration_status_eligible: false
 
-- name: Case 6, DACA 30-year-old is eligible in 2027.
+- name: Case 6, DACA 30-year-old fails both immigration tests in 2027.
   period: 2027
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
   output:
-    # DACA is on the list at 2027-01-01 (from 2026-07-01).
-    is_ny_medicaid_immigration_status_eligible: true
-    is_medicaid_immigration_status_eligible: true
+    # The age-19 bracket stays true: the model applies no return to Medicaid.
+    is_ny_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
 
-- name: Case 7, DACA 17-year-old is eligible in 2019.
+- name: Case 7, DACA 17-year-old passes both Medicaid immigration tests and fails the CHIP immigration test in 2019.
   period: 2019
   input:
     age: 17
     immigration_status: DACA
     state_code: NY
   output:
-    # The list sets no age limit.
+    # The list sets no age limit, and no age is in the Essential Plan in 2019.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
     # The list opens no CHIP route: DACA stays off the CHIP status lists.
     is_chip_immigration_status_eligible: false
 
-- name: Case 8, TPS 30-year-old is not on the list in 2019.
+- name: Case 8, TPS 30-year-old fails the New York state-funded test in 2019.
   period: 2019
   input:
     age: 30
@@ -95,7 +98,7 @@
     # too, and the list does not hold it yet.
     is_ny_medicaid_immigration_status_eligible: false
 
-- name: Case 9, undocumented 30-year-old is not on the list in 2019.
+- name: Case 9, undocumented 30-year-old fails the New York state-funded test in 2019.
   period: 2019
   input:
     age: 30
@@ -105,7 +108,7 @@
     # The list holds DACA alone.
     is_ny_medicaid_immigration_status_eligible: false
 
-- name: Case 10, DACA 30-year-old in New Jersey is ineligible in 2019.
+- name: Case 10, DACA 30-year-old in New Jersey fails both immigration tests in 2019.
   period: 2019
   input:
     age: 30
@@ -139,7 +142,7 @@
 
 # In 2025 the same adult fails the Medicaid immigration test and qualifies
 # for the Essential Plan below its income floor.
-- name: Case 12, DACA 30-year-old with no income gets the Essential Plan in 2025.
+- name: Case 12, DACA 30-year-old with no income qualifies for the Essential Plan in 2025.
   period: 2025
   input:
     people:
@@ -162,9 +165,9 @@
 
 # Pregnancy. The model's CHIP unborn-child route for New York starts in 2024
 # and covers a pregnant person who is not eligible for Medicaid. A pregnant
-# DACA recipient reaches Medicaid while DACA is on the list and the
-# unborn-child route while it is not.
-- name: Case 13, pregnant DACA 30-year-old with no income gets Medicaid in 2024.
+# DACA adult reaches Medicaid through 2024 and the unborn-child route from
+# 2025.
+- name: Case 13, pregnant DACA 30-year-old with no income qualifies for Medicaid in 2024.
   period: 2024
   input:
     people:
@@ -178,13 +181,13 @@
         members: [person1]
         state_code: NY
   output:
-    # DACA is on the list at 2024-01-01, so the person is Medicaid eligible and
-    # the unborn-child route does not apply.
+    # No age is in the Essential Plan at 2024-01-01, so the person is Medicaid
+    # eligible and the unborn-child route does not apply.
     is_medicaid_immigration_status_eligible: true
     is_medicaid_eligible: true
     is_chip_fcep_eligible_person: false
 
-- name: Case 14, pregnant DACA 30-year-old with no income keeps the unborn-child route in 2025.
+- name: Case 14, pregnant DACA 30-year-old with no income qualifies for the CHIP unborn-child route in 2025.
   period: 2025
   input:
     people:
@@ -198,43 +201,151 @@
         members: [person1]
         state_code: NY
   output:
-    # The list is empty at 2025-01-01, so the person fails the Medicaid
-    # immigration test and the unborn-child route applies, as it did before.
+    # Age 30 is in the Essential Plan at 2025-01-01, so the person fails the
+    # Medicaid immigration test and the unborn-child route applies, as it did
+    # before.
     is_medicaid_immigration_status_eligible: false
     is_medicaid_eligible: false
     is_chip_fcep_eligible_person: true
     chip_category: PREGNANT_FCEP
 
-# The list empties at every age, though the Essential Plan took ages 19 to 64.
-- name: Case 15, DACA 18-year-old is ineligible in 2025.
+# The Essential Plan took ages 19 to 64 only. Younger recipients keep the
+# Medicaid route.
+- name: Case 15, DACA 18-year-old passes both immigration tests in 2025.
   period: 2025
   input:
     age: 18
     immigration_status: DACA
     state_code: NY
   output:
-    # The list is empty at 2025-01-01 (from 2024-08-01), whatever the age.
-    is_ny_medicaid_immigration_status_eligible: false
-    is_medicaid_immigration_status_eligible: false
+    # Age 18 sits in the age-0 bracket, false at every date.
+    is_ny_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
 
-# From 2027 the Medicaid work requirement applies to the adult group.
-- name: Case 16, DACA 30-year-old with no work activity fails the work requirement in 2027.
+# From 2027 a DACA adult aged 19 to 64 reads the result main gives: no
+# Medicaid route, and emergency Medicaid for an emergency condition.
+- name: Case 16, DACA 30-year-old with an emergency condition qualifies for emergency Medicaid in 2027.
   period: 2027
   input:
     age: 30
     immigration_status: DACA
     state_code: NY
     medicaid_category: ADULT
-    monthly_hours_worked: 0
-    employment_income: 0
-    medicaid_community_engagement_pass_through_eligible: false
+    has_emergency_medical_condition: true
   output:
-    # DACA is on the list at 2027-01-01 (from 2026-07-01).
-    is_medicaid_immigration_status_eligible: true
-    # An adult-group member aged 19 to 64 with 0 hours (under 80), no income
-    # and no exemption does not meet the requirement.
-    medicaid_work_requirement_eligible: false
-    is_medicaid_ineligible_due_to_work_requirement: true
-    # Category AND immigration test AND work requirement: true AND true AND
-    # false = false.
+    # The age-19 bracket is true at 2027-01-01.
+    is_ny_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+    # A Medicaid category AND NOT immigration eligible: true AND false = false.
     is_medicaid_eligible: false
+    # Emergency condition AND a Medicaid category AND NOT immigration eligible:
+    # true AND true AND NOT false = true.
+    is_emergency_medicaid_eligible: true
+
+- name: Case 17, DACA 17-year-old passes both immigration tests in 2025.
+  period: 2025
+  input:
+    age: 17
+    immigration_status: DACA
+    state_code: NY
+  output:
+    # Age 17 sits in the age-0 bracket, false at every date.
+    is_ny_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 18, DACA 18-year-old passes both immigration tests in 2026.
+  period: 2026
+  input:
+    age: 18
+    immigration_status: DACA
+    state_code: NY
+  output:
+    # Age 18 sits in the age-0 bracket, false at 2026-01-01. A recipient must
+    # have lived in the United States since June 15, 2007, so 18 is the youngest
+    # possible age in 2026.
+    is_ny_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 19, DACA 19-year-old fails both immigration tests in 2025.
+  period: 2025
+  input:
+    age: 19
+    immigration_status: DACA
+    state_code: NY
+  output:
+    # 19 is the first age in the age-19 bracket, true at 2025-01-01.
+    is_ny_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 20, DACA 70-year-old passes both immigration tests in 2025.
+  period: 2025
+  input:
+    age: 70
+    immigration_status: DACA
+    state_code: NY
+  output:
+    # Age 70 sits in the age-65 bracket, false at every date. USCIS requires
+    # birth on or after June 16, 1981 (https://www.uscis.gov/DACA), so no
+    # recipient is 70. This case pins the schedule's upper age, not a real
+    # recipient.
+    is_ny_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+# New York pays for this coverage alone. The enrollee fails the federal
+# immigration test, so the federal share is 0.
+- name: Case 21, enrolled DACA 30-year-old with no income has no federal Medicaid share in 2019.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: DACA
+        employment_income: 0
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Adult category AND NOT federally eligible: the share is 0, not the
+    # expansion match.
+    is_medicaid_eligible: true
+    medicaid_enrolled: true
+    is_federal_medicaid_immigration_status_eligible: false
+    medicaid_federal_share: 0
+
+# A relative can move too. A parent joins the adult group only if every child
+# under 19 in their care has coverage (42 CFR 435.119(c)). The 18-year-old
+# DACA dependent now enrolls in Medicaid, so the citizen parent meets that
+# rule. Before this route existed the child had no coverage and the parent
+# failed it.
+- name: Case 22, citizen parent of an 18-year-old DACA dependent qualifies for Medicaid at 135% of the poverty line in 2019.
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 22_800
+        takes_up_medicaid_if_eligible: true
+      child:
+        age: 18
+        immigration_status: DACA
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        takes_up_medicaid_if_eligible: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    is_medicaid_immigration_status_eligible: [true, true]
+    # $22,800 / $16,910 = 1.35: below the adult limit of 138% and the
+    # older-child limit of 154%.
+    is_medicaid_eligible: [true, true]
+    medicaid_enrolled: [true, true]
+    is_basic_health_program_eligible: [false, false]

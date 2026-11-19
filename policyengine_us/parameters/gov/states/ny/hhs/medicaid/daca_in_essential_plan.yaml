@@ -1,0 +1,49 @@
+description: New York moves Deferred Action for Childhood Arrivals recipients at these ages from state-funded Medicaid to the Essential Plan.
+metadata:
+  period: year
+  amount_unit: bool
+  threshold_unit: year
+  type: single_amount
+  label: New York DACA ages in the Essential Plan
+  reference:
+    - title: "New York section 1332 waiver application (December 18, 2023), coverage of DACA recipients aged 19 to 64"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
+    - title: "New York section 1332 waiver application (December 18, 2023), August 1, 2024 start"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=27
+    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens for a Qualified Health Plan through an Exchange, Advance Payments of the Premium Tax Credit, Cost-Sharing Reductions, and a Basic Health Program"
+      href: https://www.govinfo.gov/content/pkg/FR-2024-05-08/pdf/2024-09661.pdf#page=1
+    - title: "NY State of Health, Changes for 2026 (webinar, June 17, 2026)"
+      href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15
+
+# New York planned to move DACA recipients aged 19 to 64 with income up to
+# 250% of the poverty level to the Essential Plan on August 1, 2024. Those
+# who otherwise qualify for Medicaid or Child Health Plus stayed in those
+# programs, so recipients under 19 or aged 65 or older keep the Medicaid
+# route. The ages match the Basic Health Program's minimum and maximum
+# ages (19 and 65).
+# is_ny_medicaid_immigration_status_eligible reads age alone. Essential
+# Plan eligibility itself reads Medicaid, so the formula cannot ask whether
+# the person qualifies for the Essential Plan. Medicaid's income limits sit
+# below 250% of the poverty level.
+# YEAR-defined formulas read January 1, so the 2024-08-01 value first
+# applies in 2025.
+# Model year 2026: the Essential Plan covered these recipients to June 30,
+# 2026. On July 1, 2026 those in Essential Plan 3 or 4, and pregnant or
+# postpartum recipients at any level, became eligible for Medicaid. This
+# parameter models neither: ages 19 to 64 stay out of the Medicaid route
+# from 2025 on, and they read the result they had before this route
+# existed.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 19
+    amount:
+      2015-01-01: false
+      2024-08-01: true
+  - threshold:
+      2015-01-01: 65
+    amount:
+      2015-01-01: false
