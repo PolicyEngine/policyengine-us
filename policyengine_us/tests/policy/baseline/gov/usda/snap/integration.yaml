@@ -132,3 +132,26 @@
     snap_standard_deduction: 184 #(parameter for family of 4 in contiguous US)
     snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
     snap_max_allotment: 835 # (parameter for family of 4 in contiguous US).
+
+- name: Idaho person aged 70 with income above the net income limit is ineligible before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person_1:
+        age: 70
+        social_security_retirement:
+          2024: 24_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code: ID
+  output:
+    # Idaho exempts a household with an elderly or disabled member from the
+    # gross income limit but not from the net income limit (IDAPA
+    # 16.03.04.532 and 16.03.04.549), so this household is not conferred
+    # categorical eligibility and does not receive the minimum allotment.
+    is_snap_eligible: false
+    snap: 0

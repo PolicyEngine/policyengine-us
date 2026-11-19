@@ -41,8 +41,13 @@ HI:
 IA:
   2015-10-01: false
 ID:
-  2015-10-01: false
-  2024-07-01: true
+  # Idaho exempts a household with an elderly or disabled member from the
+  # gross income limit (IDAPA 16.03.04.532) and holds it to the net income
+  # limit (16.03.04.549); broad-based categorically eligible households
+  # stay subject to the net income standard (16.03.04.010). The archived
+  # 2017 and 2022 chapters carry the same text, so the test applies
+  # throughout, not only from July 2024.
+  2015-10-01: true
 IL:
   2015-10-01: false
 IN:
@@ -134,6 +139,12 @@ metadata:
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
     - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf#page=1
+    - title: IDAPA 16.03.04.532, Idaho Food Stamp Program gross income limit
+      href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=48
+    - title: IDAPA 16.03.04.549, Idaho Food Stamp Program net income limit test
+      href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=51
+    - title: IDAPA 16.03.04.010, Idaho Food Stamp Program definition of Broad-Based Categorical Eligibility
+      href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=10
     - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions
       href: https://www.law.cornell.edu/cfr/text/7/273.2#j_2_xi
     - title: 7 CFR 273.9(a), income eligibility standards

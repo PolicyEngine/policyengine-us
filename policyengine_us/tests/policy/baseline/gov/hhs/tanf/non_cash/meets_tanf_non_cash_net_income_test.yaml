@@ -191,3 +191,42 @@
   output:
     # $1,400 exceeds the one-person FY 2026 standard of $1,305.
     meets_tanf_non_cash_net_income_test: false
+
+- name: Idaho elderly or disabled household above the FY 2024 net standard fails the net income test before July 2024.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $285 above the one-person FY 2024 net standard of $1,215.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Idaho exempts these households from the gross income limit but not
+    # from the net income limit (IDAPA 16.03.04.532 and 16.03.04.549).
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Idaho elderly or disabled household at the FY 2024 net standard meets the net income test.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_215
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    meets_tanf_non_cash_net_income_test: true
