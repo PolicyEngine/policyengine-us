@@ -31,7 +31,8 @@ class is_ny_medicaid_immigration_status_eligible(Variable):
             immigration_status.decode_to_str(),
             p.state_funded_immigration_statuses,
         )
-        # The Essential Plan took DACA recipients by age. The test reads age
+        # The Essential Plan was due to take DACA recipients aged 19 to 64
+        # with income up to 250% of the poverty level. The test reads age
         # alone, because Essential Plan eligibility itself reads Medicaid.
         daca = immigration_status == immigration_status.possible_values.DACA
         age = person("age", period)

@@ -11,9 +11,11 @@ values:
   # them eligible after the federal plan to end DACA. The Department of
   # Health's client notice of October 10, 2014 lists deferred action among
   # the PRUCOL statuses.
-  # From August 1, 2024 the Essential Plan took recipients aged 19 to 64.
+  # The Essential Plan was due to take recipients aged 19 to 64 with income
+  # up to 250% of the poverty level from August 1, 2024.
   # daca_in_essential_plan holds those ages, and
-  # is_ny_medicaid_immigration_status_eligible takes them out of this route.
+  # is_ny_medicaid_immigration_status_eligible takes every recipient at
+  # those ages out of this route.
   2015-01-01:
     - DACA
 

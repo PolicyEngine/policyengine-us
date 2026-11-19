@@ -23,16 +23,23 @@ metadata:
 # ages (19 and 65).
 # is_ny_medicaid_immigration_status_eligible reads age alone. Essential
 # Plan eligibility itself reads Medicaid, so the formula cannot ask whether
-# the person qualifies for the Essential Plan. Medicaid's income limits sit
-# below 250% of the poverty level.
+# the person qualifies for the Essential Plan. The age test is an
+# approximation: it takes every recipient aged 19 to 64 out of this route,
+# one with income above 250% of the poverty level included. The Essential
+# Plan's income limit left that person out, and the model can still give
+# them a Medicaid category, for example on the medically needy route,
+# which subtracts medical expenses from income.
 # YEAR-defined formulas read January 1, so the 2024-08-01 value first
 # applies in 2025.
 # Model year 2026: the Essential Plan covered these recipients to June 30,
-# 2026. On July 1, 2026 those in Essential Plan 3 or 4, and pregnant or
-# postpartum recipients at any level, became eligible for Medicaid. This
-# parameter models neither: ages 19 to 64 stay out of the Medicaid route
-# from 2025 on, and they read the result they had before this route
-# existed.
+# 2026. On July 1, 2026 enrollees in Essential Plan 3 or 4, and enrollees at
+# any level who were pregnant or in their 12-month postpartum period, moved
+# to Medicaid. This parameter models neither: ages 19 to 64 stay out of the
+# Medicaid route from 2025 on and have the result they had before this
+# route existed. In the model that is the Essential Plan in 2025, within
+# its income limit. From 2026 an adult who is not pregnant has neither
+# program, because the Basic Health Program's list excludes DACA again
+# from August 25, 2025.
 brackets:
   - threshold:
       2015-01-01: 0
