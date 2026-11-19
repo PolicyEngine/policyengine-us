@@ -5,7 +5,7 @@ from math import isclose, isfinite
 import numpy as np
 import pytest
 from hypothesis import assume, example, given, settings, strategies as st
-from policyengine_core.periods import period
+from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 from policyengine_us.tools.state_itemization import choose_joint_itemization
@@ -89,9 +89,15 @@ def test_warm_joint_choice_is_recomputed_for_a_filed_election_in_a_branch():
             },
         }
     )
-    simulation.tax_benefit_system.parameters.gov.simulation.joint_federal_state_itemization.update(
-        period=period(2025), value=True
+    simulation.apply_reform(
+        Reform.from_dict(
+            {"gov.simulation.joint_federal_state_itemization": {"2025": True}}
+        )
     )
+    default_policy = Simulation.default_tax_benefit_system_instance.parameters(
+        "2025-01-01"
+    )
+    assert not default_policy.gov.simulation.joint_federal_state_itemization
     baseline_2024 = simulation.calculate("federal_state_income_tax", 2024)
 
     # Query the state side first. The joint choice is for both taxes, so it

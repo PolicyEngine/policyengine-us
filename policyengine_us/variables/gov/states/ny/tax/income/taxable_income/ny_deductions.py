@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.period_branch import has_input
-from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
+from policyengine_us.tools.state_itemization import (
+    joint_itemization_is_enabled,
+    state_itemization_uses_itemized,
+)
 
 
 class ny_deductions(Variable):
@@ -21,6 +24,10 @@ class ny_deductions(Variable):
     def formula_2018(tax_unit, period, parameters):
         itemized = tax_unit("ny_itemized_deductions", period)
         standard = tax_unit("ny_standard_deduction", period)
+        if joint_itemization_is_enabled(period, parameters):
+            return where(
+                tax_unit("ny_itemizes", period), max_(itemized, standard), standard
+            )
         # Retain the historic automatic larger-amount calculation unless a
         # state election was filed. Section 613 recomputes smaller items.
         automatic = (

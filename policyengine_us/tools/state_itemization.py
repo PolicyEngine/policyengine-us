@@ -14,6 +14,8 @@ STATE_METHOD_COUNT = len(StateDeductionMethod)
 JOINT_METHOD_COUNT = 2 * STATE_METHOD_COUNT
 JOINT_FILING_CHOICE_COUNT = 2 * JOINT_METHOD_COUNT
 CENT = 0.01
+SALT_ELECTION_WHEN_STATE_ITEMIZED = ("MD", "MO")
+SALT_ELECTION_STATES = (*SALT_ELECTION_WHEN_STATE_ITEMIZED, "NE", "VA")
 NATIVE_STATE_ELECTION_INPUTS = {
     "AR": "ar_tax_unit_itemizes",
     "CA": "ca_itemizes",
@@ -106,47 +108,46 @@ def joint_itemization(tax_unit, period, parameters):
     federal_methods = []
     costs = []
     prefer_federal_itemized = None
-    for federal_itemizes, state_method, alternative in product(
-        (False, True), (STANDARD, ITEMIZED), (False, True)
+    for federal_itemizes, trial in product(
+        (False, True), ("standard", "itemized", "alternative")
     ):
         allowable = federal_itemizes | ~requires_federal_itemizing
         if forced_federal is not None:
             allowable &= forced_federal == federal_itemizes
-        methods = np.where(elected_state, state_method, AUTOMATIC)
-        if state_method == STANDARD:
-            linked_method = ITEMIZED if federal_itemizes else STANDARD
-            methods = np.where(follows_federal, linked_method, methods)
+        linked_method = ITEMIZED if federal_itemizes else STANDARD
+        linked = np.where(follows_federal, linked_method, AUTOMATIC)
+        if trial == "standard":
+            methods = np.where(elected_state, STANDARD, linked)
             allowable &= ~(
                 np.isin(state, ("ID", "MO", "NC"))
                 & requires_federal_itemizing
                 & ~keep_automatic
             )
-        else:
+        elif trial == "itemized":
+            methods = np.where(elected_state, ITEMIZED, linked)
             allowable &= independent | (federal_itemizes & federal_itemizers_only)
             allowable &= ~keep_automatic
-        methods = np.where(keep_automatic, AUTOMATIC, methods)
-
-        if alternative:
-            # NY can take an education credit on an itemized return. VA
-            # Schedule A responds to the federal choice of income or sales tax.
-            allowable &= (
-                (state == "NY") & (state_method == ITEMIZED) & (not fixed_tuition)
-            ) | (
-                (state == "VA")
+        else:
+            # Each resident can use only one of these alternatives.
+            ny_tuition = (state == "NY") & (not fixed_tuition)
+            salt_sales = (
+                np.isin(state, SALT_ELECTION_STATES)
                 & federal_itemizes
-                & (state_method == STANDARD)
                 & (not fixed_salt)
                 & known_salt_components
             )
+            methods = np.where(
+                (state == "NY") | federal_itemizers_only, ITEMIZED, linked
+            )
+            allowable &= ny_tuition | salt_sales
         if not allowable.any():
             continue
+        methods = np.where(keep_automatic, AUTOMATIC, methods)
 
         method_code = STATE_METHOD_COUNT * federal_itemizes
-        if alternative:
+        if trial == "alternative":
             method_code += JOINT_METHOD_COUNT
-        branch_name = (
-            f"resident_itemization_{period.start.year}_{method_code}_{state_method}"
-        )
+        branch_name = f"resident_itemization_{period.start.year}_{method_code}_{trial}"
         branch = get_override_branch(
             sim,
             branch_name,
@@ -159,22 +160,25 @@ def joint_itemization(tax_unit, period, parameters):
             inherit_calculated=False,
         )
         try:
-            if (state == "HI").any():
+            if (allowable & (state == "HI")).any():
                 eligibility = branch.calculate(
                     "hi_itemized_deductions_eligible"
-                    if state_method == ITEMIZED
+                    if trial == "itemized"
                     else "hi_required_to_itemize",
                     period,
                 )
                 allowable &= (state != "HI") | (
                     eligibility
-                    if state_method == ITEMIZED
+                    if trial == "itemized"
                     else (keep_automatic | ~eligibility)
                 )
-            if state_method == ITEMIZED and (state == "NY").any():
+            ny_items = (state == "NY") & (
+                (methods == ITEMIZED) | (keep_automatic & (native_supplied == ITEMIZED))
+            )
+            if (allowable & ny_items).any():
                 # N.Y. Tax Law §613 requires the standard deduction when the
                 # elected itemized amount is smaller, including the tuition option.
-                allowable &= (state != "NY") | (
+                allowable &= ~ny_items | (
                     branch.calculate("ny_itemized_deductions", period)
                     >= branch.calculate("ny_standard_deduction", period)
                 )

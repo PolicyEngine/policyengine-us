@@ -21,3 +21,59 @@
     state_code: NE
   output:
     ne_itemized_deductions: 3_000 + 7_000 + 6_000
+
+- name: Nebraska removes all income taxes even when SALT is at its federal floor
+  period: 2025
+  input:
+    state_code: NE
+    employment_income: 700_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 35_000
+    local_income_tax: 0
+    state_sales_tax: 4_000
+    local_sales_tax: 0
+    state_and_local_sales_tax_elected: false
+  output:
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 35_000
+    salt_cap: 10_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 30_000
+    ne_itemized_deductions: 0
+    ne_taxable_income: 700_000 - 8_600
+
+- name: Electing the smaller general sales tax keeps the capped SALT deduction in Nebraska
+  period: 2025
+  input:
+    state_code: NE
+    employment_income: 700_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 35_000
+    local_income_tax: 0
+    state_sales_tax: 4_000
+    local_sales_tax: 0
+    state_and_local_sales_tax_elected: true
+  output:
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 4_000
+    salt_cap: 10_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 30_000
+    ne_itemized_deductions: 30_000
+    ne_taxable_income: 670_000
+
+- name: Nebraska subtracts gross income tax when the SALT cap leaves a positive state deduction
+  period: 2025
+  input:
+    state_code: NE
+    employment_income: 700_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 40_000
+    state_and_local_sales_or_income_tax: 35_000
+    state_and_local_sales_tax_elected: false
+  output:
+    itemized_taxable_income_deductions: 50_000
+    ne_itemized_deductions: 15_000
+    ne_taxable_income: 685_000

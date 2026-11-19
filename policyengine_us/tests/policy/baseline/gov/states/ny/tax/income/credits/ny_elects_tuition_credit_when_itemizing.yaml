@@ -153,6 +153,26 @@
     ny_college_tuition_deduction: [0, 6_000]
     ny_deductions: [16_000, 22_000]
 
+- name: Explicit automatic New York itemization awards only one tuition benefit.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [NY, NY]
+    tax_unit_itemizes: [false, false]
+    state_deduction_method: [AUTOMATIC, AUTOMATIC]
+    ny_agi: [18_000, 90_000]
+    ny_exemptions: [1_000, 0]
+    deductible_mortgage_interest: [16_000, 16_000]
+    qualified_tuition_expenses: [2_000, 6_000]
+    state_sales_tax: [0, 0]
+    local_sales_tax: [0, 0]
+  output:
+    ny_itemizes: [true, true]
+    ny_elects_tuition_credit_when_itemizing: [true, false]
+    ny_college_tuition_deduction: [0, 6_000]
+    ny_college_tuition_credit: [200, 0]
+    ny_deductions: [16_000, 22_000]
+
 - name: A filed New York standard election stays binding in the joint calculation.
   period: 2025
   input:

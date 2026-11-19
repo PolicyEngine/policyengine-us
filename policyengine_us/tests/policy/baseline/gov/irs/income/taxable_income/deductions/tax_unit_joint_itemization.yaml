@@ -158,3 +158,35 @@
     income_tax: 22_175
     state_income_tax: 6_715.525
     federal_state_income_tax: 28_890.525
+
+- name: Case 7, Nebraska keeps the smaller sales tax election when the federal SALT cap binds.
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: NE
+    age: 40
+    employment_income: 700_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 35_000
+    local_income_tax: 0
+    state_sales_tax: 4_000
+    local_sales_tax: 0
+  output:
+    # Either line 5a election reaches the $10,000 federal SALT floor and gives
+    # $30,000 in federal itemized deductions. Nebraska retains the sales tax.
+    # With income taxes it removes $35,000 and uses the $8,600 state standard.
+    # The single filer's Nebraska marginal rate is 5.2%.
+    # https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=14
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    state_and_local_sales_tax_elected: true
+    state_and_local_sales_or_income_tax: 4_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 30_000
+    ne_itemized_deductions: 30_000
+    ne_taxable_income: 670_000
+    income_tax: 204_920.25
+    state_income_tax: 34_191.032
+    federal_state_income_tax: 239_111.282

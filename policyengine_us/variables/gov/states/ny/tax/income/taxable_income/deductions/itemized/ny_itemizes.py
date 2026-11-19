@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
+from policyengine_us.tools.state_itemization import (
+    joint_itemization_is_enabled,
+    state_itemization_uses_itemized,
+)
 
 
 class ny_itemizes(Variable):
@@ -22,11 +25,13 @@ class ny_itemizes(Variable):
         return federal_itemizes & (itemized_deductions >= standard_deduction)
 
     def formula_2018(tax_unit, period, parameters):
-        federal = tax_unit("tax_unit_itemizes", period)
+        automatic = (
+            True
+            if joint_itemization_is_enabled(period, parameters)
+            else tax_unit("tax_unit_itemizes", period)
+        )
         standard = tax_unit("ny_standard_deduction", period)
         itemized = tax_unit("ny_itemized_deductions", period)
         method = tax_unit("state_deduction_method", period)
-        # Preserve the legacy automatic choice. A filed state method and the
-        # joint optimizer can select itemization after either federal method.
-        elects_itemized = state_itemization_uses_itemized(method, federal)
+        elects_itemized = state_itemization_uses_itemized(method, automatic)
         return elects_itemized & (itemized >= standard)
