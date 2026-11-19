@@ -1,0 +1,40 @@
+description: New York covers these immigration statuses under the Medicaid program with state funds.
+# Undocumented residents follow the parameters under
+# gov.hhs.medicaid.eligibility, not this list.
+values:
+  # New York treats Deferred Action for Childhood Arrivals recipients as
+  # permanently residing under color of law (PRUCOL) and gives them
+  # state-funded Medicaid. GIS 18 MA/005, effective April 2, 2018, keeps
+  # them eligible after the federal plan to end DACA. The Department of
+  # Health's client notice of October 10, 2014 lists deferred action among
+  # the PRUCOL statuses.
+  2015-01-01:
+    - DACA
+  # The Essential Plan covers DACA recipients aged 19 to 64 with income up
+  # to 250% of the poverty level from August 1, 2024. YEAR-defined formulas
+  # read January 1, so this value first applies in 2025. The list empties
+  # for every age, though the Essential Plan covers ages 19 to 64 only.
+  2024-08-01:
+    []
+  # NY State of Health ends Essential Plan coverage for DACA recipients on
+  # June 30, 2026, and those in Essential Plan 3 or 4 become eligible for
+  # Medicaid on July 1, 2026. YEAR-defined formulas read January 1, so this
+  # value first applies in 2027.
+  2026-07-01:
+    - DACA
+
+metadata:
+  unit: list
+  period: year
+  label: New York state-funded Medicaid immigration statuses
+  reference:
+    - title: "New York State Department of Health, GIS 18 MA/005, Continuation of State Funded Medicaid for Deferred Action for Childhood Arrivals (DACA)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/gis/18ma005.htm
+    - title: "New York section 1332 waiver application (December 18, 2023)"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
+    - title: New York State Department of Health, client notice D61-C0332
+      href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
+    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens"
+      href: https://www.govinfo.gov/content/pkg/FR-2024-05-08/pdf/2024-09661.pdf#page=1
+    - title: "NY State of Health, Changes for 2026 (webinar, June 17, 2026)"
+      href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15
