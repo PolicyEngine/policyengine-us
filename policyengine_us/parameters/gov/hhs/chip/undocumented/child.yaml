@@ -1,5 +1,7 @@
 description: States cover undocumented children under the Children's Health Insurance Program if this is true.
-# is_chip_immigration_status_eligible applies gov.hhs.chip.child.max_age.
+# is_chip_immigration_status_eligible applies gov.hhs.chip.child.max_age, and
+# chip_federal_share gives a child enrolled through this route no federal
+# match.
 # These children pass the Medicaid immigration test only through the
 # pregnancy term. States that cover them under both programs use
 # gov.hhs.medicaid.eligibility.regardless_of_immigration_status.child_age_limit.
@@ -84,11 +86,14 @@ NM:
   2021-01-01: false
 NY:
   # Child Health Plus covers children "under the age of nineteen" (Public
-  # Health Law section 2510(4)) who meet the criteria of section 2511(2):
-  # household income, no Medicaid eligibility, no other coverage and New
-  # York residence. None of the criteria tests immigration status, and the
-  # Department of Health's 2008 documentation guide (GIS 08 MA/009) lists
-  # Child Health Plus among the programs open at any status. The 2021 date
+  # Health Law section 2510(4)). Section 2511(2) sets the criteria for a
+  # subsidy payment: household income at or below 400% of the poverty level,
+  # no Medicaid eligibility, no other coverage and New York residence. None
+  # of the criteria tests immigration status, and the Department of Health's
+  # 2008 documentation guide (GIS 08 MA/009) lists Child Health Plus among
+  # the programs open at any status. The model's New York CHIP income limit
+  # of 405% is a separate modeling choice, and enrollment at full premium
+  # above the subsidy ceiling is outside the modeled benefit. The 2021 date
   # follows the all-ages Medicaid flag this route replaces, and backdating
   # carries it to 2015. The route takes the national CHIP age limit
   # (gov.hhs.chip.child.max_age) because section 2510(4) sets the same 19.

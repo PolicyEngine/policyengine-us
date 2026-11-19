@@ -329,6 +329,105 @@
     # New York's child term is true and 17 < 19: true.
     is_chip_immigration_status_eligible: true
 
+# The pregnancy term compares days since delivery with the state's
+# postpartum period: fewer days than the period passes.
+
+- name: Undocumented New York resident 59 days postpartum is eligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 59
+    state_code: NY
+  output:
+    # New York's period reads 60 days at 2023-01-01: 59 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New York resident 60 days postpartum is ineligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 60
+    state_code: NY
+  output:
+    # New York's period reads 60 days at 2023-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented New York resident 364 days postpartum is eligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 364
+    state_code: NY
+  output:
+    # New York's period reads 365 days at 2025-01-01: 364 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New York resident 365 days postpartum is ineligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 365
+    state_code: NY
+  output:
+    # New York's period reads 365 days at 2025-01-01: 365 < 365 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented Massachusetts resident 59 days postpartum is eligible in 2022
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 59
+    state_code: MA
+  output:
+    # Massachusetts's period reads 60 days at 2022-01-01: 59 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident 60 days postpartum is ineligible in 2022
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 60
+    state_code: MA
+  output:
+    # Massachusetts's period reads 60 days at 2022-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented Massachusetts resident 364 days postpartum is eligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 364
+    state_code: MA
+  output:
+    # Massachusetts's period reads 365 days at 2023-01-01: 364 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident 365 days postpartum is ineligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 365
+    state_code: MA
+  output:
+    # Massachusetts's period reads 365 days at 2023-01-01: 365 < 365 = false.
+    is_medicaid_immigration_status_eligible: false
+
 - name: Eligible for federal Medicaid CA 
   period: 2024
   input:

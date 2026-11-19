@@ -1109,7 +1109,7 @@
 # 12-year-old and a citizen 7-year-old. New York's Medicaid limit for older
 # children is 154% of the poverty guideline, and its CHIP limit is 405%. The
 # 2025 guideline for four people is $32,150.
-- name: Case 39, New York undocumented child and citizen child both receive CHIP above the Medicaid limit.
+- name: Case 39, New York undocumented child and citizen child both qualify for CHIP above the Medicaid limit.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -1149,7 +1149,7 @@
     is_chip_eligible_child: [false, false, true, true]
     chip_category: [NONE, NONE, CHILD, CHILD]
 
-- name: Case 40, New York undocumented child receives CHIP where the citizen child receives Medicaid.
+- name: Case 40, New York undocumented child qualifies for CHIP where the citizen child qualifies for Medicaid.
   period: 2025
   absolute_error_margin: 0.01
   input:

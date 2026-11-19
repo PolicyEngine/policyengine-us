@@ -2,10 +2,11 @@ description: States cover children younger than this age under the Medicaid prog
 # A value of 0 means the model records no such coverage. States other than New
 # Jersey read 0 until researched (issue 3654). The District of Columbia, and
 # Oregon from July 1, 2023, read true for undocumented residents of every age
-# in undocumented_immigrant.yaml. New York covers undocumented children under
-# the Children's Health Insurance Program alone
-# (gov.hhs.chip.undocumented.child), and California, Illinois and Washington
-# cover children through their own state program variables.
+# in undocumented_immigrant.yaml. The Children's Health Insurance Program is
+# New York's separate route for undocumented children
+# (gov.hhs.chip.undocumented.child), and its Medicaid pregnancy and postpartum
+# route also applies to them. California, Illinois and Washington cover
+# children through their own state program variables.
 metadata:
   unit: year
   period: year
