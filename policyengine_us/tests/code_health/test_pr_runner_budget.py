@@ -186,7 +186,7 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
             "uses": f"./.github/workflows/{file}",
         }
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:
-        # the draft guard must control the only route to these runners.
+        # the PR workflow must be the only route to these runners.
         assert GROUP_WORKFLOWS[name][True] == {"workflow_call": None}
     assert set(PYTHON_JOBS) == {"RestPlan", "RestPython", "Rest", "Microsimulation"}
     assert {name: job["timeout-minutes"] for name, job in PYTHON_JOBS.items()} == {
