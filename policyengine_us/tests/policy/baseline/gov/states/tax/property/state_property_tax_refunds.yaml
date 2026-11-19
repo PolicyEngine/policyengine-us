@@ -221,6 +221,8 @@
   input:
     people:
       person1:
+        # No SSI, which counts in Utah household income.
+        ssi: 0
         age: 66
         employment_income:
           2024: 10_000

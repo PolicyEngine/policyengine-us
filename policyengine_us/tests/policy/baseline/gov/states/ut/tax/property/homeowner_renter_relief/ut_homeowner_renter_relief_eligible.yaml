@@ -85,11 +85,14 @@
   input:
     people:
       person1:
+        # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
+        ssi: 0
         age: 66
         employment_income: 10_000
         pre_subsidy_rent: 12_000
         is_tax_unit_head: true
       person2:
+        ssi: 0
         age: 40
         employment_income: 60_000
         is_tax_unit_head: true

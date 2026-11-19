@@ -9,6 +9,8 @@
   period: 2025
   input:
     age: 70
+    # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
+    ssi: 0
     strike_benefits: 10_000
     state_code: UT
   output:
@@ -18,6 +20,8 @@
   period: 2025
   input:
     age: 70
+    # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
+    ssi: 0
     strike_benefits: 10_000
     tax_exempt_strike_benefits: 3_000
     state_code: UT
@@ -28,6 +32,8 @@
   period: 2025
   input:
     age: 70
+    # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
+    ssi: 0
     strike_benefits: 3_000
     tax_exempt_strike_benefits: 5_000
     state_code: UT
@@ -314,8 +320,11 @@
   input:
     people:
       head:
+        # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
+        ssi: 0
         age: 70
       dependent:
+        ssi: 0
         age: 20
         is_tax_unit_dependent: true
         is_full_time_student: true
