@@ -1,0 +1,115 @@
+# 36 M.R.S. 5213-A(1)(B) and 5219-KK(1)(D): income is federal adjusted gross
+# income increased by listed losses, interest and "Payments received under the
+# federal Social Security Act ... to the extent not included in federal
+# adjusted gross income". Schedule PTFC/STFC line 3 adds federal total income
+# (line 2a), Social Security Act payments and interest left out of it (lines
+# 2b and 2c) and each federal line's net loss (line 2d).
+
+- name: SSI is a payment received under the federal Social Security Act.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: ME
+    social_security_retirement: 10_000
+    ssi: 3_000
+  output:
+    # 2025 Schedule PTFC/STFC instructions, lines 1a and 2b: "supplemental
+    # security income". None of the 10,000 of Social Security is taxable
+    # (provisional income 5,000). 10,000 + 3,000 SSI = 13,000.
+    me_sales_and_property_tax_fairness_credit_income: 13_000
+
+- name: A rental loss absorbed by partnership income on the same federal line is not added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ME
+    employment_income: 20_000
+    partnership_s_corp_income: 10_000
+    rental_income: -5_000
+  output:
+    # 5219-KK(1)(D)(1) adds back "any net loss resulting from combining" the
+    # rental and partnership income; Schedule PTFC/STFC line 2d adds back a
+    # negative Schedule 1 line 5. Line 5: 10,000 - 5,000 = 5,000, not a net
+    # loss, so there is no loss add-back. 20,000 wages + 5,000 = 25,000.
+    me_sales_and_property_tax_fairness_credit_income: 25_000
+
+- name: A senior renter's SSI reduces the property tax fairness credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: ME
+    social_security_retirement: 10_000
+    ssi: 3_000
+    rent: 12_000
+  output:
+    # Line 3: 10,000 Social Security (none taxable) + 3,000 SSI = 13,000.
+    me_sales_and_property_tax_fairness_credit_income: 13_000
+    # Line 5e: 15% of 12,000 = 1,800. Line 8: 4,100 (65 or older).
+    # Line 9: min(1,800, 4,100) = 1,800. Line 10: 4% of 13,000 = 520.
+    # Line 11: 1,800 - 520 = 1,280. Line 13: min(1,280, 2,000) = 1,280.
+    # Line 16: min(1,280, 1,800) = 1,280.
+    # Without the SSI: 1,800 - 4% of 10,000 = 1,400.
+    me_property_tax_fairness_credit: 1_280
+    # Single, line 3 up to 25,450: 155.
+    me_sales_tax_fairness_credit: 155
+
+- name: Wages and SSI exactly at the single sales tax fairness credit phase-out start.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: ME
+    employment_income: 23_350
+    ssi: 2_100
+  output:
+    # 23,350 + 2,100 = 25,450, the top of the first row of the 2025 single
+    # table (0 to 25,450: 155).
+    me_sales_and_property_tax_fairness_credit_income: 25_450
+    me_sales_tax_fairness_credit: 155
+
+- name: SSI one dollar higher moves income into the next row of the sales tax fairness credit table.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: ME
+    employment_income: 23_350
+    ssi: 2_101
+  output:
+    # 23,350 + 2,101 = 25,451. The 2025 single table: 25,451 to 25,950 is 145
+    # (155 less 10 for one 500 increment).
+    me_sales_and_property_tax_fairness_credit_income: 25_451
+    me_sales_tax_fairness_credit: 145
+
+- name: A rental loss that only offsets partnership income leaves income at the single phase-out start.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ME
+    employment_income: 25_450
+    partnership_s_corp_income: 5_000
+    rental_income: -5_000
+  output:
+    # Schedule 1 line 5: 5,000 - 5,000 = 0, so nothing is added back.
+    # 25,450 wages + 0 = 25,450: 155. Counting the partnership income
+    # without the loss would give 30,450 and 155 - 10 x 10 = 55.
+    me_sales_and_property_tax_fairness_credit_income: 25_450
+    me_sales_tax_fairness_credit: 155
+
+- name: A rental loss one dollar smaller leaves a dollar of Schedule 1 line 5 income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ME
+    employment_income: 25_450
+    partnership_s_corp_income: 5_000
+    rental_income: -4_999
+  output:
+    # Schedule 1 line 5: 5,000 - 4,999 = 1. 25,450 + 1 = 25,451: 145.
+    me_sales_and_property_tax_fairness_credit_income: 25_451
+    me_sales_tax_fairness_credit: 145
