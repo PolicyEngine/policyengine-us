@@ -14,10 +14,11 @@ class is_ny_medicaid_immigration_status_eligible(Variable):
     documentation = """
     New York gives state-funded Medicaid to residents it treats as
     permanently residing under color of law, Deferred Action for Childhood
-    Arrivals recipients among them. The Essential Plan covered those
-    recipients from August 1, 2024 to June 30, 2026. This variable is
-    YEAR-defined and reads the status list at January 1, so the model
-    applies the Medicaid route through 2024 and again from 2027.
+    Arrivals recipients among them. The Essential Plan took those aged 19
+    to 64 with income up to 250% of the poverty level from August 1, 2024
+    to June 30, 2026. This variable is YEAR-defined and reads the status
+    list at January 1, so the model applies the Medicaid route through 2024
+    and again from 2027.
     """
     defined_for = StateCode.NY
 

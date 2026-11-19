@@ -1,6 +1,9 @@
 description: New York covers these immigration statuses under the Medicaid program with state funds.
 # Undocumented residents follow the parameters under
-# gov.hhs.medicaid.eligibility, not this list.
+# gov.hhs.medicaid.eligibility, not this list. The Department of Health's
+# 2014 client notice also counts Temporary Protected Status holders as
+# PRUCOL. The list does not hold them: their coverage dates have not been
+# sourced.
 values:
   # New York treats Deferred Action for Childhood Arrivals recipients as
   # permanently residing under color of law (PRUCOL) and gives them
@@ -34,7 +37,7 @@ metadata:
       href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
     - title: New York State Department of Health, client notice D61-C0332
       href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
-    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens"
+    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens for a Qualified Health Plan through an Exchange, Advance Payments of the Premium Tax Credit, Cost-Sharing Reductions, and a Basic Health Program"
       href: https://www.govinfo.gov/content/pkg/FR-2024-05-08/pdf/2024-09661.pdf#page=1
     - title: "NY State of Health, Changes for 2026 (webinar, June 17, 2026)"
       href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15

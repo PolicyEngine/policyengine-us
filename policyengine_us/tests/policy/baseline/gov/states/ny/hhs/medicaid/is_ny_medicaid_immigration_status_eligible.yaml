@@ -80,6 +80,8 @@
     # The list sets no age limit.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
+    # The list opens no CHIP route: DACA stays off the CHIP status lists.
+    is_chip_immigration_status_eligible: false
 
 - name: Case 8, TPS 30-year-old is not on the list in 2019.
   period: 2019
@@ -88,9 +90,9 @@
     immigration_status: TPS
     state_code: NY
   output:
-    # The list holds DACA alone. A TPS adult also fails the federal test.
+    # The list holds DACA alone. New York's 2014 notice counts TPS as PRUCOL
+    # too, and the list does not hold it yet.
     is_ny_medicaid_immigration_status_eligible: false
-    is_medicaid_immigration_status_eligible: false
 
 - name: Case 9, undocumented 30-year-old is not on the list in 2019.
   period: 2019
