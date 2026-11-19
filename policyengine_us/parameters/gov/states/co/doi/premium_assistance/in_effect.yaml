@@ -3,21 +3,29 @@ values:
   # HB25B-1006 (2025 First Extraordinary Session, enrolled act) authorized CPA
   # only if Congress did not extend the enhanced federal Premium Tax Credit by
   # 2025-12-31; that trigger condition occurred, so the program went live for
-  # plan year 2026. DOI Amended Regulation 4-2-78 (3 CCR 702-4) sections 3 and 5
-  # implement the program for 2026 and each plan year thereafter.
-  # SB26-178 (signed 2026-06-03) funds Colorado Premium Assistance for plan year
-  # 2027 (SB26-178 section 10-16-1205(2)(f), "each calendar year thereafter").
-  # 2028-01-01: false is a conservative carry-forward, not a repealer: no repealer
-  # touches CPA; the only 2028 date, section 10-16-1212(3), repeals a feasibility
-  # study, not the program itself.
-  # TODO re-verify against the DOI fall-2026 Reg 4-2-78 amendment cycle, which may
-  # extend funded plan years beyond 2027.
+  # plan year 2026. DOI Amended Regulation 4-2-78 (3 CCR 702-4, eff.
+  # 2025-11-30) sections 3 and 5 implement the program for 2026.
+  # From 2027 the program continues with no end date:
+  # - SB26-178 (signed 2026-06-03), C.R.S. 10-16-1205(2)(f)(I), allocates
+  #   revenues "ASSESSED FOR THE 2027 CALENDAR YEAR AND FOR EACH CALENDAR YEAR
+  #   THEREAFTER", including at least 25% "TO REDUCE THE COSTS OF INDIVIDUAL
+  #   HEALTH BENEFIT PLANS FOR INDIVIDUALS WHO PURCHASE AN INDIVIDUAL HEALTH
+  #   BENEFIT PLAN ON THE EXCHANGE" ((2)(f)(I)(C)).
+  # - DOI Amended Regulation 4-2-78 (adopted 2026-08-11, effective 2026-09-30)
+  #   applies "starting in benefit year 2027 and annually thereafter" (section
+  #   3) and provides the subsidy "For the 2027 benefit year, and annually
+  #   thereafter" (section 5).
+  # Neither source repeals the program or sets different amounts for 2028 or
+  # later, so the program stays in effect and the 2027 amounts carry forward
+  # (project lead's ruling, 2026-11-18). What is specific to 2027 is the
+  # financing: section 6 of the rule provides carrier payments "for the 2027
+  # benefit year", and the only 2028 date in SB26-178, section 10-16-1212(3),
+  # repeals a feasibility study, not the program.
   # Doc note: the Colorado Premium Assistance rulemaking authority is
   # section 10-16-1207(5); section 10-16-1215 is the OmniSalud rulemaking
   # authority, a separate program, and does not govern CPA.
   0000-01-01: false
   2026-01-01: true
-  2028-01-01: false
 
 metadata:
   unit: bool
@@ -32,7 +40,13 @@ metadata:
       href: https://leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf#page=6
     - title: HB25B-1006 (enrolled) section 10-16-1205(1)(b)(II) Colorado Premium Assistance payments and funding
       href: https://leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf#page=2
-    - title: SB26-178 section 10-16-1205(2)(f) plan year 2027 funding (signed 2026-06-03; the act terms the subsidy a "premium wrap", p.12)
+    - title: SB26-178 (enrolled, signed 2026-06-03) section 10-16-1205(2)(f)(I), allocation for the 2027 calendar year and each calendar year thereafter
       href: https://leg.colorado.gov/bill_files/116559/download#page=3
+    - title: Session Laws of Colorado 2026, chapter 298 (SB26-178) section 10-16-1205(2)(f)(I)
+      href: https://leg.colorado.gov/laws/session-laws/SB26-178/298/download#page=3
+    - title: "DOI Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30) sections 3 and 5, 2027 benefit year and annually thereafter #page 1-2"
+      href: https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=1
+    - title: Colorado DOI Notice of Adoption - Amended Regulations 4-2-73 and 4-2-78 (2026-08-11)
+      href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulations-4-2-73-and-4-2-78
     - title: Connect for Health Colorado - Colorado Premium Assistance
       href: https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/

@@ -1,10 +1,12 @@
 # End-to-end integration tests for Colorado Premium Assistance (CPA), PY2026-2027.
 # CPA is a flat state premium wrap on top of the federal ACA premium tax credit:
 # $80/month for the first APTC-eligible member plus $29/month for each additional
-# member (NO member cap), for tax units in Colorado at or below the 400% FPL
-# ceiling (no lower bound), capped at the remaining benchmark premium after the
-# federal credit. In effect for plan years 2026 and 2027 (2028-01-01 sunset
-# verified by SB26-178), unfunded thereafter.
+# member in 2026, and $70 plus $25 from 2027 (Amended Regulation 4-2-78,
+# effective 2026-09-30, Section 5.B), with NO member cap, for tax units in
+# Colorado at or below the 400% FPL ceiling (no lower bound), capped at the
+# remaining benchmark premium after the federal credit. In effect from plan year
+# 2026 with no end date: SB26-178 and the amended regulation apply to 2027 and
+# each year thereafter, and the 2027 amounts carry forward.
 #
 # To keep expected values exactly hand-verifiable and independent of the
 # rating-area premium lookup, is_aca_ptc_eligible (per person), aca_magi against
@@ -12,7 +14,8 @@
 # and each scenario asserts the
 # intermediate eligibility flag so a reviewer can follow the arithmetic:
 #   n            = count of is_aca_ptc_eligible members
-#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0
+#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0   (2026)
+#   flat_monthly = (70 + 25*(n-1)) if n >= 1 else 0   (2027 and later)
 #   residual     = max(0, slcsp_annual - aca_ptc)
 #   amount       = eligible * min(12 * flat_monthly, residual)
 
@@ -171,10 +174,12 @@
     co_premium_assistance_eligible: true
     co_premium_assistance: 0
 
-- name: Scenario 6, PY2027 in-window verified year -> single member -> 12*$80.
-  # in_effect true for 2027 (SB26-178 window). n=1 -> 12*80 = 960.
-  # residual 9_000-2_000 = 7_000 >= 960. eligible true (1.0 <= 2.50 <= 4.0).
-  # amount = min(960, 7_000) = 960.
+- name: Scenario 6, PY2027 single member -> 12*$70 under the amended regulation.
+  # in_effect true for 2027 (SB26-178). Amended Regulation 4-2-78 (effective
+  # 2026-09-30) Section 5.B.1: $70 for the first enrollee (2026: $80, which gave
+  # 960 here). n=1 -> 12*70 = 840.
+  # residual 9_000-2_000 = 7_000 >= 840. eligible true (2.50 <= 4.0).
+  # amount = min(840, 7_000) = 840.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -195,7 +200,7 @@
         state_code: CO
   output:
     co_premium_assistance_eligible: true
-    co_premium_assistance: 960
+    co_premium_assistance: 840
 
 - name: Scenario 7, out-of-window and non-CO cases return 0.
   # 2025 is before the PY2026 start, so in_effect is false -> eligible false ->

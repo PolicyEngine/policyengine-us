@@ -1,7 +1,10 @@
 description: Colorado limits eligibility to this share of the federal poverty line as an upper bound under the Colorado Premium Assistance program.
 values:
   # 400% FPL upper bound, inclusive, per DOI Amended Regulation 4-2-78
-  # (3 CCR 702-4, eff. 2025-11-30) section 4.C.
+  # (3 CCR 702-4, eff. 2025-11-30) section 4.C. The amended regulation
+  # effective 2026-09-30 (2027 benefit year onward) keeps the same section 4.C
+  # definition: household income "no greater than 400% of the Federal Poverty
+  # Level".
   2026-01-01: 4
 
 metadata:
@@ -15,3 +18,5 @@ metadata:
       href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance
     - title: Connect for Health Colorado - Colorado Premium Assistance
       href: https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/
+    - title: DOI Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30) section 4.C
+      href: https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=1
