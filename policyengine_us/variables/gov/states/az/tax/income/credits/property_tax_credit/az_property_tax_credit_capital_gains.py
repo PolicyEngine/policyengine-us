@@ -44,10 +44,10 @@ class az_property_tax_credit_capital_gains(Variable):
         # back to give the year's own net gain or loss. Reg. 1.642(h)-1(a)
         # transfers a terminating estate/trust's unused capital loss as a
         # carryover. Max's d1107 ruling (2026-10-09) keeps final Form 1041 K-1
-        # box 11 code D losses in this addback. Code C, the short-term
-        # counterpart under the same regulation, is treated the same pending
-        # his confirmation (d1512). The estate_or_trust_* leaves hold those
-        # losses apart from the person's own carryovers.
+        # box 11 code D losses in this addback, and his d1512 ruling
+        # (2026-10-14) treats code C, the short-term counterpart under the
+        # same regulation, the same way. The estate_or_trust_* leaves hold
+        # those losses apart from the person's own carryovers.
         carryover = max_(0, person("long_term_capital_loss_carryover", period)) + max_(
             0, person("short_term_capital_loss_carryover", period)
         )

@@ -238,30 +238,48 @@ def _file_capital_loss_carryover_sums(simulation):
     or trust. Core does not uprate a variable that adds others, and a sum
     entered for anyone in a simulation would otherwise be an input for
     everyone in it. So, mirroring the ``employment_income`` ->
-    ``employment_income_before_lsr`` moves, a sum entered for a period
-    replaces the leaves entered for that period for each person it is
-    nonzero for: their own carryover becomes the sum, which uprates to later
-    periods as that leaf does, and an estate or trust carryover entered for
-    the period becomes zero. Where the sum is zero, the leaves entered for the
-    period stay, and without any the person's own carryover is zero, as the
-    entered sum was. Leaves entered for other periods are left alone. The sum
-    is then computed from its leaves.
+    ``employment_income_before_lsr`` moves, for each period a sum is entered
+    for and each person it is nonzero for, the person's own carryover becomes
+    the sum, which uprates to later periods as that leaf does, and their
+    estate or trust carryover becomes zero, even if it would otherwise uprate
+    from an earlier period. Everyone else keeps the leaf values they had for
+    that period, read before any period is filed, so a sum filed for one
+    period never feeds another's. The sum is then computed from its leaves.
+
+    Core clones a reform's baseline branch before this runs, so every branch
+    that exists at construction is filed the same way.
     """
+    for branch in [simulation, *simulation.branches.values()]:
+        _file_branch_capital_loss_carryover_sums(branch)
+
+
+def _file_branch_capital_loss_carryover_sums(simulation):
+    filings = []
     for total, (own, estate_or_trust) in CAPITAL_LOSS_CARRYOVER_SUMS.items():
         holder = simulation.get_holder(total)
         for known_period in holder.get_known_periods():
-            amount = holder.get_array(known_period)
-            entered = amount != 0
-            for leaf, value in [(own, amount), (estate_or_trust, 0)]:
-                existing = simulation.get_holder(leaf).get_array(known_period)
-                if existing is None and leaf == estate_or_trust:
-                    continue
-                simulation.set_input(
-                    leaf,
+            filings.append(
+                (
+                    holder,
                     known_period,
-                    np.where(entered, value, 0 if existing is None else existing),
+                    holder.get_array(known_period),
+                    {
+                        leaf: _leaf_value(simulation, leaf, known_period)
+                        for leaf in (own, estate_or_trust)
+                    },
+                    own,
+                    estate_or_trust,
                 )
-            holder.delete_arrays(known_period)
+            )
+    for holder, known_period, amount, current, own, estate_or_trust in filings:
+        entered = amount != 0
+        for leaf, value in [(own, amount), (estate_or_trust, 0)]:
+            if current[leaf] is None and leaf == estate_or_trust:
+                # Zero for everyone already.
+                continue
+            other = 0 if current[leaf] is None else current[leaf]
+            simulation.set_input(leaf, known_period, np.where(entered, value, other))
+        holder.delete_arrays(known_period)
     if getattr(simulation, "input_variables", None) is not None:
         names = [
             name
@@ -274,6 +292,20 @@ def _file_capital_loss_carryover_sums(simulation):
                 if known and leaf not in names:
                     names.append(leaf)
         simulation.input_variables = names
+
+
+def _leaf_value(simulation, leaf, period):
+    """A carryover leaf's value for the period: its input for the period, or
+    what it uprates to from an earlier input, or what a formula a reform gave
+    it returns. None when it has none of those, so it is zero for everyone."""
+    holder = simulation.get_holder(leaf)
+    array = holder.get_array(period)
+    if array is not None:
+        return array
+    variable = simulation.tax_benefit_system.get_variable(leaf)
+    if holder.get_known_periods() or not variable.is_input_variable():
+        return np.asarray(simulation.calculate(leaf, period))
+    return None
 
 
 class Simulation(SPMSimulationMixin, CoreSimulation):
