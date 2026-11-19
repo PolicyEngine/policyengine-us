@@ -75,8 +75,8 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
 
             # Freeze-affected (UNDOCUMENTED): standard age eligibility OR
             #   continuous coverage (already enrolled)
-            # Not freeze-affected (DACA/TPS/others): always eligible
-            #   (Health4All covered all ages by 2024, freeze doesn't apply)
+            # Not freeze-affected (DACA, TPS): always eligible. The freeze
+            #   names neither status.
             return is_ca_state_funded_status & where(
                 is_freeze_affected,
                 standard_eligible | current_medicaid_coverage,

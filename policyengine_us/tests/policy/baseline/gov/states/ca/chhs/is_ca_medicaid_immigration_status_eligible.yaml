@@ -468,20 +468,20 @@
     is_ca_medicaid_immigration_status_eligible: true
 
 # One household with all three statuses: the formula picks each person's schedule.
-- name: Case 39, three 22-year-olds and a child with different statuses in 2019.
+- name: Case 39, three 30-year-olds and a child with different statuses in 2019.
   period: 2019
   input:
     people:
       undocumented_adult:
-        age: 22
+        age: 30
         is_pregnant: false
         immigration_status: UNDOCUMENTED
       daca_adult:
-        age: 22
+        age: 30
         is_pregnant: false
         immigration_status: DACA
       tps_adult:
-        age: 22
+        age: 30
         is_pregnant: false
         immigration_status: TPS
       undocumented_child:
@@ -493,11 +493,11 @@
         members: [undocumented_adult, daca_adult, tps_adult, undocumented_child]
         state_code: CA
   output:
-    # Undocumented, 22: age-19 bracket of the undocumented schedule, false at 2019-01-01.
-    # DACA, 22: the one bracket of eligible_with_daca, true at 2019-01-01.
-    # TPS, 22: age-19 bracket of eligible_with_tps, true at 2019-01-01.
+    # Undocumented, 30: age-26 bracket of the undocumented schedule, false at 2019-01-01.
+    # DACA, 30: the one bracket of eligible_with_daca, true at 2019-01-01.
+    # TPS, 30: age-26 bracket of eligible_with_tps, false at 2019-01-01.
     # Undocumented, 10: age-0 bracket of the undocumented schedule, true at 2019-01-01.
-    is_ca_medicaid_immigration_status_eligible: [false, true, true, true]
+    is_ca_medicaid_immigration_status_eligible: [false, true, false, true]
 
 # 2026: the enrollment freeze reaches ages 19 to 25 as it does older adults.
 - name: Case 40, undocumented 22-year-old not on Medicaid is ineligible in 2026.
