@@ -6300,7 +6300,8 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/young_adult/reduction.yaml
     - policyengine_us/variables/gov/states/md/mhbe/premium_assistance/md_premium_assistance_young_adult_reduction.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11153
   state: ruled
   note: PolicyEngine follows the Board's schedule, which MHBE applies, under a project-lead ruling of 2026-11-18;
     young_adult/reduction.yaml reduces the target contribution through age 37 in 2026 and 2027. No COMAR amendment
