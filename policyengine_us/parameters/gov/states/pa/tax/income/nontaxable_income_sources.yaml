@@ -9,6 +9,10 @@ values:
     - us_govt_interest
     - salt_refund_income
     - military_retirement_income
+    # Alimony is income not taxable for PA PIT purposes. The list subtracts
+    # the part federal gross income holds: alimony under a divorce or
+    # separation instrument executed before 2019.
+    - taxable_alimony_income
     # Sick pay and disability benefits other than regular wages, including
     # third-party insurer payments, and disability distributions (61 Pa.
     # Code 101.6(c)(1)). Regular sick leave pay is in employment income.
@@ -38,5 +42,7 @@ metadata:
     # income, so this list subtracts the part of strike benefits it holds.
     - title: Pennsylvania Personal Income Tax Guide, Gross Compensation - income items never taxable as PA compensation
       href: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#IncomeItemsNeverTaxablePA
+    - title: 2025 Pennsylvania PIT Return Instructions (PA-40 IN), income not taxable for PA PIT purposes (alimony)
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=8
     - title: 2025 PA-40 Schedule T - Gambling and Lottery Winnings
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40t.pdf#page=1
