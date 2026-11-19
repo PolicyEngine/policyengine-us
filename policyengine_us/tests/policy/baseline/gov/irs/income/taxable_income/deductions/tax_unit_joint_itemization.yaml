@@ -127,3 +127,34 @@
     income_tax: 24_047
     state_income_tax: 6_447
     federal_state_income_tax: 30_494
+
+- name: Case 6, the Virginia sales tax election minimizes combined income tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: VA
+    age: 40
+    employment_income: 150_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 8_000
+    state_sales_tax: 7_800
+    local_sales_tax: 0
+  output:
+    # Federal Schedule A line 5a allows either tax. Income taxes would
+    # lower the federal bill by $48, to $22,127.
+    # https://www.irs.gov/instructions/i1040sca
+    # Virginia Schedule A subtracts income taxes on line 18 and retains
+    # sales taxes. The extra $7,800 deduction saves $448.50 at 5.75%.
+    # https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2025-sch-a-instructions.pdf
+    # https://law.lis.virginia.gov/vacode/title58.1/section58.1-320/
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    state_and_local_sales_tax_elected: true
+    state_and_local_sales_or_income_tax: 7_800
+    itemized_taxable_income_deductions: 27_800
+    va_deductions: 27_800
+    va_taxable_income: 121_270
+    income_tax: 22_175
+    state_income_tax: 6_715.525
+    federal_state_income_tax: 28_890.525

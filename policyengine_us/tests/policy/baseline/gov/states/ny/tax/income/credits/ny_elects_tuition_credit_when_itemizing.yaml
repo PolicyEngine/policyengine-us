@@ -168,3 +168,28 @@
     ny_itemizes: false
     ny_deductions: 8_000
     ny_college_tuition_credit: 240
+
+# IT-272 Part 2 caps the credit at $200 for $3,000 of qualified tuition.
+# IT-201 lines 47–49 use state taxable income to compute NYC resident tax.
+# https://www.tax.ny.gov/pdf/2025/inc/it272_2025_fill_in.pdf#page=2
+# https://www.tax.ny.gov/forms/html-instructions/2025/it/it201i-2025.htm
+- name: New York City's local income tax can change a resident's IT-272 tuition election.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [NY, NY]
+    in_nyc: [false, true]
+    age: [40, 40]
+    tax_unit_itemizes: [false, false]
+    ny_agi: [60_000, 60_000]
+    ny_exemptions: [0, 0]
+    deductible_mortgage_interest: [16_000, 16_000]
+    qualified_tuition_expenses: [3_000, 3_000]
+    state_sales_tax: [0, 0]
+    local_sales_tax: [0, 0]
+  output:
+    state_deduction_method: [ITEMIZED, ITEMIZED]
+    ny_elects_tuition_credit_when_itemizing: [true, false]
+    ny_college_tuition_credit: [200, 0]
+    ny_college_tuition_deduction: [0, 3_000]
+    ny_taxable_income: [44_000, 41_000]
