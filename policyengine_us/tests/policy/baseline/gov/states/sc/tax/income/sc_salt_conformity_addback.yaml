@@ -1,0 +1,103 @@
+- name: Subtract the income taxes already added back on line a
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 42_000
+    real_estate_taxes: 22_000
+    sc_federal_itemized_personal_property_taxes: 2_000
+    state_and_local_sales_or_income_tax: 12_000
+    salt_deduction: 36_000
+  output:
+    sc_state_tax_addback: 12_000
+    # $36,000 of SALT less $10,000 of allowable property tax less line a.
+    sc_salt_conformity_addback: 14_000
+    sc_obbba_addback: 14_000
+
+- name: State standard deduction limits the combined addition for a joint filer
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 35_000
+    real_estate_taxes: 3_000
+    state_and_local_sales_or_income_tax: 23_000
+    salt_deduction: 26_000
+  output:
+    # $35,000 less the $31,500 federal standard deduction.
+    sc_state_tax_addback: 3_500
+    # The two additions together cannot exceed $35,000 - $30,000.
+    sc_salt_conformity_addback: 1_500
+
+- name: Property tax conformity adjustment stops at the pre-OBBBA standard deduction
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 24_000
+    real_estate_taxes: 20_000
+    state_and_local_sales_or_income_tax: 0
+    salt_deduction: 20_000
+  output:
+    sc_state_tax_addback: 0
+    # The uncapped difference is $10,000, but $24,000 - $15,000 is $9,000.
+    sc_salt_conformity_addback: 9_000
+
+- name: Separate filers use the $5,000 prior cap and zero on worksheet line 2
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 14_000
+    real_estate_taxes: 8_000
+    state_and_local_sales_or_income_tax: 3_000
+    salt_deduction: 11_000
+  output:
+    sc_state_tax_addback: 3_000
+    sc_salt_conformity_addback: 3_000
+
+- name: Use the applicable federal cap on the state tax addback worksheet
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 35_000
+    real_estate_taxes: 5_000
+    sc_federal_itemized_personal_property_taxes: 2_000
+    state_and_local_sales_or_income_tax: 6_000
+    salt_cap: 10_000
+    salt_deduction: 10_000
+  output:
+    sc_state_tax_addback: 3_000
+    sc_salt_conformity_addback: 0
+
+- name: No itemized SALT addition when the taxpayer takes the federal standard deduction
+  period: 2025
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+    real_estate_taxes: 24_000
+    state_and_local_sales_or_income_tax: 12_000
+    salt_deduction: 36_000
+    itemized_taxable_income_deductions: 42_000
+  output:
+    sc_state_tax_addback: 0
+    sc_salt_conformity_addback: 0
+    sc_obbba_addback: 750
+
+- name: This adjustment ends with South Carolina's 2025 tax base
+  period: 2026
+  input:
+    state_code: SC
+    tax_unit_itemizes: true
+    salt_deduction: 36_000
+    real_estate_taxes: 24_000
+    itemized_taxable_income_deductions: 42_000
+  output:
+    sc_salt_conformity_addback: 0
