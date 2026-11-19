@@ -1,4 +1,11 @@
-- name: Case 1, prior-year Ohio modified adjusted gross income controls total income.
+# R.C. 323.151(C): total income is the owner's and spouse's modified adjusted
+# gross income "for the year preceding the year in which application for a
+# reduction in taxes is made".
+# https://codes.ohio.gov/assets/laws/revised-code/authenticated/3/323/323.151/10-27-2023/323.151-10-27-2023.pdf#page=1
+# PolicyEngine books the exemption to that income year, so total income for
+# a given year is that same year's Ohio modified adjusted gross income.
+
+- name: Case 1, total income is the same year's Ohio modified adjusted gross income.
   period: 2026
   input:
     people:
@@ -17,9 +24,10 @@
           2025: OH
           2026: OH
   output:
-    oh_homestead_exemption_total_income: 35_000
+    # 2026 Ohio modified AGI: 99,000. The 2025 value (35,000) is not read.
+    oh_homestead_exemption_total_income: 99_000
 
-- name: Case 2, current-year Ohio modified adjusted gross income is ignored.
+- name: Case 2, prior-year Ohio modified adjusted gross income under the limit does not qualify a filer over it.
   period: 2026
   input:
     people:
@@ -38,4 +46,31 @@
           2025: OH
           2026: OH
   output:
-    oh_homestead_exemption_total_income: 39_000
+    # 2026 Ohio modified AGI: 60,000, over the 41,000 limit. The 2025 value
+    # (39,000, under the limit) is not read.
+    oh_homestead_exemption_total_income: 60_000
+
+- name: Case 3, with one year of inputs the income limit still binds.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Ohio modified AGI: 100,000 of wages, no additions or deductions.
+    oh_modified_agi: 100_000
+    # Same-year Ohio modified AGI: 100,000. Reading the prior year gave 0
+    # here, because 2025 has no inputs.
+    oh_homestead_exemption_total_income: 100_000
+    # 100,000 > 41,000 (2026 income limit).
+    oh_homestead_exemption_eligible: false

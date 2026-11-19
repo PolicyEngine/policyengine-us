@@ -1,0 +1,1 @@
+Ohio homestead exemption total income now reads the same year's Ohio modified adjusted gross income, so the income limit applies in single-year household runs and microsimulation instead of reading an empty prior year as 0.
