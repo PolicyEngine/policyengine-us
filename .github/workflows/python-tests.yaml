@@ -102,7 +102,7 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       # Each planned process runs files of one group, one process at a time.
-      # SPM simulation/API contracts stay in the Microsimulation job.
+      # SPM simulation/API contracts run in the SPM job.
       - name: Run remaining Python tests
         if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
@@ -179,16 +179,10 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Keep simulation/API and dataset compatibility on this existing runner.
-      # Use separate, sequential processes: combining these suites in one
-      # pytest process previously accumulated enough memory to kill the runner.
-      - name: Run SPM Python tests
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
+      # Dataset compatibility. The SPM simulation/API contracts run in the SPM
+      # job: both suites on one runner took 44-60 minutes in November 2026 and
+      # hit the 60-minute timeout on release runs 44389486017 and 44576070741.
       - name: Run microsimulation tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
@@ -200,3 +194,48 @@ jobs:
           path: |
             simulation-*.xml
             simulation-*-resources.txt
+  SPM:
+    # Starts on the runner Microsimulation frees, so a PR holds no more runners
+    # at once than before. Release runs (push.yaml) start both together.
+    needs: [Microsimulation]
+    # Runs after a failed Microsimulation but stops when the run is cancelled.
+    if: ${{ !cancelled() }}
+    name: Full Suite - SPM
+    runs-on: ubuntu-latest
+    # 17-23 minutes of tests in November 2026.
+    timeout-minutes: 45
+    env:
+      PYTHONUNBUFFERED: 1
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.13.4"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
+      - name: Upload SPM timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spm-test-timings
+          path: |
+            simulation-spm.xml
+            simulation-spm-resources.txt

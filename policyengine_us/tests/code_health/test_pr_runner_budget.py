@@ -70,17 +70,26 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     # in October 2026, and by run 40014592006 its two chained runners took
     # 130 minutes. RestPlan now spreads the groups over parallel shards (five
     # from the October reports, at most MAX_SHARDS), and Rest checks their
-    # results on a runner of its own.
-    assert sum(counts.values()) == 27
+    # results on a runner of its own. SPM left the Microsimulation runner,
+    # which hit its 60-minute timeout with both suites in November 2026.
+    assert sum(counts.values()) == 28
     assert {
         name: counts[name]
-        for name in ("Baseline", "Contrib", "RestPlan", "Rest", "Microsimulation")
+        for name in (
+            "Baseline",
+            "Contrib",
+            "RestPlan",
+            "Rest",
+            "Microsimulation",
+            "SPM",
+        )
     } == {
         "Baseline": 11,
         "Contrib": 9,
         "RestPlan": 1,
         "Rest": 1,
         "Microsimulation": 1,
+        "SPM": 1,
     }
     assert (shards.MIN_SHARDS, shards.MAX_SHARDS) == (4, 12)
 
@@ -113,8 +122,11 @@ def test_uncapped_matrices_keep_a_pr_at_27_runners_at_once():
         for inner_name, inner in GROUP_WORKFLOWS[name]["jobs"].items():
             if not needs(inner):
                 first_wave[inner_name] = concurrent(inner)
-    assert not {"Rest", "RestPython", "Contrib"} & set(first_wave)
+    assert not {"Rest", "RestPython", "Contrib", "SPM"} & set(first_wave)
     assert sum(first_wave.values()) == 16
+    # SPM starts on the runner Microsimulation frees, so it never adds to the
+    # count of runners at once.
+    assert needs(PYTHON_JOBS["SPM"]) == ["Microsimulation"]
     # The shards start once RestPlan has finished. Contrib starts only after
     # Baseline has finished, so at most Contrib's groups, the shards and every
     # other first-wave job can be running then.
@@ -188,18 +200,26 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:
         # the draft guard must control the only route to these runners.
         assert GROUP_WORKFLOWS[name][True] == {"workflow_call": None}
-    assert set(PYTHON_JOBS) == {"RestPlan", "RestPython", "Rest", "Microsimulation"}
+    assert set(PYTHON_JOBS) == {
+        "RestPlan",
+        "RestPython",
+        "Rest",
+        "Microsimulation",
+        "SPM",
+    }
     assert {name: job["timeout-minutes"] for name, job in PYTHON_JOBS.items()} == {
         "RestPlan": 10,
         "RestPython": 90,
         "Rest": 5,
         "Microsimulation": 60,
+        "SPM": 45,
     }
     expected_needs = {
         "RestPlan": [],
         "RestPython": ["RestPlan"],
         "Rest": ["RestPlan", "RestPython"],
         "Microsimulation": [],
+        "SPM": ["Microsimulation"],
     }
     for name, job in PYTHON_JOBS.items():
         assert job["runs-on"] == "ubuntu-latest"
