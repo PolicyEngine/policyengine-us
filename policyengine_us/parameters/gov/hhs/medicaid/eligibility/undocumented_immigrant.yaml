@@ -17,6 +17,8 @@ metadata:
       href: https://files.kff.org/attachment/Table-3-State-Adoption-of-Options-to-Cover-Immigrant-Populations-January-2021.pdf
     - title: Massachusetts General Laws chapter 118E, section 16D
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+    - title: "130 CMR 504.000, MassHealth: Citizenship and Immigration"
+      href: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
     - title: New York Social Services Law section 122
       href: https://www.nysenate.gov/legislation/laws/SOS/122
 
@@ -66,7 +68,10 @@ MD:
   2021-01-01: false
 MA:
   # M.G.L. c. 118E, section 16D(2) limits undocumented residents to emergency
-  # services unless federal law requires more.
+  # services unless federal law requires more. 130 CMR 504.006(D) gives them
+  # MassHealth Standard if pregnant (gov.hhs.medicaid.eligibility.undocumented),
+  # MassHealth Limited, and the Children's Medical Security Plan under 19,
+  # which the model does not hold.
   2021-01-01: false
 MI:
   2021-01-01: false

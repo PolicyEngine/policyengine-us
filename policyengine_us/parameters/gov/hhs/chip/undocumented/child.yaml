@@ -15,6 +15,8 @@ metadata:
       href: https://www.nysenate.gov/legislation/laws/PBH/2510
     - title: New York Public Health Law section 2511
       href: https://www.nysenate.gov/legislation/laws/PBH/2511
+    - title: "New York State Department of Health, GIS 08 MA/009 attachment (March 3, 2008)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/08ma009att.pdf
 
 AL:
   2021-01-01: false
@@ -84,9 +86,11 @@ NY:
   # Child Health Plus covers children "under the age of nineteen" (Public
   # Health Law section 2510(4)) who meet the criteria of section 2511(2):
   # household income, no Medicaid eligibility, no other coverage and New
-  # York residence. None of the criteria tests immigration status. The 2021
-  # date follows the all-ages Medicaid flag this route replaces, and
-  # backdating carries it to 2015.
+  # York residence. None of the criteria tests immigration status, and the
+  # Department of Health's 2008 documentation guide (GIS 08 MA/009) lists
+  # Child Health Plus among the programs open at any status. The 2021 date
+  # follows the all-ages Medicaid flag this route replaces, and backdating
+  # carries it to 2015.
   2021-01-01: true
 NC:
   2021-01-01: false

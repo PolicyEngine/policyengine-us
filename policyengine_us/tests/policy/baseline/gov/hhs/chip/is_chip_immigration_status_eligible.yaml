@@ -427,7 +427,8 @@
     # 19 < 19 is false.
     is_chip_immigration_status_eligible: false
 
-# Massachusetts limits undocumented residents to emergency services.
+# Massachusetts covers undocumented children through the Children's Medical
+# Security Plan (130 CMR 504.006(D)(3)), which the model does not hold.
 - name: Case 23, undocumented 8-year-old in Massachusetts fails the CHIP immigration test in 2025.
   period: 2025
   input:

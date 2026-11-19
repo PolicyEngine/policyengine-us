@@ -92,9 +92,10 @@
 
 # New York limits undocumented residents to emergency care, except during
 # pregnancy and the postpartum period and, from January 1, 2024, at age 65 or
-# older. Massachusetts limits them to emergency services. The all-ages flag in
-# undocumented_immigrant reads false for both states, so each case below
-# turns on the pregnancy term or the aged term alone.
+# older. Massachusetts gives them MassHealth Standard only during pregnancy
+# and the postpartum period. The all-ages flag in undocumented_immigrant reads
+# false for both states, so each case below turns on the pregnancy term or
+# the aged term alone.
 
 - name: Undocumented 35-year-old in New York is ineligible in 2025
   period: 2025
@@ -236,7 +237,7 @@
     is_pregnant: false
     state_code: MA
   output:
-    # Massachusetts reads false in the flag and in both group terms: false.
+    # Massachusetts reads false in the flag, and the person is not pregnant: false.
     is_medicaid_immigration_status_eligible: false
 
 - name: Undocumented 70-year-old in Massachusetts is ineligible in 2025
@@ -249,7 +250,7 @@
     # Massachusetts's aged term is false: false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Pregnant undocumented 30-year-old in Massachusetts fails the Medicaid immigration test in 2025
+- name: Pregnant undocumented 30-year-old in Massachusetts is eligible in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -257,9 +258,21 @@
     is_pregnant: true
     state_code: MA
   output:
-    # Massachusetts's pregnancy term is false. The CHIP unborn-child route tests
-    # no immigration status (is_chip_fcep_eligible_person).
-    is_medicaid_immigration_status_eligible: false
+    # Massachusetts's pregnancy term is true and the person is pregnant: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident under 60 days postpartum is eligible in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_60_days_postpartum: true
+    state_code: MA
+  output:
+    # count_days_postpartum = 0, and Massachusetts's postpartum period reads 60
+    # days at 2017-01-01: 0 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
 
 - name: Eligible for federal Medicaid CA 
   period: 2024

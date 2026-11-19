@@ -603,12 +603,11 @@
   output:
     is_chip_fcep_eligible_person: false
 
-# Massachusetts limits undocumented residents to emergency services under
-# Medicaid (M.G.L. c. 118E, section 16D(2)), so a pregnant undocumented
-# resident fails the Medicaid immigration test. The unborn-child route tests
-# no immigration status, and Massachusetts's limit is 205% of the poverty
-# guideline.
-- name: Case 22, Massachusetts FCEP covers an undocumented pregnant applicant at 150% FPL in 2025.
+# 130 CMR 504.006(D)(1) gives a pregnant undocumented Massachusetts resident
+# MassHealth Standard, so the person passes the Medicaid immigration test and
+# the unborn-child route, which covers people who are not eligible for
+# Medicaid, does not apply.
+- name: Case 22, Massachusetts covers an undocumented pregnant applicant at 150% FPL under Medicaid in 2025.
   period: 2025
   input:
     people:
@@ -622,8 +621,7 @@
         members: [person1]
         state_code: MA
   output:
-    is_medicaid_immigration_status_eligible: false
-    is_medicaid_eligible: false
-    # 1.5 <= 2.05, and the person is not eligible for Medicaid.
-    is_chip_fcep_eligible_person: true
-    chip_category: PREGNANT_FCEP
+    is_medicaid_immigration_status_eligible: true
+    # 1.5 <= 2.05, Massachusetts's limit for pregnant people.
+    is_medicaid_eligible: true
+    is_chip_fcep_eligible_person: false
