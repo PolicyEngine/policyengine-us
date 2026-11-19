@@ -1,0 +1,345 @@
+# ORS 316.157(2)(c): "Income" means federal adjusted gross income "with the
+# following modifications: (A) There shall be added to adjusted gross income
+# the following items of otherwise exempt income: ... (B) Adjusted gross income
+# shall be increased due to the disallowance of the following deductions: ...".
+# 2025 Publication OR-17, page 107 ("What's included in household income?")
+# and the household income checklist, pages 127-128.
+# The filers are 63: old enough for the credit (62) but too young for SSI as
+# aged (65), so no SSI is computed for them, which household income would
+# count.
+
+- name: Veterans' benefits are added to adjusted gross income
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    veterans_benefits: 6_000
+    state_code: OR
+  output:
+    # ORS 316.157(2)(c)(A)(xiii): "Veteran's benefits."
+    # 10,000 + 6,000 = 16,000.
+    or_retirement_credit_household_income: 16_000
+
+- name: Workers' compensation is added to adjusted gross income
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    workers_compensation: 4_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xi): "Worker's compensation, except for reimbursement of
+    # medical expense." 10,000 + 4,000 = 14,000.
+    or_retirement_credit_household_income: 14_000
+
+- name: Child support received is added to adjusted gross income
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    child_support_received: 3_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(ii): "Child support received by the taxpayer."
+    # 10,000 + 3,000 = 13,000.
+    or_retirement_credit_household_income: 13_000
+
+- name: SSI is added, as it is not a section 86 Social Security benefit
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 5_000
+    ssi: 6_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xiv): "Payments received under the federal Social Security Act
+    # that are excluded from federal gross income." (2)(b) and (2)(f) leave out
+    # only "Title II Social Security or tier 1 railroad retirement benefits".
+    # Checklist, page 128: "Supplemental Security Income (SSI) Yes".
+    # 5,000 + 6,000 = 11,000.
+    or_retirement_credit_household_income: 11_000
+
+- name: General assistance is a welfare payment
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    general_assistance: 2_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xv): "Welfare payments", other than medical care paid to
+    # providers, in-home services and work program reimbursements.
+    # 10,000 + 2,000 = 12,000.
+    or_retirement_credit_household_income: 12_000
+
+- name: Taxable strike benefits count through adjusted gross income
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    strike_benefits: 2_000
+    state_code: OR
+  output:
+    # Strike benefits are taxable unless they are gifts, so they are in
+    # federal AGI: 10,000 + 2,000 = 12,000.
+    adjusted_gross_income: 12_000
+    or_retirement_credit_household_income: 12_000
+
+- name: Strike benefits excluded from federal gross income are added
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    # Benefits the union paid as a gift: excluded from federal gross income.
+    strike_benefits: 2_000
+    tax_exempt_strike_benefits: 2_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # (2)(c)(A)(x): "Strike benefits excluded from federal gross income."
+    # 10,000 + 2,000 = 12,000.
+    or_retirement_credit_household_income: 12_000
+
+- name: Nontaxable disability insurance benefits are added
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    # A policy the taxpayer paid for: excluded from federal gross income.
+    disability_benefits: 6_000
+    tax_exempt_disability_benefits: 6_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # (2)(c)(A)(vii): "Accident and health insurance proceeds, except
+    # reimbursement of incurred medical expenses"; checklist, page 127:
+    # "Disability income (entire amount) Yes".
+    # 10,000 + 6,000 = 16,000.
+    or_retirement_credit_household_income: 16_000
+
+- name: Foreign earned income excluded under section 911 is added
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    # Income inputs are net of the exclusion, so AGI holds none of it.
+    foreign_earned_income_exclusion: 5_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # (2)(c)(A)(xix): "Income from sources without the United States that is
+    # excluded from federal gross income." 10,000 + 5,000 = 15,000.
+    or_retirement_credit_household_income: 15_000
+
+- name: A business loss counts only up to 1,000
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 20_000
+    self_employment_income: -5_000
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 - 5,000 = 15,000.
+    adjusted_gross_income: 15_000
+    # (2)(c)(B)(iii): add back "the net loss, in excess of $1,000, from all
+    # operations of a trade or business": 5,000 - 1,000 = 4,000.
+    or_retirement_credit_disallowed_losses: 4_000
+    # 15,000 + 4,000 = 19,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: A business loss of exactly 1,000 is not added back
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 20_000
+    self_employment_income: -1_000
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 - 1,000 = 19,000. The loss does not exceed 1,000.
+    adjusted_gross_income: 19_000
+    or_retirement_credit_disallowed_losses: 0
+    or_retirement_credit_household_income: 19_000
+
+- name: A business loss of 1,001 adds back 1
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 20_000
+    self_employment_income: -1_001
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 - 1,001 = 18,999. Add back 1,001 - 1,000 = 1.
+    adjusted_gross_income: 18_999
+    or_retirement_credit_disallowed_losses: 1
+    # 18,999 + 1 = 19,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: A capital loss counts only up to 1,000
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 20_000
+    long_term_capital_gains: -3_000
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 less the 3,000 capital loss deduction = 17,000.
+    adjusted_gross_income: 17_000
+    # (2)(c)(B)(i): add back "the net loss, in excess of $1,000, from all
+    # dispositions of tangible or intangible properties": 3,000 - 1,000.
+    or_retirement_credit_disallowed_losses: 2_000
+    # 17,000 + 2,000 = 19,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: Only the capital loss deducted in adjusted gross income is added back
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 20_000
+    long_term_capital_gains: -10_000
+    state_code: OR
+  output:
+    # IRC 1211(b) limits the deduction to 3,000, so federal AGI is 17,000 and
+    # the rest of the loss carries over. The add-back is the deducted loss
+    # above 1,000: 3,000 - 1,000 = 2,000.
+    adjusted_gross_income: 17_000
+    or_retirement_credit_disallowed_losses: 2_000
+    # 17,000 + 2,000 = 19,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: A capital loss carryover offsets the year's gain
+  period: 2025
+  input:
+    age: 63
+    taxable_private_pension_income: 10_000
+    # A 4,000 gain in the year less a 4,000 long-term carryover:
+    # long_term_capital_gains is net of the carryover.
+    long_term_capital_gains: 0
+    long_term_capital_loss_carryover: 4_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # ORS 316.157(2)(c)(B) disallows net operating loss carryovers ((B)(v))
+    # but no capital loss carryover; under IRC 1212(b) the carryover nets with
+    # the year's dispositions, which here show no net loss. Household income
+    # is AGI: 10,000.
+    # Publication OR-17, page 107, says "Capital loss carryforwards aren't
+    # allowed", and its checklist (page 127) lists "Capital loss carryover No":
+    # that reading adds the 4,000 back, for 14,000. PolicyEngine follows the
+    # statute; the conflict is recorded in source_conflicts/candidates.yaml
+    # (us-or:retirement-credit-capital-loss-carryover).
+    or_retirement_credit_household_income: 10_000
+
+- name: Each loss category nets the couple's income and losses separately
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        taxable_private_pension_income: 20_000
+        rental_income: 3_000
+        self_employment_income: -4_000
+      spouse:
+        age: 63
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        rental_income: -6_000
+        farm_operations_income: -500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OR
+  output:
+    # Federal AGI: 20,000 + 3,000 - 4,000 - 6,000 - 500 = 12,500.
+    adjusted_gross_income: 12_500
+    # Publication OR-17, page 107: "Combine all income from similar sources
+    # for net income or loss. Any net loss from the source is limited to
+    # $1,000."
+    # (B)(iii) business: net loss 4,000 -> add back 3,000.
+    # (B)(iv) rents: 3,000 - 6,000 = net loss 3,000 -> add back 2,000.
+    # (B)(ii) farm: net loss 500, under 1,000 -> nothing.
+    or_retirement_credit_disallowed_losses: 5_000
+    # 12,500 + 5,000 = 17,500.
+    or_retirement_credit_household_income: 17_500
+
+- name: A dependent's SSI is not the taxpayer's income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+        taxable_private_pension_income: 10_000
+      son:
+        age: 35
+        is_tax_unit_dependent: true
+        ssi: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, son]
+    households:
+      household:
+        members: [head, son]
+        state_code: OR
+  output:
+    # (2)(b): household income is "the aggregate income of the taxpayer and
+    # the spouse of the taxpayer". The son's SSI is his own income.
+    or_retirement_credit_household_income: 10_000
+
+- name: Child support recorded on the child counts as the taxpayer's
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+        taxable_private_pension_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        child_support_received: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        # Set so the case isolates child support.
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: OR
+  output:
+    # (2)(c)(A)(ii): "Child support received by the taxpayer": paid to the
+    # custodial parent for the child. 10,000 + 3,000 = 13,000.
+    or_retirement_credit_household_income: 13_000
+
+- name: TANF paid to the family counts in full
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+        taxable_private_pension_income: 10_000
+      grandchild:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+    spm_units:
+      spm_unit:
+        members: [head, grandchild]
+        tanf: 3_000
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: OR
+  output:
+    # (2)(c)(A)(xv): "Welfare payments"; checklist, page 128: "Temporary
+    # Assistance for Needy Families (TANF) Yes". The tax unit is the whole
+    # SPM unit, so all 3,000 counts: 10,000 + 3,000 = 13,000.
+    or_retirement_credit_household_income: 13_000

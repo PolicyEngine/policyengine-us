@@ -1,0 +1,1 @@
+Count the exempt income and the losses above $1,000 per category that ORS 316.157 adds to household income for Oregon's retirement income credit, and add losses above $20,000 and, from 2025, excluded foreign earned income to qualifying income for the Oregon Kids Credit.

@@ -11219,6 +11219,45 @@ candidates:
     $82,115. PY2027: sizes 7, 9 and 11 are $1 lower ($104,693 and $104,692 at 7); the other sizes are whole-dollar
     products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
     us-or:liheap-final-payment-band-bound.'
+- id: us-or:retirement-credit-capital-loss-carryover
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does household income for Oregon's retirement income credit add back a capital loss carryover that offsets
+    the year's capital gains, as Publication OR-17 directs, when ORS 316.157(2)(c)(B) disallows only net operating loss
+    carryovers by name?
+  sources:
+  - kind: statute
+    citation: ORS 316.157(2)(c) and (2)(c)(B)(i) and (v) (2023 edition, PDF p.25; unchanged in the 2025 edition)
+    url: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25
+  - kind: guidance
+    citation: 2025 Publication OR-17, PDF p.107 ("What's included in household income?")
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=107
+  - kind: guidance
+    citation: 2025 Publication OR-17, household income checklist, PDF p.127 (the 2024 edition has the same text on pp.107
+      and 127)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=127
+  readings:
+    statute: Income starts from federal adjusted gross income. (B)(i) adds back only "the net loss, in excess of $1,000,
+      from all dispositions of tangible or intangible properties", and (B)(v) adds back "any net operating loss
+      carryovers or carrybacks included in federal adjusted gross income". No item names a capital loss carryover,
+      which IRC 1212(b) nets with the year's capital gains and losses, so a carryover that offsets the year's gains
+      stays in household income, and a net loss it creates counts up to $1,000.
+    other: Publication OR-17 says "Capital loss carryforwards aren't allowed", and its checklist lists "Capital loss
+      carryover No", so the carryover is added back.
+  example: A filer with $10,000 of taxable pension, a $4,000 long-term gain and a $4,000 long-term capital loss
+    carryover has federal AGI of $10,000. Household income is $10,000 under the statute and $14,000 under Publication
+    OR-17.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit_disallowed_losses.py
+  state: ruled
+  note: A 2026-11-19 ruling under the statute-first rule follows ORS 316.157(2)(c)(B). Household income starts from
+    federal adjusted gross income, where long_term_capital_gains is net of long_term_capital_loss_carryover, and the
+    disallowed-loss variable does not add the carryover back. The YAML case "A capital loss carryover offsets the year's
+    gain" in or_retirement_credit_household_income.yaml pins the statute's reading at $10,000.
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
