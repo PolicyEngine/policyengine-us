@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class ky_deductions_joint(Variable):
@@ -11,7 +12,8 @@ class ky_deductions_joint(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        return max_(
-            person("ky_itemized_deductions_joint", period),
-            person("ky_standard_deduction_joint", period),
-        )
+        itemized = person("ky_itemized_deductions_joint", period)
+        standard = person("ky_standard_deduction_joint", period)
+        method = person.tax_unit("state_deduction_method", period)
+        itemizes = state_itemization_uses_itemized(method, itemized > standard)
+        return where(itemizes, itemized, standard)

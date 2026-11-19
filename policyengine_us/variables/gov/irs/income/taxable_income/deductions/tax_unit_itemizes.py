@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import (
+    joint_federal_itemizes,
+    joint_itemization_is_enabled,
+)
 
 
 class tax_unit_itemizes(Variable):
@@ -10,6 +14,10 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        if joint_itemization_is_enabled(period, parameters):
+            return joint_federal_itemizes(
+                tax_unit("tax_unit_joint_itemization", period)
+            )
         p = parameters(period).gov.irs
         limitation = p.deductions.itemized.limitation
         if "charitable_contributions_ald" in p.ald.deductions:

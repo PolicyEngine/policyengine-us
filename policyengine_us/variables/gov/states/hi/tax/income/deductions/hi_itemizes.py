@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class hi_itemizes(Variable):
@@ -18,4 +19,8 @@ class hi_itemizes(Variable):
         itemized = tax_unit("hi_itemized_deductions", period)
         standard = tax_unit("hi_standard_deduction", period)
         nonitemizer_charity = tax_unit("charitable_deduction_for_non_itemizers", period)
-        return required | (eligible & (itemized > standard + nonitemizer_charity))
+        itemizes = state_itemization_uses_itemized(
+            tax_unit("state_deduction_method", period),
+            itemized > standard + nonitemizer_charity,
+        )
+        return required | (eligible & itemizes)

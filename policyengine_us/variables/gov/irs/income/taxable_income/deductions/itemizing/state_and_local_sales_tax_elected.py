@@ -1,4 +1,9 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import (
+    JOINT_METHOD_COUNT,
+    joint_federal_itemizes,
+    joint_itemization_is_enabled,
+)
 
 
 class state_and_local_sales_tax_elected(Variable):
@@ -22,4 +27,14 @@ class state_and_local_sales_tax_elected(Variable):
             tax_unit, period, ["state_withheld_income_tax", "local_income_tax"]
         )
         sales_tax = add(tax_unit, period, ["state_sales_tax", "local_sales_tax"])
-        return sales_tax > income_tax
+        default = sales_tax > income_tax
+        if joint_itemization_is_enabled(period, parameters):
+            virginia = tax_unit.household("state_code", period) == StateCode.VA
+            if virginia.any():
+                choices = tax_unit("tax_unit_joint_itemization", period)
+                return where(
+                    virginia & joint_federal_itemizes(choices),
+                    choices >= JOINT_METHOD_COUNT,
+                    default,
+                )
+        return default

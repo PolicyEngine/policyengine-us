@@ -89,3 +89,35 @@
     # They add their columns on Line 6 to get 15,000. Without deductions,
     # spouse 2 reports all 15,000 as taxable income on Line 26.
     mo_taxable_income: [0, 15_000]
+
+- name: A voluntary federal itemizer can take the smaller Missouri standard deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    tax_unit_itemizes: true
+    state_deduction_method: STANDARD
+    standard_deduction: 15_750
+    mo_itemized_deductions: 18_000
+    mo_adjusted_gross_income: 18_950
+    mo_federal_income_tax_deduction: 1_000
+  output:
+    mo_taxable_income: 2_200
+    # Only 2,200 less the 1,313 zero bracket is taxed, at 2%.
+    mo_income_tax_before_credits: 17.74
+
+- name: Missouri requires state itemization for a separate filer whose spouse itemizes
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: MO
+    filing_status: SEPARATE
+    separate_filer_itemizes: true
+  output:
+    # With no expenses or tax the two state amounts tie at zero. MO-A Part 2
+    # requires Missouri itemization when the federal return must itemize.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=16
+    standard_deduction: 0
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    mo_taxable_income: 0

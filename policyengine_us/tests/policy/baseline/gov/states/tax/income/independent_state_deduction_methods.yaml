@@ -1,0 +1,192 @@
+- name: Alabama's standard election keeps the federal tax deduction and exemptions.
+  period: 2025
+  input:
+    state_code: AL
+    state_deduction_method: STANDARD
+    al_standard_deduction: 3_000
+    al_itemized_deductions: 7_000
+    al_federal_income_tax_deduction: 1_000
+    al_personal_exemption: 1_500
+    al_dependent_exemption: 0
+    al_529_plan_deduction: 500
+  output:
+    al_deductions: 6_000
+
+- name: Arizona uses the filed state itemized amount after a federal standard election.
+  period: 2025
+  input:
+    state_code: AZ
+    tax_unit_itemizes: false
+    state_deduction_method: ITEMIZED
+    az_standard_deduction: 15_000
+    az_itemized_deductions: 11_000
+  output:
+    az_deductions: 11_000
+
+- name: Arkansas itemization reaches both columns and excludes the low-income schedule.
+  period: 2025
+  input:
+    state_code: AR
+    filing_status: SINGLE
+    state_deduction_method: ITEMIZED
+    ar_standard_deduction_joint: 2_470
+    ar_itemized_deductions_joint: 1_000
+    ar_standard_deduction_indiv: 2_470
+    ar_itemized_deductions_indiv: 1_000
+    ar_agi_joint: 14_000
+  output:
+    ar_deduction_joint: 1_000
+    ar_deduction_indiv: 1_000
+    ar_uses_low_income_tax_tables: false
+
+- name: A standard-filing Arkansas resident can still receive the embedded low-income standard.
+  period: 2025
+  input:
+    state_code: AR
+    filing_status: SINGLE
+    state_deduction_method: STANDARD
+    ar_standard_deduction_joint: 2_470
+    ar_itemized_deductions_joint: 3_000
+    ar_agi_joint: 14_000
+  output:
+    ar_deduction_joint: 2_470
+    ar_uses_low_income_tax_tables: true
+
+- name: Delaware uses one filed method in both separate and joint calculations.
+  period: 2025
+  input:
+    state_code: DE
+    state_deduction_method: STANDARD
+    de_itemized_deductions_unit: 10_000
+    de_itemized_deductions_joint: 10_000
+    de_itemized_deductions_indv: 10_000
+    de_standard_deduction_joint: 3_250
+    de_standard_deduction_indv: 3_250
+  output:
+    de_tax_unit_itemizes: false
+    de_deduction_indv: 3_250
+    de_deduction_joint: 3_250
+
+- name: An Idaho itemizer removes the medical premium overlap on Form 39R.
+  period: 2025
+  input:
+    state_code: ID
+    state_deduction_method: ITEMIZED
+    standard_deduction: 16_100
+    id_itemized_deductions: 17_000
+    id_qualified_health_insurance_premiums: 6_000
+    id_health_insurance_premiums_medical_deduction: 2_000
+  output:
+    id_itemizes: true
+    id_deductions: 17_000
+    id_health_insurance_premiums_subtraction: 4_000
+
+- name: Idaho's obligatory spouse rule overrides an unavailable standard deduction.
+  period: 2025
+  input:
+    state_code: ID
+    state_deduction_method: STANDARD
+    separate_filer_itemizes: true
+    id_itemized_deductions: 3_000
+    standard_deduction: 5_000
+  output:
+    id_itemizes: true
+    id_deductions: 3_000
+
+- name: Kansas permits a state itemized election on a 2025 federal-standard return.
+  period: 2025
+  input:
+    state_code: KS
+    state_deduction_method: ITEMIZED
+    tax_unit_itemizes: false
+    ks_agi: 40_000
+    ks_exemptions: 0
+    ks_standard_deduction: 5_000
+    ks_itemized_deductions: 3_000
+  output:
+    ks_taxable_income: 37_000
+
+- name: Kansas keeps the 2020 federal itemization requirement.
+  period: 2020
+  input:
+    state_code: KS
+    state_deduction_method: ITEMIZED
+    tax_unit_itemizes: false
+    ks_agi: 40_000
+    ks_exemptions: 0
+    ks_standard_deduction: 5_000
+    ks_itemized_deductions: 8_000
+  output:
+    ks_taxable_income: 35_000
+
+- name: Kentucky's standard election reaches the joint and separate-column deductions.
+  period: 2025
+  input:
+    state_code: KY
+    state_deduction_method: STANDARD
+    ky_standard_deduction_joint: 3_000
+    ky_itemized_deductions_joint: 4_000
+    ky_standard_deduction_indiv: 3_000
+    ky_itemized_deductions_indiv: 4_500
+  output:
+    ky_deductions_joint: 3_000
+    ky_deductions_indiv: 3_000
+
+- name: Minnesota's standard election also activates its nonitemizer charitable subtraction.
+  period: 2025
+  input:
+    state_code: MN
+    state_deduction_method: STANDARD
+    mn_standard_deduction: 15_000
+    mn_itemized_deductions: 16_000
+    mn_charitable_deduction: 1_500
+  output:
+    mn_itemizing: false
+    mn_deductions: 15_000
+    mn_charity_subtraction: 500
+
+- name: Mississippi applies the state itemized election on either filing arrangement.
+  period: 2025
+  input:
+    state_code: MS
+    state_deduction_method: ITEMIZED
+    ms_standard_deduction_joint: 3_000
+    ms_itemized_deductions_joint: 2_000
+    ms_standard_deduction_indiv: 3_000
+    ms_itemized_deductions_indiv: 2_500
+  output:
+    ms_deductions_joint: 2_000
+    ms_deductions_indiv: 2_500
+
+- name: A North Carolina standard filer preserves the separate child deduction.
+  period: 2025
+  input:
+    state_code: NC
+    state_deduction_method: STANDARD
+    nc_standard_deduction: 12_750
+    nc_itemized_deductions: 15_000
+    nc_child_deduction: 2_000
+  output:
+    nc_standard_or_itemized_deductions: 12_750
+    nc_deductions: 14_750
+
+- name: Oregon always grants the greater state deduction under ORS 316.695.
+  period: 2025
+  input:
+    state_code: OR
+    tax_unit_itemizes: false
+    or_standard_deduction: 2_800
+    or_itemized_deductions: 4_000
+  output:
+    or_deductions: 4_000
+
+- name: North Carolina imports the federal spouse-itemization exclusion for separate filers.
+  period: 2025
+  input:
+    state_code: [NC, NC, NC]
+    filing_status: [SEPARATE, SEPARATE, SINGLE]
+    separate_filer_itemizes: [true, false, false]
+    nc_itemized_deductions: [1_500, 1_500, 1_500]
+  output:
+    nc_standard_deduction: [0, 12_750, 12_750]
+    nc_standard_or_itemized_deductions: [1_500, 12_750, 12_750]

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class id_itemizes(Variable):
@@ -28,4 +29,7 @@ class id_itemizes(Variable):
         itemized = tax_unit("id_itemized_deductions", period)
         standard = tax_unit("standard_deduction", period)
         mandatory = tax_unit("separate_filer_itemizes", period)
-        return mandatory | (itemized > standard + overlap)
+        method = tax_unit("state_deduction_method", period)
+        return mandatory | state_itemization_uses_itemized(
+            method, itemized > standard + overlap
+        )
