@@ -1,0 +1,61 @@
+# 89 Ill. Adm. Code 113.100 counts all unearned income that 113.113 doesn't
+# exempt. IDHS PM 08-02-06-c budgets Social Security, Railroad Retirement,
+# veterans benefits and private pensions as nonexempt income. Each person
+# here doesn't take up SSI, so SSI adds nothing to unearned income.
+- name: Private and public pensions count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    taxable_private_pension_income: 6_000
+    tax_exempt_public_pension_income: 1_200
+    state_code: IL
+  output:
+    # (6,000 + 1,200) / 12 = 600 a month.
+    il_aabd_gross_unearned_income: 600
+    # 600 - 25 flat exemption (113.120(a)) = 575.
+    il_aabd_countable_unearned_income: 575
+
+- name: Veterans benefits count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    veterans_benefits: 2_400
+    state_code: IL
+  output:
+    # 2,400 / 12 = 200 a month; 200 - 25 = 175.
+    il_aabd_gross_unearned_income: 200
+    il_aabd_countable_unearned_income: 175
+
+- name: Railroad Retirement benefits count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    railroad_benefits: 12_000
+    state_code: IL
+  output:
+    # 12,000 / 12 = 1,000 a month; 1,000 - 25 = 975.
+    il_aabd_gross_unearned_income: 1_000
+    il_aabd_countable_unearned_income: 975
+
+- name: Social Security, a pension, veterans benefits and Railroad Retirement add together.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    social_security: 6_000
+    taxable_private_pension_income: 2_400
+    veterans_benefits: 1_200
+    railroad_benefits: 1_200
+    state_code: IL
+  output:
+    # (6,000 + 2,400 + 1,200 + 1,200) / 12 = 500 + 200 + 100 + 100 = 900.
+    il_aabd_gross_unearned_income: 900
+    # One $25 exemption per client, whatever the number of sources: 875.
+    il_aabd_countable_unearned_income: 875
