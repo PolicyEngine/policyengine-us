@@ -64,7 +64,8 @@ class is_chip_immigration_status_eligible(Variable):
         regardless = medicaid.regardless_of_immigration_status
         child_eligible_regardless_of_status = age < regardless.child_age_limit[state]
         # Some states cover undocumented children in CHIP alone. These
-        # children do not pass the Medicaid immigration test.
+        # children pass the Medicaid immigration test only through the
+        # pregnancy term.
         undocumented = status == status.possible_values.UNDOCUMENTED
         undocumented_child = (
             undocumented
