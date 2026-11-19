@@ -378,14 +378,121 @@
         members: [head, dep1]
         state_code: NY
   output:
-    # Through 2024 the income measure is household gross income (13,316 here,
-    # including imputed dependent income). Single excess rate at
-    # 13,316 = 0.06, threshold = 13,316 x 0.06 = 799; excess = 10,000 - 799 = 9,201;
-    # credit = 0.5 x 9,201 = 4,600.5, capped by the elderly maximum at 13,316
-    # (13,000-14,000 band) = 154 -> 154. If ~is_dependent still applied, the
+    # Through 2024 the income measure is household gross income: AGI 2,000 +
+    # the dependent's 2024 SSI 943 x 12 = 11,316 (line 12) + their State
+    # Supplement Program payment for living with others 23 x 12 = 276 (line
+    # 14) = 13,592. Single excess rate at 13,592 = 0.06, threshold = 13,592 x
+    # 0.06 = 815.52; excess = 10,000 - 815.52 = 9,184.48; credit = 0.5 x
+    # 9,184.48 = 4,592.24, capped by the elderly maximum at 13,592
+    # (13,001-14,000 band) = 154 -> 154. If ~is_dependent still applied, the
     # non-elderly cap (49) would bind instead, so this locks in item 2 for 2024.
-    ny_household_gross_income: 13_316
+    ny_household_gross_income: 13_592
     ny_real_property_tax_credit: 154
+
+# Through 2024 the income limit and every lookup use household gross income
+# (Tax Law 606(e)(1)(C); 2024 IT-214 line 16), which counts workers'
+# compensation (line 15) and the income of everyone who shares the residence
+# (606(e)(1)(B); 2024 IT-214-I page 2). The cases sit at the $18,000 limit
+# ("If line 16 is more than $18,000, stop") and one dollar above it.
+- name: 2024 - workers' compensation brings household gross income to exactly 18,000
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        workers_compensation: 8_000
+        real_estate_taxes: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Line 9 10,000 + line 15 8,000 = 18,000, not more than 18,000. Rate
+    # 0.065 (14,001-18,000) -> threshold 18,000 x 0.065 = 1,170; excess =
+    # 2,000 - 1,170 = 830; 50% = 415, capped by the non-elderly maximum at
+    # 17,001-18,000 = 41. Without the workers' compensation, income of 10,000
+    # would give rate 0.055, excess 1,450, 50% = 725 and the 9,001-10,000 cap
+    # of 57.
+    ny_household_gross_income: 18_000
+    ny_real_property_tax_credit: 41
+
+- name: 2024 - workers' compensation one dollar over the household gross income limit
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        workers_compensation: 8_001
+        real_estate_taxes: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # 10,000 + 8,001 = 18,001 > 18,000: no credit.
+    ny_household_gross_income: 18_001
+    ny_real_property_tax_credit: 0
+
+- name: 2024 - an adult child's income on their own return brings the household to exactly 18,000
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 64
+        employment_income: 5_000
+        real_estate_taxes: 2_000
+      child:
+        age: 40
+        employment_income: 13_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Household gross income 5,000 + 13,000 = 18,000 for both returns. The
+    # parent: rate 0.065 -> threshold 1,170; excess = 2,000 - 1,170 = 830;
+    # 50% = 415, capped by the non-elderly maximum at 17,001-18,000 = 41 (no
+    # member is 65 or older). The child pays no real property tax or rent,
+    # so no credit. On the parent's income alone (5,000) the credit would be
+    # 0.5 x (2,000 - 5,000 x 0.04) = 900, capped at 67.
+    ny_household_gross_income: [18_000, 18_000]
+    ny_real_property_tax_credit: [41, 0]
+
+- name: 2024 - an adult child's income on their own return puts the household one dollar over the limit
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 64
+        employment_income: 5_000
+        real_estate_taxes: 2_000
+      child:
+        age: 40
+        employment_income: 13_001
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # 5,000 + 13,001 = 18,001 > 18,000: no credit for either return.
+    ny_household_gross_income: [18_001, 18_001]
+    ny_real_property_tax_credit: [0, 0]
 
 # Regression: nonzero ONLY under the corrected single-amount gate. This locks in
 # the excess_real_property_tax type: single_amount fix - under the old summed
