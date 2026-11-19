@@ -12,7 +12,11 @@ class basic_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
+        # IRC 63(c)(6)(A) applies only to a married individual filing a
+        # separate return.
+        separate_filer_itemizes = tax_unit("separate_filer_itemizes", period) & (
+            filing_status == filing_status.possible_values.SEPARATE
+        )
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         standard_deduction = p.amount[filing_status]
         standard_deduction_if_dependent = min_(
