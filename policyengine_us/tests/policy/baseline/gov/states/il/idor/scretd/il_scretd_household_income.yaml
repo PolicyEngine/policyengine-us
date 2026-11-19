@@ -69,7 +69,6 @@
         us_bonds_for_higher_ed: 500
         ssi: 5_000
         railroad_benefits: 3_000
-        il_aabd_person: 1_200
         general_assistance: 600
         workers_compensation: 4_000
     tax_units:
@@ -89,11 +88,11 @@
     # (A) tax-exempt interest 1,000 + excluded savings bond interest 500.
     # (C) nontaxable part of the pension 2,000.
     # (D) SSI 5,000. (E) railroad retirement 3,000.
-    # (F) AABD 1,200 + general assistance 600 + TANF 2,400.
+    # (F) general assistance 600 + TANF 2,400.
     # (H) workers' compensation 4,000.
-    # Household income = 20,000 + 1,500 + 2,000 + 5,000 + 3,000 + 4,200
-    # + 4,000 = 39,700.
-    il_scretd_household_income: 39_700
+    # Household income = 20,000 + 1,500 + 2,000 + 5,000 + 3,000 + 3,000
+    # + 4,000 = 38,500.
+    il_scretd_household_income: 38_500
 
 - name: The spouse's income counts and a dependent's income does not.
   period: 2025

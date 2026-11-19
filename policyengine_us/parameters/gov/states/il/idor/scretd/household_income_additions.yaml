@@ -35,10 +35,13 @@ values:
     # gross income in PolicyEngine, so all of it is added.
     - railroad_benefits
     # (F) Cash public assistance from any governmental agency (IL-1017
-    # line 6): TANF, Illinois Aid to the Aged, Blind or Disabled, and general
-    # assistance.
+    # line 6): TANF and general assistance. Illinois Aid to the Aged, Blind
+    # or Disabled cash (il_aabd_person) is also cash public assistance but
+    # is not listed yet: PolicyEngine's AABD leaves pension income out of
+    # countable income, so it pays AABD to pensioners with household income
+    # far above this program's limit, and adding it would push some of them
+    # over the limit.
     - tanf
-    - il_aabd_person
     - general_assistance
     # (H) Benefits under the Workers' Compensation Act or the Workers'
     # Occupational Diseases Act.
