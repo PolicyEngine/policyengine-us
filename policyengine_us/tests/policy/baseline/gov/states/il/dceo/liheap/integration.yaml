@@ -203,8 +203,8 @@
     state_code: [IL, IL, IL, IL]
     age: [40, 40, 40, 40]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    electricity_provider: [COMED, AMEREN_ILLINOIS, OTHER, COMED]
-    natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
+    il_liheap_electricity_provider: [COMED, AMEREN_ILLINOIS, OTHER, COMED]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
     irs_gross_income: [45_000, 45_000, 45_000, 47_881]
     pre_subsidy_electricity_expense: [5_000, 5_000, 5_000, 5_000]
   output:

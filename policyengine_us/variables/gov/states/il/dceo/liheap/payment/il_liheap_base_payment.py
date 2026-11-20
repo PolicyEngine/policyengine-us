@@ -43,8 +43,8 @@ class il_liheap_base_payment(Variable):
         if parameters(
             period
         ).gov.states.il.dceo.liheap.payment.provider_matrix_in_effect:
-            electric_provider = spm_unit("electricity_provider", period)
-            gas_provider = spm_unit("natural_gas_provider", period)
+            electric_provider = spm_unit("il_liheap_electricity_provider", period)
+            gas_provider = spm_unit("il_liheap_natural_gas_provider", period)
             comed = electric_provider == electric_provider.possible_values.COMED
             providers = gas_provider.possible_values
             gas_lid = (

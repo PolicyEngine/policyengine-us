@@ -34,8 +34,8 @@ class il_liheap_income_eligible(Variable):
         income_limit = max_(smi_limit, fpg_limit)
 
         if p_il.eligibility.provider_income_limits_in_effect:
-            electricity = spm_unit("electricity_provider", period)
-            gas = spm_unit("natural_gas_provider", period)
+            electricity = spm_unit("il_liheap_electricity_provider", period)
+            gas = spm_unit("il_liheap_natural_gas_provider", period)
             electric_providers = electricity.possible_values
             gas_providers = gas.possible_values
             state_funded = (
