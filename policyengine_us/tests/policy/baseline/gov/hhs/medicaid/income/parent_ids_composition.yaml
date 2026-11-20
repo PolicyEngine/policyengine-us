@@ -289,7 +289,7 @@
     # ACWDL 20-10 adds the unborn children of pregnant members of the
     # applicant's own MAGI household. The aunt is in her own household and
     # her child's, not the grandparent's, the mother's or the niece's.
-    ca_medicaid_household_pregnancies: [0, 0, 1, 0, 1]
+    medicaid_household_pregnancies: [0, 0, 1, 0, 1]
     medicaid_household_size: [1, 2, 3, 2, 3]
     medicaid_household_income: [40_000, 20_000, 10_000, 20_000, 10_000]
 
@@ -1182,7 +1182,7 @@
     # the child, the spouse and the spouse's unborn child: 4. The spouse's is
     # the spouse, the child and her unborn child: 3. The pregnant spouse is
     # not in the parent's household.
-    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_pregnancies: [0, 1, 1]
     medicaid_household_size: [2, 4, 3]
     medicaid_household_income: [0, 30_000, 30_000]
 
@@ -1677,7 +1677,7 @@
     # As above, and ACWDL 20-10 adds the unborn child of each pregnant member:
     # the child's household is 3 people plus 1 unborn child, the spouse's 2
     # people plus 1. The pregnant spouse is not in the parent's household.
-    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_pregnancies: [0, 1, 1]
     medicaid_household_size: [2, 4, 3]
     medicaid_household_income: [0, 30_000, 30_000]
 
@@ -2187,7 +2187,7 @@
     # ACWDL 20-10 counts the pregnant spouse's unborn child in all three
     # households; income follows those same household memberships.
     medicaid_uses_non_filer_rules: [false, false, false]
-    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_pregnancies: [1, 1, 1]
     medicaid_household_size: [4, 4, 3]
     medicaid_household_income: [60_000, 60_000, 60_000]
 
@@ -2229,7 +2229,7 @@
     # that spouse or pregnancy again. A dependent who need not file remains
     # excluded from the taxpayer's income even when filing voluntarily.
     medicaid_uses_non_filer_rules: [false, false]
-    ca_medicaid_household_pregnancies: [1, 1]
+    medicaid_household_pregnancies: [1, 1]
     medicaid_household_size: [3, 3]
     medicaid_household_income: [40_000, 40_000]
 

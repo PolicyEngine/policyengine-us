@@ -1,3 +1,86 @@
+## [2.147.1] - 2026-11-19
+
+### Fixed
+
+- Decide Colorado Premium Assistance's 400% income ceiling on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction` (Amended Regulation 4-2-78, 3 CCR 702-4, Section 4.C: household income "no greater than 400% of the Federal Poverty Level"). Under current law the federal premium tax credit gate already ends at 400%, so this changes results only when a reform extends the federal credit above 400%, where incomes from 400.003% to 400.994% were eligible.
+- Decide Covered Connecticut eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 175.003% to 175.994% of the poverty line are no longer eligible (C.G.S. § 19a-754c(b)(1)(C)(iv): "household income up to one hundred seventy-five per cent of the federal poverty level"; DSS applies it "up to an[d] including 175%").
+- Decide Massachusetts ConnectorCare's income ceiling and Plan Type bands on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`. 956 CMR 12.04(3)(b) puts income "at or below 150%" in Plan Type 2A, "over 150% and not over 200%" in 2B, and so on up to 3C, "not over 400%"; truncation put incomes from 150.003% to 150.994% (and the same slivers above 200%, 250% and 300%) in the cheaper band below. The 400% ceiling changes results only under a reform that extends the federal credit above 400%.
+- Decide Maryland Premium Assistance's 400% income ceiling on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction` (MHBE PY2026 design: "No state subsidy above 400% FPL"; PY2027: "Eligibility: 400% FPL or below"). Under current law the federal premium tax credit gate already ends at 400%, so this changes results only when a reform extends the federal credit above 400%, where incomes from 400.003% to 400.994% were eligible.
+- Decide Vermont Premium Assistance eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 300.003% to 300.994% of the poverty line are no longer eligible (33 V.S.A. § 1812(a)(1): "less than or equal to 300 percent of federal poverty level").
+- Decide Washington Cascade Care Savings eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 250.003% to 250.994% of the poverty line are no longer eligible (PY2026 and PY2027 Cascade Care Savings Policy, Section 4(1)(c): "Has income up to 250% of the Federal Poverty Level").
+- Treat household income exactly at 400% of the poverty line as eligible for the premium tax credit in 2026 and later. 26 U.S.C. 36B(c)(1)(A) covers income that "does not exceed 400 percent", and Form 8962 Worksheet 2 decides "more than 400%" on the dollar amounts before truncating the percentage; the income scale's 400% bracket started at 4.00, so the truncated fraction excluded a household at exactly 400%. The new `aca_ptc_income_eligible` variable carries the income test for `is_aca_ptc_eligible` and the Basic Health Program payment.
+
+
+## [2.147.0] - 2026-11-18
+
+### Added
+
+- Add New Jersey's LIHEAP medically necessary cooling benefit and a medical cooling-need input.
+
+
+## [2.146.0] - 2026-11-18
+
+### Added
+
+- Add Delaware's published LIHEAP cooling maximum and a chronic breathing condition input, and stop requiring a heating fuel for Delaware cooling eligibility.
+
+
+## [2.145.11] - 2026-11-18
+
+### Fixed
+
+- Apply South Carolina's FY2027 LIHEAP heating amounts and stop requiring a heating fuel for South Carolina cooling eligibility.
+
+
+## [2.145.10] - 2026-11-18
+
+### Fixed
+
+- Say in the program registry that Minnesota has no regular LIHEAP cooling payment, and that Missouri has none beyond electric-account payments used for cooling from October to May.
+
+
+## [2.145.9] - 2026-11-18
+
+### Changed
+
+- Cite the Texas FY2026 and FY2027 LIHEAP state plans for the Texas CEAP income limit and utility assistance maximums.
+
+
+## [2.145.8] - 2026-11-18
+
+### Changed
+
+- Add the FY2027 Illinois LIHEAP winter crisis maximum of $2,000.
+
+
+## [2.145.7] - 2026-11-18
+
+### Fixed
+
+- Archive New Jersey child and dependent care credit source excerpts for reproducible historical income-boundary checks.
+
+
+## [2.145.6] - 2026-11-17
+
+### Fixed
+
+- Corrected the Medicaid documentation page, which still described per-group per-capita costs, to describe the current valuation: state spending allocated by an ACA benchmark-premium cost index, the paired spending and enrollment years, and the method's known limits.
+
+
+## [2.145.5] - 2026-11-17
+
+### Fixed
+
+- Require a parent's or caretaker relative's children under the state's age limit (New Jersey 21, otherwise 19) to have Medicaid, CHIP, Marketplace or other coverage for the Medicaid adult group, per 42 CFR 435.119(c).
+
+
+## [2.145.4] - 2026-11-17
+
+### Fixed
+
+- Count a pregnant member's expected children in the other members' Medicaid household size where the state elects it under 42 CFR 435.603(b), now New Jersey as well as California, and pair a California non-filer's spouse only on a joint return.
+
+
 ## [2.145.3] - 2026-11-17
 
 ### Fixed

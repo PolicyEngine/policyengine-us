@@ -1,6 +1,11 @@
 description: South Carolina limits the number of awards per program year to this amount under the Low Income Home Energy Assistance Program.
 # The limit also counts crisis assistance, which is not modeled, so here it
-# limits the heating and cooling awards.
+# limits the heating and cooling awards. Both plans let the State allow more
+# when funds permit (FY2026 item 1.1: "If funding allows, an additional
+# non-emergency benefit may be provided"; FY2027 item 1.1: "Should funding
+# allow, the State may allow additional services"). So the FY2026 value of 2
+# is an upper bound that assumes funds allow both awards, and the FY2027
+# value of 1 leaves out additional services that the State may allow.
 values:
   2025-10-01: 2
   2026-10-01: 1
