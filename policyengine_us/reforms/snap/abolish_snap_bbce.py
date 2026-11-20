@@ -18,7 +18,10 @@ def create_abolish_snap_bbce() -> Reform:
             "that every member receives TANF assistance or SSI and the general "
             "assistance routes are not modeled. The proposed rule's change from "
             "cash to assistance as defined at 45 CFR 260.31(a) and its removal of "
-            "the authorized to receive language are not modeled either."
+            "the authorized to receive language are not modeled either. Keeping "
+            "units in which only some members receive TANF cash overstates the "
+            "eligibility that remains, and counting only cash understates it for "
+            "units that receive other assistance under 45 CFR 260.31(a)."
         )
         definition_period = MONTH
         reference = (
@@ -65,7 +68,7 @@ def create_abolish_snap_bbce_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
