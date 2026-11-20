@@ -1,3 +1,15 @@
+## [2.149.1] - 2026-11-20
+
+### Changed
+
+- Update Massachusetts ConnectorCare to the 2027 enrollee premiums ($0, $55, $107, $158 and $242 per person per month for Plan Types 2A to 3C). Lower the income limit to 300% FPL from 2028, when the 300-400% FPL pilot ends.
+
+### Fixed
+
+- Illinois Senior Citizens Real Estate Tax Deferral household income now follows 320 ILCS 25/3.07: federal adjusted gross income plus nontaxable Social Security, SSI, railroad retirement, tax-exempt interest, nontaxable annuity income, cash public assistance and workers' compensation, instead of federal gross income.
+- Rhode Island property tax relief household income now sums every tax unit in the household and adds back the business, rental and capital losses that federal AGI deducts. It also counts veterans' benefits, gross retirement account distributions, general assistance, SSI and the state supplement, tax-exempt disability benefits and section 911 income, and counts pre-2019 alimony once instead of twice.
+
+
 ## [2.149.0] - 2026-11-20
 
 ### Added
