@@ -105,6 +105,9 @@ SD:
   2015-10-01: -.inf
 TN:
   2015-10-01: -.inf
+  # Tenn. Comp. R. & Regs. 1240-01-14-.15(2)(a) sets one 200% standard for
+  # every household under expanded categorical eligibility.
+  2026-04-15: 2
 TX:
   2015-10-01: 1.65
 UT:
@@ -130,6 +133,8 @@ metadata:
   period: year
   label: SNAP BBCE elderly or disabled household gross income limit
   reference:
+    - title: Tenn. Comp. R. & Regs. 1240-01-14-.15(2), Expanded Categorical Eligibility (effective April 15, 2026)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-14.20260415.pdf#page=12
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)
