@@ -28,8 +28,9 @@ class ny_ssp_is_minor(Variable):
         p = parameters(period).gov.states.ny.otda.ssp
         age = person("age", period)
         student = person("is_full_time_student", period)
-        # Marriage uses the SSI spouse test, so a child of a married couple
-        # is not treated as married.
+        # New York uses the co-resident SSI spouse lookup as its marriage
+        # proxy, which does not pair a parent with their child. SSI's separate
+        # 416.1856 marriage classification uses _ssi_is_married.
         married = _ssi_spouse_index(person, period) >= 0
         head = person("is_household_head", period)
         under_age = (age < p.minor_age) | ((age < p.student_minor_age) & student)

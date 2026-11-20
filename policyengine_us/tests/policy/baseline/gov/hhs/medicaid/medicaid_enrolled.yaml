@@ -30,7 +30,9 @@
     is_medicaid_eligible: [true]
     medicaid_enrolled: [true]
     # Computed CA per-capita cost under the SLCSP-index allocation (not injected).
-    medicaid: [9_236.48]
+    # FY2024 spending $150,413,664,949 / January 2024 enrollment 13,836,944.
+    # Main had $9,236.48, FY2023 spending over October 2024 enrollment.
+    medicaid: [10_870.44]
 
 - name: Case 2, undocumented adult in CA 2024 enrolled and eligible.
   period: 2024

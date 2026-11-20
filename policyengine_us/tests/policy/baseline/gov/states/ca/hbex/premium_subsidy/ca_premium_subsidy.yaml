@@ -973,3 +973,330 @@
     ca_premium_subsidy_eligible: false
     aca_ptc: 3_376.96
     ca_premium_subsidy: 0
+
+# ---- PY2027 amounts across the band (Final 2027 Program Design) ----
+# One-person cases use the 2026 guideline ($15,960) as aca_fpg and the OE27
+# example's benchmark ($688 a month, slcsp 8_256). aca_ptc computes from the
+# 2027 federal applicable percentage (2.15% below 133%, 3.23% -> 4.30% from
+# 133% to 150%, 4.30% -> 6.78% from 150% to 200%). Below 150% the California
+# percentage is 0%, so the state pays the whole federal contribution; above
+# 150% it is 1.5 points below the federal percentage.
+
+- name: Case 20, PY2027 $1 below the 100% FPL floor is ineligible.
+  # 15_959 / 15_960 = 0.999937 < 1, below "at or above 100 percent" (Design
+  # (d)(7)) -> not eligible -> 0.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 15_959
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+    ca_premium_subsidy: 0
+
+- name: Case 21, PY2027 exactly 100% FPL pays the whole federal contribution.
+  # federal 2.15%: aca_ptc = 8_256 - 0.0215 * 15_960 = 8_256 - 343.14
+  # = 7_912.86. CA pct 0. amount = 8_256 - 7_912.86 = 343.14.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 15_960
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 7_912.86
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy: 343.14
+
+- name: Case 22, PY2027 120% FPL pays the whole federal contribution.
+  # 19_152 / 15_960 = 1.20; federal 2.15%: aca_ptc = 8_256 - 411.768
+  # = 7_844.232. CA pct 0. amount = 411.768.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 19_152
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 7_844.232
+    ca_premium_subsidy: 411.768
+
+- name: Case 23, PY2027 145% FPL pays the whole federal contribution.
+  # 23_142 / 15_960 = 1.45; federal 3.23% + (0.12 / 0.17) * 1.07% = 3.985294%;
+  # 23_142 * 0.03985294 = 922.2768. aca_ptc = 8_256 - 922.2768 = 7_333.7232.
+  # CA pct 0. amount = 922.2768.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 23_142
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 7_333.7232
+    ca_premium_subsidy: 922.2768
+
+- name: Case 24, PY2027 exactly 150% FPL stays in the 0% band.
+  # 23_940 / 15_960 = 1.50 exactly, in "100% up to 150%" (CA pct 0). federal
+  # 4.30%: aca_ptc = 8_256 - 1_029.42 = 7_226.58. amount = 1_029.42.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 23_940
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 7_226.58
+    ca_premium_subsidy_applicable_percentage: 0
+    ca_premium_subsidy: 1_029.42
+
+- name: Case 25, PY2027 $2 above 150% FPL enters the 2.8% band.
+  # 23_942 / 15_960 = 1.500125, "Above 150%", so CA pct starts at 2.8% (the
+  # truncated 1.50 sits at the start of the band). federal 4.30%:
+  # aca_ptc = 8_256 - 1_029.506 = 7_226.494.
+  # amount = 1_029.506 - 0.028 * 23_942 = 1_029.506 - 670.376 = 359.13
+  # (= 0.015 * 23_942), down from 1_029.42 at exactly 150%.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 23_942
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 7_226.494
+    ca_premium_subsidy_applicable_percentage: 0.028
+    ca_premium_subsidy: 359.13
+
+- name: Case 26, PY2027 175% FPL pays the 1.5-point gap.
+  # 27_930 / 15_960 = 1.75; federal 4.30% + 0.5 * 2.48% = 5.54%:
+  # aca_ptc = 8_256 - 1_547.322 = 6_708.678. CA pct 2.8% + 0.5 * 2.48% = 4.04%.
+  # amount = 1_547.322 - 0.0404 * 27_930 = 1_547.322 - 1_128.372 = 418.95.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 27_930
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    aca_ptc: 6_708.678
+    ca_premium_subsidy_applicable_percentage: 0.0404
+    ca_premium_subsidy: 418.95
+
+- name: Case 27, PY2027 two-person household at 175% FPL.
+  # 37_870 / 21_640 (2026 two-person guideline) = 1.75; federal 5.54%:
+  # aca_ptc = 16_512 - 2_097.998 = 14_414.002. CA pct 4.04%.
+  # amount = 2_097.998 - 0.0404 * 37_870 = 2_097.998 - 1_529.948 = 568.05.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_fpg:
+          2027: 21_640
+        aca_magi: 37_870
+        slcsp: 16_512
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    aca_ptc: 14_414.002
+    ca_premium_subsidy: 568.05
+
+- name: Case 28, PY2027 $1 above 200% FPL gets no subsidy.
+  # 31_921 / 15_960 = 2.000063 > 2, above "at or below 200 percent" (Design
+  # (d)(7)) -> not eligible -> 0, although it truncates to 2.00.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_fpg:
+          2027: 15_960
+        aca_magi: 31_921
+        slcsp: 8_256
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+    ca_premium_subsidy: 0
+
+- name: 2027 CA single citizen at 175% of the one-person line derives eligibility
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        aca_magi: 27_930
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a]
+        state_code: CA
+  output:
+    # The case supplies aca_magi without income, so it holds the 2027 Medicaid
+    # work-requirement flag false, as the claimable-spouse case above does.
+    # 27,930 / 15,960 (2026 one-person guideline) = 1.75. Federal 2027 at
+    # 1.75: 5.54%; aca_ptc = 6,000 - 1,547.322 = 4,452.678.
+    # CA pct 4.04%: 6,000 - 4,452.678 - 1,128.372 = 418.95 (= 0.015 * 27,930).
+    aca_fpg: 15_960
+    is_aca_ptc_eligible: true
+    aca_ptc: 4_452.678
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy: 418.95
+
+- name: 2027 CA single refugee at 175% of the one-person line gets nothing
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        immigration_status: REFUGEE
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        aca_magi: 27_930
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a]
+        state_code: CA
+  output:
+    # The same household as the citizen case above. From 2027, Public Law
+    # 119-21, Section 71301, limits the federal credit to lawful permanent
+    # residents, Cuban and Haitian entrants and COFA migrants, so a refugee is
+    # not eligible for it. Design (c)(2) requires every federal APTC
+    # eligibility requirement, so the state subsidy is 0. Covered California's
+    # 2027 fact sheet for lawfully present immigrants likewise lists refugees
+    # among those who "will not be eligible for any financial assistance".
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+    ca_premium_subsidy_eligible: false
+    ca_premium_subsidy: 0

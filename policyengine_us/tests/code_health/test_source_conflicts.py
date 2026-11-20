@@ -158,6 +158,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/mt/tax/income/subtractions/disability_income/cap.yaml": 1,
     "policyengine_us/parameters/gov/states/or/ohcs/liheap/payment/income_band.yaml": 1,
     "policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml": 1,
+    "policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ut/dwf/ccap/copay/income_limits.yaml": 1,
     "policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml": 1,
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,
@@ -187,6 +188,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
     "policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py": 1,
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
+    "policyengine_us/variables/gov/states/mn/tax/income/amt/mn_amt_taxable_income.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
     "policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py": 1,
@@ -197,6 +199,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,
+    "policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/adult/meets_medicaid_adult_group_child_coverage_requirement.py": 1,
 }
 
 

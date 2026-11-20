@@ -34,6 +34,7 @@ class medicaid_medically_needy_uses_couple_standard(Variable):
         return uses_couple_standard(
             person,
             period,
+            parameters,
             p.budgets_couple_together[state].astype(bool),
             p.couple_limit_without_deeming[state].astype(bool),
         )

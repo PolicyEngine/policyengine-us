@@ -168,3 +168,31 @@
         state_code: NM
   output:
     nm_property_tax_rebate_eligible: true
+
+- name: 2025 workers' compensation counts toward the income limit, at the limit
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    social_security_retirement: 12_000
+    workers_compensation: 4_000
+  output:
+    # NMSA 7-2-2(L)(16), (18); PIT-RC lines 5 and 6: Social Security and
+    # workers' compensation are modified gross income.
+    # 12,000 + 4,000 = 16,000 <= 16,000, so eligible. (SSI is zero: 12,000 /
+    # 12 - 20 = 980 a month of countable income, above the 967 federal
+    # benefit rate.)
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+
+- name: 2025 workers' compensation counts toward the income limit, just above it
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    social_security_retirement: 12_000
+    workers_compensation: 4_001
+  output:
+    # 12,000 + 4,001 = 16,001 > 16,000, so ineligible.
+    nm_modified_gross_income: 16_001
+    nm_property_tax_rebate_eligible: false

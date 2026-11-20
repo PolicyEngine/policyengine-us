@@ -144,8 +144,8 @@ def create_ecpa_only() -> Reform:
                 "trump_dividend",
                 # Cash programs that household_benefits also counts.
                 "ca_capi",  # California Cash Assistance Program for Immigrants.
-                "ca_la_expectant_parent_payment",  # Los Angeles County.
-                "ca_la_infant_supplement",  # Los Angeles County.
+                "ca_la_expectant_parent_payment",  # California.
+                "ca_la_infant_supplement",  # California.
                 "co_denver_property_tax_relief",  # Denver.
                 "ma_eaedc",  # Massachusetts.
                 "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
@@ -231,7 +231,7 @@ def create_end_child_poverty_act_reform(parameters, period, bypass: bool = False
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).end_child_poverty_act.in_effect:
             reform_active = True
             break

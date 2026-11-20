@@ -54,12 +54,16 @@ def family_tier_multiplier(tax_unit, period, parameters, family_category, enroll
     )
     adult_count = tax_unit.sum(enrolled & ~dependent_child)
     extra_adults = max_(adult_count - 2, 0)
-    age_29_child = enrolled & person("is_aca_ny_age_29_dependent_child", period)
-    age_29_multiplier = where(
-        tax_unit.any(age_29_child),
-        parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
-        1,
-    )
+    age_29_multiplier = 1
+    # New York's Age 29 factor is first dated 2023, and the model backdates
+    # it to 2015. No value exists for 2014.
+    if period.start.year >= 2015:
+        age_29_child = enrolled & person("is_aca_ny_age_29_dependent_child", period)
+        age_29_multiplier = where(
+            tax_unit.any(age_29_child),
+            parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
+            1,
+        )
     return base_multiplier * age_29_multiplier + extra_adults * one_adult
 
 
@@ -70,8 +74,15 @@ class slcsp_family_tier_multiplier(Variable):
     unit = "/1"
     definition_period = MONTH
     defined_for = "slcsp_family_tier_applies"
+    documentation = (
+        "For 2014 benchmark estimates, New York extended dependents use the "
+        "ordinary child tier without an additional premium factor. As a "
+        "methodology choice, calculations for 2015 through 2022 apply the "
+        "New York Age 29 factor first dated 2023, which the model backdates "
+        "to 2015."
+    )
 
-    def formula(tax_unit, period, parameters):
+    def formula_2014(tax_unit, period, parameters):
         family_category = tax_unit("slcsp_family_tier_category", period)
         enrolled = tax_unit.members("pays_aca_premium", period)
         return family_tier_multiplier(

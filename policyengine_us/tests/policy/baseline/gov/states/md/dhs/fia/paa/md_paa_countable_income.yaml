@@ -116,7 +116,7 @@
           2024: MD
   output:
     # ISM = 943 / 3 + 20; countable = ISM - 20 = 314.333333.
-    ssi_in_kind_support_and_maintenance: 334.333333
+    ssi_in_kind_support_and_maintenance_monthly: 334.333333
     md_paa_countable_income: 314.333333
     # Imputed SSI = 943 - 314.333333 = 628.666667.
     md_paa_imputed_federal_ssi: 628.666667
@@ -142,7 +142,7 @@
           2024: MD
   output:
     # November retains food ISM from September under SSI's payment timing.
-    ssi_in_kind_support_and_maintenance: 334.333333
+    ssi_in_kind_support_and_maintenance_monthly: 334.333333
     md_paa_countable_income: 314.333333
     md_paa_imputed_federal_ssi: 628.666667
     # PAA = 1,173 + 102 - 943 = 332 after the July PNA increase.
@@ -167,7 +167,7 @@
           2024: MD
   output:
     # October food no longer counts, so December ISM and countable income = 0.
-    ssi_in_kind_support_and_maintenance: 0
+    ssi_in_kind_support_and_maintenance_monthly: 0
     md_paa_countable_income: 0
     md_paa_imputed_federal_ssi: 943
     # PAA = 1,173 + 102 - 0 - 943 = 332.

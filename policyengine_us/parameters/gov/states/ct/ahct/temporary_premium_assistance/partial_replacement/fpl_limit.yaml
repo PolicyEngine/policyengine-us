@@ -1,0 +1,25 @@
+description: Connecticut replaces part of the lost enhanced premium tax credit under Temporary Premium Assistance for households with income at or below this share of the federal poverty line.
+values:
+  # Applied inclusively: Access Health CT's one-person range ends at five
+  # times the guideline ($78,250 for plan year 2026).
+  # Plan year 2027 assumes the 2026 band (see in_effect.yaml): the cited
+  # band figures are plan year 2026 figures, the November 5, 2026 release
+  # confirms 2027 assistance but gives no bands, and the 2027 design that
+  # Public Act 26-68, Section 453(e), leaves to OPM is unpublished.
+  2026-01-01: 5
+
+metadata:
+  unit: /1
+  period: year
+  label: Connecticut Temporary Premium Assistance partial replacement income limit
+  reference:
+    - title: Access Health CT, Federal Changes to Health Coverage (State Financial Help)
+      href: https://www.accesshealthct.com/federal-changes-to-health-coverage/
+    - title: Access Health CT, Financial Help (Temporary Premium Assistance)
+      href: https://www.accesshealthct.com/financial-help/
+    - title: Access Health CT Help Center, Temporary Premium Assistance
+      href: https://help.accesshealthct.com/en_US/premium-assistance
+    - title: Connecticut Insurance Department, Consumer Notice (February 13, 2026)
+      href: https://portal.ct.gov/cid/consumer-information-center/consumer-alerts/2026-consumer-alerts/notice-2026-02-13
+    - title: Governor Lamont and Insurance Commissioner Hershman, financial assistance for 2027 health coverage (November 5, 2026)
+      href: https://portal.ct.gov/governor/news/press-releases/2026/11-2026/governor-lamont-and-insurance-commissioner-hershman-encourage-residents-to-review-health-coverage

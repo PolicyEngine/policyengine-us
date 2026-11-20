@@ -1,0 +1,197 @@
+# 42 CFR 435.119(c): a parent or caretaker relative living with a child
+# under the state's age limit qualifies for the adult group only if the
+# child has Medicaid, CHIP, Marketplace or other minimum essential coverage.
+# New Jersey's state plan S32 page sets the age at under 21; Colorado's sets
+# it at under 19.
+
+# Issue 10776: a Household API partner reported this household (a parent
+# with $24,000 of employment income and a 10-year-old) in New Jersey for
+# 2026. $24,000 is 111% of the 2026 poverty guideline for two people
+# ($15,960 + $5,680 = $21,640), under the adult group's 138% limit and
+# above New Jersey's 34% parent group limit. The child is under New Jersey's
+# 147% limit for children aged 6 to 18, so the child is Medicaid-eligible.
+- name: Case 1, New Jersey parent whose 10-year-old takes up Medicaid meets the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    has_child_coverage_for_medicaid_adult_group: [true, true]
+    meets_medicaid_adult_group_child_coverage_requirement: [true, true]
+    is_adult_for_medicaid: [true, false]
+
+# The same child, eligible for Medicaid but not enrolled and with no other
+# coverage. A Medicaid-eligible child can't get CHIP or Marketplace coverage.
+- name: Case 2, New Jersey parent whose Medicaid-eligible 10-year-old is uninsured fails the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        takes_up_medicaid_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    meets_medicaid_adult_group_child_coverage_requirement: [false, true]
+    is_adult_for_medicaid: [false, false]
+
+# The child is not enrolled in Medicaid but has employer coverage, for
+# example through the other parent's job.
+- name: Case 3, New Jersey parent whose 10-year-old has employer coverage meets the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        takes_up_medicaid_if_eligible: false
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    has_child_coverage_for_medicaid_adult_group: [true, true]
+    meets_medicaid_adult_group_child_coverage_requirement: [true, true]
+    is_adult_for_medicaid: [true, false]
+
+# A 21-year-old full-time student claimed as a dependent, uninsured, is at
+# New Jersey's age limit ("Under age 21"), so the requirement doesn't reach
+# the parent. The household is still two people, at 111% of the guideline.
+- name: Case 4, New Jersey parent of an uninsured 21-year-old meets the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 21
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        takes_up_medicaid_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    meets_medicaid_adult_group_child_coverage_requirement: [true, true]
+    is_adult_for_medicaid: [true, true]
+
+# A 19-year-old full-time student claimed as a dependent is under New
+# Jersey's age limit. The student is Medicaid-eligible through the adult
+# group (a dependent is never a caretaker, so the requirement doesn't reach
+# the student) but not enrolled, and is too old for CHIP.
+- name: Case 5, New Jersey parent of an uninsured 19-year-old fails the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        takes_up_medicaid_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    meets_medicaid_adult_group_child_coverage_requirement: [false, true]
+    is_adult_for_medicaid: [false, true]
+
+# Colorado's S32 page selects "Under age 19", so the requirement doesn't
+# reach the parent of the same uninsured 19-year-old.
+- name: Case 6, Colorado parent of an uninsured 19-year-old meets the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        takes_up_medicaid_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    meets_medicaid_adult_group_child_coverage_requirement: [true, true]
+    is_adult_for_medicaid: [true, true]
+
+# An undocumented 19-year-old is eligible for none of Medicaid, CHIP or the
+# Marketplace: New Jersey's coverage regardless of immigration status ends
+# at 19. 42 CFR 435.119(c)(1) and S32 still require the child to have
+# coverage, so the parent fails; 42 U.S.C. 1396a(k)(3) would reach only a
+# child eligible for Medicaid. The project lead ruled on 2026-11-15 to
+# follow the regulation.
+- name: Case 7, New Jersey parent of an uninsured undocumented 19-year-old fails the requirement.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 24_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    meets_medicaid_adult_group_child_coverage_requirement: [false, true]
+    is_adult_for_medicaid: [false, true]

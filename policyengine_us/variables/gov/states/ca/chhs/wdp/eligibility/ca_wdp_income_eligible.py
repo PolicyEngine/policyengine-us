@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ca.chhs.wdp.eligibility._ca_wdp_annual_spousal_deeming import (
+    ca_wdp_annual_spousal_deeming_applies,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_total,
 )
@@ -28,7 +31,9 @@ class ca_wdp_income_eligible(Variable):
             _ssi_couple_total(person, period.this_year, personal_income)
             - personal_income
         )
-        spousal_deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+        spousal_deeming_applies = ca_wdp_annual_spousal_deeming_applies(
+            person, period, parameters
+        )
         countable_income = personal_income + where(
             spousal_deeming_applies,
             spouse_income,

@@ -112,3 +112,32 @@
     state_code: MN
   output:
     mn_amt_taxable_income: 200_000
+
+# Minn. Stat. 290.091, subd. 2(a)(2)(i).
+# https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.2
+
+# The filer subtracts the federal amount, 4,000 - 0.005 * 100,000 = 3,500; AMT income equals 100,000 - 3,500 = 96,500.
+- name: An itemizer subtracts the federal charitable amount from Minnesota AMT income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 4_000
+    mn_itemizing: true
+    charitable_contributions_ald: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    mn_casualty_loss_deduction: 0
+    investment_interest_expense: 0
+    misc_deduction: 0
+    us_govt_interest: 0
+    mn_charity_subtraction: 0
+    mn_social_security_subtraction: 0
+    mn_military_pension_subtraction: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 3_500
+    mn_charitable_deduction: 3_000
+    mn_amt_taxable_income: 96_500

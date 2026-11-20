@@ -135,7 +135,7 @@
   output:
     oh_homestead_exemption_eligible: false
 
-- name: Case 8, prior-year total income controls eligibility.
+- name: Case 8, a total income input overrides the same year's Ohio modified adjusted gross income.
   period: 2026
   input:
     people:
@@ -153,6 +153,8 @@
         members: [person1]
         state_code: OH
   output:
+    # Total income is given as 41,001, so the 0 modified AGI is not read.
+    # 41,001 > 41,000 (2026 income limit).
     oh_homestead_exemption_eligible: false
 
 - name: Case 9, homeowner without property tax proxy is ineligible.
@@ -276,3 +278,51 @@
         state_code: OH
   output:
     oh_homestead_exemption_eligible: true
+
+- name: Case 15, same-year Ohio modified adjusted gross income at the 2026 income limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 41_000
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Ohio modified AGI: 41,000 of wages, no additions or deductions.
+    oh_modified_agi: 41_000
+    oh_homestead_exemption_total_income: 41_000
+    # R.C. 323.152(A)(1)(b)(iii): total income must "not exceed" the
+    # adjusted limit, 41,000 in 2026. 41,000 <= 41,000.
+    # https://codes.ohio.gov/assets/laws/revised-code/authenticated/3/323/323.152/9-23-2026/323.152-9-23-2026.pdf#page=1
+    oh_homestead_exemption_eligible: true
+
+- name: Case 16, same-year Ohio modified adjusted gross income one dollar above the 2026 income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 41_001
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Ohio modified AGI: 41,001 of wages, no additions or deductions.
+    oh_modified_agi: 41_001
+    oh_homestead_exemption_total_income: 41_001
+    # 41,001 > 41,000.
+    oh_homestead_exemption_eligible: false

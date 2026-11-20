@@ -8,6 +8,9 @@ import pytest
 import yaml
 
 from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters.operations.propagate_parameter_metadata import (
+    propagate_parameter_metadata,
+)
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
@@ -18,8 +21,10 @@ from policyengine_us.tools.default_uprating import NO_DEFAULT_UPRATING_VARIABLES
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
+    get_average_for_12_months_ending_august,
     get_irs_cola,
     get_irs_cola_denominator,
+    get_irs_cpi,
     round_social_security_amount,
     round_social_security_payroll_cap,
     set_irs_c_cpi_u_index,
@@ -37,6 +42,16 @@ DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES = (
 )
 # 26 U.S.C. 62(d)(3): the 62(a)(2)(D) $250 and its 1(f)(3) base year.
 EDUCATOR_EXPENSE_CAP_STATUTORY_BASE = (250, 2014)
+
+
+@pytest.mark.parametrize("name", ("cpi_u", "c_cpi_u"))
+def test_last_published_calendar_cbo_forecast_survives_extension(name):
+    source = Path(__file__).parents[4] / "parameters/gov/bls/cpi" / f"{name}.yaml"
+    with source.open() as stream:
+        encoded = yaml.safe_load(stream)["values"]
+    date = "2036-02-01"
+    published = next(value for key, value in encoded.items() if str(key) == date)
+    assert getattr(PARAMETERS.gov.bls.cpi, name)(date) == published
 
 
 def test_all_uprating_factors_extend_to_2100():
@@ -672,20 +687,39 @@ def test_projected_payroll_caps_follow_430b_through_2036():
     assert cap("2036-01-01") == 260_400
 
 
-def test_irs_uprating_averages_cbo_chained_cpi_u_points():
-    """IRS(Y) averages chained CPI-U from August Y - 2 to July Y - 1 (#9105).
+# CBO February 2026 Tax Parameters, sheet "1. Tax Parameters", row 153: the
+# chained CPI-U averaged over the 12 months ending the August before each tax
+# year (tp_c_cpi_u in US-CBO/cbo-data at 284a956, annual_cy_2026-02.csv).
+CBO_2026_02_TAX_YEAR_C_CPI_U = {
+    2027: 181.654,
+    2028: 185.881,
+    2029: 189.775,
+    2030: 193.6,
+    2031: 197.44,
+    2032: 201.335,
+    2033: 205.302,
+    2034: 209.346,
+    2035: 213.471,
+    2036: 217.68,
+}
 
-    Six months read the February Y - 2 point and six read February Y - 1.
-    A BLS refresh that writes an observed February over a projection point
-    changes the IRS years that read it; drop those years from the loop.
+
+def test_irs_uprating_grows_at_cbo_tax_year_chained_cpi_u_rates():
+    """IRS(Y) grows at CBO's tax-year rate for a window BLS has not observed.
+
+    BLS observations end in August 2026, so the window that indexes 2027 is
+    the last with an observed month, and the windows that index 2028 and
+    later hold none. Each of those years multiplies the 2027 index by CBO's
+    projected growth since 2027. A BLS refresh that reaches September 2026
+    turns 2028 into the last observed window; start the loop a year later.
     """
     irs = PARAMETERS.gov.irs.uprating
-    c_cpi_u = {
-        year: round(value, 1) for year, value in CBO_2026_02_CALENDAR_C_CPI_U.items()
-    }
-    for year in range(2029, 2037):
+    cbo = CBO_2026_02_TAX_YEAR_C_CPI_U
+    for year in range(2028, 2037):
+        growth = irs(f"{year}-01-01") / irs(f"{year - 1}-01-01")
+        assert growth == pytest.approx(cbo[year] / cbo[year - 1], rel=1e-12)
         assert irs(f"{year}-01-01") == pytest.approx(
-            (6 * c_cpi_u[year - 2] + 6 * c_cpi_u[year - 1]) / 12, rel=1e-12
+            irs("2027-01-01") * cbo[year] / cbo[2027], rel=1e-12
         )
 
 
@@ -965,16 +999,171 @@ def _synthetic_irs_parameters():
     c_cpi_u = {
         **months(2015, 9, 2016, 8, 150),
         **months(2019, 9, 2020, 8, 60),
-        # Monthly observations end in August 2030; later years hold annual
-        # projection points at February instants.
+        # Monthly observations end in August 2030; later years hold
+        # calendar-year projection points at February instants.
         **months(2029, 9, 2030, 8, 180),
-        "2032-02-01": 195,
+        "2032-02-01": 199,
     }
     cpi = SimpleNamespace(
         cpi_u=Parameter("cpi_u", data=cpi_u),
         c_cpi_u=Parameter("c_cpi_u", data=c_cpi_u),
+        # CBO's projections of the 12 months ending the August before each
+        # tax year. The C-CPI-U projection puts the last observed window
+        # (tax year 2031) at 90, half the observed 180, and tax year 2033 at
+        # 97.5: growth of 97.5 / 90, which takes 180 to 195.
+        tax_year_projection=SimpleNamespace(
+            cpi_u=Parameter("cpi_u_projection", data={"2033-01-01": 390}),
+            c_cpi_u=Parameter(
+                "c_cpi_u_projection", data={"2031-01-01": 90, "2033-01-01": 97.5}
+            ),
+        ),
     )
     return SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
+
+
+def test_irs_window_includes_august_excludes_prior_august():
+    """1(f)(6)(B) includes the ending August in the twelve-month average."""
+    monthly = Parameter(
+        "c_cpi_u",
+        data={
+            "2024-08-01": 1_000,
+            **{f"2024-{month:02d}-01": 100 for month in range(9, 13)},
+            **{f"2025-{month:02d}-01": 100 for month in range(1, 8)},
+            "2025-08-01": 220,
+        },
+    )
+    cpi = SimpleNamespace(
+        c_cpi_u=monthly,
+        tax_year_projection=SimpleNamespace(
+            c_cpi_u=Parameter("projection", data={"2026-01-01": 999})
+        ),
+    )
+    parameters = SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
+
+    # September-July contribute 11 x 100, and the ending August 220:
+    # 1,320 / 12 = 110. Including the prior August instead gives 175.
+    assert get_irs_cpi(parameters, 2025) == 110
+
+
+def test_tax_year_projection_is_distinct_from_calendar_year_projection():
+    """Forecast windows read the dedicated tax-year series, even after a refresh."""
+    parameters = _synthetic_irs_parameters()
+    cpi = parameters.gov.bls.cpi
+    assert cpi.c_cpi_u("2032-02-01") == 199
+    # The observed 180 grows at the tax-year projection's 97.5 / 90.
+    assert get_irs_cpi(parameters, 2032) == pytest.approx(195)
+
+    # Refreshing a calendar-year forecast cannot change this tax window.
+    cpi.c_cpi_u = Parameter(
+        "c_cpi_u",
+        data={
+            **{value.instant_str: value.value for value in cpi.c_cpi_u.values_list},
+            "2032-02-01": 9_999,
+        },
+    )
+    assert get_irs_cpi(parameters, 2032) == pytest.approx(195)
+    # Refreshing the tax-year forecast changes the window itself:
+    # 180 x 102.5 / 90 = 205.
+    cpi.tax_year_projection.c_cpi_u = Parameter(
+        "c_cpi_u_projection", data={"2031-01-01": 90, "2033-01-01": 102.5}
+    )
+    assert get_irs_cpi(parameters, 2032) == pytest.approx(205)
+
+
+def test_missing_month_and_partial_window_completion_are_flat_estimates():
+    """A missing interior month and an unobserved tail carry prior observations."""
+    monthly = Parameter(
+        "c_cpi_u",
+        data={
+            "2025-09-01": 100,
+            # October has no observation, as in the 2025 BLS series.
+            "2025-11-01": 120,
+            "2025-12-01": 130,
+            **{f"2026-{month:02d}-01": 130 + month * 10 for month in range(1, 7)},
+            # Calendar-year forecasts must not fill July and August.
+            "2027-02-01": 999,
+        },
+    )
+    projection = Parameter("projection", data={"2027-01-01": 888})
+
+    # October carries September's 100; July and August carry June's 190.
+    assert get_average_for_12_months_ending_august(
+        monthly, 2026, projection
+    ) == pytest.approx(1_820 / 12)
+
+
+def test_published_tax_parameters_survive_cpi_refresh():
+    """Revised CPI cannot overwrite the IRS amounts encoded in the source YAML."""
+    parameter_dir = Path(__file__).parents[4] / "parameters"
+    parameters = ParameterNode(
+        data={
+            "gov": {
+                "irs": {
+                    "uprating": {"values": {"2010-01-01": 1}},
+                },
+            }
+        }
+    )
+    parameters.gov.add_child("bls", ParameterNode("gov.bls", data={}))
+    parameters.gov.bls.add_child("cpi", PARAMETERS.gov.bls.cpi.clone())
+    irs = parameters.gov.irs
+    irs.add_child("deductions", ParameterNode("gov.irs.deductions", data={}))
+    irs.add_child("ald", ParameterNode("gov.irs.ald", data={}))
+    irs.add_child(
+        "indexing",
+        ParameterNode(
+            "gov.irs.indexing", directory_path=str(parameter_dir / "gov/irs/indexing")
+        ),
+    )
+    irs.deductions.add_child(
+        "standard",
+        ParameterNode(
+            "gov.irs.deductions.standard",
+            directory_path=str(parameter_dir / "gov/irs/deductions/standard"),
+        ),
+    )
+    irs.ald.add_child(
+        "educator_expense",
+        ParameterNode(
+            "gov.irs.ald.educator_expense",
+            directory_path=str(parameter_dir / "gov/irs/ald/educator_expense"),
+        ),
+    )
+    published = [
+        (parameter, value.instant_str, value.value)
+        for subtree in (irs.deductions.standard, irs.ald.educator_expense)
+        for parameter in subtree.get_descendants()
+        if isinstance(parameter, Parameter)
+        for value in parameter.values_list
+    ]
+
+    original_index = get_irs_cpi(parameters, 2025)
+    cpi = parameters.gov.bls.cpi.c_cpi_u
+    cpi.update(period="month:2025-08-01:1", value=2 * cpi("2025-08-01"))
+    assert get_irs_cpi(parameters, 2025) != original_index
+    # Rebuild both indices from the revised series, as the model's build
+    # does: the standard deduction projects from its 2025 base on
+    # gov.irs.uprating, and the dependent limits and the educator cap from
+    # their statutory bases on the 1(f)(3) index.
+    for year in range(2010, 2029):
+        irs.uprating.update(
+            period=f"year:{year}-01-01:1", value=get_irs_cpi(parameters, year - 1)
+        )
+    set_irs_c_cpi_u_index(parameters, 2028)
+
+    # Re-run metadata uprating from the source amounts, rather than from a
+    # tree that already contains forecasts.
+    propagate_parameter_metadata(parameters)
+    uprate_parameters(parameters)
+
+    for parameter, date, value in published:
+        assert parameter(date) == value, (parameter.name, date)
+    assert irs.deductions.standard.amount.SINGLE("2026-01-01") == 16_100
+    assert irs.deductions.standard.dependent.amount("2026-01-01") == 1_350
+    assert (
+        irs.deductions.standard.dependent.additional_earned_income("2026-01-01") == 450
+    )
+    assert irs.ald.educator_expense.cap("2026-01-01") == 350
 
 
 def test_irs_cola_follows_1f3_on_a_synthetic_index():
@@ -985,7 +1174,9 @@ def test_irs_cola_follows_1f3_on_a_synthetic_index():
     assert get_irs_cola_denominator(parameters, 1997) == pytest.approx(75)
     # Tax year 2031 reads the fully observed Sep 2029-Aug 2030 window (180).
     assert get_irs_cola(parameters, 2031, 1997) == pytest.approx(180 / 75 - 1)
-    # Tax year 2033 has no observed month and reads the 2032 projection point.
+    # Tax year 2033 has no observed month, so the last observed window (180)
+    # grows at CBO's tax-year rate, 97.5 / 90, to 195. The 2032
+    # calendar-year point (199) plays no part.
     assert get_irs_cola(parameters, 2033, 1997) == pytest.approx(195 / 75 - 1)
     # "The percentage (if any)": the Sep 2019-Aug 2020 window (60) is below
     # the denominator, so the tax year 2021 COLA is zero, not negative.
@@ -1045,10 +1236,14 @@ def encoded_dependent_standard_deduction_values(name):
 
 
 def test_dependent_standard_deduction_encoded_values_take_precedence():
-    """IRS and CBO values in the YAML survive the statutory extension."""
+    """IRS values in the YAML survive the statutory extension.
+
+    Every encoded value is an IRS publication that the statute reproduces,
+    so precedence for a non-statutory value is checked on the synthetic tree
+    in the next test.
+    """
     dependent = PARAMETERS.gov.irs.deductions.standard.dependent
-    statute_differs = []
-    for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
+    for name, _, _ in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
         parameter = getattr(dependent, name)
         # From TCJA's 2018, when 1(f)(3) moved to the C-CPI-U that
         # statutory_dependent_standard_deduction_amount reads. The earlier
@@ -1061,14 +1256,6 @@ def test_dependent_standard_deduction_encoded_values_take_precedence():
         }
         for year, value in encoded.items():
             assert parameter(f"{year}-01-01") == value, (name, year)
-            if value != statutory_dependent_standard_deduction_amount(
-                base, base_year, year
-            ):
-                statute_differs.append((name, year))
-    # The check only bites where an encoded value differs from the statutory
-    # computation on the model's index: CBO's floor does in 2031 and 2034
-    # (#9608).
-    assert statute_differs
 
 
 def _months(start_year, level):
@@ -1084,8 +1271,14 @@ def _shipped_metadata(relative_path):
     return yaml.safe_load((PARAMETER_DIR / relative_path).read_text())["metadata"]
 
 
-def _synthetic_irs_c_cpi_u_tree(*, cpi_u, c_cpi_u, first_index_year, irs):
-    """A tree with synthetic CPI series, the 1(f)(3) index and ``irs``."""
+def _synthetic_irs_c_cpi_u_tree(
+    *, cpi_u, c_cpi_u, tax_year_projection, first_index_year, irs
+):
+    """A tree with synthetic CPI series, the 1(f)(3) index and ``irs``.
+
+    ``tax_year_projection`` maps "cpi_u" and "c_cpi_u" to CBO-style
+    projections of the 12 months ending the August before each tax year.
+    """
     return ParameterNode(
         "",
         data={
@@ -1094,6 +1287,10 @@ def _synthetic_irs_c_cpi_u_tree(*, cpi_u, c_cpi_u, first_index_year, irs):
                     "cpi": {
                         "cpi_u": {"values": cpi_u},
                         "c_cpi_u": {"values": c_cpi_u},
+                        "tax_year_projection": {
+                            name: {"values": values}
+                            for name, values in tax_year_projection.items()
+                        },
                     }
                 },
                 "irs": {
@@ -1113,8 +1310,15 @@ def test_dependent_standard_deduction_base_mode_starts_after_last_encoded_year()
     dependent_path = "gov/irs/deductions/standard/dependent"
     parameters = _synthetic_irs_c_cpi_u_tree(
         cpi_u={**_months(1986, 40), **_months(1996, 100), **_months(2015, 200)},
-        # Monthly observations end in August 2030; 2032 holds a projection.
-        c_cpi_u={**_months(2015, 150), **_months(2029, 190), "2032-02-01": 205},
+        # Monthly observations end in August 2030; 2032 holds a calendar-year
+        # point, which windows do not read.
+        c_cpi_u={**_months(2015, 150), **_months(2029, 190), "2032-02-01": 211},
+        # CBO's projections of the 12 months ending the August before each
+        # tax year.
+        tax_year_projection={
+            "cpi_u": {"2033-01-01": 410},
+            "c_cpi_u": {"2031-01-01": 95, "2032-01-01": 95, "2033-01-01": 102.5},
+        },
         first_index_year=1988,
         irs={
             "deductions": {
@@ -1147,14 +1351,16 @@ def test_dependent_standard_deduction_base_mode_starts_after_last_encoded_year()
     assert dependent.additional_earned_income("2029-01-01") == 350
     assert dependent.additional_earned_income("2030-01-01") == 999
     # Index bases: 1987 is 40 x 150 / 200 = 30; 1997 is 100 x 150 / 200 = 75.
-    # 2031 reads the observed Sep 2029-Aug 2030 window (190); 2032 has no
-    # observed month and no projection point of its own, so it reads 190 too.
+    # 2031 reads the observed Sep 2029-Aug 2030 window (190). 2032 has no
+    # observed month; its tax-year projection equals 2031's (95), so the
+    # index stays at 190.
     # Floor: $500 x (190 / 30 - 1) = $2,666.67, rounded down to $2,650.
     # Addition: $250 x (190 / 75 - 1) = $383.33, rounded down to $350.
     for year in (2031, 2032):
         assert dependent.amount(f"{year}-01-01") == 3_150
         assert dependent.additional_earned_income(f"{year}-01-01") == 600
-    # 2033 reads the 2032 projection point (205).
+    # 2033 grows the observed 190 at the tax-year projection's 102.5 / 95,
+    # to 205; the calendar-year point (211) plays no part.
     # Floor: $500 x (205 / 30 - 1) = $2,916.67, rounded down to $2,900.
     # Addition: $250 x (205 / 75 - 1) = $433.33, rounded down to $400.
     assert dependent.amount("2033-01-01") == 3_400
@@ -1188,6 +1394,59 @@ def test_dependent_standard_deduction_projections_follow_statute():
     assert dependent.additional_earned_income("2032-01-01") == 550
     assert dependent.additional_earned_income("2042-01-01") == 650
     assert dependent.amount("2042-01-01") == 1_900
+
+
+def test_statute_on_cbo_index_reproduces_cbo_dependent_floor_projections():
+    """CBO's projected floor is 63(c)(4) applied to CBO's projected index.
+
+    CBO Tax Parameters, February 2026, sheet 1: row 68 ("Dependent filers
+    (unearned)") by tax year, and row 153, the C-CPI-U over the 12 months
+    ending the previous August. Applying the statute and the model's 1987
+    denominator to row 153 gives row 68 in 2028-2036, which checks the
+    statute encoding against CBO's.
+
+    The model's own floor follows its index, which grows from the last
+    observed window at CBO's rates and so exceeds row 153 by 0.47%
+    (182.501 / 181.654). That floor reaches $1,550 in 2031, a year before
+    CBO's. The 2027 floor holds the IRS amount in Rev. Proc. 2026-35, which
+    equals CBO's.
+    """
+    cbo_floor = {
+        2027: 1_400,
+        2028: 1_450,
+        2029: 1_450,
+        2030: 1_500,
+        2031: 1_500,
+        2032: 1_550,
+        2033: 1_600,
+        2034: 1_600,
+        2035: 1_650,
+        2036: 1_700,
+    }
+    denominator = get_irs_cola_denominator(PARAMETERS, 1987)
+    for year in range(2028, 2037):
+        cola = CBO_2026_02_TAX_YEAR_C_CPI_U[year] / denominator - 1
+        assert 500 + math.floor(500 * cola / 50) * 50 == cbo_floor[year], year
+
+    dependent = PARAMETERS.gov.irs.deductions.standard.dependent
+    model_floor = {**cbo_floor, 2031: 1_550}
+    for year, amount in model_floor.items():
+        assert dependent.amount(f"{year}-01-01") == amount, year
+
+
+def test_irs_uprating_is_the_c_cpi_u_for_12_months_ending_august():
+    """1(f)(6)(B): the index for tax year T averages Sep T-2 through Aug T-1."""
+    uprating = PARAMETERS.gov.irs.uprating
+    # CBO's actual tax year 2026 index (Tax Parameters row 153): 177.114.
+    assert uprating("2026-01-01") == pytest.approx(177.114, abs=5e-4)
+    # The 2027 index averages BLS observations for Sep 2025-Aug 2026, with
+    # September 2025's value standing in for the unpublished October.
+    assert uprating("2027-01-01") == pytest.approx(182.501, abs=5e-4)
+    # No BLS observation covers Sep 2026-Aug 2027, so the 2027 index grows
+    # at CBO's projected rate: 182.501 x 185.881 / 181.654 = 186.747.
+    assert uprating("2028-01-01") == pytest.approx(186.747, abs=5e-4)
+    # 182.501 x 217.68 / 181.654 = 218.695.
+    assert uprating("2036-01-01") == pytest.approx(218.695, abs=5e-4)
 
 
 def statutory_educator_expense_cap(year):
@@ -1237,15 +1496,17 @@ def test_educator_expense_cap_projections_follow_statute():
         previous = value
     assert cap("2150-01-01") == cap("2100-01-01")
 
-    # Hand anchors. They rest on the model's CPI projection, so a CBO refresh
-    # can move them; 2031 and 2032 sit within $5 of the $125 step. The 2014
-    # denominator is 134.30. The increase, $250 x the COLA, rounds to $100
-    # while under $125: $89.57 in 2027, $112.80 in 2030 and $120.06 in 2031.
-    # It rounds to $150 from $127.32 in 2032 to $150.03 in 2035. Chaining
-    # from the rounded 2026 $350 reached $400 in 2030.
+    # Hand anchors. They rest on the model's CPI projection (the 2027 index
+    # grown at CBO's tax-year C-CPI-U rates from 2028), so a BLS or CBO
+    # refresh can move them; 2032 sits $1.52 above the $125 step and 2038
+    # $1.70 below the $175 step. The 2014 denominator is 134.304. The
+    # increase, $250 x the COLA, rounds to $100 while under $125: $89.72 in
+    # 2027, $112.06 in 2030 and $119.24 in 2031 (index 198.360). It rounds
+    # to $150 from $126.52 in 2032 (index 202.273) to $173.30 in 2038.
+    # Chaining from the rounded 2026 $350 reached $400 in 2030.
     for year in range(2027, 2032):
         assert cap(f"{year}-01-01") == 350, year
-    for year in range(2032, 2036):
+    for year in range(2032, 2039):
         assert cap(f"{year}-01-01") == 400, year
 
 
@@ -1254,8 +1515,15 @@ def test_educator_expense_cap_base_mode_rounds_the_base_increase_to_nearest_50()
     through the shipped base-mode metadata."""
     parameters = _synthetic_irs_c_cpi_u_tree(
         cpi_u={**_months(2013, 100), **_months(2015, 200)},
-        # Monthly observations end in August 2030; 2032 holds a projection.
-        c_cpi_u={**_months(2015, 150), **_months(2029, 102), "2032-02-01": 126},
+        # Monthly observations end in August 2030; 2032 holds a calendar-year
+        # point, which windows do not read.
+        c_cpi_u={**_months(2015, 150), **_months(2029, 102), "2032-02-01": 999},
+        # CBO's projections of the 12 months ending the August before each
+        # tax year.
+        tax_year_projection={
+            "cpi_u": {"2033-01-01": 300},
+            "c_cpi_u": {"2031-01-01": 51, "2032-01-01": 55, "2033-01-01": 63},
+        },
         first_index_year=2015,
         irs={
             "ald": {
@@ -1278,12 +1546,15 @@ def test_educator_expense_cap_base_mode_rounds_the_base_increase_to_nearest_50()
     assert cap("2029-01-01") == 250
     assert cap("2030-01-01") == 999
     # Index base: 2014 is 100 x 150 / 200 = 75. 2031 reads the observed
-    # Sep 2029-Aug 2030 window (102); 2032 has no observed month and no
-    # projection point of its own, so it reads 102 too.
+    # Sep 2029-Aug 2030 window (102).
     # $250 x (102 / 75 - 1) = $90, nearest to $100 (rounding down gives $50).
-    for year in (2031, 2032):
-        assert cap(f"{year}-01-01") == 350, year
-    # 2033 reads the 2032 projection point (126).
+    assert cap("2031-01-01") == 350
+    # 2032 has no observed month, so the observed 102 grows at the tax-year
+    # projection's 55 / 51, to 110.
+    # $250 x (110 / 75 - 1) = $116.67, nearest to $100.
+    assert cap("2032-01-01") == 350
+    # 2033 grows the observed 102 at 63 / 51, to 126; the calendar-year
+    # point (999) plays no part.
     # $250 x (126 / 75 - 1) = $170, nearest to $150 (rounding up gives $200).
     assert cap("2033-01-01") == 400
     assert cap("2040-01-01") == 400

@@ -159,11 +159,31 @@
 - name: Case 10, SSI spousal deeming triggers the married SSI SSP standard.
   period: 2026
   input:
-    state_code: CA
-    is_disabled: true
-    employment_income: 1_000
-    pension_income: 20_000
-    ssi_countable_resources: 10_000
-    is_ssi_spousal_deeming_applies: true
+    people:
+      recipient:
+        age: 45
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 1_000
+        pension_income: 20_000
+        ssi_countable_resources: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        pension_income: 600 * 12
+    tax_units:
+      couple:
+        members: [recipient, spouse]
+    marital_units:
+      couple:
+        members: [recipient, spouse]
+    households:
+      home:
+        members: [recipient, spouse]
+        state_code: CA
   output:
-    ca_wdp_ssi_ssp_income_eligible: true
+    people:
+      recipient:
+        is_ssi_spousal_deeming_applies: true
+        ca_wdp_ssi_ssp_income_eligible: true

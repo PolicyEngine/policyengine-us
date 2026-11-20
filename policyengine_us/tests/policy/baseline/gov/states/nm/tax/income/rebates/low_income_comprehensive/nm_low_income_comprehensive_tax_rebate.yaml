@@ -387,3 +387,15 @@
     # military retired pay, modified gross income would be 30,000 and the
     # rebate 149.
     nm_low_income_comprehensive_tax_rebate: 0
+
+# TRD FYI-109, 2026 Inflation Adjustments, page 2: one exemption and
+# modified gross income over $9,000 but not over $10,000 give a $201 rebate.
+- name: New Mexico 2026 low-income rebate, one exemption, MGI of $9,500
+  period: 2026
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    nm_modified_gross_income: 9_500
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+  output:
+    nm_low_income_comprehensive_tax_rebate: 201

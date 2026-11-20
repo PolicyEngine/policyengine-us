@@ -549,3 +549,75 @@
     medicaid_household_size: 2
     medicaid_category: PREGNANT
     is_federal_medicaid_immigration_status_eligible: false
+
+# New Jersey Cover All Kids. A single parent works full time (2,080 hours) at
+# New Jersey's minimum wage: $15.13 an hour in 2024 and $13.00 in 2022. Both
+# children are in the Medicaid older-child group, whose New Jersey limit is 147%
+# of the poverty guideline. The parent is past the under-19 age limit.
+- name: Case 41, New Jersey undocumented child and citizen child both receive Medicaid in 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_470.4
+      person2:
+        age: 8
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 6
+    marital_units:
+      marital_unit:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # $31,470.40 / $25,820 (2024 guideline for 3) = 1.219.
+    medicaid_household_size: [3, 3, 3]
+    is_older_child_for_medicaid: [false, true, true]
+    is_medicaid_eligible: [false, true, true]
+    is_chip_eligible_child: [false, false, false]
+
+- name: Case 42, before Cover All Kids the New Jersey undocumented child had no Medicaid or CHIP in 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 27_040
+      person2:
+        age: 8
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 6
+    marital_units:
+      marital_unit:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # $27,040 / $23,030 (2022 guideline for 3) = 1.174.
+    medicaid_household_size: [3, 3, 3]
+    is_older_child_for_medicaid: [false, true, true]
+    is_medicaid_eligible: [false, false, true]
+    is_chip_eligible_child: [false, false, false]

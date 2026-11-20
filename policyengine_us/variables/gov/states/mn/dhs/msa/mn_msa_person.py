@@ -59,8 +59,8 @@ class mn_msa_person(Variable):
             period,
             [
                 "ssi_unearned_income",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_parent",
+                "ssi_unearned_income_deemed_from_ineligible_spouse_monthly",
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly",
             ],
         )
         disregard = where(is_medicaid_facility, 0, p.general)
@@ -90,7 +90,7 @@ class mn_msa_person(Variable):
             period.this_year,
             [
                 "ssi_earned_income",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
+                "ssi_earned_income_deemed_from_ineligible_spouse_monthly",
             ],
         )
         annual_unearned = add(
@@ -98,8 +98,8 @@ class mn_msa_person(Variable):
             period.this_year,
             [
                 "ssi_unearned_income",
-                "ssi_unearned_income_deemed_from_ineligible_spouse",
-                "ssi_unearned_income_deemed_from_ineligible_parent",
+                "ssi_unearned_income_deemed_from_ineligible_spouse_monthly",
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly",
             ],
         )
         couple_earned = _ssi_couple_total(person, period.this_year, annual_earned)
