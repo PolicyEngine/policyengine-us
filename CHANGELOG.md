@@ -1,3 +1,11 @@
+## [2.147.4] - 2026-11-20
+
+### Changed
+
+- Run PR CI on draft pull requests too, and stop rerunning it when a PR is marked ready or converted to draft.
+- Run the SPM Python tests on a runner of their own: after Microsimulation on PRs, beside it on release runs. The Microsimulation runner was hitting its 60-minute timeout with both suites.
+
+
 ## [2.147.3] - 2026-11-19
 
 ### Changed
