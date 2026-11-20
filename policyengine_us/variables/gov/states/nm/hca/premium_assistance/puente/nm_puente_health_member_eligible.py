@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.nm.hca.premium_assistance.puente.nm_puente_health_eligible import (
-    nm_puente_health_fpl_ratio,
-)
 
 
 class nm_puente_health_member_eligible(Variable):
@@ -48,9 +45,13 @@ class nm_puente_health_member_eligible(Variable):
         "otherwise have qualified for the credit: in the tax family, not "
         "married filing separately, and without the other coverage that "
         "bars the credit (gov.aca.ineligible_coverage, which includes "
-        "Medicaid). Reading 'due to the enactment' as 'but for' those "
-        "sections is a modeling choice. The sources name no filing "
-        "requirement, so none applies."
+        "Medicaid). Last, the member must not be eligible for the federal "
+        "credit (is_aca_ptc_eligible): Puente Health replaces a credit the "
+        "person lost, so a person the model counts as credit-eligible, for "
+        "example because Marketplace enrollment is supplied through "
+        "pays_aca_premium, is not a member. Reading 'due to the "
+        "enactment' as 'but for' those sections is a modeling choice. The "
+        "sources name no filing requirement, so none applies."
     )
 
     def formula(person, period, parameters):
@@ -71,7 +72,7 @@ class nm_puente_health_member_eligible(Variable):
         # Section 71302: the group aca_ptc_below_fpl_immigration_exception
         # covers, once the exception is no longer in effect.
         exception_repealed = not p_aca.below_fpl_immigration_exception_in_effect
-        below_fpl = nm_puente_health_fpl_ratio(person.tax_unit, period) < 1
+        below_fpl = person.tax_unit("nm_premium_assistance_fpl_ratio", period) < 1
         medicaid_barred = ~person("is_medicaid_immigration_status_eligible", period)
         section_71302 = (
             exception_repealed
@@ -87,9 +88,15 @@ class nm_puente_health_member_eligible(Variable):
         filing_status = person.tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
         no_other_coverage = add(person, period, p_aca.ineligible_coverage) == 0
+        # 8.401.2.11(C)(2) NMAC: the member "has become ineligible for the
+        # federal Premium Tax Credit". The paths above find that group from
+        # the credit's inputs; this keeps out anyone the model still counts
+        # as credit-eligible, such as when pays_aca_premium is supplied.
+        federal_credit_eligible = person("is_aca_ptc_eligible", period)
         return (
             (section_71301 | section_71302)
             & tax_family_member
             & not_separate
             & no_other_coverage
+            & ~federal_credit_eligible
         )

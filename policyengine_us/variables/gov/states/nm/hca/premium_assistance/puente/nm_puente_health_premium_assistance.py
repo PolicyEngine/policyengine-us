@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.nm.hca.premium_assistance.puente.nm_puente_health_eligible import (
-    nm_puente_health_fpl_ratio,
-)
 
 
 class nm_puente_health_premium_assistance(Variable):
@@ -37,11 +34,16 @@ class nm_puente_health_premium_assistance(Variable):
         "10% increase applies, so a member pays nothing for a plan priced up "
         "to 110% of the benchmark. PY2027 applies the Table 1 scale up to "
         "400% and the increase below 200%. The rule's formula has no federal "
-        "credit term, since Puente Health members receive none. In a family "
-        "with both Puente Health members and members who get the federal "
-        "credit, the model subtracts the Table 1 share of the whole "
-        "household's income here and again in base New Mexico Premium "
-        "Assistance; the sources do not say how BeWell divides it."
+        "credit term, since Puente Health members receive none. The "
+        "household pays one Table 1 share of its income: the PY2027 manual "
+        "(p.4) describes Table 1 as 'capping the SLCSP cost as a percentage "
+        "of household income'. In a family with both Puente Health members "
+        "and members who get the federal credit, base New Mexico Premium "
+        "Assistance subtracts that share from what the federal credit leaves "
+        "of its members' benchmark, and Puente Health subtracts only the "
+        "part of the share that remainder cannot cover, so the two programs "
+        "together charge the share once. The sources do not say how BeWell "
+        "divides the share between the programs."
     )
 
     def formula(tax_unit, period, parameters):
@@ -50,7 +52,9 @@ class nm_puente_health_premium_assistance(Variable):
         # (all under 100% of the poverty line); the PY2027 manual applies the
         # base program's increase "under 200% (< 200%)". Both follow from the
         # base program's gross-up limit and boundary on the exact ratio.
-        ratio = nm_puente_health_fpl_ratio(tax_unit, period)
+        # NOTE: nm_premium_assistance applies the same gross-up to the federal
+        # members' benchmark; the two blocks should change together.
+        ratio = tax_unit("nm_premium_assistance_fpl_ratio", period)
         limit = p.benchmark_gross_up.fpl_limit
         gross_up_applies = where(
             p.benchmark_gross_up.boundary_inclusive,
@@ -66,6 +70,20 @@ class nm_puente_health_premium_assistance(Variable):
             "nm_premium_assistance_target_contribution_percentage", period
         )
         income = max_(tax_unit("aca_magi", period), 0)
-        amount = max_(0, benchmark * gross_up - target_percentage * income)
+        contribution = target_percentage * income
+        # One household contribution (PY2027 manual p.4). Base New Mexico
+        # Premium Assistance subtracts the whole share from the federal
+        # members' grossed-up benchmark net of the federal credit; Puente
+        # Health subtracts only what that remainder cannot absorb.
+        federal_benchmark = add(tax_unit, period, ["aca_ptc_slcsp"])
+        aca_ptc = tax_unit("aca_ptc", period)
+        federal_remainder = max_(0, federal_benchmark * gross_up - aca_ptc)
+        base_eligible = tax_unit("nm_premium_assistance_eligible", period)
+        remaining_contribution = where(
+            base_eligible,
+            max_(0, contribution - federal_remainder),
+            contribution,
+        )
+        amount = max_(0, benchmark * gross_up - remaining_contribution)
         plan_premium = add(tax_unit, period, ["nm_puente_health_plan_premium"])
         return min_(amount, plan_premium)

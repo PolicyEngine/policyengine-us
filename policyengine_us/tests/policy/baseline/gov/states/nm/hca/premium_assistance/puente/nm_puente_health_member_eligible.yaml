@@ -503,3 +503,29 @@
         state_code: NM
   output:
     nm_puente_health_member_eligible: [false, true]
+
+- name: Case 16, 2027 TPS holder the model counts as federally credit-eligible is not a member.
+  # 39,900 / 15,960 = 2.50. Supplying pays_aca_premium makes the person
+  # eligible for the federal credit despite the TPS status, so Puente Health,
+  # which replaces a lost credit, does not also apply.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+    is_aca_ptc_eligible: true
+    nm_puente_health_member_eligible: false
+    nm_puente_health_eligible: false

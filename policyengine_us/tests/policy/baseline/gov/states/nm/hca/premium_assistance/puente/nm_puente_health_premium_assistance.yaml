@@ -330,6 +330,11 @@
 - name: Case 14, 2027 joint return of an LPR and a TPS holder prices Puente Health on the TPS spouse.
   # 54,100 / 21,640 = 2.50: Table 1 share 2%. Benchmark 9,000 for the TPS
   # spouse alone. 9,000 - 0.02 * 54,100 = 9,000 - 1,082 = 7,918.
+  # Puente Health subtracts the whole share because base New Mexico Premium
+  # Assistance takes none of it here: with aca_magi supplied and no wages,
+  # the head's Medicaid income is 0, so the 2027 Medicaid work requirement
+  # (gov.aca.ineligible_coverage) keeps him from the federal credit. Case 19
+  # has a federally eligible head.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -358,6 +363,7 @@
         members: [head, spouse]
         state_code: NM
   output:
+    nm_premium_assistance_eligible: false
     nm_puente_health_benchmark_premium: 9_000
     nm_puente_health_premium_assistance: 7_918
 
@@ -451,3 +457,50 @@
         state_code: NM
   output:
     nm_puente_health_premium_assistance: 0
+
+- name: Case 19, 2027 mixed couple at 390% FPL whose federal remainder covers part of the share.
+  # The head's wages make him a filer with no Medicaid, so he is federally
+  # eligible. 84,396 / 21,640 = 3.90. Table 1 share 5% + 0.9 * 3.5% = 8.15%:
+  # 0.0815 * 84,396 = 6,878.274. The LPR head's 3,000 federal benchmark is
+  # under the 10.22% required contribution (8,625.27), so the federal credit
+  # is 0 and base New Mexico Premium Assistance is max(0, 3,000 - 0 -
+  # 6,878.274) = 0: the federal side covers 3,000 of the share. Puente Health
+  # subtracts the rest: 9,000 - (6,878.274 - 3,000) = 9,000 - 3,878.274 =
+  # 5,121.726, under the 9,000 plan. The household pays 12,000 - 5,121.726 =
+  # 6,878.274, the 8.15% share once.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        employment_income: 84_396
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        immigration_status: TPS
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 84_396
+        aca_fpg: 21_640
+        aca_ptc_slcsp: 3_000
+        nm_puente_health_benchmark_premium: 9_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0815
+    aca_ptc: 0
+    nm_premium_assistance_eligible: true
+    nm_premium_assistance: 0
+    nm_puente_health_eligible: true
+    nm_puente_health_plan_premium: 9_000
+    nm_puente_health_premium_assistance: 5_121.726
