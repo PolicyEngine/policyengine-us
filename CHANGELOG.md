@@ -1,3 +1,14 @@
+## [2.149.0] - 2026-11-20
+
+### Added
+
+- Add Connecticut Temporary Premium Assistance for 2026 and 2027, which replaces the lost enhanced federal premium tax credit in full at 100% to 200% of the poverty line (outside Covered Connecticut) and by half above 400% up to 500%.
+
+### Fixed
+
+- Pennsylvania taxable income no longer includes alimony, and it now counts employees' traditional 401(k) and 403(b) contributions as taxable compensation, as the PA-40 instructions require.
+
+
 ## [2.148.4] - 2026-11-20
 
 ### Fixed
