@@ -1,3 +1,29 @@
+## [2.147.4] - 2026-11-20
+
+### Changed
+
+- Run PR CI on draft pull requests too, and stop rerunning it when a PR is marked ready or converted to draft.
+- Run the SPM Python tests on a runner of their own: after Microsimulation on PRs, beside it on release runs. The Microsimulation runner was hitting its 60-minute timeout with both suites.
+
+
+## [2.147.3] - 2026-11-19
+
+### Changed
+
+- Stop `test_an_edit_to_a_loaded_tree_reaches_the_next_simulation` requiring policyengine-core to load scale brackets without a parent. The test now detaches the bracket it edits, so it checks the same case whether or not core links a loaded tree's brackets to their scale.
+
+
+## [2.147.2] - 2026-11-19
+
+### Changed
+
+- Set the default calculation and input year of `Simulation` to 2026, keep `Microsimulation` on its dataset's base year, and check structural reforms from 2024 through 2033 by default.
+
+### Fixed
+
+- Fix state EITC and Utah HB210 Substitute 2 structural reforms that failed to build in a Simulation.
+
+
 ## [2.147.1] - 2026-11-19
 
 ### Fixed

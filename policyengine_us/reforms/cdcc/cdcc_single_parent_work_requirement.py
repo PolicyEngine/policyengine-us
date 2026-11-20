@@ -60,11 +60,11 @@ def create_cdcc_single_parent_work_requirement_reform(
 
     p = parameters.gov.contrib.cdcc.single_parent_work_requirement
 
-    # Check if reform is active in current period or next 5 years
+    # Check if reform is active in the lookahead window
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
