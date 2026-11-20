@@ -1,0 +1,1 @@
+Maine sales and property tax fairness credit income now counts the head's and spouse's SSI and adds back only the net loss from combining the Schedule E items on Schedule 1 line 5, as 36 M.R.S. 5213-A and 5219-KK provide.
