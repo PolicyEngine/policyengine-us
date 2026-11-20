@@ -924,3 +924,87 @@
         state_code: NY
   output:
     ny_real_property_tax_credit: 375
+
+# Tax Law 606(e), taxable years before 2025: the real property tax equivalent
+# is 25% of the adjusted rent "actually paid ... by a household" ((1)(F)(i);
+# 2024 IT-214 line 19, "rent you and all members of your household paid"),
+# the elderly limit applies when a household member is 65 or older ((6)(A);
+# 2024 IT-214-I page 1) and "only one credit per household" is allowed
+# ((6)(A)). The household's credit goes to one tax unit.
+- name: 2024 - an aged parent on their own return gives the household the elderly limit on rent an adult child pays
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        social_security: 12_000
+      child:
+        age: 40
+        employment_income: 3_000
+        rent: 4_800
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The parent's combined income 12,000 x 0.5 = 6,000 is under the 25,000
+    # base, so no Social Security is taxable and their AGI is 0. SSI:
+    # countable unearned income 12,000 / 12 - 20 = 980 a month is over the
+    # 2024 benefit rate of 943, so no SSI. The State Supplement Program rate
+    # for living with others (23) is less than the 980 - 943 = 37 excess, so
+    # no supplement.
+    ssi: [0, 0]
+    ny_ssp: [0, 0]
+    # Household gross income: line 9 (0 + 3,000) + line 11 (12,000) = 15,000.
+    ny_household_gross_income: [15_000, 15_000]
+    # Rate 0.065 (14,001-18,000) -> threshold 15,000 x 0.065 = 975. The
+    # household's rent 4,800 (400 a month, within the 450 limit) -> 25% =
+    # 1,200; excess = 1,200 - 975 = 225; 50% = 112.50. The parent is 70, so
+    # the elderly limit at 14,001-15,000 (137) applies: 112.50. Either return
+    # could claim it.
+    ny_real_property_tax_credit_potential: [112.5, 112.5]
+    # One credit per household: the tie goes to the tax unit whose head comes
+    # first in the person order. On the child's return alone the non-elderly
+    # limit at 15,000 (47) would bind instead.
+    ny_real_property_tax_credit_claimant: [true, false]
+    ny_real_property_tax_credit: [112.5, 0]
+
+- name: 2024 - two adults on their own returns who split the rent get one credit on the household's rent
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        rent: 2_400
+      person2:
+        age: 38
+        employment_income: 8_000
+        rent: 2_400
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Household gross income: line 9, 8,000 + 8,000 = 16,000.
+    ny_household_gross_income: [16_000, 16_000]
+    # Rate 0.065 (14,001-18,000) -> threshold 16,000 x 0.065 = 1,040. The
+    # household's rent 2,400 + 2,400 = 4,800 (400 a month) -> 25% = 1,200;
+    # excess = 1,200 - 1,040 = 160; 50% = 80, capped by the non-elderly limit
+    # at 15,001-16,000 = 45. Each return's own rent alone (25% x 2,400 = 600,
+    # under 1,040) would give no credit.
+    ny_real_property_tax_credit_potential: [45, 45]
+    ny_real_property_tax_credit_claimant: [true, false]
+    ny_real_property_tax_credit: [45, 0]

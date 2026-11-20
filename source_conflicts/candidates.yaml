@@ -10094,13 +10094,13 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit.py
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
-    keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
-    credit under the statute; verify the instructions'' return-level interpretation.'
+    keeps it when the spouse can be claimed (ny_real_property_tax_credit_potential.py). Ruled in October 2026 to
+    retain the credit under the statute; verify the instructions'' return-level interpretation.'
 - id: us-ny:ssp-couple-facility-entry-month
   program: ssi-state-supplement
   years:
