@@ -508,16 +508,16 @@
   output:
     md_premium_assistance: 742.20  # self-consistent APTC: equals the old reading
 
-- name: Case 19, second in-effect year (2027) at 250% FPL -> 474.33.
-  # Same forced-input shape as Case 3 but at period 2027, proving the program is
-  # still in effect in its second plan year (distinct from the 2028 sunset).
-  # 250% of the 2026 one-person guideline ($15,960), the prior year for 2027, is
-  # 39_900. The 2027 MD target at 250% is 6.33% (slide 21), so the earlier
-  # aca_ptc of 3_500 left a 2_500 balance below the 2_525.67 MD contribution and
-  # a $0 subsidy; aca_ptc is lowered to 3_000 so the case keeps a positive amount.
-  # COMAR .04B: max(0, (6_000 - 3_000) - 0.0633 * 39_900) = 3_000 - 2_525.67
-  # = 474.33. The federal percentage is the 2027 one at 250% (8.66%); the formula
-  # does not read it because aca_ptc is supplied.
+- name: Case 19, second in-effect year (2027) at 250% FPL -> 0.
+  # Same forced-input shape as Case 3 but at period 2027, with the inputs
+  # unchanged from the 2026-parameter version of this case; only the 2027 MD
+  # target changes the result. 250% of the 2026 one-person guideline ($15,960),
+  # the prior year for 2027, is 39_900. The 2027 MD target at 250% is 6.33%
+  # (slide 21): 0.0633 * 39_900 = 2_525.67, which exceeds the 2_500 balance.
+  # COMAR .04B: max(0, (6_000 - 3_500) - 2_525.67) = max(0, -25.67) = 0.
+  # The formula does not read aca_required_contribution_percentage because
+  # aca_ptc is supplied. The 2027 cases at the end of this file assert positive
+  # 2027 amounts.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -530,16 +530,16 @@
         members: [person1]
         aca_magi: 39_900
         aca_magi_fraction: 2.50
-        aca_required_contribution_percentage: 0.0866
+        aca_required_contribution_percentage: 0.0844
         slcsp: 6_000
-        aca_ptc: 3_000
+        aca_ptc: 3_500
         tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    md_premium_assistance: 474.33
+    md_premium_assistance: 0
 
 - name: Case 20, negative aca_magi -> income floored before multiplying (no sign-flip).
   # The formula floors income at 0 (max_(aca_magi, 0)), so a negative aca_magi
