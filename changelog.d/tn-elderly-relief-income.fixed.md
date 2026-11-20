@@ -1,0 +1,1 @@
+Count the income Tennessee's Rule 0600-03-.08(3) adds to adjusted gross income for elderly homeowner property tax relief: Social Security and Railroad Retirement benefits after the Medicare Part B premium, SSI, veterans' benefits, workers' compensation, tax-exempt interest, nontaxable alimony and nontaxable pensions.
