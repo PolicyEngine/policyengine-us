@@ -10,11 +10,10 @@ class vt_premium_assistance_eligible(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
-        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2027-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf#page=1",
-        # PDF page 2 in Adobe Reader (dynamic XFA form): Section VII applies
-        # "ONLY if HH income is at or below 300% FPL", with the household FPL
-        # percentage computed as income / FPL x 100, untruncated.
-        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/205APTC-EW-2027.pdf#page=2",
+        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2027-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf",
+        # PDF page 41: HBEE 60.07(c) applies the Vermont reduction to
+        # household income that "does not exceed 300 percent of the FPL".
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "A tax unit is eligible for Vermont Premium Assistance when the program "

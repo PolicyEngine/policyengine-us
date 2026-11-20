@@ -11,12 +11,11 @@ class vt_premium_assistance(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
-        # PDF page 2 in Adobe Reader (the 2027 APTC worksheet is a dynamic XFA
-        # form). Section VII step 3 computes VPA as the federal required
-        # share, capped at the benchmark, minus income times the Vermont
-        # percentage; that equals 1.5% of income whenever the federal credit
-        # is positive.
-        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/205APTC-EW-2027.pdf#page=2",
+        # PDF page 41: HBEE 60.07(c) reduces the APTC applicable percentage
+        # by 1.5% for household income that does not exceed 300% of the FPL,
+        # so VPA equals 1.5% of income whenever the federal credit is
+        # positive.
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "Vermont state top-up to the federal ACA premium tax credit, an "

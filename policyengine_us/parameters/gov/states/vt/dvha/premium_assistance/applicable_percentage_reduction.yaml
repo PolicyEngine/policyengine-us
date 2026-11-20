@@ -1,8 +1,8 @@
 description: Vermont reduces the federal section 36B applicable percentage by this many percentage points under the Vermont Premium Assistance program.
 values:
-  # The 2027 APTC worksheet (205APTC-EW, revised 09/2026), Section VII step 1,
-  # computes the Vermont percentage as the federal applicable percentage from
-  # Section III minus 1.5, so the reduction carries into 2027 unchanged.
+  # HBEE 60.07(c) (revised 01/01/2024, no end date) reduces the APTC
+  # applicable percentage by 1.5% for household income that does not exceed
+  # 300% of the FPL, so the reduction carries into 2027 unchanged.
   2026-01-01: 0.015
 
 # Statute 33 V.S.A. § 1812(a)(2) says the State "shall reduce the premium
@@ -12,9 +12,6 @@ values:
 # proportional scaling): "VPA lowers your monthly health insurance bill by
 # 1.5% of your household income." Stored here as 0.015 percentage points off
 # aca_required_contribution_percentage.
-# 205APTC-EW-2027 is a dynamic (XFA) form that only Adobe Reader renders; its
-# page anchor refers to that rendering, where Sections III and VII are on
-# page 2.
 metadata:
   unit: /1
   period: year
@@ -24,5 +21,5 @@ metadata:
       href: https://legislature.vermont.gov/statutes/section/33/018/01812
     - title: Vermont Health Connect — VPA lowers your bill by 1.5% of household income
       href: https://info.healthconnect.vermont.gov/financial-help
-    - title: Vermont Health Connect 2027 APTC Worksheet (205APTC-EW), Section VII step 1
-      href: https://info.healthconnect.vermont.gov/sites/vhc/files/documents/205APTC-EW-2027.pdf#page=2
+    - title: Vermont Health Benefits Eligibility and Enrollment Rule, Part 7, section 60.07(c) - Applicable percentage table with the Vermont Premium Reduction
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41

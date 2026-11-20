@@ -3,15 +3,19 @@ values:
   # Covered Connecticut is a standing statutory obligation under June Sp. Sess.
   # Public Act No. 21-2 (2021), Sec. 16, which is "Effective from passage." The
   # program launched under the statute on July 1, 2021 (parents and caretaker
-  # relatives) and July 1, 2022 (all adults 18-64), and is funded on an ongoing
-  # basis with no sunset date. The 2026-01-01 toggle is the modeled
+  # relatives) and July 1, 2022 (all adults, then aged 18 to 64; 19 to 64
+  # under Public Act 26-68, Sec. 462), and is funded on an ongoing basis
+  # with no sunset date. The 2026-01-01 toggle is the modeled
   # verified-coverage-start floor, not the year the program became standing.
   # Public Act 26-68, Sec. 462, re-enacts C.G.S. 19a-754c with no sunset. Under
   # Sec. 454(b)(2), if the program's Section 1115 waiver renewal is denied or
-  # not approved by July 1, 2027, the Department of Social Services must seek a
-  # basic health program or continue Covered Connecticut as a state-funded
-  # program from January 1, 2028. The program continues either way, so the
-  # toggle has no end date.
+  # not approved by July 1, 2027, the Department of Social Services must
+  # either (i) seek a basic health program or (ii) continue Covered
+  # Connecticut as a state-funded program from January 1, 2028. Branch (i)
+  # makes no provision to continue Covered Connecticut, so these sources
+  # establish the program through 2027 only. The toggle has no end date
+  # because the statute sets none, not because the program is certain to
+  # run past 2027.
   0000-01-01: false
   2026-01-01: true
 
