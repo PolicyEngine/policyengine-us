@@ -1,3 +1,10 @@
+## [2.151.1] - 2026-11-20
+
+### Fixed
+
+- Count child support, untaxed maintenance, county relief, veterans' benefits, untaxed retirement distributions, 401(k) and 403(b) deferrals, deducted IRA and self-employed plan contributions, workers' compensation and untaxed disability insurance in Wisconsin homestead credit household income, as Wis. Stat. 71.52(6) requires. S corporation income no longer counts as earned income for the homestead credit's eligibility test; a partner's net earnings from self-employment do.
+
+
 ## [2.151.0] - 2026-11-20
 
 ### Added
