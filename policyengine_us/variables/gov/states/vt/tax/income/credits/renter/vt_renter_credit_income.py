@@ -34,8 +34,12 @@ class vt_renter_credit_income(Variable):
         # net, so a loss offset by other income on the same line adds nothing
         # there.
         "limited_business_loss",
-        # (18)(A) "capital loss": the net capital loss on Form 1040 line 7
-        # (RCC-146 line 13), up to the federal limit.
+        # (18)(A) "capital loss": each loss from a sale or exchange
+        # (26 U.S.C. 1222(2), (4)) included in adjusted gross income, both the
+        # losses allowed against capital gains and the net capital loss up to
+        # the federal limit. RCC-146 line 13 adds back only the net loss on
+        # Form 1040 line 7.
+        "capital_losses_allowed_against_gains",
         "limited_capital_loss",
         # (18)(B); RCC-146 line 12.
         "tax_exempt_interest_income",
