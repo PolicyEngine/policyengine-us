@@ -1,1 +1,0 @@
-Update Colorado Premium Assistance to the 2027 amounts in amended Regulation 4-2-78: $70 a month for the first member and $25 for each additional member (were $80 and $29). Keep the program running in 2028 and later at the 2027 amounts, since SB26-178 and the regulation apply to 2027 and each year thereafter and no source sets different amounts.
