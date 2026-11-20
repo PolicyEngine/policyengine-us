@@ -92,9 +92,9 @@ def create_aca_ptc_700_fpl_cliff_reform(parameters, period, bypass: bool = False
     p = parameters.gov.contrib.aca.ptc_700_fpl_cliff
     current_period = period_(period)
 
-    # Check if reform is active within a 5-year lookahead window
+    # Check if reform is active within the lookahead window
     reform_active = False
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

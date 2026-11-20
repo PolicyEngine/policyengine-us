@@ -176,7 +176,7 @@ def create_watca_reform(parameters, period, bypass: bool = False):
     current_period = period_(period)
     reform_active = False
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if parameter(current_period).in_effect:
             reform_active = True
             break

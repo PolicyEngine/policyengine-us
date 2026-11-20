@@ -107,7 +107,7 @@ def create_ut_fully_refundable_eitc_reform(parameters, period, bypass: bool = Fa
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

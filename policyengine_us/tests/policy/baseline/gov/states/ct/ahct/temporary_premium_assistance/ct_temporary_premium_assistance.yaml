@@ -1,0 +1,588 @@
+# Connecticut Temporary Premium Assistance (TPA) amount:
+#   enhanced credit E = max(0, annual benchmark - p_enhanced x income), where
+#     p_enhanced is the 2021-2025 table of 26 U.S.C. 36B(b)(3)(A)(iii) read at
+#     the truncated aca_magi_fraction;
+#   TPA = rate x max(0, E - aca_ptc), rate 1 at 100-200% FPL (outside Covered
+#     Connecticut) and 0.5 above 400% up to 500% FPL.
+# Income is an exact percentage of the real guideline for the coverage year
+# (aca_fpg, derived): $15,960 for one person and $21,640 for two in 2027 (the
+# 2026 guideline), $15,650 for one person in 2026 (the 2025 guideline). The
+# current federal credit is supplied; each value is shown with its 2026 or
+# 2027 applicable percentage.
+
+- name: T1, 2027, 190% FPL, full replacement of the lost enhanced credit.
+  # Income 1.9 x 15,960 = 30,324. p_enhanced = 0 + 0.8 x 2% = 1.6%.
+  # E = 7,200 - 0.016 x 30,324 = 6,714.816.
+  # aca_ptc = 7,200 - 6.284% x 30,324 = 5,294.44 (2027 p = 4.30% + 0.8 x 2.48%).
+  # TPA = 6,714.816 - 5,294.44 = 1,420.376. 190% > 175%, so no Covered CT.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 7_200
+        aca_ptc: 5_294.44
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_fpg: 15_960
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.016
+    ct_temporary_premium_assistance_enhanced_ptc: 6_714.82
+    ct_covered_connecticut: 0
+    ct_temporary_premium_assistance_eligible: true
+    ct_temporary_premium_assistance: 1_420.38
+
+- name: T2, 2027, exactly 200% FPL is the top of the full replacement band.
+  # Income 2 x 15,960 = 31,920. p_enhanced = 2%: E = 7,200 - 638.40 = 6,561.60.
+  # aca_ptc = 7,200 - 6.78% x 31,920 = 5,035.82. TPA = 1,525.78.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_920
+        slcsp: 7_200
+        aca_ptc: 5_035.82
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 1_525.78
+
+- name: T3, 2027, 205% FPL is between the bands.
+  # Income 2.05 x 15,960 = 32,718: above 200% and not above 400%.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 32_718
+        slcsp: 7_200
+        aca_ptc: 4_800
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T4, 2027, 150% FPL is Covered Connecticut territory, so no TPA.
+  # Income 1.5 x 15,960 = 23,940, at or below 175%: Covered CT pays
+  # 7,200 - 6,170.58 = 1,029.42 (aca_ptc = 7,200 - 4.30% x 23,940), and its
+  # enrollees cannot receive TPA.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_940
+        slcsp: 7_200
+        aca_ptc: 6_170.58
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 1_029.42
+    ct_temporary_premium_assistance_eligible: false
+    ct_temporary_premium_assistance: 0
+
+- name: T5, 2027, exactly 400% FPL is below the partial replacement band.
+  # Income 4 x 15,960 = 63,840. The band starts above 400%.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T6, 2027, 405% FPL, half of the enhanced credit.
+  # Income 4.05 x 15,960 = 64,638. p_enhanced = 8.5% (no cap above 400%).
+  # E = 14,000 - 0.085 x 64,638 = 8,505.77. aca_ptc = 0 above 400%.
+  # TPA = 0.5 x 8,505.77 = 4,252.885.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 64_638
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    is_aca_ptc_eligible: false
+    ct_temporary_premium_assistance_enhanced_contribution_percentage: 0.085
+    ct_temporary_premium_assistance_enhanced_ptc: 8_505.77
+    ct_temporary_premium_assistance: 4_252.89
+
+- name: T7, 2027, exactly 500% FPL is the top of the partial replacement band.
+  # Income 5 x 15,960 = 79,800. E = 14,000 - 6,783 = 7,217. TPA = 3,608.50.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 79_800
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 3_608.5
+
+- name: T8, 2027, 505% FPL is above the partial replacement band.
+  # Income 5.05 x 15,960 = 80,598.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 80_598
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T9, 2027, 450% FPL with a cheap benchmark has no enhanced credit to replace.
+  # Income 4.5 x 15,960 = 71,820. E = max(0, 5,000 - 6,104.70) = 0.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 71_820
+        slcsp: 5_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+    ct_temporary_premium_assistance_enhanced_ptc: 0
+    ct_temporary_premium_assistance: 0
+
+- name: T10, 2027, 190% FPL with a benchmark below the current required contribution.
+  # E = 1,500 - 485.184 = 1,014.816; the current credit is 0
+  # (1,500 < 6.284% x 30,324 = 1,905.56), so TPA is the whole enhanced credit.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 1_500
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 1_014.82
+
+- name: T11, 2027, a couple at 190% FPL.
+  # Two-person guideline 15,960 + 5,680 = 21,640; income 1.9 x 21,640 = 41,116.
+  # E = 14,400 - 0.016 x 41,116 = 13,742.144.
+  # aca_ptc = 14,400 - 6.284% x 41,116 = 11,816.27. TPA = 1,925.874.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 41_116
+        slcsp: 14_400
+        aca_ptc: 11_816.27
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    aca_fpg: 21_640
+    ct_temporary_premium_assistance: 1_925.87
+
+- name: T12, 2026, 190% FPL with the 2025 guideline.
+  # Income 1.9 x 15,650 = 29,735. E = 7,200 - 0.016 x 29,735 = 6,724.24.
+  # aca_ptc = 7,200 - 6.118% x 29,735 = 5,380.81 (2026 p = 4.19% + 0.8 x 2.41%).
+  # TPA = 1,343.43.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 29_735
+        slcsp: 7_200
+        aca_ptc: 5_380.81
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_fpg: 15_650
+    ct_temporary_premium_assistance: 1_343.43
+
+- name: T12b, 2026, 450% FPL, half of the enhanced credit in the first year.
+  # Income 4.5 x 15,650 = 70,425. E = 14,000 - 0.085 x 70,425 = 8,013.875.
+  # TPA = 0.5 x 8,013.875 = 4,006.94.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 70_425
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 4_006.94
+
+- name: T13, 2028, the program has ended.
+  # Public Act 26-68, Section 453(e), runs "until December 31, 2027".
+  period: 2028
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 5_294.44
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T13b, 2025, the program has not started.
+  # The enhanced federal credit was still in force; TPA starts in 2026.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 6_714.82
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T14, 2027, 190% FPL without filing a return that claims the federal credit.
+  # Accepting all available advance credit requires filing to reconcile it.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 7_200
+        aca_ptc: 5_294.44
+        files_return_for_aca_ptc: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T15, 2027, 190% FPL with no member eligible for the federal credit.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 7_200
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: T16, 2027, 95% FPL is below the full replacement band.
+  # Income 0.95 x 15,960 = 15,162.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_162
+        slcsp: 7_200
+        aca_ptc: 6_870
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 0
+
+- name: Exactly 100% FPL outside Covered Connecticut gets the full replacement.
+  # aca_fpg 10,000, income 10,000. ct_covered_connecticut_eligible is supplied
+  # false (a stricter Covered CT gate could leave such an enrollee out).
+  # p_enhanced = 0: E = 7,200. aca_ptc = 7,200 - 2.15% x 10,000 = 6,985.
+  # TPA = 215.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 10_000
+        aca_fpg: 10_000
+        slcsp: 7_200
+        aca_ptc: 6_985
+        files_return_for_aca_ptc: true
+        ct_covered_connecticut_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 215
+
+- name: Just above 175% FPL, the first income Covered Connecticut leaves out.
+  # aca_fpg 10,000, income 17,501: exact ratio 1.7501 > 1.75, so no Covered CT.
+  # aca_magi_fraction truncates to 1.75: p_enhanced = 1%, E = 7,200 - 175.01 =
+  # 7,024.99; aca_ptc = 7,200 - 5.54% x 17,501 = 6,230.44. TPA = 794.55.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 17_501
+        aca_fpg: 10_000
+        slcsp: 7_200
+        aca_ptc: 6_230.44
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+    ct_temporary_premium_assistance: 794.55
+
+- name: Just above 400% FPL gets half of the enhanced credit.
+  # aca_fpg 10,000, income 40,001: exact ratio 4.0001 > 4. p_enhanced = 8.5%.
+  # E = 14,000 - 0.085 x 40,001 = 10,599.915. TPA = 5,299.96.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_001
+        aca_fpg: 10_000
+        slcsp: 14_000
+        aca_ptc: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 5_299.96
+
+- name: A current credit above the enhanced credit leaves nothing to replace.
+  # E = 6,714.816 at 190% (as T1), but the supplied aca_ptc is 7,000.
+  # TPA = max(0, 6,714.816 - 7,000) = 0.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 7_200
+        aca_ptc: 7_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+    ct_temporary_premium_assistance: 0
+
+- name: A household outside Connecticut gets no TPA.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_324
+        slcsp: 7_200
+        aca_ptc: 5_294.44
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_temporary_premium_assistance: 0

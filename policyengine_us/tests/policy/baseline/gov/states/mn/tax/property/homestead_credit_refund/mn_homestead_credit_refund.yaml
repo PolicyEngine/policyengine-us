@@ -191,3 +191,31 @@
     # IRA contribution is neither added back nor subtracted, as their wages
     # are not in AGI.
     mn_homestead_credit_refund_household_income: 45_720
+
+- name: Case 9, a retired homeowner's Supplemental Security Income counts in household income.
+  # Minn. Stat. 290A.03, subd. 3(a)(2)(v) counts Supplemental Security
+  # Income; 2025 M1PR instructions, line 4 (PDF page 7).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 12_000
+        ssi: 3_000
+        real_estate_taxes: 2_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 12,000 + 3,000 - 5,200 (age 65 or older) = 9,800.
+    mn_homestead_credit_refund_household_income: 9_800
+    # $8,810 - $10,989 band: 1.4% of income, refund rate 83%, maximum $3,480.
+    # 2,000 - 0.014 x 9,800 = 2,000 - 137.20 = 1,862.80;
+    # round(1,862.80 x 0.83) = round(1,546.12) = 1,546.
+    mn_homestead_credit_refund: 1_546

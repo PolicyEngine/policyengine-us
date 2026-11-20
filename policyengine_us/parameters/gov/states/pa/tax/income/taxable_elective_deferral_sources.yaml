@@ -1,0 +1,20 @@
+description: Pennsylvania taxes these employee elective deferrals as compensation, though federal wages leave them out.
+values:
+  2021-01-01:
+    # An employee's own contributions to an employer retirement plan,
+    # including salary reduction contributions, are not excludable from
+    # Pennsylvania compensation. No input holds 457(b) or Thrift Savings
+    # Plan deferrals, so none is listed.
+    - traditional_401k_contributions
+    - traditional_403b_contributions
+metadata:
+  unit: list
+  period: year
+  label: PA taxable elective deferral sources
+  reference:
+    - title: 2025 Pennsylvania PIT Return Instructions (PA-40 IN), Line 1a, contributions to an employer-sponsored retirement plan are PA-taxable compensation
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=12
+    - title: 61 Pa. Code 101.6(c)(8)(ii)(B), employee contributions to a plan, including by payroll deduction or salary reduction, are not excludable
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+    - title: Pennsylvania Personal Income Tax Guide, Gross Compensation (DSM-12 08-2025), employee contributions to 401(k) and 403(b) plans are taxable
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_grosscompensation.pdf#page=51

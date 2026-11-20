@@ -1,0 +1,233 @@
+# Unit tests for the main Rhode Island Marketplace Affordability Program
+# eligibility rule. A tax unit qualifies when the program is in effect (2027),
+# at least one member is eligible for the federal premium tax credit
+# (R.I. Gen. Laws 42-157.2-4(c)), it files the return the credit requires, and
+# income is below 200% of the poverty line (the last band with a Rhode Island
+# percentage, 2027 RIMAP Final Parameters p.3). is_aca_ptc_eligible,
+# files_return_for_aca_ptc, aca_magi and aca_fpg are supplied directly.
+
+- name: Case 1, 175% with the federal credit and a return qualifies.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: true
+
+- name: Case 2, exactly 150% qualifies.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 23_940
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: true
+
+- name: Case 3, one dollar below 200% qualifies.
+  # 31,919 / 15,960 = 1.9999373 < 2.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 31_919
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: true
+
+- name: Case 4, exactly 200% does not qualify.
+  # The 150-200% band is "less than 200%"; 31,920 / 15,960 = 2.00.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 31_920
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 5, no member eligible for the federal credit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 6, a tax unit that files no return does not qualify.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: false
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 7, one eligible member qualifies a two-person unit.
+  # 37,870 / 21,640 = 1.75.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 38
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        files_return_for_aca_ptc: true
+        aca_magi: 37_870
+        aca_fpg: 21_640
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: true
+
+- name: Case 8, not in effect in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 9, not in effect in 2028, which has no adopted percentages.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 10, outside Rhode Island.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ri_rimap_low_income_eligible: false
+
+- name: Case 11, no poverty guideline gives an infinite ratio, which fails the limit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        files_return_for_aca_ptc: true
+        aca_magi: 27_930
+        aca_fpg: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_low_income_eligible: false
