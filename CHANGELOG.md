@@ -1,3 +1,10 @@
+## [2.148.0] - 2026-11-20
+
+### Added
+
+- Bring back the Slack notice for PRs that change partner API contract tests: with a bot token, a PR's pushes over 24 hours share one thread; with only the webhook, pushes within 24 hours post again only when a new partner file changes.
+
+
 ## [2.147.4] - 2026-11-20
 
 ### Changed
