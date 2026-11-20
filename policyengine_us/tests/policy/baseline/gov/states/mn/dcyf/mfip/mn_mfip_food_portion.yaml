@@ -151,3 +151,104 @@
   output:
     # Food portion for family of 3 in 2016-10-01: $459
     mn_mfip_food_portion: 459
+
+# Combined Manual 0020.09, issue date 10/2026: standards effective October 1, 2026.
+
+- name: September 2026, family of three keeps the October 2025 food standard.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_mfip_food_portion:
+      2026-09: 652
+
+- name: October 2026, family of one.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_mfip_food_portion:
+      2026-10: 254
+
+- name: October 2026, family of three.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_mfip_food_portion:
+      2026-10: 671
+
+- name: January 2027, family of eleven, 1,926 + 188.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 8
+      person4:
+        age: 8
+      person5:
+        age: 8
+      person6:
+        age: 8
+      person7:
+        age: 8
+      person8:
+        age: 8
+      person9:
+        age: 8
+      person10:
+        age: 8
+      person11:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: MN
+  output:
+    mn_mfip_food_portion: 2_114
