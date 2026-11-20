@@ -34,10 +34,10 @@ class ca_liheap_income_limit(Variable):
             rounded_annual / MONTHS_IN_YEAR
             + extra_people * annual_increment / MONTHS_IN_YEAR
         )
-        # This inferred two-stage rounding reproduces all 25 FY2026 and FY2027 rows;
-        # the source does not prescribe the size-12 switch or an extension.
-        rounded_monthly = (
-            np.floor(monthly / p.monthly_rounding_increment)
-            * p.monthly_rounding_increment
-        )
+        # This inferred two-stage rounding reproduces all 25 FY2026 and FY2027
+        # rows; the source does not prescribe the size-12 switch or an extension.
+        # Round the cent count before truncating: in floating point, 10,375.56 /
+        # 0.01 is 1,037,555.999..., which would drop a cent at size 14 in FY2027.
+        cents = np.round(monthly.astype(np.float64) / p.monthly_rounding_increment, 6)
+        rounded_monthly = np.floor(cents) * p.monthly_rounding_increment
         return rounded_monthly * MONTHS_IN_YEAR

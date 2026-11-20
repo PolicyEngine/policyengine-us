@@ -1335,13 +1335,15 @@
       - 145_314.48
 
 # FY2027 table (plan p. 197): monthly ceilings of 3_458.50, 4_522.66, 9_976.50,
-# 10_176.03 and 12_570.39 for sizes 1, 2, 12, 13 and 25, from 60% of the FY2027
-# state median income (133_021 for four). Annual = monthly x 12.
+# 10_176.03, 10_375.56 and 12_570.39 for sizes 1, 2, 12, 13, 14 and 25, from 60%
+# of the FY2027 state median income (133_021 for four). Size 14 is 9_976.50 + 2 x
+# 79_812 x 0.03 / 12 = 10_375.56, where unguarded floating-point truncation would
+# give 10_375.55. Annual = monthly x 12.
 - name: Case 2, FY2027 published income limits on each side of the size-12 switch.
   period: 2027
   absolute_error_margin: 0.01
   input:
-    state_code: [CA, CA, CA, CA, CA]
-    ca_liheap_household_size: [1, 2, 12, 13, 25]
+    state_code: [CA, CA, CA, CA, CA, CA]
+    ca_liheap_household_size: [1, 2, 12, 13, 14, 25]
   output:
-    ca_liheap_income_limit: [41_502, 54_271.92, 119_718, 122_112.36, 150_844.68]
+    ca_liheap_income_limit: [41_502, 54_271.92, 119_718, 122_112.36, 124_506.72, 150_844.68]
