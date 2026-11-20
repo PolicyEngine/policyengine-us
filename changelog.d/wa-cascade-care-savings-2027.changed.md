@@ -1,1 +1,0 @@
-Update Washington Cascade Care Savings to its 2027 amounts: $35 a month per member with federal subsidies up to 200% of the federal poverty line, $20 above it, and $185 without federal subsidies. The income limit and the new 200% split now read the same exact income-to-poverty-line ratio.
