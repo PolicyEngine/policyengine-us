@@ -5,7 +5,7 @@ The YAML tests for these reforms apply each reform via the ``bypass=True``
 module-level object (e.g. ``hi_dependent_exemption_reform``), so the
 non-bypass code path inside every ``create_<st>_..._reform_fn`` is never run by
 those tests. That path inspects the ``in_effect`` contrib parameter over a
-five-year window and returns either a ``Reform`` subclass (when the reform is
+lookahead window and returns either a ``Reform`` subclass (when the reform is
 in effect) or ``None`` (the default no-op).
 
 This module covers both outcomes for all eleven states in the PR, mirroring how

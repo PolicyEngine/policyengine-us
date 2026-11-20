@@ -1,0 +1,531 @@
+# Puente Health members: lawfully present non-citizens who lost the federal
+# premium tax credit under Public Law 119-21 Section 71301 (status, from 2027)
+# or Section 71302 (the repealed below-poverty rule, from 2026), and who
+# otherwise meet the credit's conditions. aca_fpg is supplied so the income
+# tests don't depend on the uprated guideline: the 2025 one-person guideline
+# ($15,650) for 2026 and the 2026 one ($15,960) for 2027.
+
+- name: Case 1, 2027 TPS holder at 250% FPL is a member (Section 71301).
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+    nm_puente_health_member_eligible: true
+
+- name: Case 2, 2027 statuses Section 71301 bars from the credit are members; the rest are not.
+  # 250% FPL. Refugee, asylee, withholding of deportation, parole of a year or
+  # more and TPS are lawfully present but no longer credit-eligible. A citizen,
+  # LPR, Cuban/Haitian entrant and conditional entrant keep the credit in the
+  # model's federal list, and DACA and undocumented status cannot buy a
+  # qualified health plan.
+  period: 2027
+  input:
+    people:
+      p1:
+        age: 40
+        immigration_status: REFUGEE
+      p2:
+        age: 40
+        immigration_status: ASYLEE
+      p3:
+        age: 40
+        immigration_status: DEPORTATION_WITHHELD
+      p4:
+        age: 40
+        immigration_status: PAROLED_ONE_YEAR
+      p5:
+        age: 40
+        immigration_status: TPS
+      p6:
+        age: 40
+        immigration_status: CITIZEN
+      p7:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      p8:
+        age: 40
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+      p9:
+        age: 40
+        immigration_status: CONDITIONAL_ENTRANT
+      p10:
+        age: 40
+        immigration_status: DACA
+      p11:
+        age: 40
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      t1:
+        members: [p1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t2:
+        members: [p2]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t3:
+        members: [p3]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t4:
+        members: [p4]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t5:
+        members: [p5]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t6:
+        members: [p6]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t7:
+        members: [p7]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t8:
+        members: [p8]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t9:
+        members: [p9]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t10:
+        members: [p10]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+      t11:
+        members: [p11]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    spm_units:
+      s1:
+        members: [p1]
+      s2:
+        members: [p2]
+      s3:
+        members: [p3]
+      s4:
+        members: [p4]
+      s5:
+        members: [p5]
+      s6:
+        members: [p6]
+      s7:
+        members: [p7]
+      s8:
+        members: [p8]
+      s9:
+        members: [p9]
+      s10:
+        members: [p10]
+      s11:
+        members: [p11]
+    marital_units:
+      m1:
+        members: [p1]
+      m2:
+        members: [p2]
+      m3:
+        members: [p3]
+      m4:
+        members: [p4]
+      m5:
+        members: [p5]
+      m6:
+        members: [p6]
+      m7:
+        members: [p7]
+      m8:
+        members: [p8]
+      m9:
+        members: [p9]
+      m10:
+        members: [p10]
+      m11:
+        members: [p11]
+    families:
+      f1:
+        members: [p1]
+      f2:
+        members: [p2]
+      f3:
+        members: [p3]
+      f4:
+        members: [p4]
+      f5:
+        members: [p5]
+      f6:
+        members: [p6]
+      f7:
+        members: [p7]
+      f8:
+        members: [p8]
+      f9:
+        members: [p9]
+      f10:
+        members: [p10]
+      f11:
+        members: [p11]
+    households:
+      h1:
+        members: [p1]
+        state_code: NM
+      h2:
+        members: [p2]
+        state_code: NM
+      h3:
+        members: [p3]
+        state_code: NM
+      h4:
+        members: [p4]
+        state_code: NM
+      h5:
+        members: [p5]
+        state_code: NM
+      h6:
+        members: [p6]
+        state_code: NM
+      h7:
+        members: [p7]
+        state_code: NM
+      h8:
+        members: [p8]
+        state_code: NM
+      h9:
+        members: [p9]
+        state_code: NM
+      h10:
+        members: [p10]
+        state_code: NM
+      h11:
+        members: [p11]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible:
+      [true, true, true, true, true, false, false, false, false, false, false]
+
+- name: Case 3, 2027 refugee at 80% FPL is a member (no Medicaid status from October 2026).
+  # 12,768 / 15,960 = 0.80. Section 71109 limits Medicaid to citizens, LPRs and
+  # Cuban/Haitian entrants from October 1, 2026, so a refugee adult has no
+  # Medicaid to bar Puente Health.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: REFUGEE
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_768
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_medicaid_eligible: false
+    nm_puente_health_member_eligible: true
+
+- name: Case 4, 2026 LPR in the five-year bar at 80% FPL is a member (Section 71302).
+  # 12,520 / 15,650 = 0.80. The LPR's status allows the credit, but Medicaid
+  # bars them for five years, and 2026 ends the below-poverty rule that gave
+  # them the credit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_520
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
+    aca_ptc_below_fpl_immigration_exception: false
+    nm_puente_health_member_eligible: true
+
+- name: Case 5, 2026 LPR in the five-year bar just under 100% FPL is a member.
+  # 15,649 / 15,650 = 0.99994, under the poverty line.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_649
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: true
+
+- name: Case 6, 2026 LPR in the five-year bar at exactly 100% FPL is not a member.
+  # 15,650 / 15,650 = 1.00. At the poverty line the federal credit's own income
+  # test is met, so Section 71302 takes nothing away.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_650
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: false
+
+- name: Case 7, 2026 LPR past the five-year bar at 80% FPL is not a member (Medicaid instead).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_520
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_medicaid_immigration_status_eligible: true
+    nm_puente_health_member_eligible: false
+
+- name: Case 8, 2025 LPR in the five-year bar at 80% FPL is not a member (below-poverty rule still in effect).
+  # 12,048 / 15,060 (the 2024 one-person guideline) = 0.80.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_048
+        aca_fpg: 15_060
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    nm_puente_health_member_eligible: false
+
+- name: Case 9, 2027 LPR in the five-year bar at 80% FPL is a member (Section 71302 continues).
+  # 12,768 / 15,960 = 0.80.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_768
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: true
+
+- name: Case 10, 2027 LPR at 250% FPL keeps the federal credit and is not a member.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: false
+
+- name: Case 11, 2027 TPS holder offered employer coverage is not a member.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_aca_eshi_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: false
+
+- name: Case 12, 2027 TPS holder filing separately is not a member.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: false
+
+- name: Case 13, 2027 TPS holder another taxpayer can claim is not a member.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: TPS
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_aca_tax_family_member: false
+    nm_puente_health_member_eligible: false
+
+- name: Case 14, 2027 TPS holder outside New Mexico is not a member.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    nm_puente_health_member_eligible: false
+
+- name: Case 15, 2027 joint return of an LPR and a TPS holder makes only the TPS spouse a member.
+  # 54,100 / 21,640 (the 2026 two-person guideline) = 2.50.
+  period: 2027
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        immigration_status: TPS
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 54_100
+        aca_fpg: 21_640
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: [false, true]
+
+- name: Case 16, 2027 TPS holder the model counts as federally credit-eligible is not a member.
+  # 39,900 / 15,960 = 2.50. Supplying pays_aca_premium makes the person
+  # eligible for the federal credit despite the TPS status, so Puente Health,
+  # which replaces a lost credit, does not also apply.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+    is_aca_ptc_eligible: true
+    nm_puente_health_member_eligible: false
+    nm_puente_health_eligible: false

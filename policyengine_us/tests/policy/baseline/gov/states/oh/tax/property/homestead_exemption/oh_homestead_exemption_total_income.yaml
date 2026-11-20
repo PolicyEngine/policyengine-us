@@ -1,4 +1,13 @@
-- name: Case 1, prior-year Ohio modified adjusted gross income controls total income.
+# R.C. 323.151(C): total income is the owner's and spouse's modified adjusted
+# gross income "for the year preceding the year in which application for a
+# reduction in taxes is made".
+# https://codes.ohio.gov/assets/laws/revised-code/authenticated/3/323/323.151/10-27-2023/323.151-10-27-2023.pdf#page=1
+# When total income is not provided, it defaults to the current year's Ohio
+# modified adjusted gross income as a proxy for the prior-year income. A known
+# prior-year figure goes in as oh_homestead_exemption_total_income, as in
+# Case 8 of oh_homestead_exemption_eligible.yaml.
+
+- name: Case 1, total income defaults to the current year's Ohio modified adjusted gross income as a proxy for the prior year's.
   period: 2026
   input:
     people:
@@ -17,9 +26,10 @@
           2025: OH
           2026: OH
   output:
-    oh_homestead_exemption_total_income: 35_000
+    # 2026 Ohio modified AGI: 99,000. The 2025 value (35,000) is not read.
+    oh_homestead_exemption_total_income: 99_000
 
-- name: Case 2, current-year Ohio modified adjusted gross income is ignored.
+- name: Case 2, the proxy default reads the current year's Ohio modified adjusted gross income even when the prior year's is lower.
   period: 2026
   input:
     people:
@@ -38,4 +48,31 @@
           2025: OH
           2026: OH
   output:
-    oh_homestead_exemption_total_income: 39_000
+    # 2026 Ohio modified AGI: 60,000, over the 41,000 limit. The 2025 value
+    # (39,000, under the limit) is not read.
+    oh_homestead_exemption_total_income: 60_000
+
+- name: Case 3, with one year of inputs the income limit still binds.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Ohio modified AGI: 100,000 of wages, no additions or deductions.
+    oh_modified_agi: 100_000
+    # Same-year Ohio modified AGI: 100,000. Reading the prior year gave 0
+    # here, because 2025 has no inputs.
+    oh_homestead_exemption_total_income: 100_000
+    # 100,000 > 41,000 (2026 income limit).
+    oh_homestead_exemption_eligible: false

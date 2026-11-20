@@ -1,0 +1,33 @@
+# Sources for the expected values in this file:
+# - FFY 2026 fact sheet, monthly income limits on page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# - FY2026 LIHEAP Handbook, section 2.3.A (page 7):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7
+# - 42 U.S.C. 8624(b)(2)(B), the 110% poverty floor:
+#   https://www.law.cornell.edu/uscode/text/42/8624
+
+# One-person households. The limit is $4,167 a month (fact sheet, page 2);
+# 4,167 * 12 = 50_004.
+# - 50_004 / 12 = 4,167 does not exceed 4,167: income eligible.
+# - 50_016 / 12 = 4,168 exceeds 4,167: not income eligible.
+# The test needs no heating cost, which the income test does not read.
+- name: Case 1, income at the 60% state median income limit passes and one dollar a month above fails.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    nj_liheap_countable_income: [50_004, 50_016]
+  output:
+    nj_liheap_income_eligible: [true, false]
+
+# FY2026 uses the 2025 guidelines: 15,650 + 5,500 * 31 = 186,150 for 32 people,
+# and 110% is 204,765, above the 202,092 annualized 60% SMI limit.
+# - 204,764.99 is below the floor: income eligible.
+# - 204,765 is not below the floor and exceeds the limit: not income eligible.
+- name: Case 2, the federal 110% poverty floor applies where it exceeds the state limit.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    nj_liheap_household_size: [32, 32]
+    nj_liheap_countable_income: [204_764.99, 204_765]
+  output:
+    nj_liheap_income_eligible: [true, false]
