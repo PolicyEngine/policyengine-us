@@ -57,9 +57,11 @@ values:
     # via taxable_retirement_distributions; the tax-exempt portion (Roth
     # distributions) is added here per § 15-30-2337(9)(a)(i) and Schedule
     # 2EC lines 4 and 5. (9)(b) reduces income by the taxpayer's basis, but
-    # the inputs are whole distributions, basis included, and can't separate
-    # it, so they count in full (issue #10802 raises the same point for
-    # tax_exempt_pension_income).
+    # no input holds basis: the inputs are whole distributions, basis
+    # included. So tax_exempt_401k_distributions,
+    # tax_exempt_403b_distributions and tax_exempt_sep_distributions count
+    # in full, as Roth IRA distributions do (issue #11198; issue #10802
+    # raises the same point for tax_exempt_pension_income).
     - tax_exempt_retirement_distributions
     # AGI already includes taxable pension income; only the tax-exempt
     # portion is added back here per § 15-30-2337(9)(a)(i).
