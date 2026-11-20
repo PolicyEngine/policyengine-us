@@ -314,6 +314,33 @@
     ut_homeowner_renter_relief_nontaxable_income: 10_000
     ut_homeowner_renter_relief_household_income: 10_000
 
+- name: Case 14b, under a reform that takes alimony out of federal gross income, all alimony is support money received.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without taxable_alimony_income.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, salt_refund_income, military_retirement_income]
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        divorce_year: 2010
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 0
+    # Federal AGI no longer holds the pre-2019 alimony, so all of it is
+    # excluded from adjusted gross income.
+    ut_homeowner_renter_relief_nontaxable_alimony: 10_000
+    ut_homeowner_renter_relief_household_income: 10_000
+
 - name: Case 15, SSI is a payment received under the Social Security Act.
   period: 2025
   absolute_error_margin: 0.01
@@ -455,3 +482,29 @@
     ut_homeowner_renter_relief_loss_carryforward: 4_000
     # 10,000 + 4,000 = 14,000.
     ut_homeowner_renter_relief_household_income: 14_000
+
+- name: Case 19b, under a reform that takes capital gains out of federal gross income, no carryover reaches AGI to add back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without capital_gains.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income, military_retirement_income]
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        long_term_capital_gains: 0
+        long_term_capital_loss_carryover: 4_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    ut_homeowner_renter_relief_loss_carryforward: 0
+    ut_homeowner_renter_relief_household_income: 10_000
