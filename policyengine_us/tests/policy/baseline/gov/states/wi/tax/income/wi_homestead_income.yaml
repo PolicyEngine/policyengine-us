@@ -741,3 +741,308 @@
     # 9,000 SSI + 3,000 Caretaker Supplement - 500 dependent exemption. The
     # child's own 1,000 supplement stays out of household income.
     wi_homestead_income: 11_500
+
+# Wis. Stat. 71.52(6): "Income" means the sum of Wisconsin adjusted gross
+# income and the listed amounts "to the extent not included in Wisconsin
+# adjusted gross income". Page numbers are PDF pages of the 2025 Schedule H
+# instructions:
+# https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf
+
+- name: Case 20, court-ordered child support is household income (line 9i).
+  # 71.52(6): "maintenance payments ..., support money". Line 9i (page 14):
+  # "Fill in the total amount of any court ordered support payments received
+  # in 2025, including child support and family maintenance."
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        child_support_received: 4_800
+        ssi: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    # Line 7: 15,000. Line 9i: 4,800. Line 12b: 1 dependent x 500.
+    # 15,000 + 4,800 - 500 = 19,300.
+    wi_homestead_income: 19_300
+
+- name: Case 21, child support recorded on the child is the claimant's household income (line 9i).
+  # The claimant receives the support for the child, so it counts even when
+  # recorded on the child. The child's own Social Security and SSI would not
+  # (line 9b, page 13).
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        ssi: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        child_support_received: 4_800
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    # Same as Case 20: 15,000 + 4,800 - 500 = 19,300.
+    wi_homestead_income: 19_300
+
+- name: Case 22, maintenance that is not taxable is household income (line 9i).
+  # Line 9i note (page 14): "Even though these payments are no longer
+  # taxable, they must be included in household income on line 9i".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 10_000
+    alimony_income: 6_000
+    divorce_year: 2020
+  output:
+    taxable_alimony_income: 0
+    wi_homestead_nontaxable_alimony: 6_000
+    # 10,000 + 6,000 = 16,000.
+    wi_homestead_income: 16_000
+
+- name: Case 23, taxable maintenance counts once.
+  # A divorce instrument executed before 2019: the maintenance is in
+  # adjusted gross income (line 7), and line 9i leaves out "amounts included
+  # elsewhere".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 10_000
+    alimony_income: 6_000
+    divorce_year: 2015
+  output:
+    taxable_alimony_income: 6_000
+    wi_homestead_nontaxable_alimony: 0
+    adjusted_gross_income: 16_000
+    # 16,000 + 0 = 16,000.
+    wi_homestead_income: 16_000
+
+- name: Case 23b, under a reform that takes alimony out of federal gross income, all maintenance counts on line 9i.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    # The 2025 federal gross income sources without taxable_alimony_income.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, salt_refund_income, military_retirement_income]
+    age: 50
+    state_code: WI
+    employment_income: 10_000
+    alimony_income: 6_000
+    divorce_year: 2015
+  output:
+    wi_homestead_nontaxable_alimony: 6_000
+    adjusted_gross_income: 10_000
+    # 10,000 + 6,000 = 16,000.
+    wi_homestead_income: 16_000
+
+- name: Case 24, workers' compensation is household income (line 11b).
+  # 71.52(6): "worker's compensation, unemployment insurance, the gross
+  # amount of 'loss of time' insurance". Line 11b (page 14): "Workers'
+  # compensation, income continuation, and loss of time insurance".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 12_000
+    workers_compensation: 5_000
+  output:
+    # 12,000 + 5,000 = 17,000.
+    wi_homestead_income: 17_000
+
+- name: Case 25, the gross amount of disability (loss of time) insurance counts once (line 11b).
+  # Line 11b (page 14): "loss of time insurance (for example, sick pay)".
+  # 3,000 of benefits, 1,000 of them from a plan the claimant paid for.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 12_000
+    disability_benefits: 3_000
+    tax_exempt_disability_benefits: 1_000
+  output:
+    # The taxable 2,000 is in adjusted gross income: 12,000 + 2,000.
+    adjusted_gross_income: 14_000
+    # 14,000 + 1,000 nontaxable = 15,000, the gross 3,000 counted once.
+    wi_homestead_income: 15_000
+
+- name: Case 26, veterans' benefits are household income (lines 9d and 9h).
+  # 71.52(6): "the gross amount of any pension or annuity (including ...
+  # veterans disability pensions)" and "compensation and other cash benefits
+  # received from the United States for past or present service in the armed
+  # forces". Line 9d (page 13): "Include veterans' pensions, disability
+  # payments".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: WI
+    social_security_retirement: 12_000
+    veterans_benefits: 6_000
+    ssi: 0
+  output:
+    # No Social Security is taxable: 6,000 is under the 25,000 base.
+    # Line 9b: 12,000. Line 9d: 6,000. 12,000 + 6,000 = 18,000.
+    wi_homestead_income: 18_000
+
+- name: Case 27, a deductible IRA contribution is added back (line 9f).
+  # 71.52(6): "contributions to individual retirement accounts under section
+  # 219 of the internal revenue code ... deducted in determining Wisconsin
+  # adjusted gross income shall be added to 'income'". Line 9f (page 13).
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    traditional_ira_contributions: 2_000
+  output:
+    traditional_ira_deduction: 2_000
+    adjusted_gross_income: 18_000
+    # Line 7: 18,000. Line 9f: 2,000. 18,000 + 2,000 = 20,000.
+    wi_homestead_income: 20_000
+
+- name: Case 28, a deductible self-employed SEP contribution is added back (line 9f).
+  # 71.52(6): "contributions to Keogh plans ... deducted in determining
+  # Wisconsin adjusted gross income shall be added to 'income'". Line 9f
+  # (page 13): "Contributions to IRA, self-employed SEP, SIMPLE, and
+  # qualified plans".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    self_employment_income: 30_000
+    self_employed_pension_contributions_desired: 3_000
+  output:
+    # Net earnings: 30,000 x 0.9235 = 27,705. Self-employment tax:
+    # 27,705 x 15.3% = 4,238.865; half is deductible, 2,119.4325. The 3,000
+    # is under the plan limit, so it is deducted in full.
+    self_employed_pension_contribution_ald: 3_000
+    # 30,000 - 2,119.4325 - 3,000 = 24,880.5675.
+    adjusted_gross_income: 24_880.5675
+    # Line 7: 24,880.5675. Line 9f: 3,000. Total 27,880.5675.
+    wi_homestead_income: 27_880.5675
+
+- name: Case 29, a 401(k) deferral is added back (line 9e).
+  # 71.52(6): "nontaxable deferred compensation". Line 9e (page 13): "Fill
+  # in contributions to deferred compensation plans that were excluded from
+  # income on the income tax return".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    traditional_401k_contributions: 3_000
+  output:
+    adjusted_gross_income: 17_000
+    # Line 7: 17,000. Line 9e: 3,000. 17,000 + 3,000 = 20,000.
+    wi_homestead_income: 20_000
+
+- name: Case 30, a 403(b) deferral is added back (line 9e).
+  # Line 9e (page 13): excluded deferred compensation is "generally reported
+  # in box 12 of the wage and tax statement, Form W-2, preceded by the
+  # prefix D, E, F, G, H, S, or Y". Code E is a 403(b) deferral.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    traditional_403b_contributions: 3_000
+  output:
+    adjusted_gross_income: 17_000
+    # Line 7: 17,000. Line 9e: 3,000. 17,000 + 3,000 = 20,000.
+    wi_homestead_income: 20_000
+
+- name: Case 31, a nontaxable IRA distribution is household income (line 9d).
+  # Line 9d (page 13): "Include ... nontaxable IRA, SEP, SIMPLE, and
+  # qualified plan distributions. Both taxable and nontaxable amounts must be
+  # included in household income."
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 62
+    state_code: WI
+    employment_income: 10_000
+    tax_exempt_ira_distributions: 3_000
+  output:
+    # 10,000 + 3,000 = 13,000.
+    wi_homestead_income: 13_000
+
+- name: Case 32, county relief is household income (line 9j).
+  # 71.52(6): "cash public assistance" and "cash benefits paid by counties
+  # under s. 59.53 (21)". Line 9j (page 14): "Wisconsin Works (W2), county
+  # relief, kinship care, and other cash public assistance payments".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 45
+    state_code: WI
+    employment_income: 6_000
+    general_assistance: 2_400
+  output:
+    # 6,000 + 2,400 = 8,400.
+    wi_homestead_income: 8_400
+
+- name: Case 33, a dependent's own workers' compensation is not household income.
+  # The household is the claimant and spouse (71.52(4)), so a dependent
+  # student's own benefits stay out; the $500 deduction still applies.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 15_000
+        ssi: 0
+      student:
+        age: 19
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        workers_compensation: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    spm_units:
+      spm_unit:
+        members: [head, student]
+        tanf: 0
+    households:
+      household:
+        members: [head, student]
+        state_code: WI
+  output:
+    # 15,000 - 500 = 14,500. The student's 2,000 is left out.
+    wi_homestead_income: 14_500

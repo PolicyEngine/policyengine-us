@@ -1,0 +1,460 @@
+# Eligibility for Connecticut Temporary Premium Assistance, decided on the
+# exact ratio of aca_magi to aca_fpg:
+#   full replacement: 1 <= ratio <= 2, a member eligible for the federal
+#     credit, not Covered CT eligible, and filing a return for the credit;
+#   partial replacement: 4 < ratio <= 5, a member who pays a Marketplace
+#     premium and is in the tax family, and not filing separately;
+#   2026 and 2027 only.
+# aca_fpg is pinned to $10,000 so each edge is a round income.
+
+- name: Exactly 100% FPL is in the full replacement band.
+  # Covered CT eligibility is supplied false to isolate the income edge.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 10_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+        ct_covered_connecticut_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Just below 100% FPL is below the full replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 9_999
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+        ct_covered_connecticut_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Exactly 175% FPL is Covered Connecticut eligible, so not eligible for TPA.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 17_500
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Just above 175% FPL leaves Covered Connecticut and qualifies for TPA.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 17_501
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Exactly 200% FPL is in the full replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Just above 200% FPL is out, although aca_magi_fraction truncates to 2.00.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_001
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 2
+    ct_temporary_premium_assistance_eligible: false
+
+- name: 300% FPL is between the bands.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Exactly 400% FPL is below the partial replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Just above 400% FPL is in the partial replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_001
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Exactly 500% FPL is in the partial replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 50_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Just above 500% FPL is above the partial replacement band.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 50_001
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Partial replacement needs a member who pays a Marketplace premium.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Partial replacement excludes a separate return.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Partial replacement has no filing condition, since no federal credit exists above 400% FPL.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: true
+
+- name: Full replacement requires filing a return that claims the federal credit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: Full replacement requires a member eligible for the federal credit.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: 2026, the first plan year, both bands qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        pays_aca_premium: true
+      person2:
+        age: 60
+        is_aca_ptc_eligible: false
+        pays_aca_premium: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+      tax_unit2:
+        members: [person2]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: [true, true]
+
+- name: 2025, before the program, neither band qualifies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        pays_aca_premium: true
+      person2:
+        age: 60
+        is_aca_ptc_eligible: false
+        pays_aca_premium: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+      tax_unit2:
+        members: [person2]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: [false, false]
+
+- name: 2028, after the program, neither band qualifies.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        pays_aca_premium: true
+      person2:
+        age: 60
+        is_aca_ptc_eligible: false
+        pays_aca_premium: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+      tax_unit2:
+        members: [person2]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: [false, false]
+
+- name: A zero guideline gives an ineligible tax unit, not a division by zero.
+  # aca_fpg 0: the ratio is infinite, which is above both bands.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_fpg: 0
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_eligible: false
+
+- name: A household outside Connecticut is not eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        files_return_for_aca_ptc: true
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_temporary_premium_assistance_eligible: false

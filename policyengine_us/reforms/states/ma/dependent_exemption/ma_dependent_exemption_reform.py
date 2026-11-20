@@ -35,7 +35,7 @@ def create_ma_dependent_exemption_reform() -> Reform:
             # baseline per-dependent exemption. Only apply the reform
             # pricing in periods where the reform is in effect — the reform
             # is installed for the whole simulation whenever it activates in
-            # any of the next five years, so this per-period gate prevents
+            # any year of the lookahead window, so this per-period gate prevents
             # the reform amount leaking into pre-activation years.
             if pc.in_effect:
                 if pc.age_limit.in_effect:
@@ -84,7 +84,7 @@ def create_ma_dependent_exemption_reform_fn(parameters, period, bypass: bool = F
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

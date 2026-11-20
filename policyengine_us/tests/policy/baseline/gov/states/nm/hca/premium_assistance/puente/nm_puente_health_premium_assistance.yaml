@@ -1,0 +1,506 @@
+# Puente Health premium assistance:
+#   amount = max(0, benchmark * gross_up - Table 1 share * aca_magi),
+#   capped at the selected plan premium (the $0 net premium floor).
+# gross_up is 1.1 below the base program's limit: up to 200% FPL in PY2026
+# (every Puente enrollee, all under 100%) and under 200% in PY2027. Table 1:
+# 0% below 200%; 0->2% at 200-250%; 2->5% at 250-300%; 5->8.5% at 300-400%.
+# The person's annual benchmark quote is supplied (slcsp_age_curve_amount_person
+# 9,000), and aca_fpg is supplied: $15,650 for 2026 and $15,960 for 2027.
+# Membership and eligibility are derived from immigration status and income.
+# The default plan is a silver plan at the benchmark (ratio 1.0), so the cap is
+# the benchmark and hides the 10% increase; cases that show the increase select
+# a silver plan at 1.1 times the benchmark.
+
+- name: Case 1, 2026 LPR in the five-year bar at 80% FPL gets the whole benchmark.
+  # 12,520 / 15,650 = 0.80. 9,000 * 1.1 - 0 = 9,900, capped at the 9,000 plan.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_520
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true
+    nm_puente_health_benchmark_premium: 9_000
+    nm_puente_health_plan_premium: 9_000
+    nm_puente_health_premium_assistance: 9_000
+
+- name: Case 2, 2026 same household with a silver plan at 1.1 times the benchmark gets 9,900.
+  # Addendum 2: the premium used is "10% above the price of the SLCSP", with a 0%
+  # contribution under 100% FPL. Plan premium 9,900, so the cap doesn't bind.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_520
+        aca_fpg: 15_650
+        selected_marketplace_plan_benchmark_ratio: 1.1
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_plan_premium: 9_900
+    nm_puente_health_premium_assistance: 9_900
+
+- name: Case 3, 2026 LPR in the five-year bar at 120% FPL gets nothing (federally eligible).
+  # 18,780 / 15,650 = 1.20: the federal credit and base New Mexico Premium
+  # Assistance apply instead.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 18_780
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 4, 2027 refugee at 80% FPL gets the whole benchmark.
+  # 12,768 / 15,960 = 0.80. 9,000 * 1.1 = 9,900, capped at 9,000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: REFUGEE
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_768
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 9_000
+
+- name: Case 5, 2027 TPS holder at 140% FPL gets the whole benchmark.
+  # 22,344 / 15,960 = 1.40. Table 1 share 0%; 9,900 capped at 9,000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+    nm_puente_health_premium_assistance: 9_000
+
+- name: Case 6, 2027 asylee at 250% FPL pays 2% of income.
+  # 39,900 / 15,960 = 2.50: Table 1 share 2%, no increase.
+  # 9,000 - 0.02 * 39,900 = 9,000 - 798 = 8,202.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: ASYLEE
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.02
+    nm_puente_health_premium_assistance: 8_202
+
+- name: Case 7, 2027 TPS holder at 350% FPL pays 6.75% of income.
+  # 55,860 / 15,960 = 3.50: Table 1 share 5% + 0.5 * 3.5% = 6.75%.
+  # 9,000 - 0.0675 * 55,860 = 9,000 - 3,770.55 = 5,229.45.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 55_860
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0675
+    nm_puente_health_premium_assistance: 5_229.45
+
+- name: Case 8, 2027 TPS holder at exactly 400% FPL pays 8.5% of income.
+  # 63,840 / 15,960 = 4.00. 9,000 - 0.085 * 63,840 = 9,000 - 5,426.40 = 3,573.60.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.085
+    nm_puente_health_premium_assistance: 3_573.60
+
+- name: Case 9, 2027 TPS holder at 400.5% FPL gets nothing.
+  # 63,920 / 15,960 = 4.005, above the limit. The manual: above 400% the consumer
+  # "is responsible for paying the full premium cost".
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_920
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 10, 2027 LPR at 250% FPL gets nothing (federally eligible).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 11, 2027 TPS holder just under 200% FPL gets the 10% increase.
+  # 31,919 / 15,960 = 1.99994, "under 200% (< 200%)". Table 1 share 0%
+  # (aca_magi_fraction 1.99). 9,000 * 1.1 = 9,900; plan 9,900.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_919
+        aca_fpg: 15_960
+        selected_marketplace_plan_benchmark_ratio: 1.1
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+    nm_puente_health_premium_assistance: 9_900
+
+- name: Case 12, 2027 TPS holder at exactly 200% FPL gets no increase.
+  # 31,920 / 15,960 = 2.00 is not under 200%. Table 1 share 0% at 200%.
+  # 9,000 - 0 = 9,000; plan 9,900.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_920
+        aca_fpg: 15_960
+        selected_marketplace_plan_benchmark_ratio: 1.1
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+    nm_puente_health_premium_assistance: 9_000
+
+- name: Case 13, 2027 TPS holder choosing a bronze plan gets at most its premium.
+  # 22,344 / 15,960 = 1.40. 9,900 before the cap. The bronze plan costs the
+  # benchmark times the rating area's bronze-to-silver price at age 0:
+  # 9,000 * 4,500 / 6,000 = 6,750.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+        selected_marketplace_plan_category: BRONZE
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+        slcsp_age_0: 6_000
+        lcbp_age_0: 4_500
+  output:
+    nm_puente_health_plan_premium: 6_750
+    nm_puente_health_premium_assistance: 6_750
+
+- name: Case 14, 2027 joint return of an LPR and a TPS holder prices Puente Health on the TPS spouse.
+  # 54,100 / 21,640 = 2.50: Table 1 share 2%. Benchmark 9,000 for the TPS
+  # spouse alone. 9,000 - 0.02 * 54,100 = 9,000 - 1,082 = 7,918.
+  # Puente Health subtracts the whole share because base New Mexico Premium
+  # Assistance takes none of it here: with aca_magi supplied and no wages,
+  # the head's Medicaid income is 0, so the 2027 Medicaid work requirement
+  # (gov.aca.ineligible_coverage) keeps him from the federal credit. Case 19
+  # has a federally eligible head.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        slcsp_age_curve_amount_person: 9_000
+      spouse:
+        age: 40
+        immigration_status: TPS
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 54_100
+        aca_fpg: 21_640
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: false
+    nm_puente_health_benchmark_premium: 9_000
+    nm_puente_health_premium_assistance: 7_918
+
+- name: Case 15, 2027 TPS holder in Texas gets nothing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 16, 2028 TPS holder gets nothing after the last published plan year.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 17, negative income counts as zero.
+  # Eligibility is supplied. aca_magi -10,000 counts as 0, so the ratio is 0
+  # (under 200%: increase applies) and the Table 1 share, supplied at 5% so the
+  # clamp matters, multiplies 0. 9,000 * 1.1 = 9,900, plan 9,900.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_puente_health_eligible: true
+        nm_puente_health_benchmark_premium: 9_000
+        nm_premium_assistance_target_contribution_percentage: 0.05
+        aca_magi: -10_000
+        aca_fpg: 15_960
+        selected_marketplace_plan_benchmark_ratio: 1.1
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 9_900
+
+- name: Case 18, contribution above the benchmark floors the amount at zero.
+  # Eligibility and the share are supplied: 9,000 - 0.085 * 120,000 < 0.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_puente_health_eligible: true
+        nm_puente_health_benchmark_premium: 9_000
+        nm_premium_assistance_target_contribution_percentage: 0.085
+        aca_magi: 120_000
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_premium_assistance: 0
+
+- name: Case 19, 2027 mixed couple at 390% FPL whose federal remainder covers part of the share.
+  # The head's wages make him a filer with no Medicaid, so he is federally
+  # eligible. 84,396 / 21,640 = 3.90. Table 1 share 5% + 0.9 * 3.5% = 8.15%:
+  # 0.0815 * 84,396 = 6,878.274. The LPR head's 3,000 federal benchmark is
+  # under the 10.22% required contribution (8,625.27), so the federal credit
+  # is 0 and base New Mexico Premium Assistance is max(0, 3,000 - 0 -
+  # 6,878.274) = 0: the federal side covers 3,000 of the share. Puente Health
+  # subtracts the rest: 9,000 - (6,878.274 - 3,000) = 9,000 - 3,878.274 =
+  # 5,121.726, under the 9,000 plan. The household pays 12,000 - 5,121.726 =
+  # 6,878.274, the 8.15% share once.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        employment_income: 84_396
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        immigration_status: TPS
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 84_396
+        aca_fpg: 21_640
+        aca_ptc_slcsp: 3_000
+        nm_puente_health_benchmark_premium: 9_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0815
+    aca_ptc: 0
+    nm_premium_assistance_eligible: true
+    nm_premium_assistance: 0
+    nm_puente_health_eligible: true
+    nm_puente_health_plan_premium: 9_000
+    nm_puente_health_premium_assistance: 5_121.726

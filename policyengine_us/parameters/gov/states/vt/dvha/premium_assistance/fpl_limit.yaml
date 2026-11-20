@@ -1,5 +1,9 @@
 description: Vermont limits income eligibility to this share of the federal poverty line under the Vermont Premium Assistance program.
 values:
+  # Vermont Health Connect's 2027 income thresholds put VPA at 300% of the
+  # 2026 guideline ($47,880 for one person), and HBEE 60.07(c) applies the
+  # Vermont reduction to household income that "does not exceed 300 percent
+  # of the FPL".
   2026-01-01: 3
 
 metadata:
@@ -11,3 +15,7 @@ metadata:
       href: https://legislature.vermont.gov/statutes/section/33/018/01812
     - title: 2026 Eligibility Income Thresholds for QHP Subsidies
       href: https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2026-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf#page=1
+    - title: 2027 Eligibility Income Thresholds for QHP Subsidies (2027 benefit year, based on 2026 FPL)
+      href: https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2027-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf
+    - title: Vermont Health Benefits Eligibility and Enrollment Rule, Part 7, section 60.07(c) - Applicable percentage table with the Vermont Premium Reduction
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41

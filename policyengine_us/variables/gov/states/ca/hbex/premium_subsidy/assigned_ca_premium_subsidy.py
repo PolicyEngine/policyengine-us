@@ -13,6 +13,7 @@ class assigned_ca_premium_subsidy(Variable):
         # assigned_aca_ptc. Program Design (a)/(c)(1) condition the benefit on
         # Covered California Exchange enrollment, which take-up captures.
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
+        "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=1",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=100805.",
     )
 

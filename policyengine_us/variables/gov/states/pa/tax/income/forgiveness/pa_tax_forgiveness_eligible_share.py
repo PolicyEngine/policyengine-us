@@ -33,7 +33,8 @@ class pa_tax_forgiveness_eligible_share(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         eligible = person("pa_tax_forgiveness_eligible", period)
         # Each filer's own Pennsylvania taxable income: federal gross income
-        # less the person-level amounts Pennsylvania does not tax.
+        # plus the elective deferrals Pennsylvania taxes, less the
+        # person-level amounts Pennsylvania does not tax.
         sources = parameters(period).gov.states.pa.tax.income.nontaxable_income_sources
         person_sources = [
             source
@@ -43,7 +44,9 @@ class pa_tax_forgiveness_eligible_share(Variable):
             ).entity.is_person
         ]
         nontaxable = add(person, period, person_sources)
-        own = max_(0, person("irs_gross_income", period) - nontaxable) * filer
+        gross_income = person("irs_gross_income", period)
+        taxable_deferrals = person("pa_taxable_elective_deferrals", period)
+        own = max_(0, gross_income + taxable_deferrals - nontaxable) * filer
         total = tax_unit.sum(own)
         eligible_income = tax_unit.sum(own * eligible)
         # With no taxable income there is no tax; split evenly.

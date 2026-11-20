@@ -32,8 +32,9 @@ class nj_liheap(Variable):
         "under N.J.A.C. 5:49-2.2(d)1.i. Region 1 holds nineteen of the twenty-one "
         "counties. Other and unspecified direct fuels return zero as a coverage "
         "gap. Separate fuel charges paid to landlords cannot be distinguished from "
-        "vendor bills without a direct benefit override. Crisis, cooling, furnace "
-        "and utility-program benefits are excluded."
+        "vendor bills without a direct benefit override. The medically necessary "
+        "cooling benefit is nj_liheap_cooling; crisis, furnace and utility-program "
+        "benefits are excluded."
     )
 
     def formula(spm_unit, period, parameters):
