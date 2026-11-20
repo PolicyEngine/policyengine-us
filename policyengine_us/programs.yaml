@@ -2199,6 +2199,18 @@ programs:
     verified_start_year: 2026
     notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
 
+  - id: ct_temporary_premium_assistance
+    name: Connecticut Temporary Premium Assistance
+    full_name: Connecticut Temporary Premium Assistance (Access Health CT)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CT
+    variable: ct_temporary_premium_assistance
+    parameter_prefix: gov.states.ct.ahct.temporary_premium_assistance
+    verified_years: "2026-2027"
+    notes: Plan years 2026 and 2027 only (Public Act 26-68, Section 453(e)). Replaces the lost enhanced federal premium tax credit in full at 100-200% FPL outside Covered Connecticut and by half above 400% up to 500% FPL. Both credits are computed on the benchmark silver plan; the plan metal requirement is not modeled.
+
   - id: nm_premium_assistance
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program

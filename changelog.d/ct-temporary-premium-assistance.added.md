@@ -1,0 +1,1 @@
+Add Connecticut Temporary Premium Assistance for 2026 and 2027, which replaces the lost enhanced federal premium tax credit in full at 100% to 200% of the poverty line (outside Covered Connecticut) and by half above 400% up to 500%.
