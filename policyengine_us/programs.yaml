@@ -2185,7 +2185,7 @@ programs:
     variable: co_premium_assistance
     parameter_prefix: gov.states.co.doi.premium_assistance
     verified_years: "2026-2027"
-    notes: PY2026 verified against Amended Regulation 4-2-78 (3 CCR 702-4, effective 2025-11-30) and enrolled HB25B-1006; PY2027 against Amended Regulation 4-2-78 (effective 2026-09-30, $70 first member and $25 each additional member) and SB26-178. No source sets 2028 amounts yet; the model keeps the program running from 2028 with the 2027 amounts, since both the statute and the rule apply to 2027 and each year thereafter. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
+    notes: PY2026 verified against Amended Regulation 4-2-78 (3 CCR 702-4, effective 2025-11-30) and enrolled HB25B-1006, and PY2027 onward against Amended Regulation 4-2-78 (effective 2026-09-30, $70 first member and $25 each additional member for the 2027 benefit year and annually thereafter) and SB26-178.
 
   - id: ct_covered_connecticut
     name: Covered Connecticut

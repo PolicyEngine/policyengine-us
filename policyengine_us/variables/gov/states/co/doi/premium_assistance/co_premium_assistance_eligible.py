@@ -21,6 +21,12 @@ class co_premium_assistance_eligible(Variable):
         # below (which returns HTTP 403 to non-browser user agents).
         "https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view",
         "https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance",
+        # Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30),
+        # Section 2 (carrier payments pursuant to C.R.S. 10-16-1205(1)(b)(II),
+        # which covers Coloradans who receive the premium tax credit, as does
+        # Section 6.A), Section 3 (2027 benefit year and annually thereafter)
+        # and the 400%-inclusive income ceiling in Section 4.C.
+        "https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=1",
         # Enrolled HB25B-1006, Section 10-16-1207(5) (rule authority) and
         # Section 10-16-1205(1)(b)(II) (payment authority).
         "https://content.leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf",

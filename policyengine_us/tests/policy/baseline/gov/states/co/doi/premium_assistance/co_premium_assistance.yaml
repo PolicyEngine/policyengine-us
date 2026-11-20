@@ -658,8 +658,7 @@
   # SB26-178, C.R.S. 10-16-1205(2)(f)(I), funds the program "for the 2027
   # calendar year and for each calendar year thereafter", and Amended
   # Regulation 4-2-78 Section 5 applies "For the 2027 benefit year, and annually
-  # thereafter". No source sets 2028 amounts, so 2027's $70/$25 carry forward
-  # (before this change the model switched the program off in 2028 and gave 0).
+  # thereafter", so the 2027 $70/$25 amounts apply in 2028 and later years.
   # n=1 -> 12*70 = 840. residual 10_000-2_000 = 8_000 >= 840. amount = 840.
   period: 2028
   absolute_error_margin: 0.01
@@ -869,32 +868,41 @@
 
 - name: Case 30, PY2027 six members, the fourth child under 21 pays no premium -> n=5 -> 2_040.
   # Section 5.B.2: for households with more than three dependents under 21,
-  # no subsidy for subsequent dependents with a $0 premium. person6 has
-  # is_aca_ptc_eligible false, standing in for pays_aca_premium false.
-  # n=5 -> flat_monthly = 70 + 25*4 = 170 -> 12*170 = 2_040.
-  # residual 22_000-4_000 = 18_000 >= 2_040. amount = 2_040.
+  # no subsidy for subsequent dependents with a $0 premium. All six members
+  # are enrolled and meet the credit conditions, so is_aca_ptc_eligible comes
+  # from pays_aca_premium: adults pay a premium, aca_child_index ranks the
+  # enrolled children aged 20 or under oldest first (15 -> 1, 12 -> 2, 9 -> 3,
+  # 6 -> 4), and only the three oldest (max_child_count 3) pay one, so person6
+  # drops out. n = 2 adults + 3 children = 5 -> flat_monthly = 70 + 25*4 = 170
+  # -> 12*170 = 2_040. residual 22_000-4_000 = 18_000 >= 2_040. amount = 2_040.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 47
-        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
       person2:
         age: 45
-        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
       person3:
         age: 15
-        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
       person4:
         age: 12
-        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
       person5:
         age: 9
-        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
       person6:
         age: 6
-        is_aca_ptc_eligible: false
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible_before_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -907,6 +915,8 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: CO
   output:
+    aca_child_index: [99, 99, 1, 2, 3, 4]
+    is_aca_ptc_eligible: [true, true, true, true, true, false]
     co_premium_assistance_eligible: true
     co_premium_assistance: 2_040
 

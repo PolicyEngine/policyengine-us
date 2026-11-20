@@ -15,7 +15,10 @@ values:
   # "the lesser of $70 per member per month (PMPM) or the premium balance after
   # federal APTC has been applied". Section 5 applies "For the 2027 benefit
   # year, and annually thereafter". No source sets a different amount for 2028
-  # or later, so $70 carries forward.
+  # or later, so $70 carries forward. SB26-178's C.R.S. 10-16-1205(2)(f)(II)(A)
+  # states an objective for leftover revenue, "AT THE SAME LEVEL OF PREMIUM
+  # ASSISTANCE PROVIDED IN THE 2026 CALENDAR YEAR", not an amount, so the
+  # rule's $70 governs.
   2027-01-01: 70
 
 metadata:
