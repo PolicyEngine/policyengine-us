@@ -1191,3 +1191,26 @@
     # oil, kerosene and propane 990 + 61 = 1_051; wood, coal, other fuels and solar
     # 700 + 61 = 761. No fuel bill means no heating responsibility.
     ny_heap: [461, 461, 1_051, 1_051, 1_051, 761, 761, 761, 761, 0, 0]
+
+# FY2027 from actual wages. A 65-year-old heating with oil earns 24_000 (2_000 a month),
+# above the one-person Tier I line of 1_729 and below the 3_563 income limit: Tier II
+# base 990 plus the 35 vulnerable add-on (age 60 or older) = 1_025. Two 40-year-old
+# tenants with heat included in rent receive 50 at zero income (Tier I) and 45 at
+# 24_000 (Tier II). OTDA HEAP page and FY2027 State Plan pp. 9-10.
+- name: Case 54, FY2027 Tier II, vulnerable and heat-included amounts from actual wages.
+  period: 2027
+  input:
+    state_code: [NY, NY, NY]
+    age: [65, 40, 40]
+    employment_income: [24_000, 0, 24_000]
+    ssi: [0, 0, 0]
+    snap: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [FUEL_OIL, UNSPECIFIED, UNSPECIFIED]
+    fuel_oil_expense: [2_800, 0, 0]
+    heat_expense_included_in_rent: [false, true, true]
+    receives_housing_assistance: [false, false, false]
+  output:
+    ny_heap_tier_one: [false, true, false]
+    ny_heap_vulnerable: [true, false, false]
+    ny_heap: [1_025, 50, 45]
