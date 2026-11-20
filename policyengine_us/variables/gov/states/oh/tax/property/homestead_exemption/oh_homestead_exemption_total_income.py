@@ -8,9 +8,10 @@ class oh_homestead_exemption_total_income(Variable):
     documentation = (
         "R.C. 323.151(C) defines total income as the owner's and spouse's "
         "modified adjusted gross income under R.C. 5747.01 for the year "
-        "before the year of application. PolicyEngine books the homestead "
-        "exemption to that income year, so this reads Ohio modified adjusted "
-        "gross income for the same year as the exemption."
+        "preceding the year in which application is made. When not provided, "
+        "it defaults to the current year's Ohio modified adjusted gross income "
+        "as a proxy for the prior-year income. Enter a known prior-year figure "
+        "as this variable to override the proxy."
     )
     unit = USD
     definition_period = YEAR
@@ -20,7 +21,8 @@ class oh_homestead_exemption_total_income(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # R.C. 323.151(C) counts the income of the year before application.
-        # The model books the relief to that income year, so it reads the
-        # same year's Ohio modified AGI.
+        # R.C. 323.151(C) counts modified AGI for the year preceding
+        # application. With a single year of inputs, period.last_year returns
+        # 0, so the current year's Ohio modified AGI is used as a proxy
+        # instead. An explicit input of this variable overrides this formula.
         return tax_unit("oh_modified_agi", period)

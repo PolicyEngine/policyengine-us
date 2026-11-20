@@ -2,10 +2,12 @@
 # gross income "for the year preceding the year in which application for a
 # reduction in taxes is made".
 # https://codes.ohio.gov/assets/laws/revised-code/authenticated/3/323/323.151/10-27-2023/323.151-10-27-2023.pdf#page=1
-# PolicyEngine books the exemption to that income year, so total income for
-# a given year is that same year's Ohio modified adjusted gross income.
+# When total income is not provided, it defaults to the current year's Ohio
+# modified adjusted gross income as a proxy for the prior-year income. A known
+# prior-year figure goes in as oh_homestead_exemption_total_income, as in
+# Case 8 of oh_homestead_exemption_eligible.yaml.
 
-- name: Case 1, total income is the same year's Ohio modified adjusted gross income.
+- name: Case 1, total income defaults to the current year's Ohio modified adjusted gross income as a proxy for the prior year's.
   period: 2026
   input:
     people:
@@ -27,7 +29,7 @@
     # 2026 Ohio modified AGI: 99,000. The 2025 value (35,000) is not read.
     oh_homestead_exemption_total_income: 99_000
 
-- name: Case 2, prior-year Ohio modified adjusted gross income under the limit does not qualify a filer over it.
+- name: Case 2, the proxy default reads the current year's Ohio modified adjusted gross income even when the prior year's is lower.
   period: 2026
   input:
     people:
