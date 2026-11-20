@@ -1,0 +1,73 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/vt/tax/income/credits/rent/vt_renter_credit_income.yaml
+# (new file; the folder holds the other renter credit tests)
+# Each case fails on main (06c0dcbc54) and passes once the gap is fixed.
+# 32 V.S.A. 6061(18): for the renter credit, "income" means federal adjusted
+# gross income increased by (A) business, rental, capital, estate or trust
+# and farm losses, (B) exempt interest, (C) 75 percent of the Social Security
+# benefits excluded from gross income, and (D) the listed above-the-line
+# deductions, among them "the penalty for early withdrawal of savings".
+# 2025 Form RCC-146: line 10 is federal total income (Form 1040 line 9),
+# line 11 is 75% of Form 1040 line 6a minus line 6b, and line 13 adds back
+# negative amounts.
+
+- name: An above-the-line deduction is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    early_withdrawal_penalty: 500
+  output:
+    # Federal total income (Form 1040 line 9) is 30,000; AGI is 29,500.
+    # 6061(18)(D) adds the penalty back: 30,000. Main: 29,500.
+    adjusted_gross_income: 29_500
+    vt_renter_credit_income: 30_000
+
+- name: A business loss is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    self_employment_income: -5_000
+  output:
+    # Federal AGI is 25,000. RCC-146 line 13 adds back the 5,000 loss on
+    # Schedule 1 line 3: 30,000. Main: 25,000.
+    vt_renter_credit_income: 30_000
+
+- name: A capital loss is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    long_term_capital_gains: -4_000
+  output:
+    # Form 1040 line 7 shows the 3,000 loss allowed by IRC 1211(b), so AGI is
+    # 27,000. Line 13 adds the 3,000 back: 30,000. Main: 27,000.
+    vt_renter_credit_income: 30_000
+
+- name: A dependent child's Social Security is not the claimant's income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 20_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_survivors: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    # The parent's Form 1040 lines 6a and 6b are blank, so RCC-146 line 11 is
+    # 0 and income is 20,000. Main adds 75% of the child's benefit:
+    # 20,000 + 6,000 = 26,000.
+    vt_renter_credit_income: 20_000

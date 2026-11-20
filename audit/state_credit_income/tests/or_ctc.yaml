@@ -1,0 +1,39 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/or/tax/income/credits/or_ctc.yaml
+# Batch F (sweep). Not run. Fails on main (06c0dcbc54), where or_ctc reads
+# or_agi with no loss add-back.
+#
+# Law: ORS 315.273(1)(c)(A): the qualifying income limit is "adjusted gross
+# income, as defined in section 62 of the Internal Revenue Code, as modified
+# using Oregon subtractions and additions, but with losses of a taxpayer added
+# back, to the extent that those losses exceed $20,000". 2025 Form OR-40
+# instructions, Oregon Kids Credit worksheet Part B, line 11b: business loss
+# from Form 1040, Schedule 1, line 3.
+
+- name: Batch F OR, business loss above $20,000 is added back to qualifying income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 70_000
+        self_employment_income: -45_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        # Federal AGI 70,000 - 45,000 = 25,000; set directly so the case does
+        # not depend on Oregon's subtractions.
+        or_agi: 25_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Loss 45,000; excess over 20,000 = 25,000.
+    # Qualifying income = 25,000 + 25,000 = 50,000, over the 2025 ceiling of
+    # 31,550 (26,550 + 5,000), so no credit.
+    # Main: or_agi 25,000 is under 26,550, so it pays the full 1,050.
+    or_ctc: 0

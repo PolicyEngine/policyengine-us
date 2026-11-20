@@ -1,0 +1,86 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/pa/tax/income/forgiveness/pa_eligibility_income.yaml
+# Each case fails on main (06c0dcbc54) and passes once the gap is fixed.
+# 72 P.S. 7301(o.2): poverty income is "all moneys or property (including
+# interest, gains or income derived from obligations which are statutorily
+# free from State or local taxation ... under the laws of the United States)
+# received of whatever nature and from whatever source derived", less seven
+# listed exclusions. 2025 PA-40 Schedule SP, Section III: line 1 is PA taxable
+# income (PA-40 line 9) and lines 2 to 10 add income that is not taxable.
+
+- name: Interest on U.S. obligations counts in eligibility income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    taxable_interest_income: 1_000
+    us_govt_interest_person: 1_000
+  output:
+    # Line 1: PA taxable income 5,000 (Treasury interest is exempt).
+    # Line 2: exempt income from direct obligations of the federal
+    # government 1,000. Total 6,000. Main: 5,000.
+    pa_eligibility_income: 6_000
+
+- name: Alimony from a pre-2019 divorce counts once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    alimony_income: 3_000
+    divorce_year: 2010
+  output:
+    # Alimony is not PA-taxable, so line 1 is 5,000 and line 3 adds 3,000:
+    # 8,000. Main keeps the alimony in PA taxable income and adds it again:
+    # 11,000.
+    pa_eligibility_income: 8_000
+
+- name: Life insurance proceeds count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    life_insurance_benefits: 10_000
+  output:
+    # Line 1: 5,000. Line 4: "total proceeds received from life or other
+    # insurance policies" 10,000. Total 15,000. Main: 5,000.
+    pa_eligibility_income: 15_000
+
+- name: Nontaxable scholarships and grants count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    educational_assistance: 4_000
+  output:
+    # Line 1: 5,000. Line 9: nontaxable scholarships and education grants
+    # 4,000. Total 9,000. Main: 5,000.
+    pa_eligibility_income: 9_000
+
+- name: Cash received from relatives outside the household counts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    financial_assistance: 2_000
+  output:
+    # Line 1: 5,000. Line 10: "payments received from other persons outside
+    # the household" 2,000. Total 7,000. Main: 5,000.
+    pa_eligibility_income: 7_000
+
+- name: A 401(k) contribution is PA-taxable compensation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 10_000
+    traditional_401k_contributions: 1_000
+  output:
+    # 2025 PA-40 instructions: "The contributions you make to your
+    # employer's sponsored retirement plan are PA-taxable compensation".
+    # Line 1 (PA-40 line 9) is 10,000. Main: 9,000.
+    pa_total_taxable_income: 10_000
+    pa_eligibility_income: 10_000

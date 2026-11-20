@@ -1,0 +1,176 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/wi/tax/income/wi_homestead_income.yaml
+# Batch A audit cases. Each fails on upstream/main 06c0dcbc54 (the value main
+# gives is in the comment) and passes once the item is counted.
+# Wis. Stat. 71.52(6): "Income" means the sum of Wisconsin adjusted gross
+# income and the listed amounts "to the extent not included in Wisconsin
+# adjusted gross income". Page numbers are file pages of the 2025 Schedule H
+# instructions.
+
+- name: Audit case 1, court-ordered child support is household income (line 9i).
+  # 71.52(6): "maintenance payments ..., support money". Line 9i (page 14):
+  # "Fill in the total amount of any court ordered support payments received
+  # in 2025, including child support and family maintenance."
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 15_000
+        child_support_received: 4_800
+        ssi: 0
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        tanf: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    # Line 7: 15,000. Line 9i: 4,800. Line 12b: 1 dependent x 500.
+    # 15,000 + 4,800 - 500 = 19,300. Main: 14,500.
+    wi_homestead_income: 19_300
+
+- name: Audit case 2, maintenance that is not taxable is household income (line 9i).
+  # Line 9i note (page 14): "Even though these payments are no longer
+  # taxable, they must be included in household income on line 9i".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 10_000
+    alimony_income: 6_000
+    divorce_year: 2020
+  output:
+    taxable_alimony_income: 0
+    # 10,000 + 6,000 = 16,000. Main: 10,000.
+    wi_homestead_income: 16_000
+
+- name: Audit case 3, workers' compensation is household income (line 11b).
+  # 71.52(6): "worker's compensation, unemployment insurance, the gross
+  # amount of 'loss of time' insurance".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 50
+    state_code: WI
+    employment_income: 12_000
+    workers_compensation: 5_000
+  output:
+    # 12,000 + 5,000 = 17,000. Main: 12,000.
+    wi_homestead_income: 17_000
+
+- name: Audit case 4, veterans' benefits are household income (lines 9d and 9h).
+  # 71.52(6): "the gross amount of any pension or annuity (including ...
+  # veterans disability pensions)" and "compensation and other cash benefits
+  # received from the United States for past or present service in the armed
+  # forces". Line 9d (page 13): "Include veterans' pensions, disability
+  # payments".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: WI
+    social_security_retirement: 12_000
+    veterans_benefits: 6_000
+    ssi: 0
+  output:
+    # Line 9b: 12,000. Line 9d: 6,000.
+    # 12,000 + 6,000 = 18,000. Main: 12,000.
+    wi_homestead_income: 18_000
+
+- name: Audit case 5, a deductible IRA contribution is added back (line 9f).
+  # 71.52(6): "contributions to individual retirement accounts under section
+  # 219 of the internal revenue code ... deducted in determining Wisconsin
+  # adjusted gross income shall be added to 'income'".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    traditional_ira_contributions: 2_000
+  output:
+    traditional_ira_deduction: 2_000
+    adjusted_gross_income: 18_000
+    # Line 7: 18,000. Line 9f: 2,000.
+    # 18,000 + 2,000 = 20,000. Main: 18,000.
+    wi_homestead_income: 20_000
+
+- name: Audit case 6, a 401(k) deferral is added back (line 9e).
+  # 71.52(6): "nontaxable deferred compensation". Line 9e (page 13): "Fill
+  # in contributions to deferred compensation plans that were excluded from
+  # income on the income tax return".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    traditional_401k_contributions: 3_000
+  output:
+    adjusted_gross_income: 17_000
+    # Line 7: 17,000. Line 9e: 3,000.
+    # 17,000 + 3,000 = 20,000. Main: 17,000.
+    wi_homestead_income: 20_000
+
+- name: Audit case 7, a nontaxable IRA distribution is household income (line 9d).
+  # Line 9d (page 13): "Include ... nontaxable IRA, SEP, SIMPLE, and
+  # qualified plan distributions. Both taxable and nontaxable amounts must be
+  # included in household income."
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 62
+    state_code: WI
+    employment_income: 10_000
+    tax_exempt_ira_distributions: 3_000
+  output:
+    # 10,000 + 3,000 = 13,000. Main: 10,000.
+    wi_homestead_income: 13_000
+
+- name: Audit case 8, county relief is household income (line 9j).
+  # 71.52(6): "cash public assistance". Line 9j (page 14): "Wisconsin Works
+  # (W2), county relief, kinship care, and other cash public assistance
+  # payments".
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 45
+    state_code: WI
+    employment_income: 6_000
+    general_assistance: 2_400
+  output:
+    # 6,000 + 2,400 = 8,400. Main: 6,000.
+    wi_homestead_income: 8_400
+
+- name: Audit case 9, Schedule H instructions Example 1, medical care insurance subtraction (line 8c).
+  # 2025 Schedule H instructions, page 12, Example 1: "You received $500 of
+  # taxable interest, $10,000 of gross social security benefits, and a $2,000
+  # pension distribution in 2025. Medicare Part B premiums of $1,735 were
+  # deducted from the social security benefits received." The claimant is 65
+  # or older. The example enters 500 on line 8a, 1,235 on line 8b, -1,735 on
+  # line 8c, 10,000 on line 9b and 765 on line 9d.
+  # Household income starts from Wisconsin income (71.52(6)), which is net of
+  # the medical care insurance subtraction; nothing adds it back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 70
+    state_code: WI
+    taxable_interest_income: 500
+    social_security_retirement: 10_000
+    taxable_pension_income: 2_000
+    health_insurance_premiums: 1_735
+    ssi: 0
+  output:
+    # 500 + 1,235 - 1,735 + 10,000 + 765 = 10,765. Main: 12,500.
+    wi_homestead_income: 10_765

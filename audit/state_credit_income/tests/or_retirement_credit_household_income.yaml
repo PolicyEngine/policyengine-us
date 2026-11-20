@@ -1,0 +1,166 @@
+# Target (new file): policyengine_us/tests/policy/baseline/gov/states/or/tax/income/credits/retirement_income/or_retirement_credit_household_income.yaml
+# Batch D audit cases. Each fails on upstream/main 06c0dcbc54 (main's value is
+# in the comment): main computes federal AGI plus tax-exempt interest less
+# taxable Social Security and nothing else.
+# ORS 316.157(2)(c): "Income" means federal adjusted gross income "with the
+# following modifications: (A) There shall be added to adjusted gross income
+# the following items of otherwise exempt income: ... (B) Adjusted gross income
+# shall be increased due to the disallowance of the following deductions: ...".
+# 2025 Publication OR-17, page 107 ("What's included in household income?")
+# and the Household Income Checklist, pages 127-128.
+
+- name: Veterans' benefits are added to adjusted gross income
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    veterans_benefits: 6_000
+    state_code: OR
+  output:
+    # ORS 316.157(2)(c)(A)(xiii): "Veteran's benefits."
+    # 10,000 + 6,000 = 16,000. Main: 10,000.
+    or_retirement_credit_household_income: 16_000
+
+- name: Workers' compensation is added to adjusted gross income
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    workers_compensation: 4_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xi): "Worker's compensation, except for reimbursement of
+    # medical expense." 10,000 + 4,000 = 14,000. Main: 10,000.
+    or_retirement_credit_household_income: 14_000
+
+- name: Child support received is added to adjusted gross income
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    child_support_received: 3_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(ii): "Child support received by the taxpayer."
+    # 10,000 + 3,000 = 13,000. Main: 10,000.
+    or_retirement_credit_household_income: 13_000
+
+- name: SSI is added, as it is not a section 86 Social Security benefit
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 5_000
+    ssi: 6_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xiv): "Payments received under the federal Social Security Act
+    # that are excluded from federal gross income." (2)(b) and (2)(f) leave out
+    # only "Title II Social Security or tier 1 railroad retirement benefits".
+    # Checklist, page 128: "Supplemental Security Income (SSI) Yes".
+    # 5,000 + 6,000 = 11,000. Main: 5,000.
+    or_retirement_credit_household_income: 11_000
+
+- name: General assistance is a welfare payment
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    general_assistance: 2_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(xv): "Welfare payments", other than medical care paid to
+    # providers, in-home services and work program reimbursements.
+    # 10,000 + 2,000 = 12,000. Main: 10,000.
+    or_retirement_credit_household_income: 12_000
+
+- name: Strike benefits are counted
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    strike_benefits: 2_000
+    state_code: OR
+  output:
+    # (2)(c)(A)(x): "Strike benefits excluded from federal gross income";
+    # strike benefits in federal gross income count through AGI. Either way
+    # 10,000 + 2,000 = 12,000. Main: 10,000.
+    or_retirement_credit_household_income: 12_000
+
+- name: Nontaxable disability insurance benefits are added
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    # A policy the taxpayer paid for: excluded from federal gross income.
+    disability_benefits: 6_000
+    tax_exempt_disability_benefits: 6_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # (2)(c)(A)(vii): "Accident and health insurance proceeds, except
+    # reimbursement of incurred medical expenses"; checklist, page 127:
+    # "Disability income (entire amount) Yes".
+    # 10,000 + 6,000 = 16,000. Main: 10,000.
+    or_retirement_credit_household_income: 16_000
+
+- name: A business loss counts only up to 1,000
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 20_000
+    self_employment_income: -5_000
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 - 5,000 = 15,000.
+    adjusted_gross_income: 15_000
+    # (2)(c)(B)(iii): add back "the net loss, in excess of $1,000, from all
+    # operations of a trade or business": 5,000 - 1,000 = 4,000.
+    # 15,000 + 4,000 = 19,000. Main: 15,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: A capital loss counts only up to 1,000
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 20_000
+    long_term_capital_gains: -3_000
+    state_code: OR
+  output:
+    # Federal AGI: 20,000 less the 3,000 capital loss deduction = 17,000.
+    adjusted_gross_income: 17_000
+    # (2)(c)(B)(i): add back "the net loss, in excess of $1,000, from all
+    # dispositions of tangible or intangible properties": 3,000 - 1,000.
+    # 17,000 + 2,000 = 19,000. Main: 17,000.
+    or_retirement_credit_household_income: 19_000
+
+- name: A capital loss carryover does not offset the year's gain
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    # A 4,000 gain in the year less a 4,000 long-term carryover:
+    # long_term_capital_gains is net of the carryover.
+    long_term_capital_gains: 0
+    long_term_capital_loss_carryover: 4_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # Publication OR-17, page 107: "Capital loss carryforwards aren't
+    # allowed"; checklist, page 127: "Capital loss carryover No".
+    # 10,000 + 4,000 = 14,000. Main: 10,000.
+    or_retirement_credit_household_income: 14_000
+
+- name: Foreign earned income excluded under section 911 is added
+  period: 2025
+  input:
+    age: 65
+    taxable_private_pension_income: 10_000
+    # Income inputs are net of the exclusion, so AGI holds none of it.
+    foreign_earned_income_exclusion: 5_000
+    state_code: OR
+  output:
+    adjusted_gross_income: 10_000
+    # (2)(c)(A)(xix): "Income from sources without the United States that is
+    # excluded from federal gross income." 10,000 + 5,000 = 15,000.
+    # Main: 10,000.
+    or_retirement_credit_household_income: 15_000
