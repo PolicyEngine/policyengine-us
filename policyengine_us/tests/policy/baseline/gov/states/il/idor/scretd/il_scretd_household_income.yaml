@@ -130,3 +130,58 @@
     # The 16-year-old dependent's 1,000 of interest and 6,000 of SSI are
     # the dependent's own income.
     il_scretd_household_income: 42_000
+
+- name: The capital loss carryover deducted in computing adjusted gross income counts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 77_000
+        # No sales this year; the 3,000 carryover is the whole net loss.
+        long_term_capital_gains: -3_000
+        long_term_capital_loss_carryover: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 3.07(G) adds "any net operating loss carryover deduction or capital
+    # loss carryover deduction"; IL-1017 Worksheet A line 10 (PDF page 2):
+    # "Do not include any loss carryover."
+    # AGI = 77,000 pension - 3,000 carryover loss = 74,000.
+    # Carryover deducted = max(-3,000 + 3,000, -3,000) - max(-3,000, -3,000)
+    # = 0 - (-3,000) = 3,000.
+    # Household income = 74,000 + 3,000 = 77,000.
+    il_scretd_household_income: 77_000
+    # 77,000 is above the 2025 limit of 75,000; AGI alone (74,000) is not.
+    il_scretd_income_eligible: false
+
+- name: Only the part of a capital loss carryover deducted this year counts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 40_000
+        # No sales this year; the 5,000 carryover is the whole net loss.
+        long_term_capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 3.07 adds back amounts "to the extent deducted" in computing AGI.
+    # The 5,000 net loss is limited to 3,000 (26 U.S.C. 1211(b)), so AGI =
+    # 40,000 - 3,000 = 37,000, and 2,000 carries to the next year.
+    # Carryover deducted = max(-5,000 + 5,000, -3,000) - max(-5,000, -3,000)
+    # = 0 - (-3,000) = 3,000.
+    # Household income = 37,000 + 3,000 = 40,000, not 42,000.
+    il_scretd_household_income: 40_000
