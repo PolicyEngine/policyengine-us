@@ -35,6 +35,8 @@
   input:
     state_code: IL
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Past the five-year bar, so federal Medicaid covers this LPR.
+    years_since_us_entry: 5
   output:
     il_hbi_immigration_status_eligible: false
 

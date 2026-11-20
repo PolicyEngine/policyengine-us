@@ -69,11 +69,13 @@
   output:
     wa_tanf_immigration_status_eligible: true
 
-- name: Case 8, LPR using default years_since_us_entry is eligible.
+- name: Case 8, LPR with years_since_us_entry set to the former default of 5 is eligible.
   period: 2024-01
   input:
     state_code: WA
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Previously relied on the removed default of 5; now stated explicitly.
+    years_since_us_entry: 5
   output:
     wa_tanf_immigration_status_eligible: true
 
@@ -134,7 +136,8 @@
   input:
     state_code: WA
     immigration_status: CITIZEN
-    # years_since_us_entry intentionally omitted to rely on the default; the
-    # is_citizen short-circuit must keep citizens eligible regardless.
+    # years_since_us_entry intentionally omitted, so the default of 0 (inside
+    # the bar) applies; the is_citizen short-circuit must keep citizens
+    # eligible regardless.
   output:
     wa_tanf_immigration_status_eligible: true

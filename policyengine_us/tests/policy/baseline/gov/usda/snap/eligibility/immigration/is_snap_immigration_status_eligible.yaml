@@ -68,6 +68,9 @@
     people:
       person1:
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Tests the status list, not the waiting period, so the LPR has
+        # completed the waiting period. years_since_us_entry now defaults to 0.
+        years_since_us_entry: 5
     households:
       household1:
         members: [person1]
@@ -119,9 +122,9 @@
 
 # Cases 11 onward apply the qualified alien waiting period of 8 USC
 # 1612(a)(2)(L) and 7 CFR 273.4(a)(6) on top of the 7 USC 2015(f) status
-# list. years_since_us_entry defaults to 5, which satisfies the waiting
-# period, so Cases 1-10 are unchanged and every case below that exercises
-# the waiting period sets it explicitly.
+# list. years_since_us_entry defaults to 0, which leaves a person in a
+# subject status inside the waiting period, so Case 7 sets it to 5 and every
+# case below that exercises the waiting period sets it explicitly.
 
 - name: Case 11, adult LPR inside the five-year waiting period is ineligible.
   period: 2026-01
@@ -568,15 +571,16 @@
     ca_snap_immigration_status_eligible: true
     is_snap_immigration_status_eligible: false
 
-- name: Case 48, California parolee with default years in status is eligible during the delayed implementation.
+- name: Case 48, California parolee past the waiting period is eligible during the delayed implementation.
   period: 2026-01
   input:
     immigration_status: PAROLED_ONE_YEAR
     age: 30
+    years_since_us_entry: 5
     state_code: CA
   output:
-    # years_since_us_entry defaults to 5, so the pre-existing California
-    # result is unchanged.
+    # Past the waiting period, the pre-existing California result is
+    # unchanged. This case relied on the former default of 5, now stated.
     ca_snap_immigration_status_eligible: true
     is_snap_immigration_status_eligible: true
 
@@ -604,16 +608,18 @@
     ca_snap_immigration_status_eligible: true
     is_snap_immigration_status_eligible: false
 
-- name: Case 51, parolee and conditional entrant with default years in status are eligible before OBBBA.
+- name: Case 51, parolee and conditional entrant past the waiting period are eligible before OBBBA.
   period: 2025-01
   input:
     people:
       person1:
         immigration_status: PAROLED_ONE_YEAR
         age: 30
+        years_since_us_entry: 5
       person2:
         immigration_status: CONDITIONAL_ENTRANT
         age: 30
+        years_since_us_entry: 5
     marital_units:
       marital_unit1:
         members: [person1]
@@ -624,8 +630,9 @@
         members: [person1, person2]
         state_code: TX
   output:
-    # Default inertness: unchanged from the result before the waiting
-    # period was added.
+    # Past the waiting period, the result is unchanged from before the
+    # waiting period was added. This case relied on the former default of
+    # 5, now stated.
     is_snap_immigration_status_eligible: [true, true]
 
 - name: Case 52, California parolee child inside the waiting period is eligible during the delayed implementation.

@@ -703,6 +703,9 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        # Past the five-year qualified-alien waiting period; the input no
+        # longer defaults to 5 (#9732).
+        years_since_us_entry: 5
         employment_income_before_lsr: 20_000
       spouse:
         age: 33

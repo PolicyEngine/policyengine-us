@@ -207,6 +207,8 @@
         age: 50
         employment_income: 14_000
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Past the five-year bar; this case checks an eligible status.
+        years_since_us_entry: 5
         has_emergency_medical_condition: true
     tax_units:
       tax_unit:

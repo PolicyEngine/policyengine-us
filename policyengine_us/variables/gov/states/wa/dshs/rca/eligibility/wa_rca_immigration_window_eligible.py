@@ -13,7 +13,9 @@ class wa_rca_immigration_window_eligible(Variable):
     )
     # NOTE: For asylees and Cuban-Haitian entrants, per 45 CFR 400.211(b),
     # years_since_us_entry should encode years-since-status-grant rather
-    # than years-since-physical-entry.
+    # than years-since-physical-entry. years_since_us_entry defaults to 0, so
+    # an RCA-eligible person is treated as inside the window unless the input
+    # is supplied.
 
     def formula(person, period, parameters):
         immigration_eligible = person("wa_rca_immigration_status_eligible", period)

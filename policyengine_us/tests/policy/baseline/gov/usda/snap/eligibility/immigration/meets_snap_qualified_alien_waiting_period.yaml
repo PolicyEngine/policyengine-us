@@ -1,6 +1,7 @@
 # 8 USC 1612(a)(2); 7 CFR 273.4(a)(6)(ii)-(iii). years_since_us_entry is read
-# as years in qualified alien status. Its default of 5 satisfies the waiting
-# period, so every case that exercises the bar sets it explicitly. The
+# as years in qualified alien status. It defaults to 0, which leaves a person
+# in a subject status inside the waiting period; Cases 5b and 50b lock that
+# default, and every other case that exercises the bar sets it explicitly. The
 # waiting period applies to LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR and
 # CONDITIONAL_ENTRANT (273.4(a)(6)(iii)); all other statuses pass this gate
 # and are screened only by the status list.
@@ -42,13 +43,25 @@
   output:
     meets_snap_qualified_alien_waiting_period: true
 
-- name: Case 5, default years_since_us_entry leaves an adult LPR past the waiting period.
+- name: Case 5, adult LPR with five years in qualified status meets the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    # Formerly relied on the default of 5; now stated. Duplicates Case 4.
+    years_since_us_entry: 5
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 5b, adult LPR without years_since_us_entry is inside the waiting period.
   period: 2026-01
   input:
     immigration_status: LEGAL_PERMANENT_RESIDENT
     age: 30
   output:
-    meets_snap_qualified_alien_waiting_period: true
+    # years_since_us_entry defaults to 0.
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
 
 - name: Case 6, LPR age 17 is exempt as a child.
   period: 2026-01
@@ -567,19 +580,22 @@
     is_snap_alien_waiting_period_exempt: false
     meets_snap_qualified_alien_waiting_period: false
 
-- name: Case 50, default years in status leave every subject status past the waiting period.
+- name: Case 50, five years in qualified status leave every subject status past the waiting period.
   period: 2025-01
   input:
     people:
       person1:
         immigration_status: LEGAL_PERMANENT_RESIDENT
         age: 30
+        years_since_us_entry: 5
       person2:
         immigration_status: PAROLED_ONE_YEAR
         age: 30
+        years_since_us_entry: 5
       person3:
         immigration_status: CONDITIONAL_ENTRANT
         age: 30
+        years_since_us_entry: 5
     marital_units:
       marital_unit1:
         members: [person1]
@@ -592,11 +608,46 @@
         members: [person1, person2, person3]
         state_code: TX
   output:
-    # years_since_us_entry defaults to 5 and the new inputs default to
-    # non-exempt values, so the gate passes through the clock, not an
-    # exception.
+    # The exception inputs default to non-exempt values, so the gate passes
+    # through the clock, not an exception. This case relied on the former
+    # years_since_us_entry default of 5, now stated.
     is_snap_alien_waiting_period_exempt: [false, false, false]
     meets_snap_qualified_alien_waiting_period: [true, true, true]
+
+- name: Case 50b, without years_since_us_entry every adult in a subject status is inside the waiting period and a child is exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 30
+      person2:
+        immigration_status: PAROLED_ONE_YEAR
+        age: 30
+      person3:
+        immigration_status: CONDITIONAL_ENTRANT
+        age: 30
+      person4:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 10
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # years_since_us_entry defaults to 0, so only the under-18 exception
+    # lifts the waiting period.
+    is_snap_alien_waiting_period_exempt: [false, false, false, true]
+    meets_snap_qualified_alien_waiting_period: [false, false, false, true]
 
 - name: Case 51, exceptions are applied person by person in an LPR household inside the waiting period.
   period: 2026-01
