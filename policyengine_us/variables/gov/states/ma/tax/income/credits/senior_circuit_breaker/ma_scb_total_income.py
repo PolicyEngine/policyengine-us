@@ -42,10 +42,43 @@ class ma_scb_total_income(Variable):
         long_term_gains = max_(0, tax_unit("ma_long_term_capital_gains", period))
         part_a_and_c_agi = add(tax_unit, period, ["ma_part_a_agi", "ma_part_c_agi"])
         capital_deductions = part_a_gross_income + long_term_gains - part_a_and_c_agi
+        # ma_part_a_gross_income and ma_long_term_capital_gains add every
+        # member's dividends and gains, dependents' included. s.6(k)(1) counts
+        # the taxpayer's Part A and Part C income, and the worksheet reads the
+        # claimant's own Schedule B and U.S. Schedule D. With the add-back,
+        # Part A and Part C income enter as part_a_gross_income +
+        # long_term_gains, so subtracting those amounts less the head's and
+        # spouse's own removes exactly the dependents' share. The share is
+        # negative when a dependent's loss offset the filers' gains.
+        filer_short_term_gains = max_(
+            0, tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
+        )
+        # NOTE: the components of ma_long_term_capital_gains. other_net_gain is
+        # a tax unit amount that already describes the filers' return.
+        filer_long_term_gains = max_(
+            0,
+            tax_unit_non_dep_add(
+                tax_unit,
+                period,
+                [
+                    "long_term_capital_gains",
+                    "non_sch_d_capital_gains",
+                    "other_net_gain",
+                ],
+            ),
+        )
+        filer_capital_income = (
+            tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
+            + filer_short_term_gains
+            + filer_long_term_gains
+        )
+        dependent_capital_income = (
+            part_a_gross_income + long_term_gains - filer_capital_income
+        )
         scb = parameters(period).gov.states.ma.tax.income.credits.senior_circuit_breaker
         # c.62 s.6(k)(1) adds back amounts excluded or subtracted from the
-        # taxpayer's AGI. Dependents' income is never in that AGI, so count
-        # only the head's and spouse's person-level amounts.
+        # taxpayer's AGI. Dependents' items belong on their own returns, so
+        # count only the head's and spouse's person-level amounts.
         disallowed_deductions = tax_unit_non_dep_add(
             tax_unit, period, scb.income.disallowed_deductions
         )
@@ -66,4 +99,11 @@ class ma_scb_total_income(Variable):
         dependent_exemption = tax.exemptions.dependent * count_dependents
         exemptions = blind_exemption + aged_exemption + dependent_exemption
 
-        return max_(0, agi + capital_deductions + disallowed_deductions - exemptions)
+        return max_(
+            0,
+            agi
+            + capital_deductions
+            - dependent_capital_income
+            + disallowed_deductions
+            - exemptions,
+        )

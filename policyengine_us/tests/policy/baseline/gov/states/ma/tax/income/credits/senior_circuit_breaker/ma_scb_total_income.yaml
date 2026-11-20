@@ -507,3 +507,52 @@
     ma_agi: 10_000
     # 10,000 + 8,000 deduction added back - 700 aged exemption.
     ma_scb_total_income: 17_300
+
+- name: Only a dependent's share of capital income comes out when gains and losses net across members. # c.62 s.6(k)(1) counts "the taxpayer's" Part A and Part C income; 2025 Schedule CB line 3 worksheet, lines 7 to 18.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 20_000
+        qualified_dividend_income: 3_000
+        short_term_capital_gains: -1_500
+        long_term_capital_gains: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+      grandchild:
+        age: 16
+        short_term_capital_gains: 4_000
+        long_term_capital_gains: -2_000
+        is_tax_unit_dependent: true
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      grandchild_marital_unit:
+        members: [grandchild]
+    spm_units:
+      spm_unit:
+        tanf: 0
+        members: [head, grandchild]
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: MA
+  output:
+    # Tax unit: short-term gains 4,000 - 1,500 = 2,500 and long-term gains
+    # 5,000 - 2,000 = 3,000, so no loss offsets dividends. Part A AGI 3,000 +
+    # 2,500 = 5,500; Part C AGI 3,000; Part B AGI 20,000; ma_agi 28,500.
+    # The head's own: 3,000 dividends + max(0, -1,500) + 5,000 long-term gains
+    # = 8,000, against 8,500 for the tax unit: the dependent's share is 500.
+    # 28,500 - 500 - 700 aged exemption - 1,000 dependent exemption = 26,300,
+    # as with no dependent income: 20,000 + 3,000 + 5,000 - 1,700.
+    ma_scb_total_income: 26_300
