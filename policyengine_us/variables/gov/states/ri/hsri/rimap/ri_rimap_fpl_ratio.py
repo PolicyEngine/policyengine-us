@@ -33,9 +33,12 @@ class ri_rimap_fpl_ratio(Variable):
         # avoid dividing by zero, then return an infinite ratio, as
         # aca_magi_fraction does.
         has_guideline = guideline > 0
-        # Divide in float64: a float32 quotient can round a ratio just above
-        # a limit down onto it. For a whole-dollar guideline the smallest
-        # float32 income above 2.00 or 4.00 times the guideline still
-        # rounds to a stored ratio above that limit.
+        # The quotient is computed in float64, but core stores float
+        # variables as float32, so the cast is lost on return and other
+        # variables read the float32 rounding of the ratio. That is safe at
+        # the 200% and 400% limits: for whole-dollar guidelines (household
+        # sizes 1 to 15 checked), the float32 incomes just above and just
+        # below 2 or 4 times the guideline still store ratios on the same
+        # side of the limit, so nobody is misclassified.
         ratio = magi / where(has_guideline, guideline, 1)
         return where(has_guideline, ratio, np.inf)
