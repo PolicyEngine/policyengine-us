@@ -533,3 +533,44 @@
   output:
     pa_income_tax_before_forgiveness: 184.20
     pa_tax_forgiveness_amount: 184.2
+
+- name: "2025 joint return with one spouse who can be claimed as a dependent: the claimable head's 401(k) deferral counts in their share"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 3000
+        traditional_401k_contributions: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 3000
+        traditional_401k_contributions: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: PA
+  output:
+    # Each spouse's PA taxable income is 3,000, since PA taxes the head's
+    # 1,000 deferral as compensation (2025 PA-40 IN, page 12). Only the
+    # spouse can claim forgiveness: 3,000 / 6,000 = 0.5. Leaving the
+    # deferral out would give 3,000 / (2,000 + 3,000) = 0.6.
+    pa_tax_forgiveness_eligible_share: 0.5
+    # Tax: 6,000 x 3.07% = 184.20. Eligibility income 6,000 is under the
+    # married base of 2 x 6,500 = 13,000, so the rate is 100%:
+    # 184.20 x 1 x 0.5 = 92.10.
+    pa_income_tax_before_forgiveness: 184.2
+    pa_tax_forgiveness_amount: 92.1

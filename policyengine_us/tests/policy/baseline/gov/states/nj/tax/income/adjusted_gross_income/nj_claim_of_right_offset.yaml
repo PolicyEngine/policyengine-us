@@ -412,3 +412,29 @@
   output:
     nj_claim_of_right_offset: 1_500
     nj_gross_income: 30_000
+
+# Wages $10,000 with $4,000 of 401(k) elective deferrals, so New Jersey wages
+# (line 15) are $6,000 (N.J.S.A. 54A:6-21), plus $1,000 of interest. A repaid
+# $8,000 of wages offsets only the $6,000 of New Jersey wages: line 15 is
+# reported as zero and interest is untouched, so gross income is $1,000.
+- name: Case 18, a wage repayment is capped at wages net of 401(k) deferrals.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        traditional_401k_contributions: 4_000
+        taxable_interest_income: 1_000
+        claim_of_right_repayment: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_wages: 6_000
+    nj_claim_of_right_wage_offset: 6_000
+    nj_gross_income: 1_000

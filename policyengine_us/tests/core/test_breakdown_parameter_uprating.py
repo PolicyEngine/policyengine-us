@@ -70,8 +70,10 @@ AUTHORED_VALUES = _authored_values()
 def test_colorado_2027_projects_from_published_2026_limit(status):
     # Colorado publishes $39,200 for joint filers and $26,200 otherwise.
     # The retained IRS-index proxy rounds the projected amount to $100.
-    # 26,200 * 181.97958333333335 / 176.71308333333332 = 26,980.8267 -> 27,000.
-    # 39,200 * 181.97958333333335 / 176.71308333333332 = 40,368.2598 -> 40,400.
+    # The 2027 and 2026 index values average 12 months summing to 2,190.008
+    # and 2,125.365:
+    # 26,200 * 2,190.008 / 2,125.365 = 26,996.8733 -> 27,000.
+    # 39,200 * 2,190.008 / 2,125.365 = 40,392.2684 -> 40,400.
     anchor = 39_200 if status == "JOINT" else 26_200
     expected = 40_400 if status == "JOINT" else 27_000
     assert _value(CO_PATH, status, 2027) == expected
@@ -82,11 +84,12 @@ def test_colorado_2027_projects_from_published_2026_limit(status):
 def test_personal_exemption_2036_projects_after_last_cbo_forecast(status):
     # Use CBO's 2035 forecasts as anchors. Under historical IRC 68(b), round
     # down to $50; separate filers receive half the joint amount.
-    # Multiply by 217.05 / 212.85, then round down:
-    # single: 406,200 * factor = 414,215.222 -> 414,200;
-    # separate: 243,700 * factor = 248,508.739 -> 248,500;
-    # joint/surviving spouse: 487,400 * factor = 497,017.477 -> 497,000;
-    # head of household: 446,800 * factor = 455,616.350 -> 455,600.
+    # After its last observed month, the index follows CBO's chained CPI-U
+    # projection, so multiply by 217.68 / 213.471, then round down:
+    # single: 406,200 * factor = 414,209.031 -> 414,200;
+    # separate: 243,700 * factor = 248,505.024 -> 248,500;
+    # joint/surviving spouse: 487,400 * factor = 497,010.048 -> 497,000;
+    # head of household: 446,800 * factor = 455,609.539 -> 455,600.
     expected = {
         "SINGLE": 414_200,
         "SEPARATE": 248_500,
@@ -102,10 +105,10 @@ def test_personal_exemption_2036_projects_after_last_cbo_forecast(status):
 def test_biden_2025_projects_from_proposed_2024_threshold(status):
     # Treasury proposes indexing $1 million ($500,000 for separate filers)
     # after 2024 in its FY2025 proposal, without specifying a rounding interval.
-    # 1,000,000 * 172.797 / 167.95475 = 1,028,830.6820735942;
-    # separate filers receive half: 514,415.3410367971.
+    # 1,000,000 * 2,077.121 / 2,021.359 = 1,027,586.3911358645;
+    # separate filers receive half: 513,793.1955679323.
     anchor = 500_000 if status == "SEPARATE" else 1_000_000
-    expected = 514_415.3410367971 if status == "SEPARATE" else 1_028_830.6820735942
+    expected = 513_793.1955679323 if status == "SEPARATE" else 1_027_586.3911358645
     assert _value(BIDEN_PATH, status, 2025) == pytest.approx(
         expected, rel=1e-12, abs=1e-8
     )

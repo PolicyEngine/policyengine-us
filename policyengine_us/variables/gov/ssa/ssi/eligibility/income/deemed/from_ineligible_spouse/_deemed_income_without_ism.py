@@ -7,6 +7,9 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._annual_input impo
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
+    ssi_budget_spousal_deeming_applies,
+)
 
 
 def ssi_income_deemed_from_ineligible_spouse_without_ism(person, period, parameters):
@@ -25,7 +28,10 @@ def ssi_income_deemed_from_ineligible_spouse_without_ism(person, period, paramet
     if supplied is not None:
         return supplied
 
-    deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+    # A year's is_ssi_spousal_deeming_applies holds December's status. This
+    # amount covers the year, so it takes the year's comparison or a supplied
+    # flag, as the benefit rate in is_ssi_ineligible_parent does.
+    deeming_applies = ssi_budget_spousal_deeming_applies(person, period, parameters)
     own_earned = person("ssi_earned_income", period)
     own_unearned = person("ssi_unearned_income", period)
     spouse_earned = person("ssi_earned_income_deemed_from_ineligible_spouse", period)

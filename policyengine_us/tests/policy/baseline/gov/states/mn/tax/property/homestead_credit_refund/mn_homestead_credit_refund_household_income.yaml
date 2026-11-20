@@ -22,3 +22,359 @@
   output:
     traditional_ira_deduction: 0
     mn_homestead_credit_refund_household_income: 93_000
+
+# Minn. Stat. 290A.03, subd. 3(a): "Income" means federal adjusted gross
+# income plus the listed amounts "to the extent not included" in it. Page
+# numbers below are PDF pages of the 2025 Form M1PR instructions
+# (https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf).
+
+- name: Line 4 adds Supplemental Security Income
+  # Subd. 3(a)(2)(v): "any pension or annuity (including railroad retirement
+  # benefits, all payments received under the federal Social Security Act,
+  # Supplemental Security Income, and veterans benefits)". Line 4 (page 7):
+  # "Include nontaxable payments you received from ... Supplemental Security
+  # Income (SSI)".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        taxable_pension_income: 12_000
+        ssi: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Line 1: 12,000. Line 4: 3,000. Line 8 (age 65 or older): 5,200.
+    # 12,000 + 3,000 - 5,200 = 9,800.
+    mn_homestead_credit_refund_household_income: 9_800
+
+- name: Line 4 adds General Assistance
+  # Subd. 3(a)(2)(iv): "cash public assistance and relief". Line 4 (page 7)
+  # names "General Assistance (GA)".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        general_assistance: 2_400
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 10,000 + 2,400 = 12,400.
+    mn_homestead_credit_refund_household_income: 12_400
+
+- name: Line 4 adds Minnesota Supplemental Aid
+  # Subd. 3(a)(2)(iv): "cash public assistance and relief". Line 4 (page 7)
+  # names "Minnesota Supplemental Aid (MSA)".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        ssi: 9_000
+        mn_msa_person: 1_200
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Line 4: 9,000 + 1,200 = 10,200. Line 8 (age 65 or older): 5,200.
+    # 10,200 - 5,200 = 5,000.
+    mn_homestead_credit_refund_household_income: 5_000
+
+- name: Line 4 adds the family's MFIP cash grant
+  # Subd. 3(a)(2)(iv): "cash public assistance and relief". Line 4 (page 7)
+  # names the "Minnesota Family Investment Program (MFIP)", which tanf holds
+  # for Minnesota. The grant is paid for the parent and child, so the tax
+  # unit's per-person share of it is the whole grant.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 6_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Line 1: 5,000. Line 4: 6,000. Line 9, first dependent: 5,200 x 1.4 =
+    # 7,280. 5,000 + 6,000 - 7,280 = 3,720.
+    mn_homestead_credit_refund_household_income: 3_720
+
+- name: Line 6 adds workers' compensation
+  # Subd. 3(a)(2)(vii): "workers' compensation". Line 6 (page 8) lists
+  # "Worker's compensation benefits (to the extent not used for medical
+  # expenses)"; the model does not split out the part used for medical
+  # expenses.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        workers_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 30,000 + 5,000 = 35,000.
+    mn_homestead_credit_refund_household_income: 35_000
+
+- name: Line 6 adds federally nontaxed interest
+  # Subd. 3(a)(2)(vi): "interest received from the federal or a state
+  # government or any instrumentality or political subdivision thereof".
+  # Line 6 (page 8): "Federally nontaxed interest and mutual fund dividends".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        tax_exempt_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 30,000 + 1,500 = 31,500.
+    mn_homestead_credit_refund_household_income: 31_500
+
+- name: Line 6 adds Roth IRA distributions that are not in federal AGI
+  # Subd. 3(a)(2)(xii): "to the extent not included in federal adjusted gross
+  # income, distributions received by the claimant or spouse from a
+  # traditional or Roth style retirement account or plan". Line 6 (page 8):
+  # "Distributions from a ROTH or traditional IRA not included on line 1".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 62
+        employment_income: 30_000
+        tax_exempt_ira_distributions: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 30,000 + 4,000 = 34,000.
+    mn_homestead_credit_refund_household_income: 34_000
+
+- name: Line 6 adds alimony that is not in federal AGI
+  # Subd. 3(a)(2)(xiv): "alimony received to the extent not included in the
+  # recipient's income". Alimony under a 2020 divorce is not gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        alimony_income: 6_000
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    taxable_alimony_income: 0
+    # 20,000 + 6,000 = 26,000.
+    mn_homestead_credit_refund_household_income: 26_000
+
+- name: Alimony already in federal AGI counts once
+  # Alimony under a divorce before 2019 is gross income, so line 1 holds it
+  # and line 6 adds nothing (subd. 3(a)(2): "to the extent not included in
+  # clause (1)").
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        alimony_income: 6_000
+        divorce_year: 2015
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    taxable_alimony_income: 6_000
+    adjusted_gross_income: 26_000
+    # Line 1: 26,000. Line 6: 6,000 - 6,000 = 0.
+    mn_homestead_credit_refund_household_income: 26_000
+
+- name: Line 6 adds back the health savings account deduction
+  # Subd. 3(a)(2)(xv): "the amount of deduction allowed under section 220 or
+  # 223 of the Internal Revenue Code". Line 6 (page 8): "Health savings
+  # account and Archer MSA deductions".
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        health_savings_account_ald: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Line 1: 50,000 - 2,000 = 48,000. Line 6: 2,000.
+    # 48,000 + 2,000 = 50,000.
+    adjusted_gross_income: 48_000
+    mn_homestead_credit_refund_household_income: 50_000
+
+- name: The 2026 retirement base amount is $7,500
+  # Subd. 3(b)(3) leaves out after-tax contributions up to "the retirement
+  # base amount", which subd. 3(d)(2) defines as "the deductible amount for
+  # the taxable year for the claimant and spouse under section 219(b)(5)(A)
+  # of the Internal Revenue Code, adjusted for inflation as provided in
+  # section 219(b)(5)(C)". IRS Notice 2025-67 (page 4): "The deductible
+  # amount under section 219(b)(5)(A) ... is increased from $7,000 to
+  # $7,500" for 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        roth_ira_contributions: 7_500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Contributions equal the base amount: 60,000 - 7,500 = 52,500.
+    mn_homestead_credit_refund_household_income: 52_500
+
+- name: In 2026 the retirement subtraction stops at $7,500
+  # Subd. 3(b)(3) and (d)(2). Roth 401(k) deferrals stay in federal AGI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        roth_401k_contributions_desired: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    adjusted_gross_income: 60_000
+    # Subtraction: min(10,000, 60,000 of wages, 7,500) = 7,500.
+    # 60,000 - 7,500 = 52,500.
+    mn_homestead_credit_refund_household_income: 52_500
+
+- name: In 2025 the retirement subtraction stops at $7,000
+  # Subd. 3(d)(2); the IRC 219(b)(5)(A) amount is $7,000 for 2024 and 2025.
+  # 2025 M1PR line 10 (page 9): "Do not enter more than $7,000 ($14,000 if
+  # filing a joint return)."
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        roth_401k_contributions_desired: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # Subtraction: min(10,000, 60,000, 7,000) = 7,000.
+    # 60,000 - 7,000 = 53,000.
+    mn_homestead_credit_refund_household_income: 53_000
+
+- name: A married couple's 2026 retirement base amount is $15,000
+  # Subd. 3(d)(2): the deductible amount "for the claimant and spouse", so
+  # $7,500 for each of them in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        roth_401k_contributions_desired: 10_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+        roth_401k_contributions_desired: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    adjusted_gross_income: 80_000
+    # Subtraction: min(20,000, 80,000, 2 x 7,500 = 15,000) = 15,000.
+    # 80,000 - 15,000 = 65,000.
+    mn_homestead_credit_refund_household_income: 65_000

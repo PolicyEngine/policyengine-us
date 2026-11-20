@@ -1,0 +1,57 @@
+# Sources for the expected values in this file:
+# - FY2026 LIHEAP Handbook, sections 2.3.A (page 7), 2.3.F (pages 9 and 10)
+#   and 3.4 (PDF pages 13 and 14):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=13
+# - FFY 2026 fact sheet, monthly income limits on page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# - FY2026 Benefit Matrix (one page):
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+
+# Hudson County retiree aged 70 living alone, with $4,200 a month of Social
+# Security ($50,400 a year), a Medicare Part B premium of about $2,435 a year,
+# natural gas heat billed in their own name (about $1,200 a year) and an
+# electric bill for air conditioning. Their doctor certifies that their health
+# is endangered unless the home is cooled. No WFNJ/TANF or SSI is received.
+- name: Case 1, the national LIHEAP total adds the $300 cooling benefit to the heating payment.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 50_400
+        medicare_part_b_premium: 2_435
+        ssi: 0
+        has_medical_need_for_cooling: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+        county: HUDSON_COUNTY_NJ
+  output:
+    # Section 2.3.F.7(a) (page 10) deducts the Part B premium from gross
+    # Social Security: 50_400 - 2_435 = 47_965.
+    nj_liheap_countable_income_person: 47_965
+    # 47_965 / 12 = 3,997.08 -> 3,997 a month (section 2.3.F, page 9);
+    # 3,997 * 12 = 47_964.
+    nj_liheap_countable_income: 47_964
+    # One person: $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+    nj_liheap_income_limit: 50_004
+    # 3,997 does not exceed 4,167 (section 2.3.A, page 7).
+    nj_liheap_income_eligible: true
+    nj_liheap_eligible: true
+    # Gas panel, "All Other (19) counties", row "$2001 - $6439", column
+    # "1 to 4": $334.
+    nj_liheap: 334
+    # Income eligible, a member with a medical need for cooling and a cooling
+    # bill of the household's own (section 3.4.A): $300 in addition to heating.
+    nj_liheap_cooling_eligible: true
+    nj_liheap_cooling: 300
+    # 334 + 300 = 634.
+    liheap: 634

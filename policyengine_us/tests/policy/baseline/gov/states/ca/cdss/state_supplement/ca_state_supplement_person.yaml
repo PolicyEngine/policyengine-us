@@ -1003,3 +1003,102 @@
     # max(480, 1,980 - (2,315.57 - 1,335.81)) = 1,000.24 a month and gets
     # 1,335.81 - 1,000.24 = 335.57.
     ca_state_supplement_person: [4_026.84, 0, 0] # 335.57 * 12
+
+- name: California budgets mixed couples with each month's shelter support
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 65
+        is_tax_unit_head: true
+        ssi:
+          2026-01: 994
+          2026-06: 714
+        ssi_countable_income_monthly:
+          2026-01: 0
+          2026-06: 300
+        ssi_in_kind_support_and_maintenance_monthly:
+          2026-01: 0
+          2026-06: 300
+      capi_spouse:
+        age: 65
+        is_tax_unit_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi:
+          2026-01: 0
+          2026-06: 0
+        ssi_countable_income_monthly:
+          2026-01: 0
+          2026-06: 0
+        ssi_in_kind_support_and_maintenance_monthly:
+          2026-01: 0
+          2026-06: 0
+    marital_units:
+      couple:
+        members: [recipient, capi_spouse]
+    tax_units:
+      couple:
+        members: [recipient, capi_spouse]
+    households:
+      home:
+        members: [recipient, capi_spouse]
+        state_code: CA
+  output:
+    people:
+      recipient:
+        # January: 1,233.94 - 994 - 0 = 239.94.
+        # June: 1,233.94 - 714 - (300 - 20) = 239.94.
+        ca_state_supplement_person:
+          2026-01: 239.94
+          2026-06: 239.94
+
+- name: California budgets mixed couples with each month's countable SSI income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 65
+        is_tax_unit_head: true
+        ssi:
+          2026-01: 0
+          2026-06: 994
+        ssi_countable_income_monthly:
+          2026-01: 1_000
+          2026-06: 0
+        ssi_in_kind_support_and_maintenance_monthly:
+          2026-01: 0
+          2026-06: 0
+      capi_spouse:
+        age: 65
+        is_tax_unit_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi:
+          2026-01: 0
+          2026-06: 0
+        ssi_countable_income_monthly:
+          2026-01: 0
+          2026-06: 0
+        ssi_in_kind_support_and_maintenance_monthly:
+          2026-01: 0
+          2026-06: 0
+    marital_units:
+      couple:
+        members: [recipient, capi_spouse]
+    tax_units:
+      couple:
+        members: [recipient, capi_spouse]
+    households:
+      home:
+        members: [recipient, capi_spouse]
+        state_code: CA
+  output:
+    people:
+      recipient:
+        # January countable: 1,000 - (2,098.83 - 1,233.94) = 135.11.
+        # January supplement: 1,233.94 - 0 - 135.11 = 1,098.83.
+        # June supplement: 1,233.94 - 994 - 0 = 239.94.
+        ca_state_supplement_person:
+          2026-01: 1_098.83
+          2026-06: 239.94

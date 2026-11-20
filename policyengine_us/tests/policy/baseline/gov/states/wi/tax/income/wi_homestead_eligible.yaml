@@ -644,3 +644,99 @@
   output:
     wi_homestead_income: 9_000
     wi_homestead_eligible: true
+
+# Wis. Stat. 71.52(1g): "'Earned income' means wages, salaries, tips, and
+# other employee compensation that may be included in federal adjusted gross
+# income for the taxable year, plus the amount of the claimant's net earnings
+# from self-employment for the taxable year". Under 71.54(1)(dm)-(gm), as
+# Schedule H Step 1a reads them, a claimant who is under 62 and not disabled
+# needs earned income.
+
+- name: Case 16, S corporation income alone is not earned income.
+  # An S corporation shareholder's distributive share is not net earnings
+  # from self-employment (IRC 1402(a)).
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        s_corp_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        wi_homestead_income: 10_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # No wages and no net earnings from self-employment: not eligible.
+    wi_homestead_eligible: false
+
+- name: Case 17, a general partner's net earnings from self-employment are earned income.
+  # Schedule K-1 (Form 1065) box 14 net earnings from self-employment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        partnership_income: 10_000
+        partnership_self_employment_net_earnings: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        wi_homestead_income: 10_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    wi_homestead_eligible: true
+
+- name: Case 18, partnership income without net earnings from self-employment is not earned income.
+  # A limited partner's distributive share other than guaranteed payments is
+  # not net earnings from self-employment (IRC 1402(a)(13)).
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        partnership_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        wi_homestead_income: 10_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    wi_homestead_eligible: false
+
+# The 2025 Schedule H instructions ask whether household income was "less
+# than $24,680" (page 4). Veterans' benefits count toward it (Wis. Stat.
+# 71.52(6); line 9d).
+
+- name: Case 19, veterans' benefits that leave household income $1 under the limit.
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    veterans_benefits: 4_679
+  output:
+    # 20,000 + 4,679 = 24,679, under 24,680.
+    wi_homestead_income: 24_679
+    wi_homestead_eligible: true
+
+- name: Case 20, veterans' benefits that bring household income to the limit.
+  period: 2025
+  input:
+    age: 40
+    state_code: WI
+    employment_income: 20_000
+    veterans_benefits: 4_680
+  output:
+    # 20,000 + 4,680 = 24,680, not less than 24,680.
+    wi_homestead_income: 24_680
+    wi_homestead_eligible: false

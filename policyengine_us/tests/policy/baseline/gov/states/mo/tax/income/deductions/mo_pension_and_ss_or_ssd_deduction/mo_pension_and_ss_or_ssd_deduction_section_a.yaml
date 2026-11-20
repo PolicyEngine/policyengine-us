@@ -258,6 +258,22 @@
   output:
     mo_pension_and_ss_or_ssd_deduction_section_a: 0
 
+- name: 2025 public pension above the $47,633 maximum social security benefit
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 60_000
+    taxable_social_security: 0
+    taxable_public_pension_income: 60_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    # 2025 Form MO-A, Part 3, Section A:
+    # Line 2: min(60,000, 47,633) = 47,633.
+    # Line 4: 47,633 - 0 (Line 3) = 47,633.
+    mo_pension_and_ss_or_ssd_deduction_section_a: 47_633
+
 # Form MO-A Part 3 Section A, Line 1 takes the taxable public pension of the
 # filer and spouse from their federal return (Form 1040, Line 5b). A tax-unit
 # dependent's pension is not in the filer's federal AGI (RSMo 143.124.13); the

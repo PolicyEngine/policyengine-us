@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
+    ssi_budget_spousal_deeming_applies,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_budget_total,
     _ssi_couple_total,
@@ -64,6 +67,7 @@ def spouses_split_by_facility(person: Population, period: Period) -> ArrayLike:
 def uses_couple_standard(
     person: Population,
     period: Period,
+    parameters,
     budgets_together: ArrayLike,
     couple_limit_without_deeming: ArrayLike,
 ) -> ArrayLike:
@@ -80,7 +84,7 @@ def uses_couple_standard(
         & is_married
         & (spouses_sum(person, period, aged_blind_disabled) == 1)
     )
-    nothing_deemed = ~person("is_ssi_spousal_deeming_applies", period)
+    nothing_deemed = ~ssi_budget_spousal_deeming_applies(person, period, parameters)
     tested_alone = has_ineligible_spouse & nothing_deemed
     return (
         is_married

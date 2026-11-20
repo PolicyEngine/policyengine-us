@@ -31,6 +31,12 @@ class is_medicaid_immigration_status_eligible(Variable):
         state_covers_undocumented = p.undocumented_immigrant[state].astype(bool)
         undocumented_eligible = undocumented & state_covers_undocumented
 
+        # Some states cover every child below an age limit with state funds,
+        # whatever the child's immigration status.
+        age = person("age", period)
+        child_age_limit = p.regardless_of_immigration_status.child_age_limit[state]
+        child_eligible_regardless_of_status = age < child_age_limit
+
         ca_eligible_regardless_of_immigration_status = person(
             "is_ca_medicaid_immigration_status_eligible", period
         )
@@ -38,5 +44,6 @@ class is_medicaid_immigration_status_eligible(Variable):
         return (
             federally_eligible
             | undocumented_eligible
+            | child_eligible_regardless_of_status
             | ca_eligible_regardless_of_immigration_status
         )

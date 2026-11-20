@@ -1,4 +1,4 @@
-description: California taxes income at these rates for head of household filers. 
+description: California taxes income at these rates for head of household filers.
 brackets:
   - threshold:
       0000-01-01: 0
@@ -112,7 +112,7 @@ metadata:
   threshold_period: year
   type: marginal_rate
   label: California head of household income tax rate
-  reference: 
+  reference:
     - title: California Income Tax Rate Schedules for 2021
       href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
     - title: California Income Tax Rate Schedules for 2022

@@ -65,7 +65,7 @@ def _situation(rows):
             "age": {YEAR: 70},
             "employment_income": {YEAR: own_earned * 12},
             "pension_income": {YEAR: own_unearned * 12},
-            "ssi_in_kind_support_and_maintenance": {
+            "ssi_in_kind_support_and_maintenance_monthly": {
                 f"{YEAR}-{month:02}": ism if month == 1 else 0 for month in range(1, 13)
             },
         }
@@ -159,7 +159,7 @@ def test_spousal_ism_preserves_income_and_exclusion_invariants(rows):
         individual_payment,
     )
 
-    countable = simulation.calculate("ssi_countable_income", PERIOD)[0::2]
+    countable = simulation.calculate("ssi_countable_income_monthly", PERIOD)[0::2]
     deemed = simulation.calculate(
         "ssi_income_deemed_from_ineligible_spouse_monthly", PERIOD
     )[0::2]
