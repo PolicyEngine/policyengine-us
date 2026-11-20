@@ -161,8 +161,8 @@ def small_tree():
 def change_small_tree(tree, change, index, value):
     """Change ``tree`` in one of the ways it can change.
 
-    Only ``update`` clears a cache, and on a loaded tree it stops at a scale's
-    bracket, which has no parent.
+    Only ``update`` clears a cache. From a scale's bracket on a loaded tree, it
+    goes further up only if this version of core links the bracket to its scale.
     """
     credit = tree.credit
     named_parent = tree.categories.group.children["parent"]
@@ -543,14 +543,18 @@ def test_an_edit_to_the_source_tree_reaches_the_next_simulation(monkeypatch):
 
 
 def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
-    """A loaded tree's scale brackets have no parent, unlike a clone's.
+    """An edit to a scale bracket on a loaded tree reaches a pin.
 
-    So this edit clears no cache above the bracket, and a pin has to read the
-    parameter itself. The EITC's 2021 pin keeps this amount, so its result
-    moves with the edit.
+    The test detaches the bracket from its scale before the edit, so the edit
+    clears no cache above the bracket on any version of core, and the source
+    tree's cached views stay stale. A pin has to read the parameter itself. The
+    EITC's 2021 pin keeps this amount, so its result moves with the edit.
     """
     loaded = CountryTaxBenefitSystem()
-    assert loaded.parameters.gov.irs.credits.eitc.max.brackets[1].parent is None
+    edited_bracket = loaded.parameters.gov.irs.credits.eitc.max.brackets[1]
+    # Older versions of core load a bracket without a parent, and newer ones
+    # link it to its scale. Detaching it gives the same case on both.
+    edited_bracket.parent = None
 
     def result():
         situation = household(2021, earnings=15_000, interest=0)
@@ -558,8 +562,7 @@ def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
         return simulation.calculate("ny_eitc", 2021)[0]
 
     before = result()
-    amount = loaded.parameters.gov.irs.credits.eitc.max.brackets[1].amount
-    amount.update(period="year:2021:1", value=5_000)
+    edited_bracket.amount.update(period="year:2021:1", value=5_000)
     edited = result()
 
     assert edited != before

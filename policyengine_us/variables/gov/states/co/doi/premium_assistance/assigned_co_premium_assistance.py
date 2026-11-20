@@ -13,6 +13,11 @@ class assigned_co_premium_assistance(Variable):
         # Premium Assistance is paid to enrolled members, so the modeled value
         # is gated on take-up (mirrors assigned_aca_ptc).
         "https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view",
+        # Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30),
+        # Section 6.A: carrier payments for the subsidies are made pursuant to
+        # C.R.S. 10-16-1205(1)(b)(II), which covers Coloradans who receive the
+        # premium tax credit (also Section 2).
+        "https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=3",
         "https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/",
     )
 

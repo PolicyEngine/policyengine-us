@@ -1,0 +1,25 @@
+description: New Mexico provides Puente Health premium assistance to lawfully present non-citizens who lost the federal premium tax credit under Public Law 119-21 when this is true.
+values:
+  # Addendum 2 starts Puente Health with coverage on January 1, 2026. 8.401.2
+  # NMAC is permanent (8.401.2.4), but 8.401.2.11(B) has the Secretary publish
+  # the income eligibility parameters annually for the ensuing plan year, and
+  # HCA has published them only through plan year 2027 (the FINAL PY2027 MAP
+  # manual). The program therefore ends with plan year 2027 here, as the base
+  # New Mexico Premium Assistance does, until PY2028 guidance is published.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico Puente Health in effect
+  reference:
+    - title: Addendum 2 to the PY2026 MAP Policy and Procedures Manual, The Puente Health Program, Section I.B Effective Date
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/3527710a-f9f6-4e8f-9cd7-d9ea1010b653/Addendum%202_%20MAP%20P%26P%20Puente%20Health.pdf#page=2
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, Puente Health Program
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=7
+    - title: 8.401.2.11 NMAC (rule in force)
+      href: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/45b8668e-460f-45cd-804f-92ee3d442343/8.401.2.html
+    - title: "8.401.2.4 and 8.401.2.11(B) NMAC, as reprinted in HCA's proposed amendment #page 1,5"
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/d3ee1d62-6f0f-4df7-b7fc-96a4c523ea89/08.401.0002_amended.pdf#page=1

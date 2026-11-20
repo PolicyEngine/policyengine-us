@@ -91,3 +91,25 @@
     # (1,460 - 541.95) * 0.8 = 734.44. Without the supplement:
     # (11,928 - 8,060) * 0.08785 = 339.80; (1,460 - 339.80) * 0.8 = 896.16.
     wi_homestead_credit: 734.44
+
+- name: Case 7, a homeowner's veterans' benefits reduce the credit through household income.
+  # Wis. Stat. 71.52(6) counts "veterans disability pensions" and other cash
+  # benefits for service in the armed forces (2025 Schedule H line 9d).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 70
+    social_security_retirement: 12_000
+    veterans_benefits: 6_000
+    real_estate_taxes: 1_000
+    ssi: 0
+  output:
+    # No Social Security is taxable: 12,000 + 6,000 = 18,000.
+    wi_homestead_income: 18_000
+    wi_homestead_eligible: true
+    wi_homestead_property_tax: 1_000
+    # (18,000 - 8,060) x 8.785% = 873.229 phase-out;
+    # (1,000 - 873.229) x 80% = 101.4168. Without the veterans' benefits:
+    # (12,000 - 8,060) x 8.785% = 346.129; (1,000 - 346.129) x 80% = 523.0968.
+    wi_homestead_credit: 101.4168

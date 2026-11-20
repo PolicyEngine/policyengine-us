@@ -2795,6 +2795,41 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-breathing-condition
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does a household member with a chronic breathing condition count as a targeted member for the Delaware
+    Summer Cooling Assistance electric benefit, as plan item 3.3 provides, or only for an air conditioner, as the
+    manual provides?
+  sources:
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 303.2 to 303.4, PDF pages 21-23
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=21
+  readings:
+    statute: No statute is supplied; plan item 3.3 targets the program to households with members "sixty or older,
+      disabled, children five and under, and members that suffer from chronic breathing conditions".
+    other: The manual pays the electric benefit to an applicant "60 years or older and/or disabled" and names
+      breathing conditions, with written documentation from a doctor, only for air conditioners.
+  example: One adult aged 45 with asthma, wages of $18,000 and a cooling cost is a targeted household under the plan,
+    and reaches only an air conditioner under the manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11112
+  state: ruled
+  note: Ruled 2026-11-18 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/11112#issuecomment-6990706166.
+    Follow the FY2026 and FY2027 plans. The has_chronic_breathing_condition input is authorized.
 - id: us-de:liheap-cooling-heating-bill
   program: liheap
   years:
@@ -4653,6 +4688,44 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires changing claimability to actual claim, after confirming
     the statutory text reproduced in the administrative rule. Code not yet on main: il_personal_exemption.'
+- id: us-il:scretd-household-income-nontaxable-pension
+  program: property-tax-deferral
+  years:
+    from: 2025
+    type: tax
+  question: Does household income for the Illinois Senior Citizens Real Estate Tax Deferral count the part of pension
+    payments left out of federal gross income, as section 3.07(C) counts amounts received as an annuity under any
+    contract or agreement, or only the federally taxable part of pension benefits, as Form IL-1017 and PIO-64 list?
+  sources:
+  - kind: statute
+    citation: 320 ILCS 25/3.07(C), applied to the deferral by 320 ILCS 30/2(h)
+    url: https://www.ilga.gov/Documents/legislation/ilcs/documents/032000250K3.07.htm
+  - kind: form
+    citation: Form IL-1017 (R-11/25), Worksheet A lines 3 and 4 (PDF page 2) and General Information (PDF page 3)
+    url: https://cookcountytreasurer.com/pdfs/seniordeferral/IL-1017%20Form%20TY%202025.pdf#page=2
+  - kind: guidance
+    citation: Illinois Department of Revenue PIO-64, What is included in household income
+    url: https://tax.illinois.gov/research/publications/pio-64.html
+  readings:
+    statute: Section 3.07 adds to federal adjusted gross income, to the extent deducted or excluded from gross income in
+      computing it, "(C) An amount equal to all amounts received during the taxable year as an annuity under an
+      annuity, endowment or life insurance contract or under any other contract or agreement".
+    other: Worksheet A line 3 counts "Civil Service benefits (household total)" and line 4 "Annuity benefits and
+      federally taxable pension and IRA benefits"; the form's General Information and PIO-64 list "Pension and IRA
+      benefits (federally taxable portion only)".
+  example: In 2025 a claimant with a $40,000 employer pension, $4,000 of it a tax-free return of contributions, and
+    $36,000 of taxable interest has AGI of $72,000. Household income is $76,000 under section 3.07(C), over the
+    $75,000 limit, and $72,000 under the form, within it.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/il/idor/scretd/household_income_additions.yaml
+    prs: []
+  state: unreviewed
+  note: PolicyEngine adds tax_exempt_pension_income, the part of pension and annuity payments left out of gross income,
+    because section 3.07(C) reaches annuities paid under "any other contract or agreement" and the form itself counts
+    Civil Service benefits and annuity benefits in full. Nontaxable IRA and Roth distributions are not annuities and
+    are not added, as on the form.
 - id: us-il:snap-child-support-exclusion
   program: snap
   years:
@@ -5602,33 +5675,67 @@ candidates:
   program: connectorcare
   years:
     from: 2026
-    to: 2026
     type: program
-    note: program year as the program defines it
-  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the Overview's
-    100-400% range?
+    note: Health Connector plan year beginning January 1.
+  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the 100-400% FPL
+    range of the 2026 Overview and the 2027 Guide, and does the limit fall to the statute's 300% FPL once the Expansion
+    Pilot ends after plan year 2027?
   sources:
+  - kind: statute
+    citation: M.G.L. c.176Q s.3(b)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter176Q/Section3
+  - kind: statute
+    citation: St. 2023 c.28 s.81, ConnectorCare Expansion Pilot
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+  - kind: statute
+    citation: St. 2025 c.9 s.96
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2025/Chapter9
+  - kind: statute
+    citation: St. 2026 c.137 (FY2027 General Appropriation Act) ss.92-93 and 102
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter137
   - kind: regulation
-    citation: 956 CMR 12.04(3), including 12.04(3)(b)2
+    citation: 956 CMR 12.04(3)(a)1-2 and (b), with 12.04(2)(b)
     url: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
   - kind: guidance
     citation: ConnectorCare Overview 2026, Table 2 income bands
     url: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+  - kind: guidance
+    citation: Health Connector 2027 Guide to Subsidies, Plan Type 3C (300% to 400% FPL)
+    url: https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1
   readings:
-    statute: The regulation covers up to 500% FPL, including Plan Type 1 below 100% and Type 3D at 400.1-500%.
-    other: The Overview covers 100-400% FPL and Types 2A-3C.
+    regulation: '956 CMR 12.04(3)(a)1 reads "at or below 500 percent of the FPL", with no end date, and 12.04(3)(b)
+      still defines Plan Type 1 below 100% FPL and Plan Type 3D at 400.1-500% FPL. 12.04(3)(a)2 also requires
+      eligibility for a Non-Group Health Plan with APTC only under 12.04(2)(a) and (b), and 12.04(2)(b) requires
+      eligibility for federal Advance Premium Tax Credits under 45 CFR 155.305(f). St. 2023 c.28 s.81(a) has the pilot
+      extend eligibility "for applicants at or below 500 per cent of the federal poverty guidelines".'
+    guidance: The 2026 Overview covers 100-400% FPL and Plan Types 2A-3C, and says households above 400% FPL do not
+      qualify. The 2027 Guide keeps Plan Types 2A-3C, with 3C at 300% to 400% FPL, for plan year 2027.
+    statute: 'M.G.L. c.176Q s.3(b) limits premium assistance to applicants "at or below 300 per cent of the federal
+      poverty guidelines". Incomes over 300% qualify only under the pilot of St. 2023 c.28 s.81, which applies
+      "notwithstanding" that limit and began "not later than January 1, 2024". St. 2025 c.9 s.96 made it a 3-year
+      pilot and St. 2026 c.137 s.92 a "4-year" pilot, so it covers plan years 2024 to 2027; s.102 funds "the fourth
+      year of the pilot program". Section 93 moves the repeal of s.81 (St. 2023 c.28 ss.103 and 114) from December
+      31, 2027 to December 31, 2028 without lengthening the pilot, so from plan year 2028 the limit is 300% FPL.'
+  example: In 2028 one enrollee at 305% FPL, with an $8,000 benchmark premium and a $4,000 federal credit, gets no
+    ConnectorCare under the statute's 300% limit, or $1,096 as Plan Type 3C (12 x $242 enrollee premium) under a 400%
+    or 500% limit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_floor.yaml
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_limit.yaml
     - policyengine_us/variables/gov/states/ma/hic/connector_care/ma_connector_care_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9240
-  state: unreviewed
-  note: 'PE-US follows the Overview for 2026: income must be from 100% to 400% FPL, and the floor''s and limit''s
-    comments record the regulation''s Plan Type 1 and 3D bands, which are left unmodelled (fpl_floor.yaml, fpl_limit.yaml,
-    ma_connector_care_eligible.py). Reconcile the narrower coverage with the regulation.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/11154
+  state: open
+  note: 'For plan years 2026 and 2027 income must be from 100% to 400% FPL (fpl_floor.yaml and fpl_limit.yaml, read by
+    ma_connector_care_eligible.py). These bounds match the federal credit condition of 12.04(3)(a)2: from 2026 the
+    federal premium tax credit stops at 400% FPL and its below-100% exception is gone, and ma_connector_care_member_eligible.py
+    requires credit eligibility. The 2026 Overview and the 2027 Guide print the same band. From plan year 2028 the
+    code follows the statute: fpl_limit.yaml returns to 300% FPL, applied as "<=", over the regulation''s undated
+    500%, which rests on the pilot''s authority. A pilot extension in the FY2028 budget would be a one-line parameter
+    change. Not yet ruled.'
 - id: us-ma:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -6221,6 +6328,58 @@ candidates:
     at 2.00%, and the comment records that the briefing prints 1.00% at that boundary twice (target_contribution_percentage/initial.yaml
     and final.yaml, read by md_premium_assistance_target_contribution_percentage.py). Verify the suspected briefing
     error and 2027 applicability.'
+- id: us-md:premium-assistance-young-adult-age-cap
+  program: premium-assistance
+  years:
+    from: 2026
+    to: 2027
+    type: program
+    note: Maryland Health Connection plan year beginning January 1.
+  question: Does Maryland's Young Adult Subsidy reduce the expected contribution only for enrollees under 35, as COMAR
+    14.35.19.03A(4) reads, or through age 37, as the MHBE Board's parameters taper it?
+  sources:
+  - kind: statute
+    citation: Md. Insurance Article §31-122(d)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gin&section=31-122&enactments=false
+  - kind: regulation
+    citation: COMAR 14.35.19.03A(3) and (4)
+    url: https://regs.maryland.gov/us/md/exec/comar/14.35.19.03
+  - kind: policy
+    citation: MHBE Final 2026 State Subsidy and Reinsurance Parameters (Board 7-21-25), 2024-25 Young Adult Subsidy
+      Program Parameters, PDF page 14
+    url: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14
+  - kind: policy
+    citation: MHBE 2027 Final State Subsidy and Estimated Reinsurance Parameters (Board 8-4-26), expected contribution
+      note and 2024-26 Young Adult Subsidy Program Parameters, PDF pages 21 and 34
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/08/2027-Final-State-Subsidy-and-Estimated-Reinsurance-Parameters.pdf#page=21
+  - kind: policy
+    citation: MHBE Board meeting minutes of August 4, 2026, PY2027 state subsidy motion, PDF page 8
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/09/MHBE-Board-Meeting-Minutes-8.04.26.pdf#page=8
+  readings:
+    regulation: 'COMAR 14.35.19.03A makes an enrollee eligible only if "(3) The enrollee is at least 18 years old; and
+      (4) The enrollee is under the age of 35 years", so enrollees aged 35 to 37 get no reduction. The Insurance Article
+      sets no age cap of its own: §31-122(d)(1) has the Exchange, as approved by the Board, set the eligibility and
+      payment parameters for each calendar year, and (d)(2)(i) has it consider "young adults at least 18 years old and
+      under the age of 41 years".'
+    other: 'The Board''s parameters reduce the expected contribution by 2.5 percentage points at ages 18 to 33 and by
+      2.0, 1.5, 1.0 and 0.5 points at ages 34 to 37 ("Age: 18-37 (18 or older; younger than 38)"), and the Board
+      continued the 2026 Young Adult Subsidy parameters for PY2027.'
+  example: In 2027 a single filer aged 36 at exactly 300% FPL ($47,880), with a $7,000 benchmark premium and a $2,106.66
+    federal credit, has a 7.11% target contribution and $1,489.07 of state subsidy under the Board's taper, or an 8.11%
+    target and $1,010.27 under the under-35 cap.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/young_adult/reduction.yaml
+    - policyengine_us/variables/gov/states/md/mhbe/premium_assistance/md_premium_assistance_young_adult_reduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11153
+  state: ruled
+  note: PolicyEngine follows the Board's schedule, which MHBE applies, under a project-lead ruling of 2026-11-18;
+    young_adult/reduction.yaml reduces the target contribution through age 37 in 2026 and 2027. No COMAR amendment
+    was found; the regulation still reads "under the age of 35 years". The Board's tables have tapered the reduction
+    through age 37 since 2024 (2026 deck, PDF page 14). Slide 25 of the 2027 deck prints ages 19-33, but slides 21
+    and 34 and the adopted motion keep 18, so PolicyEngine keeps 18.
 - id: us-md:snap-child-support-deduction
   program: snap
   years:
@@ -8915,6 +9074,44 @@ candidates:
   state: ruled
   note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
     claim the credit on a separate return.
+- id: us-nj:liheap-cooling-amount
+  program: liheap
+  years:
+    from: 2022
+    type: federal-fiscal
+  question: Is the medically necessary cooling benefit $100 under the regulation or $300 under the handbooks?
+  sources:
+  - kind: regulation
+    citation: N.J.A.C. 5:49-3.3(a) and 5:49-3.6(d) (chapter readopted effective 2025-09-22)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-3-3
+  - kind: manual
+    citation: FY2026 and FY2027 LIHEAP Handbooks, sections 3.4.A and 3.7.D
+    url: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=14
+  - kind: guidance
+    citation: FY2026 USFHEA fact sheet, page 1 ($300.00 medically necessary cooling benefit)
+    url: https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=1
+  - kind: guidance
+    citation: FY2027 USFHEA fact sheet, page 1 ($300.00 medically necessary cooling benefit)
+    url: https://nj.gov/dca/dhcr/offices/docs/FY2027%20USFHEA%20Factsheet%20-%20English.pdf#page=1
+  - kind: plan
+    citation: New Jersey FY2027 LIHEAP State Plan, item 3.6 (cooling minimum $118, maximum $1,278), PDF page 12
+    url: https://liheapch.acf.gov/docs/2027/state-plans/NJ_Plan_2027.pdf#page=12
+  readings:
+    statute: No statute supplied; the codified regulation sets a one-time benefit of $100.00 and says medically
+      necessary cooling assistance shall not exceed $100.00.
+    other: The handbooks set a one-time benefit of $300.00 and cite N.J.A.C. 10:89-3.3 as capping it at $300.00; the
+      fact sheets print $300.00; the plan prints neither figure, only a $118 to $1,278 cooling range.
+  example: In FY2026 an eligible household receives $300 under the handbooks or $100 under the regulation.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/nj/dca/liheap/cooling/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11116
+  state: ruled
+  note: Ruled 2026-11-18 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/11116#issuecomment-6990706668.
+    Follow the handbooks and pay $300, as for us-nj:liheap-income-ceiling. The FY2026 value is applied back to FY2022,
+    and those earlier years are unverified.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
@@ -8961,14 +9158,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_eligible.py
+    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/nj/dca/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10279
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
-    than" (nj_liheap_eligible.py).
+    than" (nj_liheap_income_eligible.py).
 - id: us-nj:liheap-tanf-and-general-assistance-income
   program: liheap
   years:
@@ -11146,6 +11343,47 @@ candidates:
     $82,115. PY2027: sizes 7, 9 and 11 are $1 lower ($104,693 and $104,692 at 7); the other sizes are whole-dollar
     products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
     us-or:liheap-final-payment-band-bound.'
+- id: us-or:retirement-credit-capital-loss-carryover
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does household income for Oregon's retirement income credit add back a capital loss carryover that offsets
+    the year's capital gains, as Publication OR-17 directs, when ORS 316.157(2)(c)(B) disallows only net operating loss
+    carryovers by name?
+  sources:
+  - kind: statute
+    citation: ORS 316.157(2)(c) and (2)(c)(B)(i) and (v) (2023 edition, PDF pp.25-26; unchanged in the 2025 edition)
+    url: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25
+  - kind: guidance
+    citation: 2025 Publication OR-17, PDF p.107 ("What's included in household income?")
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=107
+  - kind: guidance
+    citation: 2025 Publication OR-17, household income checklist, PDF p.127 (the 2024 edition has the same text on pp.107
+      and 127)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=127
+  readings:
+    statute: Income starts from federal adjusted gross income. (B)(i) adds back only "the net loss, in excess of $1,000,
+      from all dispositions of tangible or intangible properties", and (B)(v) adds back "any net operating loss
+      carryovers or carrybacks included in federal adjusted gross income". No item names a capital loss carryover,
+      which IRC 1212(b) nets with the year's capital gains and losses, so a carryover that offsets the year's gains
+      stays in household income, and a net loss it creates counts up to $1,000.
+    other: Publication OR-17 says "Capital loss carryforwards aren't allowed", and its checklist lists "Capital loss
+      carryover No", so the carryover is added back.
+  example: A filer with $10,000 of taxable pension, a $4,000 long-term gain and a $4,000 long-term capital loss
+    carryover has federal AGI of $10,000. Household income is $10,000 under the statute and $14,000 under Publication
+    OR-17.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit_disallowed_losses.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11174
+  state: ruled
+  note: A 2026-11-19 ruling under the statute-first rule follows ORS 316.157(2)(c)(B). Household income starts from
+    federal adjusted gross income, where long_term_capital_gains is net of long_term_capital_loss_carryover, and the
+    disallowed-loss variable does not add the carryover back. The YAML case "A capital loss carryover offsets the year's
+    gain" in or_retirement_credit_household_income.yaml pins the statute's reading at $10,000.
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
@@ -12004,10 +12242,10 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
-  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
-    federal 110% poverty-guideline floor?
+  question: Can South Carolina's 60% SMI heating and cooling limit exclude a household of 15 or more whose income is
+    below the federal 110% poverty-guideline floor?
   sources:
   - kind: statute
     citation: 42 U.S.C. 8624(b)(2)(B)
@@ -12015,21 +12253,26 @@ candidates:
   - kind: plan
     citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
     url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  - kind: plan
+    citation: South Carolina FY2027 LIHEAP State Plan, heating and cooling income eligibility (items 2.1 and 3.1), pp.8,
+      10
+    url: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
-    other: The plan's 60% SMI limit falls below that floor from 15 members.
+    other: The plans' 60% SMI limit, used for heating and cooling, falls below that floor from 15 members in FY2026 and
+      FY2027.
   example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
     one-year lag), so they keep the $200 base award.
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_income_eligible.py).
 - id: us-sc:liheap-low-income-tier-base
   program: liheap
   years:
@@ -12751,6 +12994,43 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
     tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
+- id: us-tn:elderly-relief-nontaxable-retirement-benefits
+  program: property-tax-relief
+  years:
+    from: 2020
+    type: tax
+  question: Does Tennessee's property tax relief for elderly homeowners count the part of retirement and pension
+    benefits that is not taxable by IRS standards, which Rule 0600-03-.08(3) adds to adjusted gross income, or only
+    the taxable amount, as Comptroller Bulletin 2019-01 directs?
+  sources:
+  - kind: regulation
+    citation: Tenn. Comp. R. & Regs. 0600-03-.08(3)
+    url: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-0600-03-.08
+  - kind: guidance
+    citation: Tennessee Comptroller Bulletin 2019-01, Counting Income for Tax Relief and Tax Freeze, item 4 (PDF page 1)
+    url: https://www.comptroller.tn.gov/content/dam/cot/pa/documents/manualsandreports/bulletins-and-summaries/Bulletin2019-01CountingIncomeforTaxReliefandTaxFreeze(12-9-2019).pdf#page=1
+  readings:
+    statute: 'T.C.A. 67-5-702(a)(2) tests "annual income from all sources" without defining it. Rule 0600-03-.08(3)
+      lists "retirement and pension benefits after deduction of healthcare insurance premiums" and says the adjusted
+      gross income amount "is added to any income sources specified above which may not be taxable by IRS standards."'
+    other: 'Bulletin 2019-01 item 4 counts "Retirement and pension benefits after deduction of healthcare insurance
+      premiums" and says "Look to the amount listed in box 4b of IRS Form 1040." The bulletin cites 2018 form
+      numbering (Schedule 1 lines 23 through 36), on which Form 1040 line 4b is the taxable amount of IRAs, pensions
+      and annuities.'
+  example: 'In 2026 a homeowner aged 70 whose $40,000 pension includes $10,000 of nontaxable return of after-tax
+    contributions has income of $40,000 under the rule, above the $38,470 limit, and $30,000 under the bulletin,
+    which is under it.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11166
+  state: unreviewed
+  note: 'PolicyEngine adds tax_exempt_pension_income and tax_exempt_retirement_distributions to adjusted gross income
+    through gov.states.tn.tax.property.elderly_property_tax_relief.nontaxable_income.sources. PolicyEngine has
+    recorded no ruling. The rule text was read on Cornell LII; the Secretary of State''s copy refused automated
+    access.'
 - id: us-tx:ccs-board-psoc-before-tx3c
   program: child-care-assistance
   years:

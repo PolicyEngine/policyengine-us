@@ -64,6 +64,8 @@ class sc_liheap(Variable):
     reference = (
         # PDF pages 8-9
         "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8",
+        # PDF pages 8-9,26
+        "https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2",
         # PDF pages 311-312,338,529,537,546
         "https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=311",

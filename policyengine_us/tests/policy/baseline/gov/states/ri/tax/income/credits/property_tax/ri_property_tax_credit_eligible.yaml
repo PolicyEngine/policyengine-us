@@ -133,15 +133,22 @@
 - name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the head)"
   period: 2025
   input:
+    # Neither person receives SSI or the Rhode Island state supplement,
+    # which count as household income (R.I. Gen. Laws 44-33-3(7)), so
+    # household income stays $0.
     people:
       person_a:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -164,14 +171,21 @@
 - name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the spouse)"
   period: 2025
   input:
+    # Neither person receives SSI or the Rhode Island state supplement,
+    # which count as household income (R.I. Gen. Laws 44-33-3(7)), so
+    # household income stays $0.
     people:
       person_b:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
@@ -219,14 +233,21 @@
 - name: "2025 joint return with neither spouse claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
   period: 2025
   input:
+    # Neither person receives SSI or the Rhode Island state supplement,
+    # which count as household income (R.I. Gen. Laws 44-33-3(7)), so
+    # household income stays $0.
     people:
       person_a:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -302,15 +323,22 @@
 - name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the head)"
   period: 2025
   input:
+    # Neither person receives SSI or the Rhode Island state supplement,
+    # which count as household income (R.I. Gen. Laws 44-33-3(7)), so
+    # household income stays $0.
     people:
       person_a:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 40
+        ssi: 0
+        ri_ssp: 0
         is_disabled: true
         real_estate_taxes: 500
         is_tax_unit_head: false
@@ -331,15 +359,22 @@
 - name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the spouse)"
   period: 2025
   input:
+    # Neither person receives SSI or the Rhode Island state supplement,
+    # which count as household income (R.I. Gen. Laws 44-33-3(7)), so
+    # household income stays $0.
     people:
       person_b:
         age: 40
+        ssi: 0
+        ri_ssp: 0
         is_disabled: true
         real_estate_taxes: 500
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 65
+        ssi: 0
+        ri_ssp: 0
         real_estate_taxes: 500
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
@@ -358,6 +393,7 @@
 
 - name: 2025 single filer aged 65 who can be claimed but is not claimed is a Rhode Island property tax relief claimant
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       filer:
@@ -374,9 +410,15 @@
         state_code: RI
   output:
     # 44-33-3 excludes a person "claimed as a dependent by any taxpayer":
-    # an actual claim. min($1,000 - $0, $700) = $700.
+    # an actual claim. With no other income the filer receives the full 2025
+    # SSI benefit rate, 967 x 12 = 11,604, and the Rhode Island state
+    # supplement for an individual living independently, 39.92 x 12 = 479.04.
+    # Both count as household income (R.I. Gen. Laws 44-33-3(7)): 12,083.04,
+    # in the 5% band for one person (10,481 to 13,970). Threshold
+    # 12,083.04 x 5% = 604.15, so the credit is min(1,000 - 604.15, 700) =
+    # 395.85.
     ri_property_tax_credit_eligible: true
-    ri_property_tax_credit: 700
+    ri_property_tax_credit: 395.85
 
 - name: 2025 single filer aged 40 whose 70-year-old parent is a dependent of the return has no Rhode Island property tax relief claimant
   period: 2025

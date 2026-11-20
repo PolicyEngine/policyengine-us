@@ -63,7 +63,7 @@ def create_az_dependent_credit_reform_fn(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
@@ -123,7 +123,7 @@ def create_az_refundable_dependent_credit() -> Reform:
             unused_credit = max_(potential - non_refundable, 0)
             # Only pay the refund in periods where the reform is in effect.
             # The reform is installed for the whole simulation whenever it
-            # activates in any of the next five years (see
+            # activates in any year of the lookahead window (see
             # create_az_refundable_dependent_credit_reform_fn), so this
             # per-period gate prevents a refund leaking into
             # pre-activation years.
@@ -161,7 +161,7 @@ def create_az_refundable_dependent_credit_reform_fn(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).refundable.in_effect:
             reform_active = True
             break

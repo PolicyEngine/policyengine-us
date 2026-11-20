@@ -220,3 +220,18 @@
     # N.J.S. 54A:5-2: the category (h) net loss is disregarded, so
     # 50,000 + 3,000 + max(-8,000, 0) = 53,000.
     nj_gross_income: 53_000
+
+- name: 401(k) elective deferrals are left out of gross income and 403(b) deferrals are not.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    traditional_403b_contributions: 2_000
+    taxable_interest_income: 1_000
+    state_code: NJ
+  output:
+    # N.J.S.A. 54A:6-21 excludes the 401(k) deferrals. The 2025 NJ-1040
+    # instructions (PDF page 10) tax employee contributions to 403(b) plans.
+    # Wages 60,000 - 4,000 = 56,000, plus 1,000 of interest = 57,000.
+    nj_gross_income: 57_000

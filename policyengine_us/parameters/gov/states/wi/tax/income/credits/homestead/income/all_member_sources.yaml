@@ -1,0 +1,20 @@
+description: Wisconsin counts these homestead credit income sources for every tax unit member, not only the claimant and spouse, as payments the claimant receives for a dependent.
+values:
+  2021-01-01:
+    # Each entry must also be in sources.yaml, which decides what counts;
+    # this list only decides whose amounts are summed.
+    # Wis. Stat. 71.52(6) counts "support money", and Schedule H line 9i
+    # counts "court ordered support payments received in 2025, including
+    # child support" (instructions, page 14). The claimant receives child
+    # support for the child, so it counts even when recorded on the child.
+    # A child's own Social Security and SSI stay out (line 9b, page 13).
+    - child_support_received
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin homestead credit income sources counted for every member
+  reference:
+    - title: Wis. Stat. 71.52(4)-(6)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52
+    - title: "2025 Wisconsin Schedule H instructions #page 13-14"
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=13

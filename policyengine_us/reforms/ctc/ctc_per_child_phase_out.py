@@ -102,7 +102,7 @@ def create_ctc_per_child_phase_out_reform(parameters, period, bypass: bool = Fal
 
     reform_active = False
     current_period = period_(period)
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

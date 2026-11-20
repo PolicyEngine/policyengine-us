@@ -5,6 +5,7 @@ from functools import reduce
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.general import *
+from policyengine_us.tools.parameters import STRUCTURAL_REFORM_CHECK_YEARS
 from pathlib import Path
 from policyengine_us.typing import *
 import warnings

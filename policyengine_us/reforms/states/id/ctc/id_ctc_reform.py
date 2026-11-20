@@ -140,7 +140,7 @@ def create_id_ctc_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         node = p(current_period)
         if node.in_effect or node.refundable.in_effect:
             reform_active = True
