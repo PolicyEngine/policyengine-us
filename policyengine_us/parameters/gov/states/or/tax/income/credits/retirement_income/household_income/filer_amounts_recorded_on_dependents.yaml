@@ -1,0 +1,16 @@
+description: Oregon counts these household income additions for the retirement income credit when they are recorded on a dependent, because the taxpayer receives them.
+values:
+  2018-01-01:
+    # ORS 316.157(2)(c)(A)(ii): "Child support received by the taxpayer."
+    # Support paid to the custodial parent for a child may be recorded on the
+    # child.
+    - child_support_received
+metadata:
+  unit: list
+  period: year
+  label: Oregon retirement income credit household income additions recorded on dependents
+  reference:
+    - title: ORS 316.157(2)(b) and (2)(c)(A)(ii), credit for retirement income (2023 edition)
+      href: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25
+    - title: ORS 316.157(2)(b) and (2)(c)(A)(ii), credit for retirement income (2025 edition)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html

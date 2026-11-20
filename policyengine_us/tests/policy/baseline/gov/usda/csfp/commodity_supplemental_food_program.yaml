@@ -1,6 +1,7 @@
 - name: Age ineligible
   period: 2019
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 13_000
     spm_unit_fpg: 10_000
     age: 59
@@ -10,6 +11,7 @@
 - name: Income ineligible
   period: 2019
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 13_100
     spm_unit_fpg: 10_000
     age: 60
@@ -19,6 +21,7 @@
 - name: Eligible
   period: 2019
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 13_000
     spm_unit_fpg: 10_000
     age: 60
@@ -28,6 +31,7 @@
 - name: Case 4, eligible in 2024.
   period: 2024
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 13_000
     spm_unit_fpg: 10_000
     age: 60
@@ -37,6 +41,7 @@
 - name: Case 5, eligible in 2025 with updated amount.
   period: 2025
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 15_000
     spm_unit_fpg: 10_000
     age: 60
@@ -46,6 +51,7 @@
 - name: Case 6, eligible in 2026 with updated amount.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     csfp_countable_income: 15_000
     spm_unit_fpg: 10_000
     age: 60

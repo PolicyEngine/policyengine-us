@@ -62,9 +62,15 @@ class aca_ptc_slcsp(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        enrolled = person("is_aca_marketplace_enrollee", period.this_year)
         member = person("is_aca_tax_family_member", period.this_year)
+        # Every possible enrollee belongs to the coverage family, so a
+        # supplied benchmark carries through without deriving enrollment.
+        if member.all():
+            return tax_unit("slcsp", period)
+        enrolled = person("is_aca_marketplace_enrollee", period.this_year)
         every_enrollee_covered = ~tax_unit.any(enrolled & ~member)
+        if every_enrollee_covered.all():
+            return tax_unit("slcsp", period)
         coverage_family_benchmark = benchmark_premium(
             tax_unit, period, parameters, member, enrolled
         )

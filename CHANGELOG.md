@@ -1,3 +1,352 @@
+## [2.151.2] - 2026-11-20
+
+### Fixed
+
+- Denver's property tax relief income now counts military retired pay, retirement account distributions, Colorado Old Age Pension and Aid to the Needy Disabled, as the program's rules count all income except a listed set.
+
+
+## [2.151.1] - 2026-11-20
+
+### Fixed
+
+- Count child support, untaxed maintenance, county relief, veterans' benefits, untaxed retirement distributions, 401(k) and 403(b) deferrals, deducted IRA and self-employed plan contributions, workers' compensation and untaxed disability insurance in Wisconsin homestead credit household income, as Wis. Stat. 71.52(6) requires. S corporation income no longer counts as earned income for the homestead credit's eligibility test; a partner's net earnings from self-employment do.
+
+
+## [2.151.0] - 2026-11-20
+
+### Added
+
+- Add New Mexico's Puente Health premium assistance for lawfully present non-citizens who lost the federal premium tax credit under Public Law 119-21: those under 100% of the poverty line in 2026 and those at or below 400% in 2027.
+
+
+## [2.150.3] - 2026-11-20
+
+### Changed
+
+- Cite the 2027 sources for California Premium Subsidy, Covered Connecticut and Vermont Premium Assistance, confirming that California's 100% income floor and the Covered Connecticut and Vermont values carry into 2027 unchanged, and note that Covered Connecticut's dental and transportation benefits become optional in 2027.
+
+
+## [2.150.2] - 2026-11-20
+
+### Changed
+
+- Update Colorado Premium Assistance to the 2027 amounts in amended Regulation 4-2-78: $70 a month for the first member and $25 for each additional member (were $80 and $29). Keep the program running in 2028 and later at the 2027 amounts, since SB26-178 and the regulation apply to 2027 and each year thereafter and no source sets different amounts.
+
+
+## [2.150.1] - 2026-11-20
+
+### Changed
+
+- Update Washington Cascade Care Savings to its 2027 amounts: $35 a month per member with federal subsidies up to 200% of the federal poverty line, $20 above it, and $185 without federal subsidies. The income limit and the new 200% split now read the same exact income-to-poverty-line ratio.
+
+
+## [2.150.0] - 2026-11-20
+
+### Added
+
+- Add the Rhode Island Marketplace Affordability Program (RIMAP), the state premium subsidy HealthSource RI pays on top of the federal premium tax credit for plan year 2027.
+
+
+## [2.149.3] - 2026-11-20
+
+### Fixed
+
+- Count the exempt income and the losses above $1,000 per category that ORS 316.157 adds to household income for Oregon's retirement income credit, and add losses above $20,000 and, from 2025, excluded foreign earned income to qualifying income for the Oregon Kids Credit.
+
+
+## [2.149.2] - 2026-11-20
+
+### Fixed
+
+- New Mexico modified gross income now counts farm, partnership and S corporation income, capital gain distributions, Form 4797 gains, general assistance, workers' compensation, disability benefits, discharged debt, gross gambling winnings, cash gifts, scholarships, miscellaneous income and excluded foreign earned income. Each source is now floored at zero person by person, and capital losses and loss carryovers no longer reduce capital gains.
+- Oklahoma's gross household income for the sales tax and property tax credits now counts the income of everyone in the household, not just the tax unit, and adds dependent care benefits, retirement account distributions, TANF, veterans' and disability benefits, scholarships, gambling winnings, excluded foreign earned income and the Oklahoma earned income credit.
+
+
+## [2.149.1] - 2026-11-20
+
+### Changed
+
+- Update Massachusetts ConnectorCare to the 2027 enrollee premiums ($0, $55, $107, $158 and $242 per person per month for Plan Types 2A to 3C). Lower the income limit to 300% FPL from 2028, when the 300-400% FPL pilot ends.
+
+### Fixed
+
+- Illinois Senior Citizens Real Estate Tax Deferral household income now follows 320 ILCS 25/3.07: federal adjusted gross income plus nontaxable Social Security, SSI, railroad retirement, tax-exempt interest, nontaxable annuity income, cash public assistance and workers' compensation, instead of federal gross income.
+- Rhode Island property tax relief household income now sums every tax unit in the household and adds back the business, rental and capital losses that federal AGI deducts. It also counts veterans' benefits, gross retirement account distributions, general assistance, SSI and the state supplement, tax-exempt disability benefits and section 911 income, and counts pre-2019 alimony once instead of twice.
+
+
+## [2.149.0] - 2026-11-20
+
+### Added
+
+- Add Connecticut Temporary Premium Assistance for 2026 and 2027, which replaces the lost enhanced federal premium tax credit in full at 100% to 200% of the poverty line (outside Covered Connecticut) and by half above 400% up to 500%.
+
+### Fixed
+
+- Pennsylvania taxable income no longer includes alimony, and it now counts employees' traditional 401(k) and 403(b) contributions as taxable compensation, as the PA-40 instructions require.
+
+
+## [2.148.4] - 2026-11-20
+
+### Fixed
+
+- Ohio homestead exemption total income now defaults to the current year's Ohio modified adjusted gross income as a proxy for the prior year's, so the income limit applies in single-year runs instead of reading an empty prior year as 0; a known prior-year figure can still be entered as the total income.
+- New Jersey wages now leave out 401(k) elective deferrals (N.J.S.A. 54A:6-21), which lowers New Jersey income tax and the income that ANCHOR, property tax relief and the other retirement income exclusion read for 401(k) contributors; 403(b), 457 and other deferrals stay taxable.
+
+
+## [2.148.3] - 2026-11-20
+
+### Changed
+
+- Update Maryland's state subsidy to the target contribution percentages the MHBE Board adopted for 2027, and add 2027 references and tests.
+
+
+## [2.148.2] - 2026-11-20
+
+### Fixed
+
+- Minnesota's Homestead Credit Refund household income now adds Supplemental Security Income, cash assistance, workers' compensation, tax-exempt interest, nontaxable retirement distributions and alimony, and the HSA deduction, and its retirement base amount follows the federal IRA limit. The renter's credit now counts only the claimant's and spouse's income, not other adults' in the home.
+- Count the income Tennessee's Rule 0600-03-.08(3) adds to adjusted gross income for elderly homeowner property tax relief: Social Security and Railroad Retirement benefits after the Medicare Part B premium, SSI, veterans' benefits, workers' compensation, tax-exempt interest, nontaxable alimony and nontaxable pensions.
+
+
+## [2.148.1] - 2026-11-20
+
+### Fixed
+
+- Start California's state-funded full-scope Medi-Cal for undocumented residents aged 19 to 25 on January 1, 2020; the model had covered them from 2015. Date the expansions to children (May 1, 2016) and to ages 50 and over (May 1, 2022) at their effective dates, which annual calculations read from 2017 and 2023. DACA and TPS holders keep the dates the model already gave them. The California Medi-Cal immigration eligibility formula applies edits to `eligible_regardless_of_immigration_status` to undocumented residents. DACA and TPS holders read a separate schedule.
+
+
+## [2.148.0] - 2026-11-20
+
+### Added
+
+- Bring back the Slack notice for PRs that change partner API contract tests: with a bot token, a PR's pushes over 24 hours share one thread; with only the webhook, pushes within 24 hours post again only when a new partner file changes.
+
+
+## [2.147.4] - 2026-11-20
+
+### Changed
+
+- Run PR CI on draft pull requests too, and stop rerunning it when a PR is marked ready or converted to draft.
+- Run the SPM Python tests on a runner of their own: after Microsimulation on PRs, beside it on release runs. The Microsimulation runner was hitting its 60-minute timeout with both suites.
+
+
+## [2.147.3] - 2026-11-19
+
+### Changed
+
+- Stop `test_an_edit_to_a_loaded_tree_reaches_the_next_simulation` requiring policyengine-core to load scale brackets without a parent. The test now detaches the bracket it edits, so it checks the same case whether or not core links a loaded tree's brackets to their scale.
+
+
+## [2.147.2] - 2026-11-19
+
+### Changed
+
+- Set the default calculation and input year of `Simulation` to 2026, keep `Microsimulation` on its dataset's base year, and check structural reforms from 2024 through 2033 by default.
+
+### Fixed
+
+- Fix state EITC and Utah HB210 Substitute 2 structural reforms that failed to build in a Simulation.
+
+
+## [2.147.1] - 2026-11-19
+
+### Fixed
+
+- Decide Colorado Premium Assistance's 400% income ceiling on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction` (Amended Regulation 4-2-78, 3 CCR 702-4, Section 4.C: household income "no greater than 400% of the Federal Poverty Level"). Under current law the federal premium tax credit gate already ends at 400%, so this changes results only when a reform extends the federal credit above 400%, where incomes from 400.003% to 400.994% were eligible.
+- Decide Covered Connecticut eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 175.003% to 175.994% of the poverty line are no longer eligible (C.G.S. § 19a-754c(b)(1)(C)(iv): "household income up to one hundred seventy-five per cent of the federal poverty level"; DSS applies it "up to an[d] including 175%").
+- Decide Massachusetts ConnectorCare's income ceiling and Plan Type bands on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`. 956 CMR 12.04(3)(b) puts income "at or below 150%" in Plan Type 2A, "over 150% and not over 200%" in 2B, and so on up to 3C, "not over 400%"; truncation put incomes from 150.003% to 150.994% (and the same slivers above 200%, 250% and 300%) in the cheaper band below. The 400% ceiling changes results only under a reform that extends the federal credit above 400%.
+- Decide Maryland Premium Assistance's 400% income ceiling on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction` (MHBE PY2026 design: "No state subsidy above 400% FPL"; PY2027: "Eligibility: 400% FPL or below"). Under current law the federal premium tax credit gate already ends at 400%, so this changes results only when a reform extends the federal credit above 400%, where incomes from 400.003% to 400.994% were eligible.
+- Decide Vermont Premium Assistance eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 300.003% to 300.994% of the poverty line are no longer eligible (33 V.S.A. § 1812(a)(1): "less than or equal to 300 percent of federal poverty level").
+- Decide Washington Cascade Care Savings eligibility on the exact ratio of ACA MAGI to the premium tax credit's poverty line (`aca_fpg`) instead of the truncated `aca_magi_fraction`, so incomes from 250.003% to 250.994% of the poverty line are no longer eligible (PY2026 and PY2027 Cascade Care Savings Policy, Section 4(1)(c): "Has income up to 250% of the Federal Poverty Level").
+- Treat household income exactly at 400% of the poverty line as eligible for the premium tax credit in 2026 and later. 26 U.S.C. 36B(c)(1)(A) covers income that "does not exceed 400 percent", and Form 8962 Worksheet 2 decides "more than 400%" on the dollar amounts before truncating the percentage; the income scale's 400% bracket started at 4.00, so the truncated fraction excluded a household at exactly 400%. The new `aca_ptc_income_eligible` variable carries the income test for `is_aca_ptc_eligible` and the Basic Health Program payment.
+
+
+## [2.147.0] - 2026-11-18
+
+### Added
+
+- Add New Jersey's LIHEAP medically necessary cooling benefit and a medical cooling-need input.
+
+
+## [2.146.0] - 2026-11-18
+
+### Added
+
+- Add Delaware's published LIHEAP cooling maximum and a chronic breathing condition input, and stop requiring a heating fuel for Delaware cooling eligibility.
+
+
+## [2.145.11] - 2026-11-18
+
+### Fixed
+
+- Apply South Carolina's FY2027 LIHEAP heating amounts and stop requiring a heating fuel for South Carolina cooling eligibility.
+
+
+## [2.145.10] - 2026-11-18
+
+### Fixed
+
+- Say in the program registry that Minnesota has no regular LIHEAP cooling payment, and that Missouri has none beyond electric-account payments used for cooling from October to May.
+
+
+## [2.145.9] - 2026-11-18
+
+### Changed
+
+- Cite the Texas FY2026 and FY2027 LIHEAP state plans for the Texas CEAP income limit and utility assistance maximums.
+
+
+## [2.145.8] - 2026-11-18
+
+### Changed
+
+- Add the FY2027 Illinois LIHEAP winter crisis maximum of $2,000.
+
+
+## [2.145.7] - 2026-11-18
+
+### Fixed
+
+- Archive New Jersey child and dependent care credit source excerpts for reproducible historical income-boundary checks.
+
+
+## [2.145.6] - 2026-11-17
+
+### Fixed
+
+- Corrected the Medicaid documentation page, which still described per-group per-capita costs, to describe the current valuation: state spending allocated by an ACA benchmark-premium cost index, the paired spending and enrollment years, and the method's known limits.
+
+
+## [2.145.5] - 2026-11-17
+
+### Fixed
+
+- Require a parent's or caretaker relative's children under the state's age limit (New Jersey 21, otherwise 19) to have Medicaid, CHIP, Marketplace or other coverage for the Medicaid adult group, per 42 CFR 435.119(c).
+
+
+## [2.145.4] - 2026-11-17
+
+### Fixed
+
+- Count a pregnant member's expected children in the other members' Medicaid household size where the state elects it under 42 CFR 435.603(b), now New Jersey as well as California, and pair a California non-filer's spouse only on a joint return.
+
+
+## [2.145.3] - 2026-11-17
+
+### Fixed
+
+- New Jersey's Medicaid pathway for aged, blind and disabled people now counts resources equal to the $4,000 and $6,000 limits as within them and rounds the monthly income limit down to the whole dollar.
+
+
+## [2.145.2] - 2026-11-17
+
+### Fixed
+
+- Count overlapping applicant, spouse, parent and child-age members once in Medicaid non-filer household size and income when explicit parent links are absent.
+
+
+## [2.145.1] - 2026-11-17
+
+### Fixed
+
+- Correct IRS September–August inflation windows, keep published amounts, and extend the last observed window at CBO's projected tax-year growth rates. Index Vermont and Wisconsin amounts on their own unchained CPI-U schedules, add Vermont's preliminary 2026 brackets, and preserve CBO calendar forecast anchors. Update observed chained CPI-U through August 2026. Store the amounts that Arizona, Arkansas, DC, Massachusetts, Michigan, Minnesota, Missouri, New Mexico, Oregon, Utah and Virginia have published for parameters that follow the index.
+
+
+## [2.145.0] - 2026-11-17
+
+### Added
+
+- New Jersey Medicaid and CHIP cover children under 19 regardless of immigration status from 2023 (Cover All Kids).
+
+
+## [2.144.6] - 2026-11-17
+
+### Fixed
+
+- New Jersey Medicaid parent and caretaker relative group now counts any adult caring for a foster child and the parent of an 18-year-old full-time secondary student, per New Jersey's approved state plan.
+
+
+## [2.144.5] - 2026-11-17
+
+### Fixed
+
+- Pair each year's Medicaid spending with the same year's enrollment when valuing Medicaid per enrollee, adding FY2024 KFF spending and January 2024 enrollment.
+
+
+## [2.144.4] - 2026-11-17
+
+### Fixed
+
+- Correct Minnesota's 2017–2020 child and dependent care credit phaseout thresholds.
+
+
+## [2.144.3] - 2026-11-17
+
+### Fixed
+
+- Start Delaware's refundable earned income tax credit option in tax year 2022.
+
+
+## [2.144.2] - 2026-11-17
+
+### Fixed
+
+- Limit SSI ineligible-child allocations to the co-resident children 20 CFR 416.1160(d) names: in spousal deeming, the couple's children and the claimant's siblings and step-siblings; in parental deeming, the parents' children. Count students under 22 (21 before June 16, 2008) as children, and leave out married children and household heads. Compute SSI and Medicaid deeming budgets month by month, including the student earned-income exclusion, and apply New Hampshire's and Oklahoma's allocation-child rules and Missouri's and Virginia's Medicaid child definitions.
+
+
+## [2.144.1] - 2026-11-17
+
+### Fixed
+
+- Apply Minnesota's 1% charitable contribution floor from 2026. Cap Minnesota's deduction for combined real estate and personal property taxes at $10,000 ($5,000 for married filing separately) from 2019, in place of the federal SALT cap. Keep the federal charitable deduction in Minnesota AMT.
+
+
+## [2.144.0] - 2026-11-17
+
+### Added
+
+- Counted Family Assistance, Safety Net Assistance payments and adult state SSI supplements in New York child care assistance income, and waived the family share for families that take up Family Assistance.
+
+### Fixed
+
+- Counted New York children's SSI and state supplements in child care assistance income before October 1, 2023, when OCFS began excluding them.
+
+
+## [2.143.0] - 2026-11-17
+
+### Added
+
+- Add an `itin_or_matin_eligible` switch to the Massachusetts Commonwealth Credit reform, which counts qualifying children without a Social Security number, as the Child and Family Tax Credit does.
+
+
+## [2.142.2] - 2026-11-17
+
+### Fixed
+
+- Apply the California infant supplement and expectant parent payment statewide while preserving their public variable names. Count eligible parents' own children, correct pregnancy timing and historical rates, and apply July 2026 amounts, including the group home expectant parent payment rate. Move parameters from `gov.local.ca.la.dss.*` to `gov.states.ca.cdss.*`, and split the expectant parent payment amount into `amount.base` and `amount.group_home`. Define `is_in_foster_care_group_home` as true for a qualifying group home or a short-term residential therapeutic program.
+
+
+## [2.142.1] - 2026-11-17
+
+### Fixed
+
+- Leave out of the self-employed health insurance deduction the premiums of a person who, or whose spouse on a joint return, is eligible for a subsidized employer health plan (26 U.S.C. 162(l)(2)(B), Form 7206 line 1).
+
+
+## [2.142.0] - 2026-11-17
+
+### Added
+
+- Add an annual CSFP take-up input that defaults to true and lets callers decline payments without changing eligibility.
+
+
+## [2.141.0] - 2026-11-17
+
+### Added
+
+- Added premium tax credit calculations for 2014–2017 with annual applicable percentages and estimated historical benchmark premiums.
+
+
 ## [2.140.3] - 2026-11-16
 
 ### Fixed

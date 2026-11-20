@@ -1,10 +1,18 @@
-# Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 1.1, 3.3-3.6
-# and 11.5; 2026 Benefit Matrix; OEO 2024 Administrative Guide, Section 3A.
+# Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 1.1, 2.3-2.6,
+# 3.3-3.6 and 11.5; 2026 Benefit Matrix; OEO 2024 Administrative Guide,
+# Section 3A.
 # FY2026 allows two awards in the program year, so cooling is paid in full.
 # FY2027 allows one, so in 2027 cooling pays only its excess over the heating
-# award, which uses the FY2026 heating amounts carried forward: base 200,
-# elderly 75, disabled 50, child 50, veteran 50, low income 175, energy burden
-# 175, gas, oil, kerosene or propane fuel 75, maximum 850.
+# award.
+# FY2026 heating: base 200, elderly 75, disabled 50, child 50, veteran 50, low
+# income 175, energy burden 175, gas, oil, kerosene or propane fuel 75,
+# maximum 850.
+# FY2027 heating: base 300, elderly 50, disabled 50, child 50, veteran 50, low
+# income 150, energy burden 200, gas, oil, kerosene or propane fuel 150,
+# maximum 1,000.
+# Cooling eligibility sets no heating-fuel condition: a household that reports
+# no heating fuel (heating_type left UNSPECIFIED) receives no heating award but
+# can receive cooling.
 # FY2026 cooling: base 200, elderly 75, disabled 50, child 50, veteran 50,
 # low income 175, energy burden 175, no fuel supplement, maximum 775.
 # FY2027 cooling: base 300, elderly 50, disabled 50, child 50, veteran 50,
@@ -189,7 +197,7 @@
     # 850 + 775.
     liheap: 1_625
 
-- name: Case 4, each FY2027 cooling supplement applies alone.
+- name: Case 4, each FY2027 supplement applies alone, and the equal electric-heat heating award leaves no cooling excess.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -269,21 +277,24 @@
         members: [person7]
         state_code: SC
   output:
-    # Cooling award and heating award (FY2026 amounts carried forward):
-    # Household 1, elderly: 300 + 50 = 350; heating 200 + 75 = 275.
+    # Cooling award and FY2027 heating award. Electric heat earns no fuel
+    # supplement, so the two awards are equal:
+    # Household 1, elderly: 300 + 50 = 350; heating 300 + 50 = 350.
     # Household 2, child aged 3 (two-person tier 13_031.70): 300 + 50 = 350;
-    # heating 200 + 50 = 250.
-    # Household 3, disabled: 300 + 50 = 350; heating 250.
-    # Household 4, veteran: 300 + 50 = 350; heating 250.
+    # heating 300 + 50 = 350.
+    # Household 3, disabled: 300 + 50 = 350; heating 350.
+    # Household 4, veteran: 300 + 50 = 350; heating 350.
     # Household 5, low income: 9_048 <= 9_965.40, and 1_500 < 1_809.60:
-    # 300 + 150 = 450; heating 200 + 175 = 375.
+    # 300 + 150 = 450; heating 300 + 150 = 450.
     # Household 6, energy burden: 10_400 > 9_965.40, and 2_400 >= 2_080:
-    # 300 + 200 = 500; heating 200 + 175 = 375.
-    sc_liheap: [275, 250, 250, 250, 375, 375]
-    # Was [350, 350, 350, 350, 450, 500], now [75, 100, 100, 100, 75, 125]:
+    # 300 + 200 = 500; heating 300 + 200 = 500.
+    # FY2027 heating amounts (plan items 2.3, 2.5 and 2.6).
+    sc_liheap: [350, 350, 350, 350, 450, 500]
     # FY2027 plan items 1.1 and 11.5 allow one award in the 2027 program year,
-    # so cooling pays only its excess over the heating award.
-    sc_liheap_cooling: [75, 100, 100, 100, 75, 125]
+    # so cooling pays only its excess over the heating award: 350 - 350 = 0,
+    # and so on. Each heating award equals the cooling award, so cooling pays
+    # 0.
+    sc_liheap_cooling: [0, 0, 0, 0, 0, 0]
 
 - name: Case 5, all FY2027 cooling supplements reach the 850 cooling maximum, which the heating award already pays.
   period: 2027
@@ -313,12 +324,15 @@
   output:
     # 9_600 <= 13_031.70, and 2_400 >= 1_920.
     # Cooling award: 300 + 50 + 50 + 50 + 50 + 150 + 200 = 850, the cooling
-    # maximum. Heating, FY2026 amounts carried forward: 200 + 75 + 50 + 50 +
-    # 50 + 175 + 175 + 75 = 850, the heating maximum.
-    sc_liheap: 850
-    # Was 850, now 0: one award is allowed in the 2027 program year, and the
-    # cooling award does not exceed the 850 heating award.
+    # maximum. FY2027 heating adds the 150 natural gas supplement: 850 + 150 =
+    # 1_000, the heating maximum.
+    # The FY2027 heating maximum is 1_000.
+    sc_liheap: 1_000
+    # One award is allowed in the 2027 program year, and the 850 cooling award
+    # does not exceed the 1_000 heating award.
     sc_liheap_cooling: 0
+    # The total is the larger award: 1_000.
+    liheap: 1_000
 
 - name: Case 6, in 2027 one award is allowed, so cooling pays only its excess over the heating award.
   period: 2027
@@ -355,17 +369,20 @@
         state_code: SC
   output:
     # Household 1: 20_800 > 9_965.40, and 2_400 < 20_800 * 0.2 = 4_160.
-    # Heating 200 + 75 gas = 275; cooling award 300, so cooling pays
-    # 300 - 275 = 25.
+    # Heating 300 + 150 gas = 450; cooling award 300, below the heating
+    # award, so cooling pays 0.
     # Household 2, aged 62: 9_600 <= 9_965.40, and 1_800 < 9_600 * 0.2 =
-    # 1_920. Heating 200 + 75 elderly + 175 low income + 75 gas = 525;
+    # 1_920. Heating 300 + 50 elderly + 150 low income + 150 gas = 650;
     # cooling award 300 + 50 + 150 = 500, below the heating award, so
     # cooling pays 0.
     sc_liheap_cooling_eligible: [true, true]
-    sc_liheap: [275, 525]
-    sc_liheap_cooling: [25, 0]
-    # The total is the larger award: 275 + 25 = 300 and 525 + 0 = 525.
-    liheap: [300, 525]
+    # FY2027 heating amounts: 300 + 150 gas = 450; 300 + 50 + 150 + 150 = 650.
+    sc_liheap: [450, 650]
+    # Each cooling award (300; 500) is below the heating award (450; 650),
+    # so cooling pays 0.
+    sc_liheap_cooling: [0, 0]
+    # One award a year: the total is the larger award.
+    liheap: [450, 650]
 
 - name: Case 7, a mixed-status household's cooling award is prorated to its eligible members.
   period: 2026
@@ -396,3 +413,214 @@
     # eligible member = 125.
     sc_liheap_household_size: 1
     sc_liheap_cooling: 125
+
+- name: Case 8, a household that reports no heating fuel receives the FY2026 cooling award but no heating award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person2:
+        age: 70
+        # 1_500 a month.
+        social_security_retirement: 18_000
+        # Does not receive SSI.
+        ssi: 0
+    spm_units:
+      # heating_type is left at its UNSPECIFIED default.
+      spm_unit1:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit2:
+        members: [person2]
+        # 125 a month.
+        pre_subsidy_electricity_expense: 1_500
+        has_cooling_expense: true
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+  output:
+    # Heating requires a reported fuel unless heat is in the rent; cooling
+    # does not.
+    sc_liheap_eligible: [false, false]
+    sc_liheap: [0, 0]
+    sc_liheap_cooling_eligible: [true, true]
+    # Household 1: 20_800 <= 31_993 and > 9_597.90; 1_800 < 20_800 * 0.2 =
+    # 4_160. Cooling base 200.
+    # Household 2, aged 70: 18_000 <= 31_993 and > 9_597.90; 1_500 < 18_000 *
+    # 0.2 = 3_600. Cooling 200 + 75 elderly = 275.
+    sc_liheap_cooling: [200, 275]
+    liheap: [200, 275]
+
+- name: Case 9, each FY2027 cooling supplement is paid in full to households that report no heating fuel.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person2:
+        age: 67
+        social_security_retirement: 24_000
+      person3:
+        age: 30
+        employment_income_before_lsr: 20_800
+      person4:
+        age: 3
+      person5:
+        age: 45
+        is_disabled: true
+        employment_income_before_lsr: 20_800
+        # Does not receive SSI.
+        ssi: 0
+      person6:
+        age: 45
+        is_veteran: true
+        employment_income_before_lsr: 20_800
+      person7:
+        age: 40
+        employment_income_before_lsr: 9_048
+      person8:
+        age: 40
+        employment_income_before_lsr: 10_400
+    spm_units:
+      # heating_type is left at its UNSPECIFIED default.
+      spm_unit1:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit2:
+        members: [person2]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit3:
+        members: [person3, person4]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit4:
+        members: [person5]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit5:
+        members: [person6]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit6:
+        members: [person7]
+        pre_subsidy_electricity_expense: 1_500
+        has_cooling_expense: true
+      spm_unit7:
+        members: [person8]
+        pre_subsidy_electricity_expense: 2_400
+        has_cooling_expense: true
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3, person4]
+        state_code: SC
+      household4:
+        members: [person5]
+        state_code: SC
+      household5:
+        members: [person6]
+        state_code: SC
+      household6:
+        members: [person7]
+        state_code: SC
+      household7:
+        members: [person8]
+        state_code: SC
+  output:
+    # No heating award, so the one-award rule leaves the whole cooling award:
+    # 2027 cooling = cooling award - 0 heating.
+    sc_liheap: [0, 0, 0, 0, 0, 0, 0]
+    # Household 1, base only: 20_800 > 9_965.40, and 1_800 < 4_160: 300.
+    # Household 2, elderly: 24_000 > 9_965.40, and 1_800 < 4_800: 300 + 50 =
+    # 350.
+    # Household 3, child aged 3 (two-person tier 13_031.70): 300 + 50 = 350.
+    # Household 4, disabled: 300 + 50 = 350.
+    # Household 5, veteran: 300 + 50 = 350.
+    # Household 6, low income: 9_048 <= 9_965.40, and 1_500 < 9_048 * 0.2 =
+    # 1_809.60: 300 + 150 = 450.
+    # Household 7, energy burden: 10_400 > 9_965.40, and 2_400 >= 10_400 *
+    # 0.2 = 2_080: 300 + 200 = 500.
+    sc_liheap_cooling: [300, 350, 350, 350, 350, 450, 500]
+    liheap: [300, 350, 350, 350, 350, 450, 500]
+
+- name: Case 10, FY2026 allows two services, so an elderly gas-heated household receives both awards.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # 1_500 a month.
+        social_security_retirement: 18_000
+        # Does not receive SSI.
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # 75 a month.
+        gas_expense: 900
+        # 125 a month.
+        pre_subsidy_electricity_expense: 1_500
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 18_000 <= 31_993 and > 9_597.90, so no low-income supplement. Bills of
+    # 900 + 1_500 = 2_400 < 18_000 * 0.2 = 3_600, so no burden supplement.
+    # Heating: 200 + 75 elderly + 75 natural gas = 350.
+    sc_liheap: 350
+    # Cooling: 200 + 75 elderly = 275, paid in full.
+    sc_liheap_cooling: 275
+    # 350 + 275 = 625.
+    liheap: 625
+
+- name: Case 11, FY2027 allows one service, so the same household receives the larger FY2027 heating award.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        # Does not receive SSI.
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        pre_subsidy_electricity_expense: 1_500
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    # 18_000 <= 33_218 and > 9_965.40, so no low-income supplement. Bills of
+    # 2_400 < 3_600, so no burden supplement.
+    # Heating: 300 + 50 elderly + 150 natural gas = 500.
+    sc_liheap: 500
+    # Cooling award 300 + 50 elderly = 350, below the 500 heating award, so
+    # cooling pays max(350 - 500, 0) = 0.
+    sc_liheap_cooling: 0
+    liheap: 500

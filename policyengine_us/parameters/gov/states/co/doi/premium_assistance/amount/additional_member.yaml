@@ -11,6 +11,18 @@ values:
   # low as $1", which conflicts with the section 5.B $0-floor and is not modeled.
   # Doc note: payments are subject to unmodeled budget/enrollment-slot caps.
   2026-01-01: 29
+  # $25 PMPM from the 2027 benefit year: DOI Amended Regulation 4-2-78
+  # (3 CCR 702-4), adopted 2026-08-11 and effective 2026-09-30, section 5.B.2,
+  # "For each additional member in the household who is subject to a premium,
+  # ... the lesser of $25 per member per month (PMPM) or the premium balance
+  # after federal APTC has been applied". The rule for more than three
+  # dependents under age 21 is unchanged. Section 5 applies "For the 2027
+  # benefit year, and annually thereafter". No source sets a different amount
+  # for 2028 or later, so $25 carries forward. SB26-178's C.R.S.
+  # 10-16-1205(2)(f)(II)(A) states an objective for leftover revenue, "AT THE
+  # SAME LEVEL OF PREMIUM ASSISTANCE PROVIDED IN THE 2026 CALENDAR YEAR", not
+  # an amount, so the rule's $25 governs.
+  2027-01-01: 25
 
 metadata:
   unit: currency-USD
@@ -23,3 +35,7 @@ metadata:
       href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance
     - title: Connect for Health Colorado - Colorado Premium Assistance
       href: https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/
+    - title: DOI Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30) section 5.B.2, 2027 benefit year and annually thereafter
+      href: https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=2
+    - title: Colorado DOI Notice of Adoption - Amended Regulations 4-2-73 and 4-2-78 (2026-08-11)
+      href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulations-4-2-73-and-4-2-78

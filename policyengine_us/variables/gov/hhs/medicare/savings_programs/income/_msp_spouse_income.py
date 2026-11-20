@@ -47,7 +47,9 @@ def msp_spouse_income(person: Population, period: Period, spouse: ArrayLike) -> 
         0,
         msp_spouse_value(person("ssi_unearned_income", year), spouse),
     )
-    allocations = add(person.tax_unit, year, ["ssi_ineligible_child_allocation"])
+    allocations = (
+        person("ssi_spousal_deeming_child_allocations", period) * MONTHS_IN_YEAR
+    )
     earned_left = max_(spouse_earned - max_(allocations - spouse_unearned, 0), 0)
     unearned_left = max_(spouse_unearned - allocations, 0)
     return earned_left, unearned_left

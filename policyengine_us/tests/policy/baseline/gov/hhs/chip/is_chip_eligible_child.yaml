@@ -1058,3 +1058,49 @@
         state_code: TX
   output:
     is_chip_eligible_child: [true, true, false]
+
+# New Jersey Cover All Kids. Two parents each work full time (2,080 hours) at
+# New Jersey's 2024 minimum wage of $15.13 an hour. Family income is above the
+# 147% Medicaid limit for older children and below New Jersey's 355% CHIP limit,
+# so both children get CHIP whatever their immigration status.
+- name: Case 38, New Jersey undocumented child and citizen child both receive CHIP in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_470.4
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 31_470.4
+      person3:
+        age: 12
+        immigration_status: UNDOCUMENTED
+      person4:
+        age: 7
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    # $62,940.80 / $31,200 (2024 guideline for 4) = 2.017.
+    medicaid_household_size: [4, 4, 4, 4]
+    is_medicaid_eligible: [false, false, false, false]
+    is_chip_eligible_child: [false, false, true, true]
+    chip_category: [NONE, NONE, CHILD, CHILD]
+    # New Jersey separate CHIP spending / enrollment in 2024:
+    # $579,649,320 / 203,130 = $2,853.59.
+    chip: [0, 0, 2_853.59, 2_853.59]

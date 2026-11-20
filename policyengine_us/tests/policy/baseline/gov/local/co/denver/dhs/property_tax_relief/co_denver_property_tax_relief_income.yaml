@@ -1,0 +1,116 @@
+# Denver HOST Property Tax Relief Program Guidelines (effective May 2026),
+# Definitions (PDF pages 4-5): "Income: ... all financial income resources of
+# the household members will be considered as 'income,' except: [gifts,
+# prior-year rebates, tax refunds, Medicaid, SNAP, child support and dependent
+# income, TANF, LEAP, education assistance, SSDI, SSI, Social Security
+# retirement benefits]". Proof of income (PDF page 3): "e. Old Age Pension
+# (OAP) f. Aid to the Needy Disabled (AND) g. Pension or annuity benefits".
+# D.R.M.C. 53-496(a) leaves "countable income" to these rules.
+# Social Security is entered in each case to check that it stays out.
+
+- name: Case 1, military retired pay counts as a pension.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        military_retirement_pay: 20_000
+        # Excluded (item m).
+        social_security_retirement: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 20,000 military retired pay = 30,000.
+    # Social Security is excluded.
+    co_denver_property_tax_relief_income: 30_000
+
+- name: Case 2, IRA distributions count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        taxable_ira_distributions: 4_000
+        # Excluded (item m).
+        social_security_retirement: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 4,000 IRA distribution = 14,000.
+    # Social Security is excluded.
+    co_denver_property_tax_relief_income: 14_000
+
+- name: Case 3, Colorado Old Age Pension counts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        co_oap: 3_000
+        # Excluded (item m).
+        social_security_retirement: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 3,000 Old Age Pension = 13,000.
+    # Social Security is excluded.
+    co_denver_property_tax_relief_income: 13_000
+
+- name: Case 4, Aid to the Needy Disabled counts and SSDI does not.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        taxable_pension_income: 10_000
+        co_state_supplement: 1_000
+        # Excluded (item k).
+        social_security_disability: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 1,000 Aid to the Needy Disabled = 11,000.
+    # SSDI is excluded.
+    co_denver_property_tax_relief_income: 11_000
+
+- name: Case 5, a military survivor annuity and a Roth 401(k) distribution count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        military_retirement_pay_survivors: 6_000
+        tax_exempt_401k_distributions: 5_000
+        # Excluded (item m).
+        social_security_retirement: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 6,000 survivor annuity + 5,000 Roth 401(k)
+    # distribution = 21,000. The guidelines count all income resources, taxable
+    # or not. Social Security is excluded.
+    co_denver_property_tax_relief_income: 21_000

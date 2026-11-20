@@ -128,3 +128,94 @@
     # Band: 2.0% of income, claimant pays 50%, maximum credit $270.
     # Excess rent = 3,000 - 0.02 * 79,325 = 1,413.50; 50% = 706.75 > 270.
     mn_renters_credit: 270
+
+# 2025 renter's credit schedule from the Minnesota DOR Tax Year 2025
+# Inflation-Adjusted Amounts, 290.0693 Subd. 3 (page 5). The parameter
+# files store these amounts, so a change of uprating index cannot move them.
+- name: Minnesota renter's credit 2025 just below the $46,540 claimant-share step
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: MN
+    mn_renters_credit_eligible: true
+    mn_renters_credit_household_income: 46_500
+    mn_rent_constituting_property_taxes: 3_000
+  output:
+    # Band $39,890 - $46,539: 2.0% of income, claimant pays 30%, maximum $2,240.
+    # Excess rent = 3,000 - 0.02 * 46,500 = 3,000 - 930 = 2,070
+    # Credit = round(2,070 * 0.70) = 1,449
+    mn_renters_credit: 1_449
+
+- name: Minnesota renter's credit 2025 at the lowest band's maximum credit
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: MN
+    mn_renters_credit_eligible: true
+    mn_renters_credit_household_income: 5_000
+    mn_rent_constituting_property_taxes: 5_000
+  output:
+    # Band $0 - $6,669: 1.0% of income, claimant pays 5%, maximum $2,720.
+    # Excess rent = 5,000 - 0.01 * 5,000 = 4,950; 95% = 4,702.50 > 2,720.
+    mn_renters_credit: 2_720
+
+- name: Minnesota renter's credit 2026 just below the $47,590 claimant-share step
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: MN
+    mn_renters_credit_eligible: true
+    mn_renters_credit_household_income: 47_570
+    mn_rent_constituting_property_taxes: 3_000
+  output:
+    # Band $40,800 - $47,589: 2.0% of income, claimant pays 30%, maximum $2,290.
+    # Excess rent = 3,000 - 0.02 * 47,570 = 3,000 - 951.40 = 2,048.60
+    # Credit = round(2,048.60 * 0.70) = round(1,434.02) = 1,434
+    mn_renters_credit: 1_434
+
+- name: Roommates each claim the credit with only their own income.
+  # Minn. Stat. 290.0693, subd. 7: "the rent shall be deemed to be paid
+  # equally by each renter, and separate claims shall be filed by each
+  # renter. The income of each renter shall be each renter's household
+  # income". 2025 Schedule M1RENT instructions (PDF page 3), "Lived with a
+  # roommate": "Include only your income when filing for the credit."
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 10_000
+        pre_subsidy_rent: 9_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        pre_subsidy_rent: 9_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        mn_renters_credit_qualifying_crp: true
+      tax_unit2:
+        members: [person2]
+        mn_renters_credit_qualifying_crp: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # person1: 10,000 - 5,200 (age 65 or older) = 4,800. person2: 60,000.
+    mn_renters_credit_household_income: [4_800, 60_000]
+    # Rent constituting property taxes: 9,000 x 17% = 1,530 each.
+    mn_rent_constituting_property_taxes: [1_530, 1_530]
+    # person1, $0 - $8,859 band: 1.0% of income, claimant pays 5%, maximum
+    # $2,720. 1,530 - 0.01 x 4,800 = 1,482; round(1,482 x 0.95) =
+    # round(1,407.90) = 1,408.
+    # person2: 2.0% of income, claimant pays 40% ($53,180 - $62,059),
+    # maximum $2,240. 1,530 - 0.02 x 60,000 = 330; 330 x 0.60 = 198.
+    mn_renters_credit: [1_408, 198]

@@ -584,7 +584,8 @@ def test_amounts_do_not_fall_when_cpi_u_falls():
     average, so a fall leaves it unadjusted. The published index has not
     fallen below either base, so a small CPI-U path averages 300 for the 12
     months ending August 2018, 270 for those ending August 2026 and 250 for
-    those ending August 2027."""
+    those ending August 2027. Each of those windows holds an observed month,
+    so none reads the tax-year projection."""
     cpi = ParameterNode(
         "gov.bls.cpi",
         data={
@@ -595,7 +596,8 @@ def test_amounts_do_not_fall_when_cpi_u_falls():
                     "2025-09-01": 270,
                     "2026-09-01": 250,
                 }
-            }
+            },
+            "tax_year_projection": {"cpi_u": {"values": {"2028-01-01": 250}}},
         },
     )
     root = SimpleNamespace(gov=SimpleNamespace(bls=SimpleNamespace(cpi=cpi)))
