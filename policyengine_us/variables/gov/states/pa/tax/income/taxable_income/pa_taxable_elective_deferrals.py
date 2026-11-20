@@ -28,8 +28,11 @@ class pa_taxable_elective_deferrals(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.pa.tax.income
         deferrals = add(person, period, p.taxable_elective_deferral_sources)
-        # Federal wages are floored at zero, so they leave out the deferrals
-        # only up to the wages themselves. Add back no more than that.
         employment_income = person("employment_income", period)
+        pre_tax_contributions = person("pre_tax_contributions", period)
         federal_wages = person("irs_employment_income", period)
-        return min_(deferrals, employment_income - federal_wages)
+        # PA compensation keeps the deferrals but leaves out the other pre-tax
+        # payroll deductions, and like federal wages it is floored at zero.
+        # The add-back is the gap between the two, so it is never negative.
+        pa_wages = max_(0, employment_income - (pre_tax_contributions - deferrals))
+        return pa_wages - federal_wages

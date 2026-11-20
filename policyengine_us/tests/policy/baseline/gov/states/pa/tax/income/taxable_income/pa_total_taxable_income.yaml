@@ -337,7 +337,8 @@
     traditional_401k_contributions: 3_000
   output:
     # Federal wages are floored at 0, so they leave out only 2,000 of the
-    # 3,000 deferral: min(3,000, 2,000 - 0) = 2,000.
+    # 3,000 deferral. PA compensation: max(2,000 - (3,000 - 3,000), 0) =
+    # 2,000, so the add-back is 2,000 - 0 = 2,000.
     irs_employment_income: 0
     pa_taxable_elective_deferrals: 2_000
     pa_total_taxable_income: 2_000
@@ -376,3 +377,43 @@
     pa_total_taxable_income: 50_000
     # 50,000 x 3.07%
     pa_income_tax_before_forgiveness: 1_535
+
+- name: Negative wages do not make the deferral add-back negative.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: -1_000
+    taxable_interest_income: 5_000
+  output:
+    # Federal wages: max(-1,000 - 0, 0) = 0. PA compensation (PA-40 line 1a)
+    # is floored too: max(-1,000 - (0 - 0), 0) = 0. Add-back: 0 - 0 = 0.
+    irs_employment_income: 0
+    pa_taxable_elective_deferrals: 0
+    # 0 wages + 5,000 interest = 5,000.
+    irs_gross_income: 5_000
+    pa_total_taxable_income: 5_000
+    # 5,000 x 3.07%
+    pa_income_tax_before_forgiveness: 153.50
+
+- name: Pre-tax premiums that push federal wages to zero limit the deferral add-back to PA compensation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 10_000
+    traditional_401k_contributions: 8_000
+    pre_tax_health_insurance_premiums: 4_000
+  output:
+    # Federal wages: max(10,000 - 8,000 - 4,000, 0) = 0.
+    irs_employment_income: 0
+    # PA compensation keeps the 8,000 deferral (61 Pa. Code
+    # 101.6(c)(8)(ii)(B)) but leaves out the 4,000 of cafeteria-plan
+    # premiums (72 P.S. 7301(d)(vi)): max(10,000 - (12,000 - 8,000), 0) =
+    # 6,000. Add-back: 6,000 - 0 = 6,000, not the full 8,000 deferral.
+    pa_taxable_elective_deferrals: 6_000
+    pa_total_taxable_income: 6_000
+    # 6,000 x 3.07%
+    pa_income_tax_before_forgiveness: 184.20
