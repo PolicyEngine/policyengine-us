@@ -1,6 +1,7 @@
 # Unit tests for Colorado Premium Assistance eligibility.
-# A tax unit is eligible when the program is in effect (PY2026-2027, verified by
-# SB26-178), the household is in Colorado, at least one member is eligible for
+# A tax unit is eligible when the program is in effect (from PY2026 with no end
+# date: SB26-178 and Amended Regulation 4-2-78 apply to 2027 and each year
+# thereafter), the household is in Colorado, at least one member is eligible for
 # the federal ACA premium tax credit, and household ACA MAGI is at or below the
 # 400% FPL ceiling (upper = 4.0 as an FPL fraction). Regulation 4-2-78 Section
 # 4.C ("no greater than 400% of the Federal Poverty Level") sets a 400%-inclusive
@@ -199,8 +200,12 @@
   output:
     co_premium_assistance_eligible: false
 
-- name: Case 10, program sunset in 2028 (after PY2027 end, verified by SB26-178).
-  # in_effect: 2028-01-01 false. 2028 resolves to false.
+- name: Case 10, program still in effect in 2028 (the statute and rule apply to 2027 and thereafter).
+  # in_effect: 2026-01-01 true with no later switch-off, so 2028 resolves to
+  # true. SB26-178, C.R.S. 10-16-1205(2)(f)(I), allocates revenue "for the 2027
+  # calendar year and for each calendar year thereafter", and Amended
+  # Regulation 4-2-78 Section 5 applies "For the 2027 benefit year, and annually
+  # thereafter".
   period: 2028
   input:
     people:
@@ -217,10 +222,11 @@
         members: [person1]
         state_code: CO
   output:
-    co_premium_assistance_eligible: false
+    co_premium_assistance_eligible: true
 
-- name: Case 11, PY2027 in-window year is still eligible (in_effect true).
-  # in_effect true for 2026 and 2027; 2027 is inside the PY2026-2027 window.
+- name: Case 11, PY2027 is still eligible (in_effect true).
+  # in_effect true from 2026 onward; SB26-178 and the amended regulation cover
+  # 2027.
   period: 2027
   input:
     people:
