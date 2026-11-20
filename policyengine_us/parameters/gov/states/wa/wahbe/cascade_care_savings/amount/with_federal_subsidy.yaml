@@ -14,6 +14,9 @@ brackets:
   # takes the second. The policy assigns no amount to incomes above 200% but
   # below 201% of FPL; the project lead ruled on 2026-11-18 that those incomes
   # take the second amount, so only a ratio at or below 2.00 gets the first.
+  # The Wakely exhibit in the PY2027 memo (p. 8) labels the bands "Fed Sub <
+  # 200% FPL $35" and "Fed Sub >= 200% FPL $20", but the policy text ("up to
+  # 200% FPL") governs, so a ratio of exactly 2.00 gets $35.
   # The first threshold is -inf so that a ratio of exactly 0 falls in the
   # first band rather than in core's out-of-range cell, which returns 0.
   # The 250% income limit is applied in wa_cascade_care_savings_eligible.

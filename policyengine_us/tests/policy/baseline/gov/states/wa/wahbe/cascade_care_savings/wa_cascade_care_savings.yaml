@@ -1059,7 +1059,7 @@
   # cap = 1_000. annual = min(240, 1_000) = 240. The truncated
   # aca_magi_fraction is 2.00, so the split must read the exact ratio.
   period: 2027
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.001
   input:
     people:
       person1:
@@ -1229,7 +1229,7 @@
   # 25_000.5 / 10_000 = 2.50005 > 2.5 -> ineligible -> 0, though the
   # truncated aca_magi_fraction is 2.50. (25_000.5 is exact in float32.)
   period: 2027
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.001
   input:
     people:
       person1:

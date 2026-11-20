@@ -150,10 +150,13 @@
     aca_fpg: 15_960
     wa_cascade_care_savings_fpl_ratio: 2
 
-- name: Case 8, 2027, a zero guideline gives an ineligible tax unit, not a division by zero.
-  # aca_fpg 0: the formula divides by 1 instead and returns an infinite ratio
-  # (0 / 0 would otherwise be NaN), which fails the 250% limit, so the
-  # Group 1 member's tax unit is ineligible and the amount is 0.
+- name: Case 8, 2027, a zero guideline gives an infinite ratio, not NaN from 0 / 0.
+  # aca_fpg 0 and aca_magi 0: the formula divides by 1 instead and returns an
+  # infinite ratio. An infinite ratio is above the 200% split, so the Group 1
+  # member's pre-eligibility amount is the second band, 12*20 = 240; an
+  # unguarded 0 / 0 would give NaN, which the scale maps to its out-of-range
+  # cell, 0. The infinite ratio also fails the 250% limit, so the tax unit is
+  # ineligible and the amount is 0.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -173,6 +176,7 @@
         members: [person1]
         state_code: WA
   output:
+    wa_cascade_care_savings_member_amount: 240
     wa_cascade_care_savings_eligible: false
     wa_cascade_care_savings: 0
 

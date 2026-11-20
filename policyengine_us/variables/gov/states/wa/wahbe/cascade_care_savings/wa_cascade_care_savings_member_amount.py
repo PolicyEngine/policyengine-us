@@ -45,8 +45,13 @@ class wa_cascade_care_savings_member_amount(Variable):
         "further requires the member not be premium-tax-credit-eligible, so "
         "Groups 1 and 3 are mutually exclusive. Other Group 2 members "
         "(lawfully present but premium-tax-credit-ineligible for other "
-        "reasons) are not separately identifiable in the model and are "
-        "documented away. The monthly amount is annualized by "
+        "reasons) get no amount in the model, because Group 3 requires an "
+        "UNDOCUMENTED immigration status. The PY2027 amounts memo (p. 6) "
+        "moves lawfully present members who lose the federal premium tax "
+        "credit in 2027 to the non-federally subsidized group, so in the "
+        "model a refugee or asylee at about 180% of the federal poverty line, "
+        "for example, gets $0 in 2027. This is a known limitation (issue "
+        "9553). The monthly amount is annualized by "
         "MONTHS_IN_YEAR, assuming full-year enrollment."
     )
 

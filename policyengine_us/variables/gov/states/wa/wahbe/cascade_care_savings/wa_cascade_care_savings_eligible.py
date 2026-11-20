@@ -30,7 +30,7 @@ class wa_cascade_care_savings_eligible(Variable):
         "bound; it sets no income floor. Washington residency is enforced "
         "by defined_for. Not modeled: the Cascade Care standard-plan enrollment "
         "requirement (otherwise-eligible Marketplace enrollees are treated as "
-        "Cascade-enrolled), the filing-behavior exclusions of Section 4(2), "
+        "Cascade-enrolled), the filing-behavior exclusions of Section 4(3), "
         "the COFA Islander Premium Assistance ineligibility test, and other "
         "Group 2 members not identifiable in the model."
     )
