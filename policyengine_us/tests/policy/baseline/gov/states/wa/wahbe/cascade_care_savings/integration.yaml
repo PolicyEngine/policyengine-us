@@ -13,8 +13,11 @@
 #
 # Amount formula recap (final PY2026 policy, Section 5(1)(c)-(d); no benchmark
 # premium expectation, which the policy's Attachment 1 lists among the concepts
-# "not included in the final policy"):
-#   base_annual = 12 * (55*n_group1 + 250*n_group3)
+# "not included in the final policy"; the final PY2027 policy keeps the
+# build-up and the cap):
+#   base_annual = 12 * (a1*n_group1 + a3*n_group3)
+#     PY2026: a1 = 55, a3 = 250.
+#     PY2027: a1 = 35 if aca_magi / aca_fpg <= 2.00, else 20; a3 = 185.
 #   cap         = max(0, slcsp_annual - aca_ptc)
 #   annual      = eligible * min(base_annual, cap)
 
@@ -280,9 +283,10 @@
     wa_cascade_care_savings: 4_320
 
 - name: Scenario 9, program still in effect in 2027 (open-ended in_effect).
-  # in_effect and both amounts are open-ended from 2026, so 2027 mirrors
-  # Scenario 1. base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000.
-  # annual = min(660, 1_000) = 660.
+  # in_effect is open-ended from 2026. Same inputs as Scenario 1, but PY2027
+  # pays $35 PMPM to a Group 1 member at or below 200% FPL (was $55):
+  # frac 1.4 <= 2.00 -> base_annual = 12*35 = 420.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(420, 1_000) = 420.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -307,7 +311,7 @@
     slcsp: 6_000
     aca_ptc: 5_000
     wa_cascade_care_savings_eligible: true
-    wa_cascade_care_savings: 660
+    wa_cascade_care_savings: 420
 
 - name: Scenario 10, undocumented Apple-Health-for-Kids child adds no $250 member.
   # End-to-end guard on the post-C1 gate. person1: Group 1 adult ($55). person2:

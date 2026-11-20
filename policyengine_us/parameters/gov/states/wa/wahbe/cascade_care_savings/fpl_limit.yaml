@@ -3,6 +3,7 @@ values:
   # Eligibility caps household income (ACA MAGI per 26 U.S.C. 36B(d)(2)) at 250%
   # of the federal poverty line, applied as a "<=" comparison ("up to 250%") on
   # the exact income-to-guideline ratio, not the truncated aca_magi_fraction.
+  # The final PY2027 policy keeps the same limit (Section 4(1)(c)).
   2026-01-01: 2.5
 
 metadata:
@@ -14,3 +15,5 @@ metadata:
       href: https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=11
     - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 3 definition of Income (26 U.S.C. 36B(d)(2))
       href: https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=10
+    - title: WAHBE Final PY 2027 Cascade Care Savings Policy, Section 4(1)(c)
+      href: https://www.wahbexchange.org/content/dam/materials/communications/policy/2026/Final_PY_2027_Cascade_Care_Savings_Policy.pdf#page=3
