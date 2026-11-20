@@ -12,6 +12,9 @@ class ar_liheap_income_limit(Variable):
     defined_for = StateCode.AR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
+        # FY2027 federal amounts
+        # PDF pages 1, 4
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=1",
         # FY2026 federal amounts
         # PDF pages 1, 4
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
