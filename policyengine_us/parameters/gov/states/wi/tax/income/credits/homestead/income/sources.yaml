@@ -5,7 +5,7 @@ metadata:
   reference:
     - title: Homestead Tax Credit, Wisconsin Legislative Fiscal Bureau
       href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=14
-    - title: 2025 Wisconsin Schedule H instructions
+    - title: "2025 Wisconsin Schedule H instructions #page 6,13-14"
       href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=6
     - title: Wis. Stat. 71.52(4)-(6)
       href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52
@@ -30,3 +30,51 @@ values:
     # household income (71.52(4)-(5)).
     - wi_ssp
     - tanf
+    # Wis. Stat. 71.52(6) adds each of the amounts below "to the extent not
+    # included in Wisconsin adjusted gross income". Lines are 2025 Schedule H
+    # lines (instructions, pages 13-14).
+    # "maintenance payments ..., support money". Line 9i: "any court ordered
+    # support payments received in 2025, including child support and family
+    # maintenance". The claimant receives child support for the child, so it
+    # also counts when recorded on a dependent (all_member_sources.yaml).
+    - child_support_received
+    # Line 9i note: maintenance under an instrument executed after 2018 is
+    # outside adjusted gross income, but "they must be included in household
+    # income on line 9i". Only that untaxed part is listed, since adjusted
+    # gross income holds the rest.
+    - wi_homestead_nontaxable_alimony
+    # "cash public assistance" and "cash benefits paid by counties under s.
+    # 59.53 (21)". Line 9j: "county relief ... and other cash public
+    # assistance payments".
+    - general_assistance
+    # "the gross amount of any pension or annuity (including ... veterans
+    # disability pensions)" and "compensation and other cash benefits
+    # received from the United States for past or present service in the
+    # armed forces". Line 9d: "Include veterans' pensions, disability
+    # payments"; line 9h: military compensation.
+    - veterans_benefits
+    # "the gross amount of any pension or annuity". Line 9d: "nontaxable IRA,
+    # SEP, SIMPLE, and qualified plan distributions. Both taxable and
+    # nontaxable amounts must be included in household income." Adjusted
+    # gross income holds the taxable part.
+    - tax_exempt_retirement_distributions
+    # "nontaxable deferred compensation". Line 9e: "contributions to deferred
+    # compensation plans that were excluded from income", Form W-2 box 12
+    # codes D and E among them. Elective deferrals only: the rest of
+    # pre_tax_contributions (health premiums, HSA contributions, dependent
+    # care benefits) is not deferred compensation.
+    - traditional_401k_contributions
+    - traditional_403b_contributions
+    # "contributions to individual retirement accounts under section 219 of
+    # the internal revenue code, contributions to Keogh plans ... deducted in
+    # determining Wisconsin adjusted gross income shall be added to
+    # 'income'". Line 9f: IRA, self-employed SEP, SIMPLE and qualified plan
+    # contributions deducted on federal Schedule 1.
+    - traditional_ira_deduction
+    - self_employed_pension_contribution_ald
+    # "worker's compensation ... the gross amount of 'loss of time'
+    # insurance". Line 11b: "Workers' compensation, income continuation, and
+    # loss of time insurance (for example, sick pay)". Adjusted gross income
+    # holds the taxable part of disability benefits.
+    - workers_compensation
+    - tax_exempt_disability_benefits

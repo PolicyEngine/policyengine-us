@@ -1,0 +1,295 @@
+# T.C.A. 67-5-702(a)(2) tests "annual income from all sources". Tenn. Comp. R.
+# & Regs. 0600-03-.08(3): "Annual income from all sources shall include, but is
+# not limited to, social security payments after the Medicare deduction, ...
+# supplemental security income, retirement and pension benefits ...,
+# veteran's benefits, worker's compensation, unemployment compensation,
+# salaries and wages, alimony, total interest and total dividends. ... When
+# determining the income using a tax return, the adjusted gross income amount
+# is used. This amount is added to any income sources specified above which
+# may not be taxable by IRS standards."
+# The 2026 standard Medicare Part B premium is 202.90 a month, 2,434.80 a year.
+# Every Social Security case has income above the Medicare Savings Program
+# limits, so the person pays the premium.
+
+- name: Case 1, nontaxable sources are added to adjusted gross income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 5_000
+        veterans_benefits: 12_000
+        workers_compensation: 10_000
+        tax_exempt_interest_income: 3_000
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Adjusted gross income: 5,000 (taxable pension).
+    # Added under Rule 0600-03-.08(3): veterans' benefits 12,000 + workers'
+    # compensation 10,000 + tax-exempt interest 3,000 ("total interest";
+    # Comptroller Bulletin 2019-01 counts Form 1040 lines 2a and 2b).
+    # No Social Security, so no Medicare deduction.
+    # 5,000 + 12,000 + 10,000 + 3,000 = 30,000.
+    tn_elderly_property_tax_relief_income: 30_000
+
+- name: Case 2, Social Security counts in full after the Medicare deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Federal provisional income is 15,000 (half of 30,000), under the 25,000
+    # base, so adjusted gross income is 0 and all 30,000 is nontaxable.
+    # 0 + 30,000 - 2,434.80 Part B premium = 27,565.20.
+    tn_elderly_property_tax_relief_income: 27_565.2
+
+- name: Case 3, partly taxable Social Security counts once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        social_security_retirement: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Provisional income: 20,000 + 24,000 / 2 = 32,000, between the 25,000 base
+    # and the 34,000 adjusted base. Taxable Social Security:
+    # min(50% x 24,000, 50% x (32,000 - 25,000)) = min(12,000, 3,500) = 3,500.
+    # Adjusted gross income: 20,000 + 3,500 = 23,500.
+    # Nontaxable Social Security: 24,000 - 3,500 = 20,500.
+    # 23,500 + 20,500 - 2,434.80 = 41,565.20.
+    tn_elderly_property_tax_relief_income: 41_565.2
+
+- name: Case 4, a Medicare premium above the nontaxable Social Security comes off the taxable part.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 60_000
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Provisional income: 60,000 + 5,000 = 65,000, above the 34,000 adjusted
+    # base, so 85% of the benefit is taxable: 8,500.
+    # Adjusted gross income: 60,000 + 8,500 = 68,500.
+    # Nontaxable Social Security: 1,500, less than the 2,434.80 premium.
+    # Social Security counted: 10,000 - 2,434.80 = 7,565.20.
+    # 60,000 + 7,565.20 = 67,565.20 (= 68,500 + 1,500 - 2,434.80).
+    tn_elderly_property_tax_relief_income: 67_565.2
+
+- name: Case 5, the Medicare deduction stops at the benefit it is withheld from.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 50_000
+        social_security_retirement: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Provisional income: 50,000 + 600 = 50,600, above 34,000, so taxable
+    # Social Security is 85% x 1,200 = 1,020.
+    # Adjusted gross income: 51,020. Nontaxable Social Security: 180.
+    # The 2,434.80 premium exceeds the 1,200 benefit, so 1,200 comes off and
+    # Social Security counts as 0.
+    # 51,020 + 180 - 1,200 = 50,000.
+    tn_elderly_property_tax_relief_income: 50_000
+
+- name: Case 6, Railroad Retirement benefits count after the Medicare deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        railroad_benefits: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Railroad Retirement benefits are "retirement and pension benefits after
+    # deduction of healthcare insurance premiums"; Rule 0600-03-.08(4) leaves
+    # out only benefits that must be paid to a nursing home. The model's
+    # adjusted gross income holds none of them.
+    # 30,000 - 2,434.80 Part B premium = 27,565.20.
+    tn_elderly_property_tax_relief_income: 27_565.2
+
+- name: Case 7, Supplemental Security Income counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Rule 0600-03-.08(3) lists "supplemental security income".
+    tn_elderly_property_tax_relief_income: 6_000
+
+- name: Case 8, alimony under a divorce instrument executed after 2018 counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 15_000
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # The alimony is not taxable, so adjusted gross income is 0.
+    # Rule 0600-03-.08(3) lists alimony: 0 + 15,000 = 15,000.
+    # Alimony above the 2026 SSI benefit plus the $20 monthly exclusion
+    # (994 x 12 + 240 = 12,168) leaves no SSI to add.
+    tn_elderly_property_tax_relief_income: 15_000
+
+- name: Case 9, taxable alimony counts once.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 15_000
+        divorce_year: 2015
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Alimony under a pre-2019 instrument is in adjusted gross income (15,000),
+    # so nothing more is added. As in Case 8, there is no SSI.
+    tn_elderly_property_tax_relief_income: 15_000
+
+- name: Case 10, nontaxable pension and Roth IRA distributions count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        tax_exempt_private_pension_income: 4_000
+        tax_exempt_ira_distributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Adjusted gross income: 10,000. Rule 0600-03-.08(3) adds "retirement and
+    # pension benefits" not taxable by IRS standards: 4,000 + 3,000.
+    # Comptroller Bulletin 2019-01 points to the taxable amount only (2018
+    # Form 1040 line 4b), which would give 10,000; the rule governs.
+    # 10,000 + 4,000 + 3,000 = 17,000.
+    tn_elderly_property_tax_relief_income: 17_000
+
+- name: Case 11, a dependent's income is left out.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+      person2:
+        age: 15
+        social_security_survivors: 8_000
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # T.C.A. 67-5-702(a)(2) counts the income of the owners and the
+    # applicant's spouse. The grandchild's survivor benefits and interest are
+    # left out.
+    # Head: 30,000 - 2,434.80 = 27,565.20 (as in Case 2).
+    tn_elderly_property_tax_relief_income: 27_565.2
+
+- name: Case 12, a joint filer's spouse's income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+      person2:
+        age: 70
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Joint provisional income: 50,000 / 2 = 25,000, under the 32,000 base,
+    # so adjusted gross income is 0.
+    # Each spouse pays the 2,434.80 premium.
+    # 30,000 + 20,000 - 2 x 2,434.80 = 45,130.40.
+    tn_elderly_property_tax_relief_income: 45_130.4

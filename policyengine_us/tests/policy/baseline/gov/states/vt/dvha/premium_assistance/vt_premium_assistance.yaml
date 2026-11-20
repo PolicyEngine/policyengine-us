@@ -136,7 +136,7 @@
 # ---- Ineligible: above the 300% FPL ceiling ----
 
 - name: Case 5, 301% FPL above the ceiling yields no VPA.
-  # aca_magi_fraction 3.01 > 3.0 -> not eligible -> VPA = 0 (defined_for gate).
+  # 47_100 / 15_650 = 3.0096 > 3.0 -> not eligible -> VPA = 0 (defined_for gate).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -319,9 +319,10 @@
 
 - name: Case 13, three-person Vermont household at 300% FPL gets a gap scaling with the larger MAGI.
   # A larger family reaches 300% FPL at a higher aca_magi, so the gap
-  # (income * 0.015) scales up accordingly. fed_pct at 300% FPL = 9.96% > 1.5%,
-  # income = 100_000 -> gap = 100_000 * 0.015 = 1_500. residual =
-  # 20_000 - 8_000 = 12_000 > gap, so VPA = 1_500 (gap binds). Eligibility holds
+  # (income * 0.015) scales up accordingly. 300% of the 2025 three-person FPG
+  # ($26,650) is 79_950; fed_pct at 300% FPL = 9.96% > 1.5%, so
+  # gap = 79_950 * 0.015 = 1_199.25. residual = 20_000 - 8_000 = 12_000 > gap,
+  # so VPA = 1_199.25 (gap binds). Eligibility holds
   # at the inclusive 300% ceiling for a multi-member unit, and only one member
   # need be APTC-eligible.
   period: 2026
@@ -340,7 +341,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi: 100_000
+        aca_magi: 79_950
         aca_magi_fraction: 3.00
         slcsp: 20_000
         aca_ptc: 8_000
@@ -349,7 +350,7 @@
         members: [person1, person2, person3]
         state_code: VT
   output:
-    vt_premium_assistance: 1_500
+    vt_premium_assistance: 1_199.25
 
 # ---- Negative MAGI clamp (REQ-12) ----
 
@@ -564,3 +565,199 @@
   output:
     # Neither spouse is in a federal tax family.
     vt_premium_assistance: 0
+
+# ---- PY2027: the 1.5-point reduction and the 300% limit carry forward ----
+# The 2027 APTC worksheet (205APTC-EW, Section VII) keeps the Vermont
+# percentage at the federal applicable percentage minus 1.5 and pays VPA only
+# at or below 300% FPL. These cases supply aca_fpg (the 2026 guideline, $15,960
+# for one person and $21,640 for two) and let aca_ptc compute from the 2027
+# federal applicable percentage schedule (Rev. Proc. 2026-26):
+#   0-133%: 2.15% flat | 133-150%: 3.23%->4.30% | 150-200%: 4.30%->6.78%
+#   200-250%: 6.78%->8.66% | 250-300%: 8.66%->10.22% | 300-400%: 10.22% flat
+# The federal percentage stays above 1.5%, so VPA = 1.5% of income whenever
+# the residual premium after the federal credit is larger.
+
+- name: Case 15, PY2027 120% FPL VPA equals income times 1.5%.
+  # 19_152 / 15_960 = 1.20; federal 2.15%: aca_ptc = 10_000 - 411.768
+  # = 9_588.232. VPA = min(0.015 * 19_152, 411.768) = 287.28.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_152
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_ptc: 9_588.232
+    vt_premium_assistance: 287.28
+
+- name: Case 16, PY2027 140% FPL VPA equals income times 1.5%.
+  # 22_344 / 15_960 = 1.40; federal 3.23% + (0.07 / 0.17) * 1.07% = 3.670588%:
+  # aca_ptc = 10_000 - 820.1562 = 9_179.8438. VPA = 0.015 * 22_344 = 335.16.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_ptc: 9_179.8438
+    vt_premium_assistance: 335.16
+
+- name: Case 17, PY2027 250% FPL VPA equals income times 1.5%.
+  # 39_900 / 15_960 = 2.50; federal 8.66%: aca_ptc = 10_000 - 3_455.34
+  # = 6_544.66. VPA = 0.015 * 39_900 = 598.50.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_ptc: 6_544.66
+    vt_premium_assistance: 598.50
+
+- name: Case 18, PY2027 $1 below 300% FPL is eligible.
+  # 47_879 / 15_960 = 2.999937, truncated to 2.99; federal 8.66% + 0.98 * 1.56%
+  # = 10.1888%: aca_ptc = 10_000 - 4_878.2956 = 5_121.7044.
+  # VPA = 0.015 * 47_879 = 718.185.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_879
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_ptc: 5_121.7044
+    vt_premium_assistance_eligible: true
+    vt_premium_assistance: 718.185
+
+- name: Case 19, PY2027 exactly 300% FPL is eligible.
+  # 47_880 / 15_960 = 3.00 exactly ($47,880 is the one-person VPA limit in
+  # Vermont Health Connect's 2027 thresholds); federal 10.22%:
+  # aca_ptc = 10_000 - 4_893.336 = 5_106.664. VPA = 0.015 * 47_880 = 718.20.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_880
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_ptc: 5_106.664
+    vt_premium_assistance_eligible: true
+    vt_premium_assistance: 718.20
+
+- name: Case 20, PY2027 $1 above 300% FPL is ineligible though it truncates to 3.00.
+  # 47_881 / 15_960 = 3.000063 > 3 -> not eligible -> VPA = 0, although
+  # aca_magi_fraction truncates it to 3.00 and the federal credit is
+  # 10_000 - 0.1022 * 47_881 = 5_106.5618.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_881
+        aca_fpg: 15_960
+        slcsp: 10_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi_fraction: 3.00
+    aca_ptc: 5_106.5618
+    vt_premium_assistance_eligible: false
+    vt_premium_assistance: 0
+
+- name: Case 21, PY2027 two-person household at exactly 200% FPL.
+  # 43_280 / 21_640 = 2.00; federal 6.78%: aca_ptc = 20_000 - 2_934.384
+  # = 17_065.616. VPA = 0.015 * 43_280 = 649.20.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 43_280
+        aca_fpg: 21_640
+        slcsp: 20_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    aca_ptc: 17_065.616
+    vt_premium_assistance: 649.20

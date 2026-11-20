@@ -10,6 +10,8 @@ class tx_ceap_eligible(Variable):
     reference = (
         "https://www.tdhca.texas.gov/sites/default/files/community-affairs/ceap/docs/24-LIHEAP-Plan.pdf#page=9",
         "https://www.tdhca.texas.gov/sites/default/files/community-affairs/docs/25-LIHEAP-Plan-DRAFT_0.pdf",
+        "https://liheapch.acf.gov/docs/2026/state-plans/TX_Plan_2026.pdf#page=9",
+        "https://liheapch.acf.gov/docs/2027/state-plans/TX_Plan_2027.pdf#page=9",
     )
 
     def formula(spm_unit, period, parameters):

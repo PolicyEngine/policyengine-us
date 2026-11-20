@@ -93,14 +93,14 @@ def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_expansion()
 
-    # Look ahead for the next five years
+    # Check each year of the lookahead window
 
     p = parameters.gov.contrib.congress.wyden_smith
 
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).actc_lookback or p(current_period).per_child_actc_phase_in:
             reform_active = True
             break

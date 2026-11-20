@@ -219,3 +219,17 @@
         state_code: OR
   output:
     or_retirement_credit: 675
+
+- name: Veterans' benefits in household income reduce the credit
+  period: 2025
+  input:
+    age: 66
+    taxable_private_pension_income: 14_000
+    veterans_benefits: 4_000
+    state_code: OR
+  output:
+    # ORS 316.157(2)(c)(A)(xiii): household income 14,000 + 4,000 = 18,000.
+    or_retirement_credit_household_income: 18_000
+    # (2)(d)(B): 7,500 - 0 Social Security - (18,000 - 15,000) = 4,500, less
+    # than the 14,000 pension. 4,500 x 9% = 405.
+    or_retirement_credit: 405

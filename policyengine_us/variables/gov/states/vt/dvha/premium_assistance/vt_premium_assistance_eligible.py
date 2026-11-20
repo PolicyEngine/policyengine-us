@@ -10,6 +10,10 @@ class vt_premium_assistance_eligible(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
+        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2027-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf",
+        # PDF page 41: HBEE 60.07(c) applies the Vermont reduction to
+        # household income that "does not exceed 300 percent of the FPL".
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "A tax unit is eligible for Vermont Premium Assistance when the program "
@@ -17,10 +21,15 @@ class vt_premium_assistance_eligible(Variable):
         "premium tax credit (which embeds on-Marketplace enrollment, the "
         "married-filing-separately exclusion, and the federal required-"
         "contribution income test), and household income is at or below 300% of "
-        "the federal poverty line. Vermont imposes no minimum-income floor, so "
-        "the low end is governed by the federal PTC gate, including its below-"
-        "poverty immigration exception, which Vermont inherits rather than "
-        "overrides."
+        "the federal poverty line, measured as the exact ratio of ACA MAGI to "
+        "aca_fpg (the prior-year guideline for the section 36B tax family) "
+        "rather than the truncated aca_magi_fraction. "
+        "Vermont imposes no minimum-income floor, so "
+        "the low end is governed by the federal PTC gate, which Vermont "
+        "inherits rather than overrides. Since the federal below-poverty "
+        "exception for lawfully present immigrants ended after 2025 (Public "
+        "Law 119-21, Section 71302), that gate starts at 100% of the federal "
+        "poverty line."
     )
 
     def formula(tax_unit, period, parameters):
@@ -28,6 +37,16 @@ class vt_premium_assistance_eligible(Variable):
         in_effect = p.in_effect
         # At least one member must be eligible for the federal ACA PTC.
         aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_fraction <= p.fpl_limit
+        # 33 V.S.A. 1812(a)(1) covers income "less than or equal to 300
+        # percent of federal poverty level". Test the exact ratio, not the
+        # truncated aca_magi_fraction: truncation maps 300.00%-300.99% to
+        # 3.00, which would admit incomes above 300%. The poverty line is
+        # aca_fpg, the line aca_magi_fraction and the federal credit divide
+        # by, because the program covers those eligible for that credit.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
+        income_eligible = exact_magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & income_eligible

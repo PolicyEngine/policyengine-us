@@ -1,0 +1,72 @@
+name: Partner API impact notice
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+    paths:
+      - "policyengine_us/tests/policy/baseline/partners/**"
+
+# One notice at a time per PR, so each run reads the state the last one saved.
+concurrency:
+  group: partner-api-impact-notice-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify-slack:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      STATE_ARTIFACT: partner-api-impact-notice-pr-${{ github.event.pull_request.number }}
+    steps:
+      # pull_request_target checks out the base branch: no PR code runs here.
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Find changed partner tests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files" \
+            --jq '.[].filename' > pr-files.txt
+          grep '^policyengine_us/tests/policy/baseline/partners/' pr-files.txt \
+            > partner-files.txt || true
+      # The PR's last notice: when its thread started and which files it listed.
+      - name: Restore the last notice
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          run=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=${STATE_ARTIFACT}&per_page=100" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | last | .workflow_run.id // empty') || run=""
+          if [ -n "$run" ] && ! gh run download "$run" --repo "$GITHUB_REPOSITORY" \
+            --name "$STATE_ARTIFACT" --dir notice-state; then
+            echo "::warning::Could not restore the last notice; this push starts a new one."
+          fi
+      - name: Notify Slack
+        id: notice
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SLACK_PARTNER_BOT_TOKEN: ${{ secrets.SLACK_PARTNER_BOT_TOKEN }}
+          SLACK_PARTNER_CHANNEL_ID: ${{ vars.SLACK_PARTNER_CHANNEL_ID }}
+          SLACK_PARTNER_WEBHOOK_URL: ${{ secrets.SLACK_PARTNER_WEBHOOK_URL }}
+        run: python3 .github/partner_notice.py --files partner-files.txt --state notice-state/state.json
+      - name: Save this notice
+        if: steps.notice.outputs.saved == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.STATE_ARTIFACT }}
+          path: notice-state/state.json
+          # A thread takes replies for 24 hours.
+          retention-days: 2
