@@ -95,10 +95,15 @@ NM:
   2021-01-01: false
 NY:
   # Social Services Law section 122(1) limits undocumented residents to
-  # emergency care. New York covers them during pregnancy and the postpartum
-  # period and, from 2024, at age 65 or older
+  # emergency care. New York covers them during pregnancy and for sixty
+  # days after it (Department of Health notice D61-C0332) and, in the model
+  # from 2024, at age 65 or older
   # (gov.hhs.medicaid.eligibility.undocumented), and as children under the
   # Children's Health Insurance Program (gov.hhs.chip.undocumented.child).
+  # The model applies New York's general postpartum period to undocumented
+  # residents, which reads 365 days from 2024. The one-year law names
+  # specific eligibility groups (Social Services Law section 366(4)(b)(1)),
+  # so the longer period is a modeling choice for undocumented residents.
   2021-01-01: false
 NC:
   2021-01-01: false

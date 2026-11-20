@@ -97,7 +97,7 @@
 # false for both states, so each case below turns on the pregnancy term or
 # the aged term alone.
 
-- name: Undocumented 35-year-old in New York is ineligible in 2025
+- name: Undocumented 35-year-old in New York fails the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -108,7 +108,7 @@
     # Not pregnant or postpartum, and under 65: false OR false = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 35-year-old in New York is ineligible in 2017
+- name: Undocumented 35-year-old in New York fails the Medicaid immigration test in 2017
   period: 2017
   input:
     immigration_status: UNDOCUMENTED
@@ -119,7 +119,7 @@
     # Backdating carries the flag's false value to 2015: false OR false = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Pregnant undocumented 30-year-old in New York is eligible in 2025
+- name: Pregnant undocumented 30-year-old in New York passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -130,7 +130,7 @@
     # New York's pregnancy term is true and the person is pregnant: true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Pregnant undocumented 30-year-old in New York is eligible in 2017
+- name: Pregnant undocumented 30-year-old in New York passes the Medicaid immigration test in 2017
   period: 2017
   input:
     immigration_status: UNDOCUMENTED
@@ -141,7 +141,7 @@
     # Backdating carries the pregnancy term's true value to 2015: true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented New Yorker between 60 days and 12 months postpartum is eligible in 2025
+- name: Undocumented New Yorker between 60 days and 12 months postpartum passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -154,7 +154,7 @@
     # days at 2025-01-01: 60 < 365 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented New Yorker between 60 days and 12 months postpartum is ineligible in 2023
+- name: Undocumented New Yorker between 60 days and 12 months postpartum fails the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -167,7 +167,7 @@
     # at 2023-01-01: 60 < 60 = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 70-year-old in New York is ineligible in 2023
+- name: Undocumented 70-year-old in New York fails the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -177,7 +177,7 @@
     # New York's aged term is false at 2023-01-01 and true from 2024-01-01.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 70-year-old in New York is eligible in 2024
+- name: Undocumented 70-year-old in New York passes the Medicaid immigration test in 2024
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
@@ -187,7 +187,7 @@
     # New York's aged term is true at 2024-01-01, and 70 >= 65: true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented 70-year-old in New York is eligible in 2025
+- name: Undocumented 70-year-old in New York passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -197,7 +197,7 @@
     # New York's aged term is true at 2025-01-01, and 70 >= 65: true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented 64-year-old in New York is ineligible in 2025
+- name: Undocumented 64-year-old in New York fails the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -208,7 +208,7 @@
     # 64 >= 65 is false, and the person is not pregnant: false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 65-year-old in New York is eligible in 2025
+- name: Undocumented 65-year-old in New York passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -229,7 +229,7 @@
     # No Medicaid term applies: false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 35-year-old in Massachusetts is ineligible in 2025
+- name: Undocumented 35-year-old in Massachusetts fails the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -240,7 +240,7 @@
     # Massachusetts reads false in the flag, and the person is not pregnant: false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented 70-year-old in Massachusetts is ineligible in 2025
+- name: Undocumented 70-year-old in Massachusetts fails the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -250,7 +250,7 @@
     # Massachusetts's aged term is false: false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Pregnant undocumented 30-year-old in Massachusetts is eligible in 2025
+- name: Pregnant undocumented 30-year-old in Massachusetts passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -261,7 +261,7 @@
     # Massachusetts's pregnancy term is true and the person is pregnant: true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented Massachusetts resident under 60 days postpartum is eligible in 2017
+- name: Undocumented Massachusetts resident under 60 days postpartum passes the Medicaid immigration test in 2017
   period: 2017
   input:
     immigration_status: UNDOCUMENTED
@@ -277,7 +277,7 @@
 # Between 60 days and 12 months after delivery, the result follows each
 # state's postpartum period, read on January 1.
 
-- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum is ineligible in 2022
+- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum fails the Medicaid immigration test in 2022
   period: 2022
   input:
     immigration_status: UNDOCUMENTED
@@ -290,7 +290,7 @@
     # days at 2022-01-01: 60 < 60 = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum is eligible in 2023
+- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum passes the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -303,7 +303,7 @@
     # 365 days at 2023-01-01: 60 < 365 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented New Yorker between 60 days and 12 months postpartum is eligible in 2024
+- name: Undocumented New Yorker between 60 days and 12 months postpartum passes the Medicaid immigration test in 2024
   period: 2024
   input:
     immigration_status: UNDOCUMENTED
@@ -332,7 +332,7 @@
 # The pregnancy term compares days since delivery with the state's
 # postpartum period: fewer days than the period passes.
 
-- name: Undocumented New York resident 59 days postpartum is eligible in 2023
+- name: Undocumented New York resident 59 days postpartum passes the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -344,7 +344,7 @@
     # New York's period reads 60 days at 2023-01-01: 59 < 60 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented New York resident 60 days postpartum is ineligible in 2023
+- name: Undocumented New York resident 60 days postpartum fails the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -356,7 +356,7 @@
     # New York's period reads 60 days at 2023-01-01: 60 < 60 = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented New York resident 364 days postpartum is eligible in 2025
+- name: Undocumented New York resident 364 days postpartum passes the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -368,7 +368,7 @@
     # New York's period reads 365 days at 2025-01-01: 364 < 365 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented New York resident 365 days postpartum is ineligible in 2025
+- name: Undocumented New York resident 365 days postpartum fails the Medicaid immigration test in 2025
   period: 2025
   input:
     immigration_status: UNDOCUMENTED
@@ -380,7 +380,7 @@
     # New York's period reads 365 days at 2025-01-01: 365 < 365 = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented Massachusetts resident 59 days postpartum is eligible in 2022
+- name: Undocumented Massachusetts resident 59 days postpartum passes the Medicaid immigration test in 2022
   period: 2022
   input:
     immigration_status: UNDOCUMENTED
@@ -392,7 +392,7 @@
     # Massachusetts's period reads 60 days at 2022-01-01: 59 < 60 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented Massachusetts resident 60 days postpartum is ineligible in 2022
+- name: Undocumented Massachusetts resident 60 days postpartum fails the Medicaid immigration test in 2022
   period: 2022
   input:
     immigration_status: UNDOCUMENTED
@@ -404,7 +404,7 @@
     # Massachusetts's period reads 60 days at 2022-01-01: 60 < 60 = false.
     is_medicaid_immigration_status_eligible: false
 
-- name: Undocumented Massachusetts resident 364 days postpartum is eligible in 2023
+- name: Undocumented Massachusetts resident 364 days postpartum passes the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
@@ -416,7 +416,7 @@
     # Massachusetts's period reads 365 days at 2023-01-01: 364 < 365 = true.
     is_medicaid_immigration_status_eligible: true
 
-- name: Undocumented Massachusetts resident 365 days postpartum is ineligible in 2023
+- name: Undocumented Massachusetts resident 365 days postpartum fails the Medicaid immigration test in 2023
   period: 2023
   input:
     immigration_status: UNDOCUMENTED
