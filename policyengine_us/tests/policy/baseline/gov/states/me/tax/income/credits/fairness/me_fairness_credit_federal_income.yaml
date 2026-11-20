@@ -17,6 +17,21 @@
     # Line 2d: 2,000. 18,000 + 2,000 = 20,000.
     me_fairness_credit_federal_income: 20_000
 
+- name: A source a reform takes out of federal gross income doesn't net on its line.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without rental_income.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, non_sch_d_capital_gains, taxable_interest_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income, military_retirement_income]
+    state_code: ME
+    employment_income: 20_000
+    partnership_s_corp_income: 3_000
+    rental_income: -5_000
+  output:
+    # The rental loss isn't in federal income, so line 5 is the 3,000
+    # partnership income alone: 20,000 + 3,000 = 23,000, nothing to add back.
+    me_fairness_credit_federal_income: 23_000
+
 - name: Other Schedule E items net on Schedule 1 line 5.
   period: 2025
   absolute_error_margin: 0.01
