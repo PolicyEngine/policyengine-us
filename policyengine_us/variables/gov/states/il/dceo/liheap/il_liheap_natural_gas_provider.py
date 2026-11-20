@@ -2,11 +2,17 @@ from policyengine_us.model_api import *
 
 
 class ILLIHEAPNaturalGasProvider(Enum):
+    # The natural gas distribution company named on the bill. Customers of
+    # the four listed companies use the state-funded income limit and the
+    # low-income discount payment matrix.
     AMEREN_ILLINOIS = "Ameren Illinois"
     NICOR_GAS = "Nicor Gas"
     NORTH_SHORE_GAS = "North Shore Gas"
     PEOPLES_GAS = "Peoples Gas"
+    # A reported company outside the listed choices.
     OTHER = "Other natural gas provider"
+    # The company was not reported. It counts as a state-funded company for
+    # the income limit and uses the general payment matrix.
     UNSPECIFIED = "Unspecified"
 
 
@@ -17,15 +23,6 @@ class il_liheap_natural_gas_provider(Variable):
     default_value = ILLIHEAPNaturalGasProvider.UNSPECIFIED
     definition_period = YEAR
     label = "Illinois LIHEAP natural gas provider"
-    documentation = (
-        "Company providing the home's natural gas distribution service, as "
-        "named on the gas bill. Ameren Illinois, Nicor Gas, North Shore Gas "
-        "and Peoples Gas customers use the state-funded income limit and the "
-        "low-income discount payment matrix. OTHER means a reported company "
-        "outside the listed choices and UNSPECIFIED (the default) means the "
-        "company was not reported; both use the federally funded income limit "
-        "and the general payment matrix."
-    )
     defined_for = StateCode.IL
     reference = (
         "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html",

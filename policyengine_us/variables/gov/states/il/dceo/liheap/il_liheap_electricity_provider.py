@@ -2,9 +2,15 @@ from policyengine_us.model_api import *
 
 
 class ILLIHEAPElectricityProvider(Enum):
+    # The electric distribution company named on the bill. Ameren Illinois
+    # and ComEd customers use the state-funded income limit, and ComEd
+    # customers use the ComEd payment matrices.
     AMEREN_ILLINOIS = "Ameren Illinois"
     COMED = "ComEd"
+    # A reported company outside the listed choices.
     OTHER = "Other electricity provider"
+    # The company was not reported. It counts as a state-funded company for
+    # the income limit and uses the general payment matrix.
     UNSPECIFIED = "Unspecified"
 
 
@@ -15,15 +21,6 @@ class il_liheap_electricity_provider(Variable):
     default_value = ILLIHEAPElectricityProvider.UNSPECIFIED
     definition_period = YEAR
     label = "Illinois LIHEAP electricity provider"
-    documentation = (
-        "Company providing the home's electric distribution service, as named "
-        "on the electric bill. Ameren Illinois and ComEd customers use the "
-        "state-funded income limit, and ComEd customers use the ComEd payment "
-        "matrices. OTHER means a reported company outside the listed choices "
-        "and UNSPECIFIED (the default) means the company was not reported; "
-        "both use the federally funded income limit and the general payment "
-        "matrix."
-    )
     defined_for = StateCode.IL
     reference = (
         "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html",

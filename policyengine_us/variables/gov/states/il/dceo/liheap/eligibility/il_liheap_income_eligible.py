@@ -36,15 +36,12 @@ class il_liheap_income_eligible(Variable):
         if p_il.eligibility.provider_income_limits_in_effect:
             electricity = spm_unit("il_liheap_electricity_provider", period)
             gas = spm_unit("il_liheap_natural_gas_provider", period)
-            electric_providers = electricity.possible_values
-            gas_providers = gas.possible_values
-            state_funded = (
-                (electricity == electric_providers.AMEREN_ILLINOIS)
-                | (electricity == electric_providers.COMED)
-                | (gas == gas_providers.AMEREN_ILLINOIS)
-                | (gas == gas_providers.NICOR_GAS)
-                | (gas == gas_providers.NORTH_SHORE_GAS)
-                | (gas == gas_providers.PEOPLES_GAS)
+            # Every listed company is one of the five DCEO names for state
+            # funds. A company that was not reported counts as one of them,
+            # so the federal limit applies only when both are reported as
+            # OTHER.
+            state_funded = (electricity != electricity.possible_values.OTHER) | (
+                gas != gas.possible_values.OTHER
             )
             size = spm_unit("spm_unit_size", period)
             geography = spm_unit.household("state_group_str", period)
