@@ -46,17 +46,14 @@ class nj_other_retirement_income_exclusion(Variable):
 
         # calculate earnings eligibility on the filers' own earnings
         # (Worksheet D lines 4-8), leaving out a dependent's. Line 4 is
-        # NJ-1040 line 15, wages net of 401(k) elective deferrals (N.J.S.A.
-        # 54A:6-21) and of any claim of right repayment of wages (N.J.S.A.
-        # 54A:5-2; TAM 2011-7).
-        excluded_deferrals = parameters(
-            period
-        ).gov.states.nj.tax.income.gross_income.excluded_wage_deferrals
-        earnings = (
-            tax_unit_non_dep_add(tax_unit, period, ["earned_income"])
-            - tax_unit_non_dep_add(tax_unit, period, excluded_deferrals)
-            - tax_unit_non_dep_add(tax_unit, period, ["nj_claim_of_right_wage_offset"])
-        )
+        # NJ-1040 line 15: each person's nj_wages, net of 401(k) elective
+        # deferrals (N.J.S.A. 54A:6-21) and floored at zero, less any claim
+        # of right repayment of wages (N.J.S.A. 54A:5-2; TAM 2011-7).
+        earnings = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            ["nj_wages", "self_employment_income", "sstb_self_employment_income"],
+        ) - tax_unit_non_dep_add(tax_unit, period, ["nj_claim_of_right_wage_offset"])
         limit = p.other_retirement_income.earned_income_threshold
         earnings_eligible = earnings <= limit
 
