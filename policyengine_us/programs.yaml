@@ -2589,6 +2589,18 @@ programs:
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
 
+  - id: ri_rimap
+    name: Rhode Island Marketplace Affordability Program
+    full_name: Rhode Island Marketplace Affordability Program (RIMAP)
+    category: Healthcare
+    agency: HealthSource RI
+    status: complete
+    coverage: RI
+    variable: ri_rimap
+    parameter_prefix: gov.states.ri.hsri.rimap
+    verified_years: "2027"
+    notes: Plan Year 2027 parameters adopted by HealthSource RI under R.I. Gen. Laws 42-157.2; later years need newly adopted percentages. The amount assumes a benchmark-priced plan, and the parent and caretaker premium assistance the parameters subtract is not modeled.
+
   - id: vt_premium_assistance
     name: Vermont Premium Assistance
     full_name: Vermont Premium Assistance

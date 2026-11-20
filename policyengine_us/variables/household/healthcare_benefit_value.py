@@ -29,6 +29,7 @@ class healthcare_benefit_value(Variable):
         "nj_njhps",
         "assigned_nm_premium_assistance",
         "or_healthier_oregon_cost",
+        "assigned_ri_rimap",
         "vt_premium_assistance",
         "wa_cascade_care_savings",
     ]

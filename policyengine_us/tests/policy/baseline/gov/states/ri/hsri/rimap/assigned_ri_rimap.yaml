@@ -1,0 +1,45 @@
+# The take-up-gated Rhode Island Marketplace Affordability Program amount,
+# mirroring assigned_aca_ptc. The take-up flag follows takes_up_aca_if_eligible
+# unless supplied, because HealthSource RI pays the subsidy toward the premium
+# of a Marketplace enrollee.
+
+- name: Case 1, by default the assigned amount equals the amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ri_rimap: 1_000
+    state_code: RI
+  output:
+    takes_up_ri_rimap_if_eligible: true
+    assigned_ri_rimap: 1_000
+
+- name: Case 2, a tax unit that does not take up Marketplace coverage gets nothing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ri_rimap: 1_000
+    takes_up_aca_if_eligible: false
+    state_code: RI
+  output:
+    takes_up_ri_rimap_if_eligible: false
+    assigned_ri_rimap: 0
+
+- name: Case 3, a supplied take-up flag of false zeroes the assigned amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ri_rimap: 1_000
+    takes_up_aca_if_eligible: true
+    takes_up_ri_rimap_if_eligible: false
+    state_code: RI
+  output:
+    assigned_ri_rimap: 0
+
+- name: Case 4, outside Rhode Island nothing is assigned.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    ri_rimap: 1_000
+    state_code: MA
+  output:
+    assigned_ri_rimap: 0
