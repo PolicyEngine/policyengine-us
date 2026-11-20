@@ -11,6 +11,9 @@ class ct_covered_connecticut_eligible(Variable):
         "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=22",
         # C.G.S. 19a-754c(b)(1)(C)(iv), the codified income limit.
         "https://www.cga.ct.gov/current/pub/chap_368dd.htm#sec_19a-754c",
+        # PDF pages 706-707: Public Act 26-68, Sec. 462, re-enacting C.G.S.
+        # 19a-754c(b)(1), including the 175% limit and the age 19 to 64 range.
+        "https://www.cga.ct.gov/2026/ACT/PA/PDF/2026PA-00068-R00SB-00001-PA.PDF#page=706",
         "https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program",
         # Access Health CT's plan year 2026 chart sets the Covered Connecticut
         # limit at 175% of the 2025 guideline, by household size.
@@ -32,8 +35,10 @@ class ct_covered_connecticut_eligible(Variable):
         "people. The benchmark-silver-enrollment requirement is represented by "
         "using the second-lowest-cost silver plan premium as the modeled "
         "premium in the amount variable, and is not separately gated here. The "
-        "statutory eligibility cohorts (adults aged 18 to 64, dependents aged 26 "
-        "and under, and parents and caretaker relatives) are deliberately NOT "
+        "statutory eligibility cohorts (adults aged 19 to 64 under C.G.S. "
+        "19a-754c(b)(1)(C) as amended by Public Act 26-68, Section 462, "
+        "dependents aged 26 and under, and parents and caretaker relatives) "
+        "are deliberately NOT "
         "separately gated, matching sibling state premium-assistance programs, "
         "because the ACA MAGI test and the federal PTC structure already capture "
         "the eligible population."

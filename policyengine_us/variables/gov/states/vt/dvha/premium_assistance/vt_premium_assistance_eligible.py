@@ -10,6 +10,10 @@ class vt_premium_assistance_eligible(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
+        "https://info.healthconnect.vermont.gov/sites/vhc/files/documents/2027-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf",
+        # PDF page 41: HBEE 60.07(c) applies the Vermont reduction to
+        # household income that "does not exceed 300 percent of the FPL".
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "A tax unit is eligible for Vermont Premium Assistance when the program "
@@ -21,9 +25,11 @@ class vt_premium_assistance_eligible(Variable):
         "aca_fpg (the prior-year guideline for the section 36B tax family) "
         "rather than the truncated aca_magi_fraction. "
         "Vermont imposes no minimum-income floor, so "
-        "the low end is governed by the federal PTC gate, including its below-"
-        "poverty immigration exception, which Vermont inherits rather than "
-        "overrides."
+        "the low end is governed by the federal PTC gate, which Vermont "
+        "inherits rather than overrides. Since the federal below-poverty "
+        "exception for lawfully present immigrants ended after 2025 (Public "
+        "Law 119-21, Section 71302), that gate starts at 100% of the federal "
+        "poverty line."
     )
 
     def formula(tax_unit, period, parameters):
