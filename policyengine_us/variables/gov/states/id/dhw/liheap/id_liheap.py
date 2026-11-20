@@ -31,8 +31,8 @@ class id_liheap(Variable):
         area = clip(spm_unit("id_liheap_heating_area", period), 1, 3)
         heating = spm_unit("heating_type", period)
         types = heating.possible_values
-        electric_provider = spm_unit("electricity_provider", period)
-        gas_provider = spm_unit("natural_gas_provider", period)
+        electric_provider = spm_unit("id_liheap_electricity_provider", period)
+        gas_provider = spm_unit("id_liheap_natural_gas_provider", period)
         electric_providers = electric_provider.possible_values
         # The chart leaves Avista Area III and Rocky Mountain Area I blank.
         # Retain the representative-column estimate for unpublished area

@@ -21,8 +21,8 @@ class id_liheap_estimated_heating_cost(Variable):
         # No Idaho source names solar or kerosene. As in heating_expense, solar
         # reads as electric and kerosene as the chart's oil.
         lookup_area = clip(area, 1, 3)
-        electric_provider = spm_unit("electricity_provider", period)
-        gas_provider = spm_unit("natural_gas_provider", period)
+        electric_provider = spm_unit("id_liheap_electricity_provider", period)
+        gas_provider = spm_unit("id_liheap_natural_gas_provider", period)
         electric_providers = electric_provider.possible_values
         northern_electric = np.isin(
             electric_provider.decode_to_str(), payment.northern_electric_providers

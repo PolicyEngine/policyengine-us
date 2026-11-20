@@ -349,7 +349,7 @@
     - ELECTRICITY
     - ELECTRICITY
     - ELECTRICITY
-    electricity_provider:
+    id_liheap_electricity_provider:
     - AVISTA
     - AVISTA
     - AVISTA
@@ -411,7 +411,7 @@
     - ELECTRICITY
     - ELECTRICITY
     - ELECTRICITY
-    electricity_provider:
+    id_liheap_electricity_provider:
     - ROCKY_MOUNTAIN_POWER
     - ROCKY_MOUNTAIN_POWER
     - ROCKY_MOUNTAIN_POWER
@@ -473,7 +473,7 @@
     - NATURAL_GAS
     - NATURAL_GAS
     - NATURAL_GAS
-    natural_gas_provider:
+    id_liheap_natural_gas_provider:
     - AVISTA
     - AVISTA
     - AVISTA
@@ -523,7 +523,7 @@
     heating_type:
     - ELECTRICITY
     - ELECTRICITY
-    electricity_provider:
+    id_liheap_electricity_provider:
     - IDAHO_POWER
     - AVISTA
     id_liheap_countable_income:
@@ -559,11 +559,11 @@
     - ELECTRICITY
     - ELECTRICITY
     - NATURAL_GAS
-    electricity_provider:
+    id_liheap_electricity_provider:
     - ROCKY_MOUNTAIN_POWER
     - AVISTA
     - UNSPECIFIED
-    natural_gas_provider:
+    id_liheap_natural_gas_provider:
     - UNSPECIFIED
     - UNSPECIFIED
     - AVISTA
@@ -600,7 +600,7 @@
       BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
       ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    electricity_provider: [BONNERS_FERRY_LIGHT_AND_WATER, CLEARWATER_POWER,
+    id_liheap_electricity_provider: [BONNERS_FERRY_LIGHT_AND_WATER, CLEARWATER_POWER,
       IDAHO_COUNTY_LIGHT_AND_POWER, INLAND_POWER_AND_LIGHT, KOOTENAI_ELECTRIC,
       NORTHERN_LIGHTS, PLUMMER_ELECTRIC, OTHER, UNSPECIFIED]
     id_liheap_countable_income: [4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000]
@@ -618,7 +618,7 @@
     state_code: ID
     county: BONNER_COUNTY_ID
     heating_type: ELECTRICITY
-    electricity_provider: NORTHERN_LIGHTS
+    id_liheap_electricity_provider: NORTHERN_LIGHTS
     id_liheap_countable_income: 25_000
     has_heating_expense: true
   output:
