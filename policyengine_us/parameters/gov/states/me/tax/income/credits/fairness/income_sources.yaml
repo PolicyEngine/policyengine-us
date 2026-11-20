@@ -1,8 +1,8 @@
 description: Maine accounts for the following income sources for the sales and property tax credits.
 values:
   2021-01-01:
-    # Federal total income (Schedule PTFC/STFC line 2a) with each federal
-    # line's net loss added back (line 2d).
+    # Federal gross income: trade or business, capital and farm losses are
+    # added back in full, and the Schedule E items only for their net loss.
     - me_fairness_credit_federal_income
     - tax_exempt_social_security
     - tax_exempt_interest_income
