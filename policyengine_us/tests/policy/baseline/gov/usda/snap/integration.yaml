@@ -133,7 +133,7 @@
     snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
     snap_max_allotment: 835 # (parameter for family of 4 in contiguous US).
 
-- name: Idaho person aged 70 with income above the net income limit is ineligible before July 2024.
+- name: Idaho person aged 70 with income above the net income limit is ineligible.
   period: 2024-01
   input:
     people:
@@ -156,7 +156,7 @@
     is_snap_eligible: false
     snap: 0
 
-- name: Colorado person aged 70 under 200% of the poverty level with net income above the limit is eligible before July 2024.
+- name: Colorado person aged 70 under 200% of the poverty level with net income above the limit is eligible in January 2024.
   period: 2024-01
   input:
     people:
@@ -179,13 +179,13 @@
     is_snap_eligible: true
     snap: 23
 
-- name: Colorado full-time worker under 200% of the poverty level with net income above the limit is eligible before July 2024.
+- name: Colorado part-time worker under 200% of the poverty level with net income above the limit is eligible in January 2024.
   period: 2024-01
   input:
     people:
       person_1:
         age: 40
-        weekly_hours_worked_before_lsr: 40
+        weekly_hours_worked_before_lsr: 30
         employment_income:
           2024: 26_000
     spm_units:
