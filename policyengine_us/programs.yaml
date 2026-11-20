@@ -2215,10 +2215,11 @@ programs:
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program
     category: Healthcare
-    # Base Premium Assistance and the Middle Income Household component are
-    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
-    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
-    # Native American Table 2 rates plus the Premium Buy-down.
+    # Base Premium Assistance, the Middle Income Household component and
+    # Puente Health (nm_puente_health_premium_assistance, for lawfully present
+    # non-citizens who lost the federal credit under Public Law 119-21) are
+    # modeled. Not yet modeled: the Native American Table 2 rates and the
+    # Premium Buy-down.
     agency: State
     status: partial
     coverage: NM
