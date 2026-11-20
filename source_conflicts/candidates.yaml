@@ -10094,13 +10094,63 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit.py
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
-    keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
-    credit under the statute; verify the instructions'' return-level interpretation.'
+    keeps it when the spouse can be claimed (ny_real_property_tax_credit_potential.py). Ruled in October 2026 to
+    retain the credit under the statute; verify the instructions'' return-level interpretation.'
+- id: us-ny:real-property-credit-aged-dependent
+  program: income-tax
+  years:
+    from: 2024
+    to: 2024
+    type: tax
+  question: Before 2025, does a household get the real property tax credit limit for those aged 65 or older when its
+    only member aged 65 or older is claimed as a dependent and so cannot file Form IT-214?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(e)(1)(A)(i), 606(e)(3)(A)(i), 606(e)(6)(A), 606(e)(7)(E)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, page 1
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=1
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, line 7 (page 2) and line 32 chart (page 3)
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2
+  readings:
+    statute: 606(e)(6)(A) gives the credit for those aged 65 or older "where two or more members of a household are
+      able to meet the qualifications of a qualified taxpayer and one of them is sixty-five years of age or more".
+      606(e)(1)(A)(i) defines a qualified taxpayer as "a resident individual of the state who has occupied the same
+      residence for six months or more of the taxable year, and is required or chooses to file a return under this
+      article"; 606(e)(7)(E) denies the credit to a claimed dependent but does not change that definition. Page 1 of
+      the 2024 instructions says "If at least one member of your household is age 65 or older, the credit can be as
+      much as $375."
+    other: Line 7 of the 2024 instructions asks for "any household member who is filing Form IT-214 and was 65 or
+      older on January 1, 2025", and the line 32 chart gives the column from $375 down to $86 only where "you made an
+      entry on line 7". Page 1 requires that "You could not be claimed as a dependent on another taxpayer’s federal
+      income tax return", so a household whose only member aged 65 or older is a claimed dependent gets the column
+      from $75 down to $41.
+  example: In 2024 a 40-year-old with $3,000 of wages pays $4,800 of rent and claims a 70-year-old parent with $12,000
+    of Social Security as a dependent. Household gross income is $15,000, so 25% of the rent ($1,200) less 6.5% of
+    income ($975) leaves $225, and half of it is $112.50. The statute reading caps the credit at $137 and allows
+    $112.50; the line 7 reading caps it at $47.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11170
+  state: open
+  note: PE-US follows the statute. Through 2024 ny_real_property_tax_credit_potential.py gives the elderly limit when
+    any household member is 65 or older, a tax unit dependent included. The readings differ in the model only when
+    every member aged 65 or older is a claimed dependent, because a member who is not a dependent can file Form IT-214
+    and the model gives the household's credit to the tax unit with the largest claim. The cases "2024 - dependent
+    aged 66 makes the elderly maximum cap apply" and "2024 - an aged parent claimed as a dependent gives the household
+    the elderly limit on rent an adult child pays" in ny_real_property_tax_credit.yaml pin the statute reading. From
+    2025, 606(e)(3)(B)(i) counts claimed dependents aged 65 or older. Only the 2024 instructions were checked. The
+    review of PR 11170 agreed to keep the statute; PolicyEngine has recorded no ruling.
 - id: us-ny:ssp-couple-facility-entry-month
   program: ssi-state-supplement
   years:
