@@ -118,9 +118,9 @@ def create_aca_ptc_minimum_premium_reform(parameters, period, bypass: bool = Fal
     p = parameters.gov.contrib.aca.minimum_premium
     current_period = period_(period)
 
-    # Check if reform is active within a 5-year lookahead window
+    # Check if reform is active within the lookahead window
     reform_active = False
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

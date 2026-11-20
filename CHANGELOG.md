@@ -1,3 +1,51 @@
+## [2.148.2] - 2026-11-20
+
+### Fixed
+
+- Minnesota's Homestead Credit Refund household income now adds Supplemental Security Income, cash assistance, workers' compensation, tax-exempt interest, nontaxable retirement distributions and alimony, and the HSA deduction, and its retirement base amount follows the federal IRA limit. The renter's credit now counts only the claimant's and spouse's income, not other adults' in the home.
+- Count the income Tennessee's Rule 0600-03-.08(3) adds to adjusted gross income for elderly homeowner property tax relief: Social Security and Railroad Retirement benefits after the Medicare Part B premium, SSI, veterans' benefits, workers' compensation, tax-exempt interest, nontaxable alimony and nontaxable pensions.
+
+
+## [2.148.1] - 2026-11-20
+
+### Fixed
+
+- Start California's state-funded full-scope Medi-Cal for undocumented residents aged 19 to 25 on January 1, 2020; the model had covered them from 2015. Date the expansions to children (May 1, 2016) and to ages 50 and over (May 1, 2022) at their effective dates, which annual calculations read from 2017 and 2023. DACA and TPS holders keep the dates the model already gave them. The California Medi-Cal immigration eligibility formula applies edits to `eligible_regardless_of_immigration_status` to undocumented residents. DACA and TPS holders read a separate schedule.
+
+
+## [2.148.0] - 2026-11-20
+
+### Added
+
+- Bring back the Slack notice for PRs that change partner API contract tests: with a bot token, a PR's pushes over 24 hours share one thread; with only the webhook, pushes within 24 hours post again only when a new partner file changes.
+
+
+## [2.147.4] - 2026-11-20
+
+### Changed
+
+- Run PR CI on draft pull requests too, and stop rerunning it when a PR is marked ready or converted to draft.
+- Run the SPM Python tests on a runner of their own: after Microsimulation on PRs, beside it on release runs. The Microsimulation runner was hitting its 60-minute timeout with both suites.
+
+
+## [2.147.3] - 2026-11-19
+
+### Changed
+
+- Stop `test_an_edit_to_a_loaded_tree_reaches_the_next_simulation` requiring policyengine-core to load scale brackets without a parent. The test now detaches the bracket it edits, so it checks the same case whether or not core links a loaded tree's brackets to their scale.
+
+
+## [2.147.2] - 2026-11-19
+
+### Changed
+
+- Set the default calculation and input year of `Simulation` to 2026, keep `Microsimulation` on its dataset's base year, and check structural reforms from 2024 through 2033 by default.
+
+### Fixed
+
+- Fix state EITC and Utah HB210 Substitute 2 structural reforms that failed to build in a Simulation.
+
+
 ## [2.147.1] - 2026-11-19
 
 ### Fixed

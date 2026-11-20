@@ -23,3 +23,61 @@
     # Before, the spouse's AGI was -3,000 and the head's 27,000.
     adjusted_gross_income_person: [24_000, 0]
     mn_renters_credit_household_agi: 24_000
+
+- name: Roommates sharing an SPM unit each count only their own AGI.
+  # Minn. Stat. 290.0693, subd. 1(g) and 290A.03, subd. 4: the household is
+  # the claimant and spouse. 290.0693, subd. 7: "The income of each renter
+  # shall be each renter's household income". 2025 Schedule M1RENT
+  # instructions (PDF page 3), "Lived with a roommate": "Include only your
+  # income when filing for the credit."
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 35
+        employment_income: 45_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Each tax unit's own AGI, not the SPM unit's 70,000.
+    mn_renters_credit_household_agi: [25_000, 45_000]
+
+- name: A separate filer's household AGI adds the spouse's AGI.
+  # Schedule M1RENT line 2: "If your filing status is married filing
+  # separately ... enter your spouse's adjusted gross income for the time
+  # they lived with you" (2025 instructions, PDF page 4). The model takes the
+  # spouse's AGI to equal the filer's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # 40,000 + 40,000 = 80,000.
+    mn_renters_credit_household_agi: 80_000

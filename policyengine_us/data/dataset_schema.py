@@ -15,7 +15,7 @@ US_ENTITIES = [
 # spm_unit, family, marital_unit are optional and default to empty.
 _REQUIRED_ENTITIES = ("person", "household", "tax_unit")
 
-# Sync with CURRENT_YEAR in system.py
+# The default dataset's base year, which does not follow CURRENT_YEAR.
 _DEFAULT_TIME_PERIOD = 2024
 
 

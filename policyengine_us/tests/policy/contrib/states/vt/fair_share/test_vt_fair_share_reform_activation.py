@@ -5,7 +5,7 @@ object (``vt_fair_share``), so they never run the non-bypass branch of
 ``create_vt_fair_share_reform`` or its registration in
 ``create_structural_reforms_from_parameters``. That is the path the app and
 API take when a user sets ``gov.contrib.states.vt.fair_share.in_effect``. The
-factory looks at the period and the next four years and returns a ``Reform``
+factory looks at each year of its lookahead window and returns a ``Reform``
 subclass if the toggle is true in any of them, or ``None`` otherwise.
 
 As in ``test_dependent_exemption_reform_activation.py``, only the
@@ -26,11 +26,11 @@ from policyengine_us.reforms.states.vt.fair_share.vt_fair_share_reform import (
     create_vt_fair_share_reform,
 )
 from policyengine_us.system import system
+from policyengine_us.tools.parameters import STRUCTURAL_REFORM_CHECK_YEARS
 
 YEAR = 2026
 PERIOD = f"{YEAR}-01-01"
-# The factory checks the period and the next four years.
-LOOKAHEAD_YEARS = 5
+LOOKAHEAD_YEARS = STRUCTURAL_REFORM_CHECK_YEARS
 REFORM_VARIABLES = {
     "vt_fair_share_surcharge",
     "vt_income_tax_before_refundable_credits",
@@ -115,8 +115,8 @@ def test__given_default_parameters__then_factory_returns_none():
 def test__given_in_effect_true_within_lookahead__then_factory_returns_reform(
     years_ahead,
 ):
-    # in_effect is true only in one year: the period itself (0) or up to four
-    # years later.
+    # in_effect is true only in one year: the period itself (0) or a later year
+    # of the lookahead window.
     states = _states_with_in_effect(period=f"year:{YEAR + years_ahead}:1")
 
     result = create_vt_fair_share_reform(_contrib_states_only(states), PERIOD)
@@ -129,7 +129,7 @@ def test__given_in_effect_true_within_lookahead__then_factory_returns_reform(
 def test__given_in_effect_true_only_beyond_lookahead__then_factory_returns_none(
     years_ahead,
 ):
-    # in_effect is false through the fifth year and true from then on.
+    # in_effect is false through the lookahead window and true after it.
     states = _states_with_in_effect(start=f"{YEAR + years_ahead}-01-01")
 
     result = create_vt_fair_share_reform(_contrib_states_only(states), PERIOD)
