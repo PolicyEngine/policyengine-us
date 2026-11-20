@@ -6256,6 +6256,58 @@ candidates:
     at 2.00%, and the comment records that the briefing prints 1.00% at that boundary twice (target_contribution_percentage/initial.yaml
     and final.yaml, read by md_premium_assistance_target_contribution_percentage.py). Verify the suspected briefing
     error and 2027 applicability.'
+- id: us-md:premium-assistance-young-adult-age-cap
+  program: premium-assistance
+  years:
+    from: 2026
+    to: 2027
+    type: program
+    note: Maryland Health Connection plan year beginning January 1.
+  question: Does Maryland's Young Adult Subsidy reduce the expected contribution only for enrollees under 35, as COMAR
+    14.35.19.03A(4) reads, or through age 37, as the MHBE Board's parameters taper it?
+  sources:
+  - kind: statute
+    citation: Md. Insurance Article §31-122(d)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gin&section=31-122&enactments=false
+  - kind: regulation
+    citation: COMAR 14.35.19.03A(3) and (4)
+    url: https://regs.maryland.gov/us/md/exec/comar/14.35.19.03
+  - kind: policy
+    citation: MHBE Final 2026 State Subsidy and Reinsurance Parameters (Board 7-21-25), 2024-25 Young Adult Subsidy
+      Program Parameters, PDF page 14
+    url: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14
+  - kind: policy
+    citation: MHBE 2027 Final State Subsidy and Estimated Reinsurance Parameters (Board 8-4-26), expected contribution
+      note and 2024-26 Young Adult Subsidy Program Parameters, PDF pages 21 and 34
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/08/2027-Final-State-Subsidy-and-Estimated-Reinsurance-Parameters.pdf#page=21
+  - kind: policy
+    citation: MHBE Board meeting minutes of August 4, 2026, PY2027 state subsidy motion, PDF page 8
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/09/MHBE-Board-Meeting-Minutes-8.04.26.pdf#page=8
+  readings:
+    regulation: 'COMAR 14.35.19.03A makes an enrollee eligible only if "(3) The enrollee is at least 18 years old; and
+      (4) The enrollee is under the age of 35 years", so enrollees aged 35 to 37 get no reduction. The Insurance Article
+      sets no age cap of its own: §31-122(d)(1) has the Exchange, as approved by the Board, set the eligibility and
+      payment parameters for each calendar year, and (d)(2)(i) has it consider "young adults at least 18 years old and
+      under the age of 41 years".'
+    other: 'The Board''s parameters reduce the expected contribution by 2.5 percentage points at ages 18 to 33 and by
+      2.0, 1.5, 1.0 and 0.5 points at ages 34 to 37 ("Age: 18-37 (18 or older; younger than 38)"), and the Board
+      continued the 2026 Young Adult Subsidy parameters for PY2027.'
+  example: In 2027 a single filer aged 36 at exactly 300% FPL ($47,880), with a $7,000 benchmark premium and a $2,106.66
+    federal credit, has a 7.11% target contribution and $1,489.07 of state subsidy under the Board's taper, or an 8.11%
+    target and $1,010.27 under the under-35 cap.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/young_adult/reduction.yaml
+    - policyengine_us/variables/gov/states/md/mhbe/premium_assistance/md_premium_assistance_young_adult_reduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11153
+  state: ruled
+  note: PolicyEngine follows the Board's schedule, which MHBE applies, under a project-lead ruling of 2026-11-18;
+    young_adult/reduction.yaml reduces the target contribution through age 37 in 2026 and 2027. No COMAR amendment
+    was found; the regulation still reads "under the age of 35 years". The Board's tables have tapered the reduction
+    through age 37 since 2024 (2026 deck, PDF page 14). Slide 25 of the 2027 deck prints ages 19-33, but slides 21
+    and 34 and the adopted motion keep 18, so PolicyEngine keeps 18.
 - id: us-md:snap-child-support-deduction
   program: snap
   years:
