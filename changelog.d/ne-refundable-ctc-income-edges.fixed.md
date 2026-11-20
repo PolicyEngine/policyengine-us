@@ -1,1 +1,0 @@
-The Nebraska child care refundable tax credit now pays $2,000 per child at total household income of exactly $75,000 or below zero, and $1,000 per child at exactly $150,000. Neb. Rev. Stat. 77-7203(2) sets each band at "no more than" its limit.
