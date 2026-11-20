@@ -72,8 +72,8 @@ def create_hi_hb2306_cdcc_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    # Check if reform is active in current or next 5 years
-    for i in range(5):
+    # Check if reform is active in the lookahead window
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

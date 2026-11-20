@@ -1,16 +1,51 @@
-description: Rhode Island counts these income sources when calculating its property tax credit.
+description: Rhode Island counts these income sources, and adds back these losses, for each tax unit when calculating household income for its property tax credit.
 
 values:
   2021-01-01:
+    # R.I. Gen. Laws 44-33-3(7): "income" is federal adjusted gross income
+    # plus "all non-taxable income".
     - adjusted_gross_income
-    - tax_exempt_pension_income
     - tax_exempt_interest_income
     - tax_exempt_social_security
     - tax_exempt_unemployment_compensation
-    - alimony_income
-    - tanf
+    # "alimony": the part outside federal AGI, since AGI already holds
+    # alimony under a divorce instrument executed before 2019.
+    - ri_property_tax_nontaxable_alimony
+    # "support money"
     - child_support_received
+    # "cash public assistance and relief" (RI-1040H line 29).
+    - tanf
+    - general_assistance
+    # "all payments received under the federal Social Security Act": SSI is
+    # paid under title XVI of that act, and the state supplement is paid under
+    # the same agreement as supplementary cash assistance to SSI
+    # (R.I. Gen. Laws 40-6-27(a)(1)).
+    - ssi
+    - ri_ssp
+    # "the gross amount of any pension or annuity": RI-1040H line 20 takes
+    # IRA distributions, pensions and annuities from Form 1040 lines 4a and
+    # 5a, the gross amounts.
+    - tax_exempt_pension_income
+    - tax_exempt_retirement_distributions
+    # "veterans' disability pensions"
+    - veterans_benefits
     - workers_compensation
+    # "the gross amount of 'loss of time' insurance"
+    - tax_exempt_disability_benefits
+    # "the calculation of 'income' shall not include any deductions for
+    # rental losses, business losses, capital losses, exclusion for foreign
+    # income, and any losses received from pass-through entities"
+    # (RI-1040H line 31). These add back what federal AGI excluded or
+    # deducted: income excluded or deducted under section 911; each
+    # business, farm, rental, estate and partnership or S corporation loss,
+    # even one that nets against other income on the same form line; and
+    # the net capital loss deducted from other income (up to $3,000).
+    # Capital losses that only offset capital gains are netted before
+    # Form 1040 line 7a, which RI-1040H line 19 starts from, so they are not
+    # added back.
+    - section_911_excluded_income
+    - limited_business_loss
+    - limited_capital_loss
 
 metadata:
   unit: list
@@ -23,3 +58,9 @@ metadata:
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-1040h_w.pdf#page=2
     - title: 2022 Rhode Island General Laws § 44-33-3. Definitions. (7)
       href: https://law.justia.com/codes/rhode-island/2022/title-44/chapter-44-33/section-44-33-3/
+    - title: R.I. Gen. Laws § 44-33-3(7)
+      href: http://webserver.rilegislature.gov/Statutes/TITLE44/44-33/44-33-3.htm
+    - title: 2025 Form RI-1040H Rhode Island Property Tax Relief Claim Lines 19, 20, 29 and 31
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%201040H_w.pdf#page=2
+    - title: R.I. Gen. Laws § 40-6-27(a)(1)
+      href: https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm

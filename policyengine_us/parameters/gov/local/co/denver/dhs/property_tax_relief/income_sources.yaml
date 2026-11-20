@@ -1,4 +1,11 @@
 description: Denver counts these sources as income under the property tax relief program.
+# D.R.M.C. 53-492 defines no "income"; 53-496(a) lets the executive director
+# adopt rules "defining household composition and countable income". The
+# program's rules count "all financial income resources of the household
+# members ... except" a list (gifts, prior-year rebates, tax refunds, Medicaid,
+# SNAP, child support and dependent income, TANF, LEAP, education assistance,
+# SSDI, SSI and Social Security retirement benefits), so Social Security and
+# SSI are left out.
 values:
   2023-01-01:
     - employment_income
@@ -8,16 +15,31 @@ values:
     - rental_income
     - disability_benefits
     - pension_income
+    # Military retired pay and survivor annuities are pension benefits.
+    - military_retirement_income
+    # IRA, 401(k), 403(b), SEP and Keogh distributions, taxable or not, fall
+    # under "all financial income resources" and are not on the exception list.
+    - retirement_distributions
     - veterans_benefits
     - interest_income
     - dividend_income
     - workers_compensation
     - total_unemployment_compensation
-  
+    # Old Age Pension (OAP), named in the rules' proof-of-income list.
+    - co_oap
+    # Aid to the Needy Disabled (AND). This variable is the Colorado supplement
+    # to SSI for disabled and blind recipients (AND-CS and AB-CS); both count
+    # under the general clause.
+    - co_state_supplement
+
 metadata:
-  
-  period: year 
+  unit: list
+  period: year
   label: Denver property tax relief income sources
   reference:
     - title: Denver property tax relief program instructions 2023
       href: https://web.archive.org/web/20240803030400/https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf#page=2
+    - title: "Denver Department of Housing Stability, Property Tax Relief Program Guidelines (effective May 2026) #page 3-5"
+      href: https://denvergov.org/files/assets/public/v/1/housing-stability/documents/property-tax-relief-program-guidelines-2026.pdf#page=3
+    - title: Denver Council Bill 26-0096 (signed), D.R.M.C. 53-496(a)
+      href: https://denver.legistar1.com/denver/attachments/01a4c7e6-4957-4920-a318-d27e056e5f31.pdf#page=6
