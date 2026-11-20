@@ -54,8 +54,9 @@
     # subtraction $40K minus Hawaii student loan subtraction $833.33.
     hi_agi: 59_166.67
 
-- name: Pre-2025 Hawaii student loan interest variables are zero before the deduction takes effect
+- name: Hawaii adds back part of the federal student loan deduction in 2024, as the 2024 worksheet does
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -75,11 +76,103 @@
         members: [head]
         state_code: HI
   output:
-    # The student_loan_interest.in_effect parameter is false before 2025-01-01.
-    hi_student_loan_interest_deduction: 0
-    hi_student_loan_interest_adjustment: 0
+    # 2024 Form N-11 instructions, Student Loan Interest Deduction Worksheet (PDF p. 34).
+    # Line 2, Hawaii MAGI: $60,000. Line 3: $50,000. Line 5: $10,000 / $15,000 = 2/3.
+    # Line 7, Hawaii deduction: $2,500 * (1 - 2/3) = $833.33. Line 8, federal deduction:
+    # $2,500 (the 2024 federal phase-out starts at $80,000). Line 9 adds back $1,666.67.
+    # Hawaii AGI = federal AGI $57,500 + $1,666.67.
+    hi_student_loan_interest_deduction: 833.33
+    hi_student_loan_interest_adjustment: -1_666.67
     hi_student_loan_interest_subtraction: 0
-    hi_student_loan_interest_addition: 0
+    hi_student_loan_interest_addition: 1_666.67
+    hi_agi: 59_166.67
+
+- name: Hawaii AGI equals federal AGI in 2024 when the Hawaii and federal student loan deductions are equal
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 50_000
+        student_loan_interest: 2_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Hawaii MAGI is $50,000, not more than the $50,000 on line 3, so the Hawaii
+    # deduction is the full $2,000. The federal deduction is also $2,000, so line 9
+    # makes no adjustment and Hawaii AGI is federal AGI: $50,000 - $2,000.
+    hi_modified_agi: 50_000
+    hi_student_loan_interest_deduction: 2_000
+    hi_student_loan_interest_adjustment: 0
+    hi_subtractions: 0
+    hi_agi: 48_000
+
+- name: Hawaii adds back part of the federal student loan deduction in 2021, as the 2021 worksheet does
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 60_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # 2021 Form N-11 instructions, Student Loan Interest Deduction Worksheet (PDF p. 34):
+    # the same $2,500 cap, $50,000 line 3 and $15,000 divisor as 2024. The 2021 federal
+    # phase-out starts at $70,000, so the federal deduction is $2,500.
+    hi_student_loan_interest_deduction: 833.33
+    hi_student_loan_interest_adjustment: -1_666.67
+    hi_agi: 59_166.67
+
+- name: A qualifying surviving spouse uses the $50,000 line 3 amount in 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 60_000
+        student_loan_interest: 2_500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SURVIVING_SPOUSE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # 2024 worksheet line 3: $50,000 if single, head of household, or qualifying
+    # surviving spouse; line 5 divides by $15,000 unless married filing jointly.
+    # Hawaii deduction = $2,500 * (1 - 10,000 / 15,000) = $833.33.
+    hi_student_loan_interest_deduction: 833.33
 
 - name: Married filing separately receives no Hawaii student loan interest deduction
   period: 2025
