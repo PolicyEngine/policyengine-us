@@ -8520,6 +8520,45 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-capital-losses
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does a net capital loss reduce renter's refund income, when the renter's refund application counts net
+    gains from the sale of property and the homestead credit application, under the same definition of income, takes
+    Form 1040 line 7, which allows a net loss of up to $3,000?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 7 and 8 and the instructions for lines 4 to 9, pages 1 and 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, line 4e
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=1
+  readings:
+    statute: Income is income "for the most recent complete taxable year from all sources", with no rule for losses.
+    other: The instructions for lines 4 to 9 of SFN 24777 and item 10 of the guideline list "net gains from the sale of
+      property" as income, and SFN 24777 line 7 asks for capital gains with no line for a loss. SFN 24757 line 4e asks
+      for "Capital gains and losses (From Form 1040 or 1040-SR, line 7)", where IRC 1211(b) allows a net loss of up to
+      $3,000.
+  example: A renter with $30,000 of wages and a $20,000 net long-term capital loss has income of $30,000 under SFN
+    24777 and $27,000 under SFN 24757 line 4e.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/net_gain_components.yaml
+  state: ruled
+  note: Ruled 2026-11-19 for the renter's refund application, the form the Tax Commissioner prescribes for this program
+    under N.D.C.C. 57-02-08.1(3). Before, the model let the whole loss reduce income, which no source supports. The
+    applicant's and spouse's gains and losses net together, as on line 7 and a joint Form 1040, and each dependent's net
+    loss counts as zero.
 - id: us-nd:renters-refund-federally-excluded-income
   program: renter-credit
   years:
