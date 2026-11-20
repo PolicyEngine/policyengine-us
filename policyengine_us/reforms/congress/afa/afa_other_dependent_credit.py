@@ -302,7 +302,7 @@ def create_afa_other_dependent_credit_reform(parameters, period, bypass: bool = 
     reform_active = False
     current_period = period_(period)
 
-    for i in range(10):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p.in_effect(current_period):
             reform_active = True
             break

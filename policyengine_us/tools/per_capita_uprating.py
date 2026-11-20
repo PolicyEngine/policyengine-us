@@ -182,7 +182,7 @@ def add_per_capita_parameters_for_parameter_uprating(parameters) -> None:
 
 
 def add_per_capita_uprating(system) -> None:
-    """Point every variable that uprates by a national total at its
+    """Point every input variable that uprates by a national total at its
     per-capita sibling, building or refreshing the sibling parameters.
 
     Runs at the end of system init and again after every parameter reform, so
@@ -215,7 +215,11 @@ def add_per_capita_uprating(system) -> None:
     for path in sorted(totals):
         _add_per_capita_parameter(system.parameters, path)
     for variable in system.variables.values():
-        if is_national_total_path(variable.uprating):
+        # A reform can replace an input with a computed variable, which inherits
+        # the input's uprating. Assigning it would count as declaring uprating
+        # on a computed variable, which core rejects. The inherited path is read
+        # only in a period the variable has no formula for.
+        if variable.is_input_variable() and is_national_total_path(variable.uprating):
             variable.uprating = per_capita_path(variable.uprating)
 
 

@@ -33,12 +33,12 @@ def create_family_security_act_2024_eitc_reform(
     if bypass:
         return create_family_security_act_2024_eitc()
 
-    # Look ahead for the next five years
+    # Check each year of the lookahead window
     p = parameters.gov.contrib.congress.romney.family_security_act_2_0.eitc
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).apply_eitc_structure:
             reform_active = True
             break
