@@ -1,3 +1,11 @@
+## [2.148.2] - 2026-11-20
+
+### Fixed
+
+- Minnesota's Homestead Credit Refund household income now adds Supplemental Security Income, cash assistance, workers' compensation, tax-exempt interest, nontaxable retirement distributions and alimony, and the HSA deduction, and its retirement base amount follows the federal IRA limit. The renter's credit now counts only the claimant's and spouse's income, not other adults' in the home.
+- Count the income Tennessee's Rule 0600-03-.08(3) adds to adjusted gross income for elderly homeowner property tax relief: Social Security and Railroad Retirement benefits after the Medicare Part B premium, SSI, veterans' benefits, workers' compensation, tax-exempt interest, nontaxable alimony and nontaxable pensions.
+
+
 ## [2.148.1] - 2026-11-20
 
 ### Fixed
