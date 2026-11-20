@@ -4688,6 +4688,44 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires changing claimability to actual claim, after confirming
     the statutory text reproduced in the administrative rule. Code not yet on main: il_personal_exemption.'
+- id: us-il:scretd-household-income-nontaxable-pension
+  program: property-tax-deferral
+  years:
+    from: 2025
+    type: tax
+  question: Does household income for the Illinois Senior Citizens Real Estate Tax Deferral count the part of pension
+    payments left out of federal gross income, as section 3.07(C) counts amounts received as an annuity under any
+    contract or agreement, or only the federally taxable part of pension benefits, as Form IL-1017 and PIO-64 list?
+  sources:
+  - kind: statute
+    citation: 320 ILCS 25/3.07(C), applied to the deferral by 320 ILCS 30/2(h)
+    url: https://www.ilga.gov/Documents/legislation/ilcs/documents/032000250K3.07.htm
+  - kind: form
+    citation: Form IL-1017 (R-11/25), Worksheet A lines 3 and 4 (PDF page 2) and General Information (PDF page 3)
+    url: https://cookcountytreasurer.com/pdfs/seniordeferral/IL-1017%20Form%20TY%202025.pdf#page=2
+  - kind: guidance
+    citation: Illinois Department of Revenue PIO-64, What is included in household income
+    url: https://tax.illinois.gov/research/publications/pio-64.html
+  readings:
+    statute: Section 3.07 adds to federal adjusted gross income, to the extent deducted or excluded from gross income in
+      computing it, "(C) An amount equal to all amounts received during the taxable year as an annuity under an
+      annuity, endowment or life insurance contract or under any other contract or agreement".
+    other: Worksheet A line 3 counts "Civil Service benefits (household total)" and line 4 "Annuity benefits and
+      federally taxable pension and IRA benefits"; the form's General Information and PIO-64 list "Pension and IRA
+      benefits (federally taxable portion only)".
+  example: In 2025 a claimant with a $40,000 employer pension, $4,000 of it a tax-free return of contributions, and
+    $36,000 of taxable interest has AGI of $72,000. Household income is $76,000 under section 3.07(C), over the
+    $75,000 limit, and $72,000 under the form, within it.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/il/idor/scretd/household_income_additions.yaml
+    prs: []
+  state: unreviewed
+  note: PolicyEngine adds tax_exempt_pension_income, the part of pension and annuity payments left out of gross income,
+    because section 3.07(C) reaches annuities paid under "any other contract or agreement" and the form itself counts
+    Civil Service benefits and annuity benefits in full. Nontaxable IRA and Roth distributions are not annuities and
+    are not added, as on the form.
 - id: us-il:snap-child-support-exclusion
   program: snap
   years:

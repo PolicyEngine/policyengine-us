@@ -1,0 +1,1 @@
+Illinois Senior Citizens Real Estate Tax Deferral household income now follows 320 ILCS 25/3.07: federal adjusted gross income plus nontaxable Social Security, SSI, railroad retirement, tax-exempt interest, nontaxable annuity income, cash public assistance and workers' compensation, instead of federal gross income.
