@@ -29,10 +29,16 @@ class mo_ptc_gross_income(Variable):
         # Line numbers in comments below refer to the 2025 Form MO-PTS.
         person = tax_unit.members
         p = parameters(period).gov.states.mo.tax.income
-        sources = [
-            "mo_adjusted_gross_income",  # Line 1
-            # Line 3: pensions, annuities and interest not included in
-            # Missouri AGI, under RSMo 135.010(5)(b) and (e).
+        # Income is the claimant's, and the spouse's on a combined return
+        # (RSMo 135.010(1) and (5)). As in mo_adjusted_gross_income, a
+        # dependent's items are on their own return; Form MO-PTS brings in
+        # minor children's amounts only on Lines 2 and 6.
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        missouri_agi = person("mo_adjusted_gross_income", period)  # Line 1
+        # Line 3: pensions, annuities and interest not included in Missouri
+        # AGI, under RSMo 135.010(5)(b) and (e), each in its total amount.
+        # Candidate: us-mo:property-tax-credit-pension-excludable-cost until registered.
+        line_3_sources = [
             "tax_exempt_pension_income",
             "tax_exempt_retirement_distributions",
             # Subtracted from Missouri AGI on Form MO-A, Part 1, Line 10.
@@ -41,13 +47,16 @@ class mo_ptc_gross_income(Variable):
             # Subtracted from Missouri AGI on Form MO-A, Part 1, Line 8.
             "us_govt_interest_person",
         ]
-        core_income = tax_unit.sum(add(person, period, sources))
+        line_3_income = not_dependent * add(person, period, line_3_sources)
+        core_income = tax_unit.sum(missouri_agi + line_3_income)
         # Line 2: Social Security benefits not included in Missouri AGI.
         exempt_socsec_benefits = tax_unit("tax_exempt_social_security", period)
         # Line 5: veterans payments and benefits. Under RSMo 135.010(5)(a)
         # they don't count when the claimant or the claimant's spouse is a
         # one hundred percent service-connected disabled veteran, and such a
-        # veteran never lists their own.
+        # veteran never lists their own. Social Security on Line 2 still
+        # counts, as Form MO-PTS Lines 2 and 4 carry no such exception.
+        # Candidate: us-mo:property-tax-credit-veteran-exception-scope until registered.
         veterans_benefits = person("veterans_benefits", period)
         fully_disabled_veteran = person(
             "is_fully_disabled_service_connected_veteran", period
@@ -69,7 +78,6 @@ class mo_ptc_gross_income(Variable):
         # are business losses and stay deducted; the net capital loss
         # deduction and the listed Schedule E losses are added back. As in
         # limited_business_loss, a dependent's losses are on their own return.
-        not_dependent = ~person("is_tax_unit_dependent", period)
         own_losses = 0
         for source in p_ptc.nonbusiness_loss_sources:
             own_losses = own_losses + max_(0, -person(source, period))

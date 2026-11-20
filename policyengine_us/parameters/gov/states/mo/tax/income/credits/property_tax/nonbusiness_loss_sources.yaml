@@ -1,15 +1,17 @@
 description: Missouri adds back losses from these sources to household income for the property tax credit as nonbusiness losses, along with the net capital loss deduction.
 values:
   2008-08-28:
+    # Candidate: us-mo:property-tax-credit-nonbusiness-loss until registered.
     # Schedule E, Part I: rental real estate and royalties.
     - rental_income
     # Form 4835, carried to Schedule E: farm rental income of a landowner
     # who did not materially participate.
     - farm_rent_income
-    # Schedule E, Part II.
-    - partnership_s_corp_income
     # Schedule E, Part III.
     - estate_income
+    # Partnership and S corporation losses (Schedule E, Part II) are not
+    # listed: a partner's or shareholder's share keeps the entity's trade or
+    # business character (IRC 702(b) and 1366(b)), so they stay deducted.
 metadata:
   unit: list
   period: year

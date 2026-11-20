@@ -116,7 +116,7 @@
     # 14,000 + 6,000 = 20,000.
     mo_ptc_gross_income: 20_000
 
-- name: Partnership, estate and farm rental losses are nonbusiness losses and are added back.
+- name: A partnership loss is a business loss and stays deducted, while estate and farm rental losses are added back.
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -128,9 +128,11 @@
     farm_rent_income: -500
   output:
     # Federal and Missouri AGI: 20,000 - 2,000 - 1,000 - 500 = 16,500.
-    # None of these losses comes from Schedule C or Schedule F, so line 7
-    # adds back 3,500: 16,500 + 3,500 = 20,000.
-    mo_ptc_gross_income: 20_000
+    # A partner's share of a partnership loss keeps the partnership's trade
+    # or business character (IRC 702(b)), so it is not a loss "not incurred
+    # in a trade or business" (135.010(5)(d)). Line 7 adds back only the
+    # estate and farm rental losses: 16,500 + 1,000 + 500 = 18,000.
+    mo_ptc_gross_income: 18_000
 
 - name: Schedule C and Schedule F losses are business losses and stay deducted.
   absolute_error_margin: 0.01
@@ -212,7 +214,7 @@
     # household income as the 2025 case.
     mo_ptc_gross_income: 15_000
 
-- name: Only the part of a partnership loss that section 461(l) lets reduce federal AGI is added back.
+- name: A partnership loss that section 461(l) limits is a business loss, so none of it is added back.
   absolute_error_margin: 0.01
   period: 2023
   input:
@@ -224,9 +226,9 @@
     # With no business income, section 461(l) caps the deductible business
     # loss at the 2023 single threshold of 289,000, so federal AGI is
     # 20,000 - 289,000 = -269,000; through 2023 Missouri AGI keeps the
-    # negative amount. The other 111,000 was never deducted. Line 7 adds back
-    # the 289,000 deducted: -269,000 + 289,000 = 20,000.
-    mo_ptc_gross_income: 20_000
+    # negative amount. The partnership loss keeps its trade or business
+    # character (IRC 702(b)), so line 7 adds back nothing: -269,000.
+    mo_ptc_gross_income: -269_000
 
 - name: A tax-exempt 401(k) distribution counts as a pension outside Missouri AGI.
   absolute_error_margin: 0.01
@@ -327,3 +329,55 @@
   output:
     # Form MO-PTS line 5: 10,000 + 6,000 = 16,000. 20,000 + 16,000 = 36,000.
     mo_ptc_gross_income: 36_000
+
+- name: Only the part of a rental loss that section 461(l) lets reduce federal AGI is added back.
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    rental_income: -400_000
+    # 10,000 in the bank is above the 2023 SSI resource limit of 2,000, so
+    # no SSI enters line 6.
+    bank_account_assets: 10_000
+  output:
+    # With no business income, section 461(l) caps the deductible loss at
+    # the 2023 single threshold of 289,000, so federal AGI is
+    # 20,000 - 289,000 = -269,000; through 2023 Missouri AGI keeps the
+    # negative amount. The other 111,000 was never deducted. Line 7 adds back
+    # the deducted share of the rental loss, 400,000 x 289,000 / 400,000 =
+    # 289,000: -269,000 + 289,000 = 20,000.
+    mo_ptc_gross_income: 20_000
+
+- name: A dependent grandchild's savings bond interest adds nothing to household income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        taxable_private_pension_income: 20_000
+      person2:
+        is_tax_unit_dependent: true
+        age: 10
+        # U.S. savings bond interest: federally taxable, subtracted for
+        # Missouri AGI (Form MO-A, Part 1, line 8).
+        taxable_interest_income: 600
+        us_govt_interest_person: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Income is the claimant's, and the spouse's on a combined return
+    # (135.010(1), (5)). The grandchild's interest is on the grandchild's own
+    # return, so line 1 is the claimant's Missouri AGI of 20,000. Form MO-PTS
+    # line 3 takes amounts "not included in Line 1" of the claimant's return,
+    # and only lines 2 and 6 bring in minor children's amounts, so the 600
+    # adds nothing: 20,000.
+    mo_ptc_gross_income: 20_000
