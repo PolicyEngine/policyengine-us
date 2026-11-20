@@ -1,0 +1,192 @@
+- name: Case 1, legal joint deduction choices in a mixed resident population.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [DC, GA, OR, GA]
+    age: [40, 40, 40, 40]
+    employment_income: [150_000, 145_000, 149_500, 150_000]
+    filing_status: [SINGLE, SINGLE, SINGLE, SEPARATE]
+    separate_filer_itemizes: [false, false, false, true]
+    deductible_mortgage_interest: [13_500, 15_000, 10_000, 0]
+    state_and_local_sales_or_income_tax: [2_500, 0, 0, 0]
+    or_tax_before_credits_in_prior_year: [0, 0, 0, 0]
+  output:
+    # DC Act 26-214 sets a $15,000 single standard deduction. D-40 requires
+    # the federal method and excludes the $2,500 income tax from Schedule I.
+    # Federal itemization saves $60 but costs $127.50 in the District.
+    # https://code.dccouncil.gov/us/dc/council/acts/26-214
+    # https://otr.cfo.dc.gov/publication/2025-d-40-booklet
+    # GA 500 lines 11–12 and 19 require the federal method. Itemizing costs
+    # $180 federally and saves $155.70 plus the $300 GA itemizer credit.
+    # A separate filer with an itemizing spouse must itemize, even at zero.
+    # https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=18
+    # ORS 316.695(1)(c)(A) requires the larger Oregon deduction, so Oregon
+    # itemizes $10,000 instead of $2,835 even when the federal method is standard.
+    # https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    # https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf
+    # IRS Form 1040 tax computation uses $15,750 for the 2025 single standard
+    # deduction and a 24% marginal rate at each taxable income in this case.
+    # https://www.irs.gov/instructions/i1040gi
+    tax_unit_itemizes: [false, true, false, true]
+    state_deduction_method: [STANDARD, ITEMIZED, ITEMIZED, ITEMIZED]
+    dc_deduction_joint: [15_000, 0, 0, 0]
+    ga_deductions: [0, 15_000, 0, 0]
+    or_deductions: [0, 0, 10_000, 0]
+    income_tax: [25_067, 24_047, 24_947, 28_847]
+    state_income_tax: [9_875, 6_447, 12_063, 7_485]
+    federal_state_income_tax: [34_942, 30_494, 37_010, 36_332]
+
+- name: Case 2, the larger Oregon deduction is its standard deduction.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: OR
+    age: 40
+    employment_income: 149_500
+    deductible_mortgage_interest: 1_000
+    state_and_local_sales_or_income_tax: 0
+    or_tax_before_credits_in_prior_year: 0
+    state_deduction_method: STANDARD
+  output:
+    tax_unit_itemizes: false
+    state_deduction_method: STANDARD
+    or_deductions: 2_835
+    income_tax: 24_947
+
+- name: Case 3, an explicitly filed federal itemized deduction limits the available pairs.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: OR
+    age: 40
+    employment_income: 149_500
+    deductible_mortgage_interest: 10_000
+    state_and_local_sales_or_income_tax: 0
+    or_tax_before_credits_in_prior_year: 0
+    tax_unit_itemizes: true
+  output:
+    state_deduction_method: ITEMIZED
+    or_deductions: 10_000
+    income_tax: 26_327
+    state_income_tax: 12_063
+
+- name: Case 4, California residents can use each of the four federal and state deduction pairs.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [CA, CA, CA, CA]
+    age: [40, 40, 40, 40]
+    employment_income: [150_000, 150_000, 150_000, 150_000]
+    deductible_mortgage_interest: [1_000, 9_750, 4_000, 19_500]
+    real_estate_taxes: [0, 250, 0, 500]
+    state_and_local_sales_or_income_tax: [0, 0, 12_000, 12_000]
+  output:
+    # Federal Schedule A amounts are $1,000, $10,000, $16,000, and
+    # $32,000. California excludes the state and local income tax on
+    # Schedule CA (540), Part II, line 5a. Its single standard is $5,706.
+    # https://www.ftb.ca.gov/forms/2025/2025-540-instructions.html
+    # https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html
+    tax_unit_itemizes: [false, false, true, true]
+    state_deduction_method: [STANDARD, ITEMIZED, STANDARD, ITEMIZED]
+    ca_itemizes: [false, true, false, true]
+    ca_deductions: [5_706, 10_000, 5_706, 20_000]
+    ca_taxable_income: [144_294, 140_000, 144_294, 130_000]
+    # Schedule P Part I lines 2–5 add back the property tax for these
+    # state itemizers. Line 6 adds back the standard for California standard
+    # filers. Acquisition mortgage interest needs no AMT add-back here.
+    # https://www.ftb.ca.gov/forms/2025/2025-540-p.pdf#page=1
+    ca_amti_adjustments: [5_706, 250, 5_706, 500]
+    income_tax: [25_067, 25_067, 25_007, 21_167]
+
+- name: Case 5, the chosen filing methods retain the section 1341 repayment deduction.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: GA
+    age: 40
+    employment_income: 145_000
+    deductible_mortgage_interest: 10_000
+    state_and_local_sales_or_income_tax: 0
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 0
+  output:
+    # Under 26 USC 1341(a)(4)–(5), use the less expensive tax calculation
+    # for the filed return. With itemization, the $5,000 repayment deduction
+    # saves federal tax while the alternate method grants no credit.
+    # https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapQ-partV-sec1341.htm
+    # Georgia follows federal itemization and carries the $15,000 federal
+    # itemized deductions. Its tax is $130,000 x 5.19% minus $300 = $6,447.
+    # https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=18
+    # Federal tax on $130,000 taxable income is $24,047. The combined bill
+    # of $30,494 is less than under the two standard deductions ($30,769.70).
+    # https://www.irs.gov/instructions/i1040gi
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    income_tax: 24_047
+    state_income_tax: 6_447
+    federal_state_income_tax: 30_494
+
+- name: Case 6, the Virginia sales tax election minimizes combined income tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: VA
+    age: 40
+    employment_income: 150_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 8_000
+    state_sales_tax: 7_800
+    local_sales_tax: 0
+  output:
+    # Federal Schedule A line 5a allows either tax. Income taxes would
+    # lower the federal bill by $48, to $22,127.
+    # https://www.irs.gov/instructions/i1040sca
+    # Virginia Schedule A subtracts income taxes on line 18 and retains
+    # sales taxes. The extra $7,800 deduction saves $448.50 at 5.75%.
+    # https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2025-sch-a-instructions.pdf
+    # https://law.lis.virginia.gov/vacode/title58.1/section58.1-320/
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    state_and_local_sales_tax_elected: true
+    state_and_local_sales_or_income_tax: 7_800
+    itemized_taxable_income_deductions: 27_800
+    va_deductions: 27_800
+    va_taxable_income: 121_270
+    income_tax: 22_175
+    state_income_tax: 6_715.525
+    federal_state_income_tax: 28_890.525
+
+- name: Case 7, Nebraska keeps the smaller sales tax election when the federal SALT cap binds.
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: NE
+    age: 40
+    employment_income: 700_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 35_000
+    local_income_tax: 0
+    state_sales_tax: 4_000
+    local_sales_tax: 0
+  output:
+    # Either line 5a election reaches the $10,000 federal SALT floor and gives
+    # $30,000 in federal itemized deductions. Nebraska retains the sales tax.
+    # With income taxes it removes $35,000 and uses the $8,600 state standard.
+    # The single filer's Nebraska marginal rate is 5.2%.
+    # https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=14
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    state_and_local_sales_tax_elected: true
+    state_and_local_sales_or_income_tax: 4_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 30_000
+    ne_itemized_deductions: 30_000
+    ne_taxable_income: 670_000
+    income_tax: 204_920.25
+    state_income_tax: 34_191.032
+    federal_state_income_tax: 239_111.282

@@ -66,3 +66,21 @@
     me_deductions: 15_000
     me_taxable_income: 72_785
     me_income_tax: 4_695
+
+- name: A federal itemizer can elect Maine itemized expenses below the state standard
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: ME
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    me_standard_deduction: 15_000
+    me_itemized_deductions_pre_phaseout: 10_000
+    me_deduction_phaseout_percentage: 0.25
+    me_agi: 17_500
+    me_exemptions: 0
+  output:
+    # Deduct 75% of the selected 10,000. Maine's first rate is 5.8%.
+    me_deductions: 7_500
+    me_taxable_income: 10_000
+    me_income_tax_before_credits: 580

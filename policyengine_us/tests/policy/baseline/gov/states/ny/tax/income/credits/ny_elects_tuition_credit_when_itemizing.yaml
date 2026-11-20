@@ -1,0 +1,215 @@
+# Form IT-272: an itemizer may choose either tuition benefit but cannot take both.
+- name: Federal standard and New York itemized with the tuition credit
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: false
+    ny_itemizes: true
+    ny_elects_tuition_credit_when_itemizing: true
+    qualified_tuition_expenses: 6_000
+  output:
+    ny_college_tuition_credit: 240
+    ny_college_tuition_deduction: 0
+
+- name: Federal itemized and New York itemized with the tuition deduction
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: true
+    ny_itemizes: true
+    ny_elects_tuition_credit_when_itemizing: false
+    qualified_tuition_expenses: 6_000
+  output:
+    ny_college_tuition_credit: 0
+    ny_college_tuition_deduction: 6_000
+
+- name: A state standard filer can take the credit without an itemizer election
+  period: 2025
+  input:
+    state_code: NY
+    ny_itemizes: false
+    ny_elects_tuition_credit_when_itemizing: false
+    qualified_tuition_expenses: 6_000
+  output:
+    ny_college_tuition_credit: 240
+    ny_deductions: 8_000
+
+- name: New York itemized filing can preserve other deductions and claim the tuition credit
+  period: 2025
+  input:
+    state_code: NY
+    ny_itemizes: true
+    ny_elects_tuition_credit_when_itemizing: true
+    ny_agi: 18_000
+    ny_exemptions: 1_000
+    deductible_mortgage_interest: 16_000
+    qualified_tuition_expenses: 2_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+  output:
+    ny_deductions: 16_000
+    ny_taxable_income: 1_000
+    ny_college_tuition_deduction: 0
+    ny_college_tuition_credit: 200
+
+- name: A New York filer claimed elsewhere cannot take the tuition credit
+  period: 2025
+  input:
+    state_code: NY
+    claimed_as_dependent_on_another_return: true
+    qualified_tuition_expenses: 6_000
+    ny_itemizes: true
+    ny_elects_tuition_credit_when_itemizing: true
+  output:
+    ny_college_tuition_credit: 0
+    ny_college_tuition_deduction: 0
+
+- name: The tuition deduction is unavailable above one million of New York AGI
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 1_000_001
+    ny_itemizes: true
+    ny_elects_tuition_credit_when_itemizing: false
+    qualified_tuition_expenses: 6_000
+  output:
+    ny_college_tuition_deduction: 0
+
+- name: New York permits itemizing after a federal standard election in 2025.
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: false
+    state_deduction_method: ITEMIZED
+    ny_standard_deduction: 8_000
+    deductible_mortgage_interest: 12_000
+    qualified_tuition_expenses: 2_000
+    ny_elects_tuition_credit_when_itemizing: true
+  output:
+    ny_itemizes: true
+    ny_deductions: 12_000
+    ny_college_tuition_credit: 200
+    ny_college_tuition_deduction: 0
+
+- name: New York permits claiming standard even when the itemized amount is larger.
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: true
+    state_deduction_method: STANDARD
+    ny_standard_deduction: 8_000
+    deductible_mortgage_interest: 14_000
+    qualified_tuition_expenses: 2_000
+  output:
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_college_tuition_credit: 200
+
+- name: Under section 613 a smaller New York itemized election is recomputed with the standard.
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: true
+    state_deduction_method: ITEMIZED
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 7_999
+    qualified_tuition_expenses: 2_000
+  output:
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_college_tuition_credit: 200
+
+- name: Choosing automatic with the optimizer off preserves New York's historic larger deduction.
+  period: 2025
+  input:
+    state_code: NY
+    tax_unit_itemizes: false
+    state_deduction_method: AUTOMATIC
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 12_000
+  output:
+    ny_deductions: 12_000
+
+- name: Joint New York election compares the tuition credit with a deduction at different marginal rates.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [NY, NY]
+    tax_unit_itemizes: [false, false]
+    ny_agi: [18_000, 90_000]
+    ny_exemptions: [1_000, 0]
+    deductible_mortgage_interest: [16_000, 16_000]
+    qualified_tuition_expenses: [2_000, 6_000]
+    state_sales_tax: [0, 0]
+    local_sales_tax: [0, 0]
+  output:
+    # At $18,000 of AGI the credit pays $200 and the tuition deduction
+    # eliminates only $40 of state tax. At $90,000 the $6,000 deduction
+    # saves more state income tax than a $240 credit.
+    state_deduction_method: [ITEMIZED, ITEMIZED]
+    ny_itemizes: [true, true]
+    ny_elects_tuition_credit_when_itemizing: [true, false]
+    ny_college_tuition_credit: [200, 0]
+    ny_college_tuition_deduction: [0, 6_000]
+    ny_deductions: [16_000, 22_000]
+
+- name: Explicit automatic New York itemization awards only one tuition benefit.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [NY, NY]
+    tax_unit_itemizes: [false, false]
+    state_deduction_method: [AUTOMATIC, AUTOMATIC]
+    ny_agi: [18_000, 90_000]
+    ny_exemptions: [1_000, 0]
+    deductible_mortgage_interest: [16_000, 16_000]
+    qualified_tuition_expenses: [2_000, 6_000]
+    state_sales_tax: [0, 0]
+    local_sales_tax: [0, 0]
+  output:
+    ny_itemizes: [true, true]
+    ny_elects_tuition_credit_when_itemizing: [true, false]
+    ny_college_tuition_deduction: [0, 6_000]
+    ny_college_tuition_credit: [200, 0]
+    ny_deductions: [16_000, 22_000]
+
+- name: A filed New York standard election stays binding in the joint calculation.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: NY
+    tax_unit_itemizes: false
+    ny_itemizes: false
+    ny_agi: 90_000
+    deductible_mortgage_interest: 16_000
+    qualified_tuition_expenses: 6_000
+  output:
+    state_deduction_method: STANDARD
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_college_tuition_credit: 240
+
+# IT-272 Part 2 caps the credit at $200 for $3,000 of qualified tuition.
+# IT-201 lines 47–49 use state taxable income to compute NYC resident tax.
+# https://www.tax.ny.gov/pdf/2025/inc/it272_2025_fill_in.pdf#page=2
+# https://www.tax.ny.gov/forms/html-instructions/2025/it/it201i-2025.htm
+- name: New York City's local income tax can change a resident's IT-272 tuition election.
+  period: 2025
+  input:
+    gov.simulation.joint_federal_state_itemization: true
+    state_code: [NY, NY]
+    in_nyc: [false, true]
+    age: [40, 40]
+    tax_unit_itemizes: [false, false]
+    ny_agi: [60_000, 60_000]
+    ny_exemptions: [0, 0]
+    deductible_mortgage_interest: [16_000, 16_000]
+    qualified_tuition_expenses: [3_000, 3_000]
+    state_sales_tax: [0, 0]
+    local_sales_tax: [0, 0]
+  output:
+    state_deduction_method: [ITEMIZED, ITEMIZED]
+    ny_elects_tuition_credit_when_itemizing: [true, false]
+    ny_college_tuition_credit: [200, 0]
+    ny_college_tuition_deduction: [0, 3_000]
+    ny_taxable_income: [44_000, 41_000]

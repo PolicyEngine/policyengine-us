@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class nc_standard_or_itemized_deductions(Variable):
@@ -22,4 +23,6 @@ class nc_standard_or_itemized_deductions(Variable):
         #   N.C. standard deduction.
         stded = tax_unit("nc_standard_deduction", period)
         itded = tax_unit("nc_itemized_deductions", period)
-        return max_(stded, itded)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = state_itemization_uses_itemized(method, itded > stded)
+        return where(itemizes, itded, stded)

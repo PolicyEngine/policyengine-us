@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class me_deductions(Variable):
@@ -23,17 +24,18 @@ class me_deductions(Variable):
         # its own standard deduction amounts for tax years 2025 and 2026 under
         # 36 M.R.S. Sec. 5124-C(1-B) and (1-C), and follows the federal standard
         # deduction from 2027 under Sec. 5124-C(1-D).
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        standard_deduction = tax_unit("me_standard_deduction", period)
-        larger_deduction = max_(
-            tax_unit("me_itemized_deductions_pre_phaseout", period),
-            standard_deduction,
+        federal_itemizer = tax_unit("tax_unit_itemizes", period)
+        standard = tax_unit("me_standard_deduction", period)
+        itemized = tax_unit("me_itemized_deductions_pre_phaseout", period)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = federal_itemizer & state_itemization_uses_itemized(
+            method, itemized > standard
         )
-        max_deduction = where(itemizes, larger_deduction, standard_deduction)
+        selected_deduction = where(itemizes, itemized, standard)
 
         # Calculate the phaseout amount (Line 7).
-        phaseout_amount = max_deduction * phaseout_percent
+        phaseout_amount = selected_deduction * phaseout_percent
 
         # Calculate the deduction after phaseout (Line 8).
         # Note this cannot be negative because phaseout_percent is capped at 1.
-        return max_deduction - phaseout_amount
+        return selected_deduction - phaseout_amount

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class md_deductions(Variable):
@@ -27,4 +28,8 @@ class md_deductions(Variable):
         #       on your federal return, you may figure your tax using
         #       both deduction methods to determine which is best for you.
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
-        return where(federal_itemizer, max_(md_stdded, md_itmded), md_stdded)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = federal_itemizer & state_itemization_uses_itemized(
+            method, md_itmded > md_stdded
+        )
+        return where(itemizes, md_itmded, md_stdded)

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class ar_deduction_joint(Variable):
@@ -13,4 +14,6 @@ class ar_deduction_joint(Variable):
     def formula(person, period, parameters):
         itemized = person("ar_itemized_deductions_joint", period)
         standard = person("ar_standard_deduction_joint", period)
-        return max_(itemized, standard)
+        method = person.tax_unit("state_deduction_method", period)
+        itemizes = state_itemization_uses_itemized(method, itemized > standard)
+        return where(itemizes, itemized, standard)
