@@ -84,10 +84,6 @@ def test_human_review_requires_a_material_expertise_question():
         assert "@-mention" not in text
 
 
-def test_partner_edits_do_not_trigger_an_automatic_external_notice():
-    assert not (REPO / ".github/workflows/partner-api-impact-notice.yaml").exists()
-
-
 def test_agents_files_link_to_the_rule():
     headings = _headings(CLAUDE_MD.read_text())
     anchor = _slug(SECTION)

@@ -30,7 +30,7 @@ def create_limit_salt_deduction_to_property_taxes_reform(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).limit_salt_deduction_to_property_taxes:
             reform_active = True
             break

@@ -98,7 +98,7 @@ Known limitations, which callers avoid by supplying `marital_units`:
   formulas run again in any year without a role input. So a calculation for
   another year can give roles the units don't match. For example, a
   grandchild's undated `is_tax_unit_spouse: false` lands in the default input
-  year (2024), so the grandparents get their own units, while a 2026
+  year (2026), so the grandparents get their own units, while a 2025
   calculation still makes them head and spouse.
 
 These rules apply to Python household simulations and entity-form YAML tests,

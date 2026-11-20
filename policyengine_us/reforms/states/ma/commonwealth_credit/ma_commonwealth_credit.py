@@ -49,7 +49,7 @@ def create_ma_commonwealth_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ma.commonwealth_credit
-            # The 5-year lookahead in the reform factory can apply this
+            # The lookahead in the reform factory can apply this
             # reform to years before it takes effect; gate on the scalar
             # in_effect parameter so pre-effective years return the
             # baseline behavior (no Commonwealth Credit).
@@ -85,7 +85,7 @@ def create_ma_commonwealth_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             federal_eitc = tax_unit("eitc", period)
             rate = parameters(period).gov.states.ma.tax.income.credits.eitc.match
-            # The 5-year lookahead in the reform factory can apply this
+            # The lookahead in the reform factory can apply this
             # reform to years before it takes effect; gate on the scalar
             # in_effect parameter so pre-effective years return the baseline
             # full match to all filers.
@@ -129,7 +129,7 @@ def create_ma_commonwealth_credit_reform(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
