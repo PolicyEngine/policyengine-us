@@ -31,8 +31,11 @@ values:
     - farm_rent_income
     # § 7-2-2(L)(13) distributive share of partnership income; PIT-RC line 11:
     # "Distributions from partnerships, S corporations, or similar
-    # pass-through entities".
-    - partnership_s_corp_income
+    # pass-through entities". 3.3.1.10(B) NMAC: "The loss from one business
+    # or activity shall not reduce the income from another business or
+    # activity", so the helper floors partnership and S corporation income
+    # each on its own, falling back to a combined amount entered directly.
+    - nm_modified_gross_income_partnership_s_corp_income
     - pension_income
     # NMSA 1978 § 7-2-2(L)(9), (11): annuities and pensions, including military
     # retired pay and survivor annuities, which pension_income leaves out.

@@ -39,11 +39,11 @@ class nm_modified_gross_income(Variable):
             if tax_unit.entity.get_variable(source).entity.is_person:
                 # Each person's amount is floored, so a spouse's or
                 # dependent's loss does not reduce another member's income.
-                total += tax_unit.sum(max_(person(source, period), 0))
+                total = total + tax_unit.sum(max_(person(source, period), 0))
             else:
                 # Sources defined for the tax unit (tax_unit_social_security,
                 # other_net_gain, section_911_excluded_income) or for a larger
                 # group (tanf, whose SPM unit amount add apportions to the
                 # tax unit by its members) are floored for the tax unit.
-                total += max_(add(tax_unit, period, [source]), 0)
+                total = total + max_(add(tax_unit, period, [source]), 0)
         return total
