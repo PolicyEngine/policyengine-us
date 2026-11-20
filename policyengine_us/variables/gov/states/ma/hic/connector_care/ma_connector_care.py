@@ -45,7 +45,9 @@ class ma_connector_care(Variable):
         "through taxable income and no reconciliation is modeled. The amended "
         "956 CMR still carries un-repealed 500% FPL and Plan Type 3D pilot "
         "text, but the operational 2026 Overview runs 100-400% FPL only; a "
-        "future re-expansion is a parameter change."
+        "future re-expansion is a parameter change. Plan Type 3C (300-400% "
+        "FPL) exists only under the ConnectorCare Expansion Pilot, which ends "
+        "after PY2027, so from PY2028 the income limit is 300% FPL."
     )
 
     def formula(tax_unit, period, parameters):

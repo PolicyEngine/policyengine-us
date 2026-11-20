@@ -5637,33 +5637,67 @@ candidates:
   program: connectorcare
   years:
     from: 2026
-    to: 2026
     type: program
-    note: program year as the program defines it
-  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the Overview's
-    100-400% range?
+    note: Health Connector plan year beginning January 1.
+  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the 100-400% FPL
+    range of the 2026 Overview and the 2027 Guide, and does the limit fall to the statute's 300% FPL once the Expansion
+    Pilot ends after plan year 2027?
   sources:
+  - kind: statute
+    citation: M.G.L. c.176Q s.3(b)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter176Q/Section3
+  - kind: statute
+    citation: St. 2023 c.28 s.81, ConnectorCare Expansion Pilot
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+  - kind: statute
+    citation: St. 2025 c.9 s.96
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2025/Chapter9
+  - kind: statute
+    citation: St. 2026 c.137 (FY2027 General Appropriation Act) ss.92-93 and 102
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter137
   - kind: regulation
-    citation: 956 CMR 12.04(3), including 12.04(3)(b)2
+    citation: 956 CMR 12.04(3)(a)1-2 and (b), with 12.04(2)(b)
     url: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
   - kind: guidance
     citation: ConnectorCare Overview 2026, Table 2 income bands
     url: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+  - kind: guidance
+    citation: Health Connector 2027 Guide to Subsidies, Plan Type 3C (300% to 400% FPL)
+    url: https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1
   readings:
-    statute: The regulation covers up to 500% FPL, including Plan Type 1 below 100% and Type 3D at 400.1-500%.
-    other: The Overview covers 100-400% FPL and Types 2A-3C.
+    regulation: '956 CMR 12.04(3)(a)1 reads "at or below 500 percent of the FPL", with no end date, and 12.04(3)(b)
+      still defines Plan Type 1 below 100% FPL and Plan Type 3D at 400.1-500% FPL. 12.04(3)(a)2 also requires
+      eligibility for a Non-Group Health Plan with APTC only under 12.04(2)(a) and (b), and 12.04(2)(b) requires
+      eligibility for federal Advance Premium Tax Credits under 45 CFR 155.305(f). St. 2023 c.28 s.81(a) has the pilot
+      extend eligibility "for applicants at or below 500 per cent of the federal poverty guidelines".'
+    guidance: The 2026 Overview covers 100-400% FPL and Plan Types 2A-3C, and says households above 400% FPL do not
+      qualify. The 2027 Guide keeps Plan Types 2A-3C, with 3C at 300% to 400% FPL, for plan year 2027.
+    statute: 'M.G.L. c.176Q s.3(b) limits premium assistance to applicants "at or below 300 per cent of the federal
+      poverty guidelines". Incomes over 300% qualify only under the pilot of St. 2023 c.28 s.81, which applies
+      "notwithstanding" that limit and began "not later than January 1, 2024". St. 2025 c.9 s.96 made it a 3-year
+      pilot and St. 2026 c.137 s.92 a "4-year" pilot, so it covers plan years 2024 to 2027; s.102 funds "the fourth
+      year of the pilot program". Section 93 moves the repeal of s.81 (St. 2023 c.28 ss.103 and 114) from December
+      31, 2027 to December 31, 2028 without lengthening the pilot, so from plan year 2028 the limit is 300% FPL.'
+  example: In 2028 one enrollee at 305% FPL, with an $8,000 benchmark premium and a $4,000 federal credit, gets no
+    ConnectorCare under the statute's 300% limit, or $1,096 as Plan Type 3C (12 x $242 enrollee premium) under a 400%
+    or 500% limit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_floor.yaml
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_limit.yaml
     - policyengine_us/variables/gov/states/ma/hic/connector_care/ma_connector_care_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9240
-  state: unreviewed
-  note: 'PE-US follows the Overview for 2026: income must be from 100% to 400% FPL, and the floor''s and limit''s
-    comments record the regulation''s Plan Type 1 and 3D bands, which are left unmodelled (fpl_floor.yaml, fpl_limit.yaml,
-    ma_connector_care_eligible.py). Reconcile the narrower coverage with the regulation.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/11154
+  state: open
+  note: 'For plan years 2026 and 2027 income must be from 100% to 400% FPL (fpl_floor.yaml and fpl_limit.yaml, read by
+    ma_connector_care_eligible.py). These bounds match the federal credit condition of 12.04(3)(a)2: from 2026 the
+    federal premium tax credit stops at 400% FPL and its below-100% exception is gone, and ma_connector_care_member_eligible.py
+    requires credit eligibility. The 2026 Overview and the 2027 Guide print the same band. From plan year 2028 the
+    code follows the statute: fpl_limit.yaml returns to 300% FPL, applied as "<=", over the regulation''s undated
+    500%, which rests on the pilot''s authority. A pilot extension in the FY2028 budget would be a one-line parameter
+    change. Not yet ruled.'
 - id: us-ma:liheap-income-floor-vs-smi-limit
   program: liheap
   years:

@@ -25,14 +25,16 @@ class ma_connector_care_eligible(Variable):
         "share of aca_fpg (the prior-year federal poverty guideline for the "
         "section 36B tax family), measured as the exact ratio rather than the "
         "truncated aca_magi_fraction, is at or "
-        "above the 100% FPL floor and at or below the 400% FPL limit (the "
-        "operational 2026 band), and "
+        "above the 100% FPL floor and at or below the FPL limit (400% for "
+        "PY2026 and PY2027 under the ConnectorCare Expansion Pilot, St. 2023 "
+        "c.28 s.81 as extended by St. 2026 c.137 s.92; 300% from PY2028, the "
+        "limit in M.G.L. c.176Q s.3(b)), and "
         "at least one member is eligible for the federal ACA premium tax "
         "credit. Massachusetts residency is enforced by defined_for. The "
         "amended 956 CMR still defines a sub-100% Plan Type 1 and a 400.1-500% "
-        "Plan Type 3D, but the 2026 ConnectorCare Overview runs Plan Types "
-        "2A-3C only (100-400% FPL), and that operational reading is treated as "
-        "controlling."
+        "Plan Type 3D, but the 2026 ConnectorCare Overview and the 2027 Guide "
+        "to Subsidies run Plan Types 2A-3C only (100-400% FPL), and that "
+        "operational reading is treated as controlling."
     )
 
     def formula(tax_unit, period, parameters):

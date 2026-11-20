@@ -1,0 +1,1 @@
+Update Massachusetts ConnectorCare to the 2027 enrollee premiums ($0, $55, $107, $158 and $242 per person per month for Plan Types 2A to 3C). Lower the income limit to 300% FPL from 2028, when the 300-400% FPL pilot ends.
