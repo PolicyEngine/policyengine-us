@@ -8554,6 +8554,8 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/net_gain_components.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11187
   state: ruled
   note: Ruled 2026-11-19 for the renter's refund application, the form the Tax Commissioner prescribes for this program
     under N.D.C.C. 57-02-08.1(3). Before, the model let the whole loss reduce income, which no source supports. The
