@@ -158,6 +158,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/mt/tax/income/subtractions/disability_income/cap.yaml": 1,
     "policyengine_us/parameters/gov/states/or/ohcs/liheap/payment/income_band.yaml": 1,
     "policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml": 1,
+    "policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ut/dwf/ccap/copay/income_limits.yaml": 1,
     "policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml": 1,
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,

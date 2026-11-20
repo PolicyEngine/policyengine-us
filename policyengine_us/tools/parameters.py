@@ -8,6 +8,14 @@ from policyengine_core import periods
 # this year.
 FIRST_MODELED_YEAR = 2015
 
+# The first year checked by default when deciding whether a structural reform
+# applies: the base year of the default dataset. It stays fixed when
+# CURRENT_YEAR moves, so a reform that is on only in an earlier year still
+# applies.
+EARLIEST_STRUCTURAL_REFORM_YEAR = 2024
+# How many years a reform factory checks, counting the first.
+STRUCTURAL_REFORM_CHECK_YEARS = 10
+
 
 def str_to_instant(s):
     return periods.Instant(tuple(map(lambda s: int(s), s.split("-"))))

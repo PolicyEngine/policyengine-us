@@ -1,0 +1,30 @@
+# A tax unit qualifies for the Rhode Island Marketplace Affordability Program
+# under either rule: below 200% with the federal credit, or above 400% when
+# income is the only bar to it.
+
+- name: Case 1, the rule below 200% alone qualifies.
+  period: 2027
+  input:
+    ri_rimap_low_income_eligible: true
+    ri_rimap_high_income_eligible: false
+    state_code: RI
+  output:
+    ri_rimap_eligible: true
+
+- name: Case 2, the rule above 400% alone qualifies.
+  period: 2027
+  input:
+    ri_rimap_low_income_eligible: false
+    ri_rimap_high_income_eligible: true
+    state_code: RI
+  output:
+    ri_rimap_eligible: true
+
+- name: Case 3, neither rule.
+  period: 2027
+  input:
+    ri_rimap_low_income_eligible: false
+    ri_rimap_high_income_eligible: false
+    state_code: RI
+  output:
+    ri_rimap_eligible: false

@@ -110,8 +110,8 @@ def create_ky_graduated_income_tax_reform(parameters, period, bypass: bool = Fal
     reform_active = False
     current_period = period_(period)
 
-    # Check if either reform will be active in the next 5 years
-    for i in range(5):
+    # Check if either reform will be active in the lookahead window
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p_hb13(current_period).in_effect or p_hb152(current_period).in_effect:
             reform_active = True
             break

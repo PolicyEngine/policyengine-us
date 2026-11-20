@@ -13,7 +13,8 @@ class sc_liheap_cooling(Variable):
     documentation = (
         "Cooling-season (May 1 to September 30) nonemergency Direct Assistance "
         "award; when a program year allows one award (FY2027), only its excess "
-        "over the heating award. Verified for FY2026 and FY2027; earlier years "
+        "over the heating award. Eligibility sets no heating-fuel condition. "
+        "Verified for FY2026 and FY2027; earlier years "
         "use model parameter backfilling and are unverified historical "
         "estimates."
     )
@@ -38,7 +39,13 @@ class sc_liheap_cooling(Variable):
         # items 1.1 and 11.5 allow one assistance in the 2027 program year, the
         # calendar year that holds both seasons, so cooling pays only its excess
         # over the heating award and the household receives the larger of the
-        # two. The 2027 heating amounts are FY2026 carry-forwards.
+        # two. The FY2027 heating award adds a fuel supplement to the same base
+        # and supplements under a higher maximum, so cooling pays more than 0
+        # in 2027 only to a household without heating eligibility, such as one
+        # that reports no heating fuel. Both plans' item 1.1 lets the State
+        # allow more services when funds allow; FY2026 paying both awards is an
+        # upper bound, and FY2027 leaves out additional services the State may
+        # allow.
         if p.payment.max_awards > 1:
             return award
         heating = spm_unit("sc_liheap", period)

@@ -1,0 +1,120 @@
+# End-to-end Puente Health cases: only demographics, immigration status, wages
+# and county are supplied. ACA MAGI, the poverty line, membership, the
+# benchmark from the Bernalillo County (rating area 1) premium table, the
+# Table 1 share and the household health benefit total are all derived.
+# Benchmark: rating area 1 age-0 premium times the default age-40 factor
+# (1.6706), times 12.
+
+- name: Scenario 1, 2027 single TPS holder in Bernalillo County at 250% FPL.
+  # aca_fpg is the 2026 one-person guideline, 15,960; 39,900 / 15,960 = 2.50.
+  # Benchmark 384.00 * 1.6706 * 12 = 7,698.1248. Table 1 share 2%:
+  # 7,698.1248 - 0.02 * 39,900 = 7,698.1248 - 798 = 6,900.1248, under the
+  # 7,698.1248 benchmark plan. Section 71301 bars a TPS holder from the federal
+  # credit, so the household's only health benefit is Puente Health.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 39_900
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+        county_str: BERNALILLO_COUNTY_NM
+  output:
+    aca_magi: 39_900
+    aca_fpg: 15_960
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+    nm_premium_assistance: 0
+    nm_puente_health_member_eligible: true
+    nm_puente_health_eligible: true
+    nm_puente_health_benchmark_premium: 7_698.1248
+    nm_puente_health_plan_premium: 7_698.1248
+    nm_puente_health_premium_assistance: 6_900.1248
+    assigned_nm_puente_health_premium_assistance: 6_900.1248
+    healthcare_benefit_value: 6_900.1248
+
+- name: Scenario 2, 2026 single LPR in the five-year bar in Bernalillo County at 64% FPL.
+  # aca_fpg is the 2025 one-person guideline, 15,650; 10,000 / 15,650 = 0.639.
+  # Medicaid's five-year bar and the end of the below-poverty rule leave no
+  # federal credit (Section 71302). Benchmark 314.00 * 1.6706 * 12 =
+  # 6,294.8208; 1.1 times it with a 0% share is 6,924.30, capped at the
+  # 6,294.8208 benchmark plan.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+        county_str: BERNALILLO_COUNTY_NM
+  output:
+    aca_fpg: 15_650
+    is_medicaid_eligible: false
+    is_aca_ptc_eligible: false
+    nm_puente_health_member_eligible: true
+    nm_puente_health_benchmark_premium: 6_294.8208
+    nm_puente_health_premium_assistance: 6_294.8208
+    healthcare_benefit_value: 6_294.8208
+
+- name: Scenario 3, 2027 LPR and TPS couple in Bernalillo County at 390% FPL pays one Table 1 share.
+  # aca_fpg is the 2026 two-person guideline, 21,640; 84,396 / 21,640 = 3.90.
+  # Table 1 share 5% + 0.9 * 3.5% = 8.15%: 0.0815 * 84,396 = 6,878.274. Each
+  # spouse's benchmark is 384.00 * 1.6706 * 12 = 7,698.1248; the federal
+  # benchmark is the LPR head's alone. The federal credit's 10.22% required
+  # contribution (8,625.27) exceeds it, so aca_ptc is 0, and base New Mexico
+  # Premium Assistance is 7,698.1248 - 0 - 6,878.274 = 819.8508, which takes
+  # the whole share. Puente Health then pays the TPS spouse's whole benchmark,
+  # 7,698.1248, the plan premium. Health benefits 819.8508 + 7,698.1248 =
+  # 8,517.9756, so the couple pays 2 * 7,698.1248 - 8,517.9756 = 6,878.274,
+  # 8.15% of income once rather than twice.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 84_396
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+      person2:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+        county_str: BERNALILLO_COUNTY_NM
+  output:
+    aca_magi: 84_396
+    aca_fpg: 21_640
+    nm_premium_assistance_target_contribution_percentage: 0.0815
+    aca_ptc_slcsp: 7_698.1248
+    aca_ptc: 0
+    nm_premium_assistance: 819.8508
+    nm_puente_health_member_eligible: [false, true]
+    nm_puente_health_benchmark_premium: 7_698.1248
+    nm_puente_health_premium_assistance: 7_698.1248
+    healthcare_benefit_value: 8_517.9756

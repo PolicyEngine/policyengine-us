@@ -1,0 +1,28 @@
+description: New Mexico excludes these immigration statuses, which do not allow a person to buy a qualified health plan on the exchange, from Puente Health.
+values:
+  # Puente Health covers a "lawfully present individual", defined at
+  # 8.401.2.7(I) NMAC as a non-citizen "who has an immigration status that
+  # allows them to purchase a QHP on the exchange". 45 CFR 155.305(a)(1)
+  # limits QHP enrollment to citizens, nationals and lawfully present people,
+  # and 45 CFR 155.20 has excluded DACA recipients from lawful presence since
+  # August 25, 2025 (paragraph (14)). New Mexico serves DACA recipients
+  # through a separate off-exchange program (8.401.2.12 NMAC). Every other
+  # non-citizen status that the federal credit excludes is a lawfully present
+  # status and so a Puente Health status.
+  2026-01-01:
+    - DACA
+    - UNDOCUMENTED
+
+metadata:
+  unit: list
+  period: year
+  label: New Mexico Puente Health ineligible immigration statuses
+  reference:
+    - title: "8.401.2.7(I) and 8.401.2.12 NMAC, as reprinted in HCA's proposed amendment #page 1,5"
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/d3ee1d62-6f0f-4df7-b7fc-96a4c523ea89/08.401.0002_amended.pdf#page=1
+    - title: 8.401.2.7(I) and 8.401.2.12 NMAC (rule in force)
+      href: https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/45b8668e-460f-45cd-804f-92ee3d442343/8.401.2.html
+    - title: "45 CFR 155.20, definition of lawfully present #page 3-4"
+      href: https://www.govinfo.gov/content/pkg/CFR-2025-title45-vol2/pdf/CFR-2025-title45-vol2-sec155-20.pdf#page=3
+    - title: 45 CFR 155.305(a)(1)
+      href: https://www.govinfo.gov/content/pkg/CFR-2025-title45-vol2/pdf/CFR-2025-title45-vol2-sec155-305.pdf#page=1

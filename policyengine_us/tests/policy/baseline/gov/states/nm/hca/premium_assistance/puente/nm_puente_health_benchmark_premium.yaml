@@ -1,0 +1,96 @@
+# The Puente Health benchmark: the second-lowest-cost silver premium for the
+# tax unit's Puente Health members alone. Annual age-curve quotes are supplied
+# (slcsp_age_curve_amount_person), and the year's monthly benchmarks are summed.
+
+- name: Case 1, 2027 TPS parent with four TPS children is charged for the three oldest children.
+  # Membership is supplied. 45 CFR 147.102(c)(1): only the three oldest
+  # children under 21 add a premium. 9,000 + 3 * 3,000 = 18,000; the
+  # six-year-old adds nothing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 9_000
+      child1:
+        age: 12
+        is_tax_unit_head: false
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 3_000
+      child2:
+        age: 10
+        is_tax_unit_head: false
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 3_000
+      child3:
+        age: 8
+        is_tax_unit_head: false
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 3_000
+      child4:
+        age: 6
+        is_tax_unit_head: false
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4]
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: NM
+  output:
+    nm_puente_health_benchmark_premium: 18_000
+
+- name: Case 2, 2027 joint return prices only the member spouse.
+  # Membership is supplied: the head keeps the federal credit, the spouse is a
+  # Puente Health member. Benchmark 9,000 for the spouse; the head's 8,000 is
+  # left to the federal credit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        nm_puente_health_member_eligible: false
+        slcsp_age_curve_amount_person: 8_000
+      spouse:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        nm_puente_health_member_eligible: true
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_puente_health_benchmark_premium: 9_000
+
+- name: Case 3, 2027 tax unit with no member has no Puente Health benchmark.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: false
+        slcsp_age_curve_amount_person: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_benchmark_premium: 0

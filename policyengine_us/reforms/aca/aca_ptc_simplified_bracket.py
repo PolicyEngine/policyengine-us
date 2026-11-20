@@ -90,11 +90,11 @@ def create_aca_ptc_simplified_bracket_reform(parameters, period, bypass: bool = 
     p = parameters.gov.contrib.aca.ptc_simplified_bracket
     current_period = period_(period)
 
-    # Check if reform is active within a 5-year lookahead window
+    # Check if reform is active within the lookahead window
     # This allows the reform to be selected in the web app interface
     # even if it's scheduled to start in a future year
     reform_active = False
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

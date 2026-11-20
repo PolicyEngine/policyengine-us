@@ -1,9 +1,11 @@
-# Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 1.1 and 3.1;
+# Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 1.1 and 3.1-3.6;
 # OEO 2024 Administrative Guide, Section 3A (an obligation to pay a home energy
 # bill; Direct Assistance may pay home heating or cooling costs).
-# Cooling eligibility is regular LIHEAP eligibility plus cooling costs. FY2026
-# income limit for one person: 31,993 (60% of SMI). Wages are hourly pay times
-# hours; electric bills of 1,800 are 150 a month.
+# Cooling eligibility is the regular LIHEAP income test, any counted energy bill
+# or heat in the rent, and cooling costs. Unlike heating, it sets no
+# heating-fuel condition. FY2026 income limit for one person: 31,993 (60% of
+# SMI); 110% of the 2025 guideline: 15,650 * 1.1 = 17,215. Wages are hourly pay
+# times hours; electric bills of 1,800 are 150 a month.
 
 - name: Case 1, no cooling costs or income over the limit pays no cooling award; heat in the rent with an unspecified fuel is paid.
   period: 2026
@@ -61,3 +63,70 @@
     # Was [0, 0, 0], now [0, 200, 0]: the same change.
     sc_liheap_cooling: [0, 200, 0]
     sc_liheap: [200, 200, 0]
+
+- name: Case 2, cooling needs no reported heating fuel but still needs cooling costs, an energy bill or heat in the rent, and income under the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person2:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person3:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person4:
+        age: 40
+        employment_income_before_lsr: 20_800
+      person5:
+        age: 40
+        employment_income_before_lsr: 32_240
+    spm_units:
+      # heating_type is left at its UNSPECIFIED default in every unit.
+      spm_unit1:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+      spm_unit2:
+        members: [person2]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: false
+      spm_unit3:
+        members: [person3]
+        has_cooling_expense: true
+      spm_unit4:
+        members: [person4]
+        heat_expense_included_in_rent: true
+        has_cooling_expense: true
+      spm_unit5:
+        members: [person5]
+        pre_subsidy_electricity_expense: 1_800
+        has_cooling_expense: true
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+  output:
+    # 20_800 <= 31_993; 32_240 > 31_993 and above 17_215.
+    sc_liheap_income_eligible: [true, true, true, true, false]
+    # Heating needs a reported fuel unless heat is in the rent.
+    sc_liheap_eligible: [false, false, false, true, false]
+    # Household 1 has an electric bill and cooling costs. Household 2 has no
+    # cooling costs. Household 3 has no energy bill and no heat in the rent.
+    # Household 4 shows the obligation through heat in the rent. Household 5
+    # is over the income limit.
+    sc_liheap_cooling_eligible: [true, false, false, true, false]

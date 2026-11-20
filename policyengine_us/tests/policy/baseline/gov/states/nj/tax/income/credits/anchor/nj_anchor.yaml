@@ -835,3 +835,32 @@
   output:
     # Non-senior homeowner, income <= $150K: still $1,500 (change only affects seniors).
     nj_anchor: 1_500
+
+- name: 401(k) elective deferrals are not New Jersey gross income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 155_000
+        traditional_401k_contributions: 10_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # N.J.S.A. 54A:6-21 excludes 401(k) elective contributions, so W-2 box 16
+    # wages and line 29 are 155,000 - 10,000 = 145,000. Homeowners with gross
+    # income not over 150,000 for tax year 2025 get up to 1,500 (P.L. 2026,
+    # c. 27; Division of Taxation, "How ANCHOR benefits are calculated": "The
+    # benefit is calculated using income on line 29 of your 2025 NJ-1040").
+    nj_anchor: 1_500

@@ -1,7 +1,7 @@
 description: New Jersey offsets a claim of right repayment of category (a) income against these sources of the same category in the year of repayment.
 values:
   2021-01-01:
-    - employment_income  # Line 15
+    - nj_wages  # Line 15, net of 401(k) deferrals
 metadata:
   unit: list
   period: year
@@ -15,3 +15,7 @@ metadata:
       href: https://www.nj.gov/treasury/taxation/pdf/pubs/tams/tam7.pdf
     - title: 2025 NJ-1040, Line 15
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf#page=2
+    - title: N.J.S.A. 54A:6-21 - Contributions to certain employee trusts (401(k) deferrals)
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-6-21/
+    - title: 2025 NJ-1040 instructions, line 15 (wages)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=11
