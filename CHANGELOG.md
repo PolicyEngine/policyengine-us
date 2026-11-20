@@ -1,3 +1,10 @@
+## [2.151.2] - 2026-11-20
+
+### Fixed
+
+- Denver's property tax relief income now counts military retired pay, retirement account distributions, Colorado Old Age Pension and Aid to the Needy Disabled, as the program's rules count all income except a listed set.
+
+
 ## [2.151.1] - 2026-11-20
 
 ### Fixed
