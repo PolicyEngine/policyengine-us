@@ -6,7 +6,10 @@ class dc_liheap_income_level(Variable):
     entity = SPMUnit
     label = "Income level for DC LIHEAP payment"
     definition_period = YEAR
-    reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
+    reference = (
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/documents/DC%20DOEE%20-%20FY27%20LIHEAP%20Benefit%20Matrix_9.29.26.docx",
+    )
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
