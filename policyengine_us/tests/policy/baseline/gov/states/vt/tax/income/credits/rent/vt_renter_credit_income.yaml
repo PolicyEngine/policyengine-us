@@ -86,7 +86,7 @@
     adjusted_gross_income: 27_000
     vt_renter_credit_income: 30_000
 
-- name: Case 6, only the net capital loss on Form 1040 line 7 is added back.
+- name: Case 6, a capital loss netted against capital gain distributions is added back in full.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -95,13 +95,18 @@
     long_term_capital_gains: -4_000
     non_sch_d_capital_gains: 2_000
   output:
-    # The 2,000 of capital gain distributions go on Schedule D line 13 and
-    # net against the 4,000 loss: line 16 is -2,000, inside the 3,000 limit,
-    # so Form 1040 line 7 is -2,000 and AGI is 30,000 - 2,000 = 28,000.
-    # Line 13 adds back the 2,000 on line 7, not the 4,000 of losses:
-    # 28,000 + 2,000 = 30,000.
+    # Gross income is 30,000 + 2,000 of capital gain distributions = 32,000.
+    # IRC 1211(b) allows the 4,000 loss against the 2,000 of gains, plus the
+    # 2,000 excess, inside the 3,000 limit. Schedule D line 16 and Form 1040
+    # line 7 are -2,000, and AGI is 32,000 - 2,000 - 2,000 = 28,000.
+    # 6061(18)(A) adds back each capital loss included in AGI, the 2,000
+    # allowed against the gains and the 2,000 net loss:
+    # 28,000 + 2,000 + 2,000 = 32,000. (RCC-146 line 13 adds back only the
+    # 2,000 on line 7, for 30,000.)
+    capital_losses_allowed_against_gains: 2_000
+    limited_capital_loss: 2_000
     adjusted_gross_income: 28_000
-    vt_renter_credit_income: 30_000
+    vt_renter_credit_income: 32_000
 
 - name: Case 7, a partnership loss is added back although rental income offsets it on Schedule E.
   period: 2025
