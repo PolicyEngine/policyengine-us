@@ -15,7 +15,7 @@ class or_retirement_credit_disallowed_losses(Variable):
         "deducted in adjusted gross income, to the extent it exceeds $1,000."
     )
     reference = (
-        # ORS 316.157(2)(c)(B), 2023 edition, PDF page 25.
+        # ORS 316.157(2)(c)(B), 2023 edition, PDF pages 25-26.
         "https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25",
         # ORS 316.157, 2025 edition.
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",
@@ -36,9 +36,7 @@ class or_retirement_credit_disallowed_losses(Variable):
         # similar sources for net income or loss. Any net loss from the source
         # is limited to $1,000." Each category nets the head's and spouse's
         # income and losses as adjusted gross income includes them; the
-        # model does not split a category's income by activity. The section
-        # 461(l) business loss limit is not applied: it binds only on losses
-        # far above the credit's income limits.
+        # model does not split a category's income by activity.
         categories = (
             # (B)(i) "all dispositions of tangible or intangible properties":
             # the capital gain or loss on Form 1040 line 7a, where a net loss
@@ -64,4 +62,8 @@ class or_retirement_credit_disallowed_losses(Variable):
         for sources in categories:
             net_income = tax_unit_non_dep_add(tax_unit, period, sources)
             disallowed_losses = disallowed_losses + max_(0, -net_income - p.loss_limit)
-        return disallowed_losses
+        # Adjusted gross income deducts the business, farm, rental and Form
+        # 4797 losses only up to the section 461(l) limit. The excess business
+        # loss was never deducted, so it is not added back.
+        excess_business_loss = tax_unit("excess_business_loss", period)
+        return max_(0, disallowed_losses - excess_business_loss)

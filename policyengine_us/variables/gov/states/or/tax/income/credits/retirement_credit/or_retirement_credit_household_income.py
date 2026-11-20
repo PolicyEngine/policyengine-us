@@ -15,7 +15,7 @@ class or_retirement_credit_household_income(Variable):
         "(2)(c)(B) disallows."
     )
     reference = (
-        # ORS 316.157(2)(b), (c) and (f), 2023 edition, PDF page 25.
+        # ORS 316.157(2)(b), (c) and (f), 2023 edition, PDF pages 25-26.
         "https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25",
         # ORS 316.157, 2025 edition.
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",
