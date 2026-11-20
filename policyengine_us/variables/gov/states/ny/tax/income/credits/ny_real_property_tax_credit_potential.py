@@ -47,6 +47,7 @@ class ny_real_property_tax_credit_potential(Variable):
             # gives the elderly limit when "at least one member of your
             # household is age 65 or older". So any household member's age
             # counts, including a tax unit dependent's.
+            # Candidate: us-ny:real-property-credit-aged-dependent until registered.
             meets_age_condition = tax_unit.any(person.household.any(aged))
         else:
             # From 2025 (Part RR of Chapter 59 of the Laws of 2025) the

@@ -1008,3 +1008,50 @@
     ny_real_property_tax_credit_potential: [45, 45]
     ny_real_property_tax_credit_claimant: [true, false]
     ny_real_property_tax_credit: [45, 0]
+
+# Tax Law 606(e)(6)(A), taxable years before 2025: the elderly limit applies
+# "where two or more members of a household are able to meet the
+# qualifications of a qualified taxpayer and one of them is sixty-five years
+# of age or more", and the 2024 IT-214-I page 1 gives it when "at least one
+# member of your household is age 65 or older". Line 7 of the 2024 IT-214-I
+# (page 2) lists only a member 65 or older "who is filing Form IT-214", which
+# a claimed dependent cannot do. The model follows the statute (candidate
+# us-ny:real-property-credit-aged-dependent in source_conflicts/candidates.yaml).
+- name: 2024 - an aged parent claimed as a dependent gives the household the elderly limit on rent an adult child pays
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 40
+        employment_income: 3_000
+        rent: 4_800
+        is_tax_unit_head: true
+      parent:
+        age: 70
+        social_security: 12_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+    households:
+      household:
+        members: [child, parent]
+        state_code: NY
+  output:
+    # The parent's combined income 12,000 x 0.5 = 6,000 is under the 25,000
+    # base, so none of their Social Security is taxable and their AGI is 0.
+    # SSI: countable unearned income 12,000 / 12 - 20 = 980 a month is over
+    # the 2024 benefit rate of 943, so no SSI. The State Supplement Program
+    # rate for living with others (23) is less than the 980 - 943 = 37
+    # excess, so no supplement.
+    ssi: [0, 0]
+    ny_ssp: [0, 0]
+    # Household gross income: line 9 (3,000 + 0) + line 11 (12,000) = 15,000.
+    ny_household_gross_income: 15_000
+    # Rate 0.065 (14,001-18,000) -> threshold 15,000 x 0.065 = 975. Rent
+    # 4,800 (400 a month, within the 450 limit) -> 25% = 1,200; excess =
+    # 1,200 - 975 = 225; 50% = 112.50. Under the statute the parent's age
+    # gives the elderly limit at 14,001-15,000 (137): 112.50. Under line 7 the
+    # non-elderly limit at 14,001-15,000 (47) would bind instead.
+    ny_real_property_tax_credit: 112.5
