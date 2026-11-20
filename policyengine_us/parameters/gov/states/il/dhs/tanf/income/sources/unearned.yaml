@@ -1,12 +1,30 @@
 description: Illinois counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
   1997-07-01:
+    # 89 Ill. Adm. Code 112.100 counts all unearned income that is not
+    # specified as exempt, and defines unearned income as all income other
+    # than wages or self-employment profits. The exemptions in 112.110 don't
+    # include pensions, annuities, veterans benefits, Railroad Retirement,
+    # union benefits or contributions. IDHS PM 08-01-07-c budgets private
+    # pensions and union benefits as nonexempt income, and PM 08-01-07-e
+    # budgets contributions from relatives and non-relatives as nonexempt
+    # income.
+    # NOTE: 112.110(aa) disregards a parent's disability-based Social
+    # Security, Railroad Retirement and 100% VA disability payments up to the
+    # one-person SSI payment level. This list counts them in full.
     - social_security
+    - railroad_benefits
+    - veterans_benefits
     - disability_benefits
     - workers_compensation
     - total_unemployment_compensation
+    - pension_income
+    - military_retirement_income
+    - survivor_benefits
     - retirement_distributions
+    - strike_benefits
     - alimony_income
+    - financial_assistance
     - dividend_income
     - interest_income
     - farm_operations_income
@@ -17,10 +35,12 @@ values:
     - miscellaneous_income
     # 89 Ill. Adm. Code 112.100(c) counts need based payments and cash assistance
     - general_assistance
-    #- pension_income # exempt
-    #- veterans_benefits # exempt
-    #- gi_cash_assistance # exempt
-    #- child_support_received # exempt
+    # 112.110(ee) exempts total child support payments made to an assistance unit.
+    #- child_support_received
+    # 112.110(mm) exempts, for up to 60 months, assistance from a non-general
+    # revenue research program on poverty or financial stability, which covers
+    # some guaranteed income pilots.
+    #- gi_cash_assistance
     #- rental_income # considered earned income if the individual is actively engaged in the management of the property
 
 metadata:
@@ -33,3 +53,7 @@ metadata:
       href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.100
     - title: Ill. Admin. Code tit. 89, § 112.110 - Exempt Unearned Income
       href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.110
+    - title: IDHS Policy Manual, PM 08-01-07-c - Government Benefits/Private Pensions/Union Benefits
+      href: https://www.dhs.state.il.us/page.aspx?item=15286
+    - title: IDHS Policy Manual, PM 08-01-07-e - Contributions
+      href: https://www.dhs.state.il.us/page.aspx?item=15290
