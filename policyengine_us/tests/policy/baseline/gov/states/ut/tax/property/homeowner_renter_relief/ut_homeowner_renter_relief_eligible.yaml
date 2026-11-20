@@ -85,14 +85,11 @@
   input:
     people:
       person1:
-        # No SSI, which counts as nontaxable income (59-2a-101(20)(a)(vii)).
-        ssi: 0
         age: 66
         employment_income: 10_000
         pre_subsidy_rent: 12_000
         is_tax_unit_head: true
       person2:
-        ssi: 0
         age: 40
         employment_income: 60_000
         is_tax_unit_head: true
@@ -111,7 +108,8 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_homeowner_renter_relief_household_income: 70_000
+    # 10,000 + SSI 7,114 + 60,000 = 77,114.
+    ut_homeowner_renter_relief_household_income: 77_114
     ut_homeowner_renter_relief_eligible: [false, false]
 
 - name: Case 9, nontaxable income counts.
