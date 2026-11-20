@@ -1,3 +1,10 @@
+## [2.148.3] - 2026-11-20
+
+### Changed
+
+- Update Maryland's state subsidy to the target contribution percentages the MHBE Board adopted for 2027, and add 2027 references and tests.
+
+
 ## [2.148.2] - 2026-11-20
 
 ### Fixed
