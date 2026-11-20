@@ -1,3 +1,10 @@
+## [2.150.3] - 2026-11-20
+
+### Changed
+
+- Cite the 2027 sources for California Premium Subsidy, Covered Connecticut and Vermont Premium Assistance, confirming that California's 100% income floor and the Covered Connecticut and Vermont values carry into 2027 unchanged, and note that Covered Connecticut's dental and transportation benefits become optional in 2027.
+
+
 ## [2.150.2] - 2026-11-20
 
 ### Changed
