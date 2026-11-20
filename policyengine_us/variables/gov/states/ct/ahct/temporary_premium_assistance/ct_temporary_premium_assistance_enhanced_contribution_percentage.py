@@ -17,19 +17,21 @@ class ct_temporary_premium_assistance_enhanced_contribution_percentage(Variable)
         "expired at the end of 2025, from the 2021-2025 table of 26 U.S.C. "
         "36B(b)(3)(A)(iii): 0% up to 150% of the poverty line, rising "
         "linearly to 2% at 200%, 4% at 250%, 6% at 300% and 8.5% at 400%, "
-        "and 8.5% above 400% with no income cap. Temporary Premium "
-        "Assistance replaces all or half of the credit this percentage "
-        "gives. The bracket position is read at aca_magi_fraction, the "
-        "truncated percentage the current federal credit "
-        "(aca_required_contribution_percentage) also uses, so the expired "
-        "and current credits differ only by their tables."
+        "and 8.5% above 400% with no income cap. The table is the federal "
+        "gov.aca.required_contribution_percentage read on December 31, "
+        "2025, its last day in force. Temporary Premium Assistance replaces "
+        "all or half of the credit this percentage gives. The bracket "
+        "position is read at aca_magi_fraction, the truncated percentage "
+        "the current federal credit (aca_required_contribution_percentage) "
+        "also uses, so the expired and current credits differ only by "
+        "their tables."
     )
 
     def formula(tax_unit, period, parameters):
         magi_frac = tax_unit("aca_magi_fraction", period)
-        p = parameters(
-            period
-        ).gov.states.ct.ahct.temporary_premium_assistance.enhanced_contribution_percentage
+        # The enhanced credit is the expired federal one, so read the federal
+        # 2021-2025 table on its last day in force rather than copying it.
+        p = parameters("2025-12-31").gov.aca.required_contribution_percentage
 
         thresholds = np.array(p.threshold)
         initial_rates = np.array(p.initial)
