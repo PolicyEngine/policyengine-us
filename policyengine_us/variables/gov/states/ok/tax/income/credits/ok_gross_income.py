@@ -48,7 +48,7 @@ class ok_gross_income(Variable):
             if source in capital_gain_sources:
                 continue
             # Gross income includes only positive amounts (i.e., no losses).
-            unit_income += max_(0, add(tax_unit, period, [source]))
+            unit_income = unit_income + max_(0, add(tax_unit, period, [source]))
         # 68 O.S. 5012 and 2904(3) count income "received by all persons
         # occupying the same household", as do OAC 710:50-15-96(c), Form
         # 538-S Part 3 (line 13: "income of others living in your

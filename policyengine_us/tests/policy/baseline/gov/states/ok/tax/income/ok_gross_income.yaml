@@ -6,8 +6,9 @@
 # compensation, public assistance payments, alimony, support money, workers'
 # compensation, loss-of-time insurance payments, capital gains and any other
 # type of income received; and excluding gifts.
-# Form 538-S line 9 counts the federal and the Oklahoma earned income credit.
-# Cases that isolate another source set both credits (eitc and ok_eitc) to 0.
+# Form 538-S line 9 counts the federal earned income credit and, from 2022,
+# when it became refundable, the Oklahoma credit. Cases that isolate another
+# source set both credits (eitc and ok_eitc) to 0.
 
 - name: OK gross income unit test 1
   period: 2021
@@ -18,17 +19,11 @@
     eitc: 800
     state_code: OK
   output:
-    # Form 538-S line 9 combines the federal and Oklahoma EIC. The Oklahoma
-    # credit is 5% of the federal credit under 2020 rules for a filer with no
-    # qualifying child: phase-in min(538, 12,000 x 7.65%) = 538, less the
-    # phase-out 7.65% x (12,000 - 8,790) = 245.565, is 292.435; 5% of that is
-    # 14.62175. Oklahoma AGI equals federal AGI (12,000; the Social Security
-    # is untaxed), so no proration. In 2021 the credit is nonrefundable, but
-    # the 2021 tax on 12,000 - 6,350 - 1,000 = 4,650 of taxable income (72)
-    # is above it.
-    # 12,000 + 2,000 + 800 + 14.62175 = 14,814.62175.
-    ok_eitc: 14.62175
-    ok_gross_income: 14_814.62175
+    # The Oklahoma earned income credit was nonrefundable in 2021 (it became
+    # refundable in 2022), so it lowers tax rather than counting as income;
+    # only the federal credit counts.
+    # 12,000 + 2,000 + 800 = 14,800.
+    ok_gross_income: 14_800
 
 - name: OK gross income includes SSTB self-employment income
   period: 2024

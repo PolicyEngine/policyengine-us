@@ -75,8 +75,53 @@ values:
     # Form 538-S line 9: "Earned Income Credit (EIC) received in 2025 (if
     # applicable, combine federal and Oklahoma amounts)" (2025 Form 511
     # packet, page 51). PolicyEngine counts the credits on the year's own
-    # return rather than the credits received during the year.
+    # return rather than the credits received during the year. The Oklahoma
+    # credit was nonrefundable in 2021, so it lowered tax rather than being
+    # income received; it joins the list in 2022.
     - eitc
+  2022-01-01:
+    # The 2021 list (see the comments there), plus the Oklahoma earned
+    # income credit.
+    - irs_employment_income
+    - dependent_care_employer_benefits
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    - farm_operations_income
+    - farm_rent_income
+    - short_term_capital_gains
+    - long_term_capital_gains
+    - interest_income
+    - rental_income
+    - estate_income
+    - dividend_income
+    - pension_income
+    - military_retirement_income
+    - retirement_distributions
+    - debt_relief
+    - total_unemployment_compensation
+    - workers_compensation
+    - social_security
+    - alimony_income
+    - child_support_received
+    - illicit_income
+    - miscellaneous_income
+    - ssi
+    - ok_ssp
+    - general_assistance
+    - tanf
+    - veterans_benefits
+    - disability_benefits
+    - educational_assistance
+    - gambling_winnings
+    - section_911_excluded_income
+    - eitc
+    # The Oklahoma earned income credit was made refundable in 2022 (2022 Form
+    # 511 packet, "What's new", page 3). Form 538-S line 9 asks to "combine
+    # federal and Oklahoma amounts" only from 2024 (2024 Form 511 packet,
+    # page 51); for 2022 and 2023 it counts under 68 O.S. 2904(3) and 5012,
+    # income "of every type, regardless of the source" (Title 68, pages 1373
+    # and 1635).
     - ok_eitc
 
 metadata:
@@ -84,8 +129,8 @@ metadata:
   reference:
     - title: 2021 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
-    - title: 2022 Form 511 instructions
-      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2022/511-Pkt-2022.pdf
+    - title: 2022 Form 511 packet, What's new (the Oklahoma earned income credit made refundable)
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2022/511-Pkt-2022.pdf#page=3
     - title: 2023 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2023/511-Pkt.pdf
     - title: 2024 Form 511 instructions
