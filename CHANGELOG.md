@@ -1,3 +1,11 @@
+## [2.148.4] - 2026-11-20
+
+### Fixed
+
+- Ohio homestead exemption total income now defaults to the current year's Ohio modified adjusted gross income as a proxy for the prior year's, so the income limit applies in single-year runs instead of reading an empty prior year as 0; a known prior-year figure can still be entered as the total income.
+- New Jersey wages now leave out 401(k) elective deferrals (N.J.S.A. 54A:6-21), which lowers New Jersey income tax and the income that ANCHOR, property tax relief and the other retirement income exclusion read for 401(k) contributors; 403(b), 457 and other deferrals stay taxable.
+
+
 ## [2.148.3] - 2026-11-20
 
 ### Changed
