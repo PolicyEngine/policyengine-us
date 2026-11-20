@@ -13,6 +13,8 @@
     state_code: WV
     employment_income: 20_000
     workers_compensation: 1_000
+    # A plan the recipient paid for: all of it is tax-exempt.
+    disability_benefits: 4_000
     tax_exempt_disability_benefits: 4_000
   output:
     # Federal AGI 20,000 + 1,000 workers' compensation + 4,000 loss of
