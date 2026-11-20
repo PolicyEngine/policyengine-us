@@ -13,7 +13,7 @@
     immigration_status: DACA
     state_code: NY
   output:
-    # DACA is on the list, and no age is in the Essential Plan at 2019-01-01.
+    # DACA is on the list, and the schedule leaves no age out at 2019-01-01.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
@@ -81,7 +81,7 @@
     immigration_status: DACA
     state_code: NY
   output:
-    # The list sets no age limit, and no age is in the Essential Plan in 2019.
+    # The list sets no age limit, and the schedule leaves no age out in 2019.
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
     # The list opens no CHIP route: DACA stays off the CHIP status lists.
@@ -181,7 +181,7 @@
         members: [person1]
         state_code: NY
   output:
-    # No age is in the Essential Plan at 2024-01-01, so the person is Medicaid
+    # The schedule leaves no age out at 2024-01-01, so the person is Medicaid
     # eligible and the unborn-child route does not apply.
     is_medicaid_immigration_status_eligible: true
     is_medicaid_eligible: true
@@ -201,13 +201,15 @@
         members: [person1]
         state_code: NY
   output:
-    # Age 30 is in the Essential Plan at 2025-01-01, so the person fails the
-    # Medicaid immigration test and the unborn-child route applies, as it did
-    # before.
+    # The schedule leaves age 30 out of the Medicaid route at 2025-01-01, so
+    # the person fails the Medicaid immigration test. The CHIP unborn-child
+    # route applies, as it did before this route existed, and it blocks the
+    # model's Essential Plan.
     is_medicaid_immigration_status_eligible: false
     is_medicaid_eligible: false
     is_chip_fcep_eligible_person: true
     chip_category: PREGNANT_FCEP
+    is_basic_health_program_eligible: false
 
 # The Essential Plan's ages were 19 to 64. Younger recipients keep the
 # Medicaid route.
@@ -222,9 +224,13 @@
     is_ny_medicaid_immigration_status_eligible: true
     is_medicaid_immigration_status_eligible: true
 
-# From 2025 a DACA adult aged 19 to 64 has the result they had before this
-# route existed: no Medicaid route, and emergency Medicaid for an emergency
-# condition. This case reads 2027, after the state's July 2026 return.
+# From 2025 a DACA adult aged 19 to 64 fails the Medicaid immigration test,
+# as before this route existed: no Medicaid route, and emergency Medicaid
+# for an emergency condition if they meet a Medicaid category. The adult's
+# own immigration test is unchanged. A child's coverage can still change
+# the adult's category and emergency result, through the adult group's
+# child-coverage rule. This case sets the category and reads 2027, after
+# the state's July 2026 return.
 - name: Case 16, DACA 30-year-old with an emergency condition qualifies for emergency Medicaid in 2027.
   period: 2027
   input:
@@ -445,3 +451,187 @@
     is_medicaid_immigration_status_eligible: false
     is_medicaid_eligible: false
     is_basic_health_program_eligible: false
+
+# A known limit of the age test. This recipient is above the Essential
+# Plan's ceiling of 250% of the poverty line, so the plan could not take
+# them, and the route still leaves out every recipient aged 19 to 64. The
+# recipient holds a medically needy category and fails Medicaid on the
+# immigration test alone. These are the results the person had before
+# this route existed. The schedule's comment says why the formula reads no
+# income.
+- name: Case 28, blind DACA 30-year-old above 250% of the poverty line with medical expenses fails the immigration test in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_blind: true
+        other_medical_expenses: 60_000
+        immigration_status: DACA
+        employment_income: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # $60,000 / $15,650 = 3.83 times the 2025 guideline for one person. The
+    # age-19 bracket is true at 2025-01-01, so the person fails the test.
+    is_ny_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: false
+    is_basic_health_program_eligible: false
+
+# A child who passes the Medicaid immigration test has a parent's income
+# deemed to them in the aged, blind and disabled group, as a citizen child
+# does. Before this route existed the model deemed nothing to a DACA child,
+# so this child met that group's income limit and, failing the immigration
+# test, qualified for emergency Medicaid. With this income the child now
+# has what a citizen child has: no Medicaid category, no Medicaid and no
+# emergency Medicaid. That match holds at this income and not at every
+# income: see Cases 31 and 32. own_children_in_household marks the adult
+# as the child's parent: without it the model treats no one as the parent
+# and deems no income.
+- name: Case 29, blind DACA 17-year-old with a parent earning $100,000 has no Medicaid category in 2019.
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 100_000
+        own_children_in_household: 1
+      child:
+        age: 17
+        is_blind: true
+        immigration_status: DACA
+        has_emergency_medical_condition: true
+        social_security_survivors: 10_375
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The child's own countable income is $10,375 - $240 = $10,135 a year, under
+    # the group's limit of 82% of $12,490 = $10,241.80. The deemed income is
+    # ($100,000 / 12 - $85) / 2 - $771 = $3,353.17 a month, so the child is over
+    # that limit. The medically needy group reads the child's own $10,135,
+    # which is over its limit of $842 a month, or $10,104 a year.
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    is_emergency_medicaid_eligible: [false, false]
+
+# The same household with a citizen child, who also ends with no Medicaid
+# category and no Medicaid. own_children_in_household again marks the
+# parent.
+- name: Case 30, blind citizen 17-year-old with the same parent and income has the same Medicaid result in 2019.
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 100_000
+        own_children_in_household: 1
+      child:
+        age: 17
+        is_blind: true
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: true
+        social_security_survivors: 10_375
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The same deemed income puts the child over the group's limit. The
+    # medically needy group reads income that includes the deemed amount.
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    is_emergency_medicaid_eligible: [false, false]
+
+# The two children's results differ when the child's own income is lower.
+# The aged, blind and disabled group counts a parent's deemed income for
+# any child who passes the Medicaid immigration test. The medically needy
+# group reads SSI's countable income, and SSI deems a parent's income only
+# to a child who is a citizen or a qualified noncitizen. So where a
+# parent's deemed income is over the medically needy limit, a blind DACA
+# child with little income of their own can be Medicaid eligible through
+# that group, and a citizen child with the same facts is not. The
+# medically needy formula is outside this route; Cases 31 and 32 pin its
+# result for the two children.
+- name: Case 31, blind DACA 17-year-old with no income of their own and a parent earning $100,000 is Medicaid eligible through the medically needy group in 2019.
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 100_000
+        own_children_in_household: 1
+      child:
+        age: 17
+        is_blind: true
+        immigration_status: DACA
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The deemed income of $3,353.17 a month keeps the child out of the aged,
+    # blind and disabled group. SSI deems nothing to a DACA child, so the
+    # medically needy group reads income of $0, under its limit of $10,104.
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [false, true]
+    medicaid_category: [NONE, MEDICALLY_NEEDY]
+    is_medicaid_eligible: [false, true]
+    is_emergency_medicaid_eligible: [false, false]
+
+# The same household with a citizen child.
+- name: Case 32, blind citizen 17-year-old with no income of their own and the same parent has no Medicaid category in 2019.
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+        employment_income: 100_000
+        own_children_in_household: 1
+      child:
+        age: 17
+        is_blind: true
+        immigration_status: CITIZEN
+        has_emergency_medical_condition: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # SSI deems the parent's income to a citizen child, so the medically needy
+    # group reads ($3,353.17 - $20) x 12 = $39,998, over its limit.
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    is_emergency_medicaid_eligible: [false, false]

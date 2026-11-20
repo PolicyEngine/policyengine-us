@@ -1,10 +1,10 @@
-description: New York moves Deferred Action for Childhood Arrivals recipients at these ages from state-funded Medicaid to the Essential Plan.
+description: The model leaves DACA recipients at these ages out of New York's Medicaid immigration route, because the Essential Plan was due to take those with income up to 250% of the poverty line on August 1, 2024.
 metadata:
   period: year
   amount_unit: bool
   threshold_unit: year
   type: single_amount
-  label: New York DACA ages in the Essential Plan
+  label: New York DACA ages left out of the Medicaid immigration route
   reference:
     - title: "New York section 1332 waiver application (December 18, 2023), coverage of DACA recipients aged 19 to 64"
       href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
@@ -16,30 +16,41 @@ metadata:
       href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15
 
 # New York planned to move DACA recipients aged 19 to 64 with income up to
-# 250% of the poverty level to the Essential Plan on August 1, 2024. Those
-# who otherwise qualify for Medicaid or Child Health Plus stayed in those
-# programs, so recipients under 19 or aged 65 or older keep the Medicaid
+# 250% of the poverty level to the Essential Plan on August 1, 2024.
+# Recipients outside those ages stayed in Medicaid or Child Health Plus if
+# they qualified, so those under 19 or aged 65 or older keep the Medicaid
 # route. The ages match the Basic Health Program's minimum and maximum
 # ages (19 and 65).
-# is_ny_medicaid_immigration_status_eligible reads age alone. Essential
-# Plan eligibility itself reads Medicaid, so the formula cannot ask whether
-# the person qualifies for the Essential Plan. The age test is an
-# approximation: it takes every recipient aged 19 to 64 out of this route,
-# one with income above 250% of the poverty level included. The Essential
-# Plan's income limit left that person out, and the model can still give
-# them a Medicaid category, for example on the medically needy route,
-# which subtracts medical expenses from income.
+# is_ny_medicaid_immigration_status_eligible reads age alone. A recipient
+# aged 19 to 64 above 250% of the poverty level fails this test, though the
+# Essential Plan could not take them. One who is blind or disabled can
+# hold a medically needy category, which subtracts medical expenses from
+# income, and fails Medicaid on this test alone. This is a known limit of
+# the age test.
+# The formula cannot ask whether the person qualifies for the Essential
+# Plan, because Essential Plan eligibility itself reads Medicaid. An
+# income test would need medicaid_income_level, the measure that
+# Medicaid's MAGI groups and the Basic Health Program use. That variable
+# reaches the Medicaid immigration test through tax filing status, state
+# income tax and other programs, so reading it here raises a cycle. The
+# tax unit's income level (tax_unit_medicaid_income_level) raises none,
+# but it is not Medicaid's measure. A tax dependent of a relative who is
+# not their parent can be above 250% on the tax unit's measure and inside
+# the adult group on Medicaid's own.
 # YEAR-defined formulas read January 1, so the 2024-08-01 value first
 # applies in 2025.
 # Model year 2026: the Essential Plan covered these recipients to June 30,
 # 2026. On July 1, 2026 enrollees in Essential Plan 3 or 4, and enrollees at
 # any level who were pregnant or in their 12-month postpartum period, moved
-# to Medicaid. This parameter models neither: ages 19 to 64 stay out of the
-# Medicaid route from 2025 on and have the result they had before this
-# route existed. In the model that is the Essential Plan in 2025, within
-# its income limit. From 2026 an adult who is not pregnant has neither
-# program, because the Basic Health Program's list excludes DACA again
-# from August 25, 2025.
+# to Medicaid. This parameter models neither: from 2025 recipients aged 19
+# to 64 fail the Medicaid immigration test, as they did before this route
+# existed. A child's coverage can still change such an adult's Medicaid
+# category and emergency Medicaid result, through the adult group's
+# child-coverage rule. In the model one who is not pregnant and meets the
+# Essential Plan's other tests reaches it in 2025, within its income
+# limit. From 2026 an adult who is not pregnant has neither program,
+# because the Basic Health Program's list excludes DACA again from August
+# 25, 2025.
 brackets:
   - threshold:
       2015-01-01: 0
