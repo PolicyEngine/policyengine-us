@@ -96,7 +96,7 @@ class ri_liheap_base_payment(Variable):
         amount = where(heat_in_rent, heat_in_rent_payment, amount)
         utility_fuel = (fuel == fuels.NATURAL_GAS) | (fuel == fuels.ELECTRICITY)
         utility_grant = where(heat_in_rent, separate_electric_bill, utility_fuel)
-        electric_provider = spm_unit("electricity_provider", period)
+        electric_provider = spm_unit("ri_liheap_electricity_provider", period)
         providers = electric_provider.possible_values
         excluded_electric_provider = (
             electric_provider == providers.BLOCK_ISLAND_UTILITY_DISTRICT

@@ -184,7 +184,7 @@
   input:
     state_code: [RI, RI, RI, RI]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    electricity_provider: [RHODE_ISLAND_ENERGY, BLOCK_ISLAND_UTILITY_DISTRICT,
+    ri_liheap_electricity_provider: [RHODE_ISLAND_ENERGY, BLOCK_ISLAND_UTILITY_DISTRICT,
       CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT, UNSPECIFIED]
     ri_liheap_household_size: [1, 1, 1, 1]
     ri_liheap_income_band: [1, 1, 1, 1]
@@ -199,9 +199,8 @@
   input:
     state_code: [RI, RI, RI, RI]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL]
-    electricity_provider: [BLOCK_ISLAND_UTILITY_DISTRICT, BLOCK_ISLAND_UTILITY_DISTRICT,
+    ri_liheap_electricity_provider: [BLOCK_ISLAND_UTILITY_DISTRICT, BLOCK_ISLAND_UTILITY_DISTRICT,
       RHODE_ISLAND_ENERGY, CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT]
-    natural_gas_provider: [RHODE_ISLAND_ENERGY, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
     heat_expense_included_in_rent: [false, true, true, true]
     gas_expense: [1_000, 0, 0, 0]
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000]
@@ -217,9 +216,8 @@
   input:
     state_code: [RI, RI, RI, RI, RI]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, FUEL_OIL]
-    electricity_provider: [RHODE_ISLAND_ENERGY, BLOCK_ISLAND_UTILITY_DISTRICT,
+    ri_liheap_electricity_provider: [RHODE_ISLAND_ENERGY, BLOCK_ISLAND_UTILITY_DISTRICT,
       CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT, RHODE_ISLAND_ENERGY, RHODE_ISLAND_ENERGY]
-    natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, RHODE_ISLAND_ENERGY, UNSPECIFIED]
     ri_liheap_household_size: [1, 1, 1, 1, 1]
     ri_liheap_income_band: [1, 1, 1, 1, 1]
     pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 0, 0]
@@ -234,7 +232,7 @@
   input:
     state_code: [RI, RI, RI, RI, RI]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL, FUEL_OIL]
-    electricity_provider: [RHODE_ISLAND_ENERGY, RHODE_ISLAND_ENERGY,
+    ri_liheap_electricity_provider: [RHODE_ISLAND_ENERGY, RHODE_ISLAND_ENERGY,
       CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT, BLOCK_ISLAND_UTILITY_DISTRICT,
       RHODE_ISLAND_ENERGY]
     heat_expense_included_in_rent: [true, true, true, true, true]
