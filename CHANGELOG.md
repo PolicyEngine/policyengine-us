@@ -1,3 +1,11 @@
+## [2.149.2] - 2026-11-20
+
+### Fixed
+
+- New Mexico modified gross income now counts farm, partnership and S corporation income, capital gain distributions, Form 4797 gains, general assistance, workers' compensation, disability benefits, discharged debt, gross gambling winnings, cash gifts, scholarships, miscellaneous income and excluded foreign earned income. Each source is now floored at zero person by person, and capital losses and loss carryovers no longer reduce capital gains.
+- Oklahoma's gross household income for the sales tax and property tax credits now counts the income of everyone in the household, not just the tax unit, and adds dependent care benefits, retirement account distributions, TANF, veterans' and disability benefits, scholarships, gambling winnings, excluded foreign earned income and the Oklahoma earned income credit.
+
+
 ## [2.149.1] - 2026-11-20
 
 ### Changed
