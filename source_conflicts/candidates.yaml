@@ -15079,9 +15079,10 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9213
   state: unreviewed
-  note: 'PE-US follows the statute and state plan: Wisconsin elects the option, and the formula requires is_full_time_student,
-    a proxy the comments say is broader than the federal option because it also captures full-time college students
-    (student_option.yaml, is_parent_for_medicaid_nfc.py). Verify whether its wording reflects practice.'
+  note: 'PE-US follows the statute and state plan: Wisconsin elects the option, and the formula counts an 18-year-old
+    in secondary school, treating attendance as full time because no input marks part-time attendance, or a full-time
+    student who is not in college (student_option.yaml, is_parent_for_medicaid_nfc.py). Verify whether its wording
+    reflects practice.'
 - id: us-wi:personal-exemption-claimable-filer
   program: income-tax
   years:
