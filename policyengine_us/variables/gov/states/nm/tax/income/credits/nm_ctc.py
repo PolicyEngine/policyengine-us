@@ -13,7 +13,11 @@ class nm_ctc(Variable):
     )
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
+    # Laws 2022, Chapter 47, Section 5(A): tax years beginning January 1, 2023.
+    # https://www.nmlegis.gov/Sessions/22%20Regular/final/HB0163.pdf#page=14
+    # Laws 2023, Chapter 211, Section 43(A) retains Section 9's 2023 onset.
+    # https://www.nmlegis.gov/Sessions/23%20Regular/final/HB0547.pdf#page=118
+    def formula_2023_01_01(tax_unit, period, parameters):
         # Legal code refers to "adjusted gross income",
         # Tax form does not specify if federal or state AGI
         agi = tax_unit("adjusted_gross_income", period)

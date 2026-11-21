@@ -1,0 +1,450 @@
+# Onset-only conditional component tests; no full-return qualification.
+# These are independent annual families, not a longitudinal population cohort.
+# Roles and ages compute child counts; raw person claim facts compute claimant
+# status. No child-count, claimant-aggregate, or final-credit input is supplied.
+# Otherwise lawful relationship/residency/support and NM return facts are
+# premises; the model does not derive every IRC 152(c) condition.
+# Federal and NM AGI are stipulated equal here. The zero-income claimant
+# remains barred independently of the bracket; positive AGIs avoid edges.
+# Exact integer-dollar outputs need no numerical tolerance.
+# Final 2022 HB163 Section 5, physical page 14: tax years begin in 2023.
+# https://www.nmlegis.gov/Sessions/22%20Regular/final/HB0163.pdf#page=14
+# 2023 HB547 Sections 9 and 43(A), PDF pages 27-28,118, after the veto.
+# https://www.nmlegis.gov/Sessions/23%20Regular/final/HB0547.pdf#page=27
+
+- name: Case 1, 2017 otherwise qualifying child before the credit begins.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 2, 2018 otherwise qualifying child before the credit begins.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 3, 2019 otherwise qualifying child before the credit begins.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 4, 2020 otherwise qualifying child before the credit begins.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 5, 2021 otherwise qualifying child before the credit begins.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 6, 2022 otherwise qualifying child before the credit begins.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
+
+- name: Case 7, 2023 onset and unchanged child count and claimant conditions.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person4:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person5:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person6:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person7:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person9:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+      tax_unit2:
+        members: [person3, person4, person5, person6]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+      tax_unit3:
+        members: [person7, person8]
+        filing_status: SINGLE
+        # Lawful claimability and outside support are stipulated; this case
+        # does not derive every dependency or full-return condition.
+        adjusted_gross_income: 0
+      tax_unit4:
+        members: [person9]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NM
+      household2:
+        members: [person3, person4, person5, person6]
+        state_code: NM
+      household3:
+        members: [person7, person8]
+        state_code: NM
+      household4:
+        members: [person9]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: [1, 2, 1, 0]
+    every_filer_is_dependent_elsewhere: [false, false, true, false]
+    nm_ctc: [600, 1_200, 0, 0]
+
+- name: Case 8, 2024 published first row remains unchanged.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 622
+
+- name: Case 9, 2025 published first row remains unchanged.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 637
+
+- name: Case 10, 2026 zero children without an indexed amount oracle.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: false
+        is_parent_of_filer_or_spouse: false
+        is_grandparent_of_filer_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 0
+    every_filer_is_dependent_elsewhere: false
+    nm_ctc: 0
