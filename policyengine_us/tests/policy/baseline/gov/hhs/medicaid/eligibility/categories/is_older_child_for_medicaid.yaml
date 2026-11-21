@@ -290,3 +290,74 @@
       2026:
       - true
       - false
+
+# Synthetic statutory cases derived from Ohio Administrative Code 5160:1-4-02(D)(2)-(3)
+# and 5160:1-4-01(D)(3). The family size is three. The 2017 lower-48
+# federal poverty guideline is $20,420. Eligibility is tested before take-up.
+- name: Ohio child at 180% of the 2017 poverty guideline with ESI
+  period: 2017
+  input:
+    state_code: OH
+    age: 10
+    medicaid_household_size: 3
+    medicaid_household_income: 36_756
+    has_esi: true
+  output:
+    is_older_child_for_medicaid: false
+
+- name: Ohio child at 180% of the 2017 poverty guideline without other coverage
+  period: 2017
+  input:
+    state_code: OH
+    age: 10
+    medicaid_household_size: 3
+    medicaid_household_income: 36_756
+    has_esi: false
+  output:
+    is_older_child_for_medicaid: true
+
+- name: Ohio child at 150% of the 2017 poverty guideline with ESI
+  period: 2017
+  input:
+    state_code: OH
+    age: 10
+    medicaid_household_size: 3
+    medicaid_household_income: 30_630
+    has_esi: true
+  output:
+    is_older_child_for_medicaid: true
+
+- name: Ohio applies the lower limit across child age groups with other coverage
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 0.5
+        medicaid_income_level: 1.8
+        has_esi: true
+      person2:
+        age: 4
+        medicaid_income_level: 1.8
+      person3:
+        age: 10
+        medicaid_income_level: 1.8
+        has_marketplace_health_coverage_at_interview: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_infant_for_medicaid: [false, false, false]
+    is_young_child_for_medicaid: [false, true, false]
+    is_older_child_for_medicaid: [false, false, false]
+
+- name: Ohio's creditable coverage input leaves California child eligibility unchanged
+  period: 2017
+  input:
+    state_code: CA
+    age: 10
+    medicaid_income_level: 1.8
+    has_esi: true
+    oh_medicaid_child_has_other_creditable_coverage: true
+  output:
+    is_older_child_for_medicaid: true

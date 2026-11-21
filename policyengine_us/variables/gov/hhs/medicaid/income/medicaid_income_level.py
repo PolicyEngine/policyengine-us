@@ -74,3 +74,20 @@ def medicaid_income_eligible(person, period, parameters, income_limit):
     # ratio's precision admits the exact limit without an isclose tolerance
     # that could also admit distinguishable income above the limit.
     return income <= np.asarray(effective_limit, dtype=income.dtype)
+
+
+def medicaid_child_income_eligible(person, period, parameters, income_limit):
+    """Apply the lower Ohio limit to children with other creditable coverage."""
+    ohio_limit = parameters(
+        period
+    ).gov.states.oh.odm.medicaid.child_income_limit_with_other_coverage
+    ohio = person.household("state_code", period) == StateCode.OH
+    has_other_coverage = person(
+        "oh_medicaid_child_has_other_creditable_coverage", period
+    )
+    effective_limit = where(
+        ohio & has_other_coverage,
+        min_(income_limit, ohio_limit),
+        income_limit,
+    )
+    return medicaid_income_eligible(person, period, parameters, effective_limit)
