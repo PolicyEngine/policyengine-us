@@ -336,6 +336,7 @@
   output:
     # 30,000 on the head's return plus the dependent's own 5,000.
     # 35,000 + the head's SSI 11,604 (967 x 12) = 46,604.
+    # SSI is the full benefit: it reads the head's own income, not the return's AGI.
     ut_homeowner_renter_relief_household_income: 46_604
 
 - name: 2025, an adult dependent's estate loss nets against their wages

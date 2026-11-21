@@ -694,3 +694,48 @@
     # the child's interest belongs on the child's own return. MAGI = 43,000,
     # at the threshold: no reduction.
     ut_ctc_potential: 1_000
+
+# Register candidate us-ut:ctc-modified-agi-other-state-bond-interest: the
+# Child Tax Credit Worksheet counts interest on another state's municipal
+# bonds once (TC-40 line 6, less the TC-40A code 57 addition, plus federal
+# tax-exempt interest). The model computes no code 57 addition, so the
+# interest enters only through tax_exempt_interest_income.
+- name: Interest on another state's municipal bonds counts once in modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssn_card_type: CITIZEN
+        employment_income: 50_000
+        tax_exempt_interest_income: 3_000
+      person2:
+        age: 38
+        ssn_card_type: CITIZEN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        filing_status: JOINT
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: UT
+  output:
+    # Federal AGI of 50,000 in wages + ut_additions of 0 (no ut_other_additions).
+    ut_total_income: 50_000
+    # MAGI: 50,000 + 3,000 of tax-exempt interest = 53,000, below the 54,000
+    # joint threshold, so no reduction. Counting the interest twice would give
+    # 56,000 and 1,000 - (56,000 - 54,000) x 0.10 = 800. Both amounts are
+    # before the nonrefundable liability limit.
+    ut_ctc_potential: 1_000
