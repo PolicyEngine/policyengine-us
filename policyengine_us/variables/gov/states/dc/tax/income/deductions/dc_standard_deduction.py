@@ -9,9 +9,10 @@ class dc_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.DC
     reference = (
-        # 47-1803.03(c): when spouses file separate returns and one itemizes,
-        # the standard deduction "shall be allowed to neither".
-        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.03#(c)",
+        # 47-1803.04(b): when one spouse itemizes on a separate return,
+        # "neither of the spouses or registered domestic partners is allowed
+        # the standard deduction".
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.04#(b)",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=13",
         "https://code.dccouncil.gov/us/dc/council/laws/26-189#%C2%A77112(b)",
     )
