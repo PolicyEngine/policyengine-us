@@ -8,8 +8,8 @@ class dc_additional_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        # D.C. Act 26-416, sec. 7112(e): new D.C. Code 47-1803.04(e)(3) to (6).
-        "https://code.dccouncil.gov/us/dc/council/acts/26-416",
+        # D.C. Law 26-189, sec. 7112(e): new D.C. Code 47-1803.04(e)(3) to (6).
+        "https://code.dccouncil.gov/us/dc/council/laws/26-189#%C2%A77112(e)",
     )
     defined_for = StateCode.DC
     documentation = (

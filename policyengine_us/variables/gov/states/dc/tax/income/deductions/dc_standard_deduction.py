@@ -13,7 +13,7 @@ class dc_standard_deduction(Variable):
         # the standard deduction "shall be allowed to neither".
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.03#(c)",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=13",
-        "https://code.dccouncil.gov/us/dc/council/acts/26-416",
+        "https://code.dccouncil.gov/us/dc/council/laws/26-189#%C2%A77112(b)",
     )
 
     def formula(tax_unit, period, parameters):
@@ -36,8 +36,8 @@ class dc_standard_deduction(Variable):
         return where(tax_unit("separate_filer_itemizes", period), 0, basic + additional)
 
     def formula_2030(tax_unit, period, parameters):
-        # D.C. Code 47-1801.04(44)(A) to (C)(vi), as amended by D.C. Act
-        # 26-416, sec. 7112(b)(3): for taxable years beginning after December
+        # D.C. Code 47-1801.04(44)(A) to (C)(vi), as amended by D.C. Law
+        # 26-189, sec. 7112(b)(3): for taxable years beginning after December
         # 31, 2029, the standard deduction under IRC 63(c) again.
         standard = add(
             tax_unit,

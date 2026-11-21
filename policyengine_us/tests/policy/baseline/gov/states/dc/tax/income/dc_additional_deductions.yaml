@@ -1,10 +1,11 @@
-# D.C. Code 47-1803.04(d)(6) to (9) and (e)(3) to (6), added by D.C. Act
-# 26-416: DC denies the federal deductions for qualified tips, qualified
+# D.C. Code 47-1803.04(d)(6) to (9) and (e)(3) to (6), added by D.C. Law
+# 26-189: DC denies the federal deductions for qualified tips, qualified
 # overtime, personal car loan interest and the enhanced senior deduction before
 # 2026 and allows each from 2026, in the amount allowed on the federal return.
 # Federal law allows none of the four for taxable years beginning after 2028
 # (26 U.S.C. 224(h), 225(g), 163(h)(4)(A) and 151(d)(5)(C)(i)), so DC allows
-# none from 2029.
+# none from 2029 under current federal law. DC follows any federal extension, as
+# the 2029 tips and overtime case shows.
 
 - name: 2025, DC allows none of the four federal deductions.
   period: 2025
@@ -48,6 +49,15 @@
     additional_senior_deduction: 6_000
   output:
     dc_additional_deductions: 0
+
+- name: 2029, DC still follows the federal tips and overtime deductions if federal law allows them.
+  period: 2029
+  input:
+    state_code: DC
+    tip_income_deduction: 1_000
+    overtime_income_deduction: 2_000
+  output:
+    dc_additional_deductions: 3_000
 
 - name: 2026, outside DC the variable is zero.
   period: 2026

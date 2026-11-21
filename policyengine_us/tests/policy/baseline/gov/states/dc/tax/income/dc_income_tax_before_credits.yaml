@@ -16,7 +16,7 @@
   output:
     dc_income_tax_before_credits: 900
 
-# Households in 2025 and 2026 under D.C. Act 26-416. DC's rates: 4% to
+# Households in 2025 and 2026 under D.C. Law 26-189. DC's rates: 4% to
 # $10,000, $400 + 6% to $40,000, $2,200 + 6.5% to $60,000, $3,500 + 8.5% to
 # $250,000.
 
@@ -306,3 +306,27 @@
     dc_taxable_income_joint: 64_000
     # 3,500 + 8.5% * 4,000
     dc_income_tax_before_credits: 3_840
+
+- name: 2026 single itemizer has DC additional deductions reduced by the itemized deduction phaseout.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: DC
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    employment_income: 250_000
+    tip_income: 25_000
+    treasury_tipped_occupation_code: 102
+    real_estate_taxes: 1_000
+  output:
+    dc_agi: 250_000
+    # IRC 224(b): 25,000 - 100 * ((250,000 - 150,000) / 1,000).
+    tip_income_deduction: 15_000
+    # D.C. Code 47-1803.04(a)(1) and (c)(2): 1,000 + 15,000
+    # - 5% * (250,000 - 200,000) = 13,500.
+    dc_itemized_deductions: 13_500
+    dc_deduction_joint: 13_500
+    dc_deduction_indiv: 13_500
+    dc_taxable_income_joint: 236_500
+    # D.C. Code 47-1806.03(a)(11): 3,500 + 8.5% * (236,500 - 60,000).
+    dc_income_tax_before_credits: 18_502.50
