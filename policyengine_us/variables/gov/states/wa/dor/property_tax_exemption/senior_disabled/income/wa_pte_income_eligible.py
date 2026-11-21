@@ -15,7 +15,15 @@ class wa_pte_income_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("wa_pte_combined_disposable_income", period)
+        # defined_for masks the output but does not stop the formula from
+        # running over every household, and the thresholds are keyed by
+        # Washington county only. Households outside Washington, or with an
+        # UNKNOWN county, are looked up under Adams County (the county the
+        # model assigns a Washington household that gives none) so the lookup
+        # cannot raise ParameterNotFoundError.
         county = tax_unit.household("county_str", period)
+        in_wa = tax_unit.household("state_code_str", period) == "WA"
+        county = where(in_wa & (county != "UNKNOWN"), county, "ADAMS_COUNTY_WA")
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income.thresholds
