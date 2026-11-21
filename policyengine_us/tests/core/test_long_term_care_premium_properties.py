@@ -22,12 +22,13 @@ every tax unit:
    medical part = min(filers' medical premiums, deduction); long-term care
    part = min(filers' eligible premiums, deduction - medical part); together
    they equal min(filers' medical + eligible premiums, deduction), and the
-   applied exclusion of a computed subtotal is their sum.
+   computed subtotal's applied exclusion also includes the medical parts of
+   dependents' own deductions.
 3. Accounting: the subtotal is members' medical premiums - medical part +
    members' eligible premiums - long-term care part - dependents' own
-   long-term care parts + other expenses. A person's own long-term care part
-   is what that person's deduction leaves after their medical premiums,
-   limited to their eligible premiums. The long-term care premiums
+   medical and long-term care parts + other expenses. A person's own
+   long-term care part is what that person's deduction leaves after their
+   medical premiums, limited to their eligible premiums. The long-term care premiums
    inside it lie between what the dependents' own deductions left of their
    eligible premiums and all members' eligible premiums.
 4. Conservation (derived deduction): every eligible premium is deducted once,
@@ -44,8 +45,10 @@ every tax unit:
    exactly that amount.
 7. A supplied subtotal holds no computed long-term care premiums and no
    applied exclusion.
-8. Years after the last published table: every amount is a multiple of $10,
-   amounts rise with age, and no amount falls from one year to the next.
+8. Years after the last published table: every amount is its 1997 amount in
+   213(d)(10)(A) plus a multiple of $10, as 213(d)(10)(B) rounds the
+   increase, amounts rise with age, and no amount falls from one year to the
+   next.
 """
 
 import numpy as np
@@ -77,6 +80,8 @@ PUBLISHED_LIMITS = {
     2027: (500, 945, 1_890, 5_030, 6_290),  # Rev. Proc. 2026-35
 }
 BAND_TOPS = (40, 50, 60, 70)
+# 213(d)(10)(A): the 1997 limits the (B) increases build on.
+STATUTORY_LIMITS = (200, 375, 750, 2_000, 2_500)
 LAST_PUBLISHED = max(PUBLISHED_LIMITS)
 EDGE_AGES = [0, 18, 39, 40, 41, 50, 51, 60, 61, 70, 71, 95]
 
@@ -108,7 +113,7 @@ def test_limits_after_the_last_published_year():
     ages = np.array([30, 45, 55, 65, 75], dtype=float)
     for year in range(LAST_PUBLISHED + 1, LAST_PUBLISHED + 10):
         amounts = _limit_parameter(year).calc(ages, right=True)
-        assert (amounts % 10 == 0).all(), (year, amounts)
+        assert ((amounts - STATUTORY_LIMITS) % 10 == 0).all(), (year, amounts)
         assert (np.diff(amounts) > 0).all(), (year, amounts)
         assert (amounts >= previous).all(), (year, amounts, previous)
         previous = amounts
@@ -290,6 +295,10 @@ def _check(units, year, supplied_deduction):
         eligible * self_employed,
         person_deduction - np.minimum(health * self_employed, person_deduction),
     )
+    dependent = ~filer.astype(bool)
+    dependent_medical_part = unit_sum(
+        np.minimum(health, person_deduction - own_long_term_care_part) * dependent
+    )
     np.testing.assert_allclose(
         run["itemized_medical_expenses_excluded_premiums"],
         medical_part,
@@ -307,15 +316,14 @@ def _check(units, year, supplied_deduction):
     )
     np.testing.assert_allclose(
         run["itemized_medical_expenses_applied_exclusion"],
-        medical_part + long_term_care_part,
+        medical_part + long_term_care_part + dependent_medical_part,
         atol=TOLERANCE,
     )
 
-    # 3. Accounting identity for the subtotal, from the raw inputs. Each
-    # dependent's own deduction took that dependent's long-term care part.
+    # 3. Each dependent excludes the medical and long-term care premiums
+    # they deducted on their own return from the parents' subtotal.
     inside = run["itemized_medical_expenses_long_term_care_premiums"]
     all_eligible = unit_sum(eligible)
-    dependent = ~filer.astype(bool)
     dependents_part = unit_sum(own_long_term_care_part * dependent)
     np.testing.assert_allclose(
         inside,
@@ -329,7 +337,11 @@ def _check(units, year, supplied_deduction):
     subtotal = run["itemized_medical_expenses"]
     np.testing.assert_allclose(
         subtotal,
-        unit_sum(health) - medical_part + inside + unit_sum(other),
+        unit_sum(health)
+        - medical_part
+        - dependent_medical_part
+        + inside
+        + unit_sum(other),
         atol=TOLERANCE,
     )
 
@@ -340,7 +352,7 @@ def _check(units, year, supplied_deduction):
             subtotal
             - unit_sum(other)
             + run["self_employed_health_insurance_ald"]
-            + dependents_part,
+            + unit_sum(person_deduction * dependent),
             unit_sum(health) + all_eligible,
             atol=TOLERANCE,
         )

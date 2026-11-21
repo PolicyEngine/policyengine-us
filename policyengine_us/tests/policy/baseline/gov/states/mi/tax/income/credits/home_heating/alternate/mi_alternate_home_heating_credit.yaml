@@ -24,3 +24,14 @@
     mi_alternate_home_heating_credit_eligible: true
   output: # (300 - 3_000 * 0.11) * 0.7 < 0
     mi_alternate_home_heating_credit: 0
+
+# 2025 MI-1040CR-7, line 40: heating costs or $3,765, whichever is less.
+- name: alternate heating credit 2025, heating costs over the $3,765 cap
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    mi_household_resources: 1_000
+    heating_expenses: 4_000
+    mi_alternate_home_heating_credit_eligible: true
+  output: # (3,765 - 1,000 * 0.11) * 0.7 = 3,655 * 0.7 = 2,558.50
+    mi_alternate_home_heating_credit: 2_558.5

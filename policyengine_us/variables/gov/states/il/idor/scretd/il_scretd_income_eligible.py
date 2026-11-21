@@ -8,10 +8,13 @@ class il_scretd_income_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.IL
     reference = (
-        "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31"
+        "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1454&ChapterID=31",
+        # 320 ILCS 30/2(a)(iii) and (j): household income no greater than the
+        # maximum household income.
+        "https://www.ilga.gov/Documents/legislation/ilcs/documents/032000300K2.htm",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.idor.scretd
-        income = add(tax_unit, period, ["irs_gross_income"])
+        income = tax_unit("il_scretd_household_income", period)
         return income <= p.income_limit

@@ -33,3 +33,143 @@
     va_agi: 40_000
   output:
     va_low_income_tax_credit_agi_eligible: false
+
+# Va. Code 58.1-339.8(A): "'Family Virginia adjusted gross income' means the
+# combined Virginia adjusted gross income of an individual, the individual's
+# spouse, and any person claimed as a dependent on the individual's or his
+# spouse's income tax return for the taxable year." (B)(1): the credit is
+# allowed if family Virginia adjusted gross income "does not exceed 100
+# percent of the poverty guideline amount". 2025 Form 760 instructions, line
+# 10 (page 31): enter the VAGI of each dependent who had income and add the
+# amounts.
+
+- name: A dependent's own Virginia AGI counts in family VAGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        va_low_income_tax_credit_eligible: true
+        # The filer's Virginia AGI and the poverty guideline are set directly
+        # so the arithmetic is exact.
+        va_agi: 18_000
+        tax_unit_fpg: 21_150
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # Family VAGI = 18,000 (parent) + 6,000 (the child's wages; the child's
+    # federal and Virginia AGI are both 6,000) = 24,000 > 21,150.
+    va_low_income_tax_credit_agi_eligible: false
+
+- name: Family VAGI with a dependent's income exactly at the poverty guideline is eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        va_low_income_tax_credit_eligible: true
+        va_agi: 15_150
+        tax_unit_fpg: 21_150
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # 15,150 + 6,000 = 21,150, which does not exceed 21,150.
+    va_low_income_tax_credit_agi_eligible: true
+
+- name: Family VAGI with a dependent's income one dollar above the poverty guideline is ineligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 6_001
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        va_low_income_tax_credit_eligible: true
+        va_agi: 15_150
+        tax_unit_fpg: 21_150
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # 15,150 + 6,001 = 21,151 > 21,150.
+    va_low_income_tax_credit_agi_eligible: false
+
+- name: Parent and working teenager below the poverty guideline get the credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 15_000
+      child:
+        age: 16
+        employment_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # The parent's Virginia AGI is federal AGI, 15,000, with no Virginia
+    # additions or subtractions; federal AGI leaves out the child's wages.
+    va_agi: 15_000
+    dependent_adjusted_gross_income: [0, 4_000]
+    # Family VAGI = 15,000 + 4,000 = 19,000. The 2025 poverty guideline for
+    # two is 15,650 + 5,500 = 21,150.
+    va_low_income_tax_credit_agi_eligible: true
+    # 58.1-339.8(B)(1): 300 for each of the two exemptions.
+    va_low_income_tax_credit: 600
+
+- name: Parent and working teenager above the poverty guideline get no credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 15_000
+      child:
+        age: 16
+        employment_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_agi: 15_000
+    dependent_adjusted_gross_income: [0, 7_000]
+    # Family VAGI = 15,000 + 7,000 = 22,000 > 21,150. The parent's Virginia
+    # AGI alone, 15,000, would pass.
+    va_low_income_tax_credit_agi_eligible: false
+    va_low_income_tax_credit: 0

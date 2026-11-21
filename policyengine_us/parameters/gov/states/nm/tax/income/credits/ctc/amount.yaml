@@ -21,6 +21,8 @@ metadata:
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
     - title: 2021 New Mexico personal income tax form packet - absent
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf
+    - title: New Mexico Taxation and Revenue Department, FYI-109, 2026 Inflation Adjustments, page 3, Tax Year 2026 Child Income Tax Credit Income Table
+      href: https://realfile.tax.newmexico.gov/FYI-109.pdf#page=3
 brackets:
   - threshold:
       # If the AGI is less than 0, the filer may claim the full credit
@@ -30,6 +32,7 @@ brackets:
         2023-01-01: 600
         2024-01-01: 622
         2025-01-01: 637
+        2026-01-01: 656
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -39,6 +42,7 @@ brackets:
         2023-01-01: 400
         2024-01-01: 414
         2025-01-01: 424
+        2026-01-01: 437
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -48,6 +52,7 @@ brackets:
         2023-01-01: 200
         2024-01-01: 207
         2025-01-01: 212
+        2026-01-01: 218
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -57,6 +62,7 @@ brackets:
         2023-01-01: 100
         2024-01-01: 103
         2025-01-01: 106
+        2026-01-01: 109
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -66,6 +72,7 @@ brackets:
         2023-01-01: 75
         2024-01-01: 77
         2025-01-01: 79
+        2026-01-01: 82
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -75,6 +82,7 @@ brackets:
         2023-01-01: 50
         2024-01-01: 51
         2025-01-01: 53
+        2026-01-01: 54
       metadata:
         uprating: gov.irs.uprating
   - threshold:
@@ -83,5 +91,6 @@ brackets:
       values:
         2023-01-01: 25
         2025-01-01: 26
+        2026-01-01: 27
       metadata:
         uprating: gov.irs.uprating

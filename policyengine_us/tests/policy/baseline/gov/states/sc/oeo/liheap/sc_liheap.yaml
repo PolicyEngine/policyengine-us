@@ -1,5 +1,8 @@
 # Accepted FY 2026 plan: regular heating base 200 and seven supplements, cap 850.
 # https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+# Accepted FY 2027 plan (Cases 21-23): base 300, elderly, disabled, child and
+# veteran 50 each, low income 150, burden 200, fuel 150, cap 1,000.
+# https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8
 # Matrix used only for named fuels; its conflicting income/burden rules are not used.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/SC_BenefitMatrix_2026.pdf#page=2
 # Agency's explicit LIHEAP household rule counts all income but qualified size.
@@ -1266,6 +1269,10 @@
     sc_liheap_household_size: [25, 25]
     sc_liheap_countable_income: [150_000, 162_415]
     sc_liheap_income_limit: [116_282, 116_282]
+    # Both incomes exceed the limit. 110% of the 2025 guideline for 25 people:
+    # (15_650 + 24 * 5_500) * 1.1 = 162_415. 150_000 is below it; 162_415 is
+    # not.
+    sc_liheap_income_eligible: [true, false]
     sc_liheap_eligible: [true, false]
     sc_liheap: [200, 0]
 
@@ -1472,3 +1479,182 @@
         state_code: SC
   output:
     sc_liheap: [200, 200]
+
+- name: Case 21, FY2027 base award and fuel supplement.
+  period: 2027
+  absolute_error_margin: 0.01
+  # FY2027 plan items 2.3, 2.5 and 2.6: base 300, and 150 for a household that
+  # heats with fuel (gas, oil, kerosene or propane). Income 20_000 is above the
+  # FY2027 one-person low-income tier (33_218 * 0.3 = 9_965.40), and the 1_000
+  # bill is under 20_000 * 0.2 = 4_000, so no other supplement applies.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person5:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+      person6:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 1_000
+      spm_unit4:
+        members: [person4]
+        heating_type: KEROSENE
+        fuel_oil_expense: 1_000
+      spm_unit5:
+        members: [person5]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+      spm_unit6:
+        members: [person6]
+        heating_type: WOOD
+        wood_expense: 1_000
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+      household5:
+        members: [person5]
+        state_code: SC
+      household6:
+        members: [person6]
+        state_code: SC
+  output:
+    # Electricity and wood: base 300. Gas, oil, kerosene and propane:
+    # 300 + 150 = 450.
+    sc_liheap: [300, 450, 450, 450, 450, 300]
+
+- name: Case 22, FY2027 low-income and energy-burden supplements.
+  period: 2027
+  absolute_error_margin: 0.01
+  # FY2027 plan items 2.3 and 2.5: 150 at or below 30% of the SMI limit
+  # (33_218 * 0.3 = 9_965.40 for one person) and 200 when energy bills are 20%
+  # or more of income.
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 9_000
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 10_000
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 9_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+  output:
+    # Household 1: 9_000 <= 9_965.40, and 1_000 < 9_000 * 0.2 = 1_800:
+    # 300 + 150 = 450.
+    # Household 2: 10_000 > 9_965.40, and 2_400 >= 10_000 * 0.2 = 2_000:
+    # 300 + 200 = 500.
+    # Household 3: 9_000 <= 9_965.40, and 2_400 >= 1_800: 300 + 150 + 200 =
+    # 650.
+    sc_liheap: [450, 500, 650]
+
+- name: Case 23, all FY2027 supplements reach the 1,000 heating maximum.
+  period: 2027
+  absolute_error_margin: 0.01
+  # FY2027 plan items 2.5, 2.6 and 11.5: the base and every supplement sum to
+  # exactly the 1_000 maximum.
+  input:
+    people:
+      person1:
+        age: 64
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        is_disabled: true
+        is_veteran: true
+        employment_income: 9_000
+      person2:
+        age: 4
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Two-person limit 43_439; low-income tier 43_439 * 0.3 = 13_031.70.
+    # 9_000 <= 13_031.70, and bills of 2_000 >= 9_000 * 0.2 = 1_800.
+    # 300 base + 50 elderly + 50 disabled + 50 veteran + 50 child + 150 low
+    # income + 200 burden + 150 natural gas = 1_000, the maximum.
+    sc_liheap_income_limit: 43_439
+    sc_liheap: 1_000

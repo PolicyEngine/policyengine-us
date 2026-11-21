@@ -9,10 +9,16 @@ class ma_connector_care(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (
+        # 956 CMR 12.03 defines Household, Federal Poverty Level and MAGI.
+        "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=4",
         "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=5",
         "https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6",
         "https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1",
         "https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=2",
+        # The Health Connector uses the 2025 guidelines for plan year 2026 and
+        # the 2026 guidelines for plan year 2027.
+        "https://www.mahealthconnector.org/wp-content/uploads/ConsumerGuideToSubsidies-2026.pdf#page=1",
+        "https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1",
     )
     documentation = (
         "Massachusetts ConnectorCare, the Health Connector's state premium "
@@ -39,18 +45,32 @@ class ma_connector_care(Variable):
         "through taxable income and no reconciliation is modeled. The amended "
         "956 CMR still carries un-repealed 500% FPL and Plan Type 3D pilot "
         "text, but the operational 2026 Overview runs 100-400% FPL only; a "
-        "future re-expansion is a parameter change."
+        "future re-expansion is a parameter change. Plan Type 3C (300-400% "
+        "FPL) exists only under the ConnectorCare Expansion Pilot, which ends "
+        "after PY2027, so from PY2028 the income limit is 300% FPL."
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.hic.connector_care
         n_members = add(tax_unit, period, ["ma_connector_care_member_eligible"])
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        per_person_monthly = p.enrollee_premium.calc(magi_fraction)
+        # 956 CMR 12.04(3)(b) assigns Plan Types by exact income bands that
+        # include their upper edge: "at or below 150%" is 2A, "over 150% and
+        # not over 200%" is 2B, and so on. Look up the exact ratio, not the
+        # truncated aca_magi_fraction (which put 150.00%-150.99% in 2A), with
+        # each bracket closed on the right. ma_connector_care_eligible explains
+        # the choice of aca_fpg as the poverty line.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
+        per_person_monthly = p.enrollee_premium.calc(exact_magi_frac, right=True)
         enrollee_contribution = MONTHS_IN_YEAR * per_person_monthly * n_members
-        # SLCSP is a MONTH variable summed to the year to proxy the benchmark
-        # ConnectorCare plan; the full APTC is netted per 956 CMR 12.04(3)(c).
-        slcsp_annual = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family (a MONTH variable
+        # summed to the year) proxies the benchmark ConnectorCare plan of the
+        # APTC-eligible enrollees (956 CMR 12.04(3)(a)2); the full APTC is
+        # netted per 956 CMR 12.04(3)(c).
+        slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         subsidy = max_(0, slcsp_annual - aca_ptc - enrollee_contribution)
         eligible = tax_unit("ma_connector_care_eligible", period)

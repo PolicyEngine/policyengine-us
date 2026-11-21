@@ -48,6 +48,109 @@
   output:
     ca_renter_credit: 0
 
+# Published 2026 amounts: FTB Tax News, October 2026, 2026 Indexing.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
+
+- name: California 2026 renter credit at the published single ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 55_830
+    rent: 1
+  output:
+    ca_renter_credit: 60
+
+- name: California 2026 renter credit one dollar above the published single ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 55_831
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published separate ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    ca_agi: 55_830
+    rent: 1
+  output:
+    ca_renter_credit: 60
+
+- name: California 2026 renter credit one dollar above the published separate ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    ca_agi: 55_831
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published joint ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published joint ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published surviving spouse ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published surviving spouse ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published head of household ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published head of household ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
 # RTC 17053.5(d)(2): a qualified renter does not include "an individual whose
 # principal place of residence for more than 50 percent of the taxable year is
 # with another person who claimed that individual as a dependent". The 2025
@@ -288,3 +391,91 @@
     # 17053.5(d)(2) excludes an individual living with "another person who
     # claimed that individual as a dependent".
     ca_renter_credit: 60
+
+# FTB Tax News, October 2026, 2026 Indexing: the renter's credit is available
+# to single filers with AGI of $55,830 or less and joint filers with AGI of
+# $111,660 or less (R&TC 17053.5(j): the joint limit is twice the single limit).
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/2026/10.html#article1
+# These cases test the income limit. The $60 and $120 credits come from the
+# existing amount parameter, which does not model the 2026 amounts in
+# 17053.5(a)(1)(A)(ii) and (B)(ii) or the Budget Act condition in 17053.5(k).
+
+- name: 2026 single filer at the $55,830 income limit gets the renter credit
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        ca_agi: 55_830
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_renter_credit: 60
+
+- name: 2026 single filer above the $55,830 income limit gets no renter credit
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        ca_agi: 55_831
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_renter_credit: 0
+
+- name: 2026 joint return at the $111,660 income limit gets the renter credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 40
+        rent: 6_000
+      person_b:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ca_agi: 111_660
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 120
+
+- name: 2026 joint return above the $111,660 income limit gets no renter credit
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 40
+        rent: 6_000
+      person_b:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ca_agi: 111_661
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 0

@@ -12,8 +12,9 @@
         slcsp_age_0:
           2026-01: 1_000
   output:
-    # TX enrollment (4,178,724) x the household's index (1,670.6).
-    medicaid_slcsp_state_denominator: 6_980_976_640
+    # TX January 2024 enrollment (4,295,157) x the household's index (1,670.6).
+    # Main had 6,980,976,640 from October 2024 enrollment (4,178,724).
+    medicaid_slcsp_state_denominator: 7_175_489_284
 
 - name: Missing premium falls back to a unit index, so the denominator stays positive.
   period: 2026
@@ -30,4 +31,5 @@
           2026-01: 0
   output:
     # No positive index -> state average falls back to 1, so denominator = TX enrollment.
-    medicaid_slcsp_state_denominator: 4_178_724
+    # January 2024 (4,295,157); main had October 2024 (4,178,724).
+    medicaid_slcsp_state_denominator: 4_295_157

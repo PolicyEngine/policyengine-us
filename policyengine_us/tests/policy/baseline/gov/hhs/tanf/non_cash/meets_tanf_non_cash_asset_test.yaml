@@ -106,3 +106,34 @@
     household_vehicles_value: 18_000
   output:
     meets_tanf_non_cash_asset_test: true
+
+# Arkansas adopted BBCE with a $5,500 resource limit by emergency rule
+# effective April 4, 2025 (SNAP Certification Manual 1919, Appendix D and
+# Appendix AA). Monthly formulas read parameters at the start of the month,
+# so the limit first applies in May 2025. The federal limits are $3,000, or
+# $4,500 with an elderly or disabled member.
+- name: AR assets of $4,000 pass the $5,500 BBCE limit from May 2025
+  period: 2025
+  input:
+    state_code: AR
+    snap_assets: 4_000
+  output:
+    meets_tanf_non_cash_asset_test:
+      2025-04: false
+      2025-05: true
+
+- name: AR assets exactly at the $5,500 BBCE limit pass
+  period: 2026
+  input:
+    state_code: AR
+    snap_assets: 5_500
+  output:
+    meets_tanf_non_cash_asset_test: true
+
+- name: AR assets one dollar above the $5,500 BBCE limit fail
+  period: 2026
+  input:
+    state_code: AR
+    snap_assets: 5_501
+  output:
+    meets_tanf_non_cash_asset_test: false

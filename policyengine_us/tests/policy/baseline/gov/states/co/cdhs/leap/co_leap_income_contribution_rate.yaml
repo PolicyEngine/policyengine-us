@@ -51,3 +51,19 @@
     co_leap_countable_income: [0, -1_200, 1_200]
   output:
     co_leap_income_contribution_rate: [0, 0, 0]
+
+# The 2026-27 handout and rule (PDF pages 5, 79) print only the 0-75% FPL band. With the 2026
+# guideline and the inferred FY2026 rounding, the 75% boundaries are 1,330 x 0.75 = 997.5 -> $998
+# (size 1), 4,643 x 0.75 -> $3,482 (size 8), 5,117 x 0.75 -> $3,838 (size 9) and
+# 7,957 x 0.75 -> $5,968 (size 15). Sizes 9-15 now use their own guideline instead of the
+# FY2026 per-person increment. Annual input = monthly boundary x 12, then +$0.12.
+- name: "Case 5, FY2027 75 percent FPG boundaries use each size's own guideline."
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 1, 8, 8, 9, 9, 15, 15]
+    co_leap_countable_income: [11_976, 11976.12, 41_784, 41784.12, 46_056, 46056.12, 71_616, 71616.12]
+  output:
+    co_leap_income_contribution_rate: [0, 0.1, 0, 0.1, 0, 0.1, 0, 0.1]

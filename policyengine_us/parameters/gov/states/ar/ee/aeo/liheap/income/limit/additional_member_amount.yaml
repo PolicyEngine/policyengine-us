@@ -5,12 +5,15 @@ description: Arkansas sets this amount as the monthly income limit increase per 
 values:
   2024-10-01: 672
   2025-10-01: 688
+  2026-10-01: 710
 
 metadata:
   unit: currency-USD
   period: month
   label: Arkansas LIHEAP additional member income limit amount
   reference:
+    - title: Arkansas FY2027 Income Eligibility Chart, additional-person instruction
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/liheap-income-eligibility-chart-fy-2027.pdf
     - title: Arkansas FY2026 Income Eligibility Chart, additional-person instruction
       href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
     - title: Arkansas FY2025 Income Eligibility Chart, additional-person instruction

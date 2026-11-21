@@ -2,7 +2,7 @@ description: Louisiana assigns this benefit matrix energy burden band from total
 # The matrix prints the bands as "9.9% and Less", "10% to 17.9%", "18% to
 # 24.9%" and "25% and Greater". The unrounded burden uses lower-inclusive
 # cutoffs at 10%, 18% and 25%, which equals truncating the percent to one
-# decimal. Households with zero income receive band 4 in la_liheap.
+# decimal. Households with zero income receive band 4 in la_liheap_matrix_amount.
 brackets:
   # 9.9% and less.
   - threshold:

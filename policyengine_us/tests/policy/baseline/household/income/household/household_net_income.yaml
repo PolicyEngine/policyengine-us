@@ -184,3 +184,104 @@
   output:
     spm_unit_net_income: 500_000 + 1_000 + 200
     household_net_income: 500_000 + 1_000 + 200
+
+- name: Household net income counts the premium tax credit as a refundable tax credit.
+  period: 2026
+  input:
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    used_aca_ptc: 4_000
+    household_tax_before_refundable_credits: 2_000
+    household_health_costs: 0
+  output:
+    household_tax: 2_000 - 4_000
+    household_net_income: 30_000 + 4_000 - 2_000
+
+# With health benefits counted, health costs subtract the whole Marketplace
+# premium, so a credit that is $1,000 larger raises net income by $1,000, not
+# $2,000 (once as a refundable credit and again through a smaller net premium).
+- name: With health benefits counted, a $1,000 premium tax credit against a $5,000 premium.
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    household_tax_before_refundable_credits: 2_000
+    chip_premium: 0
+    selected_marketplace_plan_premium_proxy: 5_000
+    aca_ptc: 1_000
+  output:
+    premium_tax_credit_in_force: 1_000
+    household_health_costs: 5_000
+    household_net_income: 30_000 + 1_000 - 2_000 - 5_000
+
+- name: With health benefits counted, a $2,000 premium tax credit against the same premium.
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    household_tax_before_refundable_credits: 2_000
+    chip_premium: 0
+    selected_marketplace_plan_premium_proxy: 5_000
+    aca_ptc: 2_000
+  output:
+    premium_tax_credit_in_force: 2_000
+    household_health_costs: 5_000
+    household_net_income: 30_000 + 2_000 - 2_000 - 5_000
+
+# A single Texas adult aged 40 in 2025 (the 2017 cliffs analysis household,
+# PolicyEngine/us-cliffs-2017 scripts/ptc_household.py), with health benefits
+# counted. A $1,000 raise cuts the premium tax credit by $94, and net income
+# rises by $709.50 with or without health benefits counted (31,840.09 to
+# 32,549.59 without): the cut counts once.
+- name: With health benefits counted, a Texas adult earning $30,000 in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    premium_tax_credit_in_force: 5_606.58
+    household_health_costs: 6_194.58
+    household_net_income: 25_645.50
+
+- name: With health benefits counted, the same adult earning $31,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 31_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    premium_tax_credit_in_force: 5_512.58
+    household_health_costs: 6_194.58
+    household_net_income: 25_645.50 + 709.50
