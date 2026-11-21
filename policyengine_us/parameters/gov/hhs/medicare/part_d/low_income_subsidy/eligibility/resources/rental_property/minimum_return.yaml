@@ -1,0 +1,23 @@
+description: Medicare excludes equity in nonbusiness income-producing property from countable resources under the Part D low-income subsidy only when the property's net annual income is at least this share of the excluded equity.
+values:
+  2006-01-01: 0.06
+
+metadata:
+  unit: /1
+  period: year
+  label: Medicare Part D low-income subsidy income-producing property minimum return
+  reference:
+    # The subsidy's resources are SSI's (42 U.S.C. 1395w-114(a)(3)(E)(i)),
+    # which exclude property essential to self-support (42 U.S.C.
+    # 1382b(a)(3)); SSA applies 416.1222's rule to Extra Help (POMS HI
+    # 03030.020).
+    - title: 42 U.S.C. § 1395w-114(a)(3)(E)(i) - Alternative resource standard
+      href: https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_E_i
+    - title: 42 U.S.C. § 1382b(a)(3) - Exclusions from resources
+      href: https://www.law.cornell.edu/uscode/text/42/1382b#a_3
+    - title: 20 CFR § 416.1222(a) - How income-producing property essential to self-support is counted
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-L/section-416.1222#p-416.1222(a)
+    - title: SSA POMS HI 03030.020 - Resource Exclusions
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603030020
+    - title: SSA POMS SI 01130.503 - Essential Property Excluded up to $6,000 Equity If It Produces a 6 Percent Rate of Return
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501130503

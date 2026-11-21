@@ -1,0 +1,15 @@
+description: Medicare excludes these Supplemental Security Income unearned income sources from countable income under the Part D low-income subsidy.
+values:
+  2006-01-01:
+    - dividend_income
+    - interest_income
+
+metadata:
+  unit: list
+  period: year
+  label: Medicare Part D low-income subsidy excluded income sources
+  reference:
+    - title: 20 CFR § 418.3350(d) - What types of unearned income do we not count?
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3350#p-418.3350(d)
+    - title: SSA POMS HI 03020.050 - Unearned Income Exclusions
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603020050

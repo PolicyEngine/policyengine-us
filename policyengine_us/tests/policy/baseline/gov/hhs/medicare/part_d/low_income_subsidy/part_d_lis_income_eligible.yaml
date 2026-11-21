@@ -1,0 +1,62 @@
+# Countable income must be below 150% of the poverty guideline for the
+# family size (42 U.S.C. 1395w-114(a)(3)(A)(ii)). 2026 guidelines: $15,960
+# for one person in the contiguous states plus $5,680 per additional person;
+# Alaska $19,950 plus $7,100.
+
+- name: Single person just below 150% of the guideline.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_countable_income: 23_939
+        part_d_lis_family_size: 1
+  output:
+    # 1.5 x 15,960 = 23,940.
+    part_d_lis_income_eligible: true
+
+- name: Single person exactly at 150% of the guideline is not below it.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_countable_income: 23_940
+        part_d_lis_family_size: 1
+  output:
+    part_d_lis_income_eligible: false
+
+- name: Family of three uses the three-person guideline.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_countable_income: 40_000
+        part_d_lis_family_size: 3
+  output:
+    # 1.5 x (15,960 + 2 x 5,680) = 1.5 x 27,320 = 40,980.
+    part_d_lis_income_eligible: true
+
+- name: Alaska uses its own guideline.
+  period: 2026
+  input:
+    people:
+      person:
+        part_d_lis_countable_income: 29_000
+        part_d_lis_family_size: 1
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    # 1.5 x 19,950 = 29,925; the contiguous-state limit would be 23,940.
+    part_d_lis_income_eligible: true
+
+- name: 2023, income from 135% to 150% of the guideline qualified for the partial subsidy.
+  period: 2023
+  input:
+    people:
+      person:
+        part_d_lis_countable_income: 21_000
+        part_d_lis_family_size: 1
+  output:
+    # 2023: 1.35 x 14,580 = 19,683 < 21,000 < 1.5 x 14,580 = 21,870.
+    part_d_lis_income_eligible: true
