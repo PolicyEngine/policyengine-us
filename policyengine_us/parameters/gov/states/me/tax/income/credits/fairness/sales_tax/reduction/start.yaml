@@ -3,9 +3,11 @@ metadata:
   propagate_metadata_to_children: true
   uprating:
     parameter: gov.irs.uprating
-    # Section 5403(5)(C) indexes these thresholds from fixed base amounts, so
-    # later years project from the 2025 values rather than from the rounded
-    # 2026 values. Explicit values still take precedence.
+    # Section 5403(5)(C) indexes the statutory thresholds by Maine's chained
+    # CPI for the 12 months ending June 30. The model has no Maine index, so
+    # later years project from the 2025 values with gov.irs.uprating, which
+    # keeps main's projections; projecting from the rounded 2026 values would
+    # pull them down. Explicit values still take precedence.
     base:
       period: 2025
     rounding:

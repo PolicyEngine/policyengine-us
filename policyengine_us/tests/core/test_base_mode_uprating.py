@@ -364,11 +364,14 @@ STATUTE = {
     "gov.states.or.tax.income.credits.ctc.reduction.start": Statute(
         "ORS 315.273(3)(a), (5)", OR_INDEX, 25_000, 2023, True, "downwards", 50
     ),
-    # 36 M.R.S. 5403(5)(C) indexes the 5213-A(4) thresholds from June 2015 by
-    # Maine's chained CPI for the 12 months ending June 30, and 5403's closing
-    # paragraph rounds down to $50. The model has no Maine index, so it
+    # These Maine rows specify the model's projection, not the statute's
+    # formula. 36 M.R.S. 5403(5)(C) indexes the 5213-A(4) thresholds from June
+    # 2015 by Maine's chained CPI for the 12 months ending June 30, and 5403's
+    # closing paragraph rounds down to $50. The model has no Maine index, so it
     # projects from the 2025 amounts Maine Revenue Services published with
-    # gov.irs.uprating; the 2025 amounts are the base.
+    # gov.irs.uprating, as main did before the explicit 2026 values. SEPARATE
+    # is a zero placeholder: 5213-A(6)(A) excludes married taxpayers filing
+    # separate returns.
     **{
         f"{ME_STFC_START}.{status}": Statute(
             "36 M.R.S. 5213-A(4), 5403(5)(C)",
