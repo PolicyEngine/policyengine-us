@@ -1,0 +1,495 @@
+# 10A NCAC 10 .0905 and Subsidized Child Care Assistance Program Policy Manual, Chapter 5.
+- name: Case 1, single parent with wages has a need for care.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 2, single parent with no activity has no need for care.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: false
+
+- name: Case 3, part-time wages below minimum wage still count, since Chapter 5 III.B sets no floor.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 2_000
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 52
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 4, self-employment income meets Chapter 5 III.B.4.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: 15_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 5, a business loss with no other activity does not.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -5_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: false
+
+- name: Case 6, a business loss does not erase wages.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -30_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 7, a full-time college student has a need under .0905(f).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_full_time_college_student: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 8, two parents who both work have a need under Chapter 5 III.A.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 9, one parent working and the other in school have a need under Chapter 5 III.A.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        is_full_time_college_student: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 10, one parent working and the other at home and able to provide care have no need.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: false
+
+- name: Case 11, one parent working and the other disabled have a need under Chapter 5 III.A.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        is_disabled: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 12, a single parent unable to work or provide care has a need under .0905(b).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_disabled: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 13, an incarcerated parent is out of the household, so the working parent has a need.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 20_000
+      parent2:
+        age: 30
+        is_incarcerated: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 14, a retired grandparent who files separately does not block the working parent's need.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 70
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    tax_units:
+      grandparent_tax_unit:
+        members: [grandparent]
+      parent_tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 15, a working grandparent who files separately does not supply the parent's need.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 60
+        employment_income: 50_000
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [grandparent, parent, child]
+    tax_units:
+      grandparent_tax_unit:
+        members: [grandparent]
+      parent_tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [grandparent, parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: false
+
+- name: Case 16, Work First enrollment meets Chapter 5 III.B.5.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 17, a disabled eligible child has a developmental need under Chapter 5 III.D.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 18, an eligible child receiving Child Protective Services has a need under Chapter 5 III.E.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 19, the activity input covers job search and other needs the model does not track.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    nc_scca_need_eligible: true
+
+- name: Case 20, a working parent with an eligible child receives the subsidy through the full pipeline.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+        county_str: WAKE_COUNTY_NC
+  output:
+    nc_scca_need_eligible: true
+    nc_scca_entry_eligible: true
+    # $1,000 a month less the 10% fee on $2,500, which the $1,256 market rate leaves uncapped.
+    nc_scca: 750
+
+- name: Case 21, the same family with the same income from a pension receives nothing.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        pension_income: 30_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+        county_str: WAKE_COUNTY_NC
+  output:
+    nc_scca_need_eligible: false
+    nc_scca_entry_eligible: false
+    nc_scca: 0
