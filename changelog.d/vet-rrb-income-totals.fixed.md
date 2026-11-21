@@ -1,0 +1,1 @@
+Count veterans' benefits and Railroad Retirement Board benefits in household and SPM benefits, and in the copies of those lists that the BOOST, End Child Poverty Act and Texas rebate reforms define, so both net incomes and SPM resources include them.

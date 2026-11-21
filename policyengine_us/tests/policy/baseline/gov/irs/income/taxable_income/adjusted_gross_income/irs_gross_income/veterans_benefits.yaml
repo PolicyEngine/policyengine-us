@@ -1,0 +1,19 @@
+- name: Veterans' benefits stay out of federal gross income.
+  period: 2026
+  input:
+    age: 40
+    veterans_benefits: 30_000
+  output:
+    # 38 U.S.C. 5301(a)(1): VA benefits are exempt from taxation.
+    irs_gross_income: 0
+    adjusted_gross_income: 0
+
+- name: Veterans' benefits add nothing to a worker's federal gross income.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 45_000
+    veterans_benefits: 20_000
+  output:
+    irs_gross_income: 45_000
+    adjusted_gross_income: 45_000

@@ -302,3 +302,33 @@
   output:
     spm_unit_benefits: [1_000, 1_000]
     household_benefits: 2_000
+
+- name: Each SPM unit counts its own veterans' and railroad retirement benefits.
+  period: 2026
+  input:
+    people:
+      veteran:
+        age: 40
+        employment_income: 500_000
+        veterans_benefits: 9_000
+      railroad_annuitant:
+        age: 40
+        employment_income: 500_000
+        railroad_benefits: 24_000
+    tax_units:
+      veteran_unit:
+        members: [veteran]
+      railroad_unit:
+        members: [railroad_annuitant]
+    spm_units:
+      veteran_unit:
+        members: [veteran]
+      railroad_unit:
+        members: [railroad_annuitant]
+    households:
+      household:
+        members: [veteran, railroad_annuitant]
+        state_code: FL
+  output:
+    spm_unit_benefits: [9_000, 24_000]
+    household_benefits: 9_000 + 24_000

@@ -19,6 +19,10 @@ values:
     - educational_assistance
     - financial_assistance
     - survivor_benefits
+    # Census money income counts veterans' payments, and railroad retirement
+    # as a government transfer (P60-200 Appendix A).
+    - veterans_benefits
+    - railroad_benefits
     - household_head_start_benefits
     # One-time energy relief payments.
     # Paid at the same time as the Alaska Permanent Fund Dividend,
@@ -52,6 +56,10 @@ values:
     - educational_assistance
     - financial_assistance
     - survivor_benefits
+    # Census money income counts veterans' payments, and railroad retirement
+    # as a government transfer (P60-200 Appendix A).
+    - veterans_benefits
+    - railroad_benefits
     - household_head_start_benefits
     # One-time energy relief payments.
     # Paid at the same time as the Alaska Permanent Fund Dividend,
@@ -72,3 +80,6 @@ metadata:
   unit: list
   period: year
   label: Household benefits
+  reference:
+    - title: "Census Bureau, P60-200 Appendix A, Definitions and Explanations #page 3-4"
+      href: https://www2.census.gov/programs-surveys/cps/methodology/Appendix%20A%20P60-200%20income%20measurement%20definition.pdf#page=3
