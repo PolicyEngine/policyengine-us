@@ -1,3 +1,10 @@
+## [2.152.4] - 2026-11-21
+
+### Changed
+
+- Update New York HEAP to the 2026-2027 regular base amounts for delivered and other fuels.
+
+
 ## [2.152.3] - 2026-11-21
 
 ### Fixed
