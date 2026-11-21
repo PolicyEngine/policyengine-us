@@ -48,8 +48,6 @@ class de_pension_exclusion(Variable):
         # bleeds into other DE subtractions via the de_subtractions sum.
         capped_eligible_pension_income = min_(cap, max_(0, eligible_income))
 
-        # Filers with a United States military pension take a larger pension
-        # exclusion from 2022.
         if p.military_retirement_exclusion_available:
             # A United States military pension is a retiree's own pay and,
             # from 2024, an annuity paid to a member's survivor: "a pension
