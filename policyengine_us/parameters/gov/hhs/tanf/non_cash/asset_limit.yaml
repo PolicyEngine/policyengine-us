@@ -16,6 +16,18 @@ AZ:
   2015-10-01: .inf
 AR:
   2015-10-01: -.inf # Non-BBCE.
+  # Arkansas adopted BBCE by emergency rule effective 2025-04-04 (SNAP
+  # Certification Manual 1919 and Appendix AA), made permanent on
+  # 2025-07-01. Appendix D: "All Households five thousand five hundred
+  # ($5,500) for twelve (12) months".
+  # The $5,500 limit lasts 12 consecutive months and can be granted once
+  # every five years; the standard limits apply afterward. The model has no
+  # input for that clock and assumes the increase is available. Act 675 of
+  # 2023 grants the increase to an enrolled household that accumulates
+  # assets and the manual also grants it at application; the model cannot
+  # tell the two apart.
+  # Candidate: us-ar:snap-bbce-resource-increase-at-application until registered.
+  2025-04-04: 5_500
 CA: # *
   2015-10-01: .inf
 CO: # *
@@ -124,6 +136,12 @@ metadata:
   unit: currency-USD
   period: year
   reference:
+    - title: "Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023 (effective April 4, 2025), SNAP Certification Manual 1919, Appendix D and Act 675 #page 12,20,23"
+      href: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+    - title: "Arkansas SNAP Certification Manual, Appendix D (resource limits) and Appendix AA (Broad Based Categorical Eligibility) #page 42,80"
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=42
+    - title: USDA BBCE States Chart, June 2026
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/BBCE-States-Chart-June2026.pdf#page=1
     - title: USDA Broad-based Categorical Eligibility
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
     - title: USDA ERS SNAP Policy Database (bbce_asset/bbce_a_amt columns, Jan 1996 - Dec 2020)

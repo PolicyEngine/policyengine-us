@@ -123,3 +123,14 @@
     ny_heap_household_size: 1
   output:
     ny_heap_income_limit: 26928
+- name: Case 13, FY2027 all published income-limit rows and the first additional person.
+  period: 2027
+  # OTDA HEAP program page, "2026-2027 HEAP Monthly Income Limits": $3,563, $4,659,
+  # $5,756, $6,852, $7,948, $9,045, $9,250, $9,456, $9,662, $9,867, $10,073, $10,278
+  # and $10,515 for sizes 1 to 13, and "Add $710" for each additional member (size 14:
+  # $11,225). Annual = monthly x 12.
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    ny_heap_income_limit: [42756, 55908, 69072, 82224, 95376, 108540, 111000, 113472, 115944, 118404, 120876, 123336, 126180, 134700]

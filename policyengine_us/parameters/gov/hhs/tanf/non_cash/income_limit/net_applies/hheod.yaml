@@ -4,6 +4,11 @@ AL:
   2015-10-01: true
 AZ:
   2015-10-01: false
+AR:
+  # SNAP Certification Manual Appendix AA: "While households may meet the
+  # BBCE resource limit, they will still need to meet all other financial
+  # and non-financial eligibility rules to receive SNAP benefits."
+  2025-04-04: true
 CA:
   # Elderly or disabled households with gross income at or below 200% of the
   # poverty line are conferred MCE like any other household, and MCE has no
@@ -109,6 +114,8 @@ metadata:
   period: year
   label: SNAP net income limit for elderly/disabled BBCE households
   reference:
+    - title: Arkansas SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)

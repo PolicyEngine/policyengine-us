@@ -1,17 +1,21 @@
-# End-to-end integration tests for Colorado Premium Assistance (CPA), PY2026-2027.
+# End-to-end integration tests for Colorado Premium Assistance (CPA), PY2026 onward.
 # CPA is a flat state premium wrap on top of the federal ACA premium tax credit:
 # $80/month for the first APTC-eligible member plus $29/month for each additional
-# member (NO member cap), for tax units in Colorado at or below the 400% FPL
-# ceiling (no lower bound), capped at the remaining benchmark premium after the
-# federal credit. In effect for plan years 2026 and 2027 (2028-01-01 sunset
-# verified by SB26-178), unfunded thereafter.
+# member in 2026, and $70 plus $25 from 2027 (Amended Regulation 4-2-78,
+# effective 2026-09-30, Section 5.B), with NO member cap, for tax units in
+# Colorado at or below the 400% FPL ceiling (no lower bound), capped at the
+# remaining benchmark premium after the federal credit. In effect from plan year
+# 2026 with no end date: SB26-178 and the amended regulation apply to 2027 and
+# each year thereafter, and the 2027 amounts carry forward.
 #
 # To keep expected values exactly hand-verifiable and independent of the
-# rating-area premium lookup, is_aca_ptc_eligible (per person), aca_magi_fraction,
-# slcsp (annual) and aca_ptc are supplied directly, and each scenario asserts the
+# rating-area premium lookup, is_aca_ptc_eligible (per person), aca_magi against
+# an aca_fpg pinned to $10,000, slcsp (annual) and aca_ptc are supplied directly,
+# and each scenario asserts the
 # intermediate eligibility flag so a reviewer can follow the arithmetic:
 #   n            = count of is_aca_ptc_eligible members
-#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0
+#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0   (2026)
+#   flat_monthly = (70 + 25*(n-1)) if n >= 1 else 0   (2027 and later)
 #   residual     = max(0, slcsp_annual - aca_ptc)
 #   amount       = eligible * min(12 * flat_monthly, residual)
 
@@ -29,7 +33,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 2_400
     households:
@@ -60,7 +65,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi_fraction: 3.00
+        aca_magi: 30_000
+        aca_fpg: 10_000
         slcsp: 14_000
         aca_ptc: 4_000
     households:
@@ -103,7 +109,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        aca_magi_fraction: 4.00
+        aca_magi: 40_000
+        aca_fpg: 10_000
         slcsp: 22_000
         aca_ptc: 5_000
     households:
@@ -130,7 +137,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 2.00
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 11_000
         aca_ptc: 10_200
     households:
@@ -154,7 +162,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 7_500
         aca_ptc: 7_500
     households:
@@ -165,10 +174,12 @@
     co_premium_assistance_eligible: true
     co_premium_assistance: 0
 
-- name: Scenario 6, PY2027 in-window verified year -> single member -> 12*$80.
-  # in_effect true for 2027 (SB26-178 window). n=1 -> 12*80 = 960.
-  # residual 9_000-2_000 = 7_000 >= 960. eligible true (1.0 <= 2.50 <= 4.0).
-  # amount = min(960, 7_000) = 960.
+- name: Scenario 6, PY2027 single member -> 12*$70 under the amended regulation.
+  # in_effect true for 2027 (SB26-178). Amended Regulation 4-2-78 (effective
+  # 2026-09-30) Section 5.B.1: $70 for the first enrollee (2026: $80, which gave
+  # 960 here). n=1 -> 12*70 = 840.
+  # residual 9_000-2_000 = 7_000 >= 840. eligible true (2.50 <= 4.0).
+  # amount = min(840, 7_000) = 840.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -179,7 +190,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 2_000
     households:
@@ -188,7 +200,7 @@
         state_code: CO
   output:
     co_premium_assistance_eligible: true
-    co_premium_assistance: 960
+    co_premium_assistance: 840
 
 - name: Scenario 7, out-of-window and non-CO cases return 0.
   # 2025 is before the PY2026 start, so in_effect is false -> eligible false ->
@@ -203,7 +215,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 2_000
     households:
@@ -224,13 +237,13 @@
   # Single CO filer, employment_income 30_000, age 40, no ESHI -> marketplace enrollee.
   # DERIVED (hand-traced against the model source):
   #   aca_magi        = AGI = 30_000 (wages only, no adjustments/additions)
-  #   prior-year FPG  = 15_650 (2025 CONTIGUOUS_US, single; the fraction uses last_year)
+  #   aca_fpg         = 15_650 (2025 CONTIGUOUS_US guideline, one-person tax family)
   #   aca_magi_fraction = floor(100 * 30_000 / 15_650) / 100
   #                     = floor(191.69) / 100 = 1.91  -> inside the 100%-400% band
   #   pays_aca_premium  = true (citizen adult, has TIN, no ineligible coverage)
   #   is_aca_ptc_eligible = pays_aca_premium & not-MFS & income-eligible = true
   #   co_premium_assistance_eligible = in_effect(2026) & any(is_aca_ptc_eligible)
-  #                     & 1.0 <= 1.91 <= 4.0 = true
+  #                     & 30_000 / 15_650 = 1.917 <= 4.0 = true
   # slcsp and aca_ptc derive from the CO (Denver) rating-area premium table and the
   # required-contribution curve; the final amount is min(12*80, slcsp_annual - aca_ptc).
   # Values below read from the model run (slcsp is a MONTH-period variable; asserting
@@ -291,7 +304,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 2.00
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 16_000
         aca_ptc: 3_000
     households:
@@ -324,7 +338,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
         assigned_aca_ptc: 0
@@ -365,7 +380,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.50
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
         takes_up_co_premium_assistance_if_eligible: false

@@ -1,0 +1,237 @@
+# Puente Health tax-unit eligibility: in effect (2026-2027), at least one
+# member, and household income at or below the limit (100% FPL in PY2026, 400%
+# in PY2027) on the exact ratio of ACA MAGI to aca_fpg. aca_fpg is supplied so
+# the income edges don't depend on the uprated guideline.
+
+- name: Case 1, 2027 TPS holder at exactly 400% FPL is eligible.
+  # 63,840 / 15,960 = 4.00, "<= 400% of the FPL".
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_840
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true
+
+- name: Case 2, 2027 TPS holder one dollar above 400% FPL is not eligible.
+  # 63,841 / 15,960 = 4.00006.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_841
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_member_eligible: true
+    nm_puente_health_eligible: false
+
+- name: Case 3, 2027 TPS holder at 400.5% FPL is not eligible.
+  # 63,920 / 15,960 = 4.005. The truncated aca_magi_fraction would read 4.00.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_920
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_puente_health_eligible: false
+
+- name: Case 4, 2027 TPS holder with no income is eligible (no income floor).
+  # The PY2027 manual covers "between 0 and <= 400% of the FPL".
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true
+
+- name: Case 5, 2026 limit admits exactly 100% FPL.
+  # Membership is supplied to isolate the PY2026 limit, "at or below 100% of
+  # the FPL": 15,650 / 15,650 = 1.00. A real Section 71302 member is under 100%
+  # (member Case 6).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_650
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true
+
+- name: Case 6, 2026 limit excludes one dollar above 100% FPL.
+  # 15,651 / 15,650 = 1.00006.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_651
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false
+
+- name: Case 7, 2026 Section 71302 member at 80% FPL is eligible (first year).
+  # 12,520 / 15,650 = 0.80.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_520
+        aca_fpg: 15_650
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true
+
+- name: Case 8, 2025 is before Puente Health starts.
+  # Membership is supplied to isolate in_effect.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 12_048
+        aca_fpg: 15_060
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false
+
+- name: Case 9, 2028 is after the last published plan year.
+  # Membership is supplied to isolate in_effect.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false
+
+- name: Case 10, 2027 tax unit with no member is not eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_900
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false
+
+- name: Case 11, 2027 joint return with one TPS spouse is eligible on household income.
+  # 54,100 / 21,640 (the 2026 two-person guideline) = 2.50.
+  period: 2027
+  input:
+    people:
+      head:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 6
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        immigration_status: TPS
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        aca_magi: 54_100
+        aca_fpg: 21_640
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: true

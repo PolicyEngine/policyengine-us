@@ -7,10 +7,18 @@ metadata:
       href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7
     - title: 2025 Wisconsin Schedule H instructions
       href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=7
+    - title: Wis. Stat. 71.52(1g), earned income
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/1g
 values:
   2021-01-01:
     - irs_employment_income
     - self_employment_income
     - sstb_self_employment_income
-    - partnership_s_corp_income
+    # Wis. Stat. 71.52(1g): wages and other employee compensation "plus the
+    # amount of the claimant's net earnings from self-employment". A
+    # partner's net earnings from self-employment are Schedule K-1 (Form
+    # 1065) box 14. An S corporation shareholder's distributive share is not
+    # net earnings from self-employment (IRC 1402(a)), so S corporation
+    # income is not earned income.
+    - partnership_self_employment_net_earnings
     - farm_operations_income

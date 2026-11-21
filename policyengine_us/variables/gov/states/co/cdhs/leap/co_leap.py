@@ -8,9 +8,11 @@ class co_leap(Variable):
     unit = USD
     label = "Colorado LEAP regular heating assistance"
     defined_for = "co_leap_eligible"
-    # PDF pages 90,92-95
     reference = (
-        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90"
+        # PDF pages 100,102-105
+        "https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=100",
+        # PDF pages 90,92-95
+        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=90",
     )
 
     def formula(spm_unit, period, parameters):

@@ -1,0 +1,95 @@
+# Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 2.1 and 3.1 (60%
+# of state median income for heating and cooling); 42 U.S.C. 8624(b)(2)(B)
+# (households under 110% of the poverty guideline may not be excluded).
+# FY2026 one-person income limit: 31,993; FY2027: 33,218. 110% of the 2025
+# guideline for one person: 15,650 * 1.1 = 17,215. Case 16 of sc_liheap.yaml
+# covers the federal floor for a household whose floor exceeds its limit.
+# These Boolean cases have no absolute_error_margin.
+
+- name: Case 1, the published ceiling is inclusive, a qualified member is required, and no energy bill is needed.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 31_993
+      person2:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 31_993.01
+      person3:
+        age: 35
+        is_citizen_or_legal_immigrant: false
+        ssi: 0
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 20_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+      # No heating fuel, energy bill or cooling costs.
+      spm_unit4:
+        members: [person4]
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+      household3:
+        members: [person3]
+        state_code: SC
+      household4:
+        members: [person4]
+        state_code: SC
+  output:
+    # 31_993 <= 31_993; 31_993.01 > 31_993 and > 17_215; a household with no
+    # qualified member has size 0; 20_000 <= 31_993.
+    sc_liheap_income_eligible: [true, false, false, true]
+    # Household 4 meets the income test but has no energy bill.
+    sc_liheap_eligible: [true, false, false, false]
+
+- name: Case 2, the FY2027 income limit applies in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income: 33_218
+      person2:
+        age: 35
+        ssi: 0
+        employment_income: 33_218.01
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: SC
+      household2:
+        members: [person2]
+        state_code: SC
+  output:
+    sc_liheap_income_limit: [33_218, 33_218]
+    # 33_218 <= 33_218; 33_218.01 > 33_218.
+    sc_liheap_income_eligible: [true, false]

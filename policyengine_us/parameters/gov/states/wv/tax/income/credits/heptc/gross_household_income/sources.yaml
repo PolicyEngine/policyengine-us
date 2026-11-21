@@ -22,5 +22,11 @@ values:
     - adjusted_gross_income
     - wv_additions
     - tax_exempt_interest_income
+    # W. Va. Code 11-21-23(d)(1)(C): "Workers' compensation and loss of
+    # earnings insurance" (Schedule HEPTC-1 line 4c, earnings replacement
+    # insurance). Disability benefits from a plan the recipient paid for are
+    # loss of earnings insurance that federal AGI leaves out (IRC 104(a)(3));
+    # the taxable part is already in federal AGI.
     - workers_compensation
+    - tax_exempt_disability_benefits
     - tax_exempt_social_security

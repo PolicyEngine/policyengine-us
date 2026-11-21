@@ -23,6 +23,9 @@ class ca_premium_subsidy(Variable):
         # PDF pages 1-2; (d)(5), the applicable second lowest cost silver
         # plan, is on page 2.
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
+        # PDF pages 1-2: the Final 2027 Program Design keeps the same formula
+        # in (a) and (b) on page 1 and (d)(5) on page 2.
+        "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=1",
         # GC Title 25 Section 100805 authorizes the subsidy; Section 100810
         # sets the applicable percentage and eligibility.
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=100805.",

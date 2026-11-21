@@ -1,0 +1,30 @@
+description: Rhode Island provides state premium subsidies under the Rhode Island Marketplace Affordability Program when this is true.
+values:
+  # R.I. Gen. Laws 42-157.2 (P.L. 2026, ch. 84, art. 12, sec. 18) has no
+  # sunset, but 42-157.2-5(a) and (c)(1) have HealthSource RI adopt the
+  # affordability percentages "subject to appropriation" for each upcoming
+  # coverage year, based on the funds appropriated for the fiscal year that
+  # holds the first six months of that year, and 42-157.2-7(a) says the
+  # chapter creates no entitlement, appropriates no funds and does not
+  # require the General Assembly to appropriate any. HealthSource RI adopted
+  # percentages "for calendar year 2027" only, funded by the FY 2027
+  # appropriation of 21,994,393 dollars. Nothing sets percentages for 2028
+  # until HealthSource RI adopts them by September 30, 2027, so the program
+  # stops after 2027 until then.
+  0000-01-01: false
+  2027-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Rhode Island Marketplace Affordability Program in effect
+  reference:
+    - title: R.I. Gen. Laws 42-157.2-5(a) and (c)(1)
+      href: https://webserver.rilegislature.gov/statutes/TITLE42/42-157.2/42-157.2-5.htm
+    - title: R.I. Gen. Laws 42-157.2-7(a)
+      href: https://webserver.rilegislature.gov/statutes/TITLE42/42-157.2/42-157.2-7.htm
+    - title: "2026-H 7127 Sub A as amended (P.L. 2026, ch. 84), Article 1 Section 1 (Individual Market Affordability appropriation) and Article 12 Section 18 (R.I. Gen. Laws 42-157.2-5) #page 5,340"
+      href: https://webserver.rilegislature.gov/BillText26/HouseText26/H7127Aaa.pdf#page=5
+    - title: HealthSource RI, Rhode Island Marketplace Affordability Program Annual Program Parameters for Plan Year 2027
+      href: https://healthsourceri.com/wp-content/uploads/2027-RIMAP-Final-Parameters.pdf#page=3

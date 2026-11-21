@@ -1,0 +1,52 @@
+description: Oregon adds these otherwise exempt income sources to federal adjusted gross income when computing household income for the retirement income credit.
+values:
+  2018-01-01:
+    # ORS 316.157(2)(c)(A)(ii): "Child support received by the taxpayer."
+    - child_support_received
+    # (A)(vii): "Accident and health insurance proceeds, except reimbursement
+    # of incurred medical expenses", and (A)(ix): "Sick pay that is not
+    # included in federal adjusted gross income." The taxable part of
+    # disability_benefits is already in adjusted gross income.
+    - tax_exempt_disability_benefits
+    # (A)(x): "Strike benefits excluded from federal gross income." Taxable
+    # strike benefits are already in adjusted gross income.
+    - tax_exempt_strike_benefits
+    # (A)(xi): "Worker's compensation, except for reimbursement of medical
+    # expense."
+    - workers_compensation
+    # (A)(xiii): "Veteran's benefits."
+    - veterans_benefits
+    # (A)(xiv): "Payments received under the federal Social Security Act that
+    # are excluded from federal gross income." Subsection (2)(b) leaves out
+    # only Social Security benefits as defined in IRC 86 ((2)(f): Title II
+    # and tier 1 railroad retirement benefits), which SSI is not.
+    - ssi
+    # (A)(xv): "Welfare payments", other than payments for medical care made
+    # to providers, in-home services and work or training reimbursements.
+    # tanf is an SPM unit amount; the tax unit counts its members' shares.
+    - tanf
+    - general_assistance
+    # The Oregon Supplemental Income Program, which the household income
+    # checklist (page 128) counts.
+    - or_ssp
+    # (A)(xvii): "Nontaxable interest not included in federal adjusted gross
+    # income."
+    - tax_exempt_interest_income
+    # (A)(xix): "Income from sources without the United States that is
+    # excluded from federal gross income."
+    - section_911_excluded_income
+metadata:
+  unit: list
+  period: year
+  label: Oregon retirement income credit household income additions
+  reference:
+    - title: ORS 316.157(2)(c)(A), credit for retirement income (2023 edition)
+      href: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25
+    - title: ORS 316.157(2)(c)(A), credit for retirement income (2025 edition)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    - title: 2025 Publication OR-17, What's included in household income?
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=107
+    - title: 2025 Publication OR-17, Household income checklist
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=127
+    - title: 2025 Publication OR-17, Household income checklist (public assistance, Social Security, strike benefits and workers' compensation)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=128
