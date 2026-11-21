@@ -1,3 +1,10 @@
+## [2.152.9] - 2026-11-21
+
+### Changed
+
+- Extend Colorado LEAP's ruled whole-dollar income table entry to FY2027.
+
+
 ## [2.152.8] - 2026-11-21
 
 ### Fixed
