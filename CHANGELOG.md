@@ -1,3 +1,10 @@
+## [2.152.13] - 2026-11-21
+
+### Fixed
+
+- Medicaid federal share is now zero for enrollees who fail the federal immigration test and reach Medicaid only through state-funded coverage, such as California's state-funded Medi-Cal, Illinois Health Benefits for Immigrants and states that cover undocumented immigrants. The federal Medicaid immigration test now exempts qualified noncitizens who are veterans, on active duty, or their spouses or dependent children from the five-year bar.
+
+
 ## [2.152.12] - 2026-11-21
 
 ### Fixed
