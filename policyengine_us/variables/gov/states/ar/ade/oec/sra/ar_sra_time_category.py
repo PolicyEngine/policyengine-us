@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class ArSraTimeCategory(Enum):
@@ -21,9 +22,9 @@ class ar_sra_time_category(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ar.ade.oec.sra.rates
-        # Zero is also the input default for unknown hours. Use full-time
-        # pricing; attendance and expense rules still determine payment.
-        hours = person("childcare_hours_per_day", period.this_year)
+        # Unresolved hours retain full-time pricing; attendance and expense
+        # rules still determine payment.
+        hours = childcare_hours_for_daily_schedule(person, period)
         return where(
             (hours == 0) | (hours >= p.full_time_hours_threshold),
             ArSraTimeCategory.FULL_TIME,

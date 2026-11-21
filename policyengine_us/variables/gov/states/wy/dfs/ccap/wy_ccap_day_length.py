@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class WYCCAPDayLength(Enum):
@@ -22,9 +23,9 @@ class wy_ccap_day_length(Variable):
     def formula(person, period, parameters):
         # Table I / Manual §1101.N.1: a part day is less than five hours of
         # care and a full day is five or more hours.
-        # Zero is also the input default for unknown hours. Use full-time
-        # pricing; attendance and expense rules still determine payment.
-        hours_per_day = person("childcare_hours_per_day", period.this_year)
+        # Unresolved hours retain full-time pricing; attendance and expense
+        # rules still determine payment.
+        hours_per_day = childcare_hours_for_daily_schedule(person, period)
         p = parameters(period).gov.states.wy.dfs.ccap.rates
         is_full_day = (hours_per_day == 0) | (hours_per_day >= p.day_length_min_hours)
         return where(
