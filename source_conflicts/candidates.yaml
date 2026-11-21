@@ -17940,3 +17940,28 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-vt:renter-credit-2025-proration-and-cap
+  program: renter-credit
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the $2,500 maximum apply to the final prorated renter credit or to the annual fair market rent amount before applying rental months?
+  sources:
+  - kind: statute
+    citation: 2020 Vt. Act 160 § 3, 32 V.S.A. § 6066(b)(1) and (b)(1)(E)
+    url: https://legislature.vermont.gov/Documents/2020/Docs/ACTS/ACT160/ACT160%20As%20Enacted.pdf#page=7
+  - kind: calculator
+    citation: 2025 Vermont Renter Credit Website Calculator, Calculator sheet G13 and G17 and Base Credit Amounts table
+    url: https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+  readings:
+    statute: Apply the rental-month fraction to the fair market rent credit before applying the maximum to the claim amount.
+    other: The agency estimate workbook uses the annual amount from its capped table and multiplies the result by the rental-month fraction.
+  example: An otherwise eligible unsubsidized Chittenden household with four exemptions and six rental months has a $1,540.20 prorated amount before dollar rounding. Prorating the capped annual $2,500 amount instead gives $1,250.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
+    prs: []
+  state: ruled
+  note: This ruling covers the ordinary rental route with reported 2025 duration. The legacy estimate remains available for older or unreported facts. Subsidy phaseout and mixed-period rental expense allocation remain separate.
