@@ -1,7 +1,7 @@
-- name: Test 1 
+- name: Test 1
   period: 2022
   input:
-    tax_exempt_social_security: 100
+    filer_tax_exempt_social_security: 100
     state_code: VT
   output:
     vt_renter_credit_countable_tax_exempt_ss: 75
@@ -9,7 +9,33 @@
 - name: Test 2
   period: 2022
   input:
-    tax_exempt_social_security: 0
+    filer_tax_exempt_social_security: 0
     state_code: VT
   output:
     vt_renter_credit_countable_tax_exempt_ss: 0
+
+- name: Test 3, only the claimant's own nontaxable benefits count, not a dependent child's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        social_security_retirement: 2_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        social_security_survivors: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    # The parent's 2,000 is untaxed (provisional income 1,000 is far below
+    # the base amount) and is on the parent's Form 1040 lines 6a and 6b. The
+    # child's 8,000 is the child's own. RCC-146 line 11: 2,000 x 75% = 1,500.
+    filer_tax_exempt_social_security: 2_000
+    vt_renter_credit_countable_tax_exempt_ss: 1_500

@@ -14484,6 +14484,65 @@ candidates:
   state: open
   note: 'PE-US looks up the income limits by tax_unit_size, capped at the tables'' eight people, and the fair market
     rent by exemptions_count (vt_renter_credit.py). Axiom issue 1678 in rulespec-us pursues exemption-sized limits.'
+- id: us-vt:renter-credit-loss-add-back-netting
+  program: renter-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does Vermont renter credit income add back each kind of loss that 32 V.S.A. 6061(18)(A) lists, or only
+    a negative total on a Form 1040 or Schedule 1 line, after other income on the same line has offset the loss, as
+    Form RCC-146 line 13 does?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 6061(18)(A)
+    url: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - kind: form
+    citation: 2025 Form RCC-146, Vermont Renter Credit Claim, line 13
+    url: https://tax.vermont.gov/sites/tax/files/documents/RCC-146-2025.pdf#page=1
+  - kind: instructions
+    citation: 2025 Vermont Income Tax Return Booklet, Form RCC-146 line 13 (PDF page 39)
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=39
+  readings:
+    statute: 'For the renter credit, income is federal adjusted gross income increased by "trade or business loss from
+      a sole proprietorship, loss from a partnership, loss from a limited liability company or "subchapter S"
+      corporation, loss from a rental property, capital loss, loss from an estate or trust, loss from a real estate
+      mortgage investment conduit, farm rental loss, any loss associated with the sale of business property, and farm
+      losses included in adjusted gross income".'
+    other: 'Line 13 reads "Add back any negative amounts from federal Form 1040, Line 7 and Schedule 1, Lines 3, 4, 5,
+      6, and 8a." The booklet: "Enter the amount of any negative amount (net loss) shown on federal Form 1040 or Form
+      1040-SR, Line 7, and federal Schedule 1, Lines 3, 4, 5, 6, and 8a." Schedule 1 line 3 combines every Schedule C
+      on the return, and line 5 combines rental real estate, royalties, partnerships, S corporations, estates and
+      trusts.'
+  example: 'In 2025 a claimant with $30,000 of wages, $10,000 of rental income and a $4,000 partnership loss has
+    federal AGI of $36,000. The statute adds back the partnership loss, for income of $40,000. Schedule 1 line 5 is
+    $6,000, so line 13 adds nothing and income is $36,000. A claimant with $30,000 of wages, a $4,000 long-term capital
+    loss and $2,000 of capital gain distributions has federal AGI of $28,000: the loss offsets the $2,000 of gains and
+    the other $2,000 is deducted as a net capital loss. The statute adds back the $4,000 capital loss, for income of
+    $32,000. Form 1040 line 7 is -$2,000, so line 13 adds back $2,000 and income is $30,000.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_income.py
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_capital_loss_add_back.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11178
+  state: unreviewed
+  note: 'PolicyEngine adds back limited_business_loss, which holds each head''s and spouse''s loss in each income input
+    (self-employment, farm, rental, farm rental, estate or trust, partnership or S corporation, and Form 4797 gains),
+    and vt_renter_credit_capital_loss_add_back, each capital loss of the head and spouse that AGI deducted. That
+    add-back has three parts: a loss that offset the same person''s gain in the other holding period or capital gain
+    distributions on Schedule D line 13; capital_losses_allowed_against_gains, the losses allowed against another
+    filer''s gains and distributions reported without Schedule D; and limited_capital_loss, the net capital loss up to
+    the 26 U.S.C. 1211(b) limit. A loss carried to a later year is not added back. The prior-year long-term carryover,
+    which 26 U.S.C. 1212(b)(1)(B) treats as a capital loss of the year, is added back to the extent AGI deducted it.
+    (18)(A) does not define "capital loss"; the model reads it as each loss from a sale or exchange (26 U.S.C. 1222(2)
+    and (4)), not the "net capital loss" of 1222(10), so every capital loss included in AGI is added back. RCC-146 line
+    13 and the 2025 booklet add back only the net figure on Form 1040 line 7. A loss inside one input, such as one
+    rental property netted against another in rental_income, or two sales in the same holding period netted in one
+    person''s short-term or long-term capital gains, cannot be separated; neither can a short-term carryover, which has
+    no input of its own. Line 13 also adds back a net operating loss deduction (Schedule 1 line 8a), which (18)(A) does
+    not list; this model has no federal net operating loss deduction. Cases 6, 7 and 11 to 16 in
+    vt_renter_credit_income.yaml pin the statute reading. PolicyEngine has recorded no ruling.'
 - id: us-vt:renter-credit-statewide-average-fmr
   program: renter-credit
   years:

@@ -987,3 +987,123 @@
     # uses one personal exemption. The alternative of one-person income
     # limits would deny the credit at this income.
     vt_renter_credit: 270
+
+# Income under 32 V.S.A. 6061(18) adds back the losses and above-the-line
+# deductions federal AGI subtracts. Addison, one person, 2025: full credit
+# limit 24,400, partial credit limit 52,850, credit amount
+# ROUND(1,103 x 12 x 10%, 0) = 1,324.
+- name: Addison, 1 person, 2025, a business loss added back moves the claim into the phase-out
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 26_000
+        self_employment_income: -2_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit:
+        members: [head]
+        housing_assistance: 0
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # AGI is 26,000 - 2,000 = 24,000, below the full credit limit, but
+    # 6061(18)(A) adds the 2,000 loss back: income 26,000.
+    # (52,850 - 26,000) / (52,850 - 24,400) x 1,324 = 26,850 / 28,450 x 1,324
+    # = 1,249.54, rounded to 1,250. AGI alone would give the full 1,324.
+    vt_renter_credit_income: 26_000
+    vt_renter_credit: 1_250
+
+- name: Addison, 1 person, 2025, income with the add-back exactly at the full credit limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 24_400
+        early_withdrawal_penalty: 400
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit:
+        members: [head]
+        housing_assistance: 0
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # AGI is 24,000; 6061(18)(D) adds the 400 penalty back: income 24,400, at
+    # the limit. (52,850 - 24,400) / 28,450 = 1, so the full 1,324.
+    vt_renter_credit_income: 24_400
+    vt_renter_credit: 1_324
+
+- name: Addison, 1 person, 2025, income with the add-back just above the full credit limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 24_450
+        early_withdrawal_penalty: 400
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit:
+        members: [head]
+        housing_assistance: 0
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # AGI is 24,050, below the limit; with the 400 penalty added back income
+    # is 24,450. (52,850 - 24,450) / 28,450 x 1,324 = 28,400 / 28,450 x 1,324
+    # = 1,321.67, rounded to 1,322. AGI alone would give the full 1,324.
+    vt_renter_credit_income: 24_450
+    vt_renter_credit: 1_322
+
+- name: Addison, 1 person, 2025, income with the add-back exactly at the partial credit limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 52_850
+        early_withdrawal_penalty: 500
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit:
+        members: [head]
+        housing_assistance: 0
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: ADDISON_COUNTY_VT
+  output:
+    # AGI is 52,350; with the 500 penalty added back income is 52,850, the
+    # partial credit limit, so (52,850 - 52,850) / 28,450 x 1,324 = 0.
+    # AGI alone would give 500 / 28,450 x 1,324 = 23.27, rounded to 23.
+    vt_renter_credit_income: 52_850
+    vt_renter_credit: 0
