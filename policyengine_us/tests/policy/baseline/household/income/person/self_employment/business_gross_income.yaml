@@ -1,0 +1,26 @@
+# Gross income from businesses: Schedule C line 7, before business expenses.
+# Without an input, the net profits stand in, each floored at zero.
+
+- name: Without an input, net self-employment profits stand in.
+  period: 2025
+  input:
+    self_employment_income: 12_000
+    sstb_self_employment_income: 3_000
+  output:
+    business_gross_income: 15_000
+
+- name: A net loss in one business does not reduce the other's income.
+  period: 2025
+  input:
+    self_employment_income: -5_000
+    sstb_self_employment_income: 3_000
+  output:
+    business_gross_income: 3_000
+
+- name: An input gives Schedule C line 7 directly.
+  period: 2025
+  input:
+    self_employment_income: 5_000
+    business_gross_income: 20_000
+  output:
+    business_gross_income: 20_000

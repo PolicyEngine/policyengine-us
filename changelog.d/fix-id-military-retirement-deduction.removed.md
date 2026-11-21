@@ -1,0 +1,1 @@
+Remove `id_military_retirement_deduction` and its parameter `gov.states.id.tax.income.subtractions.military_retirement.applies`; military retirement benefits now count in `id_retirement_benefits_deduction`.

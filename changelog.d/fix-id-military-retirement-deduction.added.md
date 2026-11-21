@@ -1,0 +1,1 @@
+Add the inputs `business_gross_income` (Schedule C line 7), `farm_gross_income` (Schedule F line 9) and `foreign_earned_income_exclusion_gross_person` (the person's own Form 2555 line 43), and `id_retirement_benefits_deduction_disabled`, Idaho's disability classification under Idaho Code 63-3022A(4).

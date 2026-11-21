@@ -1,0 +1,42 @@
+# The person's own section 911 exclusions (Form 2555 line 43). A return with
+# one head or spouse credits the return's gross exclusion to the head; a
+# joint return needs each spouse's own amount.
+
+- name: A single filer's gross exclusion is the head's own.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        # Form 2555 lines 42 and 36.
+        foreign_earned_income_exclusion_amount: 30_000
+        foreign_housing_exclusion: 5_000
+    households:
+      household:
+        members: [head, child]
+  output:
+    foreign_earned_income_exclusion_gross_person: [35_000, 0]
+
+- name: A joint return without each spouse's amount credits neither spouse.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 30_000
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    foreign_earned_income_exclusion_gross_person: [0, 0]

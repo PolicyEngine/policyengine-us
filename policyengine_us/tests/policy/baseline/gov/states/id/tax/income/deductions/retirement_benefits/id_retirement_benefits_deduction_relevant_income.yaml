@@ -1,0 +1,96 @@
+# Which retirement benefits count toward the Idaho retirement benefits
+# deduction (Form 39R line 8e). The benefits of Idaho Code 63-3022A(1)(a)
+# count for a head or spouse who is 65, or 62 and disabled. Military
+# retirement benefits count on the test of 63-3022A(1)(b): before 2025 the
+# same age test, and from 2025 a recipient who is disabled, is 62 or older,
+# or works enough to have to file a federal return.
+
+- name: 2024 a 40-year-old cannot deduct military retired pay.
+  period: 2024
+  input:
+    state_code: ID
+    age: 40
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction_military_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 66-year-old deducts military retired pay.
+  period: 2024
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a 40-year-old without a job or disability cannot deduct military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 a working 40-year-old deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a disabled 40-year-old deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    is_disabled: true
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 30_000
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a 40-year-old with a public pension still needs the general age test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    public_pension_income: 20_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 working couple deducts all of the retiree's $30,000.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 60_000
+        military_retirement_pay: 30_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_relevant_income: [30_000, 0]
+    id_retirement_benefits_deduction: 30_000

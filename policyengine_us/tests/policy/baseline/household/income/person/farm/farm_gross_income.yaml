@@ -1,0 +1,16 @@
+# Gross farm income: Schedule F line 9, before farm expenses. Without an
+# input, the net farm profit stands in, floored at zero.
+
+- name: Without an input, the net farm profit stands in.
+  period: 2025
+  input:
+    farm_operations_income: 8_000
+  output:
+    farm_gross_income: 8_000
+
+- name: Without an input, a net farm loss counts as zero.
+  period: 2025
+  input:
+    farm_operations_income: -8_000
+  output:
+    farm_gross_income: 0
