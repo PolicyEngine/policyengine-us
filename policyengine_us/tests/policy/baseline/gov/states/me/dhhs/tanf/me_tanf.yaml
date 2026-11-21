@@ -62,3 +62,97 @@
   output:
     # min($425, $489 - $488.5) = min($425, $0.5) = $0.5
     me_tanf: 0.5
+
+- name: Maine increases the adult-included TANF amounts in October 2025.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: true
+      older_child:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+      younger_child:
+        age: 5
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    spm_units:
+      family:
+        members: [parent, older_child, younger_child]
+        spm_unit_cash_assets: 0
+        me_tanf_countable_income:
+          2025-09: 1_040
+          2025-10: 1_040
+    tax_units:
+      family:
+        members: [parent, older_child, younger_child]
+    households:
+      family:
+        members: [parent, older_child, younger_child]
+        state_code: ME
+  output:
+    # Rule 125A raises the standard of need on October 1.
+    # The basic grant pays the positive difference between the standard
+    # and $1,040 in countable income, up to the maximum grant.
+    me_tanf_standard_of_need:
+      2025-09: 1_030
+      2025-10: 1_052
+    me_tanf_maximum_benefit:
+      2025-09: 895
+      2025-10: 917
+    me_tanf_income_eligible:
+      2025-09: false
+      2025-10: true
+    me_tanf:
+      2025-09: 0
+      2025-10: 12
+
+- name: Maine increases the adult-included TANF amounts in October 2026.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: true
+      older_child:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+      younger_child:
+        age: 5
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+    spm_units:
+      family:
+        members: [parent, older_child, younger_child]
+        spm_unit_cash_assets: 0
+        me_tanf_countable_income:
+          2026-09: 1_040
+          2026-10: 1_040
+    tax_units:
+      family:
+        members: [parent, older_child, younger_child]
+    households:
+      family:
+        members: [parent, older_child, younger_child]
+        state_code: ME
+  output:
+    # Rule 127A raises the standard of need on October 1.
+    # The basic grant pays the positive difference between the standard
+    # and $1,040 in countable income, up to the maximum grant.
+    me_tanf_standard_of_need:
+      2026-09: 1_052
+      2026-10: 1_078
+    me_tanf_maximum_benefit:
+      2026-09: 917
+      2026-10: 943
+    me_tanf_income_eligible:
+      2026-09: true
+      2026-10: true
+    me_tanf:
+      2026-09: 12
+      2026-10: 38
