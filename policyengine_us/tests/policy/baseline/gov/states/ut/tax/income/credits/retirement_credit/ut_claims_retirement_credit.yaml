@@ -25,11 +25,41 @@
   output:
     ut_claims_retirement_credit: true
 
-- name: UT claims retirement credit unit test 4
+- name: UT claims retirement credit unit test 4 - a retirement credit worth nothing is never claimed
   period: 2022
   input:
     ut_retirement_credit_max: 0
     ut_ss_benefits_credit_max: 0
+    state_code: UT
+  output:
+    ut_claims_retirement_credit: false
+
+- name: UT claims retirement credit - military credit alone outweighs the retirement credit
+  period: 2025
+  input:
+    ut_retirement_credit_max: 450
+    ut_ss_benefits_credit_max: 0
+    ut_military_retirement_credit_max: 1_350
+    state_code: UT
+  output:
+    ut_claims_retirement_credit: false
+
+- name: UT claims retirement credit - Social Security and military credits combine against the retirement credit
+  period: 2025
+  input:
+    ut_retirement_credit_max: 450
+    ut_ss_benefits_credit_max: 300
+    ut_military_retirement_credit_max: 200
+    state_code: UT
+  output:
+    ut_claims_retirement_credit: false
+
+- name: UT claims retirement credit - retirement credit outweighs both alternatives combined
+  period: 2025
+  input:
+    ut_retirement_credit_max: 450
+    ut_ss_benefits_credit_max: 100
+    ut_military_retirement_credit_max: 225
     state_code: UT
   output:
     ut_claims_retirement_credit: true

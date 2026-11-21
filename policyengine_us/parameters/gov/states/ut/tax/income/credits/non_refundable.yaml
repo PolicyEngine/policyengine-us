@@ -27,12 +27,16 @@ values:
   - ut_retirement_credit
   - ut_ss_benefits_credit
   - ut_at_home_parent_credit
+  # 2021 S.B. 11, Section 4: the military retirement credit (TC-40A Part 3,
+  # code AJ) applies to taxable years beginning on or after January 1, 2021.
+  - ut_military_retirement_credit
 
   2022-01-01:
   - ut_eitc
   - ut_retirement_credit
   - ut_ss_benefits_credit
   - ut_at_home_parent_credit
+  - ut_military_retirement_credit
   - ut_529_plan_credit
 
   2024-01-01:

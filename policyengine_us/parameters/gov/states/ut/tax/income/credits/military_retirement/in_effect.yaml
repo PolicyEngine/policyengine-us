@@ -1,0 +1,22 @@
+description: Utah allows the military retirement credit when this is true.
+values:
+  0000-01-01: false
+  # 2021 S.B. 11, Section 4: "This bill has retrospective operation for a
+  # taxable year beginning on or after January 1, 2021." The bill enacted the
+  # credit as 59-10-1042; the Utah Code carries it as 59-10-1043.
+  2021-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Utah military retirement credit in effect
+  reference:
+    - title: Utah Code §59-10-1043
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1043.html
+    - title: 2021 Utah S.B. 11, Military Retirement Income Tax Amendments, Section 4 (retrospective operation)
+      href: https://le.utah.gov/~2021/bills/sbillenr/SB0011.htm
+    - title: Utah Military Retirement Credit
+      href: https://incometax.utah.gov/credits/military-retirement
+    - title: 2021 Utah TC-40 Instructions, Military Retirement Credit Worksheet
+      href: https://files.tax.utah.gov/tax/forms/2021/tc-40inst.pdf#page=22
+    - title: 2025 Utah TC-40 Instructions, Military Retirement Credit (code AJ)
+      href: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=23
