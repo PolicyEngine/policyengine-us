@@ -1,3 +1,10 @@
+## [2.152.6] - 2026-11-21
+
+### Changed
+
+- Update the Rhode Island LIHEAP utility enhancement to the FFY 2027 amount of $400.
+
+
 ## [2.152.5] - 2026-11-21
 
 ### Changed
