@@ -245,3 +245,54 @@
     il_scretd_eligible: true
     # Deferral = min(5,000, 7,500) = 5,000
     il_scretd_deferral_amount: 5_000
+
+# Household income under 320 ILCS 25/3.07 counts all Social Security
+
+- name: Social Security benefits push household income over the 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+        social_security_retirement: 60_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Household income = 30,000 pension + 60,000 Social Security = 90,000
+    # > 75,000 (3.07(D) adds the benefits AGI leaves out).
+    il_scretd_age_eligible: true
+    il_scretd_income_eligible: false
+    il_scretd_eligible: false
+    il_scretd_deferral_amount: 0
+
+- name: Pension and Social Security under the 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        social_security_retirement: 40_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # Household income = 20,000 pension + 40,000 Social Security = 60,000
+    # <= 75,000.
+    il_scretd_age_eligible: true
+    il_scretd_income_eligible: true
+    il_scretd_eligible: true
+    # Deferral = min(10,000, 7,500) = 7,500
+    il_scretd_deferral_amount: 7_500

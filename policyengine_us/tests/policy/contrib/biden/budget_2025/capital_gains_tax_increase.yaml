@@ -57,3 +57,35 @@
     taxable_income: 48_475
     income_tax_main_rates: 5_563.50
     capital_gains_tax: 15
+
+# Treasury indexes the 2024 $1m threshold after 2024. With the IRS proxy,
+# $1m * 2,077.121 / 2,021.359 = $1,027,586.3911358645 in 2025, where 2,077.121
+# and 2,021.359 sum the 12 monthly chained CPI-U values behind the 2025 and
+# 2024 index values.
+# Set taxable income directly to isolate the threshold. All $100,000 of gains
+# otherwise face 20%; the excess faces 37%, adding 17% of the excess.
+- name: The proposal indexes the single threshold before taxing excess gains
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    taxable_income: [1_027_586, 1_027_586.3911358645, 1_027_588]
+    long_term_capital_gains: [100_000, 100_000, 100_000]
+  output:
+    capital_gains_tax: [20_000, 20_000, 20_000.2735069]
+
+# Separate: $500,000 * 2,077.121 / 2,021.359 = $513,793.1955679323.
+# At $513,795, tax = $20,000 + ($513,795 - $513,793.1955679323) * 17%.
+- name: The proposal indexes half the threshold for separate filers
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    filing_status: [SEPARATE, SEPARATE, SEPARATE]
+    taxable_income: [513_793, 513_793.1955679323, 513_795]
+    long_term_capital_gains: [100_000, 100_000, 100_000]
+  output:
+    capital_gains_tax: [20_000, 20_000, 20_000.3067535]

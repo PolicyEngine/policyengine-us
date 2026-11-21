@@ -1,4 +1,4 @@
-description: Alabama deducts this amount from the lowest-band heating payment for each income band under the Low Income Home Energy Assistance Program.
+description: Alabama deducts this amount from the lowest-band payment for each income band under the Low Income Home Energy Assistance Program.
 # These differences reproduce every fuel and household-size cell in Appendix D.
 1:
   2025-10-01: 0
@@ -9,7 +9,7 @@ description: Alabama deducts this amount from the lowest-band heating payment fo
 metadata:
   unit: currency-USD
   period: year
-  label: Alabama LIHEAP heating payment reduction by income band
+  label: Alabama LIHEAP payment reduction by income band
   breakdown:
     - range(1, 4)
   propagate_metadata_to_children: true

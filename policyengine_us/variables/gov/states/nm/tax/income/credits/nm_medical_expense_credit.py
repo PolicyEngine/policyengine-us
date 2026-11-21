@@ -23,6 +23,9 @@ class nm_medical_expense_credit(Variable):
         "This assumes qualifying costs were funded from income included in AGI. "
         "Premium inputs use payer attribution: each person reports premiums that "
         "person paid, including family coverage regardless of whom it covers. "
+        "With a computed subtotal, a supplied applied exclusion covers the "
+        "filers' premiums only, so the model also restores the dependents' "
+        "computed medical exclusion, as Montana does."
     )
 
     def formula(tax_unit, period, parameters):
@@ -40,6 +43,19 @@ class nm_medical_expense_credit(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # PIT-RC line 23 counts costs "for the care of any combination of
+        # you, your spouse, or dependents". A supplied exclusion beside a
+        # computed subtotal covers the filers only, so restore the
+        # dependents' computed exclusion as well, as Montana does.
+        simulation = tax_unit.simulation
+        if not has_input_for_period(
+            simulation, "itemized_medical_expenses", period
+        ) and has_input_for_period(
+            simulation, "itemized_medical_expenses_applied_exclusion", period
+        ):
+            medical_expense = medical_expense + tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
         expense_eligible = medical_expense >= p.min_expenses
         # NMSA 7-2-18.13(A) allows the credit to "a taxpayer ... who is
         # sixty-five years of age or older and who is not a dependent of

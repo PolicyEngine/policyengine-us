@@ -84,6 +84,12 @@ def test_alabama_recomputes_dependent_care_exclusion_in_any_order():
             "tax_unit": {
                 "members": members,
                 "tax_unit_childcare_expenses": {YEAR: 20_000},
+                # Newly stipulated: all $20,000 is qualifying work-care
+                # incurred and paid in 2021 for these under-13 dependents,
+                # through an eligible provider, before employer benefits,
+                # net of disallowed public/third-party reimbursements.
+                # No carryovers or forfeitures; not inferred from W-2 box 10.
+                "dependent_care_assistance_qualified_expenses": {YEAR: 20_000},
             }
         },
         "households": {"household": {"members": members, "state_code": {YEAR: "AL"}}},

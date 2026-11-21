@@ -50,3 +50,25 @@
   output:
     # MI-1040CR-7 lines 40-43: heat included with rent bars the alternate credit.
     mi_alternate_home_heating_credit_eligible: false
+
+# 2025 MI-1040CR-7 instruction book, Table B: household resources must stay
+# below $18,592 for 0 or 1 exemption and below $34,227 for 4 or more.
+- name: 2025 household resources above the $18,592 cap for one exemption
+  period: 2025
+  input:
+    utilities_included_in_rent: false
+    mi_household_resources: 18_600
+    mi_exemptions_count: 1
+    state_code: MI
+  output:
+    mi_alternate_home_heating_credit_eligible: false
+
+- name: 2025 household resources below the $34,227 cap for four exemptions
+  period: 2025
+  input:
+    utilities_included_in_rent: false
+    mi_household_resources: 34_000
+    mi_exemptions_count: 4
+    state_code: MI
+  output:
+    mi_alternate_home_heating_credit_eligible: true

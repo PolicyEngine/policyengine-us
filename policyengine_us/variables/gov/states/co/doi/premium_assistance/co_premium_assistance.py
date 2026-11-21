@@ -42,6 +42,12 @@ class co_premium_assistance(Variable):
         # non-browser user agents).
         "https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view",
         "https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance",
+        # Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30),
+        # Section 5.B ($70 first member, $25 each additional member from the
+        # 2027 benefit year). Sections 2 and 6.A pay carriers pursuant to
+        # C.R.S. 10-16-1205(1)(b)(II), which covers Coloradans who receive
+        # the premium tax credit.
+        "https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=2",
         # Enrolled HB25B-1006, Section 10-16-1207(5) (rule authority) and
         # Section 10-16-1205(1)(b)(II) (payment authority).
         "https://content.leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf",
@@ -60,9 +66,12 @@ class co_premium_assistance(Variable):
             p.amount.first_member + p.amount.additional_member * (n - 1),
             0,
         )
-        # slcsp is a MONTH-period variable; core sums the 12 months when called
-        # from this YEAR formula. Approximates the enrolled-plan premium.
-        slcsp_annual = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, a MONTH variable that
+        # core sums over the year here; it approximates the eligible members'
+        # enrolled-plan premiums. C.R.S. 10-16-1205(1)(b)(II) pays carriers
+        # for Coloradans who receive the premium tax credit, so an enrollee
+        # outside the federal tax family is not counted.
+        slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         residual = max_(0, slcsp_annual - aca_ptc)
         annual = min_(MONTHS_IN_YEAR * flat_monthly, residual)

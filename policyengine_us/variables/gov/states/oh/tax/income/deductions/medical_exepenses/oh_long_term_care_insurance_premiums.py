@@ -9,6 +9,7 @@ class oh_long_term_care_insurance_premiums(Variable):
     definition_period = YEAR
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5747.01",  # R.C. 5747.01(A)(10)
+        "https://uscode.house.gov/us/usc/t26/s152/",  # IRC 152(b)(1)
         "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=41",  # Worksheet
     )
     documentation = (
@@ -39,4 +40,10 @@ class oh_long_term_care_insurance_premiums(Variable):
             - long_term_care_part
             - person("medical_expense_health_insurance_premiums", period),
         )
-        return max_(premiums - long_term_care_part - unabsorbed, 0)
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        eligible_person = (
+            person("is_tax_unit_head_or_spouse", period) | ~filer_is_dependent
+        )
+        return eligible_person * max_(premiums - long_term_care_part - unabsorbed, 0)

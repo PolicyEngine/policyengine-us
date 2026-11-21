@@ -311,3 +311,480 @@
     # then at min head/spouse earnings (6,000); AGI 26,000 -> 29% fraction
     # Credit = 3,000 * 0.29 = 870 (below the 53,630 phaseout threshold)
     mn_cdcc: 870
+
+- name: Case 10, 2017 Minnesota final credit uses the historical cap gate and zero floor.
+  period: 2017
+  absolute_error_margin: 0.01
+  # 2017 First Special Session chapter 1, article 1, sections 18-19; 2017 statute 290.067, subd. 1(h).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Known ordinary work-care expenses are $3,000, no Section 129 exclusion or
+  # disallowed reimbursement, and head earnings are $10,000. No newborn or
+  # parent-operated daycare deeming rule is involved. At AGI above $43,000,
+  # the ordinary Form 2441 line 9 amount before its tax limit is 3,000 * .20 = 600.
+  # The first row has AGI threshold + $100: cap = 600 - 100 * .05 = 595.
+  # Each such AGI is below the 2021 $53,630 value, so a model that
+  # back-extrapolates that value returns 600 instead of the sourced 595.
+  # The second row is one dollar beyond the one-person cap exhaustion point:
+  # max(0, 600 - 12,001 * .05) = 0. No final output is supplied as an input.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_100
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 62_001
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [595, 0]
+    mn_cdcc: [595, 0]
+
+- name: Case 11, 2018 Minnesota final credit uses the historical cap gate and zero floor.
+  period: 2018
+  absolute_error_margin: 0.01
+  # Official 2018 Schedule M1CD, lines 3-6 and Worksheet for Line 5, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Known ordinary work-care expenses are $3,000, no Section 129 exclusion or
+  # disallowed reimbursement, and head earnings are $10,000. No newborn or
+  # parent-operated daycare deeming rule is involved. At AGI above $43,000,
+  # the ordinary Form 2441 line 9 amount before its tax limit is 3,000 * .20 = 600.
+  # The first row has AGI threshold + $100: cap = 600 - 100 * .05 = 595.
+  # Each such AGI is below the 2021 $53,630 value, so a model that
+  # back-extrapolates that value returns 600 instead of the sourced 595.
+  # The second row is one dollar beyond the one-person cap exhaustion point:
+  # max(0, 600 - 12,001 * .05) = 0. No final output is supplied as an input.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 51_090
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 62_991
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [595, 0]
+    mn_cdcc: [595, 0]
+
+- name: Case 12, 2019 Minnesota final credit uses the historical cap gate and zero floor.
+  period: 2019
+  absolute_error_margin: 0.01
+  # Official 2019 Schedule M1CD, lines 1-4 and Worksheet for Line 3, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Known ordinary work-care expenses are $3,000, no Section 129 exclusion or
+  # disallowed reimbursement, and head earnings are $10,000. No newborn or
+  # parent-operated daycare deeming rule is involved. At AGI above $43,000,
+  # the ordinary Form 2441 line 9 amount before its tax limit is 3,000 * .20 = 600.
+  # The first row has AGI threshold + $100: cap = 600 - 100 * .05 = 595.
+  # Each such AGI is below the 2021 $53,630 value, so a model that
+  # back-extrapolates that value returns 600 instead of the sourced 595.
+  # The second row is one dollar beyond the one-person cap exhaustion point:
+  # max(0, 600 - 12,001 * .05) = 0. No final output is supplied as an input.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 52_330
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 64_231
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [595, 0]
+    mn_cdcc: [595, 0]
+
+- name: Case 13, 2020 Minnesota final credit uses the historical cap gate and zero floor.
+  period: 2020
+  absolute_error_margin: 0.01
+  # Official 2020 Schedule M1CD, lines 1-4 and Worksheet for Line 3, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Known ordinary work-care expenses are $3,000, no Section 129 exclusion or
+  # disallowed reimbursement, and head earnings are $10,000. No newborn or
+  # parent-operated daycare deeming rule is involved. At AGI above $43,000,
+  # the ordinary Form 2441 line 9 amount before its tax limit is 3,000 * .20 = 600.
+  # The first row has AGI threshold + $100: cap = 600 - 100 * .05 = 595.
+  # Each such AGI is below the 2021 $53,630 value, so a model that
+  # back-extrapolates that value returns 600 instead of the sourced 595.
+  # The second row is one dollar beyond the one-person cap exhaustion point:
+  # max(0, 600 - 12,001 * .05) = 0. No final output is supplied as an input.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        care_expenses: 0
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 53_200
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 65_101
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 10_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [595, 0]
+    mn_cdcc: [595, 0]
+
+# Synthetic API controls: reform the common threshold to $45,000. These cases
+# stipulate full-year Minnesota residency, SINGLE filing, one qualifying child,
+# $3,000 ordinary work-care expenses and sufficient earnings, as above.
+# No M1NC adjustment, Section 129 exclusion, reimbursement, newborn or
+# parent-operated daycare deeming rule applies. The reform is hypothetical.
+# Minn. Stat. 290.067 (2017), subd. 1(h), and the 2018-2020 M1CD worksheets
+# apply the one-person $600 cap less 5% of excess AGI, with a zero floor.
+# At $60,000 AGI: max(0, 600 - .05 * (60,000 - 45,000)) = 0.
+# Zero also agrees with the forms' whole-dollar rounding instructions.
+# https://www.revisor.mn.gov/statutes/2017/cite/290.067#stat.290.067.1
+# https://www.revenue.state.mn.us/sites/default/files/2018-11/m1cd_18.pdf#page=3
+# https://www.revenue.state.mn.us/sites/default/files/2019-12/m1cd_19.pdf#page=3
+# https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_20.pdf#page=3
+- name: Case 14, the common Minnesota CDCC threshold reform applies in 2017.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mn.tax.income.credits.cdcc.phaseout_threshold: 45_000
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 60_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+    mn_cdcc_phase_out: 0
+
+- name: Case 15, the common Minnesota CDCC threshold reform applies in 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mn.tax.income.credits.cdcc.phaseout_threshold: 45_000
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 60_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+    mn_cdcc_phase_out: 0
+
+- name: Case 16, the common Minnesota CDCC threshold reform applies in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mn.tax.income.credits.cdcc.phaseout_threshold: 45_000
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 60_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+    mn_cdcc_phase_out: 0
+
+- name: Case 17, the common Minnesota CDCC threshold reform applies in 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mn.tax.income.credits.cdcc.phaseout_threshold: 45_000
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income: 60_000
+        care_expenses: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income: 0
+        care_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 60_000
+        mn_cdcc_dependent_count: 1
+        tax_unit_childcare_expenses: 3_000
+        min_head_spouse_earned: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+    mn_cdcc_phase_out: 0

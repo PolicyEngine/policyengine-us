@@ -11,6 +11,11 @@ class vt_premium_assistance(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
+        # PDF page 41: HBEE 60.07(c) reduces the APTC applicable percentage
+        # by 1.5% for household income that does not exceed 300% of the FPL,
+        # so VPA equals 1.5% of income whenever the federal credit is
+        # positive.
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "Vermont state top-up to the federal ACA premium tax credit, an "
@@ -19,9 +24,9 @@ class vt_premium_assistance(Variable):
         "percentage-point reduction to the federal section 36B applicable "
         "percentage, so the subsidy equals the enrollee's income times that "
         "reduction, capped at the benchmark premium remaining after the federal "
-        "APTC so it never duplicates the federal credit. The benchmark second-"
-        "lowest-cost silver plan premium (slcsp) is annualized from its monthly "
-        "definition. At very low income the applicable percentage can fall below "
+        "APTC so it never duplicates the federal credit. The premium tax "
+        "credit's benchmark for the coverage family (aca_ptc_slcsp) is "
+        "annualized from its monthly definition. At very low income the applicable percentage can fall below "
         "1.5%, in which case the reduction floors at zero and the cap lets "
         "Vermont Premium Assistance cover the full residual premium after the "
         "federal APTC. The amount is not taxable. Advance-payment, "
@@ -47,15 +52,18 @@ class vt_premium_assistance(Variable):
         # already below 1.5%, the Vermont percentage bottoms out at 0 so the
         # gap factor below becomes the FULL federal percentage (VPA then covers
         # the entire enrollee contribution). This branch is organically
-        # unreachable in the 2026 baseline because the federal applicable
-        # percentage floors at 2.10% > 1.5%, but is retained for robustness and
-        # future contribution schedules.
+        # unreachable in the 2026 and 2027 baselines because the federal
+        # applicable percentage floors at 2.10% (2026) and 2.15% (2027), both
+        # above 1.5%, but is retained for robustness and future contribution
+        # schedules.
         vt_percentage = max_(0, federal_percentage - reduction)
         # Incremental contribution gap between the federal applicable
         # percentage and the lower Vermont percentage.
         contribution_gap = max_(0, income * (federal_percentage - vt_percentage))
-        # slcsp is a MONTH-period variable; annualize it to match aca_ptc.
-        slcsp = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, annualized to match
+        # aca_ptc: 33 V.S.A. 1812(a)(1) covers only those eligible for the
+        # federal premium tax credit.
+        slcsp = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         # Cap at the premium balance remaining after the federal APTC.
         premium_after_aptc = max_(0, slcsp - aca_ptc)

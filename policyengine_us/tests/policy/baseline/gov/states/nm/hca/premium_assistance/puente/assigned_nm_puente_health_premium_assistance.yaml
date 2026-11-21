@@ -1,0 +1,76 @@
+# Take-up: Puente Health pays only for plans bought on BeWell, so by default a
+# tax unit takes it up when it takes up Marketplace coverage.
+
+- name: Case 1, 2027 eligible amount is received when the tax unit takes up Marketplace coverage.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_puente_health_premium_assistance: 5_000
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    takes_up_nm_puente_health_if_eligible: true
+    assigned_nm_puente_health_premium_assistance: 5_000
+
+- name: Case 2, 2027 eligible amount is not received without Marketplace take-up.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_puente_health_premium_assistance: 5_000
+        takes_up_aca_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    takes_up_nm_puente_health_if_eligible: false
+    assigned_nm_puente_health_premium_assistance: 0
+
+- name: Case 3, 2027 a supplied Puente Health take-up flag overrides the Marketplace default.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nm_puente_health_premium_assistance: 5_000
+        takes_up_aca_if_eligible: true
+        takes_up_nm_puente_health_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    assigned_nm_puente_health_premium_assistance: 0
+
+- name: Case 4, 2026 assigned amount flows into household health benefits when they count.
+  # gov.household.household_health_benefits lists the assigned amount, so with
+  # the flag on it is the household's only health benefit here.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nm_premium_assistance: 0
+    nm_puente_health_premium_assistance: 900
+    snap: 0
+  output:
+    assigned_nm_puente_health_premium_assistance: 900
+    household_health_benefits: 900

@@ -404,8 +404,9 @@
     mi_allowable_homestead_property_tax_credit: 1_900
     mi_homestead_property_tax_credit: 1_900
 
-- name: 2025 household resources above line 33 limit, ineligible.
+- name: 2025 senior whose Medicare Part B premium brings household resources under the line 33 limit.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -441,6 +442,20 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    mi_household_resources: 73_288
-    mi_homestead_property_tax_credit_eligible: false
-    mi_homestead_property_tax_credit: 0
+    # Lines 15, 18 and 21: 14,196 + 29,092 + 30,000 = 73,288.
+    # Line 31: the 2025 Part B premium the 65-year-old pays, 185 x 12 =
+    # 2,220. Countable income for the Medicare Savings Programs,
+    # 73,288 / 12 - 20 = 6,087.33 a month, is far above 135% of the poverty
+    # guideline, so no program pays it.
+    # Line 33: 73,288 - 2,220 = 71,068, within the 71,500 limit.
+    mi_household_resources: 71_068
+    mi_homestead_property_tax_credit_eligible: true
+    # Line 13: 30,000 + 23% of 62,436 rent = 44,360.28. Line 34: 3.2% of
+    # 71,068 = 2,274.18. Line 35: 44,360.28 - 2,274.18 = 42,086.10.
+    # Table A at 71,068: 60%, 25,251.66, capped at 1,900. Table B: 71,068 is
+    # 8,568 over 62,500, 9 steps of 10%, so 10% remains: 190.
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 190
+    # Worksheet 5 for renters 65 and older: rent 62,436 - 40% of 71,068
+    # (28,427.20) = 34,008.80, larger than 190, so 1,900 (the maximum).
+    mi_homestead_property_tax_credit_alternate_senior_amount: 1_900
+    mi_homestead_property_tax_credit: 1_900

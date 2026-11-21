@@ -56,3 +56,30 @@
     state_code: ME
   output:
     nj_main_income_tax: 0
+
+- name: A single filer's 401(k) deferrals come off New Jersey wages before tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        traditional_401k_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # N.J.S.A. 54A:6-21: line 15 wages = 60,000 - 6,000 = 54,000.
+    # Taxable income = 54,000 - 1,000 regular exemption = 53,000.
+    # Tax = .014 * 20,000 + .0175 * 15,000 + .035 * 5,000
+    #     + .05525 * (53,000 - 40,000)
+    #     = 280 + 262.50 + 175 + 718.25 = 1,435.75
+    nj_gross_income: 54_000
+    nj_agi: 54_000
+    nj_taxable_income: 53_000
+    nj_main_income_tax: 1_435.75

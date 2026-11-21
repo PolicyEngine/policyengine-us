@@ -1,10 +1,11 @@
 # Tests for il_scretd_income_eligible variable
-# Income limit varies by year:
+# Household income (il_scretd_household_income, 320 ILCS 25/3.07) is no
+# greater than the maximum household income, which varies by year:
 # - 2024: $65,000
 # - 2025: $75,000
 # - 2026: $77,000
 # - 2027+: $79,000
-# Source: 320 ILCS 30/2, SB1821
+# Source: 320 ILCS 30/2(a)(iii) and (j), SB1821
 
 - name: Case 1, income below 2024 limit.
   period: 2024
@@ -216,4 +217,78 @@
         state_code: IL
   output:
     # Income check: 79,001 <= 79,000 = false
+    il_scretd_income_eligible: false
+
+- name: Case 13, all Social Security benefits count in household income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+        social_security_retirement: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 320 ILCS 30/2(h): "Household income" has the meaning given in the
+    # Senior Citizens and Persons with Disabilities Property Tax Relief Act.
+    # 320 ILCS 25/3.07: "Income" means federal adjusted gross income
+    # "modified by adding thereto ... (D) An amount equal to the amount of
+    # benefits paid under the Federal Social Security Act during the taxable
+    # year", to the extent left out of adjusted gross income.
+    # 320 ILCS 30/2(j)(5): maximum household income is $75,000 for 2025.
+    # Income = AGI + Social Security not in AGI = 30,000 pension + 60,000
+    # Social Security = 90,000, whatever part of the benefits is taxable.
+    # Counting only the taxable part of the benefits (26,600: half of 9,000
+    # plus 85% of 26,000 of provisional income above 34,000) would give
+    # 56,600, under the limit.
+    # 90,000 > 75,000, so not eligible.
+    il_scretd_income_eligible: false
+
+- name: Case 14, household income with section 3.07 additions exactly at the 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 60_000
+        tax_exempt_interest_income: 10_000
+        workers_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # AGI 60,000 + 3.07(A) tax-exempt interest 10,000 + 3.07(H) workers'
+    # compensation 5,000 = 75,000 <= 75,000, so eligible.
+    il_scretd_income_eligible: true
+
+- name: Case 15, household income with section 3.07 additions one dollar above the 2025 limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 60_000
+        tax_exempt_interest_income: 10_000
+        workers_compensation: 5_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # AGI 60,000 + tax-exempt interest 10,000 + workers' compensation 5,001
+    # = 75,001 > 75,000, so not eligible. Federal gross income alone,
+    # 60,000, would be under the limit.
     il_scretd_income_eligible: false

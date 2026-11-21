@@ -67,3 +67,21 @@
     social_security_disability: 100
   output:
     is_usda_disabled: true
+
+- name: Case 9, a veteran with a 100% service-connected rating that is not permanent is USDA disabled.
+  period: 2026
+  input:
+    age: 40
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: false
+  output:
+    is_usda_disabled: true
+
+- name: Case 10, a veteran with a permanent and total VA rating that is not 100% service-connected is USDA disabled.
+  period: 2026
+  input:
+    age: 40
+    is_fully_disabled_service_connected_veteran: false
+    is_permanently_disabled_veteran: true
+  output:
+    is_usda_disabled: true

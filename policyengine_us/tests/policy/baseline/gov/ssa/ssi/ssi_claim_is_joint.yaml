@@ -287,3 +287,51 @@
         state_code: FL
   output:
     ssi_claim_is_joint: [false, false]
+
+- name: With marital units omitted, an aged couple listed after their grandchild makes a joint claim.
+  period: 2025
+  input:
+    people:
+      grandchild:
+        age: 10
+      husband:
+        age: 70
+      wife:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [grandchild, husband, wife]
+    households:
+      household:
+        members: [grandchild, husband, wife]
+        state_code: TX
+  output:
+    # The model pairs the couple the tax roles pair as head and spouse,
+    # wherever they are listed, so each is the other's eligible spouse and
+    # the claim is joint (20 CFR 416.1801(c)).
+    ssi_claim_is_joint: [false, true, true]
+
+- name: With marital units omitted, an aged parent and their disabled adult child are not a joint claim.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+      child:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_permanently_and_totally_disabled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The child meets the qualifying child age test as permanently and
+    # totally disabled (26 USC 152(c)(3)(B)), so each gets their own marital
+    # unit. A parent and child aren't husband and wife, so neither is the
+    # other's eligible spouse (20 CFR 416.1801(c), 416.1806).
+    ssi_claim_is_joint: [false, false]

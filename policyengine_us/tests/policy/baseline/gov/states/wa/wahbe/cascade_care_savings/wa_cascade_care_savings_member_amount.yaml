@@ -2,7 +2,10 @@
 #
 # wa_cascade_care_savings_member_amount (Person, USD) is the pre-cap base amount
 # attributable to one member:
-#   12 * (55 if Group 1 else 0  +  250 if Group 3 else 0)
+#   12 * (a1 if Group 1 else 0  +  a3 if Group 2 or 3 else 0)
+#   PY2026: a1 = 55, a3 = 250.
+#   PY2027: a1 = 35 if the tax unit's aca_magi / aca_fpg <= 2.00, else 20;
+#           a3 = 185.
 # where Group 1 = is_aca_ptc_eligible and Group 3 = UNDOCUMENTED & ~Apple Health
 # Expansion & ~Apple Health for Kids & ~is_aca_ptc_eligible. Groups 1 and 3 are
 # mutually exclusive, so no member ever receives 12*(55+250) = 3_660.
@@ -154,3 +157,401 @@
         state_code: WA
   output:
     wa_cascade_care_savings_member_amount: [660, 3_000, 0, 0]
+
+- name: 2026 WA the claimable spouse gets the Group 2 amount and the other the Group 1 amount (the claimable spouse is the head)
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WA
+  output:
+    # 12 * 250 and 12 * 55.
+    wa_cascade_care_savings_member_amount: [3000, 660]
+
+- name: 2026 WA the claimable spouse gets the Group 2 amount and the other the Group 1 amount (the claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660, 3000]
+
+# --- PY2027: the with-federal-subsidy amount splits at 200% FPL ---
+# a1 = 35 if aca_magi / aca_fpg <= 2.00, else 20; a3 = 185 with no split
+# (WAHBE memo of 2026-10-01, p.1; Policy Section 5(1)(b)). A ratio above 2.00
+# but below 2.01 takes $20 by the project lead's ruling of 2026-11-18.
+
+- name: Case 8, 2027, Group 1 member at 140% FPL gets $35 PMPM.
+  # 14_000 / 10_000 = 1.4 <= 2.00 -> 12*35 = 420.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 14_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [420]
+
+- name: Case 9, 2027, Group 1 member at exactly 200% FPL gets $35 PMPM.
+  # 20_000 / 10_000 = 2.00 <= 2.00 -> 12*35 = 420. right=True keeps a
+  # ratio equal to the threshold in the band below it.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_fpl_ratio: 2
+    wa_cascade_care_savings_member_amount: [420]
+
+- name: Case 10, 2027, Group 1 member one cent above 200% FPL gets $20 PMPM.
+  # 20_000.01 / 10_000 = 2.000001 > 2.00 -> 12*20 = 240.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000.01
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [240]
+
+- name: Case 11, 2027, Group 1 member at 200.5% FPL gets $20 PMPM under the 200% ruling.
+  # 20_050 / 10_000 = 2.005 > 2.00 -> 12*20 = 240. The policy's bands are
+  # "up to 200%" and "201 - 250%"; a ratio above 2.00 takes the second amount
+  # (ruling of 2026-11-18). A whole-percent reading would have given 420.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_050
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [240]
+
+- name: Case 12, 2027, Group 1 member at 201% FPL gets $20 PMPM.
+  # 20_100 / 10_000 = 2.01 > 2.00 -> 12*20 = 240.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_100
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [240]
+
+- name: Case 13, 2027, Group 1 member with zero income gets $35 PMPM.
+  # ratio 0 -> first band -> 12*35 = 420. The first threshold is -inf, so a
+  # ratio of exactly 0 is not sent to the scale's out-of-range cell (0).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [420]
+
+- name: Case 14, 2027, Group 3 member at 150% FPL gets $185 PMPM.
+  # Group 3 -> 12*185 = 2_220 (was 12*250 = 3_000 in PY2026).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 15_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [2_220]
+
+- name: Case 15, 2027, Group 3 member at 240% FPL gets the same $185 PMPM.
+  # No income split for members without federal subsidies -> 12*185 = 2_220.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 24_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [2_220]
+
+- name: Case 16, 2027, mixed household at 220% FPL localizes each member's amount.
+  # frac 2.2 > 2.00. person1 Group 1 -> 12*20 = 240. person2 Group 3 ->
+  # 12*185 = 2_220. person3 neither -> 0.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+      person3:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi: 22_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [240, 2_220, 0]
+
+- name: Case 17, 2027, Group 2 member gets $185 PMPM while the Group 1 member gets $20.
+  # frac 2.2 > 2.00. person1 Group 1 -> 12*20 = 240. person2 is a
+  # Marketplace enrollee outside the federal tax family (Group 2) -> 12*185 =
+  # 2_220, with no income split.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        is_aca_marketplace_enrollee: true
+        is_aca_tax_family_member: true
+        immigration_status: CITIZEN
+      person2:
+        age: 20
+        is_aca_ptc_eligible: false
+        is_aca_marketplace_enrollee: true
+        is_aca_tax_family_member: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 22_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [240, 2_220]
+
+- name: Case 18, 2026, Group 1 member at exactly 200% FPL gets $55 PMPM.
+  # PY2026 has one amount, so both bands carry $55 -> 12*55 = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660]
+
+- name: Case 19, 2026, Group 1 member one cent above 200% FPL still gets $55 PMPM.
+  # 2.000001 > 2.00 takes the second band, which also carries $55 -> 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 20_000.01
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660]
+
+- name: Case 20, 2026, Group 1 member at 240% FPL still gets $55 PMPM.
+  # PY2026: 12*55 = 660 above 200% FPL as below it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 24_000
+        aca_fpg: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660]

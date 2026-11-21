@@ -1,0 +1,87 @@
+# The enhanced credit Temporary Premium Assistance replaces:
+#   max(0, annual benchmark (aca_ptc_slcsp) - enhanced percentage x max(aca_magi, 0)).
+# aca_fpg is pinned to $10,000.
+
+- name: 190% FPL, the benchmark less 1.6% of income.
+  # 7,200 - 0.016 x 19,000 = 6,896.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_000
+        aca_fpg: 10_000
+        slcsp: 7_200
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_ptc: 6_896
+
+- name: 450% FPL, the benchmark less 8.5% of income, where the current credit is 0.
+  # 14,000 - 0.085 x 45,000 = 10,175.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        slcsp: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_ptc: 10_175
+
+- name: A required contribution above the benchmark floors the credit at 0.
+  # max(0, 3,000 - 0.085 x 45,000 = -825) = 0.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_fpg: 10_000
+        slcsp: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_ptc: 0
+
+- name: Negative income counts as zero.
+  # The percentage is 0 at a 0% ratio, and income is floored at 0: 6,000.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: -1_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance_enhanced_ptc: 6_000

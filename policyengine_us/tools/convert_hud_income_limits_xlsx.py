@@ -5,20 +5,21 @@ huduser.gov (browse to ``Datasets > Income Limits`` and download
 ``Section8-FYXX.xlsx``; the static files live under ``il/ilXX/`` — e.g.
 ``il/il26/Section8-FY26.xlsx`` for FY2026 — not ``il2026/``, which is the
 interactive query tool). The sheet holds one row per HUD income-limit area
-(some subcounty), with a 10-digit ``fips`` whose first five digits are the
-county FIPS, the area median income, and family-size columns for each limit
-tier.
+(some subcounty), with a 10-digit ``fips`` (``fips2010`` in older files) whose
+first five digits are the county FIPS, the area median income, and family-size
+columns for each limit tier.
 
 huduser.gov serves the static files only to requests with a browser
 ``User-Agent``; a bare download gets a bot challenge (HTTP 202, zero bytes).
 
-Dependency: ``python-calamine`` (``pip install python-calamine``). HUD's
-workbooks ship with malformed metadata timestamps that openpyxl rejects;
+Refresh-only dependency: ``python-calamine==0.9.1``. HUD's workbooks ship with
+malformed metadata timestamps that openpyxl rejects;
 calamine reads them cleanly. Not a runtime dependency of the model — only
 needed when refreshing the bundled CSV.
 
 Usage:
-    python -m policyengine_us.tools.convert_hud_income_limits_xlsx \
+    uv run --with python-calamine==0.9.1 \
+        python -m policyengine_us.tools.convert_hud_income_limits_xlsx \
         --input ~/Downloads/Section8-FY26.xlsx \
         --year 2026 \
         --output \
@@ -54,7 +55,7 @@ NUMERIC_COLUMNS = ["ami", *SIZED_COLUMNS]
 
 
 def read_sheet(path: Path) -> pd.DataFrame:
-    """Load the Section 8 sheet (the one carrying a ``fips`` column).
+    """Load the Section 8 sheet with a current or legacy geography column.
 
     Uses the ``calamine`` engine because HUD's published workbooks ship with
     malformed timestamps in their metadata that openpyxl rejects.
@@ -62,13 +63,15 @@ def read_sheet(path: Path) -> pd.DataFrame:
     workbook = pd.ExcelFile(path, engine="calamine")
     for sheet in workbook.sheet_names:
         df = workbook.parse(sheet)
-        if "fips" in df.columns:
+        if "fips" in df.columns or "fips2010" in df.columns:
             return df
-    raise ValueError(f"No sheet in {path} contains a 'fips' column.")
+    raise ValueError(f"No sheet in {path} contains a 'fips' or 'fips2010' column.")
 
 
 def reshape(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """Map HUD columns to the PolicyEngine schema and collapse to county median."""
+    if "fips" not in df.columns and "fips2010" in df.columns:
+        df = df.rename(columns={"fips2010": "fips"})
     median_col = f"median{year}"
     source_sized = [
         f"{source_prefix}_{size}"

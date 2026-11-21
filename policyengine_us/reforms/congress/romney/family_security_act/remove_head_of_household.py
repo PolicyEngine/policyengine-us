@@ -14,12 +14,12 @@ def create_remove_head_of_household_reform(parameters, period, bypass: bool = Fa
     if bypass:
         return create_remove_head_of_household()
 
-    # Look ahead for the next five years
+    # Check each year of the lookahead window
     p = parameters.gov.contrib.congress.romney.family_security_act
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).remove_head_of_household:
             reform_active = True
             break

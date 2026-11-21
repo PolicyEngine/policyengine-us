@@ -1,0 +1,22 @@
+description: The IRS increases dollar amounts that the Internal Revenue Code indexes from a stated base year by the change in this C-CPI-U, which holds for each tax year the index for the calendar year before it under 26 U.S.C. 1(f)(3).
+values:
+  # Computed in parameters/uprating_extensions.py (set_irs_c_cpi_u_index):
+  # from calendar year 2016, the C-CPI-U averaged over the 12 months ending
+  # August 31 (1(f)(6)(B)); before 2016, the CPI-U over the same months
+  # (1(f)(4)) times the 1(f)(3)(B) ratio of the two for 2016. A statute's
+  # base year B is this index's period B + 1.
+  #
+  # The dependent standard deduction amounts and the educator cap project
+  # on this index. The standard deduction and the CTC, which 1(f)(3)
+  # indexes the same way, stay on gov.irs.uprating, the index the tax
+  # brackets and other chained IRS amounts use. From tax year 2017 the two
+  # indices hold the same value. gov.irs.uprating starts in 2010, after the
+  # dependent amounts' 1987 and 1997 base years. After the last window with
+  # a BLS observation, both grow at CBO's projected rate for each tax year.
+  1988-01-01: 1
+metadata:
+  unit: /1
+  label: C-CPI-U for base-year IRS indexing
+  reference:
+    - title: 26 U.S. Code § 1(f)(3)-(7) - Cost-of-living adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/1#f_3

@@ -851,3 +851,46 @@
     ca_snap_meets_allotment_requirement: false
     is_snap_eligible: false
     snap: 0
+
+- name: Case 25, Arkansas family of three with 4_000 in assets is eligible through BBCE.
+  # Arkansas BBCE raises the resource limit to $5,500 (SNAP Certification
+  # Manual 1919 and Appendix AA, effective April 4, 2025) and keeps the
+  # income tests.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 33_600
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 8
+      person3:
+        age: 6
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        snap_assets: 4_000
+        housing_cost: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # $4,000 is above the $3,000 federal limit and within Arkansas's $5,500.
+    meets_snap_asset_test: false
+    # Gross $2,800 is within 130% x 26,650 / 12 = $2,887.08.
+    meets_tanf_non_cash_gross_income_test: true
+    # Net $2,800 - 20% earned income deduction ($560) - $209 = $2,031, within
+    # the $2,221 net standard.
+    snap_net_income: 2_031
+    meets_tanf_non_cash_net_income_test: true
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    # $785 - ceil(30% x $2,031 = $609.30) = $785 - $610.
+    snap: 175

@@ -15,7 +15,13 @@ def create_ga_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), as in
+            # the baseline formula.
+            filer_is_dependent = person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
 
             # Apply age limit if in effect.
             if p.age_limit.in_effect:
@@ -83,7 +89,7 @@ def create_ga_dependent_exemption_reform_fn(parameters, period, bypass: bool = F
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

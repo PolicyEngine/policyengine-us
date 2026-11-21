@@ -1,0 +1,30 @@
+# assigned_ct_temporary_premium_assistance =
+#   ct_temporary_premium_assistance x takes_up_aca_if_eligible.
+
+- name: Take-up defaults to true, so the assigned amount equals the amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    ct_temporary_premium_assistance: 1_000
+  output:
+    assigned_ct_temporary_premium_assistance: 1_000
+
+- name: A tax unit that does not take up Marketplace coverage gets nothing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: CT
+    ct_temporary_premium_assistance: 1_000
+    takes_up_aca_if_eligible: false
+  output:
+    assigned_ct_temporary_premium_assistance: 0
+
+- name: A household outside Connecticut gets nothing.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    ct_temporary_premium_assistance: 1_000
+  output:
+    assigned_ct_temporary_premium_assistance: 0

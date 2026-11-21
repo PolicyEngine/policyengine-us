@@ -278,3 +278,100 @@
   output:
     nj_pension_retirement_exclusion: 10_000
     nj_other_retirement_income_exclusion: 10_000
+
+- name: Worksheet D's $3,000 earnings test reads wages net of 401(k) deferrals, at the limit
+  # Single, 65, $5,000 of wages with $2,000 of 401(k) elective deferrals and
+  # $20,000 of interest. Worksheet D line 4 is NJ-1040 line 15: 5,000 - 2,000
+  # = 3,000 (N.J.S.A. 54A:6-21). Line 8 must be MORE than $3,000 to
+  # disqualify, so the filer qualifies. Total income = 3,000 + 20,000 =
+  # 23,000; single maximum $75,000; no pension exclusion, so the unclaimed
+  # exclusion is 23,000.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 5_000
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_total_income: 23_000
+    nj_other_retirement_income_exclusion: 23_000
+    nj_agi: 0
+
+- name: Worksheet D's $3,000 earnings test, one dollar above the limit after 401(k) deferrals
+  # Same filer with $5,001 of wages: line 15 is 5,001 - 2,000 = 3,001, MORE
+  # than $3,000, so there is no unclaimed exclusion. Total income = 3,001 +
+  # 20,000 = 23,001.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 5_001
+        traditional_401k_contributions: 2_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_total_income: 23_001
+    nj_other_retirement_income_exclusion: 0
+    nj_agi: 23_001
+
+- name: Worksheet D's earnings test reads line 15, so a deferral above one spouse's wages does not offset the other's
+  # Joint filers, both 65. Head: $500 of wages with $4,000 of 401(k) elective
+  # deferrals and $20,000 of interest. Spouse: $6,000 of wages. Each person's
+  # New Jersey wages are floored at zero, so NJ-1040 line 15 = max(0, 500 -
+  # 4,000) + 6,000 = 0 + 6,000 = 6,000. Worksheet D line 4 is line 15 and
+  # lines 5-7 are 0, so line 8 = 6,000, MORE than $3,000: the filers cannot
+  # use the unclaimed exclusion. Total income = 20,000 + 6,000 = 26,000.
+  # Netting the deferral across both spouses (6,500 - 4,000 = 2,500) would
+  # wrongly pass the test and grant 26,000.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 500
+        traditional_401k_contributions: 4_000
+        taxable_interest_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_wages: [0, 6_000]
+    nj_total_income: [20_000, 6_000]
+    nj_pension_retirement_exclusion: 0
+    nj_other_retirement_income_exclusion: 0

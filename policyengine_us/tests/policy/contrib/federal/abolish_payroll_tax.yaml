@@ -30,6 +30,7 @@
 
 - name: Abolishing payroll tax keeps the Idaho permanent building fund tax
   period: 2025
+  absolute_error_margin: 0.01
   input:
     gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
     state_code: ID
@@ -45,8 +46,10 @@
     id_pbf: 10
     household_state_tax_before_refundable_credits: 2_010
     household_tax_before_refundable_credits: 7_010  # 5,000 + 2,000 + 10
-    household_refundable_tax_credits: 900
-    household_net_income: 53_890  # 60,000 + 900 - 7,010
+    # The federal income tax stays, and so does the premium tax credit.
+    premium_tax_credit_in_force: 122.23
+    household_refundable_tax_credits: 800 + 100 + 122.23
+    household_net_income: 53_890 + 122.23  # 60,000 + 900 + 122.23 - 7,010
 
 - name: Abolishing payroll tax keeps North Carolina use tax
   period: 2025

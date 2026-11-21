@@ -119,6 +119,20 @@
     # Need standard 1,110; limit 1,110 x 1.85 = 2,053.50.
     sc_tanf_gross_income_eligible: true
 
+- name: Gross income equal to the limit passes for a benefit group of three.
+  period: 2026-01
+  input:
+    state_code: SC
+    sc_tanf_benefit_group_size: 3
+    sc_tanf_gross_income: 2_053.50
+  output:
+    # January uses the guidelines in effect on October 1, 2025:
+    # 15,650 + 2 x 5,500 = 26,650 a year.
+    # Need = floor(26,650 / 12 x 0.5) = 1,110.
+    # Limit = 1,110 x 1.85 = 2,053.50. 114-1150(A) includes equality.
+    sc_tanf_need_standard: 1_110
+    sc_tanf_gross_income_eligible: true
+
 - name: Section 8.15 table, gross income one cent above the limit for a benefit group of 3.
   period: 2026-01
   input:

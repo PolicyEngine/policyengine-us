@@ -1,11 +1,16 @@
 description: Delaware matches this percent of the federal Earned Income Tax Credit as a refundable credit.
 values:
-  2020-01-01: 0.045
+  2015-01-01: 0
+  2022-01-01: 0.045
 metadata:
   unit: /1
   period: year
   label: Delaware refundable EITC match
   reference:
+    - title: 83 Del. Laws, chapter 118, sections 1 and 2
+      href: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
+    - title: Delaware HB 16, 151st General Assembly, effective December 1, 2022
+      href: https://www.legis.delaware.gov/BillDetail?legislationId=48193
     - title: PIT-RES_TY22_2022-02_Instructions.pdf
       href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf
     - title: The Delaware Code Online - Title 30 - Chapter 11 - Subchapter II - § 1117

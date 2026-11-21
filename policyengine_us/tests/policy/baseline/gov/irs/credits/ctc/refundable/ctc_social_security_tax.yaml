@@ -73,3 +73,42 @@
   output:
     # 300 + 70 + 100 + 30 + 50 + 10 - 20; the dependent's $515 is left out.
     ctc_social_security_tax: 540
+- name: Case 1, the 2017 ACTC payroll-tax definition counts filers and subtracts excess withholding.
+  # 2017 Schedule 8812, PDF page 2, lines 7-10; EITC is subtracted
+  # separately by the refundability formula rather than this tax subtotal.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employee_social_security_tax: 300
+        employee_medicare_tax: 70
+        self_employment_tax_ald_person: 0
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        employee_social_security_tax: 100
+        employee_medicare_tax: 30
+        self_employment_tax_ald_person: 50
+      person3:
+        age: 16
+        is_tax_unit_dependent: true
+        employee_social_security_tax: 400
+        employee_medicare_tax: 90
+        self_employment_tax_ald_person: 25
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        unreported_payroll_tax: 10
+        additional_medicare_tax: 25
+        excess_payroll_tax_withheld: 20
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+  output:
+    # 300 + 70 + 100 + 30 + 50 + 10 + 25 - 20 = 565.
+    ctc_social_security_tax: 565

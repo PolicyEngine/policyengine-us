@@ -1,0 +1,19 @@
+description: New Jersey subtracts these elective deferrals from employment income to get the wages it taxes (NJ-1040 line 15, W-2 box 16).
+values:
+  1984-01-01:
+    # N.J.S.A. 54A:6-21 leaves 401(k) elective deferrals out of gross income.
+    # Employee contributions to 403(b), 457 and SEP plans, to the federal
+    # Thrift Savings Plan and to any other retirement plan stay in New Jersey
+    # wages, so they are not listed.
+    - traditional_401k_contributions
+metadata:
+  unit: list
+  period: year
+  label: New Jersey elective deferrals excluded from wages
+  reference:
+    - title: N.J.S.A. 54A:6-21 - Contributions to certain employee trusts
+      href: https://law.justia.com/codes/new-jersey/title-54a/section-54a-6-21/
+    - title: "2025 NJ-1040 instructions, income New Jersey taxes and does not tax, and line 15 #page 10-11"
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=10
+    - title: "New Jersey Division of Taxation, GIT-1 & 2, Retirement Income, Section 401(k), 457 and 403(b) Plans #page 14-15"
+      href: https://www.nj.gov/treasury/taxation/pdf/pubs/tgi-ee/git1&2.pdf#page=14

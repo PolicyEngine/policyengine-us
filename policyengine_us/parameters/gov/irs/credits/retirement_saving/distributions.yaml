@@ -1,5 +1,7 @@
 description: The IRS subtracts these distributions from qualified contributions under the saver's credit.
 values:
+  2017-01-01:
+    - retirement_distributions
   # 25B(d)(2)(A) reaches any entity of a type that can take contributions
   # under 25B(d)(1), so ABLE distributions count for as long as ABLE
   # contributions do (Form 8880, line 4).
@@ -15,6 +17,10 @@ metadata:
   period: year
   label: Saver's Credit distributions that reduce qualified contributions
   reference:
+    - title: "2017 Form 8880 #page 1-2"
+      href: https://www.irs.gov/pub/irs-prior/f8880--2017.pdf#page=1
+    - title: Public Law 115-97, section 11024(b)-(c)
+      href: https://www.govinfo.gov/content/pkg/PLAW-115publ97/pdf/PLAW-115publ97.pdf#page=24
     - title: 26 U.S. Code § 25B(d)(2)
       href: https://www.law.cornell.edu/uscode/text/26/25B#d_2
     - title: Public Law 119-21, ABLE contributions in the saver's credit

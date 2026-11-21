@@ -7,6 +7,14 @@ values:
     # (taxable pension is already in Federal AGI via az_property_tax_credit_agi)
     - tax_exempt_public_pension_income
     - tax_exempt_private_pension_income
+    # ARS 43-1072(H)(6)(g) counts "the gross amount of any pension or annuity",
+    # A.A.C. R15-2C-502(A)(1) counts income "whether or not subject to Arizona
+    # income tax", and Form 140PTC line E counts "any IRA distributions" with
+    # all other pensions (2025 instructions, page 4). Federal AGI leaves out the
+    # nontaxable part of IRA, 401(k), 403(b) and SEP distributions (qualifying
+    # Roth distributions), so it is added here. ITR 12-1 item (9) leaves out
+    # rollovers, which these inputs don't hold.
+    - tax_exempt_retirement_distributions
     # Federal AGI minus Social Security (per ARS 43-1072(I) exclusion), with
     # federal above-the-line deductions other than loss_ald added back:
     # A.A.C. R15-2C-502(A)(1) counts "the sum of all income not specifically

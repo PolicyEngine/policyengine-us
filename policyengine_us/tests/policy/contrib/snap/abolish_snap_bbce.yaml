@@ -1,0 +1,283 @@
+# USDA's proposed rule "Supplemental Nutrition Assistance Program: Reforming
+# Categorical Eligibility" (91 FR 72454, November 10, 2026) removes the
+# non-cash TANF routes from 7 CFR 273.2(j)(2).
+# https://www.govinfo.gov/content/pkg/FR-2026-11-10/pdf/2026-22936.pdf
+#
+# January 2026 uses the FY2026 standards, built on the 2025 poverty guideline
+# of $26,650 for three people ($2,220.83 a month): federal gross limit $2,888
+# (130%), federal net limit $2,221, three-person maximum allotment $785,
+# standard deduction $209, earned income deduction 20%, and a $3,000 asset
+# limit. Texas confers broad-based categorical eligibility up to 165% of the
+# guideline ($3,664.38 for three people) with a $5,000 asset limit and no net
+# income test.
+#
+# January 2027 uses the FY2027 standards, built on the 2026 poverty guideline
+# of $27,320 for three people ($2,276.67 a month) and $15,960 for one person
+# ($1,330 a month): federal gross limit $2,960 for three people, federal net
+# limit $2,277 for three people and $1,330 for one, maximum allotment $808 for
+# three people and $306 for one, minimum allotment $25, standard deduction
+# $217, shelter deduction cap $769, and asset limits of $3,000, or $4,750 with
+# an elderly or disabled member. Washington confers broad-based categorical
+# eligibility up to 200% of the guideline with no asset limit and no net
+# income test.
+
+- name: Case 1, family eligible only through broad-based categorical eligibility loses SNAP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # $40,000 / 12 = $3,333.33, above the $2,888 federal gross limit and
+    # below the $3,664.38 Texas limit.
+    snap_gross_income: 3_333.33
+    meets_snap_gross_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    snap: 0
+
+- name: Case 2, the same family keeps SNAP when the reform is not in effect.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: false
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    meets_snap_gross_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    # $3,333.33 - $666.67 (20%) - $209 = $2,457.67, rounded to $2,458.
+    snap_net_income: 2_458
+    # 30% of $2,458 = $737.40, rounded up to $738; $785 - $738 = $47.
+    snap: 47
+
+- name: Case 3, family meeting the federal income and asset tests keeps SNAP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 24_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # $2,000 a month is below the $2,888 federal gross limit.
+    meets_snap_gross_income_test: true
+    # $2,000 - $400 (20%) - $209 = $1,391, below the $2,221 net limit.
+    snap_net_income: 1_391
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: true
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: true
+    # 30% of $1,391 = $417.30, rounded up to $418; $785 - $418 = $367.
+    snap: 367
+
+- name: Case 4, family receiving TANF cash assistance stays categorically eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Texas maximum grant for a caretaker without a second parent and
+        # two children: $382 a month from October 2025.
+        tanf: 4_584
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    # $382 - $209 = $173; 30% of $173 = $51.90, rounded up to $52;
+    # $785 - $52 = $733.
+    snap: 733
+
+- name: Case 5, household whose only member receives SSI stays categorically eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 70
+        # 2026 federal benefit rate for an individual.
+        ssi: 994
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    # $994 - $209 = $785; 30% of $785 = $235.50, rounded up to $236;
+    # one-person maximum allotment $298 - $236 = $62.
+    snap: 62
+
+- name: Case 6, family over the federal asset limit and under the state limit loses SNAP.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 24_000
+        bank_account_assets: 4_500
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # $2,000 a month is below the $2,960 federal gross limit.
+    meets_snap_gross_income_test: true
+    # $2,000 - $400 (20%) - $217 = $1,383, below the $2,277 net limit.
+    snap_net_income: 1_383
+    meets_snap_net_income_test: true
+    # $4,500 is above the $3,000 federal limit and below Texas's $5,000.
+    meets_snap_asset_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    # 30% of $1,383 = $414.90, rounded up to $415; $808 - $415 = $393, which
+    # the family receives without the reform.
+    snap_allotment_before_eligibility: 393
+    snap: 0
+
+- name: Case 7, elderly person over the federal net income limit loses SNAP.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # A unit with an elderly member is exempt from the federal gross test.
+    meets_snap_gross_income_test: true
+    # $1,800 - $217 = $1,583, above the $1,330 net limit for one person.
+    snap_net_income: 1_583
+    meets_snap_net_income_test: false
+    # $1,800 is below Washington's limit of 200% x $1,330 = $2,660.
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    # 30% of $1,583 = $474.90, rounded up to $475, above the $306 maximum, so
+    # the person receives the $25 minimum allotment without the reform.
+    snap_allotment_before_eligibility: 25
+    snap: 0
+
+- name: Case 8, family over the federal gross limit with net income under the net limit loses SNAP.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.snap.abolish_snap_bbce.abolish_snap_bbce
+  input:
+    gov.contrib.snap.abolish_bbce.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 42_000
+        pre_subsidy_rent: 24_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # $3,500 a month is above the $2,960 federal gross limit and below
+    # Washington's limit of 200% x $2,276.67 = $4,553.33.
+    meets_snap_gross_income_test: false
+    # $3,500 - $700 (20%) - $217 = $2,583 before shelter costs. Rent of
+    # $2,000 exceeds half of that ($1,291.50) by $708.50, under the $769 cap.
+    snap_excess_shelter_expense_deduction: 708.5
+    # $2,583 - $708.50 = $1,874.50, rounded to $1,875, below the $2,277 net
+    # limit.
+    snap_net_income: 1_875
+    meets_snap_net_income_test: true
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    # 30% of $1,875 = $562.50, rounded up to $563; $808 - $563 = $245, which
+    # the family receives without the reform.
+    snap_allotment_before_eligibility: 245
+    snap: 0
