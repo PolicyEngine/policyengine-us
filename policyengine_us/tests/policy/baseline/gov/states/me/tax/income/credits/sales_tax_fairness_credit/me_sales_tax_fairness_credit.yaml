@@ -252,6 +252,17 @@
     # 220 + 65 = 285, with no phase-out below the $52,100 threshold.
     me_sales_tax_fairness_credit: 285
 
+- name: 2026 ME STFC surviving spouse one dependent at the 52,100 threshold keeps the full 255
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 1
+    filing_status: SURVIVING_SPOUSE
+    me_sales_and_property_tax_fairness_credit_income: 52_100
+  output:
+    # No reduction at the threshold itself; 220 + 35 = 255.
+    me_sales_tax_fairness_credit: 255
+
 - name: 2026 ME STFC surviving spouse no dependents one dollar over the threshold gets 200
   period: 2026
   input:
