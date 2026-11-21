@@ -1,6 +1,14 @@
 description: Employee-side New York Paid Family Leave contribution rate.
 values:
+  # Contributions began January 1, 2018.
   0000-01-01: 0
+  2018-01-01: 0.00126
+  2019-01-01: 0.00153
+  2020-01-01: 0.0027
+  # 2021 and 2022: 0.506% plus a 0.005% risk adjustment for COVID-19 claims.
+  2021-01-01: 0.00511
+  2022-01-01: 0.00511
+  2023-01-01: 0.00455
   2024-01-01: 0.00373
   2025-01-01: 0.00388
   2026-01-01: 0.00432
@@ -13,6 +21,18 @@ metadata:
   reference:
     - title: New York Workers' Compensation Law Section 209
       href: https://www.nysenate.gov/legislation/laws/WKC/209
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2018
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2018_page
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2019
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2019_page
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2020
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2020_page
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2021
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2021_page
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2022
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2022
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2023
+      href: https://www.dfs.ny.gov/apps_and_licensing/health_insurers/pfl_rate_decision_2023
     - title: New York Workers' Compensation Board, NYS Paid Family Leave enhancements for 2024 (January 5, 2024)
       href: https://www.wcb.ny.gov/content/main/PressRe/pfl-enhancements-2024.jsp
     - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2025

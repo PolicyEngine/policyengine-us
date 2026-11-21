@@ -17,6 +17,6 @@ class vt_employee_child_care_contribution(Variable):
     reference = "https://legislature.vermont.gov/statutes/section/32/246/10553"
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.vt.tax.payroll.child_care.employee_rate
+        rate = person("vt_employee_child_care_contribution_rate", period)
         permitted = rate * person("vt_child_care_contribution_wages", period)
         return permitted * person("state_payroll_premium_deduction_share", period)

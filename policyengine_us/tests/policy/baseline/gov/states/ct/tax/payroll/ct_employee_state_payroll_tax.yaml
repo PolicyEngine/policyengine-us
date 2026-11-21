@@ -1,0 +1,32 @@
+# Connecticut Paid Leave employee contributions. CGS 31-49g(b)(1) starts them on
+# January 1, 2021, at 0.5% of wages up to the Social Security wage base.
+
+- name: Connecticut collects no paid leave contribution in 2020, before contributions began.
+  period: 2020
+  input:
+    employment_income: 50_000
+    state_code: CT
+  output:
+    ct_employee_paid_leave_contribution: 0
+    ct_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+
+- name: Connecticut paid leave contribution in 2021 is 0.5% of wages.
+  period: 2021
+  input:
+    employment_income: 50_000
+    state_code: CT
+  output:
+    # 0.5% * 50,000 = 250.
+    ct_employee_paid_leave_contribution: 250
+    ct_employee_state_payroll_tax: 250
+    employee_state_payroll_tax: 250
+
+- name: Connecticut paid leave contribution in 2022 stops at the 147,000 Social Security wage base.
+  period: 2022
+  input:
+    employment_income: 200_000
+    state_code: CT
+  output:
+    # 0.5% * 147,000 = 735.
+    ct_employee_paid_leave_contribution: 735

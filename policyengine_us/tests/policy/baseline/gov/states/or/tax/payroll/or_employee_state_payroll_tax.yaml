@@ -55,3 +55,28 @@
     or_employee_statewide_transit_tax: 50
     or_employee_state_payroll_tax: 350
     employee_state_payroll_tax: 350
+
+# Employers began withholding the statewide transit tax on July 1, 2018
+# (Oregon DOR, Statewide Transit Tax).
+
+- name: Oregon collects no statewide transit tax in 2017, before withholding began.
+  period: 2017
+  input:
+    employment_income: 50_000
+    state_code: OR
+  output:
+    or_employee_statewide_transit_tax: 0
+    or_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+
+- name: Oregon statewide transit tax in 2018 covers wages from July 1.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: OR
+  output:
+    # 0.1% * 6/12 * 50,000 = 25.
+    or_employee_statewide_transit_tax: 25
+    or_employee_state_payroll_tax: 25
+    employee_state_payroll_tax: 25

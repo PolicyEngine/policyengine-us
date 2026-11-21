@@ -1,0 +1,32 @@
+# Oregon statewide transit tax: 0.1% of wages, withheld from July 1, 2018.
+
+- name: Oregon statewide transit tax rate is zero in 2017, before withholding began.
+  period: 2017
+  input:
+    state_code: OR
+  output:
+    or_employee_statewide_transit_tax_rate: 0
+
+- name: Oregon statewide transit tax rate in 2018 counts only July through December.
+  period: 2018
+  absolute_error_margin: 0.0000001
+  input:
+    state_code: OR
+  output:
+    # 0.1% * 6/12 = 0.05%.
+    or_employee_statewide_transit_tax_rate: 0.0005
+
+- name: Oregon statewide transit tax rate is 0.1% in 2019.
+  period: 2019
+  absolute_error_margin: 0.0000001
+  input:
+    state_code: OR
+  output:
+    or_employee_statewide_transit_tax_rate: 0.001
+
+- name: Oregon statewide transit tax rate is zero outside Oregon.
+  period: 2019
+  input:
+    state_code: WA
+  output:
+    or_employee_statewide_transit_tax_rate: 0
