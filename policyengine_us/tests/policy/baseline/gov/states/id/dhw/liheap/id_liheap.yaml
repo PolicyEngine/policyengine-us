@@ -323,3 +323,305 @@
     id_aabd: 636
     id_liheap_countable_income: 12_564
     id_liheap: 367
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Avista electric provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    id_liheap_electricity_provider:
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    id_liheap_countable_income:
+    - 40000
+    - 20000
+    - 4000
+    - 40000
+    - 20000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 322
+    - 335
+    - 348
+    - 371
+    - 387
+    - 402
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Rocky Mountain Power electric provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    id_liheap_electricity_provider:
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    id_liheap_countable_income:
+    - 40000
+    - 20000
+    - 4000
+    - 40000
+    - 20000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 407
+    - 424
+    - 441
+    - 461
+    - 481
+    - 500
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Avista gas provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    id_liheap_natural_gas_provider:
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    id_liheap_countable_income:
+    - 40000
+    - 14000
+    - 4000
+    - 40000
+    - 14000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 168
+    - 176
+    - 183
+    - 194
+    - 203
+    - 211
+
+# 1335/24000 < 6%, whereas 1450/24000 >= 6%.
+- name: Provider-specific cost changes the burden group before the benefit lookup.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    id_liheap_electricity_provider:
+    - IDAHO_POWER
+    - AVISTA
+    id_liheap_countable_income:
+    - 24000
+    - 24000
+    id_liheap_income_eligible:
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+  output:
+    id_liheap_estimated_heating_cost:
+    - 1335
+    - 1450
+    id_liheap:
+    - 328
+    - 335
+
+# These are fallback estimates, not published awards for the blank cells.
+- name: Unpublished provider area combinations retain the documented representative estimate.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - NATURAL_GAS
+    id_liheap_electricity_provider:
+    - ROCKY_MOUNTAIN_POWER
+    - AVISTA
+    - UNSPECIFIED
+    id_liheap_natural_gas_provider:
+    - UNSPECIFIED
+    - UNSPECIFIED
+    - AVISTA
+    id_liheap_countable_income:
+    - 4000
+    - 4000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+  output:
+    id_liheap_estimated_heating_cost:
+    - 1335
+    - 1605
+    - 1207
+    id_liheap:
+    - 355
+    - 464
+    - 173
+
+# FY2026 chart's northern electric column and historical Appendix C membership.
+# Current OEMR directory and Inland Power's site confirm company identities.
+- name: Named northern municipal and cooperative companies use the northern award and cost columns.
+  period: 2026
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [BOUNDARY_COUNTY_ID, NEZ_PERCE_COUNTY_ID, IDAHO_COUNTY_ID,
+      KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID, BONNER_COUNTY_ID, BENEWAH_COUNTY_ID,
+      BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    id_liheap_electricity_provider: [BONNERS_FERRY_LIGHT_AND_WATER, CLEARWATER_POWER,
+      IDAHO_COUNTY_LIGHT_AND_POWER, INLAND_POWER_AND_LIGHT, KOOTENAI_ELECTRIC,
+      NORTHERN_LIGHTS, PLUMMER_ELECTRIC, OTHER, UNSPECIFIED]
+    id_liheap_countable_income: [4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    id_liheap_estimated_heating_cost: [1_585, 1_450, 1_585, 1_585, 1_585, 1_585, 1_585, 1_455, 1_455]
+    id_liheap: [402, 348, 402, 402, 402, 402, 402, 410, 410]
+
+# Northern Lights: 1585/25000 is medium burden, whereas the old representative
+# cost of 1455/25000 gives low burden. Both the column and burden must change.
+- name: A smaller northern utility changes the burden group as well as the payment column.
+  period: 2026
+  input:
+    state_code: ID
+    county: BONNER_COUNTY_ID
+    heating_type: ELECTRICITY
+    id_liheap_electricity_provider: NORTHERN_LIGHTS
+    id_liheap_countable_income: 25_000
+    has_heating_expense: true
+  output:
+    id_liheap_estimated_heating_cost: 1_585
+    id_liheap_income_eligible: true
+    id_liheap: 387

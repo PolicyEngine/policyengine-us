@@ -1,0 +1,28 @@
+description: Idaho groups these electricity providers in the northern utilities column under the Low Income Home Energy Assistance Program.
+# The FY2026 chart names the Avista and Northern Utilities column. Its named
+# membership is recovered from Appendix C's historical heating-cost matrix.
+# Current state and utility directories confirm these companies' identities,
+# while current LIHEAP group membership remains a documented historical proxy.
+values:
+  2025-10-01:
+    - AVISTA
+    - BONNERS_FERRY_LIGHT_AND_WATER
+    - CLEARWATER_POWER
+    - IDAHO_COUNTY_LIGHT_AND_POWER
+    - INLAND_POWER_AND_LIGHT
+    - KOOTENAI_ELECTRIC
+    - NORTHERN_LIGHTS
+    - PLUMMER_ELECTRIC
+metadata:
+  unit: list
+  period: year
+  label: Idaho LIHEAP named northern electric utility group
+  reference:
+    - title: Idaho FY2026 LIHEAP heating benefit matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1
+    - title: Historical Idaho LIHEAP Intake Manual, Appendix C, northern utility membership
+      href: https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1
+    - title: Idaho Office of Energy and Mineral Resources utility directory
+      href: https://oemr.idaho.gov/utilities/
+    - title: Inland Power and Light, northern Idaho service
+      href: https://www.inlandpower.com/
