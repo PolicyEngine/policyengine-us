@@ -14,8 +14,10 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
     income from such employment to be required to file a federal return under
     section 6012(a)(1) of the Internal Revenue Code". This is true when the
     person's income from employment, by itself, meets the gross income test
-    of the federal filing requirement for the person's return, as
-    tax_unit_is_required_to_file applies it to a return nobody can claim. As
+    of the federal filing requirement for the person's return: the gross
+    income thresholds of tax_unit_is_required_to_file, without its tests
+    for a filer someone can claim as a dependent and for a spouse who loses
+    the joint-return exception. As
     in the federal gross income, a loss from one source doesn't reduce income
     from another.
 

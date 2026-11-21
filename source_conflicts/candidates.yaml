@@ -3655,7 +3655,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10715
   state: ruled
-  note: Ruled 2026-11-11 for section 6012(f). It is the federal filing requirement in force for 2025, the instructions'
+  note: Ruled 2026-11-11 for section 6012(f) under the statute-first rule (CONTRIBUTING.md#source-conflicts), the
+    reading David Trimmer's review recommended (https://github.com/PolicyEngine/policyengine-us/pull/10715#issuecomment-6748990819).
+    It is the federal filing requirement in force for 2025, the instructions'
     wording points to it, and the literal reading would leave (iii) without effect for 2025, the year from which 2025
     House Bills 40 and 479 apply it. From 2026 section 6012(f) no longer applies, and the model uses section
     6012(a)(1)(A) and (B). The 2025 cases at $15,750 and $15,751 of wages and the blind filer's case at $17,750 in
@@ -3775,7 +3777,8 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10715
   state: ruled
-  note: Ruled 2026-11-11 for the statute. The instructions shorten the statute's words and state no different rule. The
+  note: Ruled 2026-11-11 for the statute, as David Trimmer's review recommended
+    (https://github.com/PolicyEngine/policyengine-us/pull/10715#issuecomment-6748990819). The instructions shorten the statute's words and state no different rule. The
     2025 case with a $5,000 business profit in id_retirement_benefits_deduction_military_employment_eligible.yaml pins
     the reading.
 - id: us-il:2022-rebate-claimed-vs-claimable
