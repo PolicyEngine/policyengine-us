@@ -1,0 +1,14 @@
+- name: By default all military survivor annuities are armed forces survivor annuities.
+  period: 2024
+  input:
+    military_retirement_pay_survivors: 5_000
+  output:
+    armed_forces_retirement_pay_survivors: 5_000
+
+- name: A survivor annuity from a uniformed service outside the armed forces is not an armed forces survivor annuity.
+  period: 2024
+  input:
+    military_retirement_pay_survivors: 5_000
+    military_retirement_pay_is_armed_forces: false
+  output:
+    armed_forces_retirement_pay_survivors: 0

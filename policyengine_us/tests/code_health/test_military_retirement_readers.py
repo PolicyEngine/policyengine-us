@@ -44,6 +44,10 @@ ALLOWED_PYTHON_FILES = {
     "variables/household/income/person/retirement/military_retirement_income.py": (
         "military_retirement_income adds the retiree pay and survivor annuities"
     ),
+    # The armed forces part, which state tax rules read.
+    "variables/household/income/person/retirement/armed_forces_retirement_pay.py": (
+        "armed_forces_retirement_pay keeps the retiree's own armed forces pay"
+    ),
 }
 
 

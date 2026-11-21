@@ -57,3 +57,16 @@
   output:
     ri_military_retirement_subtraction: 20_000
     ri_subtractions: 20_000
+
+- name: Rhode Island leaves retirement pay from a uniformed service outside the armed forces to the general pension modification.
+  period: 2024
+  input:
+    state_code: RI
+    age: 70
+    military_retirement_pay: 10_000
+    military_retirement_pay_is_armed_forces: false
+  output:
+    ri_military_retirement_subtraction: 0
+    # Born 1954, on or before 1958; AGI 10,000 is under the limit; the
+    # 2024 cap of 20,000 does not bind.
+    ri_retirement_income_subtraction: 10_000

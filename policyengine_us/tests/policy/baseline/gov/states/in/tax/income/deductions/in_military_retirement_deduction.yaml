@@ -61,3 +61,38 @@
     military_retirement_pay_survivors: 10_000
   output:
     in_military_retirement_deduction: 6_250 + 0.75 * (10_000 - 6_250)
+
+- name: Indiana does not deduct retirement pay from a uniformed service outside the armed forces before 2025.
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        military_retirement_pay_is_armed_forces: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_military_retirement_deduction: 0
+
+- name: Indiana deducts retirement pay from all uniformed services from 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        military_retirement_pay_is_armed_forces: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 6,250 + 100% of (30,000 - 6,250).
+    in_military_retirement_deduction: 30_000

@@ -97,3 +97,13 @@
     military_retirement_pay_survivors: 10_000
   output:
     nm_armed_forces_retirement_pay_exemption_person: 30_000
+
+- name: New Mexico does not exempt retirement pay from a uniformed service outside the armed forces.
+  period: 2022
+  input:
+    state_code: NM
+    military_retirement_pay: 8_000
+    military_retirement_pay_is_armed_forces: false
+    is_tax_unit_head_or_spouse: true
+  output:
+    nm_armed_forces_retirement_pay_exemption_person: 0

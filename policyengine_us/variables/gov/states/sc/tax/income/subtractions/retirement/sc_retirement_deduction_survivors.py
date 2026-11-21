@@ -36,7 +36,15 @@ class sc_retirement_deduction_survivors(Variable):
         # spouse, not to other beneficiaries of an inherited account.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         surviving_spouse = person("is_surviving_spouse", period)
+        # NOAA and PHS survivor annuities get no 12-6-1171 deduction, so
+        # they count here too.
         retirement_income_survivors = (
-            person("pension_survivors", period) * head_or_spouse * surviving_spouse
+            (
+                person("pension_survivors", period)
+                + person("military_retirement_pay_survivors", period)
+                - person("armed_forces_retirement_pay_survivors", period)
+            )
+            * head_or_spouse
+            * surviving_spouse
         )
         return min_(retirement_income_survivors, max_deduction_allowed)
