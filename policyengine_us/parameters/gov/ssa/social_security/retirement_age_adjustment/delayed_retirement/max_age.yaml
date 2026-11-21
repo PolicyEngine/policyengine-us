@@ -1,0 +1,11 @@
+description: The US stops granting delayed retirement credits for months at or after this age, for increment months in 1984 and later.
+values:
+  1900-01-01: 70
+metadata:
+  unit: year
+  label: Delayed retirement credit maximum age
+  reference:
+    - title: 42 U.S. Code § 402(w)(2)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/402#w_2_A
+    - title: SSA POMS RS 00615.692E - Maximum number of increment months
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300615692
