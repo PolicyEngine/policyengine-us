@@ -1,6 +1,10 @@
-# The person's own section 911 exclusions (Form 2555 line 43). A return with
-# one head or spouse credits the return's gross exclusion to the head; a
-# joint return needs each spouse's own amount.
+# The person's own section 911 exclusions (Form 2555 line 43, lines 36 plus
+# 42). A supplied foreign_earned_income_exclusion_gross_person_reported of
+# zero or more is used as entered; a negative amount means not supplied.
+# Otherwise a return with one head or spouse credits the return's line 43
+# (foreign_earned_income_exclusion_gross, as entered or from the leaves) to
+# the head, and a joint return credits neither spouse. The legacy worksheet
+# amount never stands in.
 
 - name: A single filer's gross exclusion is the head's own.
   period: 2025
@@ -22,6 +26,132 @@
   output:
     foreign_earned_income_exclusion_gross_person: [35_000, 0]
 
+- name: Line 43 leaves out the line 44 deductions and the line 50 housing deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_amount: 10_000
+        foreign_housing_exclusion: 2_000
+        # Line 44, deductions allocable to the excluded income.
+        foreign_earned_income_exclusion_allocable_deductions: 1_000
+        # Line 50, a deduction under section 911(c)(4), not an exclusion.
+        foreign_housing_deduction: 3_000
+    households:
+      household:
+        members: [head]
+  output:
+    # Worksheet line 2c is $10,000 + $2,000 - $1,000 + $3,000 = $14,000.
+    foreign_earned_income_exclusion: 14_000
+    foreign_earned_income_exclusion_gross_person: 12_000
+
+- name: A single filer's entered gross exclusion counts without leaves.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_gross: 10_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 10_000
+
+- name: A negative entered gross exclusion counts as zero.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_gross: -1_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 0
+
+- name: The legacy worksheet amount does not stand in for line 43.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        # Worksheet line 2c, which here is only a line 50 housing deduction.
+        foreign_earned_income_exclusion: 8_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 0
+
+- name: A legacy worksheet amount alone does not count, even where it would equal line 43.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        # Worksheet line 2c equals line 43 when lines 44 and 50 and worksheet
+        # line 2b are zero, but without Form 2555 leaves nothing shows that
+        # they are. A filer who knows line 43 enters it as
+        # foreign_earned_income_exclusion_gross_person_reported.
+        foreign_earned_income_exclusion: 25_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 0
+
+- name: A supplied zero is used, not the return's line 43.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 0
+
+- name: A supplied negative amount means not supplied, so the return's line 43 stands in.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported: -500
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 10_000
+
 - name: A joint return without each spouse's amount credits neither spouse.
   period: 2025
   input:
@@ -40,3 +170,50 @@
         members: [head, spouse]
   output:
     foreign_earned_income_exclusion_gross_person: [0, 0]
+
+- name: A joint return credits each spouse's supplied amount.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported: 20_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 20_000
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    foreign_earned_income_exclusion_gross_person: [20_000, 0]
+
+- name: One return's supplied amount leaves another return's head with that return's line 43.
+  period: 2025
+  input:
+    people:
+      a_head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported: 20_000
+      a_spouse:
+        age: 40
+      b_head:
+        age: 40
+    tax_units:
+      a:
+        members: [a_head, a_spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 20_000
+      b:
+        members: [b_head]
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      a_household:
+        members: [a_head, a_spouse]
+      b_household:
+        members: [b_head]
+  output:
+    foreign_earned_income_exclusion_gross_person: [20_000, 0, 10_000]

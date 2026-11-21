@@ -3,12 +3,13 @@
 # Administration, the Railroad Retirement Board or "the office of management
 # and budget pursuant to title 5", or, "if a person is not within the purview
 # of" any other listed entity, by the person's public employee retirement
-# system or disability plan; or a war veteran with a VA service-connected
-# disability of 10% or more or a VA nonservice-connected disability pension),
-# or a person with a physician-certified permanent disability under section
-# 49-117(7)(b)(iv). An SSDI award and a veteran fully disabled by a
-# service-connected disability show a listed recognition; the SSI disability
-# test, permanent and total disability and is_disabled stand in for one.
+# system or disability plan; or "A disabled veteran of any war engaged in by
+# the United States" with a VA service-connected disability of 10% or more or
+# a VA nonservice-connected disability pension), or a person with a
+# physician-certified permanent disability under section 49-117(7)(b)(iv).
+# A supplied id_retirement_benefits_disability_classification decides. When
+# it is unspecified, an SSDI award (the Social Security Administration's
+# finding) or is_disabled classifies the person; nothing else does.
 
 - name: A person with no disability facts is not classified as disabled.
   period: 2025
@@ -27,32 +28,40 @@
   output:
     id_retirement_benefits_deduction_disabled: true
 
-- name: Meeting the SSI disability test without substantial gainful activity counts.
+- name: Meeting the SSI disability test alone does not classify a person as disabled.
   period: 2025
   input:
     state_code: ID
     age: 45
     meets_ssi_disability_criteria: true
   output:
-    id_retirement_benefits_deduction_disabled: true
+    # The SSI disability test is the model's test, not a finding by the
+    # Social Security Administration. Supply DISABLED for an SSI disability
+    # award.
+    is_ssi_disabled: true
+    id_retirement_benefits_deduction_disabled: false
 
-- name: A veteran fully disabled by a service-connected disability is classified as disabled.
+- name: A veteran fully disabled by a service-connected disability is not classified as disabled without the Idaho classification.
   period: 2025
   input:
     state_code: ID
     age: 45
     is_fully_disabled_service_connected_veteran: true
   output:
-    id_retirement_benefits_deduction_disabled: true
+    # Section 63-701(1)(e) also needs service in a war engaged in by the
+    # United States, which the model doesn't record.
+    id_retirement_benefits_deduction_disabled: false
 
-- name: A permanently and totally disabled person is classified as disabled.
+- name: Permanent and total disability alone does not classify a person as disabled.
   period: 2025
   input:
     state_code: ID
     age: 45
     is_permanently_and_totally_disabled: true
   output:
-    id_retirement_benefits_deduction_disabled: true
+    # 26 U.S.C. 22(e)(3) is a federal tax test, not a recognition 63-701 or
+    # 49-117 lists.
+    id_retirement_benefits_deduction_disabled: false
 
 - name: The general disability input stands for the groups PolicyEngine has no input for.
   period: 2025
@@ -62,6 +71,64 @@
     is_disabled: true
   output:
     id_retirement_benefits_deduction_disabled: true
+
+- name: The supplied classification admits a wartime veteran with a service-connected rating.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_fully_disabled_service_connected_veteran: true
+    id_retirement_benefits_disability_classification: DISABLED
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: A supplied NOT_DISABLED overrides an SSDI award and the general disability input.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    is_disabled: true
+    id_retirement_benefits_disability_classification: NOT_DISABLED
+  output:
+    id_retirement_benefits_deduction_disabled: false
+
+- name: A supplied UNSPECIFIED gives the default.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    id_retirement_benefits_disability_classification: UNSPECIFIED
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: One spouse's supplied classification leaves the other spouse's SSDI default in place.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_disabled: true
+        id_retirement_benefits_disability_classification: NOT_DISABLED
+      spouse:
+        age: 45
+        social_security_disability: 10_000
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_disabled: [false, true]
+    # The spouse is classified as disabled (63-3022A(1)(b)(i)), so the
+    # spouse's $20,000 of military retired pay counts.
+    id_retirement_benefits_deduction_military_eligible_person: [false, true]
+    id_retirement_benefits_deduction: 20_000
 
 - name: Blindness alone does not count.
   period: 2025

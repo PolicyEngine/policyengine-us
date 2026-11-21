@@ -22,35 +22,38 @@ class id_retirement_benefits_deduction_disabled(Variable):
     not within the purview of, and is therefore not recognized as disabled
     by, any other entity listed in this paragraph", by the public employee
     retirement system or disability plan in which the person participates;
-    63-701(1)(e), a disabled veteran of any war whose disability the
-    Department of Veterans Affairs recognizes as service-connected to a
-    degree of 10% or more, or who has a VA pension for nonservice-connected
-    disabilities. Section 49-117(7)(b)(iv) describes a person whose physician
-    certifies a mobility disability with "no expectation for a fundamental or
-    marked change". The Form 39R instructions for 2024 and 2025 list the same
-    groups, without the public employee plan.
+    63-701(1)(e), "A disabled veteran of any war engaged in by the United
+    States" whose disability the Department of Veterans Affairs recognizes
+    as service-connected to a degree of 10% or more, or who has a VA pension
+    for nonservice-connected disabilities. Section 49-117(7)(b)(iv)
+    describes a person whose physician certifies a mobility disability with
+    "no expectation for a fundamental or marked change". The Form 39R
+    instructions for 2024 and 2025 list the same groups, without the public
+    employee plan.
 
-    By default a person is classified as disabled if they receive Social
-    Security disability insurance benefits (an award is the Social Security
-    Administration's finding of disability) or are a veteran fully disabled
-    by a service-connected disability (the model doesn't check
-    63-701(1)(e)'s wartime service). Three more defaults are stand-ins, not
-    recognitions the statute lists. Meeting the SSI disability test of 42
-    U.S.C. 1382c(a)(3) (is_ssi_disabled) and permanent and total disability
-    under 26 U.S.C. 22(e)(3) (is_permanently_and_totally_disabled) stand in
-    for the Social Security Administration's recognition, which the model
-    observes only through a benefit. is_disabled stands in for the groups
-    PolicyEngine has no input for (a VA rating of 10% to 90%, a VA
-    disability pension, a Railroad Retirement or title 5 disability annuity,
-    a public employee plan's finding, a physician's certificate), as it did
-    for this deduction before the variable existed; it can also admit a
-    disability that no listed group covers. Blindness alone doesn't count:
-    63-701(1)(g) lists it as a separate group, not as a disabled person.
+    A supplied id_retirement_benefits_disability_classification (DISABLED or
+    NOT_DISABLED) decides. When it is UNSPECIFIED, the person is classified
+    as disabled if they receive Social Security disability insurance
+    benefits (an award is the Social Security Administration's finding of
+    disability under title 42) or if is_disabled is true. is_disabled stands
+    in for the groups PolicyEngine has no input for, as it did for this
+    deduction before this variable existed; it can also admit a disability
+    that no listed group covers. The model doesn't infer the classification
+    from the SSI disability test or from permanent and total disability
+    under 26 U.S.C. 22(e)(3); neither is a recognition the statute lists.
+    Nor does it infer it from is_fully_disabled_service_connected_veteran:
+    a VA service-connected rating of 10% or more is the recognition
+    63-701(1)(e) lists, but only for "A disabled veteran of any war engaged
+    in by the United States", and the model doesn't record wartime service.
+    Blindness alone doesn't count: 63-701(1)(g) lists it as a separate
+    group, not as a disabled person.
 
-    Set this variable to override the default, for example to false for a
-    disability no listed body has recognized. Once any person has an input
-    for a year, enter one for every head or spouse it applies to: people
-    without an input get false, not the default.
+    Each person's value depends only on their own inputs, apart from Core's
+    carry-over of inputs into later years (see
+    id_retirement_benefits_disability_classification). Supply
+    id_retirement_benefits_disability_classification rather than setting
+    this variable: an input here applies to every person in the simulation,
+    and people without a value get false.
     """
     definition_period = YEAR
     defined_for = StateCode.ID
@@ -62,21 +65,18 @@ class id_retirement_benefits_deduction_disabled(Variable):
     )
 
     def formula(person, period, parameters):
+        classification = person(
+            "id_retirement_benefits_disability_classification", period
+        )
+        values = classification.possible_values
         # 63-701(1)(d): recognized as disabled by the Social Security
-        # Administration under title 42, which a disability insurance award
-        # shows.
+        # Administration under title 42, which the person's own disability
+        # insurance award shows.
         receives_ssdi = person("social_security_disability", period) > 0
-        # 63-701(1)(e): a VA service-connected disability of 10% or more.
-        service_connected = person(
-            "is_fully_disabled_service_connected_veteran", period
+        # The groups PolicyEngine has no input for.
+        legacy = person("is_disabled", period)
+        return where(
+            classification == values.UNSPECIFIED,
+            receives_ssdi | legacy,
+            classification == values.DISABLED,
         )
-        # Stand-ins, not listed recognitions: the SSI disability test and
-        # permanent and total disability for the Social Security
-        # Administration's recognition, and is_disabled for the groups
-        # PolicyEngine has no input for.
-        stand_in = (
-            person("is_ssi_disabled", period)
-            | person("is_permanently_and_totally_disabled", period)
-            | person("is_disabled", period)
-        )
-        return receives_ssdi | service_connected | stand_in

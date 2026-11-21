@@ -4641,7 +4641,8 @@ candidates:
   state: ruled
   note: Ruled 2026-11-08. The model counts gross income from a business or farm (business_gross_income and
     farm_gross_income, Schedule C line 7 and Schedule F line 9, the measure Chart A of the Form 1040 instructions
-    names for gross income from a business), as it counts wages. Without those inputs the net profits
+    names for gross income from a business), as it counts wages. For a person without business_gross_income_reported
+    or farm_gross_income_reported (a negative amount, by default -1), that person's net profits
     (self_employment_income, sstb_self_employment_income, farm_operations_income), each floored at zero, stand in.
     Partnership and S corporation income doesn't count. The wages-only reading would deny the deduction to a
     recipient who earns the same income from a business. The statement of purpose of 2025 House Bill 40, which under Joint Rule 18 is not

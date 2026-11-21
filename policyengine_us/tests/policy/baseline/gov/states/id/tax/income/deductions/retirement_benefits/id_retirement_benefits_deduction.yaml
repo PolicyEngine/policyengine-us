@@ -284,3 +284,58 @@
   output:
     id_retirement_benefits_deduction_relevant_income: 10_000
     id_retirement_benefits_deduction: 10_000
+
+- name: 2024 a 63-year-old with permanent and total disability, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_permanently_and_totally_disabled: true
+  output:
+    # 26 U.S.C. 22(e)(3) is a federal tax test, not a recognition Idaho Code
+    # 63-701 or 49-117 lists.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old with the SSI disability test, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    meets_ssi_disability_criteria: true
+  output:
+    # The SSI disability test is the model's test, not a finding by the
+    # Social Security Administration.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old with a fully disabled service-connected veteran flag, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    # 63-701(1)(e) also needs service in a war engaged in by the United
+    # States, which the model doesn't record.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old veteran with the supplied Idaho classification deducts a public pension.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_fully_disabled_service_connected_veteran: true
+    id_retirement_benefits_disability_classification: DISABLED
+  output:
+    id_retirement_benefits_deduction_disabled: true
+    id_retirement_benefits_deduction_eligible_person: true
+    id_retirement_benefits_deduction: 20_000

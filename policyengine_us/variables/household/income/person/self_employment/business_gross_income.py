@@ -8,17 +8,18 @@ class business_gross_income(Variable):
     unit = USD
     documentation = (
         "Gross income from the person's businesses before business expenses: "
-        "the total of line 7 of each Schedule C, gross receipts less returns "
-        "and cost of goods sold plus other business income, with a negative "
-        "line 7 counted as zero. Chart A of the Form 1040 instructions uses "
-        "this amount as gross income from a business for the filing "
-        "requirement. As with the other income inputs, leave out income "
-        "excluded under section 911. Without an input, the net amounts "
-        "stand in: self_employment_income plus sstb_self_employment_income, "
-        "each floored at zero, which equal gross income only for a business "
-        "with no expenses. Once any person has an input for a year, enter one "
-        "for every person with a business: people without an input get zero, "
-        "not the net amounts."
+        "Schedule C line 7, which Chart A of the Form 1040 instructions uses "
+        "as gross income from a business for the filing requirement. It is "
+        "business_gross_income_reported when that is zero or more. When it "
+        "is negative (its default is -1), the net amounts stand in: "
+        "self_employment_income plus sstb_self_employment_income, each "
+        "floored at zero, which equal gross income only for a business with "
+        "no expenses. Each person's value depends only on their own inputs, "
+        "apart from Core's carry-over of inputs into later years (see "
+        "business_gross_income_reported). "
+        "Supply business_gross_income_reported rather than setting this "
+        "variable: an input here applies to every person in the simulation, "
+        "and people without a value get zero."
     )
     definition_period = YEAR
     reference = (
@@ -31,6 +32,10 @@ class business_gross_income(Variable):
     )
 
     def formula(person, period, parameters):
+        reported = person("business_gross_income_reported", period)
         regular = person("self_employment_income", period)
         sstb = person("sstb_self_employment_income", period)
-        return max_(regular, 0) + max_(sstb, 0)
+        net = max_(regular, 0) + max_(sstb, 0)
+        # A negative amount, such as the default -1, means not supplied,
+        # including after Core carries an earlier year's input forward.
+        return where(reported >= 0, reported, net)

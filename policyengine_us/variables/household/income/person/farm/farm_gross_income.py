@@ -7,15 +7,18 @@ class farm_gross_income(Variable):
     label = "Gross farm income"
     unit = USD
     documentation = (
-        "Gross income from the person's farming before farm expenses: the "
-        "total of line 9 of each Schedule F, with a negative line 9 counted "
-        "as zero. Chart A of the Form 1040 instructions uses this amount as "
-        "gross income from farming for the filing requirement. As with the "
-        "other income inputs, leave out income excluded under section 911. "
-        "Without an input, farm_operations_income floored at zero stands in, "
-        "which equals gross income only for a farm with no expenses. Once any "
-        "person has an input for a year, enter one for every person with a "
-        "farm: people without an input get zero, not farm_operations_income."
+        "Gross income from the person's farming before farm expenses: "
+        "Schedule F line 9, which Chart A of the Form 1040 instructions uses "
+        "as gross income from farming for the filing requirement. It is "
+        "farm_gross_income_reported when that is zero or more. When it is "
+        "negative (its default is -1), farm_operations_income floored at "
+        "zero stands in, which equals gross income only for a farm with no "
+        "expenses. Each person's value depends only on their own inputs, "
+        "apart from Core's carry-over of inputs into later years (see "
+        "farm_gross_income_reported). "
+        "Supply farm_gross_income_reported rather than setting this variable: "
+        "an input here applies to every person in the simulation, and people "
+        "without a value get zero."
     )
     definition_period = YEAR
     reference = (
@@ -28,4 +31,8 @@ class farm_gross_income(Variable):
     )
 
     def formula(person, period, parameters):
-        return max_(person("farm_operations_income", period), 0)
+        reported = person("farm_gross_income_reported", period)
+        net = max_(person("farm_operations_income", period), 0)
+        # A negative amount, such as the default -1, means not supplied,
+        # including after Core carries an earlier year's input forward.
+        return where(reported >= 0, reported, net)

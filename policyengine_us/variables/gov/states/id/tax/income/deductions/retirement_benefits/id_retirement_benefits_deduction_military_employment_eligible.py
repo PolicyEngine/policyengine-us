@@ -19,12 +19,15 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
     for a filer someone can claim as a dependent and for a spouse who loses
     the joint-return exception. Income from employment is gross income as
     section 6012 measures it: wages (Form 1040 line 1a), taxable employer
-    dependent care benefits (line 1e, section 129(a)(2)(B)), gross income
-    from a business or farm (Schedule C line 7 and Schedule F line 9, which
-    Chart A of the Form 1040 instructions names), and foreign earned income
-    and housing amounts the person excludes under section 911 (Form 2555
-    line 43), which section 6012(c) adds back. As in the federal gross
-    income, a loss from one source doesn't reduce income from another.
+    dependent care benefits (Form 2441 line 26 and Form 1040 line 1e: the
+    benefits section 129(a) and (b) don't exclude, with the exclusion
+    limited by the line 16 qualified expenses), gross income from a
+    business or farm (Schedule C line 7 and Schedule F line 9, which Chart
+    A of the Form 1040 instructions names), and foreign earned income and
+    housing amounts the
+    person excludes under section 911 (Form 2555 line 43, not the line 50
+    housing deduction), which section 6012(c) adds back. As in the federal
+    gross income, a loss from one source doesn't reduce income from another.
 
     The statute and the Form 39R line 8e instructions, which repeat its words
     without the section number, leave four points open. PolicyEngine takes
