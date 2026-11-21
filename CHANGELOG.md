@@ -1,3 +1,10 @@
+## [2.152.0] - 2026-11-21
+
+### Added
+
+- Add a contributed reform that removes broad-based categorical eligibility from SNAP, following USDA's November 2026 proposed rule.
+
+
 ## [2.151.5] - 2026-11-21
 
 ### Fixed
