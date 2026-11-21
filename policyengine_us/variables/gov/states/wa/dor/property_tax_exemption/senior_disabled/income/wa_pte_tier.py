@@ -1,6 +1,18 @@
 from policyengine_us.model_api import *
 
 
+def property_tax_exemption_tier(income, county, thresholds):
+    return select(
+        [
+            income <= thresholds.tier_1[county],
+            income <= thresholds.tier_2[county],
+            income <= thresholds.tier_3[county],
+        ],
+        [1, 2, 3],
+        default=0,
+    )
+
+
 class wa_pte_tier(Variable):
     value_type = int
     entity = TaxUnit
@@ -19,12 +31,4 @@ class wa_pte_tier(Variable):
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income.thresholds
-        return select(
-            [
-                income <= p.tier_1[county],
-                income <= p.tier_2[county],
-                income <= p.tier_3[county],
-            ],
-            [1, 2, 3],
-            default=0,
-        )
+        return property_tax_exemption_tier(income, county, p)

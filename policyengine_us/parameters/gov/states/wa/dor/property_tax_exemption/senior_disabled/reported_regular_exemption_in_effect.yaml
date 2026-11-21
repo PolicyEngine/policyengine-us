@@ -1,0 +1,14 @@
+description: PolicyEngine calculates the additional regular levy assessed-value exemption for these verified Washington collection years.
+values:
+  0000-01-01: false
+  2025-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Washington senior property tax reported assessment calculation in effect
+  reference:
+    - title: 2023 Washington Laws chapter 147, section 1
+      href: https://lawfilesext.leg.wa.gov/biennium/2023-24/Htm/Bills/Session%20Laws/House/1355-S.SL.htm
+    - title: Washington DOR 2024–2026 county income thresholds
+      href: https://dor.wa.gov/sites/default/files/2023-08/Income_ThreshTY24-26.pdf
