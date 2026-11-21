@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    borrower_discretionary_income,
+)
 
 
 class income_based_repayment_payment(Variable):
@@ -28,7 +31,12 @@ class income_based_repayment_payment(Variable):
         "to the cent before the small payment adjustment, a modeling choice: "
         "a calculated payment just under $5, such as $4.996, rounds to $5.00 "
         "and becomes $10 rather than $0 under 34 CFR 685.209(g)(1)(iii), "
-        "which sets a payment of less than $5 to $0. A borrower with a Direct "
+        "which sets a payment of less than $5 to $0. A borrower whom another "
+        "taxpayer claims as a dependent pays on their own income "
+        "(income_driven_repayment_dependent_adjusted_gross_income) above the "
+        "plan's multiple of the poverty guideline for a family of one, with "
+        "no spousal proration; the claiming taxpayer's income and loans do "
+        "not enter. A borrower with a Direct "
         "Loan made on or after July 1, 2026 cannot use the plan and owes "
         "nothing under it."
     )
@@ -54,8 +62,15 @@ class income_based_repayment_payment(Variable):
             p.income_based_repayment.new_borrower_rate,
             p.income_based_repayment.rate,
         )
-        discretionary_income = person.tax_unit(
-            "income_based_repayment_discretionary_income", period
+        # A head or spouse uses the tax unit's discretionary income. A
+        # borrower claimed as a tax dependent uses their own income and a
+        # family of one (685.209(b)(9), (b)(10), (e)(1)).
+        discretionary_income = borrower_discretionary_income(
+            person,
+            period,
+            parameters,
+            "income_based_repayment_discretionary_income",
+            p.income_based_repayment.fpg_exempt_rate,
         )
         # 20 U.S.C. 1098e(b)(6)(A) and 685.209(f)(2)(ii), (f)(3)(ii) make the
         # payment the lesser of the income-based amount and the borrower's own

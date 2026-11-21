@@ -267,7 +267,7 @@
     income_contingent_repayment_payment:
       2026-10: 0
 
-- name: Case 11, a tax dependent with loans owes nothing.
+- name: Case 11, a tax dependent with loans and no income of their own owes nothing.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -292,5 +292,41 @@
         members: [person1, person2]
         state_code: TX
   output:
+    # The dependent's payment comes from their own income, which is 0:
+    # 20% x max(0 - 15,960, 0) = 0. The parent's 90,000 does not enter.
     income_contingent_repayment_payment:
       2026-10: [0, 0]
+
+- name: Case 12, a tax dependent pays on their own income, the single table and a family of one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+        income_driven_repayment_dependent_adjusted_gross_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Single factor at 30,000 between 29,819 (66.23%) and 35,104 (71.89%):
+    # 66.23 + 5.66 x 181 / 5,285 = 66.42%. The married or head of household
+    # table would give 63.93%.
+    # 12-year payment 15,000 x 0.005 / (1 - 1.005 ^ -144) = 146.38;
+    # 146.38 x 66.42% = 97.22 < 20% x (30,000 - 15,960) / 12 = 234.
+    income_contingent_repayment_payment:
+      2026-10: [0, 97.22]

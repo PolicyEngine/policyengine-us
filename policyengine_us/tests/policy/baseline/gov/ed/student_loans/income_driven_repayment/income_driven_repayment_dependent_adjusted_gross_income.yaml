@@ -1,0 +1,48 @@
+# Own income of a borrower whom another taxpayer claims as a dependent: 20
+# U.S.C. 1087e(q)(4)(A) for the Repayment Assistance Plan; 34 CFR
+# 685.209(b)(10) and (e)(1) for all five income-driven plans. Without an input
+# it defaults to the dependent's gross income.
+
+- name: Case 1, defaults to the dependent's own gross income, not the return's AGI.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        employment_income: 90_000
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        employment_income: 12_000
+        taxable_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # The head's income is on the return (income_driven_repayment_adjusted_gross_income).
+    income_driven_repayment_dependent_adjusted_gross_income: [0, 12_500]
+
+- name: Case 2, an input for the dependent's own return overrides the default.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        employment_income: 12_000
+        income_driven_repayment_dependent_adjusted_gross_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    income_driven_repayment_dependent_adjusted_gross_income: [0, 10_000]

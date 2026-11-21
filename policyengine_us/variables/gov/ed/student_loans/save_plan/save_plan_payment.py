@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    borrower_discretionary_income,
+)
 
 
 class save_plan_payment(Variable):
@@ -12,7 +15,12 @@ class save_plan_payment(Variable):
         "balance, times discretionary income, prorated to the borrower's "
         "Direct Loans by income_driven_repayment_balance_share (which counts "
         "a joint filer's spouse's loans and both spouses' FFEL loans), then "
-        "with the small payment adjustment. It assumes the borrower is "
+        "with the small payment adjustment. A borrower whom another taxpayer "
+        "claims as a dependent pays on their own income "
+        "(income_driven_repayment_dependent_adjusted_gross_income) above the "
+        "plan's multiple of the poverty guideline for a family of one, with "
+        "no spousal proration; the claiming taxpayer's income and loans do "
+        "not enter. It assumes the borrower is "
         "enrolled in the plan and in active repayment, not in deferment, "
         "forbearance or default. Courts have blocked the SAVE plan, so this is a "
         "counterfactual: it is computed for any period and does not mean the "
@@ -36,7 +44,16 @@ class save_plan_payment(Variable):
         rate = (
             rates.undergraduate * (1 - graduate_share) + rates.graduate * graduate_share
         )
-        discretionary_income = person.tax_unit("save_plan_discretionary_income", period)
+        # A head or spouse uses the tax unit's discretionary income. A
+        # borrower claimed as a tax dependent uses their own income and a
+        # family of one (685.209(b)(9), (b)(10), (e)(1)).
+        discretionary_income = borrower_discretionary_income(
+            person,
+            period,
+            parameters,
+            "save_plan_discretionary_income",
+            p.save_plan.fpg_exempt_rate,
+        )
         balance_share = person(
             "income_driven_repayment_balance_share", period.this_year
         )

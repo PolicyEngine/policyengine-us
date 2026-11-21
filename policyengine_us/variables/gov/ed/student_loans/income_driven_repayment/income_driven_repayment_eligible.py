@@ -7,13 +7,12 @@ class income_driven_repayment_eligible(Variable):
     label = "Eligible for income-driven repayment of federal student loans"
     documentation = (
         "The person has loans that the Income-Based Repayment, SAVE, Pay As "
-        "You Earn and Income-Contingent Repayment plans can repay and is the "
-        "head or spouse of their tax unit. Modeling restriction: a borrower "
-        "claimed as someone else's tax dependent is treated as ineligible and "
-        "owes $0, because their tax unit's adjusted gross income is the "
-        "claiming taxpayer's, not the borrower's own. The law does not "
-        "exclude these borrowers (34 CFR 685.209(c)(2)-(5)); their payment "
-        "would come from their own income."
+        "You Earn and Income-Contingent Repayment plans can repay. A borrower "
+        "whom another taxpayer claims as a dependent is eligible like any "
+        "other: 34 CFR 685.209(c)(2)-(5) do not exclude them. Their payment "
+        "comes from their own income "
+        "(income_driven_repayment_dependent_adjusted_gross_income) and a "
+        "family of one, not from the claiming taxpayer's return."
     )
     definition_period = MONTH
     reference = (
@@ -26,9 +25,4 @@ class income_driven_repayment_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        has_eligible_loans = (
-            person("federal_student_loan_balance", period.this_year) > 0
-        )
-        # Modeling restriction: tax dependents are excluded (see documentation).
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        return has_eligible_loans & is_head_or_spouse
+        return person("federal_student_loan_balance", period.this_year) > 0
