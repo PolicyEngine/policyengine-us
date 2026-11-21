@@ -12,10 +12,15 @@ metadata:
       href: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=24
     - title: COMAR 14.35.21.04D (State-Based Subsidies; payment parameters delegated to the MHBE Board)
       href: https://regs.maryland.gov/us/md/exec/comar/14.35.21
+    - title: "MHBE 2027 Final State Subsidy and Estimated Reinsurance Parameters (Board 8-4-26), young adult subsidy note and 2024-26 Young Adult Subsidy parameters #page 21,34"
+      href: https://www.marylandhbe.com/wp-content/uploads/2026/08/2027-Final-State-Subsidy-and-Estimated-Reinsurance-Parameters.pdf#page=21
+    - title: MHBE Board meeting minutes (8-4-26), motion to continue the 2026 Young Adult Subsidy parameters in PY2027
+      href: https://www.marylandhbe.com/wp-content/uploads/2026/09/MHBE-Board-Meeting-Minutes-8.04.26.pdf#page=8
 brackets:
   # Reduction (in percentage points, as a share) applied at or above each age.
   # Ages under 18: 0; 18-33: 2.5pp; then taper 0.5pp/year: 34 -> 2.0pp,
   # 35 -> 1.5pp, 36 -> 1.0pp, 37 -> 0.5pp; 38 and older: 0.
+  # The Board continued the 2026 schedule unchanged for PY2027.
   - threshold:
       0000-01-01: 0
       2026-01-01: 0

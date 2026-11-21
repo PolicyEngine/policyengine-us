@@ -7,6 +7,10 @@ values:
   # separately identifiable in the model; the modeled without-subsidy population is
   # Group 3, which uses this same amount. Amount set annually by the WAHBE Board.
   2026-01-01: 250
+  # PY2027: $185 PMPM for customers without federal tax credits and cost-sharing
+  # reductions up to 250% FPL, one amount with no income split (memo p.1;
+  # Policy Section 5(1)(b)).
+  2027-01-01: 185
 
 metadata:
   unit: currency-USD
@@ -19,3 +23,7 @@ metadata:
       href: https://www.wahbexchange.org/content/dam/materials/communications/legislative/2025/WAHBE_Final_PY_2026_Cascade_Care_Savings_Maximum_Per_Member_Per_Month_Methodology.pdf#page=7
     - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 5(1)(b)-(c)
       href: https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=14
+    - title: WAHBE, Final Cascade Care Savings amounts for plan year 2027 (memo of 2026-10-01; customers without federal subsidies $185 PMPM)
+      href: https://www.wahbexchange.org/content/dam/materials/communications/legislative/2026/PY-2027-CCS-PMPM-MethodologyMemo.pdf#page=1
+    - title: WAHBE Final PY 2027 Cascade Care Savings Policy, Section 5(1)(b) (one amount for non-federally subsidized populations)
+      href: https://www.wahbexchange.org/content/dam/materials/communications/policy/2026/Final_PY_2027_Cascade_Care_Savings_Policy.pdf#page=6

@@ -1,0 +1,42 @@
+description: Tennessee adds these income sources to federal adjusted gross income under the Property Tax Relief for Elderly Homeowners program.
+values:
+  2025-01-01:
+    # Social Security retirement and disability benefits of the head and
+    # spouse that federal adjusted gross income leaves out. The rule counts
+    # them "after the Medicare deduction", which
+    # tn_elderly_property_tax_relief_income subtracts.
+    - filer_tax_exempt_social_security
+    # Railroad Retirement benefits, which this model's federal adjusted gross
+    # income does not include. Rule 0600-03-.08(4) leaves out only benefits
+    # that must be paid to a nursing home.
+    - railroad_benefits
+    - ssi
+    # Veterans Affairs Aid and Attendance, which the rule leaves out, has no
+    # separate input and stays in veterans_benefits.
+    - veterans_benefits
+    - workers_compensation
+    # "total interest": Bulletin 2019-01 counts tax-exempt interest (Form
+    # 1040 line 2a) as well as taxable interest (line 2b).
+    - tax_exempt_interest_income
+    # "retirement and pension benefits after deduction of healthcare
+    # insurance premiums": the rule's last sentence adds the part not taxable
+    # by IRS standards. Bulletin 2019-01 (page 1) conflicts with that
+    # sentence: it points to Form 1040 line 4b of the 2018 form, the taxable
+    # amount of IRAs, pensions and annuities, which leaves these out. The
+    # rule governs. The deduction of healthcare insurance premiums from these
+    # benefits is not modeled.
+    # Candidate: us-tn:elderly-relief-nontaxable-retirement-benefits until registered.
+    - tax_exempt_pension_income
+    - tax_exempt_retirement_distributions
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee elderly property tax relief income sources added to adjusted gross income
+  reference:
+    - title: Tenn. Comp. R. & Regs. 0600-03-.08(3) and (4)
+      href: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-0600-03-.08
+    - title: Tennessee Comptroller Bulletin 2019-01, Counting Income for Tax Relief and Tax Freeze
+      href: https://www.comptroller.tn.gov/content/dam/cot/pa/documents/manualsandreports/bulletins-and-summaries/Bulletin2019-01CountingIncomeforTaxReliefandTaxFreeze(12-9-2019).pdf#page=1
+    - title: Tennessee Code Annotated Section 67-5-702(a)(2)
+      href: https://comptroller.tn.gov/content/dam/cot/pa/documents/tax-relief/TCA%2067-5-701%20through%2067-5-704.pdf#page=3

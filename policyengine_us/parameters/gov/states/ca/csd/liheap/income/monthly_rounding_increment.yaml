@@ -1,5 +1,5 @@
 description: California publishes monthly income thresholds in increments of this amount under the Low Income Home Energy Assistance Program.
-# Nearest-cent FPG thresholds and truncated SMI thresholds are inferred from the published rows, not express rounding directions.
+# Cent-level FPG thresholds (nearest cent in FY2026, truncated from FY2027) and truncated SMI thresholds are inferred from the published rows, not express rounding directions.
 values:
   2025-10-01: 0.01
 
@@ -8,5 +8,7 @@ metadata:
   period: year
   label: California LIHEAP monthly income rounding increment
   reference:
+    - title: California FY2027 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2027-Final-LIHEAP-State-Plan.pdf#page=197
     - title: California FY2026 LIHEAP State Plan
       href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

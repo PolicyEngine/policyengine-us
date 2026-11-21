@@ -11,6 +11,11 @@ class vt_premium_assistance(Variable):
     reference = (
         "https://legislature.vermont.gov/statutes/section/33/018/01812",
         "https://info.healthconnect.vermont.gov/financial-help",
+        # PDF page 41: HBEE 60.07(c) reduces the APTC applicable percentage
+        # by 1.5% for household income that does not exceed 300% of the FPL,
+        # so VPA equals 1.5% of income whenever the federal credit is
+        # positive.
+        "https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-7-Eligibility-and-Enrollment-Procedures.pdf#page=41",
     )
     documentation = (
         "Vermont state top-up to the federal ACA premium tax credit, an "
@@ -47,9 +52,10 @@ class vt_premium_assistance(Variable):
         # already below 1.5%, the Vermont percentage bottoms out at 0 so the
         # gap factor below becomes the FULL federal percentage (VPA then covers
         # the entire enrollee contribution). This branch is organically
-        # unreachable in the 2026 baseline because the federal applicable
-        # percentage floors at 2.10% > 1.5%, but is retained for robustness and
-        # future contribution schedules.
+        # unreachable in the 2026 and 2027 baselines because the federal
+        # applicable percentage floors at 2.10% (2026) and 2.15% (2027), both
+        # above 1.5%, but is retained for robustness and future contribution
+        # schedules.
         vt_percentage = max_(0, federal_percentage - reduction)
         # Incremental contribution gap between the federal applicable
         # percentage and the lower Vermont percentage.

@@ -11,14 +11,22 @@ class co_premium_assistance_eligible(Variable):
     # in effect, at least one member is eligible for the federal ACA premium tax
     # credit (which embeds on-Marketplace enrollment and the required-
     # contribution income test), and household income is at or below the 400%
-    # federal poverty line ceiling. Regulation 4-2-78 Section 4.C sets a 400%-
-    # inclusive ceiling with no explicit lower bound.
+    # federal poverty line ceiling, on the exact ratio of ACA MAGI to aca_fpg
+    # (the prior-year guideline for the section 36B tax family). Regulation
+    # 4-2-78 Section 4.C sets a 400%-inclusive ceiling with no explicit lower
+    # bound.
     reference = (
         # Amended Regulation 4-2-78 (3 CCR 702-4), Section 5.B and the 400%-
         # inclusive income ceiling in Section 4.C. Adopted via the DOI notice
         # below (which returns HTTP 403 to non-browser user agents).
         "https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view",
         "https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance",
+        # Amended Regulation 4-2-78 (3 CCR 702-4, effective 2026-09-30),
+        # Section 2 (carrier payments pursuant to C.R.S. 10-16-1205(1)(b)(II),
+        # which covers Coloradans who receive the premium tax credit, as does
+        # Section 6.A), Section 3 (2027 benefit year and annually thereafter)
+        # and the 400%-inclusive income ceiling in Section 4.C.
+        "https://doi.colorado.gov/sites/doi/files/documents/Amended%204-2-78%20Concerning%20HIAE%20On-Exchange%20Subsidies_0.pdf#page=1",
         # Enrolled HB25B-1006, Section 10-16-1207(5) (rule authority) and
         # Section 10-16-1205(1)(b)(II) (payment authority).
         "https://content.leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf",
@@ -34,8 +42,17 @@ class co_premium_assistance_eligible(Variable):
         # exclusion, immigration/TIN status, and the required-contribution
         # income test.
         aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
-        # Regulation 4-2-78 Section 4.C caps eligibility at 400% FPL inclusive
-        # and states no lower bound.
-        magi_frac = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_frac <= p.fpl_limit.upper
+        # Regulation 4-2-78 Section 4.C defines an eligible enrollee by
+        # household income "no greater than 400% of the Federal Poverty Level"
+        # and states no lower bound. Test the exact ratio, not the truncated
+        # aca_magi_fraction: truncation maps 400.00%-400.99% to 4.00, which
+        # would admit incomes above 400%. The regulation doesn't define the
+        # guideline year or household size for the poverty line, so this uses
+        # aca_fpg, the line the federal credit required above divides by.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
+        income_eligible = exact_magi_frac <= p.fpl_limit.upper
         return aptc_eligible & income_eligible

@@ -1074,15 +1074,16 @@ programs:
         full_name: Arkansas Low Income Home Energy Assistance Program
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no later manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP cooling
         full_name: Arkansas Low Income Home Energy Assistance Program summer regular cooling assistance
         variable: ar_liheap_cooling
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        verified_years: "2025-2026"
-        notes: FY2025-FY2026 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent; the planned FY2027 increase has no posted matrix. Summer crisis and equipment are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent. Summer crisis and equipment are out of scope.
       - state: AZ
         status: partial
         name: Arizona LIHEAP
@@ -1097,16 +1098,16 @@ programs:
         full_name: California Home Energy Assistance Program utility heating component
         variable: ca_liheap_utility_heating
         parameter_prefix: gov.states.ca.csd.liheap
-        verified_years: "2026"
-        notes: FY2026 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating (FY2026 local plan) and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
       - state: CO
         status: partial
         name: Colorado LEAP
         full_name: Colorado Low-income Energy Assistance Program
         variable: co_leap
         parameter_prefix: gov.states.co.cdhs.leap
-        verified_years: "2026"
-        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
       - state: CT
         status: partial
         name: Connecticut CEAP
@@ -1176,7 +1177,7 @@ programs:
         variable: ri_liheap
         parameter_prefix: gov.states.ri.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement, assuming a qualifying utility account. Earlier years and FY2027 payments reuse FY2026 amounts as unverified estimates; Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
+        notes: FY2026 regular heating, including heat-in-rent grants and the utility enhancement ($350; $400 in FY2027), assuming a qualifying utility account. Earlier years and FY2027 grants reuse FY2026 amounts as unverified estimates; Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -1410,8 +1411,8 @@ programs:
         full_name: New York Home Energy Assistance Program
         variable: ny_heap
         parameter_prefix: gov.states.ny.otda.heap
-        verified_years: "2024-2026"
-        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
+        verified_years: "2024-2027"
+        notes: FY2024-FY2027 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
       - state: OR
         status: partial
         name: Oregon LIHEAP
@@ -2185,7 +2186,7 @@ programs:
     variable: co_premium_assistance
     parameter_prefix: gov.states.co.doi.premium_assistance
     verified_years: "2026-2027"
-    notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
+    notes: PY2026 verified against Amended Regulation 4-2-78 (3 CCR 702-4, effective 2025-11-30) and enrolled HB25B-1006, and PY2027 onward against Amended Regulation 4-2-78 (effective 2026-09-30, $70 first member and $25 each additional member for the 2027 benefit year and annually thereafter) and SB26-178.
 
   - id: ct_covered_connecticut
     name: Covered Connecticut
@@ -2199,14 +2200,27 @@ programs:
     verified_start_year: 2026
     notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
 
+  - id: ct_temporary_premium_assistance
+    name: Connecticut Temporary Premium Assistance
+    full_name: Connecticut Temporary Premium Assistance (Access Health CT)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CT
+    variable: ct_temporary_premium_assistance
+    parameter_prefix: gov.states.ct.ahct.temporary_premium_assistance
+    verified_years: "2026-2027"
+    notes: Plan years 2026 and 2027 only (Public Act 26-68, Section 453(e)). Replaces the lost enhanced federal premium tax credit in full at 100-200% FPL outside Covered Connecticut and by half above 400% up to 500% FPL. Both credits are computed on the benchmark silver plan; the plan metal requirement is not modeled.
+
   - id: nm_premium_assistance
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program
     category: Healthcare
-    # Base Premium Assistance and the Middle Income Household component are
-    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
-    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
-    # Native American Table 2 rates plus the Premium Buy-down.
+    # Base Premium Assistance, the Middle Income Household component and
+    # Puente Health (nm_puente_health_premium_assistance, for lawfully present
+    # non-citizens who lost the federal credit under Public Law 119-21) are
+    # modeled. Not yet modeled: the Native American Table 2 rates and the
+    # Premium Buy-down.
     agency: State
     status: partial
     coverage: NM
@@ -2576,6 +2590,18 @@ programs:
     coverage: Harris County, TX
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
+
+  - id: ri_rimap
+    name: Rhode Island Marketplace Affordability Program
+    full_name: Rhode Island Marketplace Affordability Program (RIMAP)
+    category: Healthcare
+    agency: HealthSource RI
+    status: complete
+    coverage: RI
+    variable: ri_rimap
+    parameter_prefix: gov.states.ri.hsri.rimap
+    verified_years: "2027"
+    notes: Plan Year 2027 parameters adopted by HealthSource RI under R.I. Gen. Laws 42-157.2; later years need newly adopted percentages. The amount assumes a benchmark-priced plan, and the parent and caretaker premium assistance the parameters subtract is not modeled.
 
   - id: vt_premium_assistance
     name: Vermont Premium Assistance

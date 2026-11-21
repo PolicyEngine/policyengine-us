@@ -1,0 +1,99 @@
+# Tax Law 606(e)(6)(A), taxable years before 2025: "only one credit per
+# household and per qualified taxpayer shall be allowed". Qualifying members
+# may divide it any way they agree (2024 IT-214-I line 33); the model gives
+# the household's credit to the tax unit with the largest potential claim.
+# 606(e)(6)(B), from 2025: "only one credit per qualified taxpayer".
+
+- name: Case 1, the tax unit that owns the home and pays its property tax claims the household's credit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 3_000
+      person2:
+        age: 70
+        social_security: 12_000
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # person2's Social Security is not taxable (combined income 6,000 is
+    # under 25,000) and gives no SSI (980 a month countable is over 943), so
+    # household gross income is 3,000 + 12,000 = 15,000. Rate 0.065 ->
+    # threshold 975. 606(e)(1)(E)(i) lets only the owner's return count the
+    # property tax. person1's return has no property tax or rent: 0.
+    # person2's: excess = 1,500 - 975 = 525; 50% = 262.50, capped by the
+    # elderly limit at 14,001-15,000 = 137.
+    ny_real_property_tax_credit_potential: [0, 137]
+    ny_real_property_tax_credit_claimant: [false, true]
+    ny_real_property_tax_credit: [0, 137]
+
+- name: Case 2, a tie goes to the tax unit holding the household head.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        rent: 2_400
+      person2:
+        age: 38
+        employment_income: 8_000
+        rent: 2_400
+        is_household_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Household gross income 16,000 -> threshold 16,000 x 0.065 = 1,040.
+    # Household rent 4,800 -> 25% = 1,200; excess = 160; 50% = 80, capped by
+    # the non-elderly limit at 15,001-16,000 = 45 on either return.
+    ny_real_property_tax_credit_potential: [45, 45]
+    ny_real_property_tax_credit_claimant: [false, true]
+    ny_real_property_tax_credit: [0, 45]
+
+- name: Case 3, from 2025 each tax unit claims its own credit on its own rent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        rent: 2_400
+      person2:
+        age: 38
+        employment_income: 8_000
+        rent: 2_400
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Each return: federal AGI 8,000 -> rate 0.05 (7,001-9,000), threshold
+    # 400. Its own rent 2,400 -> 25% = 600, over 400, so the line 19 gate
+    # passes. Non-elderly Table B at 5,001-9,000: 70.
+    ny_real_property_tax_credit_potential: [70, 70]
+    ny_real_property_tax_credit_claimant: [true, true]
+    ny_real_property_tax_credit: [70, 70]

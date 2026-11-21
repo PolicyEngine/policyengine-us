@@ -1639,3 +1639,215 @@
     # Line 30: 3,532.39 + 3,000 = 6,532.39. The 3,000 took all the head's
     # medical premiums, so line 31 is 0: 100,000 - 6,532.39 = 93,467.61.
     mi_household_resources: 93_467.61
+
+# MI-1040CR lines 18, 20, 25 and 31 (2025 MI-1040 book, pages 26, 32 and 33).
+# MCL 206.510(1): "Income" means the sum of federal adjusted gross income
+# "plus all income specifically excluded or exempt from the computations of
+# the federal adjusted gross income."
+
+- name: IRA and 401(k) distributions are line 18 pension and retirement benefits
+  period: 2025
+  input:
+    # Age 64, past 59 1/2 and before Medicare, so line 31 has no Part B
+    # premium.
+    age: 64
+    employment_income_before_lsr: 20_000
+    taxable_ira_distributions: 10_000
+    taxable_401k_distributions: 5_000
+    state_code: MI
+  output:
+    # Line 14: 20,000.
+    # Line 18: "Enter all annuity, retirement, pension and individual
+    # retirement account (IRA) benefits. This should be the taxable amount
+    # shown on your U.S. Form 1099-R": 10,000 + 5,000 = 15,000.
+    # Line 33: 20,000 + 15,000 = 35,000.
+    mi_household_resources: 35_000
+
+- name: Military retired pay and a survivor annuity are line 18 retirement benefits
+  period: 2025
+  input:
+    # Age 64, before Medicare, so line 31 has no Part B premium.
+    age: 64
+    employment_income_before_lsr: 10_000
+    military_retirement_pay: 15_000
+    military_retirement_pay_survivors: 2_000
+    state_code: MI
+  output:
+    # Line 14: 10,000.
+    # Line 26: "Veterans receiving retirement benefits should enter the
+    # benefits on line 18." Line 18: 15,000 + 2,000 = 17,000.
+    # Line 33: 10,000 + 17,000 = 27,000.
+    # Issue #10890 tracks military retired pay across programs.
+    mi_household_resources: 27_000
+
+- name: A taxable Roth conversion is line 18 income
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    taxable_roth_conversions: 5_000
+    state_code: MI
+  output:
+    # Line 18: "amounts rolled over into a Roth IRA must be included to the
+    # extent included in AGI": 5,000.
+    # Line 33: 20,000 + 5,000 = 25,000.
+    mi_household_resources: 25_000
+
+- name: Forgiven debt included in federal AGI is line 20 income
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    debt_relief: 4_000
+    state_code: MI
+  output:
+    # Line 20: "forgiveness of debt to the extent included in federal AGI
+    # (e.g., mortgage foreclosure)": 4,000. Line 25 takes any part not in
+    # federal AGI, so forgiven debt counts in full either way.
+    # Line 33: 20,000 + 4,000 = 24,000.
+    mi_household_resources: 24_000
+
+- name: Employer dependent care benefits stay in household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 40_000
+    dependent_care_employer_benefits: 3_000
+    state_code: MI
+  output:
+    # Compensation is 40,000, of which 3,000 is dependent care assistance
+    # (W-2 box 10). With no qualifying person, IRC 129 excludes none of it
+    # and the 3,000 is federal AGI (Form 1040 line 1e). Whatever part IRC 129
+    # excludes, total household resources include "Reimbursement from
+    # dependent care and/or medical care spending accounts" (book page 26;
+    # line 25).
+    # Line 14: 40,000 - 3,000 = 37,000, plus the 3,000 of benefits.
+    # Line 33: 40,000.
+    mi_household_resources: 40_000
+
+- name: Dependent care benefits at the IRC 129 cap count once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income_before_lsr: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 5_000
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    # IRC 129(a)(2)(A) excludes up to 5,000 in 2025: the whole 5,000.
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [0, 0]
+    # Line 14: wages less the benefits, 60,000 - 5,000 = 55,000.
+    # Line 25: the 5,000 of dependent care reimbursement.
+    # Line 33: 55,000 + 5,000 = 60,000.
+    mi_household_resources: 60_000
+
+- name: Dependent care benefits above the IRC 129 cap count once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income_before_lsr: 60_000
+        dependent_care_employer_benefits: 5_001
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 5_001
+        tax_unit_childcare_expenses: 5_001
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    # IRC 129 excludes 5,000; the 1 above the cap is federal AGI (Form 1040
+    # line 1e).
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [1, 0]
+    # Line 14: 60,000 - 5,001 = 54,999. The benefits count once, taxable
+    # part included: 54,999 + 5,001 = 60,000.
+    mi_household_resources: 60_000
+
+- name: Survivor benefits other than Social Security are household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    survivor_benefits: 6_000
+    state_code: MI
+  output:
+    # Line 18 ("all annuity, retirement, pension ... benefits") or line 25
+    # ("Death benefits paid by or on behalf of an employer"): 6,000.
+    # Line 33: 20,000 + 6,000 = 26,000.
+    mi_household_resources: 26_000
+
+- name: After-tax premiums reported without Medicare Part B come off on line 31
+  period: 2025
+  input:
+    employment_income_before_lsr: 30_000
+    health_insurance_premiums_without_medicare_part_b: 1_200
+    state_code: MI
+  output:
+    # MCL 206.510(1): a person "may deduct from income the amount that person
+    # paid in premiums in the tax year for that insurance plan for the
+    # person's family". The premiums are in the decomposed input, which
+    # medical_expense_health_insurance_premiums reads when the direct
+    # health_insurance_premiums input is zero.
+    # Line 14: 30,000. Line 31: 1,200.
+    # Line 33: 30,000 - 1,200 = 28,800.
+    mi_household_resources: 28_800
+
+- name: A direct premium input replaces the decomposed premiums on line 31
+  period: 2025
+  input:
+    employment_income_before_lsr: 30_000
+    health_insurance_premiums: 2_000
+    health_insurance_premiums_without_medicare_part_b: 1_200
+    state_code: MI
+  output:
+    # The direct input describes the same premiums another way, not an
+    # extra expense: line 31 is 2,000, not 3,200.
+    # Line 33: 30,000 - 2,000 = 28,000.
+    mi_household_resources: 28_000
+
+- name: A Medicare Part B premium the enrollee pays comes off on line 31
+  period: 2025
+  input:
+    age: 70
+    social_security_retirement: 30_000
+    state_code: MI
+  output:
+    # Line 21: gross benefits of 30,000. Line 31 holds the Part B premium,
+    # medical insurance the enrollee pays (page 33): the 2025 standard
+    # premium of 185 a month, 185 x 12 = 2,220. Countable income for the
+    # Medicare Savings Programs, 30,000 / 12 - 20 = 2,480 a month, is above
+    # 135% of the poverty guideline (15,650 x 1.35 / 12 = 1,760.63), so no
+    # program pays it. Whether the premium is withheld from benefits (and
+    # netted on line 21) or billed, it comes off once.
+    # Line 33: 30,000 - 2,220 = 27,780.
+    mi_household_resources: 27_780
+
+- name: A Part B premium a Medicare Savings Program pays does not come off line 31
+  period: 2025
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: MI
+  output:
+    # Countable income, 12,000 / 12 - 20 = 980 a month, is below 100% of the
+    # 2025 poverty guideline (15,650 / 12 = 1,304.17) and the person has no
+    # assets, so the program pays the standard Part B premium and the
+    # enrollee pays none (MCL 206.510(1) deducts premiums the person paid).
+    # Line 21: 12,000. Line 31: 0. Line 33: 12,000.
+    mi_household_resources: 12_000

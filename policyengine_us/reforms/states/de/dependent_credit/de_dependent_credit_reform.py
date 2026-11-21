@@ -175,7 +175,7 @@ def create_de_dependent_credit_reform_fn(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
