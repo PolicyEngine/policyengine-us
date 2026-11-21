@@ -70,6 +70,25 @@
   output:
     id_retirement_benefits_deduction_military_eligible_person: true
 
+- name: 2025 a 45-year-old receiving Social Security disability benefits qualifies.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2025 the Idaho disability classification overrides the general disability input.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_disabled: true
+    id_retirement_benefits_deduction_disabled: false
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
 - name: 2025 a 45-year-old whose wages require a federal return qualifies.
   period: 2025
   input:

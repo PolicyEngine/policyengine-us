@@ -160,10 +160,13 @@
   input:
     people:
       retiree:
-        age: 66
+        # Aged 63, so the pay counts under 63-3022A(1)(b)(ii), and too young
+        # for the Medicare premiums that id_subtractions would otherwise
+        # include.
+        age: 63
         military_retirement_pay: 30_000
       spouse:
-        age: 66
+        age: 63
     marital_units:
       couple:
         members: [retiree, spouse]
@@ -179,7 +182,10 @@
         members: [retiree, spouse]
         state_code: ID
   output:
+    id_retirement_benefits_deduction_relevant_income: [30_000, 0]
     id_retirement_benefits_deduction: [0, 0]
+    # Idaho Code 63-3022A(2)(e): nothing comes off either return.
+    id_subtractions: [0, 0]
 
 - name: 2025 an unremarried widow under 62 without a job or disability cannot deduct survivor benefits.
   period: 2025
@@ -190,6 +196,40 @@
     military_retirement_pay_survivors: 25_000
   output:
     id_retirement_benefits_deduction: 0
+    id_subtractions: 0
+
+- name: 2025 a working unremarried widow under 62 deducts survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 50
+    is_surviving_spouse: true
+    employment_income: 20_000
+    military_retirement_pay_survivors: 25_000
+  output:
+    # Idaho Code 63-3022A(1)(b)(iii) applies to the unremarried widow or
+    # widower as to the member, and $20,000 of wages exceeds the $15,750
+    # single threshold. IDAPA 35.01.01.130.02 names age 65, or 62 and
+    # disabled, for survivors whose deceased spouse wasn't eligible, without
+    # making those the only routes.
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction: 25_000
+    id_subtractions: 25_000
+
+- name: 2025 a 45-year-old receiving Social Security disability benefits deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    military_retirement_pay: 20_000
+  output:
+    # The SSDI award is recognition as disabled by the Social Security
+    # Administration (Idaho Code 63-701(1)(d)), which 63-3022A(4) adopts.
+    # The model reduces the cap by Social Security retirement benefits only.
+    id_retirement_benefits_deduction_disabled: true
+    id_retirement_benefits_deduction: 20_000
+    id_subtractions: 20_000
 
 - name: 2025 an unremarried widow aged 62 deducts survivor benefits.
   period: 2025

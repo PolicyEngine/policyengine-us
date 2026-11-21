@@ -17,9 +17,14 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
     of the federal filing requirement for the person's return: the gross
     income thresholds of tax_unit_is_required_to_file, without its tests
     for a filer someone can claim as a dependent and for a spouse who loses
-    the joint-return exception. As
-    in the federal gross income, a loss from one source doesn't reduce income
-    from another.
+    the joint-return exception. Income from employment is gross income as
+    section 6012 measures it: wages (Form 1040 line 1a), taxable employer
+    dependent care benefits (line 1e, section 129(a)(2)(B)), gross income
+    from a business or farm (Schedule C line 7 and Schedule F line 9, which
+    Chart A of the Form 1040 instructions names), and foreign earned income
+    and housing amounts the person excludes under section 911 (Form 2555
+    line 43), which section 6012(c) adds back. As in the federal gross
+    income, a loss from one source doesn't reduce income from another.
 
     The statute and the Form 39R line 8e instructions, which repeat its words
     without the section number, leave four points open. PolicyEngine takes
@@ -34,14 +39,15 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
        age. Applying the (a)(1) thresholds to 2025 would also admit income
        equal to the threshold and leave out blindness, and a literal reading
        would admit nobody for 2025, when (a)(1) requires no return.
-    2. Self-employment. Business and farm profits count as income from
-       employment, as wages do.
+    2. Self-employment. Gross income from a business or farm counts as
+       income from employment, as wages do.
     3. Joint returns. The person's own income from employment is compared
        with the joint return's threshold, whatever the spouse earns. Section
        6012 itself combines the spouses' gross income.
     4. Self-employment tax returns. Section 6017 requires a return from an
        individual with $400 of net earnings from self-employment. The statute
-       names section 6012(a)(1), so that requirement doesn't count here.
+       names section 6012(a)(1), so that requirement doesn't count here:
+       gross income from a business must meet the section 6012 threshold.
     """
     definition_period = YEAR
     defined_for = StateCode.ID
@@ -49,6 +55,9 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
         "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/",
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45",
         "https://www.law.cornell.edu/uscode/text/26/6012",
+        # Chart A: gross income from a business is Schedule C line 7 or
+        # Schedule F line 9.
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=9",
     )
 
     def formula(person, period, parameters):
@@ -62,8 +71,7 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
             )
         employed = employment_income > 0
 
-        # The thresholds tax_unit_is_required_to_file applies to a return
-        # nobody can claim, for the person's own return.
+        # Federal gross income thresholds for the person's tax unit.
         standard_deduction_threshold, basic_threshold = (
             section_6012_gross_income_thresholds(person.tax_unit, period, parameters)
         )

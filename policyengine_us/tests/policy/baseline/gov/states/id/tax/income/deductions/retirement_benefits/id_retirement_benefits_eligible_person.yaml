@@ -37,3 +37,15 @@
     is_tax_unit_head_or_spouse: true
   output:
     id_retirement_benefits_deduction_eligible_person: true
+
+- name: Idaho 63-year-old receiving Social Security disability benefits is classified as disabled.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    social_security_disability: 12_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    # Idaho Code 63-3022A(4) adopts 63-701(1)(d): recognized as disabled by
+    # the Social Security Administration.
+    id_retirement_benefits_deduction_eligible_person: true

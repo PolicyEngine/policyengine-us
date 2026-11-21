@@ -1,0 +1,96 @@
+# Idaho Code 63-3022A(4): "disabled" means a disabled person described in
+# section 63-701 (recognized as disabled by the Social Security
+# Administration, the Railroad Retirement Board or "the office of management
+# and budget pursuant to title 5", or, "if a person is not within the purview
+# of" any other listed entity, by the person's public employee retirement
+# system or disability plan; or a war veteran with a VA service-connected
+# disability of 10% or more or a VA nonservice-connected disability pension),
+# or a person with a physician-certified permanent disability under section
+# 49-117(7)(b)(iv). An SSDI award and a veteran fully disabled by a
+# service-connected disability show a listed recognition; the SSI disability
+# test, permanent and total disability and is_disabled stand in for one.
+
+- name: A person with no disability facts is not classified as disabled.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+  output:
+    id_retirement_benefits_deduction_disabled: false
+
+- name: Social Security disability insurance benefits show recognition by the Social Security Administration.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: Meeting the SSI disability test without substantial gainful activity counts.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    meets_ssi_disability_criteria: true
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: A veteran fully disabled by a service-connected disability is classified as disabled.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: A permanently and totally disabled person is classified as disabled.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_permanently_and_totally_disabled: true
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: The general disability input stands for the groups PolicyEngine has no input for.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_disabled: true
+  output:
+    id_retirement_benefits_deduction_disabled: true
+
+- name: Blindness alone does not count.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_blind: true
+  output:
+    # Section 63-701(1)(g) lists blindness as a group of its own, not as a
+    # disabled person, and the Form 39R list of who is classified as
+    # disabled leaves it out.
+    id_retirement_benefits_deduction_disabled: false
+
+- name: Social Security survivor benefits are not a finding of disability.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_survivors: 10_000
+  output:
+    id_retirement_benefits_deduction_disabled: false
+
+- name: Veterans benefits alone do not show a disability rating.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    veterans_benefits: 10_000
+  output:
+    # veterans_benefits combines disability compensation with pensions,
+    # survivor benefits and education benefits.
+    id_retirement_benefits_deduction_disabled: false

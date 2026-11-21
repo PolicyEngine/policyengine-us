@@ -3669,7 +3669,7 @@ candidates:
     type: tax
   question: Idaho Code 63-3022A(1)(b)(iii) admits the military retirement benefits of a recipient who "Was employed
     during the tax year and received sufficient income from such employment to be required to file a federal return".
-    Does a business or farm profit count as income from such employment, or do wages alone?
+    Does income from a business or farm count as income from such employment, or do wages alone?
   sources:
   - kind: statute
     citation: Idaho Code 63-3022A(1)(b)(iii)
@@ -3681,13 +3681,14 @@ candidates:
     citation: 26 U.S.C. 6012(a)(1) and (f)
     url: https://www.law.cornell.edu/uscode/text/26/6012
   readings:
-    statute: A self-employed recipient is employed, and a business or farm profit is income from that employment.
-      Section 63-3022A doesn't define "employed", and the gross income test it borrows from section 6012 counts
-      business and farm income.
+    statute: A self-employed recipient is employed, and gross income from a business or farm is income from that
+      employment. Section 63-3022A doesn't define "employed", and the gross income test it borrows from section 6012
+      counts business and farm income, measured before business expenses (Schedule C line 7, Schedule F line 9).
     other: Only an employee is employed, so wages alone count. The Form 39R instructions repeat the statute's words and
       take neither side.
-  example: In 2025 a single recipient aged 45 with a $20,000 business profit and $30,000 of military retired pay deducts
-    $30,000 when the profit counts, since $20,000 exceeds the $15,750 threshold, and $0 on the wages-only reading.
+  example: In 2025 a single recipient aged 45 with $20,000 of gross income from a business (Schedule C line 7) and
+    $30,000 of military retired pay deducts $30,000 when that income counts, since $20,000 exceeds the $15,750
+    threshold, and $0 on the wages-only reading.
   pe_us:
     follows: statute
     code:
@@ -3696,13 +3697,16 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10715
   state: ruled
-  note: Ruled 2026-11-08. The model counts wages (irs_employment_income) and business and farm profits
-    (self_employment_income, sstb_self_employment_income, farm_operations_income), each floored at zero. Partnership
-    and S corporation income doesn't count. The wages-only reading would deny the deduction to a recipient who earns
-    the same income from a business. The statement of purpose of 2025 House Bill 40, which under Joint Rule 18 is not
+  note: Ruled 2026-11-08. The model counts gross income from a business or farm (business_gross_income and
+    farm_gross_income, Schedule C line 7 and Schedule F line 9, the measure Chart A of the Form 1040 instructions
+    names for gross income from a business), as it counts wages. Without those inputs the net profits
+    (self_employment_income, sstb_self_employment_income, farm_operations_income), each floored at zero, stand in.
+    Partnership and S corporation income doesn't count. The wages-only reading would deny the deduction to a
+    recipient who earns the same income from a business. The statement of purpose of 2025 House Bill 40, which under Joint Rule 18 is not
     an expression of legislative intent, describes "undisabled veterans under age 62 who are also employed and earn
-    sufficient income to owe federal income taxes". Removing three entries from income_sources.yaml gives the
-    wages-only reading.
+    sufficient income to owe federal income taxes". Removing business_gross_income and farm_gross_income from
+    income_sources.yaml gives the wages-only reading, apart from excluded foreign self-employment income, which
+    foreign_earned_income_exclusion_gross_person (Form 2555 line 43) still carries.
 - id: us-id:military-retirement-employment-joint-threshold
   program: income-tax
   years:
@@ -3767,9 +3771,9 @@ candidates:
       test, and net earnings of $400 don't meet that test.
     other: The instructions' words, "required to file a federal return", could reach any federal return requirement,
       section 6017's included.
-  example: In 2025 a single recipient aged 45 with a $5,000 business profit and $30,000 of military retired pay deducts $0
-    under the statute, because $5,000 doesn't exceed $15,750. If section 6017's requirement counted, the recipient
-    would deduct $30,000.
+  example: In 2025 a single recipient aged 45 with $5,000 of gross income from a business, no business expenses and
+    $30,000 of military retired pay deducts $0 under the statute, because $5,000 doesn't exceed $15,750. If section
+    6017's requirement counted, the recipient would deduct $30,000.
   pe_us:
     follows: statute
     code:
@@ -3779,8 +3783,68 @@ candidates:
   state: ruled
   note: Ruled 2026-11-11 for the statute, as David Trimmer's review recommended
     (https://github.com/PolicyEngine/policyengine-us/pull/10715#issuecomment-6748990819). The instructions shorten the statute's words and state no different rule. The
-    2025 case with a $5,000 business profit in id_retirement_benefits_deduction_military_employment_eligible.yaml pins
-    the reading.
+    2025 case with $5,000 of gross business income in
+    id_retirement_benefits_deduction_military_employment_eligible.yaml pins the reading.
+- id: us-id:military-retirement-survivor-routes
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: From 2025, Idaho Code 63-3022A(1)(b) counts military retirement benefits paid "to a retired member of the
+    military services of the United States, or the unremarried widow or widower of such member, who" is classified
+    as disabled, has reached 62, or meets the employment test. IDAPA 35.01.01.130.02, dated 4-6-23, says such a
+    survivor "who is sixty-five (65) or older, or sixty-two (62) and disabled, is eligible for the deduction, even
+    though the deceased spouse was not eligible at the time of death", and the 2025 Form 39R instructions' survivor
+    paragraph refers to "the age/disability requirements". Does an unremarried survivor qualify through the
+    statute's routes, including the employment test under 62, or only through the rule's age and disability
+    conditions?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3022A(1)(b), as amended by 2025 House Bills 40 and 479
+    url: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+  - kind: statute
+    citation: 2025 House Bill 40, section 2, file page 5
+    url: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0040.pdf#page=5
+  - kind: regulation
+    citation: IDAPA 35.01.01.130.02, PDF page 22
+    url: https://files.dfm.idaho.gov/dfm-admin-website/rules/current/35/350101.pdf#page=22
+  - kind: instructions
+    citation: 2025 Form 39R instructions, line 8e and the Part One survivor paragraph, PDF pages 45-46
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  readings:
+    statute: The statute's three tests apply to the survivor as to the member, since "who" follows both. House Bill 40,
+      section 2 (file page 5), the first 2025 text, which House Bill 479 restated as (1)(b)(i)-(iii), says so plainly;
+      it admits the benefits "regardless of the age or disability classification of the retired member or of the
+      unremarried widow or widower", provided that "a person receiving such retirement benefits who is not disabled
+      and has not attained the age of sixty-two (62) years" was employed. The rule and the instructions can stand
+      with it. Rule 130.02 states a sufficient condition, adopted before the 2025
+      amendment, to settle that a survivor qualifies "even though the deceased spouse was not eligible at the time
+      of death"; it doesn't say only those survivors qualify, and every survivor it admits, being at least 62, also
+      meets (1)(b)(ii). In the instructions, line 8e lists the three tests for retired service members; the
+      survivor paragraph, which says a survivor "might be eligible" if they meet the age and disability
+      requirements, sits in Part One of the two-part qualification "for all other retirees", whose Part Two lists
+      civil service, firefighter and police benefits but not military ones.
+    other: Read rule 130.02 and the survivor paragraph as the only routes for a survivor, so an unremarried widow or
+      widower of a military retiree qualifies only at 65, or at 62 with a disability.
+  example: In 2025 an unremarried widow aged 50 with $20,000 of wages and $25,000 of military survivor benefits deducts
+    $25,000 under the statute, since her wages exceed the $15,750 single threshold, and $0 if the rule's conditions
+    were the only routes. A widow aged 62 without a disability deducts her benefits under (1)(b)(ii) and would deduct
+    nothing under the exclusive reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction_military_eligible_person.py
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_eligible_military_retirement_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10715
+  state: ruled
+  note: Ruled 2026-11-21 for the statute under the statute-first rule (CONTRIBUTING.md#source-conflicts). Read as a
+    sufficient condition, the rule doesn't flatly contradict the amended statute, so the reading needs no referral
+    to the project lead; read as exclusive, it would, and the project lead would decide. The 2025 cases in
+    id_retirement_benefits_deduction.yaml pin the reading, among them the working widow aged 50 and the widow aged
+    62, who each deduct $25,000, and the widow aged 50 with no job or disability, who deducts nothing. Section
+    63-3022A is in the Axiom corpus; the rule and the instructions pages are captured in
+    source_conflicts/sources/us-id/idapa-35-01-01-130-2023-p22-23.txt and form-39r-instructions-2025-p45-46.txt.
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:

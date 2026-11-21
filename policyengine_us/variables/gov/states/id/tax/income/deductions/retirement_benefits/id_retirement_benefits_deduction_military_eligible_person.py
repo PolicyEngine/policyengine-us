@@ -9,11 +9,13 @@ class id_retirement_benefits_deduction_military_eligible_person(Variable):
     Idaho Code 63-3022A(1)(b) lets a retired member of the military, or the
     member's unremarried widow or widower, count military retirement benefits
     toward the retirement benefits deduction if the recipient is classified
-    as disabled, has reached age 62 by the end of the tax year, or was
-    employed during the tax year with enough income from that employment to
-    have to file a federal return. Before 2025 these benefits had the age test
-    of the other retirement benefits in 63-3022A(1): age 65, or age 62 and
-    classified as disabled. The age parameters carry both rules.
+    as disabled (63-3022A(4), id_retirement_benefits_deduction_disabled), has
+    reached age 62 by the end of the tax year, or was employed during the tax
+    year with enough income from that employment to have to file a federal
+    return. The three tests apply to a widow or widower who receives the
+    benefits as they do to the member. Before 2025 these benefits had the age
+    test of the other retirement benefits in 63-3022A(1): age 65, or age 62
+    and classified as disabled. The age parameters carry both rules.
     """
     definition_period = YEAR
     defined_for = StateCode.ID
@@ -29,7 +31,7 @@ class id_retirement_benefits_deduction_military_eligible_person(Variable):
             period
         ).gov.states.id.tax.income.deductions.retirement_benefits.military
         age_threshold = where(
-            person("is_disabled", period),
+            person("id_retirement_benefits_deduction_disabled", period),
             p.age_eligibility.disabled,
             p.age_eligibility.main,
         )
