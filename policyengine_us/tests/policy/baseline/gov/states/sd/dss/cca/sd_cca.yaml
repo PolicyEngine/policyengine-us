@@ -557,7 +557,7 @@
     # The weekly infant rate gives $180 * 52 / 12 = $780.
     sd_cca: 780
 
-- name: Case 20, The model pays zero before the first sourced hourly schedule.
+- name: Case 20, The model starts calculating hourly payments in July 2024.
   period: 2024-06
   absolute_error_margin: 0.01
   input:
@@ -588,7 +588,8 @@
         county_str:
           2024: MINNEHAHA_COUNTY_SD
   output:
-    # No sourced schedule covers June 2024, so hourly availability remains false.
+    # June 2024 has a rate ceiling, and the payment gate remains false.
+    sd_cca_hourly_rate: [0, 3.2]
     sd_cca: 0
 
 - name: Case 21, DSS pays hourly rates from July 2024.
