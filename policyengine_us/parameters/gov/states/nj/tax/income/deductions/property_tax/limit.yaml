@@ -14,6 +14,17 @@ metadata:
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=32
     - title: 2025 NJ-1040 Instructions (Worksheet H, Line 2)
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=32
+    - title: "P.L. 2009, c.69, sections 2 and 5 #page 2-4"
+      href: https://pub.njleg.gov/bills/2008/PL09/69_.PDF#page=2
+    - title: "2016 Division of Taxation annual report, property tax deduction #page 34,47"
+      href: https://www.nj.gov/treasury/taxation/pdf/annual/2016.pdf#page=34
+    - title: 2017 NJ-1040 instructions, Worksheet G, line 2
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2017/1040i.pdf#page=36
+    - title: P.L. 2018, c.45, sections 1-3 and 12
+      href: https://pub.njleg.gov/bills/2018/AL18/45_.HTM
 
 values:
+  # Earliest model year; the deduction predates 2015.
+  2015-01-01: 10_000
+  2018-01-01: 15_000
   2021-01-01: 15_000
