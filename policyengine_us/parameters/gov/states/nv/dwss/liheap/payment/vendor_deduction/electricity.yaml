@@ -1,0 +1,53 @@
+description: Nevada deducts this annual service fee amount from the electricity bill of each electric vendor's customers when it measures energy cost under the Low Income Home Energy Assistance Program.
+# Appendix A lists these amounts under "Use deductions below unless vendor
+# provides usage only". NV Energy reports usage only, which Appendix A prices
+# with unit charges, so no dollar deduction is published for it. A bill from
+# NV Energy, another vendor or an unreported vendor keeps its service fee.
+ALAMO_POWER_DISTRICT:
+  2025-07-01: 380.04
+  2026-07-01: 420
+BOULDER_CITY:
+  2025-07-01: 150
+CALIENTE_PUBLIC_UTILITY:
+  2025-07-01: 114
+CITY_OF_FALLON:
+  2025-07-01: 300
+  2026-07-01: 318.6
+HARNEY_ELECTRIC:
+  2025-07-01: 326.4
+  2026-07-01: 336
+LINCOLN_COUNTY_POWER:
+  2025-07-01: 240
+MT_WHEELER_POWER:
+  2025-07-01: 258
+  2026-07-01: 456
+OVERTON_POWER:
+  2025-07-01: 388.8
+  2026-07-01: 436.8
+RAFT_RIVER_ELECTRIC:
+  2025-07-01: 174
+  2026-07-01: 222
+VALLEY_ELECTRIC:
+  2025-07-01: 420
+  2026-07-01: 480
+WELLS_RURAL_ELECTRIC:
+  2025-07-01: 406.68
+  2026-07-01: 417.6
+NV_ENERGY:
+  2025-07-01: 0
+OTHER:
+  2025-07-01: 0
+UNSPECIFIED:
+  2025-07-01: 0
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Nevada LIHEAP electric vendor service fee deduction
+  breakdown:
+    - nv_liheap_electricity_provider
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Section 507 and Appendix A #page 37,112"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=37
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Section 507 and Appendix A #page 37,112"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=37
