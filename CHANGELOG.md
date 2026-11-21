@@ -1,3 +1,10 @@
+## [2.152.1] - 2026-11-21
+
+### Changed
+
+- Update Arkansas LIHEAP to the FY2027 benefit matrices, income bands and additional-member income limit amount.
+
+
 ## [2.152.0] - 2026-11-21
 
 ### Added
