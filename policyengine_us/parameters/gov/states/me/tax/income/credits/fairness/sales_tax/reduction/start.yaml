@@ -6,8 +6,10 @@ metadata:
     # Section 5403(5)(C) indexes the statutory thresholds by Maine's chained
     # CPI for the 12 months ending June 30. The model has no Maine index, so
     # later years project from the 2025 values with gov.irs.uprating, which
-    # keeps main's projections; projecting from the rounded 2026 values would
-    # pull them down. Explicit values still take precedence.
+    # keeps main's projections. Using the explicit 2026 values as the anchor
+    # would raise some later single thresholds and lower some later head of
+    # household, joint and surviving spouse thresholds. Explicit values still
+    # take precedence.
     base:
       period: 2025
     rounding:
