@@ -1,3 +1,10 @@
+## [2.152.8] - 2026-11-21
+
+### Fixed
+
+- Massachusetts Senior Circuit Breaker total income now starts from Massachusetts AGI, so deductions allowed in reaching AGI reduce it, and adds back capital losses, U.S. obligation interest, the 2021 unemployment deduction, tax-exempt retirement account distributions, EAEDC, workers' compensation and tax-exempt disability pay. Dependents' dividends and capital gains stay out, and a business or rental loss no longer offsets dividends or capital gains.
+
+
 ## [2.152.7] - 2026-11-21
 
 ### Changed
