@@ -20,3 +20,26 @@
     ca_itemized_deductions: 49_132.18
   output:
     ca_itemized_deductions_limitation: 8_867.82
+
+- name: California standard filers restore no potential itemized limitation on Schedule P
+  period: 2025
+  input:
+    state_code: CA
+    ca_standard_deduction: 5_706
+    ca_itemized_deductions_pre_limitation: 7_000
+    ca_itemized_deductions: 5_000
+    ca_agi: 400_000
+  output:
+    ca_deductions: 5_706
+    ca_itemized_deductions_limitation: 0
+    ca_pre_exemption_amti: 400_000
+
+- name: Equal state deductions keep the standard method for regular tax and AMT
+  period: 2025
+  input:
+    state_code: CA
+    ca_standard_deduction: 5_706
+    ca_itemized_deductions_pre_limitation: 7_000
+    ca_itemized_deductions: 5_706
+  output:
+    ca_itemized_deductions_limitation: 0
