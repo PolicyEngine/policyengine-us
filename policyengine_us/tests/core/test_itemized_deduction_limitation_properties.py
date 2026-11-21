@@ -54,11 +54,10 @@ deduction's taxable income without regard to section 68. The tests check:
     itemized deductions before section 68, and the reduction nets it out of
     leg (2), whether the itemization choice is set or calculated.
 
-PolicyEngine deducts gambling losses outside
-total_itemized_taxable_income_deductions (wagering_losses_deduction), so they
-never enter the limited base here; that is a model limitation, not the law
-from 2026 (#10070). They are not generated, except that test 9 checks they
-leave section 68(a)(2)'s taxable income unchanged.
+Gambling losses (wagering_losses_deduction, Schedule A line 16) are part of
+total_itemized_taxable_income_deductions and are one of the section 68(c)
+exclusions before 2026, so they are generated here as an excluded deduction.
+From 2026 they count like every other itemized deduction.
 """
 
 from functools import cache
@@ -66,7 +65,7 @@ from functools import cache
 import numpy as np
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
 from policyengine_core.reforms import Reform
 
 N = 600
@@ -86,7 +85,11 @@ SEPARATE_AMOUNTS = {2015: 154_950, 2016: 155_650, 2017: 156_900}
 # Components of total_itemized_taxable_income_deductions, split by whether
 # section 68(c) excludes them. Mortgage and investment interest are person
 # inputs that interest_deduction adds up.
-EXCLUDED = ("medical_expense_deduction", "casualty_loss_deduction")
+EXCLUDED = (
+    "medical_expense_deduction",
+    "casualty_loss_deduction",
+    "wagering_losses_deduction",
+)
 EXCLUDED_PERSON = ("investment_interest_expense",)
 OTHER = ("charitable_deduction", "salt_deduction", "misc_deduction")
 OTHER_PERSON = ("deductible_mortgage_interest",)
@@ -157,7 +160,11 @@ def _simulate(
         }
         households[f"h{i}"] = {"members": [person]}
     situation = {"people": people, "tax_units": tax_units, "households": households}
-    simulation = Simulation(situation=situation, reform=reform)
+    # Share the prepared read-only policy; Simulation clones it for the reform
+    # while keeping populations and calculation caches separate for each run.
+    simulation = Simulation(
+        tax_benefit_system=_system(), situation=situation, reform=reform
+    )
     return {name: simulation.calculate(name, period) for name in outputs}
 
 
@@ -195,7 +202,8 @@ def _worksheet_amounts(year, statuses):
 
 @cache
 def _system():
-    return CountryTaxBenefitSystem()
+    # Reading parameters does not need another full model construction.
+    return Simulation.default_tax_benefit_system_instance
 
 
 def _parameter_amounts(year, statuses):

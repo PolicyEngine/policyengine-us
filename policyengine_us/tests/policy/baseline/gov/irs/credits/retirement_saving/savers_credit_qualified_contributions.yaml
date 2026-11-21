@@ -114,3 +114,36 @@
   output:
     # 800 - 300 = 500; the 400 of retirement-plan distributions doesn't count.
     savers_credit_qualified_contributions: 500
+
+- name: Case 1, ABLE contributions do not qualify for the credit in 2017.
+  # Pub. L. 115-97 section 11024(b)-(c) applies after its 2017 enactment year.
+  # IRS Form 8880 (2017) lines 1-4 include retirement plans, not ABLE accounts.
+  period: 2017
+  input:
+    able_contributions_person: 500
+  output:
+    savers_credit_qualified_contributions: 0
+
+- name: Case 2, 2017 retirement contributions are not reduced by ABLE distributions.
+  period: 2017
+  input:
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    able_contributions_person: 500
+    retirement_distributions: 200
+    savers_credit_relevant_able_distributions: 300
+  output:
+    # Only the $200 retirement distribution reduces the $1,000 IRA contribution.
+    savers_credit_qualified_contributions: 800
+
+- name: Case 3, ABLE contributions and distributions enter the credit from 2018.
+  # Pub. L. 115-97 section 11024(b)-(c); IRS Form 8880 (2018) lines 1 and 4.
+  period: 2018
+  input:
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    able_contributions_person: 500
+    retirement_distributions: 200
+    savers_credit_relevant_able_distributions: 300
+  output:
+    savers_credit_qualified_contributions: 1_000

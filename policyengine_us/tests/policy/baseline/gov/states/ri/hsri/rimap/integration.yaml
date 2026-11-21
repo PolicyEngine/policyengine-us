@@ -1,0 +1,212 @@
+# End-to-end tests for the Rhode Island Marketplace Affordability Program
+# (RIMAP), Plan Year 2027. Income, the poverty line, federal credit eligibility,
+# filing and the federal credit are all computed by the model; only the
+# benchmark premium (slcsp, annual) is supplied, so the arithmetic can be
+# checked by hand. For 2027 the credit uses the 2026 HHS guideline: 15,960 for
+# one person and 21,640 for two.
+#   RI% (2027 RIMAP Final Parameters p.3): 0% to 150%, 0% to 2% across
+#   150-200%, none at 200-400%, 18% above 400%.
+#   RIMAP = max(0, SLCSP - federal credit - RI% x income).
+
+- name: Scenario 1, single adult at 175% of the poverty line.
+  # aca_magi 27,930 / 15,960 = 1.75. Federal applicable percentage at 175%:
+  # 4.30% + 0.5 x (6.78% - 4.30%) = 5.54%, so the credit is
+  # 9,000 - 0.0554 x 27,930 = 7,452.678. RI% = 1.00%.
+  # RIMAP = 9,000 - 7,452.678 - 279.30 = 1,268.022.
+  # No Medicaid above Rhode Island's 138% adult limit, no CHIP, MSP or Basic
+  # Health Program, so healthcare_benefit_value = assigned_aca_ptc 7,452.678
+  # + assigned_ri_rimap 1,268.022 = 8,720.70.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_930
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    aca_fpg: 15_960
+    aca_magi: 27_930
+    ri_rimap_fpl_ratio: 1.75
+    aca_ptc: 7_452.678
+    ri_rimap_low_income_eligible: true
+    ri_rimap_high_income_eligible: false
+    ri_rimap_applicable_percentage: 0.01
+    ri_rimap: 1_268.022
+    assigned_ri_rimap: 1_268.022
+    healthcare_benefit_value: 8_720.70
+
+- name: Scenario 2, married couple at 175% of the poverty line.
+  # aca_magi 37,870 / 21,640 = 1.75. Credit 18,000 - 0.0554 x 37,870
+  # = 15,902.002. RIMAP = 18,000 - 15,902.002 - 0.01 x 37,870 = 1,719.298.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 37_870
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 38
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        slcsp: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    aca_fpg: 21_640
+    aca_ptc: 15_902.002
+    ri_rimap_low_income_eligible: true
+    ri_rimap: 1_719.298
+
+- name: Scenario 3, single adult at 450% gets the 18% cap.
+  # aca_magi 71,820 / 15,960 = 4.50: no federal credit, but income is the only
+  # bar to it. RIMAP = 15,000 - 0.18 x 71,820 = 2,072.40.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 71_820
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    aca_ptc: 0
+    ri_rimap_low_income_eligible: false
+    ri_rimap_high_income_eligible: true
+    ri_rimap_applicable_percentage: 0.18
+    ri_rimap: 2_072.40
+    assigned_ri_rimap: 2_072.40
+
+- name: Scenario 4, single adult at 250% gets only the federal credit.
+  # Credit 9,000 - 0.0866 x 39,900 = 5,544.66; no RIMAP from 200% to 400%.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 39_900
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    aca_ptc: 5_544.66
+    ri_rimap_eligible: false
+    ri_rimap: 0
+
+- name: Scenario 5, a refugee at 450% is barred from the federal credit by status, not income.
+  # From 2027 federal law bars refugees from the credit, so income is not the
+  # only reason this enrollee lacks it (R.I. Gen. Laws 42-157.2-4(c)(1)).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 71_820
+        immigration_status: REFUGEE
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+    ri_rimap: 0
+
+- name: Scenario 6, a tax unit that neither files nor takes up coverage gets nothing.
+  # files_return_for_aca_ptc is false, so the federal credit and RIMAP are 0.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_930
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 9_000
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    aca_ptc: 0
+    ri_rimap_low_income_eligible: false
+    ri_rimap: 0
+    assigned_ri_rimap: 0
+
+- name: Scenario 7, the same household as Scenario 1 gets nothing in 2026.
+  # RIMAP starts in January 2027.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_930
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap: 0
+
+- name: Scenario 8, the same household as Scenario 1 gets nothing in 2028.
+  # No affordability percentages are adopted for 2028.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_930
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap: 0

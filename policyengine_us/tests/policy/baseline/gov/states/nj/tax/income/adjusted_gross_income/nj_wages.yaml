@@ -1,0 +1,72 @@
+# N.J.S.A. 54A:6-21: "Gross income shall not include amounts contributed by an
+# employer on behalf of and at the election of an employee to a trust which is
+# part of a qualified cash or deferred arrangement which meets the requirements
+# of Section 401(k)". The 2025 NJ-1040 instructions (PDF page 10) list
+# "Employer and employee contributions to 401(k) Plans up to the federal limit"
+# as exempt, and "Employee contributions to federal Thrift Savings Funds,
+# 403(b), 457, SEP, or any other type of retirement plan other than 401(k)
+# Plans" as taxable. Line 15 (PDF page 11) takes wages from W-2 box 16.
+
+- name: Case 1, 401(k) elective deferrals come off New Jersey wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 80_000
+    traditional_401k_contributions: 10_000
+    state_code: NJ
+  output:
+    # 80,000 - 10,000 = 70,000
+    nj_wages: 70_000
+
+- name: Case 2, 403(b) elective deferrals stay in New Jersey wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 80_000
+    traditional_403b_contributions: 10_000
+    state_code: NJ
+  output:
+    # GIT-1 & 2 (PDF page 15): 403(b) contributions "were included in your
+    # New Jersey income when you made them". Wages stay 80,000.
+    nj_wages: 80_000
+
+- name: Case 3, pre-tax health premiums stay in New Jersey wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 80_000
+    pre_tax_health_insurance_premiums: 3_000
+    state_code: NJ
+  output:
+    # The 2025 NJ-1040 instructions (PDF page 10) exempt cafeteria plan
+    # benefits "but not salary reduction or premium conversion plans". Wages
+    # stay 80,000.
+    nj_wages: 80_000
+
+- name: Case 4, a deferral exactly at the 2025 federal limit comes off in full.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 23_500
+    state_code: NJ
+  output:
+    # The 2025 elective deferral limit for a filer under 50 is 23,500.
+    # 100,000 - 23,500 = 76,500
+    traditional_401k_contributions: 23_500
+    nj_wages: 76_500
+
+- name: Case 5, a desired deferral above the federal limit excludes only the limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: NJ
+  output:
+    # New Jersey exempts 401(k) contributions "up to the federal limit".
+    # Deferrals are capped at 23,500, so wages are 100,000 - 23,500 = 76,500.
+    traditional_401k_contributions: 23_500
+    nj_wages: 76_500

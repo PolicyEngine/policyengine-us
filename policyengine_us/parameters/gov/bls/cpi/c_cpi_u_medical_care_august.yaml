@@ -1,0 +1,40 @@
+description: The Bureau of Labor Statistics publishes this August value of the medical care component of the Chained Consumer Price Index for All Urban Consumers, which 26 U.S.C. 213(d)(10)(B)(ii) uses to index the long-term care premium limits from 2018.
+values:
+  # BLS series SUUR0000SAM (U.S. city average, medical care, December
+  # 1999=100), from the BLS public data API on November 9, 2026. The API
+  # footnotes the August 2026 value "Initial"; the earlier values carry no
+  # footnote.
+  2000-08-01: 103.1
+  2001-08-01: 107.7
+  2002-08-01: 112.6
+  2003-08-01: 116.8
+  2004-08-01: 121.9
+  2005-08-01: 126.7
+  2006-08-01: 132.0
+  2007-08-01: 137.559
+  2008-08-01: 141.727
+  2009-08-01: 145.976
+  2010-08-01: 150.342
+  2011-08-01: 154.833
+  2012-08-01: 161.288
+  2013-08-01: 165.308
+  2014-08-01: 168.514
+  2015-08-01: 172.579
+  2016-08-01: 181.028
+  2017-08-01: 183.999
+  2018-08-01: 186.317
+  2019-08-01: 192.296
+  2020-08-01: 198.805
+  2021-08-01: 200.660
+  2022-08-01: 211.077
+  2023-08-01: 207.307
+  2024-08-01: 213.326
+  2025-08-01: 219.791
+  2026-08-01: 222.917
+metadata:
+  unit: /1
+  label: Chained CPI-U medical care, August
+  economy: false
+  reference:
+    - title: BLS | Chained CPI-U, U.S. city average, medical care (SUUR0000SAM)
+      href: https://data.bls.gov/timeseries/SUUR0000SAM

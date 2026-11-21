@@ -9,3 +9,24 @@
     has_snap_elderly_disabled_member: true
   output:
     is_tanf_non_cash_hheod: true
+
+- name: Arkansas household with one member aged 60 or over is an aged or disabled household.
+  # SNAP Certification Manual 1910: "at least one (1) member who is age
+  # sixty (60) or over or is disabled".
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_tanf_non_cash_hheod: true

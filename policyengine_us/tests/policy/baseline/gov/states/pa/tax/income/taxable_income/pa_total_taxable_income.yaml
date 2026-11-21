@@ -1,7 +1,8 @@
 # PA total taxable income starts from federal gross income, which leaves out a
-# tax unit dependent's income, and subtracts the amounts in it that Pennsylvania
-# does not tax. A dependent files their own PA return (2025 PA-40 IN, page 4,
-# "Minors"), so only the head's and spouse's nontaxable amounts are subtracted.
+# tax unit dependent's income, adds the elective deferrals Pennsylvania taxes as
+# compensation, and subtracts the amounts in it that Pennsylvania does not tax.
+# A dependent files their own PA return (2025 PA-40 IN, page 4, "Minors"), so
+# only the head's and spouse's amounts are added and subtracted.
 
 - name: A dependent's retirement income does not reduce the filer's PA taxable income.
   period: 2025
@@ -99,3 +100,320 @@
     pa_total_taxable_income: 40_000
     # 40,000 x 3.07%
     pa_income_tax_before_forgiveness: 1_228
+
+- name: Pennsylvania taxes gambling winnings net of each spouse's own wagering costs.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 30_000
+        gambling_winnings: 10_000
+        gambling_losses: 8_000
+        ssi: 0
+        # Rebate income counts half of computed pa_ssp; pin it to zero.
+        pa_ssp: 0
+      spouse:
+        age: 65
+        gambling_winnings: 2_000
+        gambling_losses: 5_000
+        ssi: 0
+        pa_ssp: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    adjusted_gross_income: 42_000
+    pa_gambling_loss_offset: [8_000, 2_000]
+    # 30,000 + (10,000 - 8,000) + max(2,000 - 5,000, 0); the spouse's extra
+    # 3,000 of costs cannot reduce the head's winnings, and the federal 90%
+    # limit does not apply.
+    pa_total_taxable_income: 32_000
+    pa_eligibility_income: 32_000
+    # PA-1000 line 11b counts the same net winnings, once.
+    pa_property_tax_or_rent_rebate_income: 32_000
+    # 3.07% x 32,000
+    pa_income_tax_before_forgiveness: 982.40
+
+- name: Pennsylvania taxes gross winnings when there are no losses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    employment_income: 30_000
+    gambling_winnings: 10_000
+    state_code: PA
+  output:
+    pa_gambling_loss_offset: 0
+    pa_total_taxable_income: 40_000
+
+# Alimony. The 2025 PA-40 instructions (page 8) list alimony among the income
+# not taxable for PA PIT purposes. Federal gross income holds alimony under a
+# divorce or separation instrument executed before 2019, and Pennsylvania
+# takes that part back out.
+
+- name: Alimony from a pre-2019 divorce is not PA taxable income and counts once in eligibility income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 5_000
+    alimony_income: 3_000
+    divorce_year: 2010
+  output:
+    # Schedule SP line 1, PA taxable income (PA-40 line 9): 5,000, since
+    # alimony is not PA-taxable. Schedule SP line 3 adds the 3,000 of
+    # alimony: 5,000 + 3,000 = 8,000. 72 P.S. 7301(o.2) counts all moneys
+    # received, and Schedule SP Section III line 3 is "Alimony" (2025 PA-40
+    # IN, page 38).
+    pa_total_taxable_income: 5_000
+    pa_eligibility_income: 8_000
+
+- name: Alimony under a 2018 divorce comes out of PA taxable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: PA
+    employment_income: 40_000
+    alimony_income: 12_000
+    # The last divorce year for which the recipient pays federal tax on
+    # alimony.
+    divorce_year: 2018
+  output:
+    taxable_alimony_income: 12_000
+    # 40,000 wages + 12,000 alimony.
+    irs_gross_income: 52_000
+    # 52,000 - 12,000 alimony = 40,000.
+    pa_total_taxable_income: 40_000
+    # 40,000 x 3.07%
+    pa_income_tax_before_forgiveness: 1_228
+
+- name: Alimony under a 2019 divorce is in neither federal gross income nor PA taxable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: PA
+    employment_income: 40_000
+    alimony_income: 12_000
+    divorce_year: 2019
+  output:
+    taxable_alimony_income: 0
+    irs_gross_income: 40_000
+    # Nothing to take out: 40,000.
+    pa_total_taxable_income: 40_000
+    # 40,000 x 3.07%
+    pa_income_tax_before_forgiveness: 1_228
+
+# Elective deferrals. 2025 PA-40 instructions, Line 1a (page 12): "The
+# contributions you make to your employer's sponsored retirement plan are
+# PA-taxable compensation, even if your contributions are not taxable for
+# federal purposes or included in the state wages shown on your W-2." 61 Pa.
+# Code 101.6(c)(8)(ii)(B): contributions an employee makes "whether through
+# payroll deduction, a salary reduction agreement or otherwise, are not
+# excludable from his income." Federal wages (irs_employment_income) leave out
+# traditional 401(k) and 403(b) deferrals, so Pennsylvania adds them back.
+
+- name: A 401(k) contribution is PA-taxable compensation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    employment_income: 10_000
+    traditional_401k_contributions: 1_000
+  output:
+    # Federal wages are 10,000 - 1,000 = 9,000. PA-40 line 9 counts the
+    # 1,000 contribution as compensation: 10,000. Eligibility income starts
+    # from PA taxable income (Schedule SP line 1): 10,000.
+    irs_employment_income: 9_000
+    pa_taxable_elective_deferrals: 1_000
+    pa_total_taxable_income: 10_000
+    pa_eligibility_income: 10_000
+
+- name: A traditional 401(k) deferral is taxed by Pennsylvania on a typical wage.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 60_000
+    traditional_401k_contributions: 6_000
+  output:
+    # 60,000 - 6,000 = 54,000 federal wages.
+    irs_gross_income: 54_000
+    pa_taxable_elective_deferrals: 6_000
+    # 54,000 + 6,000 = 60,000.
+    pa_total_taxable_income: 60_000
+    # 60,000 x 3.07%
+    pa_income_tax_before_forgiveness: 1_842
+
+- name: Each spouse's traditional 401(k) and 403(b) deferrals are added back; a Roth 401(k) deferral is already in wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        traditional_401k_contributions: 5_000
+        roth_401k_contributions: 2_000
+        traditional_403b_contributions: 0
+      spouse:
+        age: 43
+        employment_income: 40_000
+        traditional_401k_contributions: 0
+        roth_401k_contributions: 0
+        traditional_403b_contributions: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    # Head: 50,000 - 5,000 traditional = 45,000 (the Roth 2,000 stays in).
+    # Spouse: 40,000 - 4,000 = 36,000.
+    irs_employment_income: [45_000, 36_000]
+    pa_taxable_elective_deferrals: [5_000, 4_000]
+    # 45,000 + 36,000 + 5,000 + 4,000 = 90,000.
+    pa_total_taxable_income: 90_000
+    # 90,000 x 3.07%
+    pa_income_tax_before_forgiveness: 2_763
+
+- name: Pre-tax health insurance premiums stay out of PA compensation; the 401(k) deferral is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 50_000
+    pre_tax_health_insurance_premiums: 3_000
+    traditional_401k_contributions: 2_000
+  output:
+    # 50,000 - 3,000 - 2,000 = 45,000 federal wages.
+    irs_employment_income: 45_000
+    # 72 P.S. 7301(d)(vi): compensation does not include payments made under
+    # a section 125 cafeteria plan for programs covering hospitalization or
+    # sickness. Only the 2,000 deferral comes back: 47,000.
+    pa_taxable_elective_deferrals: 2_000
+    pa_total_taxable_income: 47_000
+
+- name: A deferral equal to the wages is added back in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 3_000
+    traditional_401k_contributions: 3_000
+  output:
+    # max(3,000 - 3,000, 0) = 0 federal wages; the full 3,000 comes back.
+    irs_employment_income: 0
+    pa_taxable_elective_deferrals: 3_000
+    pa_total_taxable_income: 3_000
+
+- name: A deferral above the wages adds back no more than the wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 2_000
+    traditional_401k_contributions: 3_000
+  output:
+    # Federal wages are floored at 0, so they leave out only 2,000 of the
+    # 3,000 deferral. PA compensation: max(2,000 - (3,000 - 3,000), 0) =
+    # 2,000, so the add-back is 2,000 - 0 = 2,000.
+    irs_employment_income: 0
+    pa_taxable_elective_deferrals: 2_000
+    pa_total_taxable_income: 2_000
+
+- name: A dependent's 401(k) deferral is not added to the filer's PA taxable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        traditional_401k_contributions: 0
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        employment_income: 8_000
+        traditional_401k_contributions: 1_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # The dependent files their own PA return, and their wages are not in
+    # the filer's federal gross income, so neither is their deferral.
+    pa_taxable_elective_deferrals: [0, 1_000]
+    pa_total_taxable_income: 50_000
+    # 50,000 x 3.07%
+    pa_income_tax_before_forgiveness: 1_535
+
+- name: Negative wages do not make the deferral add-back negative.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: -1_000
+    taxable_interest_income: 5_000
+  output:
+    # Federal wages: max(-1,000 - 0, 0) = 0. PA compensation (PA-40 line 1a)
+    # is floored too: max(-1,000 - (0 - 0), 0) = 0. Add-back: 0 - 0 = 0.
+    irs_employment_income: 0
+    pa_taxable_elective_deferrals: 0
+    # 0 wages + 5,000 interest = 5,000.
+    irs_gross_income: 5_000
+    pa_total_taxable_income: 5_000
+    # 5,000 x 3.07%
+    pa_income_tax_before_forgiveness: 153.50
+
+- name: Pre-tax premiums that push federal wages to zero limit the deferral add-back to PA compensation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: PA
+    employment_income: 10_000
+    traditional_401k_contributions: 8_000
+    pre_tax_health_insurance_premiums: 4_000
+  output:
+    # Federal wages: max(10,000 - 8,000 - 4,000, 0) = 0.
+    irs_employment_income: 0
+    # PA compensation keeps the 8,000 deferral (61 Pa. Code
+    # 101.6(c)(8)(ii)(B)) but leaves out the 4,000 of cafeteria-plan
+    # premiums (72 P.S. 7301(d)(vi)): max(10,000 - (12,000 - 8,000), 0) =
+    # 6,000. Add-back: 6,000 - 0 = 6,000, not the full 8,000 deferral.
+    pa_taxable_elective_deferrals: 6_000
+    pa_total_taxable_income: 6_000
+    # 6,000 x 3.07%
+    pa_income_tax_before_forgiveness: 184.20

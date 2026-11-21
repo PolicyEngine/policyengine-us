@@ -19,13 +19,25 @@ class wa_cascade_care_savings(Variable):
         # Final PY2026 PMPM methodology (memo of 2025-09-30): the $55 and $250
         # amounts on p.1, Wakely's 2025-vs-2026 exhibit on p.7.
         "https://www.wahbexchange.org/content/dam/materials/communications/legislative/2025/WAHBE_Final_PY_2026_Cascade_Care_Savings_Maximum_Per_Member_Per_Month_Methodology.pdf#page=1",
+        # PY2027 amounts memo of 2026-10-01: $35 and $20 PMPM with federal
+        # subsidies, split at 200% FPL, and $185 PMPM without.
+        "https://www.wahbexchange.org/content/dam/materials/communications/legislative/2026/PY-2027-CCS-PMPM-MethodologyMemo.pdf#page=1",
+        # Final PY2027 policy: Section 5(1)(b)-(c) (the amounts and the
+        # per-member build-up), p.6, and Section 5(1)(d) (the household cap,
+        # unchanged from PY2026), p.7.
+        # PDF pages 6-7
+        "https://www.wahbexchange.org/content/dam/materials/communications/policy/2026/Final_PY_2027_Cascade_Care_Savings_Policy.pdf#page=6",
     )
     documentation = (
         "Washington's state premium assistance program (branded Cascade Care "
         "Savings), administered by the Washington Health Benefit Exchange. The "
         "household base amount sums each eligible member's annual per-member "
-        "amount, keyed by federal-subsidy status ($55 PMPM for Group 1 members "
-        "with federal subsidies, $250 PMPM for Group 3 members without). The "
+        "amount, keyed by federal-subsidy status and, for members with federal "
+        "subsidies from PY2027, by income. PY2026: $55 PMPM for Group 1 "
+        "members with federal subsidies and $250 PMPM for Group 2 and Group 3 "
+        "members without. PY2027: $35 PMPM with federal subsidies when the "
+        "tax unit's income is at or below 200% of the federal poverty line, "
+        "$20 PMPM above it, and $185 PMPM without federal subsidies. The "
         "cap (Policy Section 5(1)(d)) limits the amount to the lesser of the "
         "household's net premium after the federal premium tax credit and "
         "the net premium its eligible members would pay in the county's "

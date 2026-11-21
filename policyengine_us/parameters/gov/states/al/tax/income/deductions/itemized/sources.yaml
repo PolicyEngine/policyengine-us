@@ -12,6 +12,9 @@ values:
     - al_casualty_loss_deduction # Section (a), (6)
     - al_misc_deduction # Section (a), (23)
     - al_interest_deduction # Section (a), (2)
+    # Schedule A line 25: gambling losses to the extent of gambling winnings,
+    # not subject to the 2% limit.
+    - al_gambling_loss_deduction
 
 metadata:
   unit: list
@@ -28,3 +31,5 @@ metadata:
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40schabdc_blk.pdf#page=1
     - title: 2024 Alabama Income Tax Instructions
       href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=18
+    - title: 2025 Alabama Income Tax Instructions, Schedule A line 25 - gambling losses
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=21

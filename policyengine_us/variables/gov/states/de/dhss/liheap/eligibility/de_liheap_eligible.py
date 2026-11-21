@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class de_liheap_eligible(Variable):
@@ -16,18 +15,6 @@ class de_liheap_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period)
-        size = spm_unit("de_liheap_household_size", period)
-        income = spm_unit("de_liheap_countable_income", period)
-        limit = spm_unit("de_liheap_income_limit", period)
-        guideline = fpg(
-            max_(size, 1),
-            spm_unit.household("state_group_str", period),
-            period,
-            parameters,
-            year_lag=p.gov.states.de.dhss.liheap.eligibility.fpg_year_lag,
-        )
-        federal_floor = np.round(guideline * p.gov.hhs.liheap.fpg_floor, 2)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         subsidized = spm_unit(
             "receives_housing_assistance", period
@@ -49,8 +36,4 @@ class de_liheap_eligible(Variable):
         # SPMUnit approximates the energy-sharing household. Application,
         # funding, boarder/absence exceptions and duplicate claims are not
         # represented by existing inputs; they are not automatic exclusions.
-        return (
-            (size > 0)
-            & ((income <= limit) | (income < federal_floor))
-            & heating_responsibility
-        )
+        return spm_unit("de_liheap_income_eligible", period) & heating_responsibility

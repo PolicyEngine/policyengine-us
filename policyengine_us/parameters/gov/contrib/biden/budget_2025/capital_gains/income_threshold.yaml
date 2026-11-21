@@ -6,6 +6,9 @@ metadata:
   label: Threshold above which capital income is taxed as ordinary income  
   unit: currency-USD
   period: year
+  propagate_metadata_to_children: true
+  # Treasury proposes indexing these thresholds after 2024 without specifying an index
+  # or rounding interval; use the existing IRS inflation index for projections.
   uprating: gov.irs.uprating
 
   breakdown:

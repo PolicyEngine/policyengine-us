@@ -1,0 +1,19 @@
+description: Delaware lists this amount as the maximum estimated summer cooling assistance benefit level under the Low Income Home Energy Assistance Program.
+# Plan section 3.6 prints one estimated benefit range for the whole cooling
+# component, the Summer Cooling Assistance Program, which has an electric
+# benefit and an air-conditioner component (section 3.3). The plan does not
+# split the range between the two components. Section 3.5 publishes no
+# cooling benefit matrix: the State divides the funds available for the
+# electric benefit equally among the eligible households.
+values:
+  2025-10-01: 1_000
+  2026-10-01: 1_250
+metadata:
+  unit: currency-USD
+  period: year
+  label: Delaware LIHEAP cooling estimated maximum benefit
+  reference:
+    - title: Delaware FY2026 LIHEAP State Plan, section 3.6 (Maximum Benefit $1,000)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=13
+    - title: Delaware FY2027 LIHEAP State Plan, section 3.6 (Maximum Benefit $1,250)
+      href: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=12

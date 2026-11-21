@@ -330,3 +330,887 @@
     # 2023-2024 matrix, Tier I add-on column: Utility 400 + 41 = 441; Oil,
     # Kerosene, and Propane 900 + 41 = 941.
     ny_heap: [441, 941]
+
+# FY2017 accepted state plan, Attachment 1 (PDF page 54): oil base $575,
+# Tier I supplement $26, vulnerable-member supplement $25.
+# https://liheapch.acf.gov/docs/NY_Plan_2017.pdf#page=54
+- name: Case 17, FY2017 regular oil benefit from wages and age.
+  period: 2017
+  input:
+    state_code: NY
+    age: 65
+    employment_income: 12_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_800
+  output:
+    # $1,000 monthly wages is below 130% FPG; age 65 confers vulnerability.
+    # The annual regular payment is 575 + 26 + 25 = 626, not twelve grants.
+    ny_heap: 626
+    ny_heap_countable_income: 12_000
+    ny_heap_categorically_eligible: false
+    ny_heap_tier_one: true
+    ny_heap_vulnerable: true
+    ny_heap_eligible: true
+
+# Historical matrices and superseding December 2022 amendment are listed in
+# payment/base.yaml. These annual FFY fixtures certify ordinary schedules,
+# not application-month timing or exact historical income ceilings. Wages of
+# $1,000/$2,000 monthly select Tier I/Tier II safely inside the HEAP maximum.
+# Solar retains the existing other-fuel mapping; unknown/NONE lack a bill.
+- name: Case 18, FY2017 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 376, 375, 401, 350, 376, 375, 401, 575, 601, 600, 626, 575, 601, 600, 626, 575, 601, 600, 626, 525, 551,
+      550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 19, FY2018 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 376, 375, 401, 350, 376, 375, 401, 675, 701, 700, 726, 675, 701, 700, 726, 675, 701, 700, 726, 525, 551,
+      550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 20, FY2019 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 376, 375, 401, 350, 376, 375, 401, 675, 701, 700, 726, 675, 701, 700, 726, 675, 701, 700, 726, 525, 551,
+      550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 21, FY2020 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 376, 375, 401, 350, 376, 375, 401, 675, 701, 700, 726, 675, 701, 700, 726, 675, 701, 700, 726, 525, 551,
+      550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 525, 551, 550, 576, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 22, FY2021 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 381, 385, 416, 350, 381, 385, 416, 675, 706, 710, 741, 675, 706, 710, 741, 675, 706, 710, 741, 525, 556,
+      560, 591, 525, 556, 560, 591, 525, 556, 560, 591, 525, 556, 560, 591, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 23, FY2022 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [350, 391, 385, 426, 350, 391, 385, 426, 675, 716, 710, 751, 675, 716, 710, 751, 675, 716, 710, 751, 525, 566,
+      560, 601, 525, 566, 560, 601, 525, 566, 560, 601, 525, 566, 560, 601, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 24, FY2023 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [500, 541, 535, 576, 500, 541, 535, 576, 1050, 1091, 1085, 1126, 1050, 1091, 1085, 1126, 1050, 1091, 1085, 1126,
+      685, 726, 720, 761, 685, 726, 720, 761, 685, 726, 720, 761, 685, 726, 720, 761, 0, 0, 0, 0, 0, 0, 0, 0]
+# The matrix prints 706 in the wood both-add-ons cell. Its stated base
+# 635 plus the explicit add-ons 41 and 35 is 711; use that additive rule.
+- name: Case 25, FY2024 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2024
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [400, 441, 435, 476, 400, 441, 435, 476, 900, 941, 935, 976, 900, 941, 935, 976, 900, 941, 935, 976, 635, 676,
+      670, 711, 635, 676, 670, 711, 635, 676, 670, 711, 635, 676, 670, 711, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 26, FY2025 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2025
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [400, 461, 435, 496, 400, 461, 435, 496, 900, 961, 935, 996, 900, 961, 935, 996, 900, 961, 935, 996, 635, 696,
+      670, 731, 635, 696, 670, 731, 635, 696, 670, 731, 635, 696, 670, 731, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 27, FY2026 every fuel and all ordinary add-on combinations from wages and age.
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY,
+      NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65,
+      40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65, 40, 40, 65, 65]
+    employment_income: [24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000,
+      24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000,
+      12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, KEROSENE, KEROSENE, KEROSENE, KEROSENE, PROPANE, PROPANE, PROPANE, PROPANE,
+      WOOD, WOOD, WOOD, WOOD, COAL, COAL, COAL, COAL, OTHER, OTHER, OTHER, OTHER, SOLAR, SOLAR, SOLAR, SOLAR, UNSPECIFIED,
+      UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, NONE, NONE, NONE, NONE]
+    pre_subsidy_electricity_expense: [2400, 2400, 2400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 900, 900, 900, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 1500, 1500, 1500, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 0, 0, 0, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 2800, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2600, 2600, 2600, 2600, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 1200, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1300,
+      1300, 1300, 1300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap: [400, 461, 435, 496, 400, 461, 435, 496, 900, 961, 935, 996, 900, 961, 935, 996, 900, 961, 935, 996, 635, 696,
+      670, 731, 635, 696, 670, 731, 635, 696, 670, 731, 635, 696, 670, 731, 0, 0, 0, 0, 0, 0, 0, 0]
+- name: Case 28, FY2017 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [35, 30, 21, 21, 0]
+- name: Case 29, FY2018 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [35, 30, 21, 21, 0]
+- name: Case 30, FY2019 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [35, 30, 21, 21, 0]
+- name: Case 31, FY2020 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [35, 30, 21, 21, 0]
+- name: Case 32, FY2021 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [45, 40, 21, 21, 0]
+- name: Case 33, FY2022 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [50, 45, 21, 21, 0]
+- name: Case 34, FY2023 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [50, 45, 21, 21, 0]
+- name: Case 35, FY2024 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2024
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [50, 45, 21, 21, 0]
+- name: Case 36, FY2025 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2025
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [50, 45, 21, 21, 0]
+- name: Case 37, FY2026 heat-included tiers exclude direct-heater add-ons and other states.
+  period: 2026
+  input:
+    state_code: [NY, NY, NY, NY, NJ]
+    age: [65, 65, 65, 65, 65]
+    employment_income: [12000, 24000, 12000, 24000, 12000]
+    ssi: [0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    ny_heap: [50, 45, 21, 21, 0]
+- name: Case 38, FY2017 elderly vulnerability starts at sixty.
+  period: 2017
+  input:
+    state_code: [NY, NY]
+    age: [59, 60]
+    employment_income: [12000, 12000]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    heating_type: [FUEL_OIL, FUEL_OIL]
+    fuel_oil_expense: [2800, 2800]
+  output:
+    ny_heap: [601, 626]
+    ny_heap_vulnerable: [false, true]
+- name: Case 40, FY2017 child age5 vulnerable supplement boundary.
+  period: 2017
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12000
+        ssi: 0
+      child:
+        age: 5
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2800
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_heap: 626
+    ny_heap_vulnerable: true
+- name: Case 41, FY2017 child age6 vulnerable supplement boundary.
+  period: 2017
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12000
+        ssi: 0
+      child:
+        age: 6
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2800
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_heap: 601
+    ny_heap_vulnerable: false
+- name: Case 39, FY2021 elderly vulnerability starts at sixty.
+  period: 2021
+  input:
+    state_code: [NY, NY]
+    age: [59, 60]
+    employment_income: [12000, 12000]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    heating_type: [FUEL_OIL, FUEL_OIL]
+    fuel_oil_expense: [2800, 2800]
+  output:
+    ny_heap: [706, 741]
+    ny_heap_vulnerable: [false, true]
+- name: Case 42, FY2021 child age5 vulnerable supplement boundary.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12000
+        ssi: 0
+      child:
+        age: 5
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2800
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_heap: 741
+    ny_heap_vulnerable: true
+- name: Case 43, FY2021 child age6 vulnerable supplement boundary.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 12000
+        ssi: 0
+      child:
+        age: 6
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        snap: 0
+        tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2800
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_heap: 706
+    ny_heap_vulnerable: false
+
+# FY2017 State Plan page 9 sets Tier I at or below 130% FPG. The 2016 HHS
+# one-person guideline is $11,880, so 130% is $15,444 ($1,287 monthly).
+# https://liheapch.acf.gov/docs/NY_Plan_2017.pdf#page=9
+# https://public-inspection.federalregister.gov/2016-01450.pdf
+- name: Case 44, FY2017 monthly income crosses the Tier I supplement boundary.
+  period: 2017
+  input:
+    state_code: [NY, NY]
+    age: [40, 40]
+    employment_income: [15_444, 15_456]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_500, 1_500]
+  output:
+    ny_heap_countable_income: [15_444, 15_456]
+    ny_heap_tier_one: [true, false]
+    ny_heap_eligible: [true, true]
+    # $1,287 monthly receives 350 + 26; $1,288 receives the $350 base.
+    ny_heap: [376, 350]
+
+# FY2017 desk guide: one-person monthly Tier II maximum is $2,300.
+# https://otda.ny.gov/policy/directives/2016/LCM/16-LCM-16-Attachment-1.pdf#page=1
+- name: Case 45, FY2017 published maximum income includes the final monthly dollar.
+  period: 2017
+  input:
+    state_code: [NY, NY]
+    age: [40, 40]
+    employment_income: [27_600, 27_612]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_500, 1_500]
+  output:
+    # $2,300 monthly is included; $2,301 exceeds the published maximum.
+    # Both are above Tier I and age 40 adds no vulnerable supplement.
+    ny_heap: [350, 0]
+    ny_heap_income_limit: [27_600, 27_600]
+    ny_heap_countable_income: [27_600, 27_612]
+    ny_heap_categorically_eligible: [false, false]
+    ny_heap_tier_one: [false, false]
+    ny_heap_eligible: [true, false]
+
+# Original desk-guide income tables: historical_income_limits parameter references.
+# Four one-person citizen households at/above Tier I and at/above the overall
+# published monthly maximum. Annual wages are twelve constant monthly wages;
+# reported receipts are zero. Eligibility and countable income are calculated.
+- name: Case 46, FY2017 published Tier I and overall income boundaries from actual wages.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id001 [15444, 15456, 27600, 27612]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id001
+    ny_heap_income_limit: [27600, 27600, 27600, 27600]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 47, FY2018 published Tier I and overall income boundaries from actual wages.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id002 [15684, 15696, 27816, 27828]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id002
+    ny_heap_income_limit: [27816, 27816, 27816, 27816]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 48, FY2019 published Tier I and overall income boundaries from actual wages.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id003 [15780, 15792, 28692, 28704]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id003
+    ny_heap_income_limit: [28692, 28692, 28692, 28692]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 49, FY2020 published Tier I and overall income boundaries from actual wages.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id004 [16236, 16248, 29928, 29940]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id004
+    ny_heap_income_limit: [29928, 29928, 29928, 29928]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 50, FY2021 published Tier I and overall income boundaries from actual wages.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id005 [16584, 16596, 31320, 31332]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [381, 350, 350, 0]
+    ny_heap_countable_income: *id005
+    ny_heap_income_limit: [31320, 31320, 31320, 31320]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 51, FY2022 published Tier I and overall income boundaries from actual wages.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id006 [16740, 16752, 32748, 32760]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [391, 350, 350, 0]
+    ny_heap_countable_income: *id006
+    ny_heap_income_limit: [32748, 32748, 32748, 32748]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 52, FY2023 published Tier I and overall income boundaries from actual wages.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id007 [17664, 17676, 34224, 34236]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [541, 500, 500, 0]
+    ny_heap_countable_income: *id007
+    ny_heap_income_limit: [34224, 34224, 34224, 34224]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+
+# OTDA HEAP program page, "Regular HEAP Benefit Amounts 2026-2027": oil, kerosene or
+# propane $990, wood, wood pellets, coal, corn or other deliverable fuel $700, and
+# electricity or natural gas $400, plus $61 for Tier I and $35 for a vulnerable member.
+# https://otda.ny.gov/programs/heap/
+- name: Case 53, FY2027 every fuel with the Tier I supplement.
+  period: 2027
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false, false, false, false, false, false]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, WOOD, COAL, OTHER, SOLAR, UNSPECIFIED, NONE]
+    pre_subsidy_electricity_expense: [2_400, 0, 0, 0, 0, 0, 0, 0, 900, 0, 0]
+    gas_expense: [0, 1_500, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 2_800, 2_800, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 2_600, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 1_300, 0, 0, 0]
+  output:
+    # Case 1's households in FY2027. Zero income is Tier I: utility 400 + 61 = 461;
+    # oil, kerosene and propane 990 + 61 = 1_051; wood, coal, other fuels and solar
+    # 700 + 61 = 761. No fuel bill means no heating responsibility.
+    ny_heap: [461, 461, 1_051, 1_051, 1_051, 761, 761, 761, 761, 0, 0]
+
+# FY2027 from actual wages. A 65-year-old heating with oil earns 24_000 (2_000 a month),
+# above the one-person Tier I line of 1_729 and below the 3_563 income limit: Tier II
+# base 990 plus the 35 vulnerable add-on (age 60 or older) = 1_025. Two 40-year-old
+# tenants with heat included in rent receive 50 at zero income (Tier I) and 45 at
+# 24_000 (Tier II). OTDA HEAP page and FY2027 State Plan pp. 9-10.
+- name: Case 54, FY2027 Tier II, vulnerable and heat-included amounts from actual wages.
+  period: 2027
+  input:
+    state_code: [NY, NY, NY]
+    age: [65, 40, 40]
+    employment_income: [24_000, 0, 24_000]
+    ssi: [0, 0, 0]
+    snap: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [FUEL_OIL, UNSPECIFIED, UNSPECIFIED]
+    fuel_oil_expense: [2_800, 0, 0]
+    heat_expense_included_in_rent: [false, true, true]
+    receives_housing_assistance: [false, false, false]
+  output:
+    ny_heap_tier_one: [false, true, false]
+    ny_heap_vulnerable: [true, false, false]
+    ny_heap: [1_025, 50, 45]

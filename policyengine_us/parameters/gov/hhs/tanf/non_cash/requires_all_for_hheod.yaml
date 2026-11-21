@@ -2,6 +2,10 @@ description: Requires all members in household to be elderly or disabled for the
 # States without BBCE elderly/disabled rules skipped.
 AL:
   2015-10-01: true
+AR:
+  # SNAP Certification Manual 1910: an aged/disabled household "contains at
+  # least one (1) member who is age sixty (60) or over or is disabled".
+  2025-04-04: false
 GA:
   2015-10-01: true
 ID:
@@ -35,6 +39,8 @@ metadata:
   period: year
   label: TANF non-cash elderly/disabled household classification requirement
   reference:
+    - title: Arkansas SNAP Certification Manual, Section 1910, Aged/Disabled Household
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Policy-Manual-07.01.2026.pdf#page=103
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_multiple column, Jan 1996 - Dec 2020)

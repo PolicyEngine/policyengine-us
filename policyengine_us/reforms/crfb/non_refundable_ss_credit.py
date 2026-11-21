@@ -143,9 +143,9 @@ def create_non_refundable_ss_credit_reform(parameters, period, bypass: bool = Fa
     current_period = period_(period)
     reform_active = False
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if parameter(current_period).in_effect:
-            # If in any of the next five years, the boolean is true,
+            # If in any year of the lookahead window, the boolean is true,
             # set the boolean reform_active to true, and stop the check,
             # i.e., assume the reform is active in all subsequent years.
             reform_active = True

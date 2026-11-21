@@ -155,3 +155,56 @@
     co_leap_dwelling_type: ["HOUSE_MODULAR", "HOUSE_MODULAR"]
   output:
     co_leap_heating_cost: [620, 292.64]
+
+# 2026-27 manual handout "Standard Amount for Heat in Rent" (PDF page 6), dwelling order house,
+# mobile, duplex, townhouse, apartment, hotel, cabin, tiny home, RV. The FY2027 program year
+# starts November 1, 2026.
+- name: "Case 13, all nine FY2027 natural gas heat-in-rent rates match the annual handout."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [208, 180, 159, 150, 111, 116, 194, 228, 196]
+
+# 2026-27 handout, propane column (headed "Propane Fuel Oil", as in FY2026).
+- name: "Case 14, all nine FY2027 propane heat-in-rent rates match the annual handout."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE", "PROPANE"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [407, 385, 319, 202, 312, 301, 370, 337, 337]
+
+# 2026-27 handout, electric column times the unchanged heat shares (62%, 62%, 48%, 48%, 43%,
+# 43%, 43%, 43%, 50%): 487 x 0.62 = 301.94, 424 x 0.62 = 262.88, 347 x 0.48 = 166.56,
+# 408 x 0.48 = 195.84, 235 x 0.43 = 101.05, 239 x 0.43 = 102.77, 329 x 0.43 = 141.47,
+# 204 x 0.43 = 87.72, 319 x 0.5 = 159.5.
+- name: "Case 15, all nine FY2027 electric rent standards receive the required heating share."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY", "ELECTRICITY"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [301.94, 262.88, 166.56, 195.84, 101.05, 102.77, 141.47, 87.72, 159.5]
+
+# 2026-27 handout, "Fuel Oil/Kerosene" column.
+- name: "Case 16, all nine FY2027 fuel oil heat-in-rent rates match the annual handout."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO", "CO"]
+    heating_type: ["FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL", "FUEL_OIL"]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, true]
+    co_leap_dwelling_type: ["HOUSE_MODULAR", "MOBILE_HOME", "DUPLEX_TRIPLEX_FOURPLEX", "TOWNHOUSE", "APARTMENT_CONDO", "HOTEL_MOTEL", "CABIN", "TINY_HOME", "CAMPER_RV"]
+  output:
+    co_leap_heating_cost: [312, 443, 169, 348, 169, 169, 169, 169, 151]

@@ -29,28 +29,55 @@ def create_aca_ptc_minimum_premium() -> Reform:
         label = "ACA premium tax credit before the filing condition"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/36B#b"
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/36B#b",
+            "https://www.govinfo.gov/content/pkg/CFR-2014-title26-vol1/pdf/CFR-2014-title26-vol1-sec1-36B-3.pdf#page=2",
+        )
         documentation = (
-            "The benchmark premium less the required contribution, but no more "
-            "than the enrolled premium less the minimum premium. The enrolled "
-            "premium is the selected plan's premium, or the benchmark premium "
-            "when that is higher, since the credit is otherwise computed as if "
-            "the tax unit enrolled in the benchmark plan; used_aca_ptc applies "
-            "the cap for a cheaper selected plan."
+            "The coverage family's benchmark premium (aca_ptc_slcsp) less the "
+            "required contribution, but no more than the enrolled premium less "
+            "the minimum premium. The enrolled premium is the coverage family's "
+            "share of the selected plan's premium "
+            "(aca_ptc_coverage_family_premium), or the benchmark premium when "
+            "that is higher, since the credit is otherwise computed as if the "
+            "tax unit enrolled in the benchmark plan; used_aca_ptc applies the "
+            "cap for a cheaper selected plan."
         )
         defined_for = "is_aca_ptc_eligible"
 
         def formula(tax_unit, period, parameters):
             return 0
 
+        def formula_2014(tax_unit, period, parameters):
+            # Price the coverage family separately (26 CFR 1.36B-3(f)).
+            plan_cost = tax_unit("aca_ptc_slcsp", period)
+            income = max_(0, tax_unit("aca_magi", period))
+            applicable_figure = tax_unit("aca_required_contribution_percentage", period)
+            return max_(0, plan_cost - income * applicable_figure)
+
+        def formula_2015(tax_unit, period, parameters):
+            plan_cost = tax_unit("aca_ptc_slcsp", period)
+            income = max_(0, tax_unit("aca_magi", period))
+            applicable_figure = tax_unit("aca_required_contribution_percentage", period)
+            credit = max_(0, plan_cost - income * applicable_figure)
+            enrolled_premium = max_(
+                plan_cost,
+                tax_unit("aca_ptc_coverage_family_premium", period),
+            )
+            minimum = tax_unit("aca_ptc_minimum_premium", period)
+            return min_(credit, max_(0, enrolled_premium - minimum))
+
         def formula_2018(tax_unit, period, parameters):
-            plan_cost = tax_unit("slcsp", period)
+            # The benchmark and premiums of the coverage family (26 CFR
+            # 1.36B-3(d)(1) and (f)), which leave out an enrollee who can be
+            # claimed on another return.
+            plan_cost = tax_unit("aca_ptc_slcsp", period)
             income = tax_unit("aca_magi", period)
             applicable_figure = tax_unit("aca_required_contribution_percentage", period)
             credit = max_(0, plan_cost - income * applicable_figure)
             enrolled_premium = max_(
                 plan_cost,
-                tax_unit("selected_marketplace_plan_premium_proxy", period),
+                tax_unit("aca_ptc_coverage_family_premium", period),
             )
             minimum = tax_unit("aca_ptc_minimum_premium", period)
             return min_(credit, max_(0, enrolled_premium - minimum))
@@ -62,12 +89,13 @@ def create_aca_ptc_minimum_premium() -> Reform:
         unit = USD
         definition_period = YEAR
         documentation = (
-            "The premium tax credit applied to the selected plan, which leaves "
-            "the minimum premium to pay on that plan."
+            "The premium tax credit applied to the selected plan, up to the "
+            "coverage family's share of its premium "
+            "(aca_ptc_coverage_family_premium) less the minimum premium."
         )
 
         def formula(tax_unit, period, parameters):
-            plan_premium = tax_unit("selected_marketplace_plan_premium_proxy", period)
+            plan_premium = tax_unit("aca_ptc_coverage_family_premium", period)
             minimum = tax_unit("aca_ptc_minimum_premium", period)
             return min_(
                 tax_unit("aca_ptc", period),
@@ -90,9 +118,9 @@ def create_aca_ptc_minimum_premium_reform(parameters, period, bypass: bool = Fal
     p = parameters.gov.contrib.aca.minimum_premium
     current_period = period_(period)
 
-    # Check if reform is active within a 5-year lookahead window
+    # Check if reform is active within the lookahead window
     reform_active = False
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
