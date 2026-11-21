@@ -1,3 +1,10 @@
+## [2.152.5] - 2026-11-21
+
+### Changed
+
+- Update DC LIHEAP to the FY 2027 regular benefit table.
+
+
 ## [2.152.4] - 2026-11-21
 
 ### Changed
