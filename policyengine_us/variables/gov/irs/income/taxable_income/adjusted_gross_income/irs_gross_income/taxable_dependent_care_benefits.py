@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.income.person.dependent_care_employer_benefits import (
+    form_2441_line_15,
+)
 
 
 class taxable_dependent_care_benefits(Variable):
@@ -9,8 +12,10 @@ class taxable_dependent_care_benefits(Variable):
         "Employer dependent care benefits above the IRC 129 exclusion (Form "
         "2441 line 26, reported on Form 1040 line 1e). Box 1 wages leave out "
         "all of dependent_care_employer_benefits, so this adds back the part "
-        "the filer cannot exclude. The tax unit's amount is split among its "
-        "members in proportion to their benefits."
+        "the filer received and cannot exclude: Form 2441 line 15 (line 12 "
+        "benefits plus grace-period carryovers, less amounts forfeited or "
+        "carried forward) less the exclusion. The tax unit's amount is split "
+        "among its members in proportion to their line 15 amounts."
     )
     unit = USD
     definition_period = YEAR
@@ -24,10 +29,14 @@ class taxable_dependent_care_benefits(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        benefits = person("dependent_care_employer_benefits", period)
+        # Each person's part of Form 2441 line 15: line 12 benefits plus
+        # grace-period carryovers, less amounts forfeited or carried forward.
+        benefits = form_2441_line_15(person, period, parameters)
         # The tax_unit projector returns each member's unit-level value.
         unit_benefits = tax_unit.sum(benefits)
         exclusion = tax_unit("dependent_care_assistance_exclusion", period)
+        # Line 26: line 15 less the line 25 exclusion. Line 22 (benefits from
+        # the filer's own business) is zero for employee benefits.
         unit_taxable = max_(unit_benefits - exclusion, 0)
         share = np.divide(
             benefits,

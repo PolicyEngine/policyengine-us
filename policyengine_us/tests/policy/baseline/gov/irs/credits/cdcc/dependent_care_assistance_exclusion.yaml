@@ -1,9 +1,12 @@
 # IRC section 129 dependent care assistance exclusion, as reconciled on
 # Form 2441 Part III. Dollar/earnings-limit unit cases explicitly supply
 # sufficient qualified expenses; the full-household cases also test that limit.
-# The exclusion is the lesser of qualified expenses, employer benefits,
-# the section 129(a)(2)(A) dollar cap (by filing status), and the section
-# 129(b) earned-income limit.
+# The exclusion is the lesser of qualified expenses, employer benefits
+# (Form 2441 line 15: line 12, plus grace-period carryovers, less amounts
+# forfeited or carried forward), the section 129(a)(2)(A) dollar cap (by
+# filing status), and the section 129(b) earned-income limit. Line 12 is
+# dependent_care_employer_benefits: W-2 box 10, not counting any amount
+# above the plan's exclusion, which box 1 already includes as wages.
 
 - name: No employer dependent care benefits gives no exclusion
   period: 2024
@@ -940,3 +943,179 @@
     # The omitted input defaults0; this does not establish actual costs0.
     dependent_care_assistance_exclusion: 0
     taxable_dependent_care_benefits: [2_000, 0]
+
+- name: IRS 2025 line 14 example, $5,000 set aside and $50 forfeited.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 45_000
+        dependent_care_employer_benefits: 5_000
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 50
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 4_950
+        tax_unit_childcare_expenses: 4_950
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 2025 Form 2441 instructions, line 14: $5,000 on line 12 and $50 on
+    # line 14, after $4,950 of qualified expenses was incurred and
+    # reimbursed. Line 15 is $4,950, all excluded; line 26 is $0.
+    dependent_care_assistance_exclusion: 4_950
+    taxable_dependent_care_benefits: [0, 0]
+
+- name: A grace-period carryover supports an exclusion without box 10 benefits.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+        dependent_care_employer_benefits_prior_year_carryover: 1_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 1_000
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15 is the $1,000 carryover (line 13), all excluded. Section
+    # 21(c) reduces the $3,000 credit limit by it.
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [0, 0]
+    cdcc_limit: 2_000
+
+- name: For 2022 a line 13 carryover adds nothing to taxable benefits.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 55_000
+        dependent_care_employer_benefits: 5_000
+        # Unused 2021 plan-year benefits used in 2022 (line 13).
+        dependent_care_employer_benefits_prior_year_carryover: 1_500
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 7_000
+        tax_unit_childcare_expenses: 7_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 2022 Form 2441: line 15 is $5,000 + $1,500 = $6,500, and line 21 adds
+    # the $1,500 on line 13 to the $5,000 cap, so line 25 is $6,500 and line
+    # 26 is $0. Temporary relief rules govern such carryovers, so the model
+    # leaves line 13 out of both line 15 and the cap for 2021 and 2022
+    # (prior_year_carryover_omitted). That gives the same line 26 of $0 but
+    # an exclusion of $5,000 rather than the form's $6,500, so this case
+    # asserts only line 26 and AGI.
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 50_000
+
+- name: For 2021 a line 13 carryover above the $10,500 cap adds nothing to taxable benefits.
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        # Box 1 wages of $70,000 plus $10,500 of box 10 benefits under a plan
+        # that adopted the 2021 limit.
+        employment_income: 80_500
+        dependent_care_employer_benefits: 10_500
+        # Unused 2020 plan-year benefits used in 2021 (line 13).
+        dependent_care_employer_benefits_prior_year_carryover: 1_500
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 13_000
+        tax_unit_childcare_expenses: 13_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 2021 Form 2441: line 15 is $10,500 + $1,500 = $12,000, and line 21
+    # adds the $1,500 on line 13 to the $10,500 cap, so line 25 is $12,000
+    # and line 26 is $0. The model leaves line 13 out of both line 15 and
+    # the cap (prior_year_carryover_omitted): the same line 26 of $0, with an
+    # exclusion of $10,500 rather than $12,000, so this case asserts only
+    # line 26 and AGI. Counting line 13 without raising the cap would tax
+    # $1,500.
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 70_000
+
+- name: The 2023 cap does not add the line 13 carryover.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 55_000
+        dependent_care_employer_benefits: 5_000
+        dependent_care_employer_benefits_prior_year_carryover: 1_500
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 7_000
+        tax_unit_childcare_expenses: 7_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 2023 Form 2441 line 21 is $5,000. Line 15 is $6,500; line 26 is $1,500.
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [1_500, 0]
+
+- name: Negative line 13 and line 14 entries count as zero.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+        dependent_care_employer_benefits: 3_000
+        dependent_care_employer_benefits_prior_year_carryover: -500
+        dependent_care_employer_benefits_forfeited_or_carried_forward: -2_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 9_000
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15 is the $3,000 on line 12; neither entry can lower or raise it.
+    dependent_care_assistance_exclusion: 3_000
+    taxable_dependent_care_benefits: [0, 0]

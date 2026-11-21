@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.income.person.dependent_care_employer_benefits import (
+    form_2441_line_15,
+)
 
 
 class dependent_care_assistance_exclusion(Variable):
@@ -27,9 +30,11 @@ class dependent_care_assistance_exclusion(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Total employer-provided dependent care benefits (Form 2441 line 12,
-        # W-2 box 10).
-        benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
+        # Form 2441 line 15: employer-provided dependent care benefits (line
+        # 12, W-2 box 10 less any amount above the plan's exclusion), plus
+        # prior-year benefits used in this year's grace period (line 13), less
+        # benefits forfeited or carried forward (line 14).
+        benefits = tax_unit.sum(form_2441_line_15(tax_unit.members, period, parameters))
         if not np.any(benefits > 0):
             return np.zeros_like(benefits)
         p = parameters(period).gov.irs.gross_income.dependent_care_assistance_programs

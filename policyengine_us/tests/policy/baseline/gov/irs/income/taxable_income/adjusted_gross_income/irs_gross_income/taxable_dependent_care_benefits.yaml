@@ -188,3 +188,175 @@
     irs_employment_income: 30_000
     payroll_tax_gross_wages: 30_000
     taxable_dependent_care_benefits: 0
+
+# Form 2441 line 15 adds prior-year benefits used in this year's grace period
+# (line 13) to the line 12 benefits and subtracts amounts forfeited or
+# carried forward (line 14). Line 12 is dependent_care_employer_benefits: W-2
+# box 10, not counting any amount above the plan's exclusion, which box 1
+# already includes as wages. Line 26 is line 15 less the line 25 exclusion.
+
+- name: Forfeited benefits are neither excluded nor taxable, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        # Box 1 wages of $23,000 plus $5,000 of box 10 benefits.
+        employment_income: 28_000
+        # Box 10 reports benefits regardless of employee forfeitures.
+        dependent_care_employer_benefits: 5_000
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 1_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 4_000
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The filer set aside $5,000, incurred $4,000 of qualified expenses and
+    # forfeited $1,000. Line 15: $5,000 - $1,000 = $4,000. Line 25: the
+    # smallest of $4,000, $4,000 of qualified expenses (line 16), $23,000 of
+    # earned income and the $5,000 cap. Line 26: $0. Without line 14, line
+    # 26 would be $1,000 and AGI $24,000.
+    irs_employment_income: [23_000, 0]
+    dependent_care_assistance_exclusion: 4_000
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 23_000
+
+- name: Box 10 above the plan's exclusion stays in wages when part is forfeited, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        # One W-2 reports $6,000 in box 10 under a plan with a $5,000
+        # exclusion. The $1,000 above it is in box 1 (W-2 instructions,
+        # p. 19) and not on line 12, so box 1 is $24,000 and line 12 is
+        # $5,000.
+        employment_income: 29_000
+        dependent_care_employer_benefits: 5_000
+        # The filer incurred $5,000 of expenses and forfeited $1,000; line 14
+        # enters the forfeited amount included on line 12.
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 1_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 5_000
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15: $5,000 - $1,000 = $4,000. Line 25: $4,000. Line 26: $0. The
+    # $1,000 above the plan's exclusion stays in box 1, so AGI is $24,000.
+    irs_employment_income: [24_000, 0]
+    dependent_care_assistance_exclusion: 4_000
+    taxable_dependent_care_benefits: [0, 0]
+    adjusted_gross_income: 24_000
+
+- name: Grace-period carryover adds to the benefits, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 44_000
+        dependent_care_employer_benefits: 4_000
+        # Unused 2024 benefits used in the 2025 grace period (line 13).
+        dependent_care_employer_benefits_prior_year_carryover: 1_500
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 6_000
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15: $4,000 + $1,500 = $5,500. Line 25: $5,000 cap. Line 26: $500.
+    irs_employment_income: [40_000, 0]
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [500, 0]
+    adjusted_gross_income: 40_500
+
+- name: Joint return splits the taxable part by each spouse's line 15 amount, 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 1_000
+      spouse:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        dependent_care_assistance_qualified_expenses: 9_000
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Line 15: $4,000 + $5,000 = $9,000. Line 25: $5,000 cap. Line 26:
+    # $4,000, split 4:5.
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [1_777.78, 2_222.22, 0]
+    irs_employment_income: [55_000, 55_000, 0]
+    adjusted_gross_income: 114_000
+
+- name: One spouse's line 14 cannot reduce the other spouse's line 15, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        # A forfeiture entered for a spouse with no benefits of their own.
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 1_000
+      spouse:
+        age: 40
+        employment_income: 65_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        dependent_care_assistance_qualified_expenses: 3_000
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Each person's line 14 comes from their own line 12 and line 13, so the
+    # head's part of line 15 is floored at $0 and the spouse's stays $5,000.
+    # Line 25: $3,000 of qualified expenses. Line 26: $2,000, all the
+    # spouse's.
+    dependent_care_assistance_exclusion: 3_000
+    taxable_dependent_care_benefits: [0, 2_000, 0]
+    adjusted_gross_income: 122_000
