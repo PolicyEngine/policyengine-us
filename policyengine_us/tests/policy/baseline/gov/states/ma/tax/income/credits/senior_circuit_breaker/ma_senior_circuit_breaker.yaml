@@ -1339,3 +1339,100 @@
     - 1_150
     - 1_150
     - 0
+
+- name: Case 17, 2025 single filer whose HSA deduction brings total income exactly to the limit is eligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 77_700
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        health_savings_account_ald: 2_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Massachusetts AGI: 77,700 wages - 2,000 HSA deduction = 75,700.
+    # Total income: 75,700 - 700 aged exemption = 75,000, not above the
+    # 75,000 single limit.
+    ma_scb_total_income: 75_000
+    # Income threshold: 75,000 * 0.10 = 7,500; 10,000 - 7,500 = 2,500;
+    # credit: min(2,500, 2,820) = 2,500.
+    ma_senior_circuit_breaker: 2_500
+
+- name: Case 18, 2025 single filer one dollar over the limit after the HSA deduction is ineligible.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 77_701
+        real_estate_taxes: 10_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        health_savings_account_ald: 2_000
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Total income: 77,701 - 2,000 HSA deduction - 700 aged exemption =
+    # 75,001, above the 75,000 single limit.
+    ma_scb_total_income: 75_001
+    ma_senior_circuit_breaker: 0
+
+- name: Case 19, 2025 a dependent's dividends do not count toward the head of household's total income. # c.62 s.6(k)(1) counts "the taxpayer's" Part A, B and C income; the 2025 Schedule CB line 3 worksheet reads the claimant's own Form 1, Schedule B and U.S. Schedule D.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 94_000
+        real_estate_taxes: 12_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+      grandchild:
+        age: 10
+        qualified_dividend_income: 2_000
+        is_tax_unit_dependent: true
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      grandchild_marital_unit:
+        members: [grandchild]
+    spm_units:
+      spm_unit:
+        tanf: 0
+        members: [head, grandchild]
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: MA
+  output:
+    # Part B AGI: 94,000 wages. ma_agi also carries the grandchild's 2,000 of
+    # dividends as Part A AGI, which come back out as the dependent's share.
+    # Total income: 94,000 - 700 aged exemption - 1,000 dependent exemption =
+    # 92,300, not above the 94,000 head of household limit.
+    ma_scb_total_income: 92_300
+    # Income threshold: 92,300 * 0.10 = 9,230; 12,000 - 9,230 = 2,770;
+    # credit: min(2,770, 2,820) = 2,770.
+    ma_senior_circuit_breaker: 2_770
