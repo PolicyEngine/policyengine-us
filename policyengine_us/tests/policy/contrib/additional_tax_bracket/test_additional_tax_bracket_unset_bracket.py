@@ -392,6 +392,40 @@ def test_baseline_schedule_is_unchanged_in_every_year():
             assert np.array_equal(below, old_below), (status, year)
 
 
+def test_shipped_separate_thresholds_equal_half_joint_thresholds():
+    thresholds = baseline_system.parameters.get_child(f"{BRACKET}.thresholds")
+    expected_brackets = {str(i) for i in range(1, N_BRACKETS + 1)}
+    assert set(thresholds.children) == expected_brackets
+    checked = set()
+
+    for bracket in sorted(thresholds.children, key=int):
+        columns = thresholds.children[bracket].children
+        joint, separate = columns["JOINT"], columns["SEPARATE"]
+        instants = sorted(
+            {
+                value_at_instant.instant_str
+                for leaf in (joint, separate)
+                for value_at_instant in leaf.values_list
+            }
+        )
+        for instant_str in instants:
+            joint_value = joint._get_at_instant(instant_str)
+            separate_value = separate._get_at_instant(instant_str)
+            if joint_value is None and separate_value is None:
+                continue
+            assert joint_value is not None and separate_value is not None, (
+                bracket,
+                instant_str,
+            )
+            assert separate_value == joint_value / 2, (
+                f"{BRACKET}.thresholds.{bracket}: SEPARATE {separate_value} "
+                f"does not equal half JOINT {joint_value} at {instant_str}"
+            )
+            checked.add(bracket)
+
+    assert checked == expected_brackets
+
+
 # ---------------------------------------------------------------------------
 # The reform in simulations
 # ---------------------------------------------------------------------------
