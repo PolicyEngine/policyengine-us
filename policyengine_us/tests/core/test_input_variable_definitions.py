@@ -54,6 +54,14 @@ def test_legacy_marketplace_coverage_is_not_active_input_variable():
     assert system.variables["takes_up_aca_if_eligible"].is_input_variable()
 
 
+def test_service_connected_disabled_veteran_is_an_input_variable():
+    # The web app's household builder offers only input variables, so a
+    # default formula here would hide the any-rating flag from its users.
+    variable = system.variables["is_service_connected_disabled_veteran"]
+    assert variable.is_input_variable()
+    assert variable.default_value is False
+
+
 def test_state_input_variables_match_state_defined_for():
     invalid = {
         name: variable.defined_for
