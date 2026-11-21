@@ -602,3 +602,26 @@
         state_code: CO
   output:
     is_chip_fcep_eligible_person: false
+
+# 130 CMR 504.006(D)(1) gives a pregnant undocumented Massachusetts resident
+# MassHealth Standard, so the person passes the Medicaid immigration test and
+# the unborn-child route, which covers people who are not eligible for
+# Medicaid, does not apply.
+- name: Case 22, Massachusetts covers an undocumented pregnant applicant at 150% FPL under Medicaid in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        immigration_status: UNDOCUMENTED
+        medicaid_income_level: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    is_medicaid_immigration_status_eligible: true
+    # 1.5 <= 2.05, Massachusetts's limit for pregnant people.
+    is_medicaid_eligible: true
+    is_chip_fcep_eligible_person: false

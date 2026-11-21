@@ -1,0 +1,60 @@
+# The federal CHIP immigration test: citizens, qualified noncitizens exempt
+# from or past the five-year bar, and the lawfully residing option. A state's
+# own routes for undocumented children pass is_chip_immigration_status_eligible
+# and fail this test.
+- name: Case 1, citizen child passes the federal CHIP immigration test.
+  period: 2025
+  input:
+    state_code: AZ
+    immigration_status: CITIZEN
+    age: 10
+  output:
+    is_federal_chip_immigration_status_eligible: true
+    is_chip_immigration_status_eligible: true
+
+- name: Case 2, Arizona permanent resident child passes once the five-year bar ends.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 4
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+  output:
+    # Arizona elected no lawfully residing option: 4 < 5 fails, 5 >= 5 passes.
+    is_federal_chip_immigration_status_eligible: [false, true]
+    is_chip_immigration_status_eligible: [false, true]
+
+- name: Case 3, undocumented 8-year-old in New York passes the state route and fails the federal test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    # Not a citizen, not a qualified noncitizen, not lawfully residing: false.
+    is_federal_chip_immigration_status_eligible: false
+    # New York's child term is true, and 8 < 19: true.
+    is_chip_immigration_status_eligible: true
+
+- name: Case 4, undocumented 8-year-old in New Jersey passes the state route and fails the federal test in 2024.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_federal_chip_immigration_status_eligible: false
+    # New Jersey's child_age_limit is 19 from 2023, and 8 < 19: true.
+    is_chip_immigration_status_eligible: true
