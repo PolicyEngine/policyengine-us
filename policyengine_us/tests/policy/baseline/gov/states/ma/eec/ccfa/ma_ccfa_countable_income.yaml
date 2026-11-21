@@ -599,3 +599,19 @@
   output:
     ma_ccfa_is_parent: [true, true, false]
     ma_ccfa_countable_income: 5_300
+
+- name: Case 26, railroad retirement benefits count as retirement income.
+  # The October 2023 interim policies list retirement income among the only
+  # income sources counted. They exclude Social Security, which the Social
+  # Security Administration pays, and railroad annuities come from the
+  # Railroad Retirement Board.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: MA
+    railroad_benefits: 12_000
+  output:
+    ma_ccfa_countable_income:
+      2023-09: 1_000
+      2023-10: 1_000

@@ -152,3 +152,29 @@
   output:
     # 3,000 + 500 (19-year-old's earnings counted) = 3,500
     nd_ccap_countable_income: 3_500
+
+- name: Case 8, railroad retirement benefits count as unearned income.
+  # NDAC 75-02-01.3-08 disregards no recurring railroad retirement benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 12,000 / 12 = 1,000
+    nd_ccap_gross_income: 1_000
+    nd_ccap_countable_income: 1_000

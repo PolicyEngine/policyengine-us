@@ -17,4 +17,4 @@ class mo_snc_countable_income(Variable):
         "https://dssmanuals.mo.gov/supplemental-nursing-care/0610-000-00/0610-005-00/",
         "https://dssmanuals.mo.gov/supplemental-nursing-care/0610-000-00/0610-025-00/",
     )
-    adds = ["market_income", "social_security", "ssi"]
+    adds = ["market_income", "social_security", "railroad_benefits", "ssi"]

@@ -1,0 +1,10 @@
+- name: Case 1, railroad retirement benefits count as income.
+  # SHARE requires all household income and names pension among income proofs.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    in_riv: true
+    railroad_benefits: 12_000
+  output:
+    ca_riv_share_countable_income: 12_000

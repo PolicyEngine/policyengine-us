@@ -7,6 +7,7 @@ values:
     - interest_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - veterans_benefits
     - military_retirement_income
     - alimony_income
@@ -19,12 +20,18 @@ values:
   # (all types), SSI, child support, and veterans disability benefits, and
   # the countable list becomes exclusive; interest income is not on it.
   # CCFA mapping assumption: veterans_benefits contains disability payments.
+  # railroad_benefits counts as "Retirement income": the Railroad Retirement
+  # Board pays it under the Railroad Retirement Act, and the exclusion of
+  # "Social Security Income" names Social Security benefits. The input doesn't
+  # separate railroad disability and survivor annuities, which the list may
+  # not reach, so the model counts every railroad payment.
   2023-10-01:
     - farm_rent_income
     - estate_income
     - dividend_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - military_retirement_income
     - alimony_income
     - total_unemployment_compensation
@@ -35,6 +42,7 @@ values:
     - dividend_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - military_retirement_income
     - alimony_income
     - total_unemployment_compensation

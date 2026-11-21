@@ -14,6 +14,8 @@ values:
     - workers_compensation
     - veterans_benefits        # "VA benefits"; VA disability is non-countable
     - pension_income           # "pensions" and "retirement"
+    # Railroad retirement annuities are pensions and retirement benefits.
+    - railroad_benefits
     - alimony_income
     - child_support_received   # "child support" and "back child support"
     - interest_income          # "interest income"

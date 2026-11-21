@@ -1,0 +1,10 @@
+- name: Case 1, railroad retirement benefits count as income.
+  # GA regulations define unearned income as "all other income received" and
+  # name Railroad Retirement Benefits among potentially available income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    railroad_benefits: 12_000
+  output:
+    ca_ala_general_assistance_countable_income_person: 1_000

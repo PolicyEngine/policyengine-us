@@ -1,0 +1,9 @@
+- name: Case 1, railroad retirement benefits count as unearned income.
+  # 16 Del. Admin. Code 11003 counts "Pensions; viii. Railroad retirement; ix. Annuities".
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: DE
+    railroad_benefits: 12_000
+  output:
+    de_poc_countable_income: 1_000

@@ -85,3 +85,14 @@
         members: [person1]
   output:
     ca_smc_general_assistance_countable_income: 300
+
+- name: Case 6, railroad retirement benefits count as income.
+  # The GA fact sheet counts retirement benefits and other means of income or support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    in_smc: true
+    railroad_benefits: 12_000
+  output:
+    ca_smc_general_assistance_countable_income: 1_000

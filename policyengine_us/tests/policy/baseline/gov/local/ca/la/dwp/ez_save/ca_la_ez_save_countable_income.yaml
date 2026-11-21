@@ -1,0 +1,13 @@
+- name: Case 1, railroad retirement benefits count as income.
+  # EZ-SAVE defines income as all the money and benefits a household receives and
+  # names retirement. The income list also counts SNAP, which this case holds at
+  # zero to isolate the railroad benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    in_la: true
+    snap: 0
+    railroad_benefits: 12_000
+  output:
+    ca_la_ez_save_countable_income: 12_000

@@ -16,6 +16,9 @@ values:
     - workers_compensation
     - gi_cash_assistance
     - social_security
+    # 256P.06, subd. 3(2)(ix) counts retirement benefits. railroad_benefits doesn't
+    # separate disability annuities, so the whole amount counts.
+    - railroad_benefits
     # MFIP counts GA, RCA and cash benefits already issued (0017.12.03).
     # Receipt-of-other-assistance rules in 0011.21 are separate eligibility
     # rules; this input represents cash received by an assistance-unit member.

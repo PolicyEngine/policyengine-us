@@ -75,3 +75,13 @@
     dividend_income: 1200
   output:
     nd_tanf_gross_unearned_income: 300
+
+- name: Case 9, railroad retirement benefits count as unearned income.
+  # Manual 400-19-55-20-15 lists "Railroad benefits" as countable unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    railroad_benefits: 12_000
+  output:
+    nd_tanf_gross_unearned_income: 1_000

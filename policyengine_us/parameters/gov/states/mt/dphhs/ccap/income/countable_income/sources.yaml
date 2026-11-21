@@ -13,7 +13,8 @@ values:
     - dividend_income
     - rental_income  # Rental/lease income, contract for deed
     - social_security  # SS and SSDI counted; SSI excluded (social_security omits SSI)
-    - pension_income  # Government pension, annuity, railroad retirement, veterans' pensions
+    - railroad_benefits  # Railroad Retirement counts as pension or retirement income
+    - pension_income  # Government pension, annuity, veterans' pensions
     - retirement_distributions
     - total_unemployment_compensation
     - workers_compensation

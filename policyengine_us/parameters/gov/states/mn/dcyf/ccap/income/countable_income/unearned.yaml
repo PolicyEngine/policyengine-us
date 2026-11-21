@@ -8,6 +8,11 @@ values:
     - dividend_income
     - interest_income
     - pension_income
+    # 256P.06, subd. 3(2)(ix) counts retirement benefits. Item (xvi), which the
+    # model applies to Social Security through rsdi_sources, doesn't name them.
+    # railroad_benefits doesn't separate disability annuities, so the whole
+    # amount counts.
+    - railroad_benefits
     - veterans_benefits
     # Military retirement pay and Survivor Benefit Plan annuities count as
     # retirement benefits under 256P.06, subd. 3(2)(ix), which has no income

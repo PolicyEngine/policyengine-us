@@ -9,6 +9,11 @@ values:
     - rental_income
     - pension_income
     - alimony_income
+    # 40 TAC 809.44(c) counts all income that (b) doesn't exclude. Item (b)(17)
+    # excludes "Regular payments from Social Security", and the Railroad
+    # Retirement Board, not the Social Security Administration, pays railroad
+    # annuities, so they count.
+    - railroad_benefits
     # The statute defines excluded sources rather than included sources:
     # Medicare, Medicaid, SNAP, school meals, housing assistance
     # TANF, social_security, ssi, general assistance, general relief
@@ -21,4 +26,6 @@ metadata:
   label: Texas CCS countable income sources
   reference:
     - title: SECTION 809.44. Calculating Family Income (b)
+      href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-44
+    - title: SECTION 809.44. Calculating Family Income (c)
       href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-44

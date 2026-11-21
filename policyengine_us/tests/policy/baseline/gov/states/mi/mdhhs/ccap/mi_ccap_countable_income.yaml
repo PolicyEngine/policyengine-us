@@ -1,0 +1,9 @@
+- name: Case 1, railroad retirement benefits count as unearned income.
+  # BEM 503 counts the gross Railroad Retirement benefit as unearned income for all programs.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    railroad_benefits: 12_000
+  output:
+    mi_ccap_countable_income: 1_000
