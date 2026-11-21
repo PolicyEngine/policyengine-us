@@ -1,3 +1,11 @@
+## [2.152.3] - 2026-11-21
+
+### Fixed
+
+- Michigan household resources for the homestead property tax and home heating credits now count IRA and 401(k) distributions, taxable Roth conversions, military retired pay, survivor benefits, forgiven debt and employer dependent care benefits. Line 31 now subtracts health insurance premiums recorded in the decomposed premium inputs, including the Medicare Part B premium the enrollee pays.
+- Count tax-exempt retirement distributions in the Arizona property tax credit, tax-exempt disability insurance in West Virginia homestead excess property tax credit income, the section 911, 931 and 933 exclusions in Nebraska child care credit household income, and dependents' income in Virginia low-income credit family income. North Dakota renter's refund income no longer lets a net capital loss reduce income.
+
+
 ## [2.152.2] - 2026-11-21
 
 ### Changed
