@@ -149,3 +149,45 @@
     # The same household fails where the state's BBCE keeps the net test:
     # $2,966 exceeds the four-person FY 2026 standard of $2,680.
     meets_tanf_non_cash_net_income_test: false
+
+# Arkansas BBCE raises only the resource limit: households "still need to
+# meet all other financial and non-financial eligibility rules" (SNAP
+# Certification Manual Appendix AA), so the net test stays for both
+# household types.
+- name: Arkansas BBCE household of three above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 3
+        is_tanf_non_cash_hheod: false
+        snap_net_income: 2_300
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $2,300 exceeds the three-person FY 2026 standard of $2,221.
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Arkansas BBCE aged or disabled household above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_400
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $1,400 exceeds the one-person FY 2026 standard of $1,305.
+    meets_tanf_non_cash_net_income_test: false
