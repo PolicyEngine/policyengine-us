@@ -180,3 +180,123 @@
     adjusted_gross_income: 30_000
     vt_renter_credit_deduction_add_back: 0
     vt_renter_credit_income: 30_000
+
+- name: Case 11, a short-term capital loss netted against the same person's long-term gain is added back in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    short_term_capital_gains: -4_000
+    long_term_capital_gains: 2_000
+  output:
+    # capital_gains nets the two parts to -2,000, so gross income is 30,000.
+    # The 2,000 net loss is inside the 3,000 limit (Form 1040 line 7), and
+    # AGI is 28,000. 6061(18)(A) adds back the whole 4,000 short-term loss:
+    # the 2,000 that offset the long-term gain and the 2,000 net loss, for
+    # 28,000 + 4,000 = 32,000, as in Case 6. (RCC-146 line 13 adds back only
+    # the 2,000 on line 7, for 30,000.)
+    capital_losses_allowed_against_gains: 0
+    limited_capital_loss: 2_000
+    adjusted_gross_income: 28_000
+    vt_renter_credit_capital_loss_add_back: 4_000
+    vt_renter_credit_income: 32_000
+
+- name: Case 12, a capital loss netted against capital gain distributions on Schedule D line 13 is added back in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    long_term_capital_gains: -2_000
+    schedule_d_capital_gain_distributions: 2_000
+  output:
+    # The 2,000 of distributions on Schedule D line 13 net with a 4,000
+    # long-term loss from sales to -2,000 on line 15, so AGI is 28,000.
+    # 6061(18)(A) adds back the 4,000 loss: the 2,000 the distributions
+    # absorbed and the 2,000 net loss, for 32,000, as in Case 6.
+    limited_capital_loss: 2_000
+    adjusted_gross_income: 28_000
+    vt_renter_credit_capital_loss_add_back: 4_000
+    vt_renter_credit_income: 32_000
+
+- name: Case 13, a prior-year capital loss carryover absorbed by the same person's long-term gain is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    long_term_capital_gains: 5_000
+    long_term_capital_loss_carryover: 3_000
+  output:
+    # The year's 8,000 long-term gain less the 3,000 carryover (Schedule D
+    # lines 14 and 15) is 5,000, so AGI is 35,000. 26 U.S.C. 1212(b)(1)(B)
+    # treats the carryover as a long-term capital loss of the year, and AGI
+    # deducted all of it, so 6061(18)(A) adds it back: 38,000.
+    adjusted_gross_income: 35_000
+    vt_renter_credit_capital_loss_add_back: 3_000
+    vt_renter_credit_income: 38_000
+
+- name: Case 14, the part of a netted capital loss above the federal limit is not added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    short_term_capital_gains: -10_000
+    long_term_capital_gains: 2_000
+  output:
+    # The parts net to -8,000, of which IRC 1211(b) allows 3,000, so AGI is
+    # 27,000. AGI deducted 2,000 of the short-term loss against the
+    # long-term gain and 3,000 as the net loss; the other 5,000 carries to
+    # 2026. 6061(18)(A) adds back the 5,000 deducted: 32,000.
+    limited_capital_loss: 3_000
+    adjusted_gross_income: 27_000
+    vt_renter_credit_capital_loss_add_back: 5_000
+    vt_renter_credit_income: 32_000
+
+- name: Case 15, a dependent's capital loss netted against the dependent's own gain is not added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VT
+  output:
+    # The child's gains and losses are on the child's own return, so the
+    # parent's AGI is 30,000 and there is no capital loss to add back.
+    adjusted_gross_income: 30_000
+    vt_renter_credit_capital_loss_add_back: 0
+    vt_renter_credit_income: 30_000
+
+- name: Case 16, a carryover is added back when the net capital gain is supplied without its parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    employment_income: 30_000
+    capital_gains: -1_000
+    long_term_capital_loss_carryover: 3_000
+  output:
+    # The -1,000 net includes the 3,000 carryover, so the year's own gain is
+    # 2,000. AGI deducts the 1,000 net loss: 29,000. The carryover is a
+    # capital loss of the year (IRC 1212(b)(1)(B)); AGI deducted 2,000 of it
+    # against the gain and 1,000 as the net loss, so 6061(18)(A) adds back
+    # 3,000: 32,000.
+    limited_capital_loss: 1_000
+    adjusted_gross_income: 29_000
+    vt_renter_credit_capital_loss_add_back: 3_000
+    vt_renter_credit_income: 32_000

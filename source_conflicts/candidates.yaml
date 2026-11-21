@@ -14523,21 +14523,26 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_income.py
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_capital_loss_add_back.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/11178
   state: unreviewed
-  note: 'PolicyEngine adds back limited_business_loss, which holds each head''s and spouse''s loss in each income
-    input (self-employment, farm, rental, farm rental, estate or trust, partnership or S corporation, and Form 4797
-    gains), and both capital loss parts of the federal deduction: capital_losses_allowed_against_gains, the losses
-    allowed against capital gains and capital gain distributions, and limited_capital_loss, the net capital loss up to
-    the 26 U.S.C. 1211(b) limit. (18)(A) does not define "capital loss"; the model reads it as each loss from a sale or
-    exchange (26 U.S.C. 1222(2) and (4)), not the "net capital loss" of 1222(10), so every capital loss included in
-    AGI is added back. RCC-146 line 13 and the 2025 booklet add back only the net figure on Form 1040 line 7. A loss
-    inside one input, such as one rental property netted against another in rental_income, or a short-term loss
-    netted against a long-term gain in one person''s capital_gains, cannot be separated. Line 13 also adds back a net
-    operating loss deduction (Schedule 1 line 8a), which (18)(A) does not list; this model has no federal net
-    operating loss deduction. Cases 6 and 7 in vt_renter_credit_income.yaml pin the statute reading. PolicyEngine has
-    recorded no ruling.'
+  note: 'PolicyEngine adds back limited_business_loss, which holds each head''s and spouse''s loss in each income input
+    (self-employment, farm, rental, farm rental, estate or trust, partnership or S corporation, and Form 4797 gains),
+    and vt_renter_credit_capital_loss_add_back, each capital loss of the head and spouse that AGI deducted. That
+    add-back has three parts: a loss that offset the same person''s gain in the other holding period or capital gain
+    distributions on Schedule D line 13; capital_losses_allowed_against_gains, the losses allowed against another
+    filer''s gains and distributions reported without Schedule D; and limited_capital_loss, the net capital loss up to
+    the 26 U.S.C. 1211(b) limit. A loss carried to a later year is not added back. The prior-year long-term carryover,
+    which 26 U.S.C. 1212(b)(1)(B) treats as a capital loss of the year, is added back to the extent AGI deducted it.
+    (18)(A) does not define "capital loss"; the model reads it as each loss from a sale or exchange (26 U.S.C. 1222(2)
+    and (4)), not the "net capital loss" of 1222(10), so every capital loss included in AGI is added back. RCC-146 line
+    13 and the 2025 booklet add back only the net figure on Form 1040 line 7. A loss inside one input, such as one
+    rental property netted against another in rental_income, or two sales in the same holding period netted in one
+    person''s short-term or long-term capital gains, cannot be separated; neither can a short-term carryover, which has
+    no input of its own. Line 13 also adds back a net operating loss deduction (Schedule 1 line 8a), which (18)(A) does
+    not list; this model has no federal net operating loss deduction. Cases 6, 7 and 11 to 16 in
+    vt_renter_credit_income.yaml pin the statute reading. PolicyEngine has recorded no ruling.'
 - id: us-vt:renter-credit-statewide-average-fmr
   program: renter-credit
   years:
