@@ -213,7 +213,9 @@
       - false
 
 # Guide p. 221: the applicant names the utility account that takes the benefit, so
-# any known fuel qualifies on a gas or electric bill. NONE and UNSPECIFIED do not.
+# any known fuel qualifies on a gas or electric bill. So does a home without heating,
+# since the guide asks only for responsibility for energy costs (p. 193). UNSPECIFIED
+# does not.
 # A wood home with an approved delivery takes that payment instead (contract
 # 8.1.2, p. 363). Heat in rent gives a propane home no utility account.
 - name: Case 3, a gas or electric bill opens the utility benefit to every known fuel.
@@ -344,4 +346,77 @@
         state_code: CA
         county: ALAMEDA_COUNTY_CA
   output:
-    ca_liheap_utility_eligible: [true, true, true, true, true, true, false, false, false, false]
+    # Was false, now true for spm_unit7: a home without heating qualifies on its
+    # electric bill.
+    ca_liheap_utility_eligible: [true, true, true, true, true, true, true, false, false, false]
+
+# Plan p. 55 reports HEAP payments on electric bills from July 1 to October 31
+# as cooling, within the one HEAP benefit a year (guide p. 193). A home without
+# heating qualifies on an electric bill it pays for cooling, and on a gas bill
+# alone without any cooling cost: the guide asks only that the household be
+# responsible for energy costs (p. 193). UNSPECIFIED fuel still gets nothing.
+# Wages of 40,500 exceed the 39,979.92 one-person limit (p. 184).
+- name: Case 4, a home without heating qualifies on a gas or electric bill.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person2: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4:
+        age: 35
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income_before_lsr: 40_500
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        has_cooling_expense: false
+        gas_expense: 600
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit4:
+        members: [person4]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household3:
+        members: [person3]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household4:
+        members: [person4]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+  output:
+    ca_liheap_utility_eligible: [true, true, false, false]

@@ -5,6 +5,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
     medicaid_filer_spouse_sum,
+    medicaid_non_filer_fallback_sum,
     medicaid_non_filer_member_sum,
     medicaid_tax_dependent_spouse_sum,
 )
@@ -33,10 +34,12 @@ class medicaid_household_income(Variable):
         "siblings are read from the whole family, and those relatives' "
         "amounts are added only when positive (each child's, and each "
         "couple's parents' netted), so a relative outside the household "
-        "cannot lower its income. An adult's own amount and their spouse's "
-        "are added signed; a child's own amount and their siblings' enter "
-        "with the family's children, only when positive. Unmarried "
-        "co-resident parents are each counted only when positive."
+        "cannot lower its income. The applicant's own amount and their spouse's "
+        "(the other head or spouse of a joint return, or a cohabiting spouse "
+        "filing separately) are added signed and excluded from the relatives' "
+        "groups. In a child-age applicant's household, a parent who is also "
+        "child-age is counted only as a parent. Unmarried co-resident parents "
+        "are each counted only when positive."
     )
     definition_period = YEAR
     reference = (
@@ -46,7 +49,6 @@ class medicaid_household_income(Variable):
     )
 
     def formula(person, period, parameters):
-        child_age_eligible = person("medicaid_non_filer_child_age_eligible", period)
         non_filer_rules = person("medicaid_uses_non_filer_rules", period)
         member_income = person("medicaid_household_income_member", period)
         required_to_file = person("medicaid_person_is_required_to_file", period)
@@ -59,13 +61,17 @@ class medicaid_household_income(Variable):
             person("medicaid_magi_person", period),
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        head_or_spouse_count = head_or_spouse.astype(int)
-        head_spouse_income = person.tax_unit.sum(head_or_spouse_count * member_income)
-        same_unit_spouse_income = head_or_spouse_count * head_spouse_income - (
-            head_or_spouse_count * member_income
+        head_spouse_count = person.tax_unit("head_spouse_count", period)
+        head_spouse_income = person.tax_unit.sum(head_or_spouse * member_income)
+        # As in medicaid_household_size, the other head or spouse is a
+        # same-unit spouse only on a joint return (head_spouse_count 2).
+        same_unit_spouse_income = where(
+            head_or_spouse & (head_spouse_count == 2),
+            head_spouse_income - member_income,
+            0,
         )
         cohabitating_separate = person.tax_unit("cohabitating_spouses", period) & (
-            person.tax_unit("head_spouse_count", period) == 1
+            head_spouse_count == 1
         )
         claimed_by_another_return = person(
             "claimed_as_dependent_on_another_return", period
@@ -76,32 +82,8 @@ class medicaid_household_income(Variable):
             0,
         )
         spouse_income = same_unit_spouse_income + separate_spouse_income
-        # The non-filer household's parents and siblings are read from the
-        # whole family, which can include people outside the household, such
-        # as a grandparent who is also a parent there. So their amounts are
-        # added only when positive: each child's, and each couple's parents'
-        # netted together, so married parents' losses still offset each
-        # other's income. An adult's own and their spouse's amounts are added
-        # signed; a child's own amount is among the family's children.
-        family_child_income = person.family.sum(
-            child_age_eligible * max_(0, member_income)
-        )
-        is_parent = person("is_parent", period)
-        couple_parent_income = person.marital_unit.sum(is_parent * member_income)
-        couple_parents = person.marital_unit.sum(is_parent)
-        parent_share = np.divide(
-            is_parent.astype(float),
-            couple_parents,
-            out=np.zeros_like(couple_parents, dtype=float),
-            where=couple_parents > 0,
-        )
-        family_parent_income = person.family.sum(
-            parent_share * max_(0, couple_parent_income)
-        )
-        non_filer_household_income = where(
-            child_age_eligible,
-            spouse_income + family_parent_income + family_child_income,
-            member_income + spouse_income + family_child_income,
+        non_filer_household_income = medicaid_non_filer_fallback_sum(
+            person, period, member_income, spouse_income, income=True
         )
         # With parent links in the household, sum over the same members that
         # medicaid_household_size counts, adding every selected amount signed.

@@ -108,6 +108,33 @@
   output:
     is_medicaid_immigration_status_eligible: false
 
+# California began full-scope Medi-Cal for undocumented residents aged 19 to
+# 25 on January 1, 2020. Before that, no route in the formula covers a
+# nonpregnant one: the federal test fails, California reads false in
+# undocumented_immigrant and 0 in child_age_limit, and
+# is_ca_medicaid_immigration_status_eligible is false.
+- name: Undocumented 22-year-old in California is ineligible in 2018, before the 2020 expansion
+  period: 2018
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 22
+    is_pregnant: false
+    state_code: CA
+  output:
+    # false OR false OR (22 < 0 = false) OR false = false
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 22-year-old in California is eligible in 2020
+  period: 2020
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 22
+    is_pregnant: false
+    state_code: CA
+  output:
+    # false OR false OR (22 < 0 = false) OR true = true
+    is_medicaid_immigration_status_eligible: true
+
 # 42 USC 1396b(v)(4): states that elected the lawfully residing option cover
 # children and pregnant individuals inside the five-year bar.
 - name: Case 15, recent permanent resident child in California is eligible through the lawfully residing option.
@@ -147,3 +174,147 @@
     state_code: TX
   output:
     is_medicaid_immigration_status_eligible: false
+
+# New Jersey has covered children under 19 regardless of immigration status
+# since January 1, 2023 (Cover All Kids), under its appropriations acts.
+- name: Case 19, undocumented 8-year-old in New Jersey is eligible in 2024.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 20, undocumented 19-year-old in New Jersey is past the under-19 age limit.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 21, DACA 17-year-old in New Jersey is eligible in 2024.
+  period: 2024
+  input:
+    immigration_status: DACA
+    age: 17
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 22, undocumented 8-year-old in New Jersey is eligible from January 1, 2023.
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 23, recent permanent resident on active duty in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(B) and 1612(b)(2)(C)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 24, recent permanent resident veteran in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_veteran: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(A)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 25, temporary protected status adult on active duty in Texas is not eligible, since the military exemption applies only to qualified noncitizens.
+  period: 2025
+  input:
+    immigration_status: TPS
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    is_federal_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 26, recent permanent resident on active duty in Texas stays exempt from the five-year bar after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5)(B)(ii) keeps permanent residents; 8 U.S.C.
+    # 1613(b)(2)(B) still lifts their five-year bar.
+    is_federal_medicaid_immigration_status_eligible: true
+
+- name: Case 27, refugee on active duty in Texas fails the federal test after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5) drops refugees; the military exemption only lifts
+    # the five-year bar and cannot restore the status.
+    is_federal_medicaid_immigration_status_eligible: false
+
+- name: Case 28, dependent child of an active duty parent in Alabama is exempt from the five-year bar until the dependent-child ages run out.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        age: 19
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # 8 U.S.C. 1613(b)(2)(C). Alabama does not elect the lawfully residing
+    # option, so the 10-year-old passes only through the military exemption.
+    # The 19-year-old is not a full-time student or disabled, so is past the
+    # dependent-child ages the model borrows from 7 CFR 273.4(a)(6)(ii)(G)(3).
+    is_snap_alien_military_connected: [true, true, false]
+    is_federal_medicaid_immigration_status_eligible: [true, true, false]

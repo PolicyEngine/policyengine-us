@@ -1,0 +1,4207 @@
+# Isolated NJ ordinary retirement fraction/pension-cap component.
+# Filing statuses and full-year NJ residence are independently established
+# premises; this does not derive HOH support or survivor/death-timing rules.
+# The separate filer's spouse lives elsewhere and files a separate return.
+# Known nj_total_income is the NJ taxable-line total BEFORE retirement
+# exclusions, not federal AGI. Both joint spouses contribute to that total.
+# HOH/survivor dependents have their own $5,000 NJ income, excluded from the
+# filers' return. Their filing-status classification is a component premise.
+# Independently known eligible pension totals $10,000 per filer unit; joint
+# head/spouse shares are $6,000/$4,000. No final fraction/exclusion is input.
+# Age-65 full-year filers avoid part-year and mixed-age qualification issues.
+# This case asserts no special-exclusion or complete NJ tax result.
+# 2017 NJ-1040 instructions, line 27a (physical PDF page 28).
+# https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2017/1040i.pdf#page=28
+# P.L.2021,c.129 section1, N.J.S.A.54A:6-10(b)(2): before2021 cutoff.
+# https://pub.njleg.state.nj.us/Bills/2020/PL21/129_.HTM
+- name: Case 1, 2017 ordinary retirement fraction boundaries across all filing statuses.
+  period: 2_017
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person4:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person5:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person6:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person7:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person8:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 79_999
+        nj_eligible_pension_income: 6_000
+      person9:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person14:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 105_000
+        nj_eligible_pension_income: 6_000
+      person15:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person16:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 105_001
+        nj_eligible_pension_income: 6_000
+      person17:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person18:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 130_000
+        nj_eligible_pension_income: 6_000
+      person19:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person20:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 130_001
+        nj_eligible_pension_income: 6_000
+      person21:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person22:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person23:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person28:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person29:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person30:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person31:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person32:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person33:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person34:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person35:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person36:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person37:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person42:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person43:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person44:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person45:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person46:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person47:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person48:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person49:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person50:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person53:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person54:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person55:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person56:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit4:
+        members:
+        - person4
+        filing_status: SINGLE
+      tax_unit5:
+        members:
+        - person5
+        filing_status: SINGLE
+      tax_unit6:
+        members:
+        - person6
+        filing_status: SINGLE
+      tax_unit7:
+        members:
+        - person7
+        filing_status: SINGLE
+      tax_unit8:
+        members:
+        - person8
+        - person9
+        filing_status: JOINT
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit11:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+      tax_unit12:
+        members:
+        - person16
+        - person17
+        filing_status: JOINT
+      tax_unit13:
+        members:
+        - person18
+        - person19
+        filing_status: JOINT
+      tax_unit14:
+        members:
+        - person20
+        - person21
+        filing_status: JOINT
+      tax_unit15:
+        members:
+        - person22
+        - person23
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit18:
+        members:
+        - person28
+        - person29
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit19:
+        members:
+        - person30
+        - person31
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit20:
+        members:
+        - person32
+        - person33
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit21:
+        members:
+        - person34
+        - person35
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit22:
+        members:
+        - person36
+        - person37
+        filing_status: SURVIVING_SPOUSE
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit25:
+        members:
+        - person42
+        - person43
+        filing_status: SURVIVING_SPOUSE
+      tax_unit26:
+        members:
+        - person44
+        - person45
+        filing_status: SURVIVING_SPOUSE
+      tax_unit27:
+        members:
+        - person46
+        - person47
+        filing_status: SURVIVING_SPOUSE
+      tax_unit28:
+        members:
+        - person48
+        - person49
+        filing_status: SURVIVING_SPOUSE
+      tax_unit29:
+        members:
+        - person50
+        filing_status: SEPARATE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+      tax_unit32:
+        members:
+        - person53
+        filing_status: SEPARATE
+      tax_unit33:
+        members:
+        - person54
+        filing_status: SEPARATE
+      tax_unit34:
+        members:
+        - person55
+        filing_status: SEPARATE
+      tax_unit35:
+        members:
+        - person56
+        filing_status: SEPARATE
+    families:
+      family1:
+        members:
+        - person1
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family4:
+        members:
+        - person4
+      family5:
+        members:
+        - person5
+      family6:
+        members:
+        - person6
+      family7:
+        members:
+        - person7
+      family8:
+        members:
+        - person8
+        - person9
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family11:
+        members:
+        - person14
+        - person15
+      family12:
+        members:
+        - person16
+        - person17
+      family13:
+        members:
+        - person18
+        - person19
+      family14:
+        members:
+        - person20
+        - person21
+      family15:
+        members:
+        - person22
+        - person23
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family18:
+        members:
+        - person28
+        - person29
+      family19:
+        members:
+        - person30
+        - person31
+      family20:
+        members:
+        - person32
+        - person33
+      family21:
+        members:
+        - person34
+        - person35
+      family22:
+        members:
+        - person36
+        - person37
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family25:
+        members:
+        - person42
+        - person43
+      family26:
+        members:
+        - person44
+        - person45
+      family27:
+        members:
+        - person46
+        - person47
+      family28:
+        members:
+        - person48
+        - person49
+      family29:
+        members:
+        - person50
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+      family32:
+        members:
+        - person53
+      family33:
+        members:
+        - person54
+      family34:
+        members:
+        - person55
+      family35:
+        members:
+        - person56
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+      spm_unit7:
+        members:
+        - person7
+      spm_unit8:
+        members:
+        - person8
+        - person9
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit11:
+        members:
+        - person14
+        - person15
+      spm_unit12:
+        members:
+        - person16
+        - person17
+      spm_unit13:
+        members:
+        - person18
+        - person19
+      spm_unit14:
+        members:
+        - person20
+        - person21
+      spm_unit15:
+        members:
+        - person22
+        - person23
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit18:
+        members:
+        - person28
+        - person29
+      spm_unit19:
+        members:
+        - person30
+        - person31
+      spm_unit20:
+        members:
+        - person32
+        - person33
+      spm_unit21:
+        members:
+        - person34
+        - person35
+      spm_unit22:
+        members:
+        - person36
+        - person37
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit25:
+        members:
+        - person42
+        - person43
+      spm_unit26:
+        members:
+        - person44
+        - person45
+      spm_unit27:
+        members:
+        - person46
+        - person47
+      spm_unit28:
+        members:
+        - person48
+        - person49
+      spm_unit29:
+        members:
+        - person50
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+      spm_unit32:
+        members:
+        - person53
+      spm_unit33:
+        members:
+        - person54
+      spm_unit34:
+        members:
+        - person55
+      spm_unit35:
+        members:
+        - person56
+    marital_units:
+      marital_unit1:
+        members:
+        - person1
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit4:
+        members:
+        - person4
+      marital_unit5:
+        members:
+        - person5
+      marital_unit6:
+        members:
+        - person6
+      marital_unit7:
+        members:
+        - person7
+      marital_unit8:
+        members:
+        - person8
+        - person9
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit11:
+        members:
+        - person14
+        - person15
+      marital_unit12:
+        members:
+        - person16
+        - person17
+      marital_unit13:
+        members:
+        - person18
+        - person19
+      marital_unit14:
+        members:
+        - person20
+        - person21
+      marital_unit15:
+        members:
+        - person23
+      marital_unit16:
+        members:
+        - person22
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit21:
+        members:
+        - person29
+      marital_unit22:
+        members:
+        - person28
+      marital_unit23:
+        members:
+        - person31
+      marital_unit24:
+        members:
+        - person30
+      marital_unit25:
+        members:
+        - person33
+      marital_unit26:
+        members:
+        - person32
+      marital_unit27:
+        members:
+        - person35
+      marital_unit28:
+        members:
+        - person34
+      marital_unit29:
+        members:
+        - person37
+      marital_unit30:
+        members:
+        - person36
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit35:
+        members:
+        - person43
+      marital_unit36:
+        members:
+        - person42
+      marital_unit37:
+        members:
+        - person45
+      marital_unit38:
+        members:
+        - person44
+      marital_unit39:
+        members:
+        - person47
+      marital_unit40:
+        members:
+        - person46
+      marital_unit41:
+        members:
+        - person49
+      marital_unit42:
+        members:
+        - person48
+      marital_unit43:
+        members:
+        - person50
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+      marital_unit46:
+        members:
+        - person53
+      marital_unit47:
+        members:
+        - person54
+      marital_unit48:
+        members:
+        - person55
+      marital_unit49:
+        members:
+        - person56
+    households:
+      household1:
+        members:
+        - person1
+        state_code: NJ
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household4:
+        members:
+        - person4
+        state_code: NJ
+      household5:
+        members:
+        - person5
+        state_code: NJ
+      household6:
+        members:
+        - person6
+        state_code: NJ
+      household7:
+        members:
+        - person7
+        state_code: NJ
+      household8:
+        members:
+        - person8
+        - person9
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household11:
+        members:
+        - person14
+        - person15
+        state_code: NJ
+      household12:
+        members:
+        - person16
+        - person17
+        state_code: NJ
+      household13:
+        members:
+        - person18
+        - person19
+        state_code: NJ
+      household14:
+        members:
+        - person20
+        - person21
+        state_code: NJ
+      household15:
+        members:
+        - person22
+        - person23
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household18:
+        members:
+        - person28
+        - person29
+        state_code: NJ
+      household19:
+        members:
+        - person30
+        - person31
+        state_code: NJ
+      household20:
+        members:
+        - person32
+        - person33
+        state_code: NJ
+      household21:
+        members:
+        - person34
+        - person35
+        state_code: NJ
+      household22:
+        members:
+        - person36
+        - person37
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household25:
+        members:
+        - person42
+        - person43
+        state_code: NJ
+      household26:
+        members:
+        - person44
+        - person45
+        state_code: NJ
+      household27:
+        members:
+        - person46
+        - person47
+        state_code: NJ
+      household28:
+        members:
+        - person48
+        - person49
+        state_code: NJ
+      household29:
+        members:
+        - person50
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+      household32:
+        members:
+        - person53
+        state_code: NJ
+      household33:
+        members:
+        - person54
+        state_code: NJ
+      household34:
+        members:
+        - person55
+        state_code: NJ
+      household35:
+        members:
+        - person56
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 10_000
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 10_000
+    - 10_000
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 10_000
+    - 10_000
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 10_000
+    - 10_000
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 10_000
+    - 10_000
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+
+# 2018 NJ-1040 instructions, Line 28a, physical PDF page 23.
+# https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2018/1040i.pdf#page=23
+- name: Case 2, 2018 ordinary retirement income cutoff across all filing statuses.
+  period: 2_018
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+    families:
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+    spm_units:
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+    marital_units:
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+    households:
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+
+# 2019 NJ-1040 instructions, Line 28a, physical PDF page 21.
+# https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2019/1040i.pdf#page=21
+- name: Case 3, 2019 ordinary retirement income cutoff across all filing statuses.
+  period: 2_019
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+    families:
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+    spm_units:
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+    marital_units:
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+    households:
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+
+# 2020 NJ-1040 instructions, Line 28a, physical PDF pages 21-22.
+# https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2020/1040i.pdf#page=21
+- name: Case 4, 2020 ordinary retirement income cutoff across all filing statuses.
+  period: 2_020
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+    families:
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+    spm_units:
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+    marital_units:
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+    households:
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+
+# 2021 NJ-1040 instructions, Line 28a, physical PDF pages 20-21.
+# https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=20
+- name: Case 5, 2021 ordinary retirement partial-band transition across all filing statuses.
+  period: 2_021
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person4:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person5:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person6:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person7:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person8:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 79_999
+        nj_eligible_pension_income: 6_000
+      person9:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person14:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 105_000
+        nj_eligible_pension_income: 6_000
+      person15:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person16:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 105_001
+        nj_eligible_pension_income: 6_000
+      person17:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person18:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 130_000
+        nj_eligible_pension_income: 6_000
+      person19:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person20:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 130_001
+        nj_eligible_pension_income: 6_000
+      person21:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person22:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person23:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person28:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person29:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person30:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person31:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person32:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person33:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person34:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person35:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person36:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person37:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person42:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person43:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person44:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person45:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person46:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person47:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person48:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+      person49:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person50:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 99_999
+        nj_eligible_pension_income: 10_000
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person53:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_000
+        nj_eligible_pension_income: 10_000
+      person54:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 125_001
+        nj_eligible_pension_income: 10_000
+      person55:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_000
+        nj_eligible_pension_income: 10_000
+      person56:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 150_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit4:
+        members:
+        - person4
+        filing_status: SINGLE
+      tax_unit5:
+        members:
+        - person5
+        filing_status: SINGLE
+      tax_unit6:
+        members:
+        - person6
+        filing_status: SINGLE
+      tax_unit7:
+        members:
+        - person7
+        filing_status: SINGLE
+      tax_unit8:
+        members:
+        - person8
+        - person9
+        filing_status: JOINT
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit11:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+      tax_unit12:
+        members:
+        - person16
+        - person17
+        filing_status: JOINT
+      tax_unit13:
+        members:
+        - person18
+        - person19
+        filing_status: JOINT
+      tax_unit14:
+        members:
+        - person20
+        - person21
+        filing_status: JOINT
+      tax_unit15:
+        members:
+        - person22
+        - person23
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit18:
+        members:
+        - person28
+        - person29
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit19:
+        members:
+        - person30
+        - person31
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit20:
+        members:
+        - person32
+        - person33
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit21:
+        members:
+        - person34
+        - person35
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit22:
+        members:
+        - person36
+        - person37
+        filing_status: SURVIVING_SPOUSE
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit25:
+        members:
+        - person42
+        - person43
+        filing_status: SURVIVING_SPOUSE
+      tax_unit26:
+        members:
+        - person44
+        - person45
+        filing_status: SURVIVING_SPOUSE
+      tax_unit27:
+        members:
+        - person46
+        - person47
+        filing_status: SURVIVING_SPOUSE
+      tax_unit28:
+        members:
+        - person48
+        - person49
+        filing_status: SURVIVING_SPOUSE
+      tax_unit29:
+        members:
+        - person50
+        filing_status: SEPARATE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+      tax_unit32:
+        members:
+        - person53
+        filing_status: SEPARATE
+      tax_unit33:
+        members:
+        - person54
+        filing_status: SEPARATE
+      tax_unit34:
+        members:
+        - person55
+        filing_status: SEPARATE
+      tax_unit35:
+        members:
+        - person56
+        filing_status: SEPARATE
+    families:
+      family1:
+        members:
+        - person1
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family4:
+        members:
+        - person4
+      family5:
+        members:
+        - person5
+      family6:
+        members:
+        - person6
+      family7:
+        members:
+        - person7
+      family8:
+        members:
+        - person8
+        - person9
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family11:
+        members:
+        - person14
+        - person15
+      family12:
+        members:
+        - person16
+        - person17
+      family13:
+        members:
+        - person18
+        - person19
+      family14:
+        members:
+        - person20
+        - person21
+      family15:
+        members:
+        - person22
+        - person23
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family18:
+        members:
+        - person28
+        - person29
+      family19:
+        members:
+        - person30
+        - person31
+      family20:
+        members:
+        - person32
+        - person33
+      family21:
+        members:
+        - person34
+        - person35
+      family22:
+        members:
+        - person36
+        - person37
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family25:
+        members:
+        - person42
+        - person43
+      family26:
+        members:
+        - person44
+        - person45
+      family27:
+        members:
+        - person46
+        - person47
+      family28:
+        members:
+        - person48
+        - person49
+      family29:
+        members:
+        - person50
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+      family32:
+        members:
+        - person53
+      family33:
+        members:
+        - person54
+      family34:
+        members:
+        - person55
+      family35:
+        members:
+        - person56
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+      spm_unit7:
+        members:
+        - person7
+      spm_unit8:
+        members:
+        - person8
+        - person9
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit11:
+        members:
+        - person14
+        - person15
+      spm_unit12:
+        members:
+        - person16
+        - person17
+      spm_unit13:
+        members:
+        - person18
+        - person19
+      spm_unit14:
+        members:
+        - person20
+        - person21
+      spm_unit15:
+        members:
+        - person22
+        - person23
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit18:
+        members:
+        - person28
+        - person29
+      spm_unit19:
+        members:
+        - person30
+        - person31
+      spm_unit20:
+        members:
+        - person32
+        - person33
+      spm_unit21:
+        members:
+        - person34
+        - person35
+      spm_unit22:
+        members:
+        - person36
+        - person37
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit25:
+        members:
+        - person42
+        - person43
+      spm_unit26:
+        members:
+        - person44
+        - person45
+      spm_unit27:
+        members:
+        - person46
+        - person47
+      spm_unit28:
+        members:
+        - person48
+        - person49
+      spm_unit29:
+        members:
+        - person50
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+      spm_unit32:
+        members:
+        - person53
+      spm_unit33:
+        members:
+        - person54
+      spm_unit34:
+        members:
+        - person55
+      spm_unit35:
+        members:
+        - person56
+    marital_units:
+      marital_unit1:
+        members:
+        - person1
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit4:
+        members:
+        - person4
+      marital_unit5:
+        members:
+        - person5
+      marital_unit6:
+        members:
+        - person6
+      marital_unit7:
+        members:
+        - person7
+      marital_unit8:
+        members:
+        - person8
+        - person9
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit11:
+        members:
+        - person14
+        - person15
+      marital_unit12:
+        members:
+        - person16
+        - person17
+      marital_unit13:
+        members:
+        - person18
+        - person19
+      marital_unit14:
+        members:
+        - person20
+        - person21
+      marital_unit15:
+        members:
+        - person23
+      marital_unit16:
+        members:
+        - person22
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit21:
+        members:
+        - person29
+      marital_unit22:
+        members:
+        - person28
+      marital_unit23:
+        members:
+        - person31
+      marital_unit24:
+        members:
+        - person30
+      marital_unit25:
+        members:
+        - person33
+      marital_unit26:
+        members:
+        - person32
+      marital_unit27:
+        members:
+        - person35
+      marital_unit28:
+        members:
+        - person34
+      marital_unit29:
+        members:
+        - person37
+      marital_unit30:
+        members:
+        - person36
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit35:
+        members:
+        - person43
+      marital_unit36:
+        members:
+        - person42
+      marital_unit37:
+        members:
+        - person45
+      marital_unit38:
+        members:
+        - person44
+      marital_unit39:
+        members:
+        - person47
+      marital_unit40:
+        members:
+        - person46
+      marital_unit41:
+        members:
+        - person49
+      marital_unit42:
+        members:
+        - person48
+      marital_unit43:
+        members:
+        - person50
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+      marital_unit46:
+        members:
+        - person53
+      marital_unit47:
+        members:
+        - person54
+      marital_unit48:
+        members:
+        - person55
+      marital_unit49:
+        members:
+        - person56
+    households:
+      household1:
+        members:
+        - person1
+        state_code: NJ
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household4:
+        members:
+        - person4
+        state_code: NJ
+      household5:
+        members:
+        - person5
+        state_code: NJ
+      household6:
+        members:
+        - person6
+        state_code: NJ
+      household7:
+        members:
+        - person7
+        state_code: NJ
+      household8:
+        members:
+        - person8
+        - person9
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household11:
+        members:
+        - person14
+        - person15
+        state_code: NJ
+      household12:
+        members:
+        - person16
+        - person17
+        state_code: NJ
+      household13:
+        members:
+        - person18
+        - person19
+        state_code: NJ
+      household14:
+        members:
+        - person20
+        - person21
+        state_code: NJ
+      household15:
+        members:
+        - person22
+        - person23
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household18:
+        members:
+        - person28
+        - person29
+        state_code: NJ
+      household19:
+        members:
+        - person30
+        - person31
+        state_code: NJ
+      household20:
+        members:
+        - person32
+        - person33
+        state_code: NJ
+      household21:
+        members:
+        - person34
+        - person35
+        state_code: NJ
+      household22:
+        members:
+        - person36
+        - person37
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household25:
+        members:
+        - person42
+        - person43
+        state_code: NJ
+      household26:
+        members:
+        - person44
+        - person45
+        state_code: NJ
+      household27:
+        members:
+        - person46
+        - person47
+        state_code: NJ
+      household28:
+        members:
+        - person48
+        - person49
+        state_code: NJ
+      household29:
+        members:
+        - person50
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+      household32:
+        members:
+        - person53
+        state_code: NJ
+      household33:
+        members:
+        - person54
+        state_code: NJ
+      household34:
+        members:
+        - person55
+        state_code: NJ
+      household35:
+        members:
+        - person56
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 1
+    - 0.375
+    - 0.375
+    - 0.1875
+    - 0.1875
+    - 0
+    - 1
+    - 1
+    - 0.5
+    - 0.5
+    - 0.25
+    - 0.25
+    - 0
+    - 1
+    - 1
+    - 0.375
+    - 0.375
+    - 0.1875
+    - 0.1875
+    - 0
+    - 1
+    - 1
+    - 0.375
+    - 0.375
+    - 0.1875
+    - 0.1875
+    - 0
+    - 1
+    - 1
+    - 0.25
+    - 0.25
+    - 0.125
+    - 0.125
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 10_000
+    - 3_750
+    - 3_750
+    - 1_875
+    - 1_875
+    - 0
+    - 10_000
+    - 10_000
+    - 5_000
+    - 5_000
+    - 2_500
+    - 2_500
+    - 0
+    - 10_000
+    - 10_000
+    - 3_750
+    - 3_750
+    - 1_875
+    - 1_875
+    - 0
+    - 10_000
+    - 10_000
+    - 3_750
+    - 3_750
+    - 1_875
+    - 1_875
+    - 0
+    - 10_000
+    - 10_000
+    - 2_500
+    - 2_500
+    - 1_250
+    - 1_250
+    - 0
+
+# P.L. 2021, c. 129, section 1: $100,000 cutoff from 2005 through 2020.
+# Existing parameter backdating also applies these earliest zero cells to 2015.
+# https://pub.njleg.state.nj.us/Bills/2020/PL21/129_.HTM
+- name: Case 6, 2015 ordinary retirement income cutoff across all filing statuses.
+  period: 2_015
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+    families:
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+    spm_units:
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+    marital_units:
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+    households:
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+
+# P.L. 2021, c. 129, section 1: $100,000 cutoff from 2005 through 2020.
+# Existing parameter backdating also applies these earliest zero cells to 2016.
+# https://pub.njleg.state.nj.us/Bills/2020/PL21/129_.HTM
+- name: Case 7, 2016 ordinary retirement income cutoff across all filing statuses.
+  period: 2_016
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person2:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person10:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_000
+        nj_eligible_pension_income: 6_000
+      person11:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person12:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 80_001
+        nj_eligible_pension_income: 6_000
+      person13:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        nj_total_income: 20_000
+        nj_eligible_pension_income: 4_000
+      person24:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person25:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person26:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person27:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person38:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person39:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person40:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+      person41:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        nj_total_income: 5_000
+        nj_eligible_pension_income: 0
+      person51:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_000
+        nj_eligible_pension_income: 10_000
+      person52:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        nj_total_income: 100_001
+        nj_eligible_pension_income: 10_000
+    tax_units:
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+      tax_unit9:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+      tax_unit10:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+      tax_unit16:
+        members:
+        - person24
+        - person25
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit17:
+        members:
+        - person26
+        - person27
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit23:
+        members:
+        - person38
+        - person39
+        filing_status: SURVIVING_SPOUSE
+      tax_unit24:
+        members:
+        - person40
+        - person41
+        filing_status: SURVIVING_SPOUSE
+      tax_unit30:
+        members:
+        - person51
+        filing_status: SEPARATE
+      tax_unit31:
+        members:
+        - person52
+        filing_status: SEPARATE
+    families:
+      family2:
+        members:
+        - person2
+      family3:
+        members:
+        - person3
+      family9:
+        members:
+        - person10
+        - person11
+      family10:
+        members:
+        - person12
+        - person13
+      family16:
+        members:
+        - person24
+        - person25
+      family17:
+        members:
+        - person26
+        - person27
+      family23:
+        members:
+        - person38
+        - person39
+      family24:
+        members:
+        - person40
+        - person41
+      family30:
+        members:
+        - person51
+      family31:
+        members:
+        - person52
+    spm_units:
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit9:
+        members:
+        - person10
+        - person11
+      spm_unit10:
+        members:
+        - person12
+        - person13
+      spm_unit16:
+        members:
+        - person24
+        - person25
+      spm_unit17:
+        members:
+        - person26
+        - person27
+      spm_unit23:
+        members:
+        - person38
+        - person39
+      spm_unit24:
+        members:
+        - person40
+        - person41
+      spm_unit30:
+        members:
+        - person51
+      spm_unit31:
+        members:
+        - person52
+    marital_units:
+      marital_unit2:
+        members:
+        - person2
+      marital_unit3:
+        members:
+        - person3
+      marital_unit9:
+        members:
+        - person10
+        - person11
+      marital_unit10:
+        members:
+        - person12
+        - person13
+      marital_unit17:
+        members:
+        - person25
+      marital_unit18:
+        members:
+        - person24
+      marital_unit19:
+        members:
+        - person27
+      marital_unit20:
+        members:
+        - person26
+      marital_unit31:
+        members:
+        - person39
+      marital_unit32:
+        members:
+        - person38
+      marital_unit33:
+        members:
+        - person41
+      marital_unit34:
+        members:
+        - person40
+      marital_unit44:
+        members:
+        - person51
+      marital_unit45:
+        members:
+        - person52
+    households:
+      household2:
+        members:
+        - person2
+        state_code: NJ
+      household3:
+        members:
+        - person3
+        state_code: NJ
+      household9:
+        members:
+        - person10
+        - person11
+        state_code: NJ
+      household10:
+        members:
+        - person12
+        - person13
+        state_code: NJ
+      household16:
+        members:
+        - person24
+        - person25
+        state_code: NJ
+      household17:
+        members:
+        - person26
+        - person27
+        state_code: NJ
+      household23:
+        members:
+        - person38
+        - person39
+        state_code: NJ
+      household24:
+        members:
+        - person40
+        - person41
+        state_code: NJ
+      household30:
+        members:
+        - person51
+        state_code: NJ
+      household31:
+        members:
+        - person52
+        state_code: NJ
+  output:
+    nj_retirement_exclusion_fraction:
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    - 1
+    - 0
+    nj_pension_retirement_exclusion:
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0
+    - 10_000
+    - 0

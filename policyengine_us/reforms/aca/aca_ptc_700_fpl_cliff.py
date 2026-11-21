@@ -66,7 +66,16 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
             )
             is_income_eligible = standard_income_eligible | below_fpl_exception
 
-            return person("pays_aca_premium", period) & ~separate & is_income_eligible
+            # The reform leaves 26 U.S.C. 36B(c)(1)(D) in place: someone
+            # another taxpayer can claim is outside the tax family.
+            tax_family_member = person("is_aca_tax_family_member", period)
+
+            return (
+                person("pays_aca_premium", period)
+                & tax_family_member
+                & ~separate
+                & is_income_eligible
+            )
 
     class reform(Reform):
         def apply(self):
@@ -83,9 +92,9 @@ def create_aca_ptc_700_fpl_cliff_reform(parameters, period, bypass: bool = False
     p = parameters.gov.contrib.aca.ptc_700_fpl_cliff
     current_period = period_(period)
 
-    # Check if reform is active within a 5-year lookahead window
+    # Check if reform is active within the lookahead window
     reform_active = False
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

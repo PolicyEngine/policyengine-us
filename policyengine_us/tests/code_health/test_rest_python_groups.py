@@ -828,11 +828,17 @@ def test_the_rest_check_aggregates_the_plan_and_shards_without_hiding_failure(
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
-def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow):
+def test_spm_and_dataset_suites_run_once_in_their_own_jobs_with_reports(workflow):
+    # Both suites on the Microsimulation runner took 44-60 minutes in November
+    # 2026 and hit its 60-minute timeout on release runs 44389486017 and
+    # 44576070741, so the SPM suite has a job of its own.
     jobs = yaml.safe_load(workflow.read_text())["jobs"]
-    selected = []
     reports = []
-    for target in ("test-other-python-spm", "test-microsimulation"):
+    artifacts = []
+    for target, owner in (
+        ("test-other-python-spm", "SPM"),
+        ("test-microsimulation", "Microsimulation"),
+    ):
         calls = [
             (job, step)
             for job, config in jobs.items()
@@ -841,7 +847,7 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
         ]
         assert len(calls) == 1, (target, calls)
         job, step = calls[0]
-        assert job == "Microsimulation", (target, job)
+        assert job == owner, (target, job)
         command = shlex.split(step["run"])
         assert command[:3] == ["/usr/bin/time", "-v", "-o"]
         assert command[4:] == ["uv", "run", "--no-sync", "make", target]
@@ -852,55 +858,74 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
             if arg.startswith("--junitxml=")
         ]
         assert len(junit) == 1
+        steps = jobs[job]["steps"]
+        assert_system_ca_precedes(steps, step)
+        (upload,) = [
+            candidate
+            for candidate in steps
+            if candidate.get("uses", "").startswith("actions/upload-artifact")
+        ]
+        assert upload["if"] == "always()"
+        assert steps.index(step) < steps.index(upload)
+        patterns = upload["with"]["path"].split()
+        assert all(
+            any(fnmatch(report, pattern) for pattern in patterns)
+            for report in (command[3], *junit)
+        )
         reports.extend([command[3], *junit])
-        selected.append(step)
-    steps = jobs["Microsimulation"]["steps"]
-    assert steps.index(selected[0]) < steps.index(selected[1])
-    assert selected[1]["if"] == KEEP_RUNNING_WITH_SYSTEM_CA
-    assert_system_ca_precedes(steps, selected[0])
+        artifacts.append(upload["with"]["name"])
     assert len(set(reports)) == 4
-    uploads = [
-        step
-        for step in steps
-        if step.get("uses", "").startswith("actions/upload-artifact")
-    ]
-    assert len(uploads) == 1
-    assert uploads[0]["if"] == "always()"
-    patterns = uploads[0]["with"]["path"].split()
-    assert all(
-        any(fnmatch(report, pattern) for pattern in patterns) for report in reports
-    )
-    assert uploads[0]["with"]["name"] != "rest-test-timings"
+    assert len(set(artifacts)) == 2
+    assert "rest-test-timings" not in artifacts
+    if workflow.name == "push.yaml":
+        # A release run starts both suites together and publishes after both.
+        assert jobs["SPM"]["needs"] == jobs["Microsimulation"]["needs"]
+        assert " ".join(jobs["SPM"]["if"].split()) == RELEASE_ONLY
+        assert {"Microsimulation", "SPM"} <= set(jobs["Publish"]["needs"])
+    else:
+        # A PR runs SPM on the runner Microsimulation frees, even after it
+        # fails, so it holds no more runners at once.
+        assert jobs["SPM"]["needs"] == ["Microsimulation"]
+        assert jobs["SPM"]["if"] == "${{ !cancelled() }}"
 
 
 @pytest.mark.parametrize(
-    "group,file",
+    "group,files",
     [
         (
             "ss-calculator-engine",
-            "policyengine_us/tests/unit/test_ss_calculator_engine.py",
+            ["policyengine_us/tests/unit/test_ss_calculator_engine.py"],
         ),
         (
             "ss-calculator-differential",
-            "policyengine_us/tests/unit/test_ss_calculator_differential.py",
+            [
+                "policyengine_us/tests/unit/test_ss_calculator_differential.py",
+                "policyengine_us/tests/core/test_ss_calculator_reference_invariants.py",
+            ],
         ),
-        ("ss-history-engine", "policyengine_us/tests/unit/test_ss_history_engine.py"),
+        (
+            "ss-history-engine",
+            ["policyengine_us/tests/unit/test_ss_history_engine.py"],
+        ),
         (
             "ss-history-differential",
-            "policyengine_us/tests/unit/test_ss_history_differential.py",
+            ["policyengine_us/tests/unit/test_ss_history_differential.py"],
         ),
     ],
 )
 def test_calculator_api_files_run_once_in_separate_rest_processes(
-    groups, group_files, group, file
+    groups, group_files, group, files
 ):
-    assert group_files[group] == [file]
-    assert [owner for owner, files in group_files.items() if file in files] == [group]
+    assert group_files[group] == files
+    for file in files:
+        assert [
+            owner for owner, owned_files in group_files.items() if file in owned_files
+        ] == [group]
+        assert all(file not in command for command in dry_run("test-other-python-spm"))
     assert groups[group]["reports"] == [
         f"{REPORT_DIR}/rest-python-{group}.xml",
         f"{REPORT_DIR}/rest-python-{group}-resources.txt",
     ]
-    assert all(file not in command for command in dry_run("test-other-python-spm"))
 
 
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):

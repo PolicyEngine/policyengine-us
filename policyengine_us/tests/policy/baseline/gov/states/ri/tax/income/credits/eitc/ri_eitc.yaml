@@ -21,3 +21,286 @@
     eitc: 20_000
   output:
     ri_eitc: 3_000
+
+# Component test: the federal EITC amounts below are hypothetical inputs.
+# Federal eligibility, earnings, family composition and tax liability are not
+# being tested; ri_eitc must apply the RI match to the supplied federal credit.
+# 2017 RI-1040 resident instructions, printed page I-5, Schedule EIC lines 38-40:
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2017/Income/2017-Resident-Instructions_v3.pdf#page=5
+# R.I. Gen. Laws section 44-30-2.6(c)(2)(N)(1) applies 15% from January 1, 2017.
+# Independently: [0, 100, 1_000] * 0.15 = [0, 15, 150].
+- name: Case 4, Rhode Island matches federal EITC at 15 percent from 2017.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: RI
+      household_100:
+        members: [person_100]
+        state_code: RI
+      household_1000:
+        members: [person_1000]
+        state_code: RI
+  output:
+    ri_eitc: [0, 15, 150]
+
+# Further source-component chronology controls; same three independent federal
+# credit premises and explicit persons/tax units/households as the 2017 case.
+# 2016 Schedule EIC: 12.5%; 2018 Schedule EIC: 15%.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2016/Income/2016-Resident-Instructions_11302016.pdf#page=5
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2018/Income/2018-Resident-Instructions_12072018.pdf#page=6
+# P.L. 2017, chapter 451, section 21 confirms 15% beginning January 1, 2017.
+# https://webserver.rilegislature.gov/PublicLaws/law17/law17451.htm
+# Section 44-30-2.6(c)(2)(N)(1) retains 15% until 16% begins in 2024.
+# https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-I/44-30-2.6.htm
+# Refundability is unchanged and is not asserted by these match-only cases.
+- name: Case 5, 2016 Rhode Island EITC match at 12.5 percent.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 12.5
+    - 125
+- name: Case 6, 2018 Rhode Island EITC match at 15 percent.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 15
+    - 150
+- name: Case 7, 2019 Rhode Island EITC match at 15 percent.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 15
+    - 150
+- name: Case 8, 2020 Rhode Island EITC match at 15 percent.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 15
+    - 150
+- name: Case 9, 2021 Rhode Island EITC match at 15 percent.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 15
+    - 150
+- name: Case 10, 2024 Rhode Island EITC match at 16 percent.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members:
+        - person_0
+        eitc: 0
+      tax_unit_100:
+        members:
+        - person_100
+        eitc: 100
+      tax_unit_1000:
+        members:
+        - person_1000
+        eitc: 1000
+    households:
+      household_0:
+        members:
+        - person_0
+        state_code: RI
+      household_100:
+        members:
+        - person_100
+        state_code: RI
+      household_1000:
+        members:
+        - person_1000
+        state_code: RI
+  output:
+    ri_eitc:
+    - 0
+    - 16
+    - 160

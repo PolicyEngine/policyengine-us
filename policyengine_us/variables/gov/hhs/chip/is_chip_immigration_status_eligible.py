@@ -58,4 +58,12 @@ class is_chip_immigration_status_eligible(Variable):
             & medicaid_option.pregnant[state].astype(bool)
             & person("is_pregnant_for_medicaid_nfc", period)
         )
-        return federally_eligible_status | (lawfully_residing & (child | pregnant))
+        # States that cover every child below an age limit regardless of
+        # immigration status do so in CHIP as well as Medicaid.
+        regardless = medicaid.regardless_of_immigration_status
+        child_eligible_regardless_of_status = age < regardless.child_age_limit[state]
+        return (
+            federally_eligible_status
+            | (lawfully_residing & (child | pregnant))
+            | child_eligible_regardless_of_status
+        )

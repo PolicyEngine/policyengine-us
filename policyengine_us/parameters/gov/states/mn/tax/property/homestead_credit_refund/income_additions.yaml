@@ -1,0 +1,26 @@
+description: Minnesota adds these amounts to federal adjusted gross income when computing household income under the Homestead Credit Refund program.
+values:
+  2024-01-01:
+    # Line 4, government assistance: Supplemental Security Income (Minn.
+    # Stat. 290A.03, subd. 3(a)(2)(v)) and cash public assistance and relief
+    # (subd. 3(a)(2)(iv)): Minnesota Supplemental Aid, General Assistance and
+    # MFIP, which tanf holds for Minnesota.
+    - ssi
+    - mn_msa_person
+    - general_assistance
+    - tanf
+    # Line 6, additional nontaxable income.
+    - workers_compensation # subd. 3(a)(2)(vii)
+    - tax_exempt_interest_income # subd. 3(a)(2)(vi)
+    - tax_exempt_retirement_distributions # subd. 3(a)(2)(xii)
+    - health_savings_account_ald # subd. 3(a)(2)(xv)
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota Homestead Credit Refund household income additions
+  reference:
+    - title: Minn. Stat. 290A.03, subd. 3(a)(2)
+      href: https://www.revisor.mn.gov/statutes/cite/290A.03
+    - title: "2025 Form M1PR Instructions, lines 4 and 6 #page 7-8"
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=7

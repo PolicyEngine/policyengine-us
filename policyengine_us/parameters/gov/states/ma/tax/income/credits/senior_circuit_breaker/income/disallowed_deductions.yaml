@@ -16,20 +16,42 @@ description: Income sources re-added to total income for the Massachusetts Senio
 # We follow the statute's item 2 here: reading item 8 to sweep in in-kind aid
 # would make the words "but not in-kind" surplusage. Revisit if DOR clarifies.
 #
+# The item 8 catch-all is re-added through the sources Schedule CB line 6 names
+# that have a variable: workers' compensation and disability pay outside federal
+# gross income. Capital losses and the collectibles deduction taken in reaching
+# Part A and Part C AGI are re-added in ma_scb_total_income.
+#
 # Not re-added, for lack of a corresponding variable: tax-exempt dividends
-# (§ 6(k)(1) item 3 covers "tax-exempt interest and dividends"), and the item 8
-# catch-all generally.
+# (§ 6(k)(1) item 3 covers "tax-exempt interest and dividends"), gifts and
+# return of capital.
 values:
   2001-01-01:
     - social_security
     - tax_exempt_unemployment_compensation
     - tax_exempt_pension_income
     - taxable_public_pension_income
+    # Schedule CB line 5: "Pensions/annuities/IRA/Keogh distributions not taxed
+    # on your Massachusetts tax return".
+    - tax_exempt_retirement_distributions
     - tax_exempt_interest_income
+    # Interest on U.S. obligations, subtracted in ma_part_b_agi. Schedule CB
+    # line 3 worksheet, line 8 adds back Schedule B line 6a.
+    - us_govt_interest
     - ssi
     - ma_state_supplement
     - tanf
+    # Massachusetts cash assistance (EAEDC), counted for the SPM unit like TANF.
+    - ma_eaedc
     - military_retirement_income
+    # Schedule CB line 6: "disability income, gifts, sick pay, worker's
+    # compensation and return of capital".
+    - workers_compensation
+    - tax_exempt_disability_benefits
+    # Unemployment compensation excluded from Massachusetts gross income by
+    # St. 2021, c. 9, § 26(b) (Schedule Y line 9c, 2021 only). The 2021
+    # Schedule CB line 3 worksheet: "do not exclude any amount on Schedule Y,
+    # line 9 that represents a deduction for unemployment compensation".
+    - ma_qualified_unemployment_deduction
     # In-kind under § 6(k)(1) item 2; see the note above before re-enabling.
     # - snap
     # - wic
@@ -41,3 +63,11 @@ metadata:
       href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit#calculate-your-total-income-
     - title: Mass. General Laws c.62 § 6(k)(1), definition of "taxpayer's total income"
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6
+    - title: "2025 Schedule CB, Circuit Breaker Credit, lines 5 and 6 and line 3 worksheet line 8 #page 1-2"
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-sch-cb.pdf#page=1
+    - title: 2025 Form 1 instructions, Schedule CB lines 5 and 6
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2025/ma-dor-2025-inc-form-1-inst.pdf#page=30
+    - title: 2021 Schedule CB, Circuit Breaker Credit, line 3 worksheet note on unemployment compensation
+      href: https://www.mass.gov/doc/2021-schedule-cb-circuit-breaker-credit/download#page=2
+    - title: St. 2021, c. 9, § 26(b)
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter9

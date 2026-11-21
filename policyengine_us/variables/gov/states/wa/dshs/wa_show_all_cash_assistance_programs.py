@@ -17,7 +17,8 @@ class wa_show_all_cash_assistance_programs(Variable):
     # any computation that flows into spm_unit_benefits / household_net_income.
     # Doing so triple-counts cash assistance, since wa_tanf, wa_sfa, and
     # wa_rca all become payable for the same unit and all three feed into
-    # spm_unit_benefits.
+    # spm_unit_benefits. SNAP also budgets TANF and SFA simultaneously with
+    # this flag enabled.
     #
     # If a consumer of this flag must compute aggregates while the flag is
     # set, it should explicitly zero out the redundant programs (e.g., keep

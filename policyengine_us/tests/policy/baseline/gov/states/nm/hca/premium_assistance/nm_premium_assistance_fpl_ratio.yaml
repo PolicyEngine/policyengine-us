@@ -1,0 +1,62 @@
+# The exact ratio of ACA MAGI (negative income counted as zero) to aca_fpg,
+# not truncated to whole percentage points as aca_magi_fraction is.
+
+- name: Case 1, 2027 income at 400.5% of the poverty line keeps its decimals.
+  # 63,920 / 15,960 = 4.00501. aca_magi_fraction truncates it to 4.00.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 63_920
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_fpl_ratio: 4.005
+
+- name: Case 2, 2027 negative income counts as zero.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: -10_000
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_fpl_ratio: 0
+
+- name: Case 3, 2027 a zero poverty line gives no finite ratio, so no income limit is met.
+  # The guard returns an infinite ratio instead of 0 / 0.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        nm_puente_health_member_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_fpg: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_puente_health_eligible: false

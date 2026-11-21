@@ -180,7 +180,7 @@ def test_unobserved_decembers_interpolate_toward_calendar_year_projections():
 
 
 def test_first_projected_year_gets_a_full_year_of_projected_inflation():
-    """December 2026 is interpolated, not carried flat from June 2026."""
+    """Interpolate December 2026 beyond the latest observed month."""
     cpi_u = CPI.cpi_u
     last_observation = max(
         instant(value.instant_str)

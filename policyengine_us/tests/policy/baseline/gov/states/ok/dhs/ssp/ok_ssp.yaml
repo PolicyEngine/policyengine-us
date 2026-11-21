@@ -287,3 +287,96 @@
     # Third adult: (100 - 20) + SSI (994 - 80) = 994; 1,034 - 994 = 40.
     ok_ssp_countable_income: [1_491, 1_491, 994]
     ok_ssp: [40, 40, 40]
+
+- name: Oklahoma excludes a disabled noncitizen sibling from parental allocations
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      child:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      sibling:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      family:
+        members: [parent, child, sibling]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      sibling_unit:
+        members: [sibling]
+    families:
+      family:
+        members: [parent, child, sibling]
+    households:
+      home:
+        members: [parent, child, sibling]
+        state_code: OK
+  output:
+    people:
+      sibling:
+        is_ssi_ineligible_child: true
+        ok_ssp_ineligible_child: false
+      child:
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 489
+        ssi: 525
+        # Oklahoma: 2,000 - 20 - 994 = 986 deemed.
+        ok_ssp_unearned_income_deemed_from_ineligible_parent: 986
+        # 986 - 20 + 525 = 1,491 exceeds 1,034.
+        ok_ssp_countable_income: 1_491
+        ok_ssp: 0
+
+- name: Oklahoma excludes a disabled noncitizen child from spousal allocations
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 45
+        is_ssi_disabled: true
+      spouse:
+        age: 43
+        ssi_unearned_income: 24_000
+      child:
+        age: 12
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+      child_unit:
+        members: [child]
+    families:
+      family:
+        members: [claimant, spouse, child]
+    households:
+      home:
+        members: [claimant, spouse, child]
+        state_code: OK
+  output:
+    people:
+      child:
+        is_ssi_ineligible_child: true
+        ok_ssp_ineligible_child: false
+      claimant:
+        # Oklahoma gives no allocation for this child; SSI retains its 497.
+        ok_ssp_spouse_child_allocation: 0
+      spouse:
+        ok_ssp_spouse_child_allocation: 0

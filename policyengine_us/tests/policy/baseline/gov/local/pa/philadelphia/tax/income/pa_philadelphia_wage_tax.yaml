@@ -1,0 +1,37 @@
+- name: Each person's Philadelphia wage tax uses their own rate
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+        pa_philadelphia_wage_tax_resident: true
+      person2:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+        pa_philadelphia_wage_tax_resident: false
+      person3:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 40_000
+        pa_philadelphia_wage_tax_resident: true
+        pa_philadelphia_wage_tax_reduced_rate_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    # Rates from July 2023: resident 3.75%, nonresident 3.44%, reduced 1.5%.
+    pa_philadelphia_wage_tax_person: [3_750, 3_440, 600]
+    pa_philadelphia_wage_tax: 7_790
+
+- name: No Philadelphia wages, no tax
+  period: 2024
+  input:
+    pa_philadelphia_wage_tax_taxable_wages: 0
+    state_code: PA
+  output:
+    pa_philadelphia_wage_tax_person: 0
+    pa_philadelphia_wage_tax: 0

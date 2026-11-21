@@ -189,7 +189,14 @@
   output:
     # Also includes #10032's IRA 219(g) phase-out, since this is a two-cause
     # CA + IRA cell.
-    state_income_tax_before_refundable_credits: 40683.11
+    # 2026, with FTB Tax News, October 2026 amounts: the itemized limit is
+    # 6% x ($543,076 - $521,448.82) = $1,297.63 (the 2025 $504,411 threshold
+    # uprated by the June 2026 CCPI), so deductions are $22,839.83 - $1,297.63
+    # = $21,542.20 and taxable income is $538,928.31 - $21,542.20 = $517,386.11.
+    # Schedule Y: $6,621.76 + 9.3% x ($517,386.11 - $150,394) = $40,752.03.
+    # Exemption credits phase down by ceil($21,627.18 / $2,500) x $6 = $54 each:
+    # 2 x ($158 - $54) = $208. Tax: $40,752.03 - $208 = $40,544.03.
+    state_income_tax_before_refundable_credits: 40544.03
 - name: 'PolicyBench scenario_022: California itemized conformity'
   period: 2026
   absolute_error_margin: 0.01
@@ -250,7 +257,11 @@
         state_code: CA
         household_vehicles_value: 20782.353515625
   output:
-    state_income_tax_before_refundable_credits: 1902.59
+    # 2026, with FTB Tax News, October 2026 amounts: taxable income is
+    # $91,524.41 - $30,389.97 = $61,134.44. Schedule X: $2,054.96 + 8% x
+    # ($61,134.44 - $59,498) = $2,185.88, less 2 x $158 personal and senior
+    # exemption credits = $1,869.88.
+    state_income_tax_before_refundable_credits: 1869.88
 - name: 'PolicyBench scenario_099: California itemized conformity'
   period: 2026
   absolute_error_margin: 0.01
@@ -384,7 +395,9 @@
   output:
     # Also includes #10032's IRA 219(g) phase-out.
     # FTB Schedule CA (540), Section C, line 11: $337.50 educator addback x 8% = $27 (R&TC 17072(b)).
-    state_income_tax_before_refundable_credits: 4468.45
+    # 2026 Schedule Y on $138,792.30 = $5,693.62, less $316 + 2 x $491 = $1,298
+    # of exemption credits = $4,395.62 (see ca_income_tax_before_refundable_credits.yaml).
+    state_income_tax_before_refundable_credits: 4395.62
 
 # 2024 Schedule CA (540) instructions, line 15 (Form 540 booklet, PDF p. 66):
 # "California law does not conform" to the federal limit of personal casualty
