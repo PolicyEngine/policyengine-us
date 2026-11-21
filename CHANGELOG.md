@@ -1,3 +1,10 @@
+## [2.152.12] - 2026-11-21
+
+### Fixed
+
+- Count additional state and local need-based cash benefits as SNAP unearned income.
+
+
 ## [2.152.11] - 2026-11-21
 
 ### Fixed
