@@ -1,0 +1,1 @@
+Utah homeowner's and renter's relief household income now counts alimony once, and adds SSI, nontaxable disability insurance benefits and capital loss carryovers claimed in the year. The Utah child tax credit now phases out on modified adjusted gross income (total income plus tax-exempt interest) without subtracting Utah subtractions or the state tax refund.
