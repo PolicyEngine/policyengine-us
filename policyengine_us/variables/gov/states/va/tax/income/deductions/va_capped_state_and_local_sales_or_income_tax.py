@@ -20,3 +20,10 @@ class va_capped_state_and_local_sales_or_income_tax(Variable):
             state_and_local_tax_cap - real_estate_tax, 0
         )
         return min_(uncapped_state_and_local_tax, cap_reduced_by_real_estate_tax)
+
+    def formula_2024(tax_unit, period, parameters):
+        # Virginia caps line 5a separately from lines 5b and 5c.
+        return min_(
+            tax_unit("state_and_local_sales_or_income_tax", period),
+            tax_unit("salt_cap", period),
+        )
