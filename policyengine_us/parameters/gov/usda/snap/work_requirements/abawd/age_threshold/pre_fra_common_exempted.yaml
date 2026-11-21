@@ -1,0 +1,27 @@
+description: These age groups are exempt from the pre-FRA SNAP ABAWD time limit under the adopted completed-years statutory reading.
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: SNAP ABAWD pre-FRA completed-age exemptions
+  reference:
+    - title: 7 U.S.C. 2015(o)(3)(A), 2017 edition
+      href: https://www.govinfo.gov/content/pkg/USCODE-2017-title7/html/USCODE-2017-title7-chap51-sec2015.htm
+    - title: 7 CFR 273.24(c)(1), 2017 edition
+      href: https://www.govinfo.gov/content/pkg/CFR-2017-title7-vol4/pdf/CFR-2017-title7-vol4-sec273-24.pdf
+    - title: USDA OIG Audit 27601-0002-31, Finding 2
+      href: https://usdaoig.oversight.gov/sites/default/files/reports/2023-03/27601-0002-31_fr.pdf
+brackets:
+  - threshold:
+      2017-01-01: 0
+    amount:
+      2017-01-01: true
+  - threshold:
+      2017-01-01: 18
+    amount:
+      2017-01-01: false
+  - threshold:
+      2017-01-01: 51
+    amount:
+      2017-01-01: true
