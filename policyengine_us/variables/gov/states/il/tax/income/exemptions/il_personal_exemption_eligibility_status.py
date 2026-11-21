@@ -15,6 +15,7 @@ class il_personal_exemption_eligibility_status(Variable):
     label = "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
     definition_period = YEAR
     defined_for = StateCode.IL
+    reference = "https://ilga.gov/documents/legislation/publicacts/103/PDF/103-0009.pdf#page=357"
 
     def formula(tax_unit, period, parameters):
         personal_eligibility_amount = parameters(
@@ -29,30 +30,29 @@ class il_personal_exemption_eligibility_status(Variable):
             joint, 2, 1
         )
 
-        # Then, determine whether either the head or the spouse of the
-        # tax unit is claimable as a dependent in another unit
-        claimable_count = add(
-            tax_unit,
-            period,
-            ["head_is_dependent_elsewhere", "spouse_is_dependent_elsewhere"],
-        )
+        # Count actual dependent claims among the head and spouse, as required
+        # by 35 ILCS 5/204(b).
+        person = tax_unit.members
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
+        claimed_count = tax_unit.sum(head_or_spouse & claimed_elsewhere)
         il_base_income = tax_unit("il_base_income", period)
 
         # Criteria for complete ineligibility
         ineligible = (
             (
                 ~joint
-                & (claimable_count > 0)
+                & (claimed_count > 0)
                 & (il_base_income > tax_unit_personal_eligibility_amount)
             )
             | (
                 joint
-                & (claimable_count > 1)
+                & (claimed_count > 1)
                 & (il_base_income > tax_unit_personal_eligibility_amount)
             )
             | (
                 joint
-                & (claimable_count == 2)
+                & (claimed_count == 2)
                 & (il_base_income > tax_unit_personal_eligibility_amount * 2)
             )
         )
@@ -61,14 +61,14 @@ class il_personal_exemption_eligibility_status(Variable):
         partner_ineligible = (
             (
                 joint
-                & (claimable_count == 1)
+                & (claimed_count == 1)
                 & (il_base_income > tax_unit_personal_eligibility_amount)
             )
-            | (~joint & (claimable_count == 0))
+            | (~joint & (claimed_count == 0))
             | (
                 ~joint
-                & (claimable_count == 1)
-                & (il_base_income < tax_unit_personal_eligibility_amount)
+                & (claimed_count == 1)
+                & (il_base_income <= tax_unit_personal_eligibility_amount)
             )
         )
 
