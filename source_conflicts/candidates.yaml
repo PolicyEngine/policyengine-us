@@ -992,6 +992,45 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
   note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
+- id: us-ar:snap-bbce-resource-increase-at-application
+  program: snap
+  years:
+    from: 2025
+    type: calendar
+  question: Does Arkansas grant the temporary $5,500 SNAP resource limit only to an enrolled household that accumulates
+    resources above the federal limit, or also to a household that applies with resources above it?
+  sources:
+  - kind: statute
+    citation: Ark. Code 20-76-115(b)(2), as amended by Act 675 of 2023, section 1
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2F&file=675.pdf&ddBienniumSession=2023%2F2023R
+  - kind: manual
+    citation: Arkansas DHS SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility (PDF page 80)
+    url: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
+  - kind: rulemaking
+    citation: Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023, effective April 4, 2025, SNAP
+      Certification Manual 1919 (PDF page 12)
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+  readings:
+    statute: 'Subdivision (b)(2)(A) sets the asset limit "equal to the federal resource limit". Subdivision (b)(2)(B)(i)
+      grants the temporary increase "If an enrolled household is determined by the Department of Human Services to
+      have accumulated countable assets greater than the federal resource limit".'
+    other: 'Section 1919 applies the increase to "all SNAP households that receive a non-cash TANF or Maintenance of
+      Effort benefit". Appendix AA starts the twelve months at application: "Client applies July 2025 with $5200 in
+      resources, the 12 months start in July 2025."'
+  example: In June 2026 an Arkansas family of three with gross income of $2,800 a month and $4,000 in resources applies
+    for SNAP. Under Appendix AA the household is within the $5,500 limit and eligible. Under the statute's wording it
+    is not an enrolled household, the $3,000 federal limit applies and it is ineligible.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/tanf/non_cash/asset_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11124
+  state: ruled
+  note: 'PE-US follows the manual: the $5,500 limit applies to every Arkansas household within the BBCE income limits,
+    at application and while enrolled. The model has no input that separates an applicant from an enrolled household
+    or that tracks the twelve months. Ruled by the project lead, 2026-11-18:
+    https://github.com/PolicyEngine/policyengine-us/pull/11124'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
@@ -2228,7 +2267,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
     state median income, or the whole-dollar monthly tables the plan attachment and manual print?
@@ -2242,11 +2281,19 @@ candidates:
   - kind: manual
     citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
     url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  - kind: manual
+    citation: 2026-27 LEAP Operations Manual, eligibility chart, p.99
+    url: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=99
+  - kind: guidance
+    citation: CDHS 2026-27 LEAP Income Limits table, linked from the LEAP page (https://cdhs.colorado.gov/leap)
+    url: https://drive.google.com/file/d/1gfDDrwl3HmZONV3za74lhyXsj8LMdVeF/view
   readings:
     statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
       and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
     other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
-      median income for one person, and the attachment says Colorado "uses the FPL chart".
+      median income for one person, and the attachment says Colorado "uses the FPL chart". For FY2027 the eligibility
+      chart and the income limits table print $3,774 for one person, where 60% of state median income is $45,295 a year
+      ($3,774.58 a month).
   example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
     $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
     under the printed $3,607 and $700 within 60% of state median income ($43,293).
@@ -2259,7 +2306,10 @@ candidates:
   note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
     by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
     The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
-    state median income guidelines".'
+    state median income guidelines". FY2027 follows the same ruling: the 2026-27 manual''s eligibility chart (p.99),
+    both applications (pp.125, 131) and the income limits table on the LEAP page print the floored amount in every
+    row, and only the manual''s rates handout (p.5) prints $10,453 for ten members, against $10,452 elsewhere (PR
+    11138). FY2027 prints only the percentage contribution bands, so their dollar boundaries keep the FY2026 rounding.'
 - id: us-co:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -8520,6 +8570,47 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-capital-losses
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does a net capital loss reduce renter's refund income, when the renter's refund application counts net
+    gains from the sale of property and the homestead credit application, under the same definition of income, takes
+    Form 1040 line 7, which allows a net loss of up to $3,000?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 7 and 8 and the instructions for lines 4 to 9, pages 1 and 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, line 4e
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=1
+  readings:
+    statute: Income is income "for the most recent complete taxable year from all sources", with no rule for losses.
+    other: The instructions for lines 4 to 9 of SFN 24777 and item 10 of the guideline list "net gains from the sale of
+      property" as income, and SFN 24777 line 7 asks for capital gains with no line for a loss. SFN 24757 line 4e asks
+      for "Capital gains and losses (From Form 1040 or 1040-SR, line 7)", where IRC 1211(b) allows a net loss of up to
+      $3,000.
+  example: A renter with $30,000 of wages and a $20,000 net long-term capital loss has income of $30,000 under SFN
+    24777 and $27,000 under SFN 24757 line 4e.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/net_gain_components.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11187
+  state: ruled
+  note: Ruled 2026-11-19 for the renter's refund application, the form the Tax Commissioner prescribes for this program
+    under N.D.C.C. 57-02-08.1(3). Before, the model let the whole loss reduce income, which no source supports. The
+    applicant's and spouse's gains and losses net together, as on line 7 and a joint Form 1040, and each dependent's net
+    loss counts as zero.
 - id: us-nd:renters-refund-federally-excluded-income
   program: renter-credit
   years:
@@ -10094,13 +10185,63 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit.py
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
-    keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
-    credit under the statute; verify the instructions'' return-level interpretation.'
+    keeps it when the spouse can be claimed (ny_real_property_tax_credit_potential.py). Ruled in October 2026 to
+    retain the credit under the statute; verify the instructions'' return-level interpretation.'
+- id: us-ny:real-property-credit-aged-dependent
+  program: income-tax
+  years:
+    from: 2024
+    to: 2024
+    type: tax
+  question: Before 2025, does a household get the real property tax credit limit for those aged 65 or older when its
+    only member aged 65 or older is claimed as a dependent and so cannot file Form IT-214?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(e)(1)(A)(i), 606(e)(3)(A)(i), 606(e)(6)(A), 606(e)(7)(E)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, page 1
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=1
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, line 7 (page 2) and line 32 chart (page 3)
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2
+  readings:
+    statute: 606(e)(6)(A) gives the credit for those aged 65 or older "where two or more members of a household are
+      able to meet the qualifications of a qualified taxpayer and one of them is sixty-five years of age or more".
+      606(e)(1)(A)(i) defines a qualified taxpayer as "a resident individual of the state who has occupied the same
+      residence for six months or more of the taxable year, and is required or chooses to file a return under this
+      article"; 606(e)(7)(E) denies the credit to a claimed dependent but does not change that definition. Page 1 of
+      the 2024 instructions says "If at least one member of your household is age 65 or older, the credit can be as
+      much as $375."
+    other: Line 7 of the 2024 instructions asks for "any household member who is filing Form IT-214 and was 65 or
+      older on January 1, 2025", and the line 32 chart gives the column from $375 down to $86 only where "you made an
+      entry on line 7". Page 1 requires that "You could not be claimed as a dependent on another taxpayer’s federal
+      income tax return", so a household whose only member aged 65 or older is a claimed dependent gets the column
+      from $75 down to $41.
+  example: In 2024 a 40-year-old with $3,000 of wages pays $4,800 of rent and claims a 70-year-old parent with $12,000
+    of Social Security as a dependent. Household gross income is $15,000, so 25% of the rent ($1,200) less 6.5% of
+    income ($975) leaves $225, and half of it is $112.50. The statute reading caps the credit at $137 and allows
+    $112.50; the line 7 reading caps it at $47.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11170
+  state: open
+  note: PE-US follows the statute. Through 2024 ny_real_property_tax_credit_potential.py gives the elderly limit when
+    any household member is 65 or older, a tax unit dependent included. The readings differ in the model only when
+    every member aged 65 or older is a claimed dependent, because a member who is not a dependent can file Form IT-214
+    and the model gives the household's credit to the tax unit with the largest claim. The cases "2024 - dependent
+    aged 66 makes the elderly maximum cap apply" and "2024 - an aged parent claimed as a dependent gives the household
+    the elderly limit on rent an adult child pays" in ny_real_property_tax_credit.yaml pin the statute reading. From
+    2025, 606(e)(3)(B)(i) counts claimed dependents aged 65 or older. Only the 2024 instructions were checked. The
+    review of PR 11170 agreed to keep the statute; PolicyEngine has recorded no ruling.
 - id: us-ny:ssp-couple-facility-entry-month
   program: ssi-state-supplement
   years:

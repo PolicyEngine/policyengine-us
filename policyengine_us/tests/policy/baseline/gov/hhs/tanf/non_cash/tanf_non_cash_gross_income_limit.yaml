@@ -270,3 +270,36 @@
 # gov/hhs/fpg.yaml are $0 placeholders, so the computed limit is $0 on
 # both sides of the step and any boundary test would pass vacuously
 # regardless of the percentage.
+
+# Arkansas adopted BBCE by emergency rule effective April 4, 2025: 130% of
+# the poverty guideline for regular households and 165% for aged or disabled
+# households (SNAP Certification Manual Appendix AA). The parameters apply
+# from the first full month, May 2025.
+- name: AR one person applies the 130% standard from May 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 40
+    state_code: AR
+  output:
+    tanf_non_cash_gross_income_limit:
+      # 130% x 15,060 / 12 = 1,631.50 through September; 130% x 15,650 / 12
+      # = 1,695.42 from October.
+      2025-05: 1_631.5
+      2025-10: 1_695.42
+
+- name: AR elderly person applies the 165% standard from May 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: AR
+  output:
+    is_tanf_non_cash_hheod:
+      2025-05: true
+    tanf_non_cash_gross_income_limit:
+      # 165% x 15,060 / 12 = 2,070.75 through September; 165% x 15,650 / 12
+      # = 2,151.88 from October.
+      2025-05: 2_070.75
+      2025-10: 2_151.88

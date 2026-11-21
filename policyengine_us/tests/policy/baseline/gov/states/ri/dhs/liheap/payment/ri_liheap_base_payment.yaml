@@ -177,6 +177,28 @@
   output:
     ri_liheap_base_payment: [0, 0, 400]
 
+# DHS's response to Division data request 1-1 in PUC Docket 26-34-GE (issued October 14,
+# 2026): "The LIHEAP Enhancement Grant for FFY 2027 is set at $400." Case 6's households
+# in FY2027: gas 232 + 400 = 632 and electric 393 + 400 = 793; oil stays 861 with no
+# enhancement. The federal grants carry the FY2026 chart forward, an unverified estimate
+# until DHS publishes an FY2027 chart.
+- name: Case 11, FY2027 utility enhancement of 400 follows the primary utility grant.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [FUEL_OIL, NATURAL_GAS, ELECTRICITY]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+    fuel_oil_expense: [1_200, 0, 0]
+    gas_expense: [1_200, 1_200, 1_200]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    ri_liheap_base_payment: [861, 632, 793]
+
 # R.I. Gen. Laws 39-1-27.12(f) excludes Block Island and Pascoag (now Clear
 # River) from the enhancement. The FY2026 federal electric row A remains $393.
 - name: Case 20, excluded electric providers retain the federal primary grant.

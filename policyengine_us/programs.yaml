@@ -1074,15 +1074,16 @@ programs:
         full_name: Arkansas Low Income Home Energy Assistance Program
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no later manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP cooling
         full_name: Arkansas Low Income Home Energy Assistance Program summer regular cooling assistance
         variable: ar_liheap_cooling
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        verified_years: "2025-2026"
-        notes: FY2025-FY2026 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent; the planned FY2027 increase has no posted matrix. Summer crisis and equipment are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent. Summer crisis and equipment are out of scope.
       - state: AZ
         status: partial
         name: Arizona LIHEAP
@@ -1097,16 +1098,16 @@ programs:
         full_name: California Home Energy Assistance Program utility heating component
         variable: ca_liheap_utility_heating
         parameter_prefix: gov.states.ca.csd.liheap
-        verified_years: "2026"
-        notes: FY2026 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating (FY2026 local plan) and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
       - state: CO
         status: partial
         name: Colorado LEAP
         full_name: Colorado Low-income Energy Assistance Program
         variable: co_leap
         parameter_prefix: gov.states.co.cdhs.leap
-        verified_years: "2026"
-        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
       - state: CT
         status: partial
         name: Connecticut CEAP
@@ -1176,7 +1177,7 @@ programs:
         variable: ri_liheap
         parameter_prefix: gov.states.ri.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement. Block Island and Clear River electric accounts are excluded from the enhancement; omitted providers retain a qualifying-account assumption. The FY2027 enhancement is sourced at $400, while FY2027 federal base grants and earlier-year payments remain unverified estimates. Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
+        notes: FY2026 regular heating, including heat-in-rent grants and the utility enhancement ($350; $400 in FY2027), assuming a qualifying utility account. Earlier years and FY2027 grants reuse FY2026 amounts as unverified estimates; Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -1410,8 +1411,8 @@ programs:
         full_name: New York Home Energy Assistance Program
         variable: ny_heap
         parameter_prefix: gov.states.ny.otda.heap
-        verified_years: "2024-2026"
-        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
+        verified_years: "2024-2027"
+        notes: FY2024-FY2027 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
       - state: OR
         status: partial
         name: Oregon LIHEAP

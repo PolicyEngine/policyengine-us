@@ -1,3 +1,102 @@
+## [2.152.10] - 2026-11-21
+
+### Fixed
+
+- Give Michigan's qualified disabled veteran exemption to every veteran with a service-connected disability, at any rating, as MCL 206.30(3)(b) does, through a new `is_service_connected_disabled_veteran` input; the home heating credit's exemption count follows.
+
+
+## [2.152.9] - 2026-11-21
+
+### Changed
+
+- Extend Colorado LEAP's ruled whole-dollar income table entry to FY2027.
+
+
+## [2.152.8] - 2026-11-21
+
+### Fixed
+
+- Massachusetts Senior Circuit Breaker total income now starts from Massachusetts AGI, so deductions allowed in reaching AGI reduce it, and adds back capital losses, U.S. obligation interest, the 2021 unemployment deduction, tax-exempt retirement account distributions, EAEDC, workers' compensation and tax-exempt disability pay. Dependents' dividends and capital gains stay out, and a business or rental loss no longer offsets dividends or capital gains.
+
+
+## [2.152.7] - 2026-11-21
+
+### Changed
+
+- Update Colorado LEAP to the 2026-27 heat-in-rent standards and income limits tabulated through 15 members.
+
+
+## [2.152.6] - 2026-11-21
+
+### Changed
+
+- Update the Rhode Island LIHEAP utility enhancement to the FFY 2027 amount of $400.
+
+
+## [2.152.5] - 2026-11-21
+
+### Changed
+
+- Update DC LIHEAP to the FY 2027 regular benefit table.
+
+
+## [2.152.4] - 2026-11-21
+
+### Changed
+
+- Update New York HEAP to the 2026-2027 regular base amounts for delivered and other fuels.
+
+
+## [2.152.3] - 2026-11-21
+
+### Fixed
+
+- Michigan household resources for the homestead property tax and home heating credits now count IRA and 401(k) distributions, taxable Roth conversions, military retired pay, survivor benefits, forgiven debt and employer dependent care benefits. Line 31 now subtracts health insurance premiums recorded in the decomposed premium inputs, including the Medicare Part B premium the enrollee pays.
+- Count tax-exempt retirement distributions in the Arizona property tax credit, tax-exempt disability insurance in West Virginia homestead excess property tax credit income, the section 911, 931 and 933 exclusions in Nebraska child care credit household income, and dependents' income in Virginia low-income credit family income. North Dakota renter's refund income no longer lets a net capital loss reduce income.
+
+
+## [2.152.2] - 2026-11-21
+
+### Changed
+
+- Update California LIHEAP to the FY2027 county utility base amounts and the FY2027 poverty-group boundary rounding.
+
+
+## [2.152.1] - 2026-11-21
+
+### Changed
+
+- Update Arkansas LIHEAP to the FY2027 benefit matrices, income bands and additional-member income limit amount.
+
+
+## [2.152.0] - 2026-11-21
+
+### Added
+
+- Add a contributed reform that removes broad-based categorical eligibility from SNAP, following USDA's November 2026 proposed rule.
+
+
+## [2.151.5] - 2026-11-21
+
+### Fixed
+
+- Add Arkansas's SNAP broad-based categorical eligibility ($5,500 resource limit, 130% gross income limit, 165% for elderly or disabled households, net income test kept) from April 4, 2025.
+
+
+## [2.151.4] - 2026-11-20
+
+### Fixed
+
+- The Nebraska child care refundable tax credit now pays $2,000 per child at total household income of exactly $75,000 or below zero, and $1,000 per child at exactly $150,000. Neb. Rev. Stat. 77-7203(2) sets each band at "no more than" its limit.
+
+
+## [2.151.3] - 2026-11-20
+
+### Fixed
+
+- New York's real property tax credit (through 2024) now counts the household gross income of everyone who shares the residence, including other tax units and dependents, and adds workers' compensation, child support, veterans' benefits, tax-exempt pensions, cash public assistance (TANF, general assistance and the State Supplement Program), tax-exempt disability benefits and section 911 excluded income. Through 2024 it also counts the rent paid by every household member, applies the 65-or-older limit when any household member is 65 or older, and allows one credit per household.
+
+
 ## [2.151.2] - 2026-11-20
 
 ### Fixed
