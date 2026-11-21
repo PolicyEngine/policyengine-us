@@ -1,0 +1,1 @@
+Kentucky filing status now follows the filer's own federal filing status, so a separated dependent no longer makes an unmarried filer file separately, and a separated filer who files federal head of household uses Kentucky Filing Status 1 (Single).
