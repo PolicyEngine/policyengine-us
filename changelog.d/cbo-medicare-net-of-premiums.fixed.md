@@ -1,0 +1,1 @@
+PolicyEngine moves its default CBO household income closer to CBO's standard measure by counting Medicare at average cost per enrollee, net of premium income and excluding the Part D low-income subsidy. It uses the new `cbo_medicare_benefit` variable in place of gross Medicare spending.
