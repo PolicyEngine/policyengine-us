@@ -1,3 +1,10 @@
+## [2.152.2] - 2026-11-21
+
+### Changed
+
+- Update California LIHEAP to the FY2027 county utility base amounts and the FY2027 poverty-group boundary rounding.
+
+
 ## [2.152.1] - 2026-11-21
 
 ### Changed
