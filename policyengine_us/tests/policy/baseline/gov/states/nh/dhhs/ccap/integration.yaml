@@ -100,7 +100,7 @@
         weekly_hours_worked_before_lsr: 40
         employment_income: 60_000
         # $60,000/yr = $5,000/mo > $3,064.75 (138% FPG for 3)
-        # Step 3: 7% * $5,000 / 4.33 = $80.77/week
+        # Step 3: 7% * $5,000 / 4.33 = $80.83/week
       person2:
         age: 35
         weekly_hours_worked_before_lsr: 40
@@ -129,8 +129,8 @@
     nh_ccap_income_eligible: true
     nh_ccap_eligible: true
 
-    # Cost share: 7% * $5,000 / (52/12) = $350 / 4.3333 = $80.77/week
-    nh_ccap_cost_share: 80.77
+    # Cost share: 7% * $5,000 / 4.33 = $350 / 4.33 = $80.83/week
+    nh_ccap_cost_share: 80.83
 
 - name: Case 4, two eligible children, cost share split equally.
   period: 2025-01
@@ -379,3 +379,44 @@
     nh_ccap_income_eligible: false
     nh_ccap_eligible: false
     nh_ccap: 0
+
+- name: Case 10, positive benefit end-to-end at step 3, the cost share divides by 4.33 weeks.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 48_000
+        # $48,000/yr = $4,000/mo, above 138% of the 2024 poverty guideline for 2 ($2,350.60),
+        # which He-C 6910.18(e) applies until July 2025, and of the 2025 guideline ($2,432.25),
+        # which the model applies from January. Below 85% SMI for 2 ($7,060.37).
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nh_ccap_provider_type: LICENSED_CENTER
+        pre_subsidy_childcare_expenses: 18_720
+        # $18,720/yr = $360/week
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_eligible: true
+    # Cost share: 7% * $4,000 / 4.33 = $280 / 4.33 = $64.67/week
+    nh_ccap_cost_share: 64.67
+    # Preschool, full-time, licensed center: $280/week
+    # min($360/wk charge, $280 rate) = $280
+    # Weekly payment: $280 - $280 / 4.33 = $215.3349
+    # Monthly: $215.3349 * (52/12) = $933.12
+    nh_ccap: 933.12

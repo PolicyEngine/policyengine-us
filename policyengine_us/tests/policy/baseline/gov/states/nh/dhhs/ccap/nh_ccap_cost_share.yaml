@@ -5,7 +5,7 @@
 # 2025 FPG family of 3: 15,650 + 5,500*2 = $26,650/year = $2,220.83/month
 # Step 1: <= 100% FPG ($2,220.83/mo) → $0/week
 # Step 2: > 100% to <= 138% FPG ($3,064.75/mo) → $5/week
-# Step 3: > 138% FPG → 7% * monthly income / (52/12)
+# Step 3: > 138% FPG → 7% * monthly income / 4.33
 #
 # 2025 FPG family of 2: 15,650 + 5,500 = $21,150/year = $1,762.50/month
 # 2025 FPG family of 1: $15,650/year = $1,304.17/month
@@ -66,7 +66,7 @@
         age: 30
         employment_income: 53_304
         # $53,304/yr = $4,442/mo > $3,064.75 (138% FPG)
-        # Step 3: 7% * $4,442 / (52/12) = $71.77/week
+        # Step 3: 7% * $4,442 / 4.33 = $71.81/week
       person2:
         age: 5
       person3:
@@ -79,8 +79,8 @@
         members: [person1, person2, person3]
         state_code: NH
   output:
-    # $4,442 * 0.07 / (52/12) = $310.94 / 4.3333 = $71.76
-    nh_ccap_cost_share: 71.76
+    # $4,442 * 0.07 / 4.33 = $310.94 / 4.33 = $71.81
+    nh_ccap_cost_share: 71.81
 
 - name: Case 4, income exactly at 100% FPG boundary, step 1.
   period: 2025-01
@@ -175,8 +175,8 @@
         state_code: NH
   output:
     # $2,433.33 * 0.07 = $170.33
-    # $170.33 / (52/12) = $170.33 / 4.3333 = $39.31
-    nh_ccap_cost_share: 39.31
+    # $170.33 / 4.33 = $39.34
+    nh_ccap_cost_share: 39.34
 
 - name: Case 8, zero income, step 1, $0 cost share.
   period: 2025-01
