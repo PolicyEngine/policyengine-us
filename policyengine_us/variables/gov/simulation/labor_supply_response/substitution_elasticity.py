@@ -3,6 +3,32 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
     earnings_before_lsr,
 )
 
+# TODO: Parametrise
+# The lowest earnings in each primary-earner decile, from decile 1 to decile
+# 10 (the parameters primary.1 to primary.10). Decile k runs from the k-th
+# marker up to, but not including, the next; decile 10 has no upper limit.
+EARNINGS_DECILE_MARKERS = [
+    0,
+    14e3,
+    28e3,
+    39e3,
+    50e3,
+    61e3,
+    76e3,
+    97e3,
+    138e3,
+    1_726e3,
+]
+
+
+def earnings_decile(earnings):
+    """Primary-earner earnings decile, from 1 to 10, of each earnings amount."""
+    # side="right" counts the markers at or below each amount, which is the
+    # amount's decile. Earnings are never negative, but clip so that every
+    # value has a decile with a parameter.
+    decile = np.searchsorted(EARNINGS_DECILE_MARKERS, earnings, side="right")
+    return np.clip(decile, 1, len(EARNINGS_DECILE_MARKERS))
+
 
 class substitution_elasticity(Variable):
     value_type = float
@@ -24,22 +50,8 @@ class substitution_elasticity(Variable):
         if p.all != 0:
             return p.all
 
-        # TODO: Parametrise
-        EARNINGS_DECILE_MARKERS = [
-            0,
-            14e3,
-            28e3,
-            39e3,
-            50e3,
-            61e3,
-            76e3,
-            97e3,
-            138e3,
-            1_726e3,
-        ]
-
         earnings = earnings_before_lsr(person, period)
-        earnings_decile = np.searchsorted(EARNINGS_DECILE_MARKERS, earnings) + 1
+        decile = earnings_decile(earnings)
 
         tax_unit = person.tax_unit
         # Primary earner == highest earner in tax unit
@@ -57,10 +69,8 @@ class substitution_elasticity(Variable):
 
         if np.any(non_zero_earnings):
             # First assign primary earner elasticities by decile
-            for i in range(10):
-                mask = (
-                    non_zero_earnings & (earnings_decile == i + 1) & is_primary_earner
-                )
+            for i in range(len(EARNINGS_DECILE_MARKERS)):
+                mask = non_zero_earnings & (decile == i + 1) & is_primary_earner
                 if np.any(mask):
                     decile_param = getattr(p.by_position_and_decile.primary, str(i + 1))
                     param_value = (
