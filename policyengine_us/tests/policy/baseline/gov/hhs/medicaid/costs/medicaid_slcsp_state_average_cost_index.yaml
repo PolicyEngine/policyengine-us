@@ -1,4 +1,4 @@
-- name: State average is weighted, excludes missing premiums, and is per state.
+- name: Keep each singleton household's index and use 1 when premiums are missing.
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -38,6 +38,48 @@
         slcsp_age_0:
           2026-01: 1_000
   output:
-    # TX average of the two positive indices, weighted 1 and 3, broadcast to all
-    # TX residents (including the missing-premium person); NY is separate.
-    medicaid_slcsp_state_average_cost_index: [2_923.55, 2_923.55, 2_923.55, 1_000]
+    # TX singletons retain 1,000 * 1.6706 = 1,670.6 and 2,000 * 1.6706 = 3,341.2.
+    # The missing-premium household has no positive-index weight, so use 1.
+    # The NY singleton retains its index of 1,000.
+    medicaid_slcsp_state_average_cost_index: [1_670.6, 3_341.2, 1, 1_000]
+
+- name: Weight positive household indices and exclude unrelated households.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        medicaid_slcsp_cost_index: 100
+        person_weight: 1
+      person2:
+        medicaid_slcsp_cost_index: 300
+        person_weight: 3
+      person3:
+        medicaid_slcsp_cost_index: 0
+        person_weight: 5
+      person4:
+        medicaid_slcsp_cost_index: 900
+        person_weight: 2
+      person5:
+        medicaid_slcsp_cost_index: 200
+        person_weight: 0
+      person6:
+        medicaid_slcsp_cost_index: 0
+        person_weight: 5
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: TX
+      household2:
+        members: [person4]
+        state_code: TX
+      household3:
+        members: [person5, person6]
+        state_code: TX
+  output:
+    # Household1: (1 * 100 + 3 * 300) / (1 + 3) = 250; exclude the zero index.
+    # Household2: 2 * 900 / 2 = 900.
+    # Household3: positive-index weight = 0 * 1 + 5 * 0 = 0, so use 1.
+    medicaid_slcsp_state_average_cost_index: [250, 250, 250, 900, 1, 1]
+    # Retain positive indices and replace zero indices with the household mean.
+    medicaid_slcsp_cost_index_filled: [100, 300, 250, 900, 200, 1]
