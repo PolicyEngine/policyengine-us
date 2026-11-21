@@ -1,0 +1,273 @@
+# Census Bureau money income, Current Population Reports P60-200, Appendix A.
+# Expected values add the amounts of the sources Appendix A lists (pages A-1 to
+# A-3) and leave out the receipts it says it does not count (page A-3).
+
+- name: Money income adds every Appendix A source a person receives
+  period: 2026
+  input:
+    state_code: TX
+    age: 40
+    # 5. Supplemental Security Income, 6. public assistance.
+    ssi: 1_100
+    tanf: 700
+    general_assistance: 200
+    # 1. Earnings: wages, nonfarm and farm self-employment.
+    employment_income: 30_000
+    self_employment_income: 4_000
+    farm_operations_income: 1_000
+    # 2. Unemployment compensation, with strike benefits from union funds.
+    unemployment_compensation: 2_000
+    strike_benefits: 500
+    # 3. Workers' compensation.
+    workers_compensation: 1_000
+    # 4. Social Security.
+    social_security: 6_000
+    # 7. Veterans' payments.
+    veterans_benefits: 3_000
+    # 8. Survivor benefits, military survivor annuities included.
+    survivor_benefits: 700
+    military_retirement_pay_survivors: 300
+    # 9. Disability benefits.
+    disability_benefits: 400
+    # 10. Pension or retirement income, military and railroad retirement
+    # included.
+    pension_income: 2_500
+    military_retirement_pay: 800
+    railroad_benefits: 1_100
+    # 11. Interest, 12. dividends, 13. rents, royalties, estates and trusts.
+    interest_income: 300
+    dividend_income: 200
+    rental_income: 1_200
+    estate_income: 100
+    # 14. Educational assistance, 15. alimony, 16. child support.
+    educational_assistance: 900
+    alimony_income: 600
+    child_support_received: 800
+    # 17. Financial assistance from outside the household, 18. other income.
+    financial_assistance: 250
+    gi_cash_assistance: 150
+  output:
+    census_money_income: 59_800
+    census_family_money_income: 59_800
+    census_household_money_income: 59_800
+
+- name: Receipts Appendix A does not count leave money income unchanged
+  period: 2026
+  input:
+    state_code: TX
+    age: 40
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    # Capital gains, tax refunds and lump-sum insurance payments.
+    capital_gains: 10_000
+    salt_refund_income: 300
+    life_insurance_benefits: 5_000
+    # Discharged debt is not a receipt of money.
+    debt_relief: 2_000
+    # Noncash benefits.
+    snap: 1_200
+    wic: 500
+    free_school_meals: 400
+    housing_assistance: 3_000
+  output:
+    census_money_income: 20_000
+    census_household_money_income: 20_000
+
+- name: A benefit paid to an SPM unit is split equally among its members
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+        ssi: 0
+      partner:
+        age: 38
+        railroad_benefits: 1_200
+        ssi: 0
+      child:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [parent, partner, child]
+        tanf: 1_200
+        # SNAP is noncash and stays out.
+        snap: 900
+    households:
+      household:
+        members: [parent, partner, child]
+        state_code: TX
+  output:
+    # TANF of $1,200 over three members gives each $400.
+    census_money_income: [30_400, 1_600, 400]
+    census_family_money_income: 32_400
+    census_household_money_income: 32_400
+
+- name: Each group benefit splits among the members of the group that receives it
+  period: 2026
+  input:
+    people:
+      first:
+        age: 40
+        ssi: 0
+      second:
+        age: 38
+        ssi: 0
+      third:
+        age: 35
+        ssi: 0
+      fourth:
+        age: 12
+        ssi: 0
+      fifth:
+        age: 10
+        ssi: 0
+    tax_units:
+      first_tax_unit:
+        members: [first]
+        basic_income: 100
+      second_tax_unit:
+        members: [second]
+        basic_income: 200
+      third_tax_unit:
+        members: [third, fourth, fifth]
+        basic_income: 300
+    spm_units:
+      first_spm_unit:
+        members: [first, second]
+        tanf: 1_000
+      second_spm_unit:
+        members: [third, fourth, fifth]
+        tanf: 900
+    families:
+      first_family:
+        members: [first, second]
+      second_family:
+        members: [third, fourth, fifth]
+    marital_units:
+      first_marital_unit:
+        members: [first]
+      second_marital_unit:
+        members: [second]
+      third_marital_unit:
+        members: [third]
+      fourth_marital_unit:
+        members: [fourth]
+      fifth_marital_unit:
+        members: [fifth]
+    households:
+      household:
+        members: [first, second, third, fourth, fifth]
+        state_code: CA
+        # Other income, paid to the household.
+        ca_la_infant_supplement: 1_000
+  output:
+    # TANF: 1,000 over two and 900 over three. Basic income: 100, 200, and 300
+    # over three. Household payment: 1,000 over five.
+    census_money_income: [800, 900, 600, 600, 600]
+    census_family_money_income: [1_700, 1_800]
+    census_household_money_income: 3_500
+
+- name: Two unrelated roommates form two families in one household
+  period: 2026
+  input:
+    people:
+      first:
+        age: 30
+        employment_income: 25_000
+        ssi: 0
+      second:
+        age: 40
+        alimony_income: 9_000
+        interest_income: 500
+        ssi: 0
+    tax_units:
+      first_tax_unit:
+        members: [first]
+      second_tax_unit:
+        members: [second]
+    spm_units:
+      first_spm_unit:
+        members: [first]
+        tanf: 0
+      second_spm_unit:
+        members: [second]
+        tanf: 0
+    families:
+      first_family:
+        members: [first]
+      second_family:
+        members: [second]
+    marital_units:
+      first_marital_unit:
+        members: [first]
+      second_marital_unit:
+        members: [second]
+    households:
+      household:
+        members: [first, second]
+        state_code: TX
+  output:
+    census_money_income: [25_000, 9_500]
+    census_family_money_income: [25_000, 9_500]
+    census_household_money_income: 34_500
+
+- name: A state cash program for aged, blind and disabled people counts as SSI
+  period: 2026
+  input:
+    state_code: CA
+    age: 70
+    employment_income: 500_000
+    # California's Cash Assistance Program for Immigrants, paid to the SPM unit.
+    ca_capi: 6_000
+  output:
+    census_money_income: 506_000
+    census_household_money_income: 506_000
+
+# Since the redesigned processing system the Current Population Survey
+# introduced in 2019, which covers 2018 income, the survey leaves retirement
+# account distributions to people under 58 out of total income (data
+# dictionary: DST_VAL1 for 58 and over, DST_VAL1_YNG under).
+- name: A retirement account distribution counts at age 58
+  period: 2026
+  input:
+    state_code: TX
+    age: 58
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 5_000
+    census_money_income: 25_000
+    census_household_money_income: 25_000
+
+- name: A retirement account distribution does not count at age 57
+  period: 2026
+  input:
+    state_code: TX
+    age: 57
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 0
+    census_money_income: 20_000
+    census_household_money_income: 20_000
+
+- name: For 2017 income, before the 2019 processing system, a distribution counts at any age
+  period: 2017
+  input:
+    state_code: TX
+    age: 40
+    ssi: 0
+    tanf: 0
+    employment_income: 20_000
+    retirement_distributions: 5_000
+  output:
+    census_retirement_distributions: 5_000
+    census_money_income: 25_000
+    census_household_money_income: 25_000

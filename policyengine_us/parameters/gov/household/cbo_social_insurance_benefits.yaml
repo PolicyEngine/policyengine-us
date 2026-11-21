@@ -2,7 +2,10 @@ description: Social insurance benefits included in CBO household income.
 values:
   0000-01-01:
     - social_security
-    - medicare_gross_cost
+    # CBO measures Medicare as the average cost to the government net of
+    # offsetting receipts. medicare_cost subtracts the Part A and Part B
+    # premiums from the average cost per enrollee; Part D premiums stay in.
+    - medicare_cost
     - total_unemployment_compensation
     - workers_compensation
 
@@ -10,3 +13,8 @@ metadata:
   unit: list
   period: year
   label: CBO social insurance benefits
+  reference:
+    - title: "Congressional Budget Office, The Distribution of Household Income in 2021, Appendix A note 3 (Medicare net of offsetting receipts) and Appendix D (social insurance benefits) #page 27,41"
+      href: https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=27
+    - title: Congressional Budget Office, Reconciling the Official Poverty Measure and CBO's Distributional Analysis of Household Income (Medicare benefits net of premiums)
+      href: https://www.cbo.gov/publication/61157

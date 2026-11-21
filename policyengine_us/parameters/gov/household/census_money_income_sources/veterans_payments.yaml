@@ -1,0 +1,11 @@
+description: The Census Bureau counts these sources as veterans' payments, source 7 of 18 in money income.
+values:
+  0000-01-01:
+    - veterans_benefits
+metadata:
+  unit: list
+  period: year
+  label: Census money income veterans' payments sources
+  reference:
+    - title: "Census Bureau, Current Population Reports P60-200, Appendix A, source 7 (veterans' payments) #page 1,3"
+      href: https://www2.census.gov/programs-surveys/cps/methodology/Appendix%20A%20P60-200%20income%20measurement%20definition.pdf#page=1
