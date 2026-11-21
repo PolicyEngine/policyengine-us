@@ -1,0 +1,19 @@
+description: New Mexico applies the federal filer Social Security number condition under its Working Families Tax Credit when this is true.
+values:
+  # The inspected 2015 law supplies a coverage anchor, not an enactment date.
+  2015-01-01: true
+  # The SSN exception does not remove other return identification requirements.
+  2021-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico EITC filer SSN requirement
+  reference:
+    - title: New Mexico Laws 2008, Second Special Session, Chapter 4, House Bill 4, Sections 1-2
+      href: https://www.nmlegis.gov/Sessions/08%20Special/final/HB0004.pdf#page=1
+    - title: "New Mexico Laws 2019, Chapter 270, House Bill 6, Sections 13(A) and 59(A) #page 40,105"
+      href: https://www.nmlegis.gov/Sessions/19%20Regular/final/HB0006.pdf#page=40
+    - title: 26 U.S.C. 32(c)(1)(E) and (m) (2015 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2015-title26/html/USCODE-2015-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm#substructure-location_c_1_E
+    - title: "2021 New Mexico HB 291, Sections 2(A) and 4 #page 5-7"
+      href: https://www.nmlegis.gov/Sessions/21%20Regular/final/HB0291.pdf#page=5

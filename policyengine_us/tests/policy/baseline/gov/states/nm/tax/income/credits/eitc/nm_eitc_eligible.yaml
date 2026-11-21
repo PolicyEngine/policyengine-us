@@ -27,3 +27,846 @@
     filing_status: JOINT
   output:
     nm_eitc_eligible: true
+
+# Conditional filer-SSN component only: HB 4 (2008), Section 1(A), physical
+# page 1; HB 6 (2019), Section 13(A), physical page 40; IRC 32(c)(1)(E),
+# 32(m); HB 291 (2021), Section 2(A), physical pages 5-6, and Section 4,
+# physical page 7 (the NM exception applies from tax year 2021).
+# Every filer has an explicit SSN-card category. Positive SSN premises assume
+# timely valid issuance and inclusion on a lawful return. NONE means no SSN
+# card, not no TIN. Post-2020 no-SSN cases assume otherwise lawful NM return
+# identification, including any required valid ITIN; these tests do not
+# validate issuance dates, return inclusion or ITINs.
+# Demographic and person-to-filer ID behavior derive from actual person facts.
+# Investment and marital eligibility are supplied component premises, so these
+# are not full-return eligibility or cash-award tests.
+
+- name: Case 4, 2017 filer SSN-card requirements.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, false, false]
+
+- name: Case 5, 2018 filer SSN-card requirements.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, false, false]
+
+- name: Case 6, 2019 filer SSN-card requirements.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, false, false]
+
+- name: Case 7, 2020 filer SSN-card requirements.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, false, false]
+
+- name: Case 8, 2021 filer SSN-card requirements.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 9, 2022 filer SSN-card requirements.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 10, 2023 filer SSN-card requirements.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 11, 2024 filer SSN-card requirements.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 12, 2025 filer SSN-card requirements.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 13, 2026 filer SSN-card requirements.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+      person3:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: OTHER_NON_CITIZEN
+      person4:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: [true, true, false, false]
+    nm_eitc_eligible: [true, true, true, true]
+
+- name: Case 14, 2017 joint filers with SSN categories CITIZEN and NONE.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: false
+    nm_eitc_eligible: false
+
+- name: Case 15, 2017 joint filers with SSN categories NONE and CITIZEN.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+      person2:
+        age: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: false
+    nm_eitc_eligible: false
+
+- name: Case 16, 2020 joint filers with SSN categories CITIZEN and NON_CITIZEN_VALID_EAD.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+      person2:
+        age: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NON_CITIZEN_VALID_EAD
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: true
+    nm_eitc_eligible: true
+
+- name: Case 17, 2021 joint filers with SSN categories NONE and NONE.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+      person2:
+        age: 31
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc_investment_income_eligible: true
+        eitc_marital_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: false
+    nm_eitc_eligible: true
+
+- name: Case 18, 2020 valid filer ID does not waive the marital component.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        eitc_investment_income_eligible: true
+        # Failed marital eligibility is a supplied component premise.
+        eitc_marital_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: true
+    nm_eitc_eligible: false
+
+- name: Case 19, 2021 valid filer ID does not waive the marital component.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        eitc_investment_income_eligible: true
+        # Failed marital eligibility is a supplied component premise.
+        eitc_marital_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    filer_meets_eitc_identification_requirements: true
+    nm_eitc_eligible: false
