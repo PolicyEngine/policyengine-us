@@ -1,0 +1,65 @@
+- name: Licensed center bands change at 18 months, 36 months and 6 years.
+  period: 2026-01
+  input:
+    people:
+      one:
+        age: 1
+      eighteen_months:
+        age: 1.5
+      almost_three:
+        age: 2.9
+      three:
+        age: 3
+      almost_six:
+        age: 5.9
+      six:
+        age: 6
+    households:
+      household:
+        members: [one, eighteen_months, almost_three, three, almost_six, six]
+        state_code: CO
+  output:
+    co_ccap_center_age_band:
+      [
+        MONTHS_0_TO_18,
+        MONTHS_18_TO_36,
+        MONTHS_18_TO_36,
+        MONTHS_36_TO_YEARS_6,
+        MONTHS_36_TO_YEARS_6,
+        SCHOOL_AGE,
+      ]
+
+- name: Licensed home bands change at 24 months and 6 years.
+  period: 2026-01
+  input:
+    people:
+      almost_two:
+        age: 1.9
+      two:
+        age: 2
+      almost_six:
+        age: 5.9
+      six:
+        age: 6
+    households:
+      household:
+        members: [almost_two, two, almost_six, six]
+        state_code: CO
+  output:
+    co_ccap_home_age_band:
+      [MONTHS_0_TO_24, MONTHS_24_TO_YEARS_6, MONTHS_24_TO_YEARS_6, SCHOOL_AGE]
+
+- name: Qualified exempt bands change at 5 years.
+  period: 2026-01
+  input:
+    people:
+      almost_five:
+        age: 4.9
+      five:
+        age: 5
+    households:
+      household:
+        members: [almost_five, five]
+        state_code: CO
+  output:
+    co_ccap_qualified_exempt_age_band: [UNDER_5, AGE_5_AND_OVER]

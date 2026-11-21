@@ -101,8 +101,11 @@
     # 8 hours a day is full-time care, and a facility rating of 0 gives no
     # discount.
     co_ccap_parent_fee: 128
-    # Expenses 12,000 / 12 = 1,000 - 128 = 872
-    co_ccap_subsidy: 872
+    # Denver, licensed center, School Age, Tier 1 & Tier 2 from October 2025:
+    # $38.65 a day x 5 x 52 / 12 = $837.42, below the $1,000 charge.
+    co_ccap_reimbursement: 837.42
+    # 837.42 - 128 = 709.42
+    co_ccap_subsidy: 709.42
 
 - name: Case 6, without court supervision the same teenager receives nothing.
   period: 2026-01

@@ -29,27 +29,14 @@ class co_ccap_child_in_part_time_care(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.ccap.parent_fee.part_time
         units = person("co_ccap_full_time_equivalent_units", period)
-        part_time_units = units < p.unit_threshold
+        # The units come from values stored in single precision, which can put
+        # an exact 13 units a hair below the threshold; four decimals clear it.
+        part_time_units = np.round(units, 4) < p.unit_threshold
         year = period.this_year
-        daily_hours = person("co_ccap_care_hours_per_day", period)
-        part_time_days = (daily_hours > 0) & (
-            p.full_time_equivalent_units.calc(daily_hours, right=True) < 1
-        )
+        # co_ccap_care_unit reads the part-time unit for a child whose only
+        # care comes after school (co_ccap_after_school_care_only).
+        part_time_days = person("co_ccap_care_unit", period) < 1
         in_grade_one_or_above = person("is_in_k12_school", year) & (
             person("age", year) >= FIRST_GRADE_AGE
         )
-        # After-school care fills part of a school day, and a child with no
-        # other schedule or care expense has that care in most months (3.124(V)).
-        no_schedule = (
-            (daily_hours == 0)
-            & (person("childcare_days_per_week", year) == 0)
-            & (person("childcare_attending_days_per_month", year) == 0)
-        )
-        after_school_only = (
-            no_schedule
-            & (person("after_school_expenses", year) > 0)
-            & (person("pre_subsidy_childcare_expenses", year) == 0)
-        )
-        return part_time_units | (
-            in_grade_one_or_above & (part_time_days | after_school_only)
-        )
+        return part_time_units | (in_grade_one_or_above & part_time_days)

@@ -1,0 +1,27 @@
+- name: Centers and family child care homes take the licensed rates, and license-exempt care takes the qualified exempt rates.
+  period: 2026-01
+  input:
+    people:
+      center:
+        childcare_provider_type_group: DCC_SACC
+      home:
+        childcare_provider_type_group: FDC_GFDC
+      exempt_group:
+        childcare_provider_type_group: LE_GC
+      informal:
+        childcare_provider_type_group: LE_STD
+      informal_enhanced:
+        childcare_provider_type_group: LE_ENH
+    households:
+      household:
+        members: [center, home, exempt_group, informal, informal_enhanced]
+        state_code: CO
+  output:
+    co_ccap_provider_type:
+      [
+        LICENSED_CENTER,
+        LICENSED_HOME,
+        QUALIFIED_EXEMPT,
+        QUALIFIED_EXEMPT,
+        QUALIFIED_EXEMPT,
+      ]
