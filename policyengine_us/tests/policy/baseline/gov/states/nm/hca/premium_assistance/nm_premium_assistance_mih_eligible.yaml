@@ -3,8 +3,8 @@
 # effect (PY2026-2027), at least one member is enrolled on the Marketplace
 # (pays_aca_premium, any-member), the unit does not file married-filing-
 # separately, the tax unit files a federal return, and ACA MAGI is ABOVE the
-# 400% FPL limit (aca_magi_fraction > 4.0). pays_aca_premium, filing_status,
-# and aca_magi_fraction are supplied directly so the gate logic is tested in
+# 400% FPL limit (aca_magi / aca_fpg > 4.0). pays_aca_premium, filing_status,
+# aca_magi, and aca_fpg are supplied directly so the gate logic is tested in
 # isolation from the premium-data lookup. Unlike the base gate this does NOT use
 # is_aca_ptc_eligible, whose embedded income test fails above 400% FPL.
 
@@ -23,7 +23,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -46,7 +47,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -73,7 +75,8 @@
         members: [person1, person2]
         filing_status: JOINT
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.50
+        aca_magi: 45_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1, person2]
@@ -100,7 +103,8 @@
         members: [person1, person2]
         filing_status: SEPARATE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1, person2]
@@ -123,7 +127,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.00
+        aca_magi: 40_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -146,7 +151,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -168,7 +174,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -191,7 +198,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -216,7 +224,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -242,7 +251,8 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: false
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -268,13 +278,80 @@
         filing_status: SINGLE
         tax_unit_is_filer: false
         takes_up_aca_if_eligible: true
-        aca_magi_fraction: 4.20
+        aca_magi: 42_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
         state_code: NM
   output:
     nm_premium_assistance_mih_eligible: false
+
+- name: Case 11, $62,600 (exactly 400% of the 2025 guideline) is not above 400%.
+  # Addendum 1, Section I.A(3): "Have a household income above 400% of the FPL."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 62_600
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 12, $62,600.47 (400.003%) is above 400% though truncated to 4.00.
+  # Addendum 1, Section I.A(3): "Have a household income above 400% of the FPL."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 62_600.47
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_mih_eligible: true
+
+- name: Case 13, $62,755.56 (400.994%) is above 400% though truncated to 4.00.
+  # Addendum 1, Section I.A(3): "Have a household income above 400% of the FPL."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 62_755.56
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.00
+    nm_premium_assistance_mih_eligible: true
 
 - name: "2026 NM above 400% FPL for a tax family of one: the other spouse qualifies for the MIH component (the claimable spouse is the head)"
   period: 2026
@@ -402,3 +479,96 @@
   output:
     # The Addendum requires every federal PTC criterion except income.
     nm_premium_assistance_mih_eligible: false
+
+- name: Case 14, a joint return with one claimable spouse at exactly 400% of the one-person guideline is not above 400%.
+  # The claimable spouse is outside the section 36B tax family, so aca_fpg is
+  # the one-person guideline: 62_600 / 15_650 = 4.00. No New Mexico source
+  # defines family size; this pins the model's use of aca_fpg.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 62_600
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 15, the same return just above 400% of the one-person guideline is MIH-eligible.
+  # 62_600.47 / 15_650 = 4.00003 > 4. Against the two-person guideline of the
+  # whole tax unit ($21,150) the ratio would be 2.96, below the MIH floor.
+  # 6_000 - 0.085 * 62_600.47 = 678.96.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 62_600.47
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+        # Annual base: each adult has a 6,000 premium.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    nm_premium_assistance_mih_eligible: true
+    nm_premium_assistance: 678.96

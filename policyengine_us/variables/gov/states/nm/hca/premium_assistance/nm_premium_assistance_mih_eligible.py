@@ -18,6 +18,12 @@ class nm_premium_assistance_mih_eligible(Variable):
     # eligibility, but not its FPL-band income test, which fails above 400% FPL.
     reference = (
         "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P&P%20Middle%20Income%20Household.pdf#page=2",
+        # 8.401.2.7(G) NMAC defines the FPL. The rule in force is one HTML page;
+        # HCA's proposed amendment repeats the definition on PDF page 1.
+        "https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/45b8668e-460f-45cd-804f-92ee3d442343/8.401.2.html",
+        "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/d3ee1d62-6f0f-4df7-b7fc-96a4c523ea89/08.401.0002_amended.pdf#page=1",
+        # 45 CFR 155.300(a): the Exchange's FPL.
+        "https://www.govinfo.gov/content/pkg/CFR-2025-title45-vol2/pdf/CFR-2025-title45-vol2-sec155-300.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -43,6 +49,15 @@ class nm_premium_assistance_mih_eligible(Variable):
         # stand for filing (files_return_for_aca_ptc); only filing for another
         # reason counts.
         is_filer = tax_unit("tax_unit_is_filer", period)
-        magi_frac = tax_unit("aca_magi_fraction", period)
-        income_eligible = magi_frac > p.fpl_limit
+        # Addendum 1, Section I.A(3): "Have a household income above 400% of
+        # the FPL." Test the exact ratio, not the truncated aca_magi_fraction:
+        # truncation maps 400.00%-400.99% to 4.00, which would leave incomes
+        # just above 400% out of both this component and the base program.
+        # nm_premium_assistance_eligible explains the choice of aca_fpg.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
+        income_eligible = exact_magi_frac > p.fpl_limit
         return in_effect & pays_premium & not_separate & is_filer & income_eligible

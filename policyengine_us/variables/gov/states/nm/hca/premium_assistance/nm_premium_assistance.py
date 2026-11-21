@@ -29,6 +29,12 @@ class nm_premium_assistance(Variable):
         "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=5",
         "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=6",
         "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P&P%20Middle%20Income%20Household.pdf#page=3",
+        # 8.401.2.7(G) NMAC defines the FPL. The rule in force is one HTML page;
+        # HCA's proposed amendment repeats the definition on PDF page 1.
+        "https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/45b8668e-460f-45cd-804f-92ee3d442343/8.401.2.html",
+        "https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/d3ee1d62-6f0f-4df7-b7fc-96a4c523ea89/08.401.0002_amended.pdf#page=1",
+        # 45 CFR 155.300(a): the Exchange's FPL.
+        "https://www.govinfo.gov/content/pkg/CFR-2025-title45-vol2/pdf/CFR-2025-title45-vol2-sec155-300.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -42,17 +48,24 @@ class nm_premium_assistance(Variable):
         # Middle Income Household component except for income).
         slcsp = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
-        magi_frac = tax_unit("aca_magi_fraction", period)
+        # The exact ratio of income to the poverty line, not the truncated
+        # aca_magi_fraction, which maps 200.00%-200.99% to 2.00.
+        # nm_premium_assistance_eligible explains the choice of aca_fpg.
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = income.astype(np.float64) / fpg
 
         # Base NMPA: gross up the benchmark by 10% up to the gross-up FPL limit,
         # subtract the federal APTC and the target contribution, floor at zero.
-        # PY2026 treats the 200% FPL limit as inclusive; PY2027 treats it as
-        # strict (below 200% FPL), toggled by benchmark_gross_up.boundary_inclusive.
+        # PY2026 treats the 200% FPL limit as inclusive ("up to 200% FPL"; the
+        # next range starts at "200.01"); PY2027 treats it as strict ("under
+        # 200% (< 200%)"), toggled by benchmark_gross_up.boundary_inclusive.
         limit = p.benchmark_gross_up.fpl_limit
         gross_up_applies = where(
             p.benchmark_gross_up.boundary_inclusive,
-            magi_frac <= limit,
-            magi_frac < limit,
+            exact_magi_frac <= limit,
+            exact_magi_frac < limit,
         )
         gross_up = where(gross_up_applies, 1 + p.benchmark_gross_up.rate, 1)
         benchmark = slcsp * gross_up
