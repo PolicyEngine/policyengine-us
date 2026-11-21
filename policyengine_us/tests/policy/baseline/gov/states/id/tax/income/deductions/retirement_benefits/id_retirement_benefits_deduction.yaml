@@ -268,6 +268,25 @@
   output:
     id_retirement_benefits_deduction: 50_256
 
+- name: Idaho 2027 retirement benefits cap less Social Security retirement benefits.
+  period: 2027
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_relevant_income: 60_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # 50,256 - 20,000
+    id_retirement_benefits_deduction: 30_256
+
 - name: Idaho 2027 retirement benefits cap on a joint return.
   period: 2027
   input:
