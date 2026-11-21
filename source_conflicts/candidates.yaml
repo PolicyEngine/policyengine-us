@@ -17987,3 +17987,32 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-ma:undocumented-pregnancy-masshealth-standard
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does Massachusetts give a pregnant undocumented resident MassHealth Standard, as 130 CMR 504.006(D)(1) provides, when M.G.L. c. 118E, section 16D(2) bars benefits other than emergency services to undocumented residents unless federal law requires them?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 118E, section 16D(2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+  - kind: regulation
+    citation: 130 CMR 504.006(D)(1), PDF page 13 (Rev. 08/19/22)
+    url: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+  - kind: regulation
+    citation: 130 CMR 505.002(D), PDF page 4 (revised February 13, 2026)
+    url: https://www.mass.gov/doc/130-cmr-505000-masshealth-coverage-types-5/download#page=4
+  readings:
+    statute: Section 16D(2) says "services or benefits other than emergency services shall not be provided to undocumented aliens unless required by federal law".
+    other: 130 CMR 504.006(D)(1) gives other noncitizens "MassHealth Standard, if they are pregnant", and 130 CMR 505.002(D) continues that coverage after the pregnancy ends.
+  example: In model year 2025 the model finds an undocumented Massachusetts resident at 150% of the poverty line who meets Medicaid's other tests eligible for Medicaid during pregnancy and through day 364 after delivery. 130 CMR 505.002(D)(4), in the text revised February 13, 2026, continues eligibility for postpartum care for 12 months after the pregnancy ends and then to the end of the month in which that period ends. If the model followed the statute's emergency-only reading, the resident would not be eligible for Medicaid. The model's CHIP unborn-child route would be open during pregnancy if its other tests pass and would end at delivery. Emergency Medicaid is a separate test.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented/pregnant.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented_immigrant.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11130
+  state: open
+  note: PolicyEngine follows the regulation. Before pull request 11130 the model passed every undocumented Massachusetts resident at every age. No source read for this candidate names a federal law that requires the coverage, or says whether Massachusetts claims federal match for it. A regulation that flatly contradicts its statute goes to the project lead (CONTRIBUTING.md, "Source conflicts").
