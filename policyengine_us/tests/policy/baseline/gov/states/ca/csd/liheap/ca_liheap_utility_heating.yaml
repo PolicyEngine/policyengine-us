@@ -5484,3 +5484,53 @@
   output:
     ca_liheap_income_group: [1, 1]
     ca_liheap_utility_heating: [621, 621]
+
+# FY2027 county table (plan pp. 195-196): Imperial pays $560 and Los Angeles $455 in
+# poverty group 1, and sizes 2 through 6 add $19 (p. 201). One adult with wages of
+# $12,000 ($1,000 a month) is group 1 (below the 2026 guideline, $1,330 a month): the
+# Imperial home of Case 17 now receives $560. A Los Angeles adult with the same wages
+# and one other member is group 1 (below $1,803.33): $455 + $19 = $474.
+- name: Case 18, FY2027 county amounts and the additional person amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income_before_lsr: 12_000
+      person3: {age: 38, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household2:
+        members: [person2, person3]
+        state_code: CA
+        county: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_liheap_income_group: [1, 1]
+    ca_liheap_utility_heating: [560, 474]
