@@ -48,9 +48,6 @@ class de_pension_exclusion(Variable):
         # bleeds into other DE subtractions via the de_subtractions sum.
         capped_eligible_pension_income = min_(cap, max_(0, eligible_income))
 
-        # Filer over a certain age are eligible to receive an exclsuion
-        # for the total of pension income and eligible retirement income pre and after 2022
-
         # Filers with a United States military pension take a larger pension
         # exclusion from 2022.
         if p.military_retirement_exclusion_available:

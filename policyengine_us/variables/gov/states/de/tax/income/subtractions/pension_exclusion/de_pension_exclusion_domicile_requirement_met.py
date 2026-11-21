@@ -11,8 +11,10 @@ class de_pension_exclusion_domicile_requirement_met(Variable):
         "domicile for a person domiciled in Delaware before January 1, 2027, "
         "and at least 5 years for one domiciled there on or after that date. "
         "A person counts as domiciled in Delaware while a resident individual "
-        "under 30 Del. C. 1103. PolicyEngine assumes the requirement is met "
-        "unless this input says otherwise."
+        "under 30 Del. C. 1103. PolicyEngine tracks neither the date a person "
+        "became domiciled in Delaware nor the years since, so set this input "
+        "from both. PolicyEngine assumes the requirement is met unless this "
+        "input says otherwise."
     )
     definition_period = YEAR
     default_value = True
