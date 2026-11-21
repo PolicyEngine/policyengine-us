@@ -8,7 +8,14 @@ class il_liheap_base_payment(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.IL
-    reference = "https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf"
+    reference = (
+        "https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf",
+        # PDF pages 1-2
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1",
+        # PDF pages 1-2
+        "https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1",
+        "https://www.icc.illinois.gov/consumers/utility-energy-assistance",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dceo.liheap.payment.matrix
@@ -33,6 +40,38 @@ class il_liheap_base_payment(Variable):
             ],
             default=0,
         )
+        if parameters(
+            period
+        ).gov.states.il.dceo.liheap.payment.provider_matrix_in_effect:
+            electric_provider = spm_unit("il_liheap_electricity_provider", period)
+            gas_provider = spm_unit("il_liheap_natural_gas_provider", period)
+            comed = electric_provider == electric_provider.possible_values.COMED
+            providers = gas_provider.possible_values
+            gas_lid = (
+                (gas_provider == providers.AMEREN_ILLINOIS)
+                | (gas_provider == providers.NICOR_GAS)
+                | (gas_provider == providers.NORTH_SHORE_GAS)
+                | (gas_provider == providers.PEOPLES_GAS)
+            )
+            # LIHEAP customers at these gas utilities qualify automatically for
+            # LID. The matrix presumes that coordinated application/enrollment.
+            # An unspecified company retains the pre-provider non-LID estimate.
+            electric_group = where(comed, "comed", "other")
+            matrix_amount = select(
+                [
+                    comed & is_electric,
+                    gas_lid & is_gas,
+                    comed & is_gas,
+                    comed & is_propane,
+                ],
+                [
+                    p.all_electric_comed[income_bracket][capped_size],
+                    p.nat_gas_lid[electric_group][income_bracket][capped_size],
+                    p.nat_gas_comed[income_bracket][capped_size],
+                    p.propane_comed[income_bracket][capped_size],
+                ],
+                default=matrix_amount,
+            )
         # Cap non-cash benefits at actual heating expenses.
         # Cash (heat in rent) is a direct payment — no expense cap.
         # Deprecated adapter: households without a canonical heating_type

@@ -1,0 +1,33 @@
+
+# PY2027 size-one published 30-day band tops are 665, 1330 and 1995.
+- name: PY2027 income bands use prior-year FPG and the published whole-dollar boundaries.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    irs_gross_income: [0, 7980, 7992, 15960, 15972, 23940, 23952, 45000]
+  output:
+    il_liheap_income_bracket: [1, 1, 2, 2, 3, 3, 4, 4]
+
+# Final PY2027 matrix, published 30-day band tops in both provider schedules.
+- name: Every PY2027 published poverty-band boundary matches for household sizes one through thirteen.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL,
+      IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL,
+      IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL,
+      IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12,
+      13, 13, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13,
+      1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13]
+    irs_gross_income: [7980, 7992, 10824, 10836, 13656, 13668, 16500, 16512, 19344, 19356, 22176,
+      22188, 25020, 25032, 27864, 27876, 30696, 30708, 33540, 33552, 36384, 36396, 39216, 39228,
+      42060, 42072, 15960, 15972, 21636, 21648, 27324, 27336, 33000, 33012, 38676, 38688, 44364,
+      44376, 50040, 50052, 55716, 55728, 61404, 61416, 67080, 67092, 72756, 72768, 78444, 78456,
+      84120, 84132, 23940, 23952, 32460, 32472, 40980, 40992, 49500, 49512, 58020, 58032, 66540,
+      66552, 75060, 75072, 83580, 83592, 92100, 92112, 100620, 100632, 109140, 109152, 117660, 117672,
+      126180, 126192]
+  output:
+    il_liheap_income_bracket: [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
+      1, 2, 1, 2, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 3,
+      4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4]

@@ -1,0 +1,64 @@
+# Preserve printed TOTAL cells, even where they differ from the sum of the component cells.
+description: Illinois provides these all electric comed heating-payment amounts under the Low Income Home Energy Assistance Program.
+1:
+  1:
+    '2025-10-01': 489
+  2:
+    '2025-10-01': 516
+  3:
+    '2025-10-01': 538
+  4:
+    '2025-10-01': 564
+  5:
+    '2025-10-01': 591
+  6:
+    '2025-10-01': 618
+2:
+  1:
+    '2025-10-01': 260
+  2:
+    '2025-10-01': 269
+  3:
+    '2025-10-01': 278
+  4:
+    '2025-10-01': 287
+  5:
+    '2025-10-01': 305
+  6:
+    '2025-10-01': 323
+3:
+  1:
+    '2025-10-01': 72
+  2:
+    '2025-10-01': 76
+  3:
+    '2025-10-01': 83
+  4:
+    '2025-10-01': 90
+  5:
+    '2025-10-01': 93
+  6:
+    '2025-10-01': 103
+4:
+  1:
+    '2025-10-01': 58
+  2:
+    '2025-10-01': 63
+  3:
+    '2025-10-01': 67
+  4:
+    '2025-10-01': 72
+  5:
+    '2025-10-01': 76
+  6:
+    '2025-10-01': 83
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Illinois LIHEAP all electric comed payment
+  reference:
+  - title: 'Illinois FY2026 provider-related heating benefit matrices #page 1-2'
+    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+  - title: 'Illinois PY2027 final benefit matrix #page 1-2'
+    href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1

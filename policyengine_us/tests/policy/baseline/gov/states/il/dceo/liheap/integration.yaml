@@ -194,3 +194,36 @@
     # min(710, 1,200) = 710
     il_liheap_base_payment: 710
     il_liheap: 710
+
+# PY2027 DCEO eligibility and final matrix, size-one last income band.
+# ComEd uses the electric LID-first total $58; Ameren uses $325.
+- name: PY2027 provider choice controls eligibility and the regular heating amount end to end.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL]
+    age: [40, 40, 40, 40]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    il_liheap_electricity_provider: [COMED, AMEREN_ILLINOIS, OTHER, COMED]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
+    irs_gross_income: [45_000, 45_000, 45_000, 47_881]
+    pre_subsidy_electricity_expense: [5_000, 5_000, 5_000, 5_000]
+  output:
+    il_liheap_income_eligible: [true, true, false, false]
+    il_liheap_income_bracket: [4, 4, 4, 4]
+    il_liheap_regular_heating: [58, 325, 0, 0]
+
+# A household that reports no company counts as state-funded for the income
+# limit (47,880) and uses the general payment matrix, like the Ameren
+# household above.
+- name: PY2027 household with no reported company is eligible and uses the general matrix.
+  period: 2027
+  input:
+    state_code: IL
+    age: 40
+    heating_type: ELECTRICITY
+    irs_gross_income: 45_000
+    pre_subsidy_electricity_expense: 5_000
+  output:
+    il_liheap_income_eligible: true
+    il_liheap_income_bracket: 4
+    il_liheap_regular_heating: 325

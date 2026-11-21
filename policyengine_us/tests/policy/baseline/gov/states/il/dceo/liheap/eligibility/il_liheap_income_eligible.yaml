@@ -56,3 +56,62 @@
     # Exactly at 200% FPG limit
   output:
     il_liheap_income_eligible: true
+
+# DCEO PY2027 size-one state limit = 3 * 2026 FPG 15,960 = 47,880.
+- name: All five named utility routes allow the published state-funded income boundary.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1]
+    il_liheap_electricity_provider: [AMEREN_ILLINOIS, COMED, OTHER, OTHER, OTHER, OTHER, COMED]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, NICOR_GAS, NORTH_SHORE_GAS, PEOPLES_GAS, AMEREN_ILLINOIS,
+      OTHER]
+    irs_gross_income: [47880, 47880, 47880, 47880, 47880, 47880, 47881]
+  output:
+    il_liheap_income_eligible: [true, true, true, true, true, true, false]
+- name: Other companies use the published federal monthly limit, and an unreported company counts as state-funded.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 1, 1]
+    il_liheap_electricity_provider: [OTHER, OTHER, UNSPECIFIED, COMED]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
+    irs_gross_income: [41292, 41293, 45000, 45000]
+  output:
+    il_liheap_income_eligible: [true, false, true, true]
+
+# PY2027 final matrix monthly federal income rows, including the size-13 rule.
+- name: Federal monthly income limits reproduce every published size row and boundary.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL,
+      IL, IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12,
+      13, 13]
+    il_liheap_electricity_provider: [OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER, OTHER,
+      OTHER, OTHER, OTHER]
+    irs_gross_income: [41292, 41293, 54000, 54001, 66696, 66697, 79404, 79405, 92112, 92113, 104820,
+      104821, 107196, 107197, 109584, 109585, 111960, 111961, 114348, 114349, 116724, 116725, 119112,
+      119113, 126180, 126181]
+  output:
+    il_liheap_income_eligible: [true, false, true, false, true, false, true, false, true, false,
+      true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+      true, false]
+
+# An unreported company counts as one of the five state-funded utilities, so
+# only a household reporting OTHER for both companies uses the federal limit.
+# PY2027 size-one limits: state 3 * 15,960 = 47,880; federal 41,292.
+- name: Unreported companies use the state-funded limit unless both are reported as other.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 1, 1, 1]
+    il_liheap_electricity_provider: [UNSPECIFIED, UNSPECIFIED, OTHER, UNSPECIFIED, OTHER]
+    il_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, OTHER, OTHER]
+    irs_gross_income: [47_880, 47_881, 47_880, 47_880, 47_880]
+  output:
+    il_liheap_income_eligible: [true, false, true, true, false]

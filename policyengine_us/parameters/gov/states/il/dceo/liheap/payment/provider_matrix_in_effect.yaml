@@ -1,0 +1,11 @@
+description: Illinois applies separate provider-related heating payment matrices under the Low Income Home Energy Assistance Program when this parameter is true.
+values:
+  2023-10-01: false
+  2025-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Illinois LIHEAP provider payment matrices in effect
+  reference:
+    - title: "Illinois FY2026 benefit matrix, electric LID and non-LID schedules #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
