@@ -7735,9 +7735,10 @@ candidates:
   readings:
     statute: Income is increased to reflect "(a) Social Security, railroad retirement, and veterans payments and benefits
       unless the claimant is a one hundred percent service-connected, disabled veteran or a spouse of a one hundred
-      percent service-connected, disabled veteran." Read literally, the clause follows all three kinds of benefits. The
-      next sentence says only that "The one hundred percent service-connected disabled veteran shall not be required to
-      list veterans payments and benefits".
+      percent service-connected, disabled veteran." One reading takes the words literally, so the "unless" clause follows
+      all three kinds of benefits. Another applies the last-antecedent rule, so the clause modifies only "veterans
+      payments and benefits". The next sentence supports that reading, saying that "The one hundred percent
+      service-connected disabled veteran shall not be required to list veterans payments and benefits".
     other: Form MO-PTS line 2 (nontaxable Social Security benefits) and line 4 (railroad retirement benefits) carry no
       exception, nor do the line 2 instructions. The line 5 instructions say "If a veteran is 100 percent disabled
       entirely as a result of military service, do not include veteran payments and benefits as household income on
@@ -7752,10 +7753,12 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/11175
   state: unreviewed
-  note: PolicyEngine follows the form. It counts nontaxable Social Security on line 2 for every claimant and leaves out
+  note: The statute's words allow either reading, and the department breaks the tie. Its form and instructions apply
+    the exception only to line 5 veterans payments and benefits, the second reading. PolicyEngine follows the department
+    pending project-lead confirmation. It counts nontaxable Social Security on line 2 for every claimant and leaves out
     every member's veterans benefits on line 5 when the claimant or spouse is a one hundred percent service-connected
-    disabled veteran. Line 4 railroad retirement benefits are left to PolicyEngine/policyengine-us#10722. PolicyEngine
-    has recorded no ruling.
+    disabled veteran. Line 4 railroad retirement benefits are left to PolicyEngine/policyengine-us#10722. Both statutory
+    readings remain open, and PolicyEngine has recorded no ruling.
 - id: us-mo:sab-personal-standard-rounding
   program: supplemental-aid-to-the-blind
   question: Is SAB's earnings standard exactly 10% under the manual or the rounded-up value in the regulation's

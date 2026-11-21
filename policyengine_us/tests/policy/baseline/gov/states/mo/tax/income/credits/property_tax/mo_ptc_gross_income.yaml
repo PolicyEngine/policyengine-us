@@ -9,7 +9,8 @@
 # their subdivisions and instrumentalities".
 # Line numbers refer to the 2025 Form MO-PTS. Pensions of 15,000 or more, or
 # Social Security of 14,000, keep the modeled SSI at zero in the 2023 and
-# 2025 cases.
+# 2025 cases, except the 2023 rental-loss case, where a 10,000 bank balance
+# does.
 
 - name: Unit test for MO property tax credit gross income that includes employment income, OASDI, SSI, and TANF, but not veterans benefits
   absolute_error_margin: 0.01
@@ -342,6 +343,10 @@
     # no SSI enters line 6.
     bank_account_assets: 10_000
   output:
+    # Section 461(l) limits only trade or business losses, and this file
+    # treats a rental loss as a nonbusiness loss, so a federal return would
+    # not limit it this way. The case exercises the model's 461(l)
+    # deducted-share code rather than a typical federal outcome.
     # With no business income, section 461(l) caps the deductible loss at
     # the 2023 single threshold of 289,000, so federal AGI is
     # 20,000 - 289,000 = -269,000; through 2023 Missouri AGI keeps the
