@@ -263,3 +263,49 @@
   output:
     household_benefits: 0
     spm_unit_benefits: 0
+
+- name: Before 2024 the Colorado subsidy stays a resource under this reform's list.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    co_ccap_subsidy: 1
+    ecpa_child_benefit: 0
+    spm_unit_capped_housing_subsidy: 0
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 1
+
+- name: From 2024 the Colorado subsidy leaves this reform's list and lowers the SPM expense instead.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    co_ccap_subsidy: 1
+    ecpa_child_benefit: 0
+    spm_unit_capped_housing_subsidy: 0
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 0

@@ -856,7 +856,9 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
     belongs to that policy. The rebuilt baseline arm has no baseline of its
     own, holds nothing that only the reform defines, and keeps no holder the
     reform built for its own definition of a variable: here, yearly storage
-    for the baseline's ``ETERNITY`` ``is_household_head``.
+    for the baseline's ``ETERNITY`` ``is_household_head``. Construction branches
+    the arm again after it moves inputs, and that arm holds to the same
+    invariant before any subsampling.
 
     Core 3.33.1 and later rebuild from recorded inputs without exporting
     calculated values as inputs; earlier versions also exported calculated
@@ -872,6 +874,11 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
         reform=SUBSAMPLED_REFORMS[reform],
         spm={"geography_kind": "national"},
     )
+    # Core lists input variables by asking for every variable's holder, so the
+    # redefining reform gets an empty yearly holder for is_household_head. The
+    # arm branched after the moves copies it and must drop it.
+    for simulation in (changed, changed.baseline):
+        assert_bound_to_own_policy(simulation)
     policies = {
         "reform": changed.tax_benefit_system,
         "baseline": changed.baseline.tax_benefit_system,
