@@ -4,8 +4,9 @@
 # 2026 and allows each from 2026, in the amount allowed on the federal return.
 # Federal law allows none of the four for taxable years beginning after 2028
 # (26 U.S.C. 224(h), 225(g), 163(h)(4)(A) and 151(d)(5)(C)(i)), so DC allows
-# none from 2029 under current federal law. DC follows any federal extension, as
-# the 2029 tips and overtime case shows.
+# none from 2029 under current federal law. The 2029 case checks that the model
+# passes through federally allowed tips and overtime if those deductions are
+# extended.
 
 - name: 2025, DC allows none of the four federal deductions.
   period: 2025
