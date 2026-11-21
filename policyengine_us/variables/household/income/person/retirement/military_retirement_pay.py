@@ -15,8 +15,6 @@ class military_retirement_pay(Variable):
         "such as CRSC and VA Dependency and Indemnity Compensation (DIC) should be reported "
         "under veterans_benefits. Included in federal gross income under 26 U.S.C. § 61(a)(10).\n\n"
         "Known limitations:\n"
-        "- Montana (MCA 15-30-2120(3)(n)): allows a deduction of up to 50% of military retired pay "
-        "(capped at Montana earned income) starting in 2024; this deduction is not yet modeled.\n"
         "- North Carolina (N.C. Gen. Stat. § 105-153.5(b)(5a)): deduction requires either 20 years of military "
         "service or medical retirement; entering military_retirement_pay alone without service record "
         "variables (years_in_military or is_permanently_disabled_veteran) defaults to no deduction."
