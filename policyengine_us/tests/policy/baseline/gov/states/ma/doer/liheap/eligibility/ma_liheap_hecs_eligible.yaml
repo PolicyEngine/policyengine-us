@@ -36,3 +36,16 @@
   output:
     ma_liheap_heating_type: NONE
     ma_liheap_hecs_eligible: false
+
+- name: FY2027 prior-year cost at each threshold does not qualify and one dollar more does
+  period: 2027
+  input:
+    state_code: [MA, MA, MA, MA, MA, MA, MA, MA, MA, MA]
+    heating_type: [FUEL_OIL, FUEL_OIL, NATURAL_GAS, NATURAL_GAS, WOOD, WOOD, KEROSENE, KEROSENE, ELECTRICITY, ELECTRICITY]
+    heating_expense_last_year: [1_948, 1_949, 1_542, 1_543, 1_174, 1_175, 1_622, 1_623, 1_957, 1_958]
+  output:
+    # FY2027 chart, dated 10/20/2026: heating oil and propane 1_948, natural gas
+    # 1_542, other 1_174, kerosene 1_622, electricity 1_957. The supplement goes
+    # to households whose prior-year heating costs exceed the threshold.
+    ma_liheap_heating_type: [HEATING_OIL_AND_PROPANE, HEATING_OIL_AND_PROPANE, NATURAL_GAS, NATURAL_GAS, OTHER, OTHER, KEROSENE, KEROSENE, ELECTRICITY, ELECTRICITY]
+    ma_liheap_hecs_eligible: [false, true, false, true, false, true, false, true, false, true]
