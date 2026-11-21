@@ -1,0 +1,193 @@
+# Income-cap component controls, USD per tax year. All scenarios stipulate a
+# lawful filing status, full-year California residence, qualifying taxed rental
+# premises and rent for at least half the year, no homeowner exemption and no
+# dependent-residence exclusion. Joint spouses share that qualifying residence;
+# separate filers claim $60 each. These premises do not establish actual receipt.
+# Integer AGI boundaries avoid selecting a fractional-AGI rounding convention.
+# RTC 17053.5(j)(4) doubles the rounded single cap. For 2016 this gives $78,124;
+# source_conflicts/candidates.yaml records the FTB booklet's $78,125 reading.
+# Existing 2021+ values, the 2025 statutory choice, and ordinary tests stay intact.
+# Primary sources for the six annual vectors:
+# 2015: https://www.ftb.ca.gov/forms/2015/15_540bk.pdf#page=21
+# 2016: https://www.ftb.ca.gov/forms/2016/16_540bk.pdf#page=21
+# 2017: https://www.ftb.ca.gov/tax-pros/law/legislation/2017-2018/sb1212-021518.pdf#page=1
+# 2018: https://www.ftb.ca.gov/tax-pros/law/legislation/2019-2020/SB248-021119-031819-042419.pdf#page=2
+# 2019: https://www.ftb.ca.gov/forms/2019/2019-540-booklet.html
+# 2020: https://www.ftb.ca.gov/forms/2020/2020-540-booklet.html
+# Existing-law j4: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160210_introduced.pdf#page=104
+
+- name: 2015 renter-credit income caps include equality for all five filing statuses
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people: &renters
+      single_at_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      single_above_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      separate_at_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      separate_above_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      surviving_spouse_at_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      surviving_spouse_at_child: {age: 10, is_tax_unit_head: false, is_tax_unit_spouse: false, is_tax_unit_dependent: true}
+      surviving_spouse_above_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      surviving_spouse_above_child: {age: 10, is_tax_unit_head: false, is_tax_unit_spouse: false, is_tax_unit_dependent: true}
+      joint_at_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      joint_at_spouse: {age: 40, is_tax_unit_head: false, is_tax_unit_spouse: true, is_tax_unit_dependent: false, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      joint_above_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      joint_above_spouse: {age: 40, is_tax_unit_head: false, is_tax_unit_spouse: true, is_tax_unit_dependent: false, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      head_of_household_at_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      head_of_household_at_child: {age: 10, is_tax_unit_head: false, is_tax_unit_spouse: false, is_tax_unit_dependent: true}
+      head_of_household_above_head: {age: 40, is_tax_unit_head: true, is_tax_unit_spouse: false, is_tax_unit_dependent: false, rent: 6_000, claimed_as_dependent_on_another_return: false, lives_with_claiming_taxpayer: false}
+      head_of_household_above_child: {age: 10, is_tax_unit_head: false, is_tax_unit_spouse: false, is_tax_unit_dependent: true}
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 38_259}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 38_260}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 38_259}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 38_260}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 76_518}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 76_519}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 76_518}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 76_519}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 76_518}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 76_519}
+    households: &renter_homes
+      single_at_home: {members: [single_at_head], state_code: CA}
+      single_above_home: {members: [single_above_head], state_code: CA}
+      separate_at_home: {members: [separate_at_head], state_code: CA}
+      separate_above_home: {members: [separate_above_head], state_code: CA}
+      surviving_spouse_at_home: {members: [surviving_spouse_at_head, surviving_spouse_at_child], state_code: CA}
+      surviving_spouse_above_home: {members: [surviving_spouse_above_head, surviving_spouse_above_child], state_code: CA}
+      joint_at_home: {members: [joint_at_head, joint_at_spouse], state_code: CA}
+      joint_above_home: {members: [joint_above_head, joint_above_spouse], state_code: CA}
+      head_of_household_at_home: {members: [head_of_household_at_head, head_of_household_at_child], state_code: CA}
+      head_of_household_above_home: {members: [head_of_household_above_head, head_of_household_above_child], state_code: CA}
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+- name: 2016 renter-credit income caps include equality for all five filing statuses
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people: *renters
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 39_062}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 39_063}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 39_062}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 39_063}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 78_124}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 78_125}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 78_124}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 78_125}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 78_124}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 78_125}
+    households: *renter_homes
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+- name: 2017 renter-credit income caps include equality for all five filing statuses
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people: *renters
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 40_078}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 40_079}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 40_078}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 40_079}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 80_156}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 80_157}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 80_156}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 80_157}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 80_156}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 80_157}
+    households: *renter_homes
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+- name: 2018 renter-credit income caps include equality for all five filing statuses
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people: *renters
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 41_641}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 41_642}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 41_641}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 41_642}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 83_282}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 83_283}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 83_282}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 83_283}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 83_282}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 83_283}
+    households: *renter_homes
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+- name: 2019 renter-credit income caps include equality for all five filing statuses
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people: *renters
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 42_932}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 42_933}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 42_932}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 42_933}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 85_864}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 85_865}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 85_864}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 85_865}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 85_864}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 85_865}
+    households: *renter_homes
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+- name: 2020 renter-credit income caps include equality for all five filing statuses
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people: *renters
+    tax_units:
+      single_at: {members: [single_at_head], filing_status: SINGLE, ca_agi: 43_533}
+      single_above: {members: [single_above_head], filing_status: SINGLE, ca_agi: 43_534}
+      separate_at: {members: [separate_at_head], filing_status: SEPARATE, ca_agi: 43_533}
+      separate_above: {members: [separate_above_head], filing_status: SEPARATE, ca_agi: 43_534}
+      surviving_spouse_at: {members: [surviving_spouse_at_head, surviving_spouse_at_child], filing_status: SURVIVING_SPOUSE, ca_agi: 87_066}
+      surviving_spouse_above: {members: [surviving_spouse_above_head, surviving_spouse_above_child], filing_status: SURVIVING_SPOUSE, ca_agi: 87_067}
+      joint_at: {members: [joint_at_head, joint_at_spouse], filing_status: JOINT, ca_agi: 87_066}
+      joint_above: {members: [joint_above_head, joint_above_spouse], filing_status: JOINT, ca_agi: 87_067}
+      head_of_household_at: {members: [head_of_household_at_head, head_of_household_at_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 87_066}
+      head_of_household_above: {members: [head_of_household_above_head, head_of_household_above_child], filing_status: HEAD_OF_HOUSEHOLD, ca_agi: 87_067}
+    households: *renter_homes
+  output:
+    ca_renter_credit: [60, 0, 60, 0, 120, 0, 120, 0, 120, 0]
+
+# Wage-only control: $40,079 gross wages, no other gross income, deductions,
+# or California additions/subtractions gives $40,079 California AGI. The 2017
+# current-law source limits single-filer AGI to $40,078, so $40,079 gives no credit.
+# The same renter premises above apply. Compute AGI from raw earnings.
+- name: 2017 single renter computes income above the cap from raw wages
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 40_079
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        lives_with_claiming_taxpayer: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_agi: 40_079
+    ca_renter_credit: 0
