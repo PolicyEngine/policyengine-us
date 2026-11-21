@@ -17,3 +17,40 @@
     state_code: MA
   output:
     ma_tafdc_countable_earned_income: 1_200
+
+# Conditional annual composition: the completed financial-income stage is
+# $9,600. The supplied partial stage is $4,800 a year ($400 each month),
+# consistent with the predecessor50% rule for a qualifying recipient after
+# work-related expenses and with no dependent-care deduction at this stage.
+# These are upstream financial-stage premises, not a test of deductions or
+# actual receipt/employment history. Gross annual earnings are $12,000.
+# Acts2016ch133 sections124/125; Acts2018ch154 sections55/113:
+# https://malegislature.gov/Laws/SessionLaws/Acts/2016/Chapter133
+# https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+
+- name: Case 3, 2017 conditional annual composition.
+  period: 2017
+  input:
+    state_code: MA
+    ma_tcap_gross_earned_income: 12_000
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+    ma_tafdc_partially_disregarded_earned_income: 4_800
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: false
+    #2017: twelve monthly partial-stage amounts of$400 remain countable.
+    ma_tafdc_countable_earned_income: 4_800
+
+- name: Case 4, 2018 conditional annual composition.
+  period: 2018
+  input:
+    state_code: MA
+    ma_tcap_gross_earned_income: 12_000
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+    ma_tafdc_partially_disregarded_earned_income: 4_800
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+    #2018: retained annual approximation counts six$400 partial-stage months;
+    # this is not a claim about Jan-June2018 legality or realized usage.
+    ma_tafdc_countable_earned_income: 2_400
