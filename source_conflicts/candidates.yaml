@@ -2567,6 +2567,92 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
     of countable income. Neither document names it, and plan 1.9 is the specific list.'
+- id: us-dc:additional-deductions-standard-deduction-filers
+  program: income-tax
+  years:
+    from: 2026
+    to: 2028
+    type: tax
+  question: Do the additional deductions in D.C. Code 47-1803.04(e), which from 2026 through 2028 include the federal
+    deductions for qualified tips, qualified overtime, personal car loan interest and the enhanced senior deduction,
+    reach a filer who takes the standard deduction, or only one who itemizes?
+  sources:
+  - kind: statute
+    citation: D.C. Code § 47-1803.04(a)(1), (b), (c)(2) and (e), added by D.C. Law 26-189, sec. 7112(e)
+    url: https://code.dccouncil.gov/us/dc/council/laws/26-189#%C2%A77112(e)
+  - kind: instructions
+    citation: 2025 D-40 booklet, Standard Deduction (PDF p. 13) and Schedule I Calculation B lines 8, 9 and 15
+      (PDF p. 64)
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=64
+  - kind: guidance
+    citation: CFO fiscal impact statement, Fiscal Year 2027 Budget Support Act of 2026, Subtitle VII(I), PDF pp.105-106
+    url: https://app.cfo.dc.gov/services/fiscal_impact/pdf/spring09/FIS%20Fiscal%20Year%202027%20Budget%20Support%20Act%20of%202026.pdf#page=105
+  readings:
+    statute: Subsection (e) allows its deductions "in computing net income of any individual", and (b) bars other
+      additions to the standard deduction "except as otherwise provided in this chapter". Standard-deduction filers
+      deduct the allowed amounts alongside the standard deduction. Itemizers include the allowed amounts in the
+      nonexempt itemized pool before the subsection (c)(2) reduction.
+    other: Subsection (a)(1) allows "either the standard deduction or itemized deductions (including the additional
+      deductions set forth in subsection (e) of this section, if applicable)", which, read alone, attaches them to
+      itemized deductions only.
+  example: A married couple aged 67 and 65 with $45,000 of military retired pay and $30,000 of Social Security in 2026
+    has DC AGI of $45,000 and a $33,300 standard deduction. With the two $6,000 senior deductions their DC tax is $0;
+    limited to itemizers, they get no senior deduction and owe $502.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/deductions/additional/sources.yaml
+    - policyengine_us/variables/gov/states/dc/tax/income/deductions/dc_additional_deductions.py
+    - policyengine_us/variables/gov/states/dc/tax/income/deductions/dc_deduction_joint.py
+    - policyengine_us/variables/gov/states/dc/tax/income/deductions/dc_itemized_deductions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10806
+  state: ruled
+  note: Both readings come from the statute. PolicyEngine-US takes (e)'s operative words, "any individual", with the
+    canon of one meaning per section. OTR's 2025 D-40 booklet quotes § 47-1803.04(b) and lists the (e)(1) and (e)(2)
+    deductions as Schedule I subtractions available regardless of itemization. The fiscal impact statement describes
+    the four new deductions as available to "District taxpayers" and lists no separate revenue for them against a
+    February baseline that "did not assume any decoupling from OBBBA provisions". PolicyEngine-US deducts the four
+    amounts in computing DC taxable income and uses DC adjusted gross income before those amounts for the
+    itemized-deduction reduction. The 2025 D-40 subtracts the (e)(1) and (e)(2) amounts on Schedule I, before DC
+    adjusted gross income and outside Calculation F's 5% reduction. If OTR's 2026 forms put the four new deductions
+    there too, an itemizer above the reduction threshold keeps amounts the model reduces. The act, booklet and fiscal
+    impact statement passages are captured under source_conflicts/sources/us-dc/.
+- id: us-dc:basic-standard-deduction-2026-amount
+  program: income-tax
+  years:
+    from: 2026
+    to: 2026
+    type: tax
+  question: Which basic standard deduction amounts apply in 2026 under the District's new cost-of-living rule?
+  sources:
+  - kind: statute
+    citation: D.C. Law 26-189, sec. 7112(b), adding D.C. Code § 47-1801.04(3A)
+    url: https://code.dccouncil.gov/us/dc/council/laws/26-189#%C2%A77112(b)
+  - kind: statute
+    citation: D.C. Code § 47-1801.04(11), cost-of-living adjustment
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04#(11)
+  - kind: form
+    citation: 2026 D-40ES booklet, Worksheet to Estimate DC Tax Payments, line 2b (PDF p. 10)
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2026_D40ES_Book_wLinks04012026.pdf#page=10
+  readings:
+    statute: Section 47-1801.04(3A)(B) sets the 2026 base year to 2025. The preceding calendar year in
+      § 47-1801.04(11)(A) is also 2025, so the adjustment is zero and the $15,000, $22,500 and $30,000 amounts
+      in § 47-1801.04(3A)(A)(ii) apply.
+    other: The estimated-payment worksheet directs filers to use the federal amounts of $16,100, $24,150 and
+      $32,200, including $32,200 for joint filers.
+  example: A married couple filing jointly in 2026 has a $30,000 basic standard deduction under the statute and
+    a $32,200 basic amount under the estimated-payment worksheet.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/deductions/standard/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10806
+  state: ruled
+  note: The March 2026 booklet predates the October 2, 2026 effective date of D.C. Law 26-189. Section 7113
+    applies the subtitle as of January 1, 2025, except as otherwise provided. The act, D.C. Code and D-40ES
+    passages are captured under source_conflicts/sources/us-dc/.
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
