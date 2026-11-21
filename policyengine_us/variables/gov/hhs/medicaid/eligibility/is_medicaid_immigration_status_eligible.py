@@ -40,10 +40,16 @@ class is_medicaid_immigration_status_eligible(Variable):
         ca_eligible_regardless_of_immigration_status = person(
             "is_ca_medicaid_immigration_status_eligible", period
         )
+        # New York covers some statuses outside the federal test with state
+        # funds.
+        ny_state_funded_eligible = person(
+            "is_ny_medicaid_immigration_status_eligible", period
+        )
 
         return (
             federally_eligible
             | undocumented_eligible
             | child_eligible_regardless_of_status
             | ca_eligible_regardless_of_immigration_status
+            | ny_state_funded_eligible
         )
