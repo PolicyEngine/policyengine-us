@@ -64,3 +64,121 @@
         state_code: NV
   output:
     nv_liheap_energy_cost: 600
+
+# Section 507 leaves service fees out of the energy cost, and Appendix A lists
+# an annual deduction by vendor: City of Fallon 300 (SFY2026); Mt. Wheeler
+# Power 258 (SFY2026) and 456 (SFY2027); Alamo Power District 380.04
+# (SFY2026); Southwest Gas 129.60, or 108 for multi-family service in the
+# south. NV Energy has no dollar deduction.
+
+- name: Case 4, a Fallon home deducts the City of Fallon and Southwest Gas service fees.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 720
+        pre_subsidy_electricity_expense: 1_320
+        nv_liheap_electricity_provider: CITY_OF_FALLON
+        nv_liheap_natural_gas_provider: SOUTHWEST_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # (720 - 129.60) + (1,320 - 300) = 590.40 + 1,020
+    nv_liheap_energy_cost: 1_610.4
+
+- name: Case 5, an electrically heated Mt. Wheeler Power home uses the SFY2027 deduction.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_440
+        nv_liheap_electricity_provider: MT_WHEELER_POWER
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 1,440 - 456 (1,440 - 258 = 1,182 at the SFY2026 amount)
+    nv_liheap_energy_cost: 984
+
+- name: Case 6, a deduction larger than the bill leaves no electricity cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+        # Net grid bill of 25 a month after the panels' output.
+        pre_subsidy_electricity_expense: 300
+        nv_liheap_electricity_provider: ALAMO_POWER_DISTRICT
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 300 - 380.04 < 0
+    nv_liheap_energy_cost: 0
+
+- name: Case 7, a southern multi-family Southwest Gas account deducts 108 and NV Energy nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 720
+        pre_subsidy_electricity_expense: 1_320
+        nv_liheap_electricity_provider: NV_ENERGY
+        nv_liheap_natural_gas_provider: SOUTHWEST_GAS_SOUTH_MULTI_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # (720 - 108) + 1,320
+    nv_liheap_energy_cost: 1_932
+
+- name: Case 8, a fuel-oil-heated home with a gas account deducts no gas service fee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        # Rural heating oil of 125 a month.
+        fuel_oil_expense: 1_500
+        pre_subsidy_electricity_expense: 1_200
+        nv_liheap_natural_gas_provider: SOUTHWEST_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # The gas bill is not part of the energy cost: 1,500 + 1,200
+    nv_liheap_energy_cost: 2_700

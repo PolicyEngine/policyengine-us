@@ -9,10 +9,12 @@ class nv_liheap_energy_cost(Variable):
     label = "Nevada LIHEAP energy cost"
     documentation = (
         "Annual primary heating and electric energy costs used for the Fixed "
-        "Annual Credit. Bills include vendor service fees, which Section 507 "
-        "leaves out of the energy cost and Appendix A deducts by vendor. No "
-        "input identifies the vendor, so a credit between the minimum and the "
-        "cap can exceed the program's amount by up to that fee."
+        "Annual Credit, less the annual service fee deduction Appendix A "
+        "lists for the household's electricity and natural gas vendors. "
+        "Section 507 leaves service fees out of the energy cost. Appendix A "
+        "lists no dollar deduction for NV Energy, so for its customers, and "
+        "for other or unreported vendors, a credit between the minimum and "
+        "the cap can exceed the program's amount by up to that fee."
     )
     defined_for = StateCode.NV
     reference = (
@@ -29,6 +31,7 @@ class nv_liheap_energy_cost(Variable):
         # the electricity bill are included; heating_expense already reads the
         # electricity bill when the home heats with electricity or solar, so
         # it is not added again.
+        p = parameters(period).gov.states.nv.dwss.liheap.payment.vendor_deduction
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
         electric_heat = (heating_type == types.ELECTRICITY) | (
@@ -36,4 +39,15 @@ class nv_liheap_energy_cost(Variable):
         )
         heating = spm_unit("heating_expense", period)
         electricity = spm_unit("pre_subsidy_electricity_expense", period)
-        return heating + where(electric_heat, 0, electricity)
+        # Each vendor's deduction comes off that vendor's bill only. The gas
+        # bill is part of the energy cost only when gas heats the home.
+        electricity_provider = spm_unit("nv_liheap_electricity_provider", period)
+        gas_provider = spm_unit("nv_liheap_natural_gas_provider", period)
+        gas_deduction = where(
+            heating_type == types.NATURAL_GAS, p.natural_gas[gas_provider], 0
+        )
+        electricity_bill = where(electric_heat, heating, electricity)
+        other_heating_bill = where(electric_heat, 0, max_(heating - gas_deduction, 0))
+        return other_heating_bill + max_(
+            electricity_bill - p.electricity[electricity_provider], 0
+        )

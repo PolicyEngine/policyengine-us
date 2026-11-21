@@ -794,3 +794,35 @@
     # 1,500 - 0.0148 x 18,720 = 1,500 - 277.056 = 1,222.944
     # 18,720 / 15,960 = 1.173 -> band 3; standard cap 1,280
     nv_liheap: 1_222.944
+
+- name: Case 29, the City of Fallon and Southwest Gas service fees lower the FAC.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_960
+      person2:
+        age: 8
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        pre_subsidy_electricity_expense: 1_440
+        nv_liheap_electricity_provider: CITY_OF_FALLON
+        nv_liheap_natural_gas_provider: SOUTHWEST_GAS
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # Case 1 with the Appendix A deductions: (600 - 129.60) + (1,440 - 300) = 1,610.40
+    nv_liheap_energy_cost: 1_610.4
+    # 1,610.40 - 0.0181 x 24,960 = 1,610.40 - 451.776 = 1,158.624
+    # 24,960 / 26,650 = 0.937 -> band 2; cap 1,773
+    nv_liheap: 1_158.624
