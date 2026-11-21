@@ -2267,7 +2267,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
     state median income, or the whole-dollar monthly tables the plan attachment and manual print?
@@ -2281,11 +2281,19 @@ candidates:
   - kind: manual
     citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
     url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  - kind: manual
+    citation: 2026-27 LEAP Operations Manual, eligibility chart, p.99
+    url: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=99
+  - kind: guidance
+    citation: CDHS 2026-27 LEAP Income Limits table, linked from the LEAP page (https://cdhs.colorado.gov/leap)
+    url: https://drive.google.com/file/d/1gfDDrwl3HmZONV3za74lhyXsj8LMdVeF/view
   readings:
     statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
       and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
     other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
-      median income for one person, and the attachment says Colorado "uses the FPL chart".
+      median income for one person, and the attachment says Colorado "uses the FPL chart". For FY2027 the eligibility
+      chart and the income limits table print $3,774 for one person, where 60% of state median income is $45,295 a year
+      ($3,774.58 a month).
   example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
     $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
     under the printed $3,607 and $700 within 60% of state median income ($43,293).
@@ -2298,7 +2306,10 @@ candidates:
   note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
     by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
     The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
-    state median income guidelines".'
+    state median income guidelines". FY2027 follows the same ruling: the 2026-27 manual''s eligibility chart (p.99),
+    both applications (pp.125, 131) and the income limits table on the LEAP page print the floored amount in every
+    row, and only the manual''s rates handout (p.5) prints $10,453 for ten members, against $10,452 elsewhere (PR
+    11138). FY2027 prints only the percentage contribution bands, so their dollar boundaries keep the FY2026 rounding.'
 - id: us-co:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
