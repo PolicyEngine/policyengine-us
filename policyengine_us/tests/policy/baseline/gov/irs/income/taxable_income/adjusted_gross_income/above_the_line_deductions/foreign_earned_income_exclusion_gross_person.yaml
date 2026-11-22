@@ -1,10 +1,10 @@
 # The person's own section 911 exclusions (Form 2555 line 43, lines 36 plus
 # 42). A supplied foreign_earned_income_exclusion_gross_person_reported of
-# zero or more is used as entered; a negative amount means not supplied.
-# Otherwise a return with one head or spouse credits the return's line 43
-# (foreign_earned_income_exclusion_gross, as entered or from the leaves) to
-# the head, and a joint return credits neither spouse. The legacy worksheet
-# amount never stands in.
+# zero or more is used as entered; a negative amount means not supplied. An
+# entry applies only to the year entered. Otherwise a return with one head or
+# spouse credits the return's line 43 (foreign_earned_income_exclusion_gross,
+# as entered or from the leaves) to the head, and a joint return credits
+# neither spouse. The legacy worksheet amount never stands in.
 
 - name: A single filer's gross exclusion is the head's own.
   period: 2025
@@ -217,3 +217,69 @@
         members: [b_head]
   output:
     foreign_earned_income_exclusion_gross_person: [20_000, 0, 10_000]
+
+- name: An amount supplied only for 2025 does not apply in 2026, so the return's line 43 stands in.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person_reported: -1
+    foreign_earned_income_exclusion_gross_person: 10_000
+
+- name: A zero supplied for 2026 is used in 2026, not the 2025 amount or the return's line 43.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
+          2026: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      household:
+        members: [head]
+  output:
+    foreign_earned_income_exclusion_gross_person: 0
+
+- name: One return's amount supplied only for 2025 does not apply in 2026 beside another return's 2026 amount.
+  period: 2026
+  input:
+    people:
+      a_head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
+      b_head:
+        age: 40
+        foreign_earned_income_exclusion_gross_person_reported:
+          2026: 4_000
+    tax_units:
+      a:
+        members: [a_head]
+        foreign_earned_income_exclusion_amount: 10_000
+      b:
+        members: [b_head]
+        foreign_earned_income_exclusion_amount: 4_000
+    households:
+      a_household:
+        members: [a_head]
+      b_household:
+        members: [b_head]
+  output:
+    foreign_earned_income_exclusion_gross_person_reported: [-1, 4_000]
+    foreign_earned_income_exclusion_gross_person: [10_000, 4_000]

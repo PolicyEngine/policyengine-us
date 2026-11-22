@@ -31,12 +31,14 @@ class id_retirement_benefits_disability_classification(Variable):
     finding comes from outside those groups. UNSPECIFIED, the default, means
     not supplied: id_retirement_benefits_deduction_disabled then uses this
     person's own Social Security disability insurance benefits and
-    is_disabled, whatever other people's classifications are. As with every
-    input, Core carries a classification into a later year only when no one
-    has one for that year: once anyone supplies a classification for a
-    year, a person whose classification was supplied only for an earlier
-    year is UNSPECIFIED in that year. Supply each person's classification
-    for every year calculated.
+    is_disabled, whatever other people's classifications are. A
+    classification supplied for a calendar year applies only to that year,
+    and one keyed by a period of several years or by a year that starts
+    after January, such as year:2024:3 or year:2025-07, applies to no year.
+    Because of its formula, Core does not count this as an input variable,
+    so Simulation.to_input_dict() and to_input_dataframe() leave a supplied
+    classification out unless include_computed_variables=True; supply it in
+    the situation or with set_input.
     """
     reference = (
         "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/",
@@ -44,3 +46,9 @@ class id_retirement_benefits_disability_classification(Variable):
         "https://legislature.idaho.gov/statutesrules/idstat/title49/t49ch1/sect49-117/",
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45",
     )
+
+    def formula(person, period, parameters):
+        # The formula stops Core carrying a classification into later years.
+        return person.filled_array(
+            IDRetirementBenefitsDisabilityClassification.UNSPECIFIED
+        )

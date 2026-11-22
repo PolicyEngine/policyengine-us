@@ -40,8 +40,12 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
        requirement in force that year, and section 6012(a)(1)(A) and (B) from
        2026: at least the basic standard deduction plus the additions for
        age. Applying the (a)(1) thresholds to 2025 would also admit income
-       equal to the threshold and leave out blindness, and a literal reading
-       would admit nobody for 2025, when (a)(1) requires no return.
+       equal to the threshold and leave out blindness, as Chart A of the 2025
+       Form 1040 instructions and Publication 501 do: both require a return
+       at gross income of "at least" an amount that rises for age alone. The
+       model follows section 6012(f), the statute, as
+       tax_unit_is_required_to_file does. A literal reading would admit
+       nobody for 2025, when (a)(1) requires no return.
     2. Self-employment. Gross income from a business or farm counts as
        income from employment, as wages do.
     3. Joint returns. The person's own income from employment is compared

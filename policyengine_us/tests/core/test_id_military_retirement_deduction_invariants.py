@@ -59,9 +59,13 @@ STATUSES = ("SINGLE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE", "SEPARATE", "JOIN
 UNMARRIED = ("SINGLE", "HEAD_OF_HOUSEHOLD")
 
 # Basic standard deduction and the additional standard deduction for each of
-# age 65 and blindness. 2025: Chart A of the 2025 Form 1040 instructions,
-# https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf. 2026: Rev. Proc.
-# 2025-32, sec. 4.14, https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+# age 65 and blindness, which section 63(f) sets equal. 2025: the basic and
+# age amounts in Chart A of the 2025 Form 1040 instructions,
+# https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=9 (Chart A itself
+# says to file at "at least" its amount and has no blindness row; section
+# 6012(f) uses "does not exceed" the standard deduction, blindness
+# included). 2026: Rev. Proc. 2025-32, sec. 4.14,
+# https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 BASIC = {
     2025: {
         "SINGLE": 15_750,

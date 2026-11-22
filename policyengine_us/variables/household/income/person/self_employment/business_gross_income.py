@@ -14,9 +14,13 @@ class business_gross_income(Variable):
         "is negative (its default is -1), the net amounts stand in: "
         "self_employment_income plus sstb_self_employment_income, each "
         "floored at zero, which equal gross income only for a business with "
-        "no expenses. Each person's value depends only on their own inputs, "
-        "apart from Core's carry-over of inputs into later years (see "
-        "business_gross_income_reported). "
+        "no expenses. An entry of business_gross_income_reported applies "
+        "only to the year entered. Each person's value depends only on their "
+        "own inputs, apart from the carry-over of the net amounts: an entry "
+        "of one carries into a later year only when no one has an entry of it "
+        "for that year, so once anyone enters one for a year, a person whose "
+        "amount was entered only for an earlier year has zero in that year. "
+        "Enter the net amounts for every year calculated. "
         "Supply business_gross_income_reported rather than setting this "
         "variable: an input here applies to every person in the simulation, "
         "and people without a value get zero."
@@ -36,6 +40,7 @@ class business_gross_income(Variable):
         regular = person("self_employment_income", period)
         sstb = person("sstb_self_employment_income", period)
         net = max_(regular, 0) + max_(sstb, 0)
-        # A negative amount, such as the default -1, means not supplied,
-        # including after Core carries an earlier year's input forward.
+        # Any negative amount, such as the default -1, means not supplied:
+        # Schedule C line 7, with a negative line counted as zero, can't be
+        # negative.
         return where(reported >= 0, reported, net)

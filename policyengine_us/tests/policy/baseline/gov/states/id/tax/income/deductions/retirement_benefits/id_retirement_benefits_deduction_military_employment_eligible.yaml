@@ -451,61 +451,94 @@
     id_retirement_benefits_deduction_military_employment_eligible: [true, false]
     id_retirement_benefits_deduction: 30_000
 
-- name: 2026 a spouse's gross business income supplied only for 2025 leaves the retiree's net profit in place.
+- name: 2026 a retiree's gross business income supplied only for 2025 does not apply in 2026, so the retiree's net profit stands in.
   period: 2026
   input:
     people:
+      head:
+        age: 43
       retiree:
         age: 45
-        self_employment_income: 35_000
+        self_employment_income: 5_000
         military_retirement_pay: 30_000
-      spouse:
-        age: 43
         business_gross_income_reported:
-          2025: 5_000
+          2025: 40_000
     tax_units:
       tax_unit:
-        members: [retiree, spouse]
+        members: [head, retiree]
         filing_status: JOINT
     households:
       household:
-        members: [retiree, spouse]
+        members: [head, retiree]
         state_code: ID
   output:
-    # Core carries the 2025 input into 2026 with the default dollar input
-    # uprating, which also scales the retiree's default of -1; any negative
-    # amount still means not supplied. $35,000 meets the $32,200 joint
-    # threshold.
-    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
-    id_retirement_benefits_deduction: 30_000
+    # An entry applies only to the year entered. The retiree's $5,000 net
+    # profit falls short of the $32,200 joint threshold; the 2025 amount
+    # would meet it if it applied in 2026.
+    business_gross_income_reported: [-1, -1]
+    business_gross_income: [0, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
 
-- name: 2026 a spouse's gross farm income supplied only for 2025 leaves the retiree's net farm profit in place.
+- name: 2026 the head's own 2026 gross business income leaves the retiree's net profit in place.
   period: 2026
   input:
     people:
+      head:
+        age: 43
+        self_employment_income: 5_000
+        business_gross_income_reported:
+          2026: 5_000
       retiree:
         age: 45
-        farm_operations_income: 35_000
+        self_employment_income: 5_000
         military_retirement_pay: 30_000
-      spouse:
-        age: 43
-        farm_gross_income_reported:
-          2025: 5_000
+        business_gross_income_reported:
+          2025: 40_000
     tax_units:
       tax_unit:
-        members: [retiree, spouse]
+        members: [head, retiree]
         filing_status: JOINT
     households:
       household:
-        members: [retiree, spouse]
+        members: [head, retiree]
         state_code: ID
   output:
-    # As with gross business income, Core carries the 2025 input into 2026
-    # with the default dollar input uprating, which also scales the retiree's
-    # default of -1; any negative amount still means not supplied. $35,000
-    # meets the $32,200 joint threshold.
-    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
-    id_retirement_benefits_deduction: 30_000
+    # The retiree's 2026 value is the retiree's own net profit whether or
+    # not the head enters an amount for 2026.
+    business_gross_income_reported: [5_000, -1]
+    business_gross_income: [5_000, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2026 a retiree's gross farm income supplied only for 2025 does not apply in 2026, so the retiree's net farm profit stands in.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 43
+      retiree:
+        age: 45
+        farm_operations_income: 5_000
+        military_retirement_pay: 30_000
+        farm_gross_income_reported:
+          2025: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, retiree]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, retiree]
+        state_code: ID
+  output:
+    # As with gross business income, the 2025 amount doesn't apply in 2026,
+    # and the retiree's $5,000 net farm profit falls short of the $32,200
+    # joint threshold.
+    farm_gross_income_reported: [-1, -1]
+    farm_gross_income: [0, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
 
 - name: 2025 a supplied zero of gross business income is used, not the net profit.
   period: 2025
@@ -568,7 +601,7 @@
     id_retirement_benefits_deduction_military_employment_eligible: [true, false, true]
     id_retirement_benefits_deduction: [0, 30_000]
 
-- name: 2026 one return's section 911 amount supplied only for 2025 leaves a sole filer's excluded wages in place.
+- name: 2026 section 911 amounts supplied only for 2025 do not apply in 2026, so each return's own line 43 stands in.
   period: 2026
   input:
     people:
@@ -582,6 +615,8 @@
         age: 45
         employment_income: 10_000
         military_retirement_pay: 30_000
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
     tax_units:
       a:
         members: [a_retiree, a_spouse]
@@ -589,7 +624,7 @@
       b:
         members: [b_retiree]
         # Form 2555 line 42.
-        foreign_earned_income_exclusion_amount: 10_000
+        foreign_earned_income_exclusion_amount: 1_000
     households:
       a_household:
         members: [a_retiree, a_spouse]
@@ -598,13 +633,14 @@
         members: [b_retiree]
         state_code: ID
   output:
-    # Core carries A's 2025 amount into 2026 with the default dollar input
-    # uprating, which also scales B's default of -1; any negative amount
-    # still means not supplied. B's $10,000 of wages and $10,000 excluded
-    # meet the $16,100 single threshold. A's carried amount falls short of
-    # the $32,200 joint threshold.
-    id_retirement_benefits_deduction_military_employment_eligible: [false, false, true]
-    id_retirement_benefits_deduction: [0, 30_000]
+    # A's joint return credits neither spouse, and B, a sole filer, gets B's
+    # own $1,000 line 43. B's $10,000 of wages and $1,000 excluded fall short
+    # of the $16,100 single threshold; B's 2025 amount would meet it if it
+    # applied in 2026.
+    foreign_earned_income_exclusion_gross_person_reported: [-1, -1, -1]
+    foreign_earned_income_exclusion_gross_person: [0, 0, 1_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false, false]
+    id_retirement_benefits_deduction: [0, 0]
 
 - name: 2025 a single filer's entered gross section 911 exclusion counts without Form 2555 leaves.
   period: 2025

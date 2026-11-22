@@ -24,13 +24,14 @@ class foreign_earned_income_exclusion_gross_person(Variable):
         "2555 leaves nothing shows that lines 44 and 50 and worksheet line 2b "
         "are zero, and once any leaf is entered, even a zero, the leaves give "
         "line 43 as lines 36 and 42. A filer who knows line 43 enters it as "
-        "foreign_earned_income_exclusion_gross_person_reported. Each person's "
-        "value depends only on their own inputs and their own return's, apart "
-        "from Core's carry-over of inputs into later years (see "
-        "foreign_earned_income_exclusion_gross_person_reported) and a batch "
-        "that mixes an entered foreign_earned_income_exclusion_gross in one "
-        "return with Form 2555 leaves in another, which "
-        "policyengine_us.Simulation rejects. Supply "
+        "foreign_earned_income_exclusion_gross_person_reported, which applies "
+        "only to the year entered. Each person's value depends only on their "
+        "own inputs and their own return's, apart from a batch that mixes an "
+        "entered foreign_earned_income_exclusion_gross in one return with "
+        "Form 2555 leaves in another, or enters a Form 2555 leaf for "
+        "different years in different returns, where one return's entry for "
+        "a later year stops another's earlier entry carrying into it; "
+        "policyengine_us.Simulation rejects both. Supply "
         "foreign_earned_income_exclusion_gross_person_reported rather than "
         "setting this variable: an input here applies to every person in the "
         "simulation, and people without a value get zero. The tax unit "
@@ -63,6 +64,6 @@ class foreign_earned_income_exclusion_gross_person(Variable):
         head = person("is_tax_unit_head", period)
         one_filer = person.tax_unit("head_spouse_count", period) == 1
         fallback = where(head & one_filer, return_exclusion, 0)
-        # A negative amount, such as the default -1, means not supplied,
-        # including after Core carries an earlier year's input forward.
+        # Any negative amount, such as the default -1, means not supplied:
+        # line 43 adds two exclusions and can't be negative.
         return where(reported >= 0, reported, fallback)

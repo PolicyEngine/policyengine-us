@@ -4578,6 +4578,12 @@ candidates:
   - kind: instructions
     citation: 2025 Form 39R instructions, line 8e, PDF page 45
     url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Chart A, PDF page 9
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=9
+  - kind: guidance
+    citation: IRS Publication 501 (2025), Table 1 and Filing Requirements for Most Taxpayers, PDF pages 2-3
+    url: https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=2
   readings:
     statute: Section 6012(f), the federal requirement in force for 2025. The income must exceed the standard deduction,
       which includes the additions for age and blindness. Idaho Code 63-3004 defines the Internal Revenue Code as that
@@ -4585,7 +4591,10 @@ candidates:
     other: Apply the thresholds of section 6012(a)(1)(A) and (B) to 2025 as though (f) didn't displace them, so income of
       at least the basic standard deduction plus the additions for age, without blindness, qualifies. Or read "(a)(1)"
       literally, so that nobody qualifies under (iii) for 2025, a year for which (a)(1) requires no return. The Form
-      39R instructions drop the section number and say "required to file a federal return".
+      39R instructions drop the section number and say "required to file a federal return". The IRS's 2025 Chart A and
+      Publication 501 Table 1 give the (a)(1) thresholds for 2025, a return at gross income of "at least" an amount
+      that rises for age only ("Age is a factor in determining if you must file a return only if you are 65 or
+      older").
   example: In 2025 a single recipient aged 45 with $15,750 of wages and $30,000 of military retired pay fails under
     section 6012(f), because the wages don't exceed the $15,750 standard deduction, and deducts $0. The (a)(1)
     threshold admits wages equal to $15,750, for a $30,000 deduction. A blind recipient with $17,750 of wages fails
@@ -4603,7 +4612,11 @@ candidates:
     wording points to it, and the literal reading would leave (iii) without effect for 2025, the year from which 2025
     House Bills 40 and 479 apply it. From 2026 section 6012(f) no longer applies, and the model uses section
     6012(a)(1)(A) and (B). The 2025 cases at $15,750 and $15,751 of wages and the blind filer's case at $17,750 in
-    id_retirement_benefits_deduction_military_employment_eligible.yaml pin the reading.
+    id_retirement_benefits_deduction_military_employment_eligible.yaml pin the reading. Chart A of the 2025 Form 1040
+    instructions and Publication 501 Table 1 would require a return of both example filers, at wages equal to the
+    standard deduction and without the blindness addition. That federal conflict is its own open candidate,
+    us:filing-chart-a-blindness-and-equality, under which tax_unit_is_required_to_file follows section 6012(f); this
+    entry follows the statute the same way.
 - id: us-id:military-retirement-employment-includes-self-employment
   program: income-tax
   years:

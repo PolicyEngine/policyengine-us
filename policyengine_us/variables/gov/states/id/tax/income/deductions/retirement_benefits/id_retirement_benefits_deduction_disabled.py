@@ -48,9 +48,14 @@ class id_retirement_benefits_deduction_disabled(Variable):
     Blindness alone doesn't count: 63-701(1)(g) lists it as a separate
     group, not as a disabled person.
 
-    Each person's value depends only on their own inputs, apart from Core's
-    carry-over of inputs into later years (see
-    id_retirement_benefits_disability_classification). Supply
+    A supplied id_retirement_benefits_disability_classification applies only
+    to the year supplied. Each person's value depends only on their own
+    inputs, apart from the carry-over of is_disabled and
+    social_security_disability: an entry of either carries into a later
+    year only when no one has an entry of it for that year, so once anyone
+    enters one for a year, a person whose value was entered only for an
+    earlier year has false or zero in that year. Enter them for every year
+    calculated. Supply
     id_retirement_benefits_disability_classification rather than setting
     this variable: an input here applies to every person in the simulation,
     and people without a value get false.

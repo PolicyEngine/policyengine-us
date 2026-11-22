@@ -7,9 +7,10 @@
 # the United States" with a VA service-connected disability of 10% or more or
 # a VA nonservice-connected disability pension), or a person with a
 # physician-certified permanent disability under section 49-117(7)(b)(iv).
-# A supplied id_retirement_benefits_disability_classification decides. When
-# it is unspecified, an SSDI award (the Social Security Administration's
-# finding) or is_disabled classifies the person; nothing else does.
+# A supplied id_retirement_benefits_disability_classification decides, in the
+# year it is supplied for. When it is unspecified, an SSDI award (the Social
+# Security Administration's finding) or is_disabled classifies the person;
+# nothing else does.
 
 - name: A person with no disability facts is not classified as disabled.
   period: 2025
@@ -129,6 +130,85 @@
     # spouse's $20,000 of military retired pay counts.
     id_retirement_benefits_deduction_military_eligible_person: [false, true]
     id_retirement_benefits_deduction: 20_000
+
+- name: A classification supplied only for 2024 does not apply in 2025, so the SSDI default decides.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    id_retirement_benefits_disability_classification:
+      2024: NOT_DISABLED
+  output:
+    id_retirement_benefits_disability_classification: UNSPECIFIED
+    id_retirement_benefits_deduction_disabled: true
+
+- name: A classification supplied for 2025 replaces the 2024 one in 2025.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    id_retirement_benefits_disability_classification:
+      2024: DISABLED
+      2025: NOT_DISABLED
+  output:
+    id_retirement_benefits_deduction_disabled: false
+
+- name: 2025 a spouse's DISABLED supplied only for 2024 does not admit the spouse's 2025 public pension.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+      spouse:
+        age: 63
+        public_pension_income: 20_000
+        id_retirement_benefits_disability_classification:
+          2024: DISABLED
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    # The spouse has no 2025 classification, SSDI or is_disabled, so at 63
+    # the spouse fails the (1)(a) test. The 2024 classification would admit
+    # the $20,000 pension if it applied in 2025.
+    id_retirement_benefits_disability_classification: [UNSPECIFIED, UNSPECIFIED]
+    id_retirement_benefits_deduction_disabled: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 the head's own 2025 classification leaves the spouse's 2025 classification unspecified.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 63
+        id_retirement_benefits_disability_classification:
+          2025: NOT_DISABLED
+      spouse:
+        age: 63
+        public_pension_income: 20_000
+        id_retirement_benefits_disability_classification:
+          2024: DISABLED
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    # The spouse's 2025 value is the spouse's own default whether or not the
+    # head supplies a classification for 2025.
+    id_retirement_benefits_disability_classification: [NOT_DISABLED, UNSPECIFIED]
+    id_retirement_benefits_deduction_disabled: [false, false]
+    id_retirement_benefits_deduction: 0
 
 - name: Blindness alone does not count.
   period: 2025
