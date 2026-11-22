@@ -552,9 +552,10 @@
     # min(910, 2_000) = 910 at bracket 1 and min(325, 2_000) = 325 at 4.
     il_liheap_base_payment: [910, 910, 325, 325]
 
-# PY2027 final matrix, pages 1-2, size-one TOTAL cells by provider and fuel.
-- name: PY2027 ELECTRICITY with COMED electric and UNSPECIFIED gas company uses its published totals.
+# PY2027 final matrix, size-one TOTAL cells by provider and fuel.
+- name: Case 26, PY2027 ELECTRICITY with COMED electric and UNSPECIFIED gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
@@ -562,12 +563,13 @@
     il_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
     il_liheap_base_payment: [489, 260, 72, 58]
-- name: PY2027 ELECTRICITY with AMEREN_ILLINOIS electric and UNSPECIFIED gas company uses its published
-    totals.
+
+- name: Case 27, PY2027 ELECTRICITY with AMEREN_ILLINOIS electric and UNSPECIFIED gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
@@ -575,11 +577,13 @@
     il_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
     il_liheap_base_payment: [910, 910, 400, 325]
-- name: PY2027 NATURAL_GAS with COMED electric and NICOR_GAS gas company uses its published totals.
+
+- name: Case 28, PY2027 NATURAL_GAS with COMED electric and NICOR_GAS gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -587,12 +591,13 @@
     il_liheap_natural_gas_provider: [NICOR_GAS, NICOR_GAS, NICOR_GAS, NICOR_GAS]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
     il_liheap_base_payment: [458, 263, 253, 212]
-- name: PY2027 NATURAL_GAS with AMEREN_ILLINOIS electric and AMEREN_ILLINOIS gas company uses its
-    published totals.
+
+- name: Case 29, PY2027 NATURAL_GAS with AMEREN_ILLINOIS electric and AMEREN_ILLINOIS gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -600,11 +605,13 @@
     il_liheap_natural_gas_provider: [AMEREN_ILLINOIS, AMEREN_ILLINOIS, AMEREN_ILLINOIS, AMEREN_ILLINOIS]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
-    il_liheap_base_payment: [1184, 538, 393, 278]
-- name: PY2027 NATURAL_GAS with COMED electric and OTHER gas company uses its published totals.
+    il_liheap_base_payment: [1_184, 538, 393, 278]
+
+- name: Case 30, PY2027 NATURAL_GAS with COMED electric and OTHER gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -612,11 +619,13 @@
     il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
     il_liheap_base_payment: [966, 461, 355, 275]
-- name: PY2027 PROPANE with COMED electric and UNSPECIFIED gas company uses its published totals.
+
+- name: Case 31, PY2027 PROPANE with COMED electric and UNSPECIFIED gas company uses its published totals.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [PROPANE, PROPANE, PROPANE, PROPANE]
@@ -624,13 +633,14 @@
     il_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
     il_liheap_income_bracket: [1, 2, 3, 4]
     spm_unit_size: [1, 1, 1, 1]
-    heating_expense: [10000, 10000, 10000, 10000]
+    heating_expense: [10_000, 10_000, 10_000, 10_000]
   output:
-    il_liheap_base_payment: [1461, 631, 445, 335]
+    il_liheap_base_payment: [1_461, 631, 445, 335]
 
 # The existing expense cap remains operative after provider selection.
-- name: ComEd heating payment remains capped at reported heating costs.
+- name: Case 32, ComEd heating payment remains capped at reported heating costs.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: IL
     heating_type: ELECTRICITY
@@ -640,8 +650,10 @@
     heating_expense: 100
   output:
     il_liheap_base_payment: 100
-- name: Provider selection does not affect the published cash grant for heat in rent.
+
+- name: Case 33, provider selection does not affect the published cash grant for heat in rent.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL]
     heating_type: [NATURAL_GAS, NATURAL_GAS]
@@ -653,8 +665,9 @@
   output:
     il_liheap_base_payment: [956, 956]
 
-- name: Every qualifying gas company selects the LID heating row.
+- name: Case 34, every qualifying gas company selects the LID heating row.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     state_code: [IL, IL, IL, IL]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
@@ -665,8 +678,9 @@
   output:
     il_liheap_base_payment: [458, 458, 458, 458]
 
-- name: Reported companies do not apply the FY2026 schedule to FY2025.
+- name: Case 35, reported companies do not apply the FY2026 schedule to FY2025.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     state_code: IL
     heating_type: ELECTRICITY
@@ -675,3 +689,19 @@
     heating_expense: 5_000
   output:
     il_liheap_base_payment: 910
+
+# Model year 2026 is the first year of the provider schedules (2025-10-01
+# values). The ComEd household of Case 35 moves from the general all-electric
+# 910 to the "LID for Electric" page: All ELEC., band 1, one person = 489;
+# min(489, 1_800) = 489.
+- name: Case 36, model year 2026 applies the FY2026 electric LID schedule to a ComEd household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    heating_type: ELECTRICITY
+    il_liheap_electricity_provider: COMED
+    il_liheap_income_bracket: 1
+    heating_expense: 1_800
+  output:
+    il_liheap_base_payment: 489

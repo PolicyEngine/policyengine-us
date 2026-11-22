@@ -1,64 +1,76 @@
+description: Illinois provides this amount to natural gas households without a gas low-income discount on the electric low-income discount schedule under the Low Income Home Energy Assistance Program.
+# The "Non-LID NAT.GAS/OTHER" TOTAL row on the matrix page headed "LID for
+# Electric". The FY2026 matrix names no utility in that heading. Mapping the
+# page to ComEd follows the PY2027 heading "LID first for Electric (ComEd)".
 # Preserve printed TOTAL cells, even where they differ from the sum of the component cells.
-description: Illinois provides these nat gas comed heating-payment amounts under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
 1:
   1:
-    '2025-10-01': 966
+    2025-10-01: 966
   2:
-    '2025-10-01': 1021
+    2025-10-01: 1_021
   3:
-    '2025-10-01': 1077
+    2025-10-01: 1_077
   4:
-    '2025-10-01': 1132
+    2025-10-01: 1_132
   5:
-    '2025-10-01': 1198
+    2025-10-01: 1_198
   6:
-    '2025-10-01': 1256
+    2025-10-01: 1_256
+
+# Income bracket 2 = 51-100% FPL
 2:
   1:
-    '2025-10-01': 461
+    2025-10-01: 461
   2:
-    '2025-10-01': 481
+    2025-10-01: 481
   3:
-    '2025-10-01': 512
+    2025-10-01: 512
   4:
-    '2025-10-01': 547
+    2025-10-01: 547
   5:
-    '2025-10-01': 572
+    2025-10-01: 572
   6:
-    '2025-10-01': 598
+    2025-10-01: 598
+
+# Income bracket 3 = 101-150% FPL
 3:
   1:
-    '2025-10-01': 355
+    2025-10-01: 355
   2:
-    '2025-10-01': 376
+    2025-10-01: 376
   3:
-    '2025-10-01': 396
+    2025-10-01: 396
   4:
-    '2025-10-01': 421
+    2025-10-01: 421
   5:
-    '2025-10-01': 442
+    2025-10-01: 442
   6:
-    '2025-10-01': 457
+    2025-10-01: 457
+
+# Income bracket 4 = 151% FPL to 60% SMI (and 60% SMI to 300% FPL from PY2027)
 4:
   1:
-    '2025-10-01': 275
+    2025-10-01: 275
   2:
-    '2025-10-01': 300
+    2025-10-01: 300
   3:
-    '2025-10-01': 323
+    2025-10-01: 323
   4:
-    '2025-10-01': 351
+    2025-10-01: 351
   5:
-    '2025-10-01': 376
+    2025-10-01: 376
   6:
-    '2025-10-01': 399
+    2025-10-01: 399
+
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
   period: year
-  label: Illinois LIHEAP nat gas comed payment
+  label: Illinois LIHEAP non-LID natural gas payment (LID for Electric)
   reference:
-  - title: 'Illinois FY2026 provider-related heating benefit matrices #page 1-2'
-    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
-  - title: 'Illinois PY2027 final benefit matrix #page 1-2'
-    href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1
+    - title: "Illinois FY2026 provider-related heating benefit matrices #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+    - title: "Illinois PY2027 final benefit matrix #page 1-2"
+      href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1

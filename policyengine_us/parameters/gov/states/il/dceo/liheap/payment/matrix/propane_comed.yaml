@@ -1,64 +1,76 @@
+description: Illinois provides this amount to propane and fuel oil households on the electric low-income discount schedule under the Low Income Home Energy Assistance Program.
+# The "PROPANE/FUEL OIL" TOTAL row on the matrix page headed "LID for
+# Electric". The FY2026 matrix names no utility in that heading. Mapping the
+# page to ComEd follows the PY2027 heading "LID first for Electric (ComEd)".
 # Preserve printed TOTAL cells, even where they differ from the sum of the component cells.
-description: Illinois provides these propane comed heating-payment amounts under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
 1:
   1:
-    '2025-10-01': 1461
+    2025-10-01: 1_461
   2:
-    '2025-10-01': 1516
+    2025-10-01: 1_516
   3:
-    '2025-10-01': 1572
+    2025-10-01: 1_572
   4:
-    '2025-10-01': 1627
+    2025-10-01: 1_627
   5:
-    '2025-10-01': 1693
+    2025-10-01: 1_693
   6:
-    '2025-10-01': 1751
+    2025-10-01: 1_751
+
+# Income bracket 2 = 51-100% FPL
 2:
   1:
-    '2025-10-01': 631
+    2025-10-01: 631
   2:
-    '2025-10-01': 661
+    2025-10-01: 661
   3:
-    '2025-10-01': 717
+    2025-10-01: 717
   4:
-    '2025-10-01': 772
+    2025-10-01: 772
   5:
-    '2025-10-01': 802
+    2025-10-01: 802
   6:
-    '2025-10-01': 858
+    2025-10-01: 858
+
+# Income bracket 3 = 101-150% FPL
 3:
   1:
-    '2025-10-01': 445
+    2025-10-01: 445
   2:
-    '2025-10-01': 461
+    2025-10-01: 461
   3:
-    '2025-10-01': 471
+    2025-10-01: 471
   4:
-    '2025-10-01': 481
+    2025-10-01: 481
   5:
-    '2025-10-01': 492
+    2025-10-01: 492
   6:
-    '2025-10-01': 522
+    2025-10-01: 522
+
+# Income bracket 4 = 151% FPL to 60% SMI (and 60% SMI to 300% FPL from PY2027)
 4:
   1:
-    '2025-10-01': 335
+    2025-10-01: 335
   2:
-    '2025-10-01': 360
+    2025-10-01: 360
   3:
-    '2025-10-01': 393
+    2025-10-01: 393
   4:
-    '2025-10-01': 426
+    2025-10-01: 426
   5:
-    '2025-10-01': 461
+    2025-10-01: 461
   6:
-    '2025-10-01': 484
+    2025-10-01: 484
+
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
   period: year
-  label: Illinois LIHEAP propane comed payment
+  label: Illinois LIHEAP propane/fuel oil payment (LID for Electric)
   reference:
-  - title: 'Illinois FY2026 provider-related heating benefit matrices #page 1-2'
-    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
-  - title: 'Illinois PY2027 final benefit matrix #page 1-2'
-    href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1
+    - title: "Illinois FY2026 provider-related heating benefit matrices #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+    - title: "Illinois PY2027 final benefit matrix #page 1-2"
+      href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1

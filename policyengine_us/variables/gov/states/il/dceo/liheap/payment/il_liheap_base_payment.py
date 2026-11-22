@@ -18,7 +18,8 @@ class il_liheap_base_payment(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.il.dceo.liheap.payment.matrix
+        p_payment = parameters(period).gov.states.il.dceo.liheap.payment
+        p = p_payment.matrix
         fuel_type = spm_unit("il_liheap_heating_type", period)
         # The floor keeps units outside Illinois (bracket 0) on a valid matrix key.
         income_bracket = clip(spm_unit("il_liheap_income_bracket", period), 1, 4)
@@ -40,9 +41,7 @@ class il_liheap_base_payment(Variable):
             ],
             default=0,
         )
-        if parameters(
-            period
-        ).gov.states.il.dceo.liheap.payment.provider_matrix_in_effect:
+        if p_payment.provider_matrix_in_effect:
             electric_provider = spm_unit("il_liheap_electricity_provider", period)
             gas_provider = spm_unit("il_liheap_natural_gas_provider", period)
             comed = electric_provider == electric_provider.possible_values.COMED

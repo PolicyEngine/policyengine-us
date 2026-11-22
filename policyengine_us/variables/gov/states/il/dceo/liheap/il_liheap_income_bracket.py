@@ -11,6 +11,8 @@ class il_liheap_income_bracket(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1",
         # PDF pages 1-2
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1",
+        # PDF pages 1-2
         "https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1",
     )
 
@@ -30,7 +32,10 @@ class il_liheap_income_bracket(Variable):
             monthly_income = max_(income, 0) / MONTHS_IN_YEAR
             # Nearest-dollar guideline shares reproduce the published 30-day
             # band tops. The last payment band also covers state funds
-            # above 60% SMI; its payment amounts are unchanged in the chart.
+            # above 60% SMI, where its four fuel rows are unchanged in the
+            # chart. The chart prints no cash row there, and
+            # il_liheap_income_eligible keeps households with heat included
+            # in rent on the federal limit.
             band = 1
             for rate in p_il.payment.fpg_band_rates:
                 top = np.floor(guideline * rate / MONTHS_IN_YEAR + 0.5)
