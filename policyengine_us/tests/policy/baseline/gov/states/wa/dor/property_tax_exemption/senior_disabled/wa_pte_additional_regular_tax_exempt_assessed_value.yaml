@@ -105,3 +105,18 @@
     # A jointly occupied household is outside this reported scenario's scope.
     wa_pte_reported_tier: 0
     wa_pte_additional_regular_tax_exempt_assessed_value: 0
+
+- name: Case 6, the reported assessment calculation only covers 2025 collections.
+  period: 2026
+  input:
+    state_code: WA
+    county_fips: "53033"
+    wa_pte_assessment_year_age: 61
+    wa_pte_owner_occupant: true
+    wa_pte_reported_combined_disposable_income: 25_000
+    wa_pte_assessor_approved_value: 200_000
+  output:
+    # The reported model covers only 2025 even though this household supplies
+    # qualifying facts. The zero outputs denote the boundary of this model.
+    wa_pte_reported_tier: 0
+    wa_pte_additional_regular_tax_exempt_assessed_value: 0
