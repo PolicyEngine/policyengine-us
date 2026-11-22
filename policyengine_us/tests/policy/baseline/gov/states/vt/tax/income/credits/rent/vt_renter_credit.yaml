@@ -987,3 +987,136 @@
     # uses one personal exemption. The alternative of one-person income
     # limits would deny the credit at this income.
     vt_renter_credit: 270
+
+# Act 160 of 2020, sections 2 and 3, supplies the 2025 calendar-month
+# eligibility and proration rules. HUD FY2025 FMR Schedule page 51 gives
+# Addison's $1,103 monthly one-bedroom FMR.
+# https://legislature.vermont.gov/Documents/2020/Docs/ACTS/ACT160/ACT160%20As%20Enacted.pdf#page=4
+# https://www.huduser.gov/portal/datasets/fmr/fmr2025/FY2025_FMR_Schedule.pdf#page=51
+- name: Case 1, nine reported months prorate the unsubsidized annual base.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: 9
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    # $1,324 annual base times 9/12.
+    vt_renter_credit: 993
+
+- name: Case 2, six reported months prorate the income-adjusted annual base.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    employment_income: 38_625
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: 6
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    # The DOR 2025 workbook puts Addison's one-person thresholds at
+    # $24,400 and $52,850. The midpoint halves the annual $1,324 base,
+    # then six qualifying months halve the result again.
+    vt_renter_credit: 331
+
+- name: Case 3, a renter actually claimed as a dependent still receives no credit.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 22
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: true
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: 9
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    # 32 V.S.A. 6066(c)(2) and RCC-146 line 3.
+    vt_renter_credit: 0
+
+- name: Case 4, omitted duration and domicile preserve the legacy annual amount.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+  output:
+    vt_renter_credit: 1_324
+
+- name: Case 5, the explicit unreported sentinel preserves the legacy annual amount.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: -1
+    vt_renter_credit_domicile_status: UNREPORTED
+  output:
+    vt_renter_credit: 1_324
+
+- name: Case 6, six qualifying subsidized months retain the gross-rent credit.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    housing_assistance: 3_000
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: 6
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    # 32 V.S.A. 6066(b)(1)(D) and (E) give 10% of qualified rent actually
+    # paid over the subsidized occupancy. No month fraction applies.
+    vt_renter_credit: 600
+
+- name: Case 7, Burlington four-bedroom fair market rent is prorated before the cap.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        rent: 6_000
+      person2:
+        age: 12
+      person3:
+        age: 9
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        rent_is_shared_with_another_tax_unit: false
+        vt_renter_credit_months_rented: 6
+        vt_renter_credit_domicile_status: FULL_YEAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        housing_assistance: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    exemptions_count: 4
+    # HUD's monthly FMR is $2,567. With four exemptions, the full annual
+    # amount is $3,080.40 before rounding. Six months gives about $1,540
+    # under the model's whole-dollar convention and is below the $2,500 cap.
+    vt_renter_credit: 1_540

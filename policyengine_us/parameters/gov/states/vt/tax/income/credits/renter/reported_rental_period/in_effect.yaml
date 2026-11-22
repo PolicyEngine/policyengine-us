@@ -1,0 +1,12 @@
+description: PolicyEngine applies reported Vermont Renter Credit rental duration and domicile for verified tax years.
+values:
+  0000-01-01: false
+  2025-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Vermont RC reported rental period calculation in effect
+  reference:
+    - title: 2025 Form RCC-146, lines 2 through 7
+      href: https://tax.vermont.gov/sites/tax/files/documents/RCC-146-2025.pdf#page=1

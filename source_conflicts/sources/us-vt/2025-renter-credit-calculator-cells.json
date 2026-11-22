@@ -1,0 +1,23 @@
+{
+  "url": "https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx",
+  "sha256": "2614623c6d6b4c8199ed0771cab02b493377e9c18c40cae3227e09d8be7b2862",
+  "sheet": "Calculator",
+  "modelYear": 2025,
+  "formulas": {
+    "G13": "VLOOKUP(County,TRebateAmounts[],MATCH(TEXT(IF(Household_Size>4,4,Household_Size),0),TRebateAmounts[#Headers],0),FALSE)",
+    "G14": "MIN(G10*10%,2500)",
+    "G17": "IF(G7>5,(G7/12)*IFERROR(IF(Percent_Rebate_Claimable=0,0,IF(SharedOccupant=\"Yes\",ROUND(IF(G8=\"YES\",Base_Credit_Subsidized*(G9/G7)+(G7-G9)/G7*Base_Credit,Base_Rebate_Amount)*Percent_Rebate_Claimable,0)*0.5,ROUND(IF(G8=\"YES\",Base_Credit_Subsidized*(G9/G7)+(G7-G9)/G7*Base_Credit,Base_Rebate_Amount)*Percent_Rebate_Claimable,0))),\"\"),0)"
+  },
+  "definedNames": [
+    {
+      "name": "Base_Rebate_Amount",
+      "localSheetId": "0",
+      "reference": "Calculator!$G$13"
+    },
+    {
+      "name": "Base_Rebate_Amount",
+      "localSheetId": null,
+      "reference": "'By Inc Bracket'!$P$17"
+    }
+  ]
+}

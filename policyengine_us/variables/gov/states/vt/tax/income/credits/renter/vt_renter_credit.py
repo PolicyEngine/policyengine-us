@@ -9,7 +9,7 @@ class vt_renter_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://legislature.vermont.gov/statutes/fullchapter/32/154",  # 6066(b)(2), (c)(2)
+        "https://legislature.vermont.gov/statutes/section/32/154/06066",  # (b)(1)(E), (b)(2), (c)(2)
         "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/",  # b
         "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35",
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
@@ -47,10 +47,30 @@ class vt_renter_credit(Variable):
             safe_county
         ]
         fmr = p.fair_market_rent[exemptions][safe_county]
+        has_housing_assistance = tax_unit.spm_unit("housing_assistance", period) > 0
+        proration_numerator = 1
+        proration_denominator = 1
+        reported_period = p.reported_rental_period
+        if reported_period.in_effect:
+            months_rented = tax_unit("vt_renter_credit_months_rented", period)
+            prorate = (months_rented >= 0) & ~has_housing_assistance
+            proration_numerator = where(prorate, months_rented, 1)
+            proration_denominator = where(prorate, MONTHS_IN_YEAR, 1)
+            # The existing FMR lookup uses four bedrooms for larger tax units.
+            chittenden_fmr = reported_period.chittenden_fair_market_rent[
+                clip(exemptions, 3, 4)
+            ]
+            fmr = where(
+                prorate & (safe_county == "CHITTENDEN_COUNTY_VT") & (exemptions >= 3),
+                chittenden_fmr,
+                fmr,
+            )
         # The department rounds the credit amount to whole dollars, half up,
         # before applying the income phase-out: its 2021 calculator computes
         # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
         base_credit_amount = np.floor(fmr * MONTHS_IN_YEAR * p.fmr_rate + 0.5)
+        fmr_credit_numerator = base_credit_amount * proration_numerator
+        full_credit_unsubsidized = fmr_credit_numerator / proration_denominator
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
@@ -60,13 +80,14 @@ class vt_renter_credit(Variable):
         # Multiply before dividing so whole-dollar inputs preserve exact
         # half-dollar credits instead of floating-point values just below them.
         partial_credit_unsubsidized = (
-            income_diff * base_credit_amount / income_threshold_diff
+            income_diff
+            * fmr_credit_numerator
+            / (income_threshold_diff * proration_denominator)
         )
         # If shared residence, reduce by a given fraction.
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         shared_residence_reduction = shared_rent * p.shared_residence_reduction
         # if subsidized, get base credit
-        has_housing_assistance = tax_unit.spm_unit("housing_assistance", period) > 0
         rent_amount = add(tax_unit, period, ["rent"])
         base_credit_subsidized = rent_amount * p.fmr_rate
 
@@ -87,7 +108,7 @@ class vt_renter_credit(Variable):
                 mid_income & has_housing_assistance,
             ],
             [
-                base_credit_amount,
+                full_credit_unsubsidized,
                 base_credit_subsidized,
                 partial_credit_unsubsidized,
                 percent_rebate_claimable * base_credit_subsidized,

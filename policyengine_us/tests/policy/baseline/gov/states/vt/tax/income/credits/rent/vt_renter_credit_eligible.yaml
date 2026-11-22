@@ -85,3 +85,91 @@
   output:
     vt_renter_credit_eligible: false
     vt_renter_credit: 0
+
+# 2025 RCC-146 lines 2 and 4 ask about full-year domicile and at least
+# six calendar months of rent. Line 7 reports qualifying months.
+# https://tax.vermont.gov/sites/tax/files/documents/RCC-146-2025.pdf#page=1
+- name: Case 1, five reported months fail the six-month eligibility minimum.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    vt_renter_credit_months_rented: 5
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    vt_renter_credit_eligible: false
+    vt_renter_credit: 0
+
+- name: Case 2, six nonconsecutive reported months meet the eligibility minimum.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    housing_assistance: 0
+    rent_is_shared_with_another_tax_unit: false
+    vt_renter_credit_months_rented: 6
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    vt_renter_credit_eligible: true
+    # HUD FY2025 Addison one-bedroom FMR is $1,103. The annual $1,324
+    # whole-dollar base is prorated by 6/12 under 32 V.S.A. 6066(b)(1)(E).
+    vt_renter_credit: 662
+
+- name: Case 3, nine months of rent do not satisfy the separate domicile requirement.
+  period: 2025
+  input:
+    state_code: VT
+    county: ADDISON_COUNTY_VT
+    age: 30
+    rent: 6_000
+    vt_renter_credit_months_rented: 9
+    vt_renter_credit_domicile_status: NOT_FULL_YEAR
+  output:
+    vt_renter_credit_eligible: false
+    vt_renter_credit: 0
+
+- name: Case 4, reported zero months do not use the unreported-duration fallback.
+  period: 2025
+  input:
+    state_code: VT
+    age: 30
+    rent: 6_000
+    vt_renter_credit_months_rented: 0
+  output:
+    vt_renter_credit_eligible: false
+
+- name: Case 5, an invalid negative month count does not use the unreported-duration fallback.
+  period: 2025
+  input:
+    state_code: VT
+    age: 30
+    rent: 6_000
+    vt_renter_credit_months_rented: -2
+  output:
+    vt_renter_credit_eligible: false
+
+- name: Case 6, an invalid month count above twelve does not qualify.
+  period: 2025
+  input:
+    state_code: VT
+    age: 30
+    rent: 6_000
+    vt_renter_credit_months_rented: 13
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    vt_renter_credit_eligible: false
+
+- name: Case 7, valid reported duration still requires positive rent.
+  period: 2025
+  input:
+    state_code: VT
+    age: 30
+    rent: 0
+    vt_renter_credit_months_rented: 6
+    vt_renter_credit_domicile_status: FULL_YEAR
+  output:
+    vt_renter_credit_eligible: false
