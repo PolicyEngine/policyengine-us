@@ -200,9 +200,11 @@
     ri_liheap_base_payment: [861, 632, 793]
 
 # R.I. Gen. Laws 39-1-27.12(f) excludes Block Island and Pascoag (now Clear
-# River) from the enhancement. The FY2026 federal electric row A remains $393.
-- name: Case 20, excluded electric providers retain the federal primary grant.
+# River) from the enhancement. FY2026 electric row A is 393: Rhode Island Energy and
+# an unspecified company add 350 = 743; Block Island and Clear River stay at 393.
+- name: Case 12, excluded electric providers retain the federal primary grant.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     state_code: [RI, RI, RI, RI]
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
@@ -214,53 +216,43 @@
   output:
     ri_liheap_base_payment: [743, 393, 393, 743]
 
-# The excluded electric company matters when a HIR grant reaches its account,
-# including a gas-heated building. It does not remove a gas-account enhancement.
-- name: Case 21, enhancement follows the account receiving the regular grant.
+# The enhancement follows the account receiving the regular grant. Gas heat on the
+# household's own gas account keeps it whatever the electric company (Clear River):
+# 232 + 350 = 582. Heat in rent with a separate electric bill sends row H (80) to the
+# electric account whatever the building's fuel: a Block Island account gets 80 alone,
+# a Rhode Island Energy account 80 + 350 = 430.
+- name: Case 13, enhancement follows the account receiving the regular grant.
   period: 2026
+  absolute_error_margin: 0.01
   input:
-    state_code: [RI, RI, RI, RI]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL]
-    ri_liheap_electricity_provider: [BLOCK_ISLAND_UTILITY_DISTRICT, BLOCK_ISLAND_UTILITY_DISTRICT,
-      RHODE_ISLAND_ENERGY, CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT]
-    heat_expense_included_in_rent: [false, true, true, true]
-    gas_expense: [1_000, 0, 0, 0]
-    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000]
-    ri_liheap_household_size: [1, 1, 1, 1]
-    ri_liheap_income_band: [1, 1, 1, 1]
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, FUEL_OIL, NATURAL_GAS]
+    ri_liheap_electricity_provider: [CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT,
+      BLOCK_ISLAND_UTILITY_DISTRICT, RHODE_ISLAND_ENERGY]
+    heat_expense_included_in_rent: [false, true, true]
+    gas_expense: [1_000, 0, 0]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
   output:
-    ri_liheap_base_payment: [582, 80, 430, 80]
+    ri_liheap_base_payment: [582, 80, 430]
 
-# DHS Docket 26-34-GE, DIV 1-1 response filed October 28, 2026 sets the
-# FY2027 enhancement at $400. Federal base grants retain the FY2026 proxy.
-- name: FY2027 enhancement increases while excluded electric providers retain their federal grant.
+# Period 2027 reads the FFY2027 enhancement of 400 (Case 11); rows H and I carry the
+# FY2026 chart forward as an unverified estimate. Heat in rent with a separate electric
+# bill on a Rhode Island Energy account: row H 80 + 400 = 480 unsubsidized, row I 50 +
+# 400 = 450 subsidized. A subsidized household on a Block Island account gets 50 alone.
+- name: Case 14, FY2027 heat-in-rent enhancement follows the selected electric company.
   period: 2027
+  absolute_error_margin: 0.01
   input:
-    state_code: [RI, RI, RI, RI, RI]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, FUEL_OIL]
-    ri_liheap_electricity_provider: [RHODE_ISLAND_ENERGY, BLOCK_ISLAND_UTILITY_DISTRICT,
-      CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT, RHODE_ISLAND_ENERGY, RHODE_ISLAND_ENERGY]
-    ri_liheap_household_size: [1, 1, 1, 1, 1]
-    ri_liheap_income_band: [1, 1, 1, 1, 1]
-    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 0, 0]
-    gas_expense: [0, 0, 0, 1_000, 0]
-    fuel_oil_expense: [0, 0, 0, 0, 1_000]
-  output:
-    ri_liheap_base_payment: [793, 393, 393, 632, 861]
-
-# A heat-in-rent grant reaching an electric account receives one enhancement.
-- name: FY2027 heat-in-rent enhancement follows the selected electric company.
-  period: 2027
-  input:
-    state_code: [RI, RI, RI, RI, RI]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL, FUEL_OIL]
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, FUEL_OIL]
     ri_liheap_electricity_provider: [RHODE_ISLAND_ENERGY, RHODE_ISLAND_ENERGY,
-      CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT, BLOCK_ISLAND_UTILITY_DISTRICT,
-      RHODE_ISLAND_ENERGY]
-    heat_expense_included_in_rent: [true, true, true, true, true]
-    receives_housing_assistance: [false, true, false, true, false]
-    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000, 1_000, 0]
-    ri_liheap_household_size: [1, 1, 1, 1, 1]
-    ri_liheap_income_band: [1, 1, 1, 1, 1]
+      BLOCK_ISLAND_UTILITY_DISTRICT]
+    heat_expense_included_in_rent: [true, true, true]
+    receives_housing_assistance: [false, true, true]
+    pre_subsidy_electricity_expense: [1_000, 1_000, 1_000]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
   output:
-    ri_liheap_base_payment: [480, 450, 80, 50, 400]
+    ri_liheap_base_payment: [480, 450, 50]

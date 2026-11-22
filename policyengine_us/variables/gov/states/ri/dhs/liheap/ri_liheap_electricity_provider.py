@@ -24,4 +24,7 @@ class ri_liheap_electricity_provider(Variable):
     reference = (
         "https://webserver.rilegislature.gov/Statutes/TITLE39/39-1/39-1-27.12.htm",
         "https://ripuc.ri.gov/utility-information/regulated-utilities",
+        # Division position memo, November 12, 2026: grants go only to
+        # Rhode Island Energy customers.
+        "https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2026-11/26-34-GE%20LIHEAP%20Enhancement%20-%20DPUC%20Position%20Memo%20%2811-12-26%29.pdf#page=1",
     )

@@ -470,3 +470,33 @@
     ri_liheap_income_limit: 55_252
     ri_liheap_eligible: false
     ri_liheap: 0
+
+# Case 1's electric-heat household with a Clear River Electric and Water District account
+# (formerly Pascoag Utility District). Income 10,000 <= 42,252 (size 1) and <= 11,738
+# (75% of the 2025 guideline 15,650) is band 1: electric row A 393. R.I. Gen. Laws
+# 39-1-27.12(f) leaves that company out of the enhancement, so 393 and not 393 + 350.
+- name: Case 18, electric heat on a Clear River electric account receives the federal grant without the enhancement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI]
+    age: [40]
+    immigration_status: [CITIZEN]
+    employment_income: [10_000]
+    ssi: [0]
+    tanf: [0]
+    childcare_expenses: [0]
+    child_care_subsidies: [0]
+    heating_type: [ELECTRICITY]
+    ri_liheap_electricity_provider: [CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT]
+    gas_expense: [0]
+    pre_subsidy_electricity_expense: [1_200]
+    fuel_oil_expense: [0]
+    heat_expense_included_in_rent: [false]
+    receives_housing_assistance: [false]
+    is_in_public_housing: [false]
+  output:
+    ri_liheap_income: [10_000]
+    ri_liheap_income_band: [1]
+    ri_liheap_base_payment: [393]
+    ri_liheap: [393]

@@ -4,8 +4,10 @@ description: Rhode Island provides this enhancement with a primary heating grant
 # filing (Docket 26-34-GE, October 2, 2026, page 2) gives one additional credit to
 # accounts receiving a 2027 primary benefit, and DHS's response to the Division's
 # data request 1-1 (issued October 14, 2026) sets it at $400. It is not part of
-# the federal fuel matrix or a crisis/cooling grant. Provider and actual
-# federal-grant account routing are input limits.
+# the federal fuel matrix or a crisis/cooling grant. The formula excludes Block
+# Island Utility District and Clear River Electric and Water District electric
+# accounts (R.I. Gen. Laws 39-1-27.12(f)); which account receives the federal
+# grant stays an assumption.
 values:
   2025-10-01: 350
   2026-10-01: 400
