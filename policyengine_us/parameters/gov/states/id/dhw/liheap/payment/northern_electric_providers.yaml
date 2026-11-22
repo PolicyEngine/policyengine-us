@@ -3,6 +3,9 @@ description: Idaho groups these electricity providers in the northern utilities 
 # membership is recovered from Appendix C's historical heating-cost matrix.
 # Current state and utility directories confirm these companies' identities,
 # while current LIHEAP group membership remains a documented historical proxy.
+# The Appendix C footnote also names Lamb Creek Trailer Park. It is left out
+# because its current utility identity was not established, so such a
+# household reports OTHER and uses the Idaho Power & Southern Utilities column.
 values:
   2025-10-01:
     - AVISTA
@@ -13,12 +16,13 @@ values:
     - KOOTENAI_ELECTRIC
     - NORTHERN_LIGHTS
     - PLUMMER_ELECTRIC
+
 metadata:
   unit: list
   period: year
   label: Idaho LIHEAP named northern electric utility group
   reference:
-    - title: Idaho FY2026 LIHEAP heating benefit matrix
+    - title: Idaho PY26 LIHEAP Benefit Determination Chart
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1
     - title: Historical Idaho LIHEAP Intake Manual, Appendix C, northern utility membership
       href: https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1

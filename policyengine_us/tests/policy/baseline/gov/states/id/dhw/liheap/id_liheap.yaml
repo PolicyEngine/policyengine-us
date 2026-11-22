@@ -324,304 +324,173 @@
     id_liheap_countable_income: 12_564
     id_liheap: 367
 
-# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
-- name: Named Avista electric provider selects each published burden and area cell.
+- name: Case 15, named Avista electric provider selects each published burden and area cell.
   period: 2026
+  absolute_error_margin: 0.01
+  # FY2026 chart, Avista and Northern Utilities column, with the PY2007 northern electric costs.
+  # Nez Perce County is Area I (cost 1_450) and Kootenai County Area II (cost 1_585).
+  # Income 40_000 is low (3.63%, 3.96%), 20_000 medium (7.25%, 7.93%), 4_000 high (36.25%, 39.63%).
   input:
-    state_code:
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    county:
-    - ADA_COUNTY_ID
-    - ADA_COUNTY_ID
-    - ADA_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    heating_type:
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    id_liheap_electricity_provider:
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    id_liheap_countable_income:
-    - 40000
-    - 20000
-    - 4000
-    - 40000
-    - 20000
-    - 4000
-    id_liheap_income_eligible:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
-    has_heating_expense:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
+    state_code: [ID, ID, ID, ID, ID, ID]
+    county: [NEZ_PERCE_COUNTY_ID, NEZ_PERCE_COUNTY_ID, NEZ_PERCE_COUNTY_ID,
+             KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    id_liheap_electricity_provider: [AVISTA, AVISTA, AVISTA,
+                                     AVISTA, AVISTA, AVISTA]
+    id_liheap_countable_income: [40_000, 20_000, 4_000,
+                                 40_000, 20_000, 4_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true]
   output:
-    id_liheap:
-    - 322
-    - 335
-    - 348
-    - 371
-    - 387
-    - 402
+    id_liheap: [322, 335, 348,
+                371, 387, 402]
 
-# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
-- name: Named Rocky Mountain Power electric provider selects each published burden and area cell.
+- name: Case 16, named Rocky Mountain Power electric provider selects each published burden and area cell.
   period: 2026
+  absolute_error_margin: 0.01
+  # FY2026 chart, Rocky Mountain Power column, with the PY2007 costs from the Utah Power & Light column.
+  # Franklin County is Area II (cost 1_692) and Bear Lake County Area III (cost 1_836).
+  # Income 40_000 is low (4.23%, 4.59%), 20_000 medium (8.46%, 9.18%), 4_000 high (42.3%, 45.9%).
   input:
-    state_code:
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    county:
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BEAR_LAKE_COUNTY_ID
-    - BEAR_LAKE_COUNTY_ID
-    - BEAR_LAKE_COUNTY_ID
-    heating_type:
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    - ELECTRICITY
-    id_liheap_electricity_provider:
-    - ROCKY_MOUNTAIN_POWER
-    - ROCKY_MOUNTAIN_POWER
-    - ROCKY_MOUNTAIN_POWER
-    - ROCKY_MOUNTAIN_POWER
-    - ROCKY_MOUNTAIN_POWER
-    - ROCKY_MOUNTAIN_POWER
-    id_liheap_countable_income:
-    - 40000
-    - 20000
-    - 4000
-    - 40000
-    - 20000
-    - 4000
-    id_liheap_income_eligible:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
-    has_heating_expense:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
+    state_code: [ID, ID, ID, ID, ID, ID]
+    county: [FRANKLIN_COUNTY_ID, FRANKLIN_COUNTY_ID, FRANKLIN_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    id_liheap_electricity_provider: [ROCKY_MOUNTAIN_POWER, ROCKY_MOUNTAIN_POWER, ROCKY_MOUNTAIN_POWER,
+                                     ROCKY_MOUNTAIN_POWER, ROCKY_MOUNTAIN_POWER, ROCKY_MOUNTAIN_POWER]
+    id_liheap_countable_income: [40_000, 20_000, 4_000,
+                                 40_000, 20_000, 4_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true]
   output:
-    id_liheap:
-    - 407
-    - 424
-    - 441
-    - 461
-    - 481
-    - 500
+    id_liheap: [407, 424, 441,
+                461, 481, 500]
 
-# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
-- name: Named Avista gas provider selects each published burden and area cell.
+- name: Case 17, named Avista gas provider selects each published burden and area cell.
   period: 2026
+  absolute_error_margin: 0.01
+  # FY2026 chart, Avista gas column, with the PY2007 Avista gas costs.
+  # Nez Perce County is Area I (cost 875) and Kootenai County Area II (cost 1_200).
+  # Income 40_000 is low (2.19%, 3%), 14_000 medium (6.25%, 8.57%), 4_000 high (21.88%, 30%).
   input:
-    state_code:
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    - ID
-    county:
-    - ADA_COUNTY_ID
-    - ADA_COUNTY_ID
-    - ADA_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    - BANNOCK_COUNTY_ID
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    id_liheap_natural_gas_provider:
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    - AVISTA
-    id_liheap_countable_income:
-    - 40000
-    - 14000
-    - 4000
-    - 40000
-    - 14000
-    - 4000
-    id_liheap_income_eligible:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
-    has_heating_expense:
-    - true
-    - true
-    - true
-    - true
-    - true
-    - true
+    state_code: [ID, ID, ID, ID, ID, ID]
+    county: [NEZ_PERCE_COUNTY_ID, NEZ_PERCE_COUNTY_ID, NEZ_PERCE_COUNTY_ID,
+             KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+                   NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    id_liheap_natural_gas_provider: [AVISTA, AVISTA, AVISTA,
+                                     AVISTA, AVISTA, AVISTA]
+    id_liheap_countable_income: [40_000, 14_000, 4_000,
+                                 40_000, 14_000, 4_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true]
   output:
-    id_liheap:
-    - 168
-    - 176
-    - 183
-    - 194
-    - 203
-    - 211
+    id_liheap: [168, 176, 183,
+                194, 203, 211]
 
-# 1335/24000 < 6%, whereas 1450/24000 >= 6%.
-- name: Provider-specific cost changes the burden group before the benefit lookup.
+- name: Case 18, provider-specific cost changes the burden group before the benefit lookup.
   period: 2026
+  absolute_error_margin: 0.01
+  # Area I at income 24_000. Idaho Power in Ada County: 1_335 / 24_000 = 5.56% is low, 328.
+  # Avista in Nez Perce County: 1_450 / 24_000 = 6.04% is medium, 335.
   input:
-    state_code:
-    - ID
-    - ID
-    county:
-    - ADA_COUNTY_ID
-    - ADA_COUNTY_ID
-    heating_type:
-    - ELECTRICITY
-    - ELECTRICITY
-    id_liheap_electricity_provider:
-    - IDAHO_POWER
-    - AVISTA
-    id_liheap_countable_income:
-    - 24000
-    - 24000
-    id_liheap_income_eligible:
-    - true
-    - true
-    has_heating_expense:
-    - true
-    - true
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, NEZ_PERCE_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    id_liheap_electricity_provider: [IDAHO_POWER, AVISTA]
+    id_liheap_countable_income: [24_000, 24_000]
+    id_liheap_income_eligible: [true, true]
+    has_heating_expense: [true, true]
   output:
-    id_liheap_estimated_heating_cost:
-    - 1335
-    - 1450
-    id_liheap:
-    - 328
-    - 335
+    id_liheap_estimated_heating_cost: [1_335, 1_450]
+    id_liheap: [328, 335]
 
-# These are fallback estimates, not published awards for the blank cells.
-- name: Unpublished provider area combinations retain the documented representative estimate.
+- name: Case 19, unpublished provider area combinations retain the documented representative estimate.
   period: 2026
+  absolute_error_margin: 0.01
+  # The chart prints no amount for Rocky Mountain Power in Area I or for Avista in Area III.
+  # These rows pay the Idaho Power or Intermountain Gas column as a fallback estimate, not a published award.
+  # Income 4_000 is high. Ada electric 1_335 pays 355; Bear Lake electric 1_605 pays 464; Bear Lake gas 1_207 pays 173.
   input:
-    state_code:
-    - ID
-    - ID
-    - ID
-    county:
-    - ADA_COUNTY_ID
-    - BEAR_LAKE_COUNTY_ID
-    - BEAR_LAKE_COUNTY_ID
-    heating_type:
-    - ELECTRICITY
-    - ELECTRICITY
-    - NATURAL_GAS
-    id_liheap_electricity_provider:
-    - ROCKY_MOUNTAIN_POWER
-    - AVISTA
-    - UNSPECIFIED
-    id_liheap_natural_gas_provider:
-    - UNSPECIFIED
-    - UNSPECIFIED
-    - AVISTA
-    id_liheap_countable_income:
-    - 4000
-    - 4000
-    - 4000
-    id_liheap_income_eligible:
-    - true
-    - true
-    - true
-    has_heating_expense:
-    - true
-    - true
-    - true
+    state_code: [ID, ID, ID]
+    county: [ADA_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS]
+    id_liheap_electricity_provider: [ROCKY_MOUNTAIN_POWER, AVISTA, UNSPECIFIED]
+    id_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED, AVISTA]
+    id_liheap_countable_income: [4_000, 4_000, 4_000]
+    id_liheap_income_eligible: [true, true, true]
+    has_heating_expense: [true, true, true]
   output:
-    id_liheap_estimated_heating_cost:
-    - 1335
-    - 1605
-    - 1207
-    id_liheap:
-    - 355
-    - 464
-    - 173
+    id_liheap_estimated_heating_cost: [1_335, 1_605, 1_207]
+    id_liheap: [355, 464, 173]
 
-# FY2026 chart's northern electric column and historical Appendix C membership.
-# Current OEMR directory and Inland Power's site confirm company identities.
-- name: Named northern municipal and cooperative companies use the northern award and cost columns.
+- name: Case 20, named northern municipal and cooperative companies use the northern award and cost columns.
   period: 2026
+  absolute_error_margin: 0.01
+  # FY2026 chart's northern electric column with the historical Appendix C membership.
+  # The current OEMR directory and Inland Power's site confirm the company identities.
+  # Income 4_000 is high. Northern cost 1_585 pays 402 in Area II; Nez Perce County is Area I, 1_450 and 348.
+  # Other and unspecified companies in Bannock County keep the Idaho Power cost 1_455 and 410.
   input:
     state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
     county: [BOUNDARY_COUNTY_ID, NEZ_PERCE_COUNTY_ID, IDAHO_COUNTY_ID,
-      KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID, BONNER_COUNTY_ID, BENEWAH_COUNTY_ID,
-      BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
-      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    id_liheap_electricity_provider: [BONNERS_FERRY_LIGHT_AND_WATER, CLEARWATER_POWER,
-      IDAHO_COUNTY_LIGHT_AND_POWER, INLAND_POWER_AND_LIGHT, KOOTENAI_ELECTRIC,
-      NORTHERN_LIGHTS, PLUMMER_ELECTRIC, OTHER, UNSPECIFIED]
-    id_liheap_countable_income: [4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000]
+             KOOTENAI_COUNTY_ID, KOOTENAI_COUNTY_ID, BONNER_COUNTY_ID,
+             BENEWAH_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    id_liheap_electricity_provider: [BONNERS_FERRY_LIGHT_AND_WATER, CLEARWATER_POWER, IDAHO_COUNTY_LIGHT_AND_POWER,
+                                     INLAND_POWER_AND_LIGHT, KOOTENAI_ELECTRIC, NORTHERN_LIGHTS,
+                                     PLUMMER_ELECTRIC, OTHER, UNSPECIFIED]
+    id_liheap_countable_income: [4_000, 4_000, 4_000,
+                                 4_000, 4_000, 4_000,
+                                 4_000, 4_000, 4_000]
     id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
     has_heating_expense: [true, true, true, true, true, true, true, true, true]
   output:
-    id_liheap_estimated_heating_cost: [1_585, 1_450, 1_585, 1_585, 1_585, 1_585, 1_585, 1_455, 1_455]
-    id_liheap: [402, 348, 402, 402, 402, 402, 402, 410, 410]
+    id_liheap_estimated_heating_cost: [1_585, 1_450, 1_585,
+                                      1_585, 1_585, 1_585,
+                                      1_585, 1_455, 1_455]
+    id_liheap: [402, 348, 402,
+                402, 402, 402,
+                402, 410, 410]
 
-# Northern Lights: 1585/25000 is medium burden, whereas the old representative
-# cost of 1455/25000 gives low burden. Both the column and burden must change.
-- name: A smaller northern utility changes the burden group as well as the payment column.
+- name: Case 21, Intermountain Gas and an unlisted gas company pay the Intermountain Gas column.
   period: 2026
+  absolute_error_margin: 0.01
+  # Income 12_000 is medium. Intermountain Gas in Ada County (Area I): 977 / 12_000 = 8.14%, 127.
+  # An unlisted gas company in Franklin County (Area II): 1_100 / 12_000 = 9.17%, 147.
+  # The Avista gas column would cost 875 and 1_200 and pay 176 and 203.
   input:
-    state_code: ID
-    county: BONNER_COUNTY_ID
-    heating_type: ELECTRICITY
-    id_liheap_electricity_provider: NORTHERN_LIGHTS
-    id_liheap_countable_income: 25_000
-    has_heating_expense: true
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, FRANKLIN_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    id_liheap_natural_gas_provider: [INTERMOUNTAIN_GAS, OTHER]
+    id_liheap_countable_income: [12_000, 12_000]
+    id_liheap_income_eligible: [true, true]
+    has_heating_expense: [true, true]
   output:
-    id_liheap_estimated_heating_cost: 1_585
-    id_liheap_income_eligible: true
-    id_liheap: 387
+    id_liheap_estimated_heating_cost: [977, 1_100]
+    id_liheap: [127, 147]
+
+- name: Case 22, the gas company alone selects the gas column of a gas-heated household with Avista electricity.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Nez Perce County is Area I. Both households buy electricity from Avista and heat with gas; income 4_000 is high.
+  # Avista gas: 875 / 4_000 = 21.88%, 183. Unreported gas company: Intermountain Gas column, 977 / 4_000 = 24.4%, 132.
+  # The electric company does not reach the gas branch: it does not pay the northern electric column
+  # (cost 1_450, 348) and does not select the Avista gas column in the second row.
+  input:
+    state_code: [ID, ID]
+    county: [NEZ_PERCE_COUNTY_ID, NEZ_PERCE_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    id_liheap_electricity_provider: [AVISTA, AVISTA]
+    id_liheap_natural_gas_provider: [AVISTA, UNSPECIFIED]
+    id_liheap_countable_income: [4_000, 4_000]
+    id_liheap_income_eligible: [true, true]
+    has_heating_expense: [true, true]
+  output:
+    id_liheap_estimated_heating_cost: [875, 977]
+    id_liheap: [183, 132]
