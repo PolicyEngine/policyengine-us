@@ -16,8 +16,10 @@ class NVLIHEAPElectricityProvider(Enum):
     RAFT_RIVER_ELECTRIC = "Raft River Electric"
     VALLEY_ELECTRIC = "Valley Electric"
     WELLS_RURAL_ELECTRIC = "Wells Rural Electric"
-    # NV Energy (Nevada Power and Sierra Pacific) reports usage only, which
-    # Appendix A prices with unit charges, so it has no dollar deduction.
+    # Appendix A publishes no dollar deduction for NV Energy and lists unit
+    # charges for Nevada Power and Sierra Pacific, and for Southwest Gas
+    # North and South. Treating an NV Energy bill as carrying no deductible
+    # fee is an inference from that table.
     NV_ENERGY = "NV Energy"
     # A reported company outside the listed choices, or a company that was
     # not reported. Nothing is deducted for either.

@@ -1,8 +1,10 @@
 description: Nevada deducts this annual service fee amount from the electricity bill of each electric vendor's customers when it measures energy cost under the Low Income Home Energy Assistance Program.
 # Appendix A lists these amounts under "Use deductions below unless vendor
-# provides usage only". NV Energy reports usage only, which Appendix A prices
-# with unit charges, so no dollar deduction is published for it. A bill from
-# NV Energy, another vendor or an unreported vendor keeps its service fee.
+# provides usage only". It publishes no dollar deduction for NV Energy and
+# lists unit charges for Nevada Power and Sierra Pacific, and for Southwest
+# Gas North and South. Treating an NV Energy bill as carrying no deductible
+# fee is an inference from that table. Nothing is deducted from the bill of
+# another vendor or an unreported vendor either.
 ALAMO_POWER_DISTRICT:
   2025-07-01: 380.04
   2026-07-01: 420

@@ -826,3 +826,37 @@
     # 1,610.40 - 0.0181 x 24,960 = 1,610.40 - 451.776 = 1,158.624
     # 24,960 / 26,650 = 0.937 -> band 2; cap 1,773
     nv_liheap: 1_158.624
+
+# SFY2027: minimum 360, burden 1.48%, Valley Electric deduction 480 (420 in SFY2026).
+# 1,200 - 480 = 720; 720 - 0.0148 x 24,960 = 720 - 369.408 = 350.592 < 360 -> 360.
+
+- name: Case 30, the SFY2027 Valley Electric service fee deduction leaves a FAC below 360, so the household receives the minimum.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 24_960
+      person2:
+        age: 8
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: ELECTRICITY
+        # An all-electric Pahrump apartment's bill of 100 a month.
+        pre_subsidy_electricity_expense: 1_200
+        nv_liheap_electricity_provider: VALLEY_ELECTRIC
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # Case 29's family with electric heat: 1,200 - 480
+    nv_liheap_energy_cost: 720
+    # 24,960 <= 1.5 x 27,320 = 40,980; 24,960 / 27,320 = 0.914 -> band 2; cap 1,773
+    # The FAC would be 830.592 with no deduction and 410.592 at the SFY2026 deduction.
+    nv_liheap: 360

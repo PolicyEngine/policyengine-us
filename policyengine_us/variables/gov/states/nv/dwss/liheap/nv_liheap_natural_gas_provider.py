@@ -8,8 +8,10 @@ class NVLIHEAPNaturalGasProvider(Enum):
     # and a lower one for multi-family service in southern Nevada.
     SOUTHWEST_GAS = "Southwest Gas (single-family, or multi-family in northern Nevada)"
     SOUTHWEST_GAS_SOUTH_MULTI_FAMILY = "Southwest Gas (multi-family in southern Nevada)"
-    # NV Energy (Sierra Pacific gas) reports usage only, which Appendix A
-    # prices with unit charges, so it has no dollar deduction.
+    # Appendix A publishes no dollar deduction for NV Energy (Sierra Pacific
+    # gas) and lists unit charges for Sierra Pacific gas, and for Southwest
+    # Gas North and South. Treating an NV Energy gas bill as carrying no
+    # deductible fee is an inference from that table.
     NV_ENERGY = "NV Energy"
     # A reported company outside the listed choices, or a company that was
     # not reported. Nothing is deducted for either.

@@ -9,9 +9,9 @@ class nv_liheap_eligible(Variable):
     defined_for = StateCode.NV
     reference = (
         "https://www.leg.state.nv.us/nrs/nrs-702.html#NRS702Sec260",
-        # PDF pages 31, 34, 43, 60-61
+        # PDF pages 31, 34, 37, 43, 60-61
         "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=31",
-        # PDF pages 31, 34, 43, 60-61
+        # PDF pages 31, 34, 37, 43, 60-61
         "https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=31",
         # PDF pages 4-5, 8
         "https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=4",
@@ -46,6 +46,10 @@ class nv_liheap_eligible(Variable):
         # without heating can only use the latter. The Section 42-only housing
         # exception, roomers and boarders, master meters and solar vendor
         # credits have no inputs.
+        # The energy burden is the energy cost after the vendor service fee
+        # deduction (Section 507), so a subsidized, utilities-in-rent household
+        # whose only bill is at or below its vendor's Appendix A deduction has
+        # no energy burden.
         utilities_in_rent = heat_in_rent | ~spm_unit.household(
             "tenant_pays_utilities", period
         )

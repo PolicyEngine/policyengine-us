@@ -1,9 +1,11 @@
 description: Nevada deducts this annual service fee amount from the natural gas bill of each gas vendor's customers when it measures energy cost under the Low Income Home Energy Assistance Program.
 # Appendix A lists 129.60 for Southwest Gas single-family service (RS) in the
 # north and south and for multi-family service (RM) in the north, and 108 for
-# multi-family service in the south, the same in SFY2026 and SFY2027. NV
-# Energy (Sierra Pacific gas) reports usage only, so no dollar deduction is
-# published for it.
+# multi-family service in the south, the same in SFY2026 and SFY2027. It
+# publishes no dollar deduction for NV Energy (Sierra Pacific gas) and lists
+# unit charges for Sierra Pacific gas, and for Southwest Gas North and South.
+# Treating an NV Energy gas bill as carrying no deductible fee is an inference
+# from that table.
 SOUTHWEST_GAS:
   2025-07-01: 129.6
 SOUTHWEST_GAS_SOUTH_MULTI_FAMILY:
