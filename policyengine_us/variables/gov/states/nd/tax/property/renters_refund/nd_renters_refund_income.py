@@ -10,6 +10,9 @@ class nd_renters_refund_income(Variable):
     reference = (
         "https://ndlegis.gov/cencode/t57c02.pdf#page=16",
         "https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2",
+        # SFN 24777 (10-2025), lines 7 and 8 and the instructions for lines
+        # 4 to 9, PDF pages 1-2.
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1",
     )
     defined_for = StateCode.ND
 
@@ -23,6 +26,11 @@ class nd_renters_refund_income(Variable):
         "exclusion from the tax unit's income that holds it. For Puerto Rico "
         "and American Samoa income, it subtracts the exclusion from market "
         "income before losses. Social security counts in full. "
+        "Capital gains count only as a net gain (net_gain_components): the "
+        "applicant's and spouse's gains and losses net together, each "
+        "dependent's net separately, and a net loss counts as zero, since the "
+        "renter's refund application counts net gains from the sale of "
+        "property and has no line for a loss (SFN 24777). "
         "The paid-cost base restores the self-employed premiums excluded from "
         "the federal subtotal: by the federal formula, or as supplied with a "
         "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
@@ -92,6 +100,18 @@ class nd_renters_refund_income(Variable):
             0,
         )
         deducted_exclusions = deducted_exclusions + min_(without_holder, income_left)
+        # SFN 24777 counts "net gains from the sale of property" (instructions
+        # for lines 4 to 9) and has no line for a loss. Line 7 takes the
+        # applicant's and spouse's capital gains together, and line 8 each
+        # dependent's income. market_income keeps a net loss, so add it back:
+        # the filers' combined net loss and each dependent's own.
+        net_gains = add(person, period, p.net_gain_components)
+        is_dependent = person("is_tax_unit_dependent", period)
+        filers_net_gain = tax_unit.sum(where(is_dependent, 0, net_gains))
+        dependents_net_losses = tax_unit.sum(
+            where(is_dependent, max_(-net_gains, 0), 0)
+        )
+        net_losses = max_(-filers_net_gain, 0) + dependents_net_losses
         # Restore premiums excluded from the federal subtotal (computed, or
         # supplied with a caller's subtotal).
         medical_expenses = add(
@@ -118,6 +138,7 @@ class nd_renters_refund_income(Variable):
             )
         return max_(
             add(tax_unit, period, p.income_sources)
+            + net_losses
             - person_exclusions
             - deducted_exclusions
             - medical_expenses,

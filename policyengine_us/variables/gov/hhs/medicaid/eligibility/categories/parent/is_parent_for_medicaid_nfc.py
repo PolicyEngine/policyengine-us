@@ -52,20 +52,11 @@ class is_parent_for_medicaid_nfc(Variable):
         age_qualifies = (age < dc.age_limit[state]) | (
             elects_student_option & is_student & (age < dc.student_age_limit)
         )
-        # In states electing the 42 CFR 435.4 paragraph (3) any-adult
-        # option on their state plan S25 page, a foster child makes the
-        # adult caring for the child a caretaker, whether or not the adult
-        # is a relative. Elsewhere foster children are excluded as a proxy:
-        # an unrelated foster parent may claim the child as a tax dependent
-        # yet is not a relative by blood, adoption, or marriage. Outside
-        # electing states this also excludes kinship foster caregivers,
-        # whose blood relationship legally survives the foster placement -
-        # a known limitation, since the model cannot distinguish the two
-        # placements.
-        in_foster_care = add(person, period, ["is_in_foster_care"]) > 0
-        elects_any_adult = p.caretaker_relative.any_adult_option[state].astype(bool)
-        excluded_foster_child = in_foster_care & ~elects_any_adult
-        is_dependent_child = is_dependent & age_qualifies & ~excluded_foster_child
+        # The caretaker relationship, including the treatment of foster
+        # children, is shared with the adult group's child coverage
+        # requirement.
+        in_care = person("is_child_of_medicaid_caretaker", period)
+        is_dependent_child = in_care & age_qualifies
         has_dependent_child_in_tax_unit = person.tax_unit.sum(is_dependent_child) > 0
 
         # A person claimed as a tax dependent is not the caretaker filer,

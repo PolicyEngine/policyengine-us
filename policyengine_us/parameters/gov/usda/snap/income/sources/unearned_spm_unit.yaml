@@ -5,8 +5,41 @@ values:
     # (i) Unit-level assistance payments are counted in full since they
     # cannot be attributed to an individual ineligible member.
     - tanf
+    # Other recurring cash assistance under 7 CFR 273.9(b)(2)(i).
+    - dc_gac
+    - dc_power
+    - ma_eaedc
+    - ny_safety_net_assistance
+    - wa_sfa
+    - snap_reported_unit_cash_assistance
+    # Ordinary California county GA/GR cash grants.
+    - ca_ala_general_assistance
+    - ca_cc_general_assistance
+    - ca_marin_general_relief
+    - ca_oc_general_relief
+    - ca_riv_general_relief
+    - ca_sbd_general_relief
+    - ca_scc_general_assistance
+    - ca_sf_caap
+    - ca_smc_general_assistance_countable_for_snap
+    # Count the regular LA grant, including any part sent to the landlord.
+    # CalFresh MPP 63-502.2(b)(2) excludes the separate county subsidy.
+    - la_general_relief
+    - la_general_relief_rent_contribution
 
 metadata:
   reference:
     - title: 7 CFR 273.9(b)(2)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
+    - title: DC ESA SNAP Policy Manual, section 11.3
+      href: https://dhs.dc.gov/sites/default/files/2026-09/ESA%20SNAP%20Policy%20Manual_FY2026-9.24.26%20%281%29.pdf#page=160
+    - title: 106 CMR 363.220(B)(1), Massachusetts SNAP assistance payments
+      href: https://www.mass.gov/doc/106-cmr-363-supplemental-nutrition-assistance-program-financial-eligibility-standards/download
+    - title: New York SNAP Source Book, section 13(C)(1)
+      href: https://otda.ny.gov/programs/snap/snapsb.pdf
+    - title: WAC 388-450-0025, Washington Basic Food unearned income
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-450-0025
+    - title: California CalFresh MPP 63-502.141 and 63-502.2(b)(2)
+      href: https://cdss.ca.gov/Portals/9/Regs/Man/Fsman/fsman05.docx
+    - title: Los Angeles CalFresh 63-502.14, Unearned Income
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/calfresh/unearned-income.html

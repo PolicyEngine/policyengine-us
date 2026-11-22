@@ -12,6 +12,8 @@ class co_leap_income_limit(Variable):
     defined_for = StateCode.CO
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
+        # PDF pages 5,59,99,125,131
+        "https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=5",
         "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4",
     )
 
@@ -27,8 +29,12 @@ class co_leap_income_limit(Variable):
             / MONTHS_IN_YEAR
         )
         extra = max_(size - p.additional_person_threshold, 0)
-        # Flooring reproduces all eight FY2026 published SMI rows; the
-        # independently printed increment governs additional members.
+        # Colorado prints 60% of state median income by month with the cents
+        # dropped. Flooring reproduces all eight FY2026 rows and all 15 rows of
+        # the FY2027 eligibility chart, both applications and the LEAP website.
+        # Only the FY2027 rates handout prints $10,453 for ten members, against
+        # $10,452 everywhere else. FY2026's printed increment governs members
+        # above eight.
         annual_limit = (monthly + extra * p.additional_person_amount) * MONTHS_IN_YEAR
         # 42 U.S.C. 8624(b)(2)(B) pays no household above the greater of 60% of SMI
         # and 150% of the guideline. The printed FY2026 increment stays within that,

@@ -1,0 +1,134 @@
+description: States cover undocumented immigrants aged 65 or older under the Medicaid program if this is true.
+# is_medicaid_immigration_status_eligible tests age with is_ssi_aged, the
+# age-65 test of the Medicaid aged group. States that cover undocumented
+# immigrants of every age read true in undocumented_immigrant.yaml and false
+# here. States other than New York read false until researched.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid undocumented immigrant aged coverage
+  breakdown:
+    - state_code
+  reference:
+    - title: New York Social Services Law section 366
+      href: https://www.nysenate.gov/legislation/laws/SOS/366
+    - title: "New York Laws of 2022, chapter 56, part AAA"
+      href: https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=A09006&term=2021&Summary=Y&Actions=Y&Text=Y
+    - title: "New York Laws of 2023, chapter 57, part H"
+      href: https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=A03007&term=2023&Summary=Y&Actions=Y&Text=Y
+    - title: "New York State Department of Health, 23 OHIP/INF-2 (December 29, 2023)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/inf/23inf-02.pdf
+
+AL:
+  2021-01-01: false
+AK:
+  2021-01-01: false
+AZ:
+  2021-01-01: false
+AR:
+  2021-01-01: false
+CA:
+  2021-01-01: false
+CO:
+  2021-01-01: false
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: false
+DE:
+  2021-01-01: false
+FL:
+  2021-01-01: false
+GA:
+  2021-01-01: false
+HI:
+  2021-01-01: false
+ID:
+  2021-01-01: false
+IL:
+  2021-01-01: false
+IN:
+  2021-01-01: false
+IA:
+  2021-01-01: false
+KS:
+  2021-01-01: false
+KY:
+  2021-01-01: false
+LA:
+  2021-01-01: false
+ME:
+  2021-01-01: false
+MD:
+  2021-01-01: false
+MA:
+  2021-01-01: false
+MI:
+  2021-01-01: false
+MN:
+  2021-01-01: false
+MS:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MT:
+  2021-01-01: false
+NE:
+  2021-01-01: false
+NV:
+  2021-01-01: false
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: false
+NM:
+  2021-01-01: false
+NY:
+  # Social Services Law section 366(1)(g)(4) covers people "age sixty-five or
+  # older, who are otherwise eligible for medical assistance under this
+  # section, but for their immigration status". Part AAA of chapter 56 of
+  # the Laws of 2022 added it from January 1, 2023. Part H of chapter 57 of
+  # the Laws of 2023 reset its start to "no later than January 1, 2024", and
+  # section 7 of that part deems the change in force from January 1, 2023.
+  # The model starts the coverage on January 1, 2024, the latest date Part H
+  # allows. The reference list also holds informational letter 23
+  # OHIP/INF-2, cited for that start date and for state funding; its text
+  # is unverified.
+  2021-01-01: false
+  2024-01-01: true
+NC:
+  2021-01-01: false
+ND:
+  2021-01-01: false
+OH:
+  2021-01-01: false
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: false
+PA:
+  2021-01-01: false
+RI:
+  2021-01-01: false
+SC:
+  2021-01-01: false
+SD:
+  2021-01-01: false
+TN:
+  2021-01-01: false
+TX:
+  2021-01-01: false
+UT:
+  2021-01-01: false
+VT:
+  2021-01-01: false
+VA:
+  2021-01-01: false
+WA:
+  2021-01-01: false
+WV:
+  2021-01-01: false
+WI:
+  2021-01-01: false
+WY:
+  2021-01-01: false

@@ -453,3 +453,42 @@
     nj_njhps: 1_200
     household_health_benefits: 1_200  # derived NJ subsidy flows through the pipeline
     household_benefits: 1_200
+
+- name: Case 20, Rhode Island Marketplace Affordability Program flows into household health benefits.
+  # household_health_benefits sums gov.household.household_health_benefits,
+  # which lists assigned_ri_rimap (the take-up-gated amount). With the flag on
+  # and the household in Rhode Island, the 1,000 enters household_health_benefits
+  # and so household_benefits and net income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    ri_rimap: 1_000
+    snap: 0
+  output:
+    assigned_ri_rimap: 1_000
+    household_health_benefits: 1_000
+    household_benefits: 1_000
+
+- name: Case 21, take-up false keeps the Rhode Island Marketplace Affordability Program out of net income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    ri_rimap: 1_000
+    takes_up_ri_rimap_if_eligible: false
+    snap: 0
+  output:
+    assigned_ri_rimap: 0
+    household_health_benefits: 0
+    household_benefits: 0

@@ -1,0 +1,246 @@
+# Unit tests for the Rhode Island Marketplace Affordability Program rule above
+# 400% of the poverty line. A tax unit qualifies when the program is in effect
+# (2027), income is above 400% (2027 RIMAP Final Parameters p.3), and income is
+# the only bar to the federal premium tax credit (R.I. Gen. Laws
+# 42-157.2-4(c)(1)): a member of the credit's tax family is enrolled through
+# HealthSource RI (is_aca_coverage_family_member), the unit does not file
+# separately, and it files a return. Those inputs, aca_magi and aca_fpg are
+# supplied directly.
+
+- name: Case 1, 450% with an enrolled member and a return qualifies.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: true
+
+- name: Case 2, exactly 400% does not qualify.
+  # "Above 400% FPL": 63,840 / 15,960 = 4.00 is not above 4.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 63_840
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 3, one dollar above 400% qualifies.
+  # 63,841 / 15,960 = 4.0000627 > 4.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 63_841
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: true
+
+- name: Case 4, no member enrolled through HealthSource RI.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 5, married filing separately does not qualify.
+  # Filing separately bars the federal credit for a reason other than income.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 6, a tax unit that files no return does not qualify.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: false
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 7, income below the floor does not qualify under this rule.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 27_930
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 8, a joint couple with one enrolled spouse qualifies.
+  # 97,380 / 21,640 = 4.50.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 60
+        is_aca_coverage_family_member: true
+      person2:
+        age: 66
+        is_aca_coverage_family_member: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+        aca_magi: 97_380
+        aca_fpg: 21_640
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: true
+
+- name: Case 9, not in effect in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 10, not in effect in 2028.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_rimap_high_income_eligible: false
+
+- name: Case 11, outside Rhode Island.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_coverage_family_member: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi: 71_820
+        aca_fpg: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    ri_rimap_high_income_eligible: false

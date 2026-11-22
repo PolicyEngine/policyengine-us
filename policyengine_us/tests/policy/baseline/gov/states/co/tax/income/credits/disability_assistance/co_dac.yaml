@@ -218,3 +218,30 @@
     co_dac: 1200
     co_refundable_credits: 1200
     co_income_tax: -1200
+
+# These expected outcomes follow the annual
+# adjustment in C.R.S. §39-31-104.5(4)(c) and the 2025 Denver index required by
+# C.R.S. §24-118-101(1)(v)(IX). The calculation receipt lists the exact BLS values.
+- name: Case 6, the 2026 single DAC schedule includes each indexed band ceiling.
+  period: 2026
+  input:
+    state_code: [CO, CO, CO, CO, CO, CO, CO, CO, CO, CO, CO, CO]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    co_dac_disability_qualified: [true, true, true, true, true, true, true, true, true, true, true, true]
+    co_dac_resident_qualified: [true, true, true, true, true, true, true, true, true, true, true, true]
+    adjusted_gross_income: [0, 10_200, 10_201, 12_800, 12_801, 15_400, 15_401, 17_900, 17_901, 20_500, 20_501, -1]
+  output:
+    # The 15,400 row catches use of BLS M13, which lowers its ceiling to 15,300.
+    co_dac: [1_230, 1_230, 1_020, 1_020, 820, 820, 610, 610, 410, 410, 0, 1_230]
+
+- name: Case 7, the 2026 joint DAC schedule includes each indexed band ceiling.
+  period: 2026
+  input:
+    state_code: [CO, CO, CO, CO, CO, CO, CO, CO, CO, CO]
+    filing_status: [JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    co_dac_disability_qualified: [true, true, true, true, true, true, true, true, true, true]
+    co_dac_resident_qualified: [true, true, true, true, true, true, true, true, true, true]
+    adjusted_gross_income: [16_400, 16_401, 20_500, 20_501, 24_600, 24_601, 28_700, 28_701, 32_800, 32_801]
+  output:
+    # BLS M13 would instead use 28,600 and 32,700 for the final two ceilings.
+    co_dac: [1_230, 1_020, 1_020, 820, 820, 610, 610, 410, 410, 0]

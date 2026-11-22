@@ -255,3 +255,40 @@
     # FY2025 other (wood) row 2,010-2,129, column 1&2: 68.
     ar_liheap_matrix_amount: 68
     ar_liheap: 68
+
+# Case 1's widow in FY2027, with the same Social Security and SSI amounts. Her countable
+# income stays 12,168 (MCI 1,014). The FY2027 chart's size-1 limit is 2,460 a month, and
+# the FFY 2027 electric matrix pays 140 in row 970-1029, column 1&2 (page 1).
+# https://www.adeq.state.ar.us/energy/assistance/pdfs/liheap-income-eligibility-chart-fy-2027.pdf
+# https://www.adeq.state.ar.us/energy/assistance/pdfs/electric-benefit-matrix-fy-2027.pdf
+- name: Case 6, the elderly SSI recipient with electric heat in FY2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security: 7_200
+        ssi: 4_968
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ar_tea: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+        is_in_public_housing: false
+  output:
+    ar_liheap_countable_income: 12_168
+    # FY2027 chart, size 1: 2,460 x 12.
+    ar_liheap_income_limit: 29_520
+    ar_liheap_eligible: true
+    ar_liheap_matrix_amount: 140
+    ar_liheap: 140

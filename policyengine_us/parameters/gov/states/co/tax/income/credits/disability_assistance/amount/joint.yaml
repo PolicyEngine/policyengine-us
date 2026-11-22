@@ -10,28 +10,46 @@ metadata:
       href: https://leg.colorado.gov/laws/session-laws/HB24-1268/475/download#page=6
     - title: 2025 Colorado Simplified Individual Income Tax Return, Disability Assistance Credit table
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104EZ_2025.pdf#page=4
+    - title: "2026 Colorado Laws chapter 194, C.R.S. Section 24-118-101 (1)(v)(IX)"
+      href: https://leg.colorado.gov/laws/session-laws/HB26-1364/194/download#page=5
+    - title: U.S. Bureau of Labor Statistics Denver CPI-U all items 2025 semiannual indexes
+      href: https://api.bls.gov/publicAPI/v2/timeseries/data/CUUSS48BSA0?startyear=2023&endyear=2026
+    - title: U.S. Bureau of Labor Statistics Denver CPI-U all items 2024 annual average
+      href: https://api.bls.gov/publicAPI/v2/timeseries/data/CUURS48BSA0?startyear=2023&endyear=2026&annualaverage=true
 brackets:
   - threshold:
       2025-01-01: -.inf
+      2026-01-01: -.inf
     amount:
       2025-01-01: 1_200
+      2026-01-01: 1_230
   - threshold:
       2025-01-01: 16_000
+      2026-01-01: 16_400
     amount:
       2025-01-01: 1_000
+      2026-01-01: 1_020
   - threshold:
       2025-01-01: 20_000
+      2026-01-01: 20_500
     amount:
       2025-01-01: 800
+      2026-01-01: 820
   - threshold:
       2025-01-01: 24_000
+      2026-01-01: 24_600
     amount:
       2025-01-01: 600
+      2026-01-01: 610
   - threshold:
       2025-01-01: 28_000
+      2026-01-01: 28_700
     amount:
       2025-01-01: 400
+      2026-01-01: 410
   - threshold:
       2025-01-01: 32_000
+      2026-01-01: 32_800
     amount:
       2025-01-01: 0
+      2026-01-01: 0

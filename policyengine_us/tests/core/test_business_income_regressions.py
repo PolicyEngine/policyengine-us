@@ -12,6 +12,7 @@ def test_simulation_moves_self_employment_input_before_lsr():
                 },
             },
         },
+        default_input_period=2024,
     )
 
     assert simulation.calculate("self_employment_income_before_lsr", 2024)[0] == 10_000
@@ -27,6 +28,7 @@ def test_simulation_moves_sstb_self_employment_input_before_lsr():
                 },
             },
         },
+        default_input_period=2024,
     )
 
     assert (
@@ -45,6 +47,7 @@ def test_taxable_self_employment_income_uses_farm_operations_income():
                 },
             },
         },
+        default_input_period=2024,
     )
 
     assert simulation.calculate("taxable_self_employment_income", 2024)[
@@ -61,6 +64,7 @@ def test_taxable_self_employment_income_excludes_schedule_j_farm_income():
                 },
             },
         },
+        default_input_period=2024,
     )
 
     assert simulation.calculate("taxable_self_employment_income", 2024)[0] == 0

@@ -15,6 +15,9 @@ class mn_homestead_credit_refund(Variable):
         # PDF pages 5, 9, 14-23.
         "https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=5",
         "https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-25.pdf#page=2",
+        # 2026 official schedule and software-vendor final draft (form lines 14–18).
+        "https://www.revenue.state.mn.us/sites/default/files/2026-10/ho-schedule-26.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-10/m1pr-26.pdf#page=2",
     )
     defined_for = "mn_homestead_credit_refund_eligible"
 
