@@ -1,1 +1,0 @@
-Let Deferred Action for Childhood Arrivals recipients pass New York's state-funded Medicaid immigration test at every age in model years 2015 to 2024. The model applies the August 2024 transition from 2025, when only recipients under 19 or aged 65 or older keep the route. The model leaves out the July 2026 return of some adults to Medicaid.
