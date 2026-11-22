@@ -364,7 +364,7 @@ def check_composition(households, members_of):
     simulation = Simulation(situation=linked_situation(households))
     size = by_name(simulation, "medicaid_household_size")
     income = by_name(simulation, "medicaid_household_income")
-    pregnancies = by_name(simulation, "ca_medicaid_household_pregnancies")
+    pregnancies = by_name(simulation, "medicaid_household_pregnancies")
     # Households without any nonzero id keep main's family-sum expressions,
     # which the zero-id differential covers; check every household with ids.
     linked = [
@@ -410,7 +410,7 @@ def test_linked_composition_is_invariant_to_member_order():
         "is_parent",
         "medicaid_household_size",
         "medicaid_household_income",
-        "ca_medicaid_household_pregnancies",
+        "medicaid_household_pregnancies",
     ]:
         assert by_name(forward, variable) == by_name(shuffled, variable), variable
 
@@ -625,7 +625,7 @@ def test_tax_dependent_counts_a_co_resident_spouse_exactly_once():
     non_filer = by_name(simulation, "medicaid_uses_non_filer_rules")
     size = by_name(simulation, "medicaid_household_size")
     income = by_name(simulation, "medicaid_household_income")
-    pregnancies = by_name(simulation, "ca_medicaid_household_pregnancies")
+    pregnancies = by_name(simulation, "medicaid_household_pregnancies")
     placements = {scenario["placement"] for scenario in scenarios}
     assert placements == set(SPOUSE_PLACEMENTS)
     for s, scenario in enumerate(scenarios):
@@ -687,7 +687,7 @@ def test_tax_dependent_counts_a_co_resident_spouse_exactly_once():
     for variable in [
         "medicaid_household_size",
         "medicaid_household_income",
-        "ca_medicaid_household_pregnancies",
+        "medicaid_household_pregnancies",
     ]:
         assert by_name(simulation, variable) == by_name(reversed_, variable), variable
 
@@ -709,7 +709,7 @@ def test_households_without_ids_keep_their_values_next_to_linked_ones():
         "medicaid_uses_non_filer_rules",
         "medicaid_household_size",
         "medicaid_household_income",
-        "ca_medicaid_household_pregnancies",
+        "medicaid_household_pregnancies",
     ]:
         in_mixed = by_name(mixed, variable)
         for name, value in by_name(alone, variable).items():

@@ -58,7 +58,7 @@
     # California: 3 members plus 2 expected children for everyone. Kansas: only
     # the pregnant member's own household grows.
     medicaid_household_size: [5, 5, 5, 3, 4, 3]
-    ca_medicaid_household_pregnancies: [2, 2, 2, 0, 0, 0]
+    medicaid_household_pregnancies: [2, 2, 2, 0, 1, 0]
 
 - name: Case 2, CHIP no-other-coverage exclusion is applied per person in a mixed-state population.
   period: 2025

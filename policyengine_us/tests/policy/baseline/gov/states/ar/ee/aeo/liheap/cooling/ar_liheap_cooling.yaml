@@ -158,3 +158,23 @@
     ar_liheap_countable_income: [18_300, 18_300]
     ar_liheap_cooling_eligible: [true, true]
     ar_liheap_cooling: [77, 77]
+
+# Case 5's household in FY2027: the FFY 2027 Electric matrix, headed "(WINTER & SUMMER)",
+# pays 85 for 1&2 at MCI 1_525 (row 1510-1569, page 2), up from 77 in FY2026.
+- name: Case 6, FY2027 summer grant from the FFY 2027 electric matrix.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: AR
+    age: 45
+    immigration_status: CITIZEN
+    ssi: 0
+    ar_tea: 0
+    employment_income_before_lsr: 22_880
+    heating_type: NATURAL_GAS
+    has_cooling_expense: true
+    pre_subsidy_electricity_expense: 1_800
+  output:
+    ar_liheap_countable_income: 18_300
+    ar_liheap_cooling_eligible: true
+    ar_liheap_cooling: 85

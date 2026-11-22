@@ -1033,3 +1033,103 @@
     # Line 11b: Schedule 2, 3,851 - 4,000 -> 279.
     # Line 13: 750. Line 15: smaller of 279 and 750.
     az_property_tax_credit: 279
+
+# Tax-exempt retirement account distributions. ARS 43-1072(H)(6)(g): income
+# includes "the gross amount of any pension or annuity not otherwise
+# exempted". A.A.C. R15-2C-502(A)(1) counts income "whether or not subject to
+# Arizona income tax". 2025 Form 140PTC instructions, line E (page 4):
+# "Pension income that you must enter here includes the following: ... any
+# IRA distributions." ITR 12-1 item (9) leaves out only rollovers.
+
+- name: Roth IRA distribution is a line E pension amount
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        tax_exempt_ira_distributions: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line E: IRA distributions 3,000. Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    az_property_tax_credit_household_income: 3_000
+    # Line 11a: Schedule 1, 2,951 - 3,050 -> 212. Line 13: 0.15 x 5,000 =
+    # 750. Line 15: smaller of 212 and 750.
+    az_property_tax_credit: 212
+
+- name: Nontaxable 401(k) distribution counts with the taxable pension
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 2_000
+        tax_exempt_401k_distributions: 1_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line E: gross pension and retirement plan payments 2,000 + 1,000 = 3,000.
+    # Line J: 3,000.
+    az_property_tax_credit_income: 3_000
+    az_property_tax_credit_household_income: 3_000
+    # Line 11a: Schedule 1, 2,951 - 3,050 -> 212. Line 13: 750.
+    az_property_tax_credit: 212
+
+- name: Tax-exempt 403(b) distribution brings income to the last band below the limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 3_000
+        tax_exempt_403b_distributions: 750
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line E: 3,000 + 750 = 3,750. Line J: 3,750.
+    az_property_tax_credit_income: 3_750
+    # ARS 43-1072(A)(3)(a): a claimant living alone needs income below
+    # 3,751. Line 11a: Schedule 1, 3,651 - 3,750 -> 56. Line 13: 750.
+    # Line 15: smaller of 56 and 750.
+    az_property_tax_credit: 56
+
+- name: Tax-exempt SEP distribution one dollar more reaches the income limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_private_pension_income: 3_000
+        tax_exempt_sep_distributions: 751
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Line E: 3,000 + 751 = 3,751. Line J: 3,751.
+    az_property_tax_credit_income: 3_751
+    # Line 11a: Schedule 1, 3,751 and up -> 0.
+    az_property_tax_credit: 0

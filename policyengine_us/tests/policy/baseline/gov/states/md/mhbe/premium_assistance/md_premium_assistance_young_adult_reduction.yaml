@@ -5,7 +5,11 @@
 # Values map directly to gov.states.md.mhbe.premium_assistance.young_adult.reduction.
 # The variable takes the largest reduction among the tax unit's federally
 # APTC-eligible enrollees, so each person is marked is_aca_ptc_eligible: true.
-# All periods use 2026 (program starts PY2026; YAS modeled 2026+ only).
+# Cases 1-16 use 2026 (program starts PY2026; YAS modeled 2026-2027 only). The
+# 2027 cases pin the same schedule, which the Board continued for PY2027 (8-4-2026
+# motion; 2027 deck slides 21 and 34). Ages 35-37 follow the Board's taper, not
+# COMAR 14.35.19.03A(4)'s "under the age of 35 years" (project-lead ruling
+# 2026-11-18; source_conflicts/candidates.yaml).
 
 - name: Case 1, age 17 (under 18) receives no reduction.
   period: 2026
@@ -303,3 +307,141 @@
         state_code: MD
   output:
     md_premium_assistance_young_adult_reduction: 0.02
+
+# ---- 2027: the 2026 schedule continues ----
+
+- name: 2027 Case 1, age 17 receives no reduction.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 17
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0
+
+- name: 2027 Case 2, age 18 reduced by 2.5 points.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 18
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.025
+
+- name: 2027 Case 3, age 33 reduced by 2.5 points.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 33
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.025
+
+- name: 2027 Case 4, age 34 reduced by 2.0 points.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 34
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.02
+
+- name: 2027 Case 5, age 35 reduced by 1.5 points under the Board's taper.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 35
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.015
+
+- name: 2027 Case 6, age 36 reduced by 1.0 point under the Board's taper.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.01
+
+- name: 2027 Case 7, age 37 reduced by 0.5 points under the Board's taper.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 37
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0.005
+
+- name: 2027 Case 8, age 38 receives no reduction.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 38
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_young_adult_reduction: 0

@@ -66,7 +66,7 @@ def create_al_hb527_overtime_deduction_reform(parameters, period, bypass: bool =
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

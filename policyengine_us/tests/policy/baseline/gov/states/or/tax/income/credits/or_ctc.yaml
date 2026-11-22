@@ -295,3 +295,193 @@
         state_code: OR
   output:
     or_ctc: 1_050
+
+# Qualifying income, ORS 315.273(1)(c)(A): "adjusted gross income ... as
+# modified using Oregon subtractions and additions, but with the sum of the
+# following added back: (i) Losses of the taxpayer, to the extent that those
+# losses exceed $20,000; and (ii) Foreign earned income, as defined in section
+# 911 of the Internal Revenue Code, that is excluded from adjusted gross
+# income." Item (ii) applies from 2025 (Oregon Laws 2025, chapter 321,
+# section 17(2)). 2025 Form OR-40 instructions, Oregon Kids Credit worksheet
+# Part B (page 24): line 11b is the business loss from Form 1040, Schedule 1,
+# line 3, and line 12 the exclusion from Schedule 1, line 8d. These cases set
+# or_agi directly so they do not depend on Oregon's subtractions.
+
+- name: 2025 - a business loss above $20,000 is added back to qualifying income.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 70_000
+        self_employment_income: -45_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        # Federal AGI 70,000 - 45,000 = 25,000.
+        or_agi: 25_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Loss 45,000; excess over 20,000 = 25,000.
+    # Qualifying income = 25,000 + 25,000 = 50,000, over the 2025 ceiling of
+    # 31,550 (26,550 + 5,000), so no credit.
+    or_ctc_qualifying_income: 50_000
+    or_ctc: 0
+
+- name: 2025 - losses of exactly $20,000 are not added back.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 46_550
+        self_employment_income: -20_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 26_550
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Loss 20,000 does not exceed 20,000. Qualifying income 26,550 is at the
+    # phase-out start, so the full 1,050.
+    or_ctc_qualifying_income: 26_550
+    or_ctc: 1_050
+
+- name: 2025 - losses of $21,000 add back $1,000.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 47_550
+        self_employment_income: -21_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 26_550
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Qualifying income 26,550 + (21,000 - 20,000) = 27,550.
+    # Reduction (27,550 - 26,550) / 5,000 = 20%: 1,050 x 0.8 = 840.
+    or_ctc_qualifying_income: 27_550
+    or_ctc: 840
+
+- name: 2025 - losses on separate worksheet lines are added together, with the capital loss as deducted.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        long_term_capital_gains: -5_000
+        rental_income: -18_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 26_550
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Line 11a: Form 1040 line 7a limits the capital loss to 3,000 (IRC
+    # 1211(b)). Line 11d: rental loss 18,000. Total 21,000; excess 1,000.
+    # Qualifying income 26,550 + 1,000 = 27,550: 1,050 x 0.8 = 840.
+    or_ctc_qualifying_income: 27_550
+    or_ctc: 840
+
+- name: 2025 - excluded foreign earned income is added to qualifying income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 20_000
+        foreign_earned_income_exclusion: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # ORS 315.273(1)(c)(A)(ii): qualifying income 20,000 + 10,000 = 30,000.
+    # Reduction (30,000 - 26,550) / 5,000 = 69%: 1,050 x 0.31 = 325.50.
+    or_ctc_qualifying_income: 30_000
+    or_ctc: 325.5
+
+- name: 2024 - excluded foreign earned income is not yet added.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 20_000
+        foreign_earned_income_exclusion: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Before 2025 the statute added back only losses, and the 2024 worksheet
+    # (page 20) has no exclusion line. Qualifying income 20,000 is under the
+    # 25,750 phase-out start: the full 1,000.
+    or_ctc_qualifying_income: 20_000
+    or_ctc: 1_000
+
+- name: 2023 - losses above $20,000 are added back from the first year.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 47_500
+        self_employment_income: -22_500
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        or_agi: 25_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # HB 3235 (2023) Section 2(1)(c): "losses of a taxpayer added back, to
+    # the extent that those losses exceed $20,000". Qualifying income
+    # 25,000 + 2,500 = 27,500. Reduction 2,500 / 5,000 = 50%: 1,000 x 0.5 = 500.
+    or_ctc_qualifying_income: 27_500
+    or_ctc: 500

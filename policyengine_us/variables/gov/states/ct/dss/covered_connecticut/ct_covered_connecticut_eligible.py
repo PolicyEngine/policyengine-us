@@ -9,7 +9,15 @@ class ct_covered_connecticut_eligible(Variable):
     defined_for = StateCode.CT
     reference = (
         "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=22",
+        # C.G.S. 19a-754c(b)(1)(C)(iv), the codified income limit.
+        "https://www.cga.ct.gov/current/pub/chap_368dd.htm#sec_19a-754c",
+        # PDF pages 706-707: Public Act 26-68, Sec. 462, re-enacting C.G.S.
+        # 19a-754c(b)(1), including the 175% limit and the age 19 to 64 range.
+        "https://www.cga.ct.gov/2026/ACT/PA/PDF/2026PA-00068-R00SB-00001-PA.PDF#page=706",
         "https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program",
+        # Access Health CT's plan year 2026 chart sets the Covered Connecticut
+        # limit at 175% of the 2025 guideline, by household size.
+        "https://www.accesshealthct.com/wp-content/uploads/2026/04/FPL-OE13-Plan-Year-2026_ADA-1.pdf#page=1",
     )
     documentation = (
         "A tax unit is eligible for the Covered Connecticut Program when the "
@@ -17,15 +25,20 @@ class ct_covered_connecticut_eligible(Variable):
         "ACA premium tax credit (which embeds on-Marketplace enrollment, the "
         "married-filing-separately exclusion, and the federal required-"
         "contribution income test), and household ACA MAGI is at or below 175% "
-        "of the federal poverty line. Connecticut imposes no minimum-income "
+        "of the federal poverty line for the premium tax credit tax family "
+        "(aca_fpg, the prior-year guideline), measured as the exact ratio "
+        "rather than the truncated aca_magi_fraction. Connecticut imposes "
+        "no minimum-income "
         "floor: the statutory requirement that enrollees be ineligible for "
         "Medicaid because their income exceeds the Medicaid limits is inherited "
         "from the federal ACA PTC gate, which already excludes Medicaid-eligible "
         "people. The benchmark-silver-enrollment requirement is represented by "
         "using the second-lowest-cost silver plan premium as the modeled "
         "premium in the amount variable, and is not separately gated here. The "
-        "statutory eligibility cohorts (adults aged 18 to 64, dependents aged 26 "
-        "and under, and parents and caretaker relatives) are deliberately NOT "
+        "statutory eligibility cohorts (adults aged 19 to 64 under C.G.S. "
+        "19a-754c(b)(1)(C) as amended by Public Act 26-68, Section 462, "
+        "dependents aged 26 and under, and parents and caretaker relatives) "
+        "are deliberately NOT "
         "separately gated, matching sibling state premium-assistance programs, "
         "because the ACA MAGI test and the federal PTC structure already capture "
         "the eligible population."
@@ -36,5 +49,19 @@ class ct_covered_connecticut_eligible(Variable):
         in_effect = p.in_effect
         # At least one member must be eligible for the federal ACA PTC.
         aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
-        income_eligible = tax_unit("aca_magi_fraction", period) <= p.fpl_limit
+        # C.G.S. 19a-754c(b)(1)(C)(iv) covers "household income up to one
+        # hundred seventy-five per cent of the federal poverty level", which
+        # DSS applies "up to an[d] including 175%". Test the exact ratio, not
+        # the truncated aca_magi_fraction: truncation maps 175.00%-175.99% to
+        # 1.75, which would admit incomes above 175%. The statute does not
+        # define the poverty level or household size. Access Health CT's chart
+        # uses the prior-year guideline and enrollees must qualify for the
+        # federal credit, so this uses aca_fpg, the line that credit divides
+        # by. No source says how to size a household with a claimable spouse.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
+        income_eligible = exact_magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & income_eligible

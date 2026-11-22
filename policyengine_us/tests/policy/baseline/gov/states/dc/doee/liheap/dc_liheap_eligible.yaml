@@ -71,3 +71,14 @@
     # down), DOEE's published two-person limit. The unrounded 80,870.09 would
     # admit $80,870.
     dc_liheap_eligible: [true, false]
+
+- name: Case 7, FY2027 limits match DOEE's published table.
+  period: 2027
+  input:
+    state_code: [DC, DC, DC, DC]
+    spm_unit_size: [1, 1, 6, 6]
+    irs_gross_income: [63_024, 63_025, 159_984, 159_985]
+  output:
+    # FY 2027 table: $63,024 for one person and $159,984 for six. 202,000 x 0.6
+    # = 121,200, times 0.52 = 63,024 and times 1.32 = 159,984.
+    dc_liheap_eligible: [true, false, true, false]

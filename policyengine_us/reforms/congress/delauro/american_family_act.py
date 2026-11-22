@@ -43,7 +43,7 @@ def create_american_family_act_with_baby_bonus_reform(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).baby_bonus > 0:
             reform_active = True
             break

@@ -158,6 +158,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/mt/tax/income/subtractions/disability_income/cap.yaml": 1,
     "policyengine_us/parameters/gov/states/or/ohcs/liheap/payment/income_band.yaml": 1,
     "policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml": 1,
+    "policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ut/dwf/ccap/copay/income_limits.yaml": 1,
     "policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml": 1,
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,
@@ -198,6 +199,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,
+    "policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/adult/meets_medicaid_adult_group_child_coverage_requirement.py": 1,
 }
 
 

@@ -4,12 +4,12 @@
     people:
       person1:
         age: 65
+        taxable_pension_income: 38_470
         real_estate_taxes: 1_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 38_470
     households:
       household:
         members: [person1]
@@ -23,12 +23,12 @@
     people:
       person1:
         age: 65
+        taxable_pension_income: 38_471
         real_estate_taxes: 1_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 38_471
     households:
       household:
         members: [person1]
@@ -42,12 +42,12 @@
     people:
       person1:
         age: 64
+        taxable_pension_income: 30_000
         real_estate_taxes: 1_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1]
@@ -61,11 +61,11 @@
     people:
       person1:
         age: 70
+        taxable_pension_income: 30_000
         rent: 12_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1]
@@ -79,12 +79,12 @@
     people:
       person1:
         age: 70
+        taxable_pension_income: 30_000
         real_estate_taxes: 1_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1]
@@ -98,12 +98,12 @@
     people:
       person1:
         age: 65
+        taxable_pension_income: 37_530
         real_estate_taxes: 1_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 37_530
     households:
       household:
         members: [person1]
@@ -117,11 +117,11 @@
     people:
       person1:
         age: 70
+        taxable_pension_income: 30_000
         assessed_property_value: 25_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1]
@@ -135,12 +135,12 @@
     people:
       person1:
         age: 70
+        taxable_pension_income: 30_000
         real_estate_taxes: 1_000
         assessed_property_value: 0
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1]
@@ -154,6 +154,7 @@
     people:
       person1:
         age: 70
+        taxable_pension_income: 30_000
       person2:
         age: 17
         real_estate_taxes: 1_000
@@ -161,10 +162,97 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [person1, person2]
         state_code: TN
   output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 10, Social Security alone can exceed the income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 45_000
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Federal adjusted gross income is 0: provisional income is 22,500 (half
+    # of 45,000), under the 25,000 base, so no Social Security is taxable.
+    # Rule 0600-03-.08(3) counts "social security payments after the Medicare
+    # deduction": 45,000 - 2,434.80 (202.90 x 12, the 2026 Part B premium)
+    # = 42,565.20, above the 38,470 limit for tax year 2026.
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 11, the Medicare deduction brings Social Security under the income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 40_000
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Provisional income is 20,000, under the 25,000 base, so adjusted gross
+    # income is 0. Income: 40,000 - 2,434.80 = 37,565.20, at most 38,470.
+    tn_elderly_property_tax_relief_eligible: true
+
+- name: Case 12, nontaxable income exactly at the 2026 income limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_pension_income: 8_470
+        veterans_benefits: 30_000
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Adjusted gross income 8,470 + veterans' benefits 30,000 = 38,470, the
+    # 2026 limit. No Social Security, so no Medicare deduction.
+    tn_elderly_property_tax_relief_eligible: true
+
+- name: Case 13, nontaxable income one dollar above the 2026 income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_pension_income: 8_470
+        veterans_benefits: 30_001
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 8,470 + 30,001 = 38,471, above the 38,470 limit.
     tn_elderly_property_tax_relief_eligible: false

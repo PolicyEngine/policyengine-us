@@ -1,0 +1,48 @@
+# Unit tests for the exact income-to-poverty ratio the Rhode Island
+# Marketplace Affordability Program (RIMAP) uses: max(aca_magi, 0) / aca_fpg.
+# aca_magi and aca_fpg are supplied directly, so the cases don't depend on the
+# uprated guideline. 15,960 is the 2026 HHS guideline for one person, which
+# the premium tax credit uses for 2027.
+
+- name: Case 1, 175% of the poverty line.
+  # 27,930 / 15,960 = 1.75.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi: 27_930
+    aca_fpg: 15_960
+    state_code: RI
+  output:
+    ri_rimap_fpl_ratio: 1.75
+
+- name: Case 2, one dollar above 400% stays above 4.
+  # 63,841 / 15,960 = 4.0000627, not truncated to 4.00 as aca_magi_fraction is.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi: 63_841
+    aca_fpg: 15_960
+    state_code: RI
+  output:
+    ri_rimap_fpl_ratio: 4.0000627
+    aca_magi_fraction: 4
+
+- name: Case 3, negative income counts as zero.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi: -5_000
+    aca_fpg: 15_960
+    state_code: RI
+  output:
+    ri_rimap_fpl_ratio: 0
+
+- name: Case 4, outside Rhode Island the ratio is not computed.
+  period: 2027
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi: 27_930
+    aca_fpg: 15_960
+    state_code: MA
+  output:
+    ri_rimap_fpl_ratio: 0

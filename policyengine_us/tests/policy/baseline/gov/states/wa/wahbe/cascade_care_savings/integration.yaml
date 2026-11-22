@@ -1,18 +1,23 @@
 # Integration tests for Washington Cascade Care Savings (CCS).
 #
-# These exercise the full chain: aca_magi_fraction (income gate) ->
+# These exercise the full chain: ACA MAGI over aca_fpg (income gate, on the
+# exact ratio) ->
 # wa_cascade_care_savings_eligible (Group 1 / Group 3 membership) ->
 # wa_cascade_care_savings (per-member build-up, capped by SLCSP - APTC).
 #
-# slcsp, aca_ptc, and aca_magi_fraction are supplied directly (SLCSP as an annual
-# value) so the arithmetic is fully hand-verifiable. slcsp is a MONTH variable;
+# slcsp and aca_ptc are supplied directly (SLCSP as an annual value), and income
+# is aca_magi against an aca_fpg pinned to $10,000, so the
+# arithmetic is fully hand-verifiable. slcsp is a MONTH variable;
 # at the YEAR test period its output is the annual sum (= the value supplied).
 # Each scenario documents the per-member build-up and the cap.
 #
 # Amount formula recap (final PY2026 policy, Section 5(1)(c)-(d); no benchmark
 # premium expectation, which the policy's Attachment 1 lists among the concepts
-# "not included in the final policy"):
-#   base_annual = 12 * (55*n_group1 + 250*n_group3)
+# "not included in the final policy"; the final PY2027 policy keeps the
+# build-up and the cap):
+#   base_annual = 12 * (a1*n_group1 + a3*n_group3)
+#     PY2026: a1 = 55, a3 = 250.
+#     PY2027: a1 = 35 if aca_magi / aca_fpg <= 2.00, else 20; a3 = 185.
 #   cap         = max(0, slcsp_annual - aca_ptc)
 #   annual      = eligible * min(base_annual, cap)
 
@@ -31,7 +36,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -59,7 +65,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.8
+        aca_magi: 18_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -91,7 +98,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
         assigned_aca_ptc: 7_000
@@ -122,7 +130,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
         assigned_aca_ptc: 0
@@ -154,7 +163,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.6
+        aca_magi: 16_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 4_000
         assigned_aca_ptc: 4_000
@@ -184,7 +194,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.0
+        aca_magi: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 0
         assigned_aca_ptc: 0
@@ -211,7 +222,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.6
+        aca_magi: 26_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 3_000
         assigned_aca_ptc: 3_000
@@ -254,7 +266,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 1.6
+        aca_magi: 16_000
+        aca_fpg: 10_000
         slcsp: 15_000
         aca_ptc: 6_000
         assigned_aca_ptc: 6_000
@@ -270,9 +283,10 @@
     wa_cascade_care_savings: 4_320
 
 - name: Scenario 9, program still in effect in 2027 (open-ended in_effect).
-  # in_effect and both amounts are open-ended from 2026, so 2027 mirrors
-  # Scenario 1. base_annual = 660. cap = max(0, 6_000 - 5_000) = 1_000.
-  # annual = min(660, 1_000) = 660.
+  # in_effect is open-ended from 2026. Same inputs as Scenario 1, but PY2027
+  # pays $35 PMPM to a Group 1 member at or below 200% FPL (was $55):
+  # frac 1.4 <= 2.00 -> base_annual = 12*35 = 420.
+  # cap = max(0, 6_000 - 5_000) = 1_000. annual = min(420, 1_000) = 420.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -283,7 +297,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -296,7 +311,7 @@
     slcsp: 6_000
     aca_ptc: 5_000
     wa_cascade_care_savings_eligible: true
-    wa_cascade_care_savings: 660
+    wa_cascade_care_savings: 420
 
 - name: Scenario 10, undocumented Apple-Health-for-Kids child adds no $250 member.
   # End-to-end guard on the post-C1 gate. person1: Group 1 adult ($55). person2:
@@ -322,7 +337,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -362,7 +378,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -394,7 +411,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.6
+        aca_magi: 26_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
         assigned_aca_ptc: 0

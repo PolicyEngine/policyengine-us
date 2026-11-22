@@ -1,0 +1,133 @@
+# End-to-end Connecticut Temporary Premium Assistance: income, guideline,
+# benchmark, federal credit, Covered Connecticut and TPA are all derived from
+# employment income for a single 40-year-old in Connecticut, and the
+# take-up-gated amount flows into healthcare_benefit_value.
+# The 2026 benchmark for this person is $11,186.34 a year
+# (healthcare_benefit_value.yaml Case 15: 10,197.50 + 988.84).
+
+- name: Integration 1, 2026, 190% FPL, the state tops the federal credit up to the enhanced credit.
+  # Income 1.9 x 15,650 = 29,735.
+  # aca_ptc = 11,186.34 - 6.118% x 29,735 = 11,186.34 - 1,819.19 = 9,367.15.
+  # E = 11,186.34 - 1.6% x 29,735 = 11,186.34 - 475.76 = 10,710.58.
+  # TPA = 10,710.58 - 9,367.15 = 1,343.43 (= 4.518% x 29,735).
+  # healthcare_benefit_value = assigned_aca_ptc + TPA = 10,710.58, the
+  # enhanced credit.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 29_735
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi: 29_735
+    aca_fpg: 15_650
+    ct_temporary_premium_assistance_fpl_ratio: 1.9
+    aca_ptc: 9_367.15
+    ct_covered_connecticut: 0
+    ct_temporary_premium_assistance_enhanced_ptc: 10_710.58
+    ct_temporary_premium_assistance: 1_343.43
+    assigned_ct_temporary_premium_assistance: 1_343.43
+    healthcare_benefit_value: 10_710.58
+
+- name: Integration 2, 2026, 450% FPL, half of the enhanced credit above the federal cap.
+  # Income 4.5 x 15,650 = 70,425. The federal credit is 0 above 400%.
+  # E = 11,186.34 - 8.5% x 70,425 = 11,186.34 - 5,986.13 = 5,200.22.
+  # TPA = 0.5 x 5,200.22 = 2,600.11 = healthcare_benefit_value.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 70_425
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_ptc: 0
+    ct_temporary_premium_assistance_eligible: true
+    ct_temporary_premium_assistance_enhanced_ptc: 5_200.22
+    ct_temporary_premium_assistance: 2_600.11
+    healthcare_benefit_value: 2_600.11
+
+- name: Integration 3, 2026, 150% FPL, Covered Connecticut instead of TPA.
+  # The healthcare_benefit_value.yaml Case 15 household: Covered CT pays
+  # 0.0419 x 23,600 = 988.84, and TPA is 0.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 988.84
+    ct_temporary_premium_assistance: 0
+    healthcare_benefit_value: 11_186.34
+
+- name: Integration 4, 2027, 190% FPL.
+  # Income 1.9 x 15,960 = 30,324. Both credits are the same benchmark less a
+  # share of income, so TPA = (6.284% - 1.6%) x 30,324 = 1,420.38 whatever the
+  # 2027 benchmark, as long as it exceeds 6.284% x 30,324 = 1,905.56.
+  period: 2027
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_324
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_fpg: 15_960
+    ct_covered_connecticut: 0
+    ct_temporary_premium_assistance: 1_420.38
+    assigned_ct_temporary_premium_assistance: 1_420.38
+
+- name: Integration 5, 2027, 190% FPL without Marketplace take-up.
+  # The tax unit still files (its income requires a return), so the amount is
+  # 1,420.38, but with no take-up neither the federal credit nor TPA is
+  # received, and healthcare_benefit_value is 0.
+  period: 2027
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_324
+    tax_units:
+      tax_unit:
+        members: [person1]
+        takes_up_aca_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_temporary_premium_assistance: 1_420.38
+    assigned_ct_temporary_premium_assistance: 0
+    healthcare_benefit_value: 0

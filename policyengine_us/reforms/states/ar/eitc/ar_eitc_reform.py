@@ -48,7 +48,7 @@ def create_ar_eitc_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         p_at_period = p(current_period)
         if p_at_period.in_effect:
             reform_active = True

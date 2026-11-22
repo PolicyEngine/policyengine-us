@@ -6,13 +6,21 @@ metadata:
   breakdown:
   - state_code
   reference:
-    # currently, states that only cover a certain age group of undocumented immigrants are not included in this list.
+    # States that cover only some groups of undocumented immigrants read false
+    # here. gov.hhs.medicaid.eligibility.undocumented and
+    # gov.hhs.chip.undocumented hold their group rules.
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2023: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2021: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-State-Adoption-of-Options-to-Cover-Immigrant-Populations-January-2021.pdf
+    - title: Massachusetts General Laws chapter 118E, section 16D
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+    - title: "130 CMR 504.000, MassHealth: Citizenship and Immigration"
+      href: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+    - title: New York Social Services Law section 122
+      href: https://www.nysenate.gov/legislation/laws/SOS/122
 
 AL:
   2021-01-01: false
@@ -59,7 +67,12 @@ ME:
 MD:
   2021-01-01: false
 MA:
-  2021-01-01: true
+  # M.G.L. c. 118E, section 16D(2) limits undocumented residents to emergency
+  # services unless federal law requires more. 130 CMR 504.006(D) gives them
+  # MassHealth Standard if pregnant (gov.hhs.medicaid.eligibility.undocumented),
+  # MassHealth Limited, and the Children's Medical Security Plan under 19,
+  # which the model does not hold.
+  2021-01-01: false
 MI:
   2021-01-01: false
 MN:
@@ -81,7 +94,17 @@ NJ:
 NM:
   2021-01-01: false
 NY:
-  2021-01-01: true
+  # Social Services Law section 122(1) limits undocumented residents to
+  # emergency care. New York covers them during pregnancy and for sixty
+  # days after it (Department of Health notice D61-C0332) and, in the model
+  # from 2024, at age 65 or older
+  # (gov.hhs.medicaid.eligibility.undocumented), and as children under the
+  # Children's Health Insurance Program (gov.hhs.chip.undocumented.child).
+  # The model applies New York's general postpartum period to undocumented
+  # residents, which reads 365 days from 2024. The one-year law names
+  # specific eligibility groups (Social Services Law section 366(4)(b)(1)),
+  # so the longer period is a modeling choice for undocumented residents.
+  2021-01-01: false
 NC:
   2021-01-01: false
 ND:
