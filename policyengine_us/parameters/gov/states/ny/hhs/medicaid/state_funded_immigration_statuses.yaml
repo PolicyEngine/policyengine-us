@@ -1,0 +1,32 @@
+description: New York covers these immigration statuses under the Medicaid program with state funds.
+# Undocumented residents follow the parameters under
+# gov.hhs.medicaid.eligibility, not this list. The Department of Health's
+# 2014 client notice also counts Temporary Protected Status holders as
+# PRUCOL. The list does not hold them: their coverage dates have not been
+# sourced.
+values:
+  # New York treats Deferred Action for Childhood Arrivals recipients as
+  # permanently residing under color of law (PRUCOL) and gives them
+  # state-funded Medicaid. GIS 18 MA/005, effective April 2, 2018, keeps
+  # them eligible after the federal plan to end DACA. The Department of
+  # Health's client notice of October 10, 2014 lists deferred action among
+  # the PRUCOL statuses.
+  # The Essential Plan was due to take recipients aged 19 to 64 with income
+  # up to 250% of the poverty level from August 1, 2024.
+  # daca_in_essential_plan holds those ages, and
+  # is_ny_medicaid_immigration_status_eligible takes every recipient at
+  # those ages out of this route.
+  2015-01-01:
+    - DACA
+
+metadata:
+  unit: list
+  period: year
+  label: New York state-funded Medicaid immigration statuses
+  reference:
+    - title: "New York State Department of Health, GIS 18 MA/005, Continuation of State Funded Medicaid for Deferred Action for Childhood Arrivals (DACA)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/gis/18ma005.htm
+    - title: "New York section 1332 waiver application (December 18, 2023)"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
+    - title: New York State Department of Health, client notice D61-C0332
+      href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
