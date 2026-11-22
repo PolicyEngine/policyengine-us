@@ -2248,7 +2248,7 @@
       home:
         members: [parent, food_supported_child, sibling]
   output:
-    ssi_countable_income:
+    ssi_countable_income_monthly:
       2024-01: [0, 680, 0]
       2024-11: [0, 680, 0]
       2024-12: [0, 680, 0]
@@ -2283,7 +2283,7 @@
         meets_ssi_disability_criteria: true
         is_tax_unit_dependent: true
         is_household_head: false
-        ssi_countable_income:
+        ssi_countable_income_monthly:
           2024-01: 1_014.33
           2024-12: 680
         ssi_countable_resources: 0

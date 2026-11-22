@@ -1,13 +1,40 @@
-description: Washington provides this monthly amount per member with federal subsidies under the Cascade Care Savings program.
-values:
+description: Washington provides this monthly amount per member with federal subsidies, by household income as a share of the federal poverty line, under the Cascade Care Savings program.
+brackets:
   # Group 1: enrollees receiving federal subsidies (Advance Premium Tax Credit).
-  # PY2026 maximum per-member per-month (PMPM) assistance is $55 (down from $155
-  # in PY2025). There is NO age split; the survey figure of "$30 per child" was
-  # incorrect. Amount set annually by the WAHBE Board within the appropriation.
-  2026-01-01: 55
+  # There is NO age split; the survey figure of "$30 per child" was incorrect.
+  # Amounts are set annually by the WAHBE Board within the appropriation.
+  # PY2026 has one maximum per-member per-month (PMPM) amount, $55 (down from
+  # $155 in PY2025), so both bands carry $55. From PY2027, Policy Section
+  # 5(1)(b) sets "one amount for customers up to 200% FPL and one amount for
+  # customers 201 - 250% FPL": $35 and $20 PMPM.
+  #
+  # Read with calc(wa_cascade_care_savings_fpl_ratio, right=True), on the exact
+  # income-to-poverty-line ratio. Each threshold closes the band below it, so a
+  # ratio of exactly 2.00 stays in the first band and any ratio above 2.00
+  # takes the second. The policy assigns no amount to incomes above 200% but
+  # below 201% of FPL; the project lead ruled on 2026-11-18 that those incomes
+  # take the second amount, so only a ratio at or below 2.00 gets the first.
+  # The Wakely exhibit in the PY2027 memo (p. 8) labels the bands "Fed Sub <
+  # 200% FPL $35" and "Fed Sub >= 200% FPL $20", but the policy text ("up to
+  # 200% FPL") governs, so a ratio of exactly 2.00 gets $35.
+  # The first threshold is -inf so that a ratio of exactly 0 falls in the
+  # first band rather than in core's out-of-range cell, which returns 0.
+  # The 250% income limit is applied in wa_cascade_care_savings_eligible.
+  - threshold:
+      2026-01-01: -.inf
+    amount:
+      2026-01-01: 55
+      2027-01-01: 35
+  - threshold:
+      2026-01-01: 2
+    amount:
+      2026-01-01: 55
+      2027-01-01: 20
 
 metadata:
-  unit: currency-USD
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
   period: month
   label: Washington Cascade Care Savings monthly amount per member with federal subsidies
   reference:
@@ -17,3 +44,7 @@ metadata:
       href: https://www.wahbexchange.org/content/dam/materials/communications/legislative/2025/WAHBE_Final_PY_2026_Cascade_Care_Savings_Maximum_Per_Member_Per_Month_Methodology.pdf#page=7
     - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 5(1)(b)-(c)
       href: https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=14
+    - title: WAHBE, Final Cascade Care Savings amounts for plan year 2027 (memo of 2026-10-01; $35 PMPM up to 200% FPL, $20 PMPM 201% - 250% FPL)
+      href: https://www.wahbexchange.org/content/dam/materials/communications/legislative/2026/PY-2027-CCS-PMPM-MethodologyMemo.pdf#page=1
+    - title: WAHBE Final PY 2027 Cascade Care Savings Policy, Section 5(1)(b) (two federally subsidized amounts, up to 200% FPL and 201 - 250% FPL)
+      href: https://www.wahbexchange.org/content/dam/materials/communications/policy/2026/Final_PY_2027_Cascade_Care_Savings_Policy.pdf#page=6

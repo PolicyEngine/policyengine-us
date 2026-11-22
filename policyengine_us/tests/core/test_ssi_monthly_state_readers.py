@@ -53,7 +53,9 @@ def _situation(profiles, annual_earned, annual_unearned):
                 "is_ssi_qualified_noncitizen": {YEAR: False},
                 "ssi_earned_income": {YEAR: annual_earned},
                 "ssi_unearned_income": {YEAR: annual_unearned},
-                "ssi_in_kind_support_and_maintenance": dict(zip(MONTHS, profile)),
+                "ssi_in_kind_support_and_maintenance_monthly": dict(
+                    zip(MONTHS, profile)
+                ),
             }
             if state == "MD":
                 values.update(

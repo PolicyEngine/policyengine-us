@@ -7,6 +7,10 @@ class co_denver_property_tax_relief_income(Variable):
     unit = USD
     label = "Denver Property Tax Relief income"
     definition_period = YEAR
-    reference = "https://web.archive.org/web/20240803030400/https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf#page=1"
+    reference = (
+        "https://web.archive.org/web/20240803030400/https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf#page=1",
+        # PDF pages 3-5
+        "https://denvergov.org/files/assets/public/v/1/housing-stability/documents/property-tax-relief-program-guidelines-2026.pdf#page=3",
+    )
 
     adds = "gov.local.co.denver.dhs.property_tax_relief.income_sources"

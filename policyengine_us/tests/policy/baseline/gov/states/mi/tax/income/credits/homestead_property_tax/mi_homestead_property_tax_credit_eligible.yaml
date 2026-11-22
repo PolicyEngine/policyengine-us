@@ -128,3 +128,28 @@
     state_code: MI
   output:
     mi_homestead_property_tax_credit_eligible: false
+
+- name: 2025 IRA distributions that bring household resources to the limit, eligible
+  period: 2025
+  input:
+    age: 60
+    employment_income_before_lsr: 60_000
+    taxable_ira_distributions: 11_500
+    state_code: MI
+  output:
+    # MI-1040CR line 14: 60,000. Line 18, IRA benefits: 11,500 (2025 MI-1040
+    # book, page 32). Line 33: 71,500, at the 71,500 limit.
+    mi_household_resources: 71_500
+    mi_homestead_property_tax_credit_eligible: true
+
+- name: 2025 IRA distributions that bring household resources above the limit, ineligible
+  period: 2025
+  input:
+    age: 60
+    employment_income_before_lsr: 60_000
+    taxable_ira_distributions: 11_501
+    state_code: MI
+  output:
+    # Line 33: 60,000 + 11,501 = 71,501, above the 71,500 limit.
+    mi_household_resources: 71_501
+    mi_homestead_property_tax_credit_eligible: false

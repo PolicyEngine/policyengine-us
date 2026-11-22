@@ -11,6 +11,36 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ca:expectant-parent-payment-residential-rate
+  program: foster-care
+  years:
+    from: 2022
+    type: calendar
+  question: Does California pay an expectant parent in a group home or short-term residential therapeutic program the home-based infant supplement amount or the residential infant supplement amount?
+  sources:
+  - kind: statute
+    citation: California Welfare and Institutions Code section 11465, subdivisions (d)(2) and (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11465.
+  - kind: guidance
+    citation: CDSS All County Letter 21-123, page two (PDF page 3)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-123.pdf#page=3
+  - kind: guidance
+    citation: CDSS All County Letter 26-44, pages two and four (PDF pages 3 and 5)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-44.pdf#page=5
+  readings:
+    statute: From January 2022, subdivision (e)(1) adds to a pregnant minor's or nonminor dependent's rate "the amount that would otherwise be paid under this section to cover the care and supervision of a child, if born." Subdivision (d)(2) sets that amount at the group home or short-term residential therapeutic program infant supplement rate in those placements. Subdivision (e)(3) sets the lump sum before automation at three times the monthly amount paid under subdivision (a).
+    other: ACL 21-123 directs counties to pay the home-based infant supplement amount in every placement from January 2022. ACL 26-44 lists $932 for home-based placements and $1,429 for short-term residential therapeutic programs under its combined infant supplement and expectant parent payment heading from July 2026.
+  example: In March 2024 an eligible expectant parent in a group home receives $900 under ACL 21-123 or $1,379 under the residential reading of subdivision (e)(1), a difference of $479 per month. From July 2026 the two readings give $932 and $1,429, a difference of $497 per month.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/base.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/group_home.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/expectant_parent_payment/ca_la_expectant_parent_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10836
+  state: open
+  note: PolicyEngine pays $900 in every placement from January 2022 through June 2026, as ACL 21-123 directs. From July 2026 it pays $1,429 in group homes and short-term residential therapeutic programs. ACL 26-44 lists that amount for short-term residential therapeutic programs and no amount for group homes. PolicyEngine applies it to group homes as an interpretation of subdivision (d)(2). PolicyEngine has recorded no ruling.
 - id: us-ak:hap-general-relief-assistance
   program: liheap
   years:
@@ -962,6 +992,45 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
   note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
+- id: us-ar:snap-bbce-resource-increase-at-application
+  program: snap
+  years:
+    from: 2025
+    type: calendar
+  question: Does Arkansas grant the temporary $5,500 SNAP resource limit only to an enrolled household that accumulates
+    resources above the federal limit, or also to a household that applies with resources above it?
+  sources:
+  - kind: statute
+    citation: Ark. Code 20-76-115(b)(2), as amended by Act 675 of 2023, section 1
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2F&file=675.pdf&ddBienniumSession=2023%2F2023R
+  - kind: manual
+    citation: Arkansas DHS SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility (PDF page 80)
+    url: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
+  - kind: rulemaking
+    citation: Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023, effective April 4, 2025, SNAP
+      Certification Manual 1919 (PDF page 12)
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+  readings:
+    statute: 'Subdivision (b)(2)(A) sets the asset limit "equal to the federal resource limit". Subdivision (b)(2)(B)(i)
+      grants the temporary increase "If an enrolled household is determined by the Department of Human Services to
+      have accumulated countable assets greater than the federal resource limit".'
+    other: 'Section 1919 applies the increase to "all SNAP households that receive a non-cash TANF or Maintenance of
+      Effort benefit". Appendix AA starts the twelve months at application: "Client applies July 2025 with $5200 in
+      resources, the 12 months start in July 2025."'
+  example: In June 2026 an Arkansas family of three with gross income of $2,800 a month and $4,000 in resources applies
+    for SNAP. Under Appendix AA the household is within the $5,500 limit and eligible. Under the statute's wording it
+    is not an enrolled household, the $3,000 federal limit applies and it is ineligible.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/tanf/non_cash/asset_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11124
+  state: ruled
+  note: 'PE-US follows the manual: the $5,500 limit applies to every Arkansas household within the BBCE income limits,
+    at application and while enrolled. The model has no input that separates an applicant from an enrolled household
+    or that tracks the twelve months. Ruled by the project lead, 2026-11-18:
+    https://github.com/PolicyEngine/policyengine-us/pull/11124'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
@@ -2198,7 +2267,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
     state median income, or the whole-dollar monthly tables the plan attachment and manual print?
@@ -2212,11 +2281,19 @@ candidates:
   - kind: manual
     citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
     url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  - kind: manual
+    citation: 2026-27 LEAP Operations Manual, eligibility chart, p.99
+    url: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=99
+  - kind: guidance
+    citation: CDHS 2026-27 LEAP Income Limits table, linked from the LEAP page (https://cdhs.colorado.gov/leap)
+    url: https://drive.google.com/file/d/1gfDDrwl3HmZONV3za74lhyXsj8LMdVeF/view
   readings:
     statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
       and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
     other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
-      median income for one person, and the attachment says Colorado "uses the FPL chart".
+      median income for one person, and the attachment says Colorado "uses the FPL chart". For FY2027 the eligibility
+      chart and the income limits table print $3,774 for one person, where 60% of state median income is $45,295 a year
+      ($3,774.58 a month).
   example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
     $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
     under the printed $3,607 and $700 within 60% of state median income ($43,293).
@@ -2229,7 +2306,10 @@ candidates:
   note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
     by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
     The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
-    state median income guidelines".'
+    state median income guidelines". FY2027 follows the same ruling: the 2026-27 manual''s eligibility chart (p.99),
+    both applications (pp.125, 131) and the income limits table on the LEAP page print the floored amount in every
+    row, and only the manual''s rates handout (p.5) prints $10,453 for ten members, against $10,452 elsewhere (PR
+    11138). FY2027 prints only the percentage contribution bands, so their dollar boundaries keep the FY2026 rounding.'
 - id: us-co:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2640,6 +2720,37 @@ candidates:
   note: The statutory dependent definition controls the actual-claim wording in the confirmed 2021, 2022 and 2025
     instructions. The same statutory definition applies in 2026. The federal exception for claiming one's own
     dependents does not remove the claimant's dependent status. Either eligible spouse may claim for the couple.
+- id: us-de:eitc-refundable-option-start-year
+  program: income-tax
+  years:
+    from: 2021
+    to: 2022
+    type: tax
+  question: Does Delaware first offer the refundable earned income tax credit option in tax year 2021 or 2022?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1117(a)(1) and (a)(2), Title 30 PDF page 50
+    url: https://delcode.delaware.gov/title30/Title30.pdf#page=50
+  - kind: statute
+    citation: 83 Del. Laws, chapter 118 (HB 16), sections 1 and 2
+    url: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
+  - kind: guidance
+    citation: Official HB 16 bill detail, effective December 1, 2022, and Finance notice tooltip
+    url: https://www.legis.delaware.gov/BillDetail?legislationId=48193
+  - kind: instructions
+    citation: 2021 Delaware resident income tax instructions, line 33, PDF page 9
+    url: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=9
+  readings:
+    statute: The 20% credit remains nonrefundable before tax year 2022. From tax year 2022, a filer may choose that liability-limited credit or a refundable credit equal to 4.5% of federal earned income tax credit.
+    other: The 2021 resident instructions permit the 4.5% refundable alternative on a 2021 return.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/credits/eitc/refundable.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10960
+  state: ruled
+  note: The act keys applicability to January 1 of the contingency year; the official effective-date record and codified statute identify 2022. Preserve the nonrefundable alternative and existing election mechanics. The contrary instruction passage has a two-line document-reader transcript; native PDF bytes and full-page verification remain unavailable.
 - id: us-de:529-subtraction-exact-agi-limit
   program: income-tax
   years:
@@ -2734,6 +2845,41 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-breathing-condition
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does a household member with a chronic breathing condition count as a targeted member for the Delaware
+    Summer Cooling Assistance electric benefit, as plan item 3.3 provides, or only for an air conditioner, as the
+    manual provides?
+  sources:
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 303.2 to 303.4, PDF pages 21-23
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=21
+  readings:
+    statute: No statute is supplied; plan item 3.3 targets the program to households with members "sixty or older,
+      disabled, children five and under, and members that suffer from chronic breathing conditions".
+    other: The manual pays the electric benefit to an applicant "60 years or older and/or disabled" and names
+      breathing conditions, with written documentation from a doctor, only for air conditioners.
+  example: One adult aged 45 with asthma, wages of $18,000 and a cooling cost is a targeted household under the plan,
+    and reaches only an air conditioner under the manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11112
+  state: ruled
+  note: Ruled 2026-11-18 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/11112#issuecomment-6990706166.
+    Follow the FY2026 and FY2027 plans. The has_chronic_breathing_condition input is authorized.
 - id: us-de:liheap-cooling-heating-bill
   program: liheap
   years:
@@ -2846,6 +2992,53 @@ candidates:
     checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
     from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
     (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
+- id: us-de:military-pension-survivor-annuity
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does an annuity paid to a uniformed-services member's survivor, such as a Survivor Benefit Plan annuity,
+    count as a "United States military pension" under 30 Del. C. 1106(b)(3), or only the retiree's own retired pay, as
+    the PIT-RES Line 6 instructions provide?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1106(b)(3)f.2, added as (b)(3)c.2 by 84 Del. Laws c. 437 (SB 329, approved September 26, 2024)
+    url: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2024
+    url: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=6
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2025
+    url: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=6
+  readings:
+    statute: '"United States military pension" means a pension received as a result of an individual''s service in the
+      Army, Navy, Air Force, Marine Corps, Space Force, Coast Guard, the commissioned corps of the National Oceanic and
+      Atmospheric Administration, the commissioned corps of the Public Health Service, or the National Guard. A
+      survivor''s annuity is received as a result of the deceased member''s service.'
+    other: The instructions give the military pension exclusion to a filer who "retired from the United States military
+      and received pension income", which leaves a survivor's annuity in the $2,000 or $12,500 pension exclusion.
+  example: In 2024 a 50-year-old with a $3,000 Survivor Benefit Plan annuity and no other income excludes $3,000 under
+    the statute and $2,000 under the instructions. In 2029 a 50-year-old with a $30,000 annuity excludes $25,000 under
+    the statute, and $2,000 if the instructions keep their retiree-only wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/pension/military_income_sources.yaml
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/pension_exclusion/de_pension_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10716
+  state: ruled
+  note: Definitions control, so from 2024 the military pension branch counts retired pay and survivor annuities
+    (military_retirement_pay and military_retirement_pay_survivors), each person's total under one cap. 83 Del. Laws
+    c. 352 (approved July 20, 2022) created the military pension exclusion for 2022 without defining the term, and the
+    2022 and 2023 instructions give it to a filer who retired from the military. 84 Del. Laws c. 437 (approved September
+    26, 2024) put the definition in (b)(3)c., which applies "for the purposes of this paragraph (b)(3)" and so reaches
+    b., the rule for taxable years beginning on or after January 1, 2022; the act has no effective-date or applicability
+    section. Three start years have support, 2022 (when the provision the definition attaches to begins), 2024 (the tax
+    year of approval) and 2025 (the first full tax year after approval). The code starts the definition in 2024 and reads retired
+    pay alone for 2022 and 2023, as those years' instructions did. The SB 219 fiscal note (assumption 4) counts "1,337
+    survivors receiving a military pension" in Delaware. The Axiom corpus holds none of these texts, so captures of
+    1106(b)(3) and both years' Line 6 pages are in source_conflicts/sources/us-de/.
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -4592,6 +4785,44 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; the rule requires changing claimability to actual claim, after confirming
     the statutory text reproduced in the administrative rule. Code not yet on main: il_personal_exemption.'
+- id: us-il:scretd-household-income-nontaxable-pension
+  program: property-tax-deferral
+  years:
+    from: 2025
+    type: tax
+  question: Does household income for the Illinois Senior Citizens Real Estate Tax Deferral count the part of pension
+    payments left out of federal gross income, as section 3.07(C) counts amounts received as an annuity under any
+    contract or agreement, or only the federally taxable part of pension benefits, as Form IL-1017 and PIO-64 list?
+  sources:
+  - kind: statute
+    citation: 320 ILCS 25/3.07(C), applied to the deferral by 320 ILCS 30/2(h)
+    url: https://www.ilga.gov/Documents/legislation/ilcs/documents/032000250K3.07.htm
+  - kind: form
+    citation: Form IL-1017 (R-11/25), Worksheet A lines 3 and 4 (PDF page 2) and General Information (PDF page 3)
+    url: https://cookcountytreasurer.com/pdfs/seniordeferral/IL-1017%20Form%20TY%202025.pdf#page=2
+  - kind: guidance
+    citation: Illinois Department of Revenue PIO-64, What is included in household income
+    url: https://tax.illinois.gov/research/publications/pio-64.html
+  readings:
+    statute: Section 3.07 adds to federal adjusted gross income, to the extent deducted or excluded from gross income in
+      computing it, "(C) An amount equal to all amounts received during the taxable year as an annuity under an
+      annuity, endowment or life insurance contract or under any other contract or agreement".
+    other: Worksheet A line 3 counts "Civil Service benefits (household total)" and line 4 "Annuity benefits and
+      federally taxable pension and IRA benefits"; the form's General Information and PIO-64 list "Pension and IRA
+      benefits (federally taxable portion only)".
+  example: In 2025 a claimant with a $40,000 employer pension, $4,000 of it a tax-free return of contributions, and
+    $36,000 of taxable interest has AGI of $72,000. Household income is $76,000 under section 3.07(C), over the
+    $75,000 limit, and $72,000 under the form, within it.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/il/idor/scretd/household_income_additions.yaml
+    prs: []
+  state: unreviewed
+  note: PolicyEngine adds tax_exempt_pension_income, the part of pension and annuity payments left out of gross income,
+    because section 3.07(C) reaches annuities paid under "any other contract or agreement" and the form itself counts
+    Civil Service benefits and annuity benefits in full. Nontaxable IRA and Roth distributions are not annuities and
+    are not added, as on the form.
 - id: us-il:snap-child-support-exclusion
   program: snap
   years:
@@ -5245,6 +5476,83 @@ candidates:
     CPI-U change rounded to one decimal and double the rounded single deduction for joint, head of household and
     surviving spouse filers (standard/amount.yaml, retirement/cap.yaml, extend_la_cpi_u_indexed_amounts in uprating_extensions.py).
     Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions.'
+- id: us-la:dependent-exemption-of-a-claimable-filer-with-filing-exception
+  program: income-tax
+  years:
+    from: 2021
+    to: 2024
+    type: tax
+  question: Does a claimable filer whose claimant meets the refund-only filing exception receive the additional
+    dependent exemption, or does the child's exemption first satisfy the personal exemption requirement?
+  sources:
+  - kind: statute
+    citation: Pre-2025 La. R.S. 47:294, introductory paragraph and Subsections A and B; Act 11 of 2024 Third Extraordinary Session, pages 7 and 161
+    url: https://www.legis.la.gov/legis/ViewDocument.aspx?d=1391656#page=7
+  - kind: statute
+    citation: 26 U.S.C. 151(b), (c), (d)(2) and (d)(5), 2024 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/pdf/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec151.pdf
+  - kind: instructions
+    citation: 2021 IT-540 instructions, Lines 6A through 6D, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3
+  - kind: instructions
+    citation: 2022 IT-540 instructions, Lines 6A through 6F, PDF page 2
+    url: https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2
+  - kind: instructions
+    citation: 2023 IT-540 instructions, Lines 6A through 6F, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+  - kind: instructions
+    citation: 2022 Louisiana Tax Table, single and married-separate filers, PDF page 1
+    url: https://dam.ldr.la.gov/taxforms/IT540(2022)%20Tax%20Table.pdf#page=1
+  - kind: instructions
+    citation: 2023 Louisiana Tax Table, single and married-separate filers, PDF page 1
+    url: https://dam.ldr.la.gov/taxforms/IT540(2023)%20TT.pdf#page=1
+  - kind: instructions
+    citation: 2024 IT-540 instructions, Lines 6A through 6F and single-filer tax table, PDF pages 3 and 18
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3
+  - kind: guidance
+    citation: IRS Publication 501 (2024), Dependent Taxpayer Test, PDF page 11
+    url: https://www.irs.gov/pub/irs-prior/p501--2024.pdf#page=11
+  - kind: guidance
+    citation: Louisiana Revenue Ruling 18-001, December 21, 2018, pages 1 through 4
+    url: https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf
+  readings:
+    statute: In the introductory paragraph of pre-2025 R.S. 47:294, legislators required taxpayers to claim the same
+      exemptions as on their federal return. Congress zeroed a claimable filer's federal exemption amount under section
+      151(d)(2). One reading treats that as losing the filer's exemption, allocates the child's exemption to Subsection A
+      and leaves none for B. Another distinguishes the amount from the count, uses the filer's exemption for A and claims
+      the child's exemption under B.
+    other: >-
+      In its 2021-2024 Lines 6A and 6B instructions, LDR requires the federal number of exemptions unless "you are
+      listed as a dependent on someone else’s return" or another listed condition applies. LDR counts the filer on
+      Line 6A even when someone else claims them, and federal dependents on Line 6C. LDR subtracts one from that
+      total in its 2022-2024 single-filer tables, leaving one additional exemption for the child.
+  example: A 2024 claimable single filer aged 20 with one child aged 4 and a refund-only claimant receives
+    $1,000 for the child, $4,500 for the filer, and $5,500 in total exemptions, without blind or aged exemptions.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_personal_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/la_exemptions.py
+    - policyengine_us/parameters/gov/states/la/tax/income/exemptions/dependent.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_claimable_filer_exemptions.yaml
+    - policyengine_us/tests/core/test_la_claimable_filer_exemption_invariants.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+    - https://github.com/PolicyEngine/policyengine-us/pull/10833
+  state: unreviewed
+  note: PE-US retains the agency tie-break reading pending project-lead confirmation. Legislators supplied filing-status
+    amounts in A without identifying which exemptions satisfy A when they wrote B. Both statutory readings remain
+    open. The cited instructions start in 2021, so this entry does not assess earlier years. The legislature replaced
+    the exemptions from 2025 in Act 11 under section 6. For a single filer without blind, aged or adoption adjustments, LDR counts
+    the filer and one federal dependent as two exemptions. LDR uses one for the personal allowance and adds
+    $1,000 for the child. Keep the formula and the existing filing-exception case unchanged. PE-US treats the joint
+    spouse by analogy with the head; the cited Louisiana instructions do not resolve the claimable spouse's
+    Line 6B exemption. LDR distinguished exemption counts from amounts for 151(d)(5) in Revenue Ruling 18-001,
+    without addressing 151(d)(2) or this class. No cited LDR ruling or court holding resolves this class.
+    Full-page official text captures accompany this entry under source_conflicts/sources/us-la/; Revenue Ruling
+    18-001 page 2 quotes the pre-2025 statute without Act 11's strikethrough extraction ambiguity.
 - id: us-la:liheap-plan-income-checklist
   program: liheap
   years:
@@ -5464,33 +5772,67 @@ candidates:
   program: connectorcare
   years:
     from: 2026
-    to: 2026
     type: program
-    note: program year as the program defines it
-  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the Overview's
-    100-400% range?
+    note: Health Connector plan year beginning January 1.
+  question: Does ConnectorCare cover the regulation's below-100% and 400.1-500% FPL plan types or only the 100-400% FPL
+    range of the 2026 Overview and the 2027 Guide, and does the limit fall to the statute's 300% FPL once the Expansion
+    Pilot ends after plan year 2027?
   sources:
+  - kind: statute
+    citation: M.G.L. c.176Q s.3(b)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter176Q/Section3
+  - kind: statute
+    citation: St. 2023 c.28 s.81, ConnectorCare Expansion Pilot
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+  - kind: statute
+    citation: St. 2025 c.9 s.96
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2025/Chapter9
+  - kind: statute
+    citation: St. 2026 c.137 (FY2027 General Appropriation Act) ss.92-93 and 102
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter137
   - kind: regulation
-    citation: 956 CMR 12.04(3), including 12.04(3)(b)2
+    citation: 956 CMR 12.04(3)(a)1-2 and (b), with 12.04(2)(b)
     url: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
   - kind: guidance
     citation: ConnectorCare Overview 2026, Table 2 income bands
     url: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+  - kind: guidance
+    citation: Health Connector 2027 Guide to Subsidies, Plan Type 3C (300% to 400% FPL)
+    url: https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1
   readings:
-    statute: The regulation covers up to 500% FPL, including Plan Type 1 below 100% and Type 3D at 400.1-500%.
-    other: The Overview covers 100-400% FPL and Types 2A-3C.
+    regulation: '956 CMR 12.04(3)(a)1 reads "at or below 500 percent of the FPL", with no end date, and 12.04(3)(b)
+      still defines Plan Type 1 below 100% FPL and Plan Type 3D at 400.1-500% FPL. 12.04(3)(a)2 also requires
+      eligibility for a Non-Group Health Plan with APTC only under 12.04(2)(a) and (b), and 12.04(2)(b) requires
+      eligibility for federal Advance Premium Tax Credits under 45 CFR 155.305(f). St. 2023 c.28 s.81(a) has the pilot
+      extend eligibility "for applicants at or below 500 per cent of the federal poverty guidelines".'
+    guidance: The 2026 Overview covers 100-400% FPL and Plan Types 2A-3C, and says households above 400% FPL do not
+      qualify. The 2027 Guide keeps Plan Types 2A-3C, with 3C at 300% to 400% FPL, for plan year 2027.
+    statute: 'M.G.L. c.176Q s.3(b) limits premium assistance to applicants "at or below 300 per cent of the federal
+      poverty guidelines". Incomes over 300% qualify only under the pilot of St. 2023 c.28 s.81, which applies
+      "notwithstanding" that limit and began "not later than January 1, 2024". St. 2025 c.9 s.96 made it a 3-year
+      pilot and St. 2026 c.137 s.92 a "4-year" pilot, so it covers plan years 2024 to 2027; s.102 funds "the fourth
+      year of the pilot program". Section 93 moves the repeal of s.81 (St. 2023 c.28 ss.103 and 114) from December
+      31, 2027 to December 31, 2028 without lengthening the pilot, so from plan year 2028 the limit is 300% FPL.'
+  example: In 2028 one enrollee at 305% FPL, with an $8,000 benchmark premium and a $4,000 federal credit, gets no
+    ConnectorCare under the statute's 300% limit, or $1,096 as Plan Type 3C (12 x $242 enrollee premium) under a 400%
+    or 500% limit.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_floor.yaml
     - policyengine_us/parameters/gov/states/ma/hic/connector_care/fpl_limit.yaml
     - policyengine_us/variables/gov/states/ma/hic/connector_care/ma_connector_care_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9240
-  state: unreviewed
-  note: 'PE-US follows the Overview for 2026: income must be from 100% to 400% FPL, and the floor''s and limit''s
-    comments record the regulation''s Plan Type 1 and 3D bands, which are left unmodelled (fpl_floor.yaml, fpl_limit.yaml,
-    ma_connector_care_eligible.py). Reconcile the narrower coverage with the regulation.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/11154
+  state: open
+  note: 'For plan years 2026 and 2027 income must be from 100% to 400% FPL (fpl_floor.yaml and fpl_limit.yaml, read by
+    ma_connector_care_eligible.py). These bounds match the federal credit condition of 12.04(3)(a)2: from 2026 the
+    federal premium tax credit stops at 400% FPL and its below-100% exception is gone, and ma_connector_care_member_eligible.py
+    requires credit eligibility. The 2026 Overview and the 2027 Guide print the same band. From plan year 2028 the
+    code follows the statute: fpl_limit.yaml returns to 300% FPL, applied as "<=", over the regulation''s undated
+    500%, which rests on the pilot''s authority. A pilot extension in the FY2028 budget would be a one-line parameter
+    change. Not yet ruled.'
 - id: us-ma:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -6083,6 +6425,58 @@ candidates:
     at 2.00%, and the comment records that the briefing prints 1.00% at that boundary twice (target_contribution_percentage/initial.yaml
     and final.yaml, read by md_premium_assistance_target_contribution_percentage.py). Verify the suspected briefing
     error and 2027 applicability.'
+- id: us-md:premium-assistance-young-adult-age-cap
+  program: premium-assistance
+  years:
+    from: 2026
+    to: 2027
+    type: program
+    note: Maryland Health Connection plan year beginning January 1.
+  question: Does Maryland's Young Adult Subsidy reduce the expected contribution only for enrollees under 35, as COMAR
+    14.35.19.03A(4) reads, or through age 37, as the MHBE Board's parameters taper it?
+  sources:
+  - kind: statute
+    citation: Md. Insurance Article §31-122(d)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gin&section=31-122&enactments=false
+  - kind: regulation
+    citation: COMAR 14.35.19.03A(3) and (4)
+    url: https://regs.maryland.gov/us/md/exec/comar/14.35.19.03
+  - kind: policy
+    citation: MHBE Final 2026 State Subsidy and Reinsurance Parameters (Board 7-21-25), 2024-25 Young Adult Subsidy
+      Program Parameters, PDF page 14
+    url: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14
+  - kind: policy
+    citation: MHBE 2027 Final State Subsidy and Estimated Reinsurance Parameters (Board 8-4-26), expected contribution
+      note and 2024-26 Young Adult Subsidy Program Parameters, PDF pages 21 and 34
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/08/2027-Final-State-Subsidy-and-Estimated-Reinsurance-Parameters.pdf#page=21
+  - kind: policy
+    citation: MHBE Board meeting minutes of August 4, 2026, PY2027 state subsidy motion, PDF page 8
+    url: https://www.marylandhbe.com/wp-content/uploads/2026/09/MHBE-Board-Meeting-Minutes-8.04.26.pdf#page=8
+  readings:
+    regulation: 'COMAR 14.35.19.03A makes an enrollee eligible only if "(3) The enrollee is at least 18 years old; and
+      (4) The enrollee is under the age of 35 years", so enrollees aged 35 to 37 get no reduction. The Insurance Article
+      sets no age cap of its own: §31-122(d)(1) has the Exchange, as approved by the Board, set the eligibility and
+      payment parameters for each calendar year, and (d)(2)(i) has it consider "young adults at least 18 years old and
+      under the age of 41 years".'
+    other: 'The Board''s parameters reduce the expected contribution by 2.5 percentage points at ages 18 to 33 and by
+      2.0, 1.5, 1.0 and 0.5 points at ages 34 to 37 ("Age: 18-37 (18 or older; younger than 38)"), and the Board
+      continued the 2026 Young Adult Subsidy parameters for PY2027.'
+  example: In 2027 a single filer aged 36 at exactly 300% FPL ($47,880), with a $7,000 benchmark premium and a $2,106.66
+    federal credit, has a 7.11% target contribution and $1,489.07 of state subsidy under the Board's taper, or an 8.11%
+    target and $1,010.27 under the under-35 cap.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/md/mhbe/premium_assistance/young_adult/reduction.yaml
+    - policyengine_us/variables/gov/states/md/mhbe/premium_assistance/md_premium_assistance_young_adult_reduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11153
+  state: ruled
+  note: PolicyEngine follows the Board's schedule, which MHBE applies, under a project-lead ruling of 2026-11-18;
+    young_adult/reduction.yaml reduces the target contribution through age 37 in 2026 and 2027. No COMAR amendment
+    was found; the regulation still reads "under the age of 35 years". The Board's tables have tapered the reduction
+    through age 37 since 2024 (2026 deck, PDF page 14). Slide 25 of the 2027 deck prints ages 19-33, but slides 21
+    and 34 and the adopted motion keep 18, so PolicyEngine keeps 18.
 - id: us-md:snap-child-support-deduction
   program: snap
   years:
@@ -6739,6 +7133,60 @@ candidates:
     The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
     We exclude 2026 from the years above because the Department still labels that form a draft.
     The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
+- id: us-mn:amt-charitable-contribution-floor
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: >-
+    Does a Minnesota itemizer subtract the federal section 170 charitable
+    deduction when computing alternative minimum taxable income, or the
+    Minnesota charitable amount that draft Schedule M1MT takes from M1SA?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.091, subd. 2(a)(2)(i)
+    url: https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.2
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 4(a); Laws 2026, ch. 128, art. 1, sec. 4
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.4
+  - kind: statute
+    citation: Public Law 119-21, section 70425(a)(1) and (c)
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
+  - kind: form
+    citation: 2026 Schedule M1MT, line 11, final draft October 1, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-10/m1mt-26.pdf#page=1
+  - kind: form
+    citation: 2026 Schedule M1SA, lines 18-21, final draft November 4, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=1
+  readings:
+    statute: >-
+      Preserve the federal section 170 charitable deduction in Minnesota
+      alternative minimum taxable income, including the federal 0.5% floor
+      from 2026. Section 290.091 does not substitute Minnesota's charitable
+      amount for that federal deduction.
+    other: >-
+      Subtract Minnesota's charitable amount from M1SA line 21, including
+      Minnesota's 1% floor from 2026, as draft M1MT line 11 directs.
+  example: >-
+    An itemizer with $100,000 of adjusted gross income and $4,000 of current-year
+    gifts deducts $3,500 federally and $3,000 in Minnesota. With no other
+    adjustments, the filer computes $96,500 of alternative minimum taxable
+    income under the statute and $97,000 under draft M1MT.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/amt/mn_amt_taxable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10872
+  state: ruled
+  note: >-
+    Follow the statute under CONTRIBUTING.md's statute-first principle. Preserve
+    the federal charitable_deduction in Minnesota AMT. Capture the relevant
+    statutory and draft-form text under source_conflicts/sources/us-mn before
+    registering the ruling after merge. The draft M1SA adds prior-year
+    carryovers after its floor; the example uses only current-year gifts.
+    The conflict ends if the department takes the federal section 170 amount
+    on line 11 of its final 2026 Schedule M1MT.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -8169,6 +8617,47 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-capital-losses
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does a net capital loss reduce renter's refund income, when the renter's refund application counts net
+    gains from the sale of property and the homestead credit application, under the same definition of income, takes
+    Form 1040 line 7, which allows a net loss of up to $3,000?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 7 and 8 and the instructions for lines 4 to 9, pages 1 and 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, line 4e
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=1
+  readings:
+    statute: Income is income "for the most recent complete taxable year from all sources", with no rule for losses.
+    other: The instructions for lines 4 to 9 of SFN 24777 and item 10 of the guideline list "net gains from the sale of
+      property" as income, and SFN 24777 line 7 asks for capital gains with no line for a loss. SFN 24757 line 4e asks
+      for "Capital gains and losses (From Form 1040 or 1040-SR, line 7)", where IRC 1211(b) allows a net loss of up to
+      $3,000.
+  example: A renter with $30,000 of wages and a $20,000 net long-term capital loss has income of $30,000 under SFN
+    24777 and $27,000 under SFN 24757 line 4e.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/net_gain_components.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11187
+  state: ruled
+  note: Ruled 2026-11-19 for the renter's refund application, the form the Tax Commissioner prescribes for this program
+    under N.D.C.C. 57-02-08.1(3). Before, the model let the whole loss reduce income, which no source supports. The
+    applicant's and spouse's gains and losses net together, as on line 7 and a joint Form 1040, and each dependent's net
+    loss counts as zero.
 - id: us-nd:renters-refund-federally-excluded-income
   program: renter-credit
   years:
@@ -8440,8 +8929,7 @@ candidates:
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the stillborn-child subtraction require federal dependent eligibility under the form when the statute
     allows it for each stillbirth?
@@ -8453,17 +8941,18 @@ candidates:
     citation: 2025 Schedule ND-1SA line 8, p. 2
     url: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/28710-schedule-nd-1sa-2025.pdf#page=2
   readings:
-    statute: The subtraction applies for each birth resulting in stillbirth without the added dependency condition.
+    statute: A filer subtracts an allowance for each birth resulting in stillbirth without a dependency condition.
     other: The filer must have been eligible to claim the child federally.
-  example: A claimable filer receives $5,241 under the statutory reading versus $0 under the form.
+  example: In 2025, a claimable filer receives $5,241 under the statutory reading versus $0 under the form.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s added dependency condition if confirmed; the requested
-    decision remains open. Code not yet on main: nd_stillborn_subtraction.'
+  state: ruled
+  note: PE-US counts tax_unit_stillborn_children without a dependency test, following section 57-38-30.3(2)(p).
+    The 2021 to 2024 schedules carry the same condition on page 2 (line 5 in 2021 and 2022, line 8 from 2023).
 - id: us-ne:claim-of-right-obsolete-revenue-ruling
   program: income-tax
   years:
@@ -8626,6 +9115,39 @@ candidates:
     wait, and the NOTE records AAM 305.13''s contrary rule (nh_ssp_eligible.py, immigration/permanent_resident_qualifying_quarters.yaml).
     The quarters come from snap_alien_qualifying_quarters, which defaults to 0. The manual may rest on 8 U.S.C.
     1624, which lets a State restrict general cash public assistance; whether the adult categories are that is unsettled.'
+- id: us-nj:childless-eitc-listed-as-dependent
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a childless New Jersey filer outside the federal EITC ages claim the NJEITC when another return lists
+    the filer as a dependent but the filer meets the federal dependency test?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(4), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: The filer must meet every federal EITC qualification except the minimum or maximum age. The federal
+      test bars a filer for whom another taxpayer may deduct an exemption, and neither provision asks whether
+      another return lists the filer.
+    other: The filer must also not be listed as a dependent on another tax return.
+  example: In 2025, a single childless filer aged 20 with $5,000 of wages, listed by a claimant who files only for a
+    refund, gets $259.60 under the statute and $0 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_childless_eitc_age_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal dependency test with Publication 596's claimant filing exception and no listing
+    test. The 2021 to 2024 instructions carry the same sentence (line 57 in 2021, line 58 from 2022).
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
@@ -8690,6 +9212,44 @@ candidates:
   state: ruled
   note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
     claim the credit on a separate return.
+- id: us-nj:liheap-cooling-amount
+  program: liheap
+  years:
+    from: 2022
+    type: federal-fiscal
+  question: Is the medically necessary cooling benefit $100 under the regulation or $300 under the handbooks?
+  sources:
+  - kind: regulation
+    citation: N.J.A.C. 5:49-3.3(a) and 5:49-3.6(d) (chapter readopted effective 2025-09-22)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-3-3
+  - kind: manual
+    citation: FY2026 and FY2027 LIHEAP Handbooks, sections 3.4.A and 3.7.D
+    url: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=14
+  - kind: guidance
+    citation: FY2026 USFHEA fact sheet, page 1 ($300.00 medically necessary cooling benefit)
+    url: https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=1
+  - kind: guidance
+    citation: FY2027 USFHEA fact sheet, page 1 ($300.00 medically necessary cooling benefit)
+    url: https://nj.gov/dca/dhcr/offices/docs/FY2027%20USFHEA%20Factsheet%20-%20English.pdf#page=1
+  - kind: plan
+    citation: New Jersey FY2027 LIHEAP State Plan, item 3.6 (cooling minimum $118, maximum $1,278), PDF page 12
+    url: https://liheapch.acf.gov/docs/2027/state-plans/NJ_Plan_2027.pdf#page=12
+  readings:
+    statute: No statute supplied; the codified regulation sets a one-time benefit of $100.00 and says medically
+      necessary cooling assistance shall not exceed $100.00.
+    other: The handbooks set a one-time benefit of $300.00 and cite N.J.A.C. 10:89-3.3 as capping it at $300.00; the
+      fact sheets print $300.00; the plan prints neither figure, only a $118 to $1,278 cooling range.
+  example: In FY2026 an eligible household receives $300 under the handbooks or $100 under the regulation.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/nj/dca/liheap/cooling/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11116
+  state: ruled
+  note: Ruled 2026-11-18 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/11116#issuecomment-6990706668.
+    Follow the handbooks and pay $300, as for us-nj:liheap-income-ceiling. The FY2026 value is applied back to FY2022,
+    and those earlier years are unverified.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
@@ -8736,14 +9296,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_eligible.py
+    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/nj/dca/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10279
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
-    than" (nj_liheap_eligible.py).
+    than" (nj_liheap_income_eligible.py).
 - id: us-nj:liheap-tanf-and-general-assistance-income
   program: liheap
   years:
@@ -8769,6 +9329,202 @@ candidates:
   state: unreviewed
   note: PE-US counts TANF under the handbook; obtain the plan URL, verify the anchor and General Assistance treatment,
     and do not infer a contrary handbook rule for strike pay.
+- id: us-nj:medicaid-abd-income-limit-rounding
+  program: medicaid
+  years:
+    from: 2018
+    to: 2026
+    type: calendar
+  question: Is New Jersey's monthly Medicaid income standard for aged, blind and disabled people 1/12 of the poverty
+    guideline rounded down, as N.J.A.C. 10:72-4.1(a) says, or rounded up, as each year's DMAHS income-standards chart
+    prints?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(m)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#m_2_A
+  - kind: regulation
+    citation: N.J.A.C. 10:72-4.1(a) and (d)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-1
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 18-01, Income Eligibility Standards Effective January 1, 2018 (February 1, 2018),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2018/18-01_Income_Eligibility_Standards_Effective_1-1-2018.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 19-03, Income Eligibility Standards Effective January 1, 2019 (February 4, 2019),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2019/19-03_Income_Eligibility_Standards_Effective_1-1-19.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 20-02, Income Eligibility Standards Effective January 1, 2020 (February 19, 2020),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2020/20-02_2020_Income_Eligibility_Standards_Effective_1-1-2020.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 21-02, Income Eligibility Standards Effective January 1, 2021 (March 5, 2021),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2021/21-02_Income_Standards_Effective_1-1-2021.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 22-02, Income Eligibility Standards Effective January 1, 2022 (February 25, 2022),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2022/22-02%20Income%20Standards%20Effective1.1.%202022.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 23-02, Income Eligibility Standards Effective January 1, 2023 (February 22, 2023),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2023/23-02%20Income%20Eligibility%20Standards.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 24-02, Income Eligibility Standards Effective January 1, 2024 (March 1, 2024),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2024/24-02_Income_Eligibility_Standards_Effective_1-1-2024.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 25-03, Income Eligibility Standards Effective January 1, 2025 (February 28, 2025),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2025/25-03%20Income%20Eligibility%20Standards%20Effective%20January%201,%202025.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 26-03, Income Eligibility Standards Effective January 1, 2026 (February 26, 2026),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2026/26-03_Income_Eligibility_Standards_Effective_January-1-2026.pdf#page=3
+  readings:
+    statute: The statute caps the income level at "not more than 100 percent" of the poverty line. The regulation sets
+      the monthly standard at 1/12 of the annual guideline "rounded down to the next whole dollar amount for household
+      unit sizes of one and two", and income must be "equal to or less than the income limit" (4.1(d)). In 2026 the
+      standards are $1,330 for one person and $1,803 for two.
+    other: Each chart prints 1/12 of the guideline rounded up. For two people it prints $1,372, $1,410, $1,437, $1,452,
+      $1,526, $1,644, $1,704, $1,763 and $1,804 (2018 to 2026); the regulation gives $1 less in each year. For one
+      person it prints $1,012, $1,041, $1,064, $1,074 and $1,133 (2018 to 2022) and $1,305 (2025), again $1 above
+      the regulation. Each of these amounts exceeds 100 percent of that year's guideline. The one-person amounts for
+      2023, 2024 and 2026 ($1,215, $1,255 and $1,330) divide exactly, and the readings agree there.
+  example: In 2025, a single aged person with $1,304.50 of countable income a month ($15,654 a year) is over the
+    regulation's $1,304 standard and the statute's $1,304.17 cap, but within the chart's $1,305.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/rounds_monthly_limit_down.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10985
+  state: ruled
+  note: 'PE-US rounds New Jersey''s monthly standard down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
+    applied in medicaid_optional_senior_or_disabled_income_limit.py) and admits income equal to the standard. The
+    statute-first rule decides the conflict: 42 U.S.C. 1396a(m)(2)(A) and N.J.A.C. 10:72-4.1(a) agree in every year,
+    and every chart amount that differs exceeds the statute''s cap. All nine charts from 2018 to 2026 were checked.
+    The corpus holds the 2026 chart; page 3 of the 2018 to 2025 charts is captured under source_conflicts/sources/us-nj/.
+    The model applies New Jersey''s 2018 values back to 2015, and the 2015 to 2017 charts were not checked. Pinning
+    cases: the New Jersey cases in medicaid_optional_senior_or_disabled_income_limit.yaml (2026 couple, 2025 single,
+    2021 couple) and is_optional_senior_or_disabled_income_eligible.yaml (2026 couple at the limit and one dollar
+    over).'
+- id: us-nj:medicaid-caretaker-relative-any-adult
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Is an adult who lives with and cares for an unrelated child, such as a foster child, a caretaker relative
+    for New Jersey's parent and caretaker relative group, as the approved state plan elects, or only a listed relative,
+    as N.J.A.C. 10:69 reads?
+  sources:
+  - kind: plan
+    citation: New Jersey approved state plan S25 (NJ-13-0011-MM1), approved 02/28/2014, effective 01/01/2014
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
+  - kind: regulation
+    citation: 42 CFR 435.4, caretaker relative, paragraph (3)
+    url: https://www.law.cornell.edu/cfr/text/42/435.4
+  - kind: regulation
+    citation: 'N.J.A.C. 10:69-1.5 ("Caretaker relative", "Dependent child", "Parent-person") and 10:69-3.10(a)1 #page
+      9-10,12,64'
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_69%20AFDC-RELATED%20MEDICAID.PDF#page=9
+  - kind: regulation
+    citation: N.J.A.C. 10:78-1.1(a), NJ FamilyCare program outline
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=4
+  readings:
+    statute: No statute is supplied; 42 CFR 435.4 paragraph (3) lets a state include "an adult with whom the child is
+      living and who assumes primary responsibility for the dependent child's care", and S25 checks that option.
+    other: N.J.A.C. 10:69, readopted effective July 15, 2024, defines a dependent child as one living "with a parent or
+      other enumerated relative" and limits a parent-person to listed relatives (grandparents, siblings, step-relatives,
+      aunts, uncles, first cousins, nephews and nieces).
+  example: A New Jersey adult earning $3,600 a year who lives with and cares for an unrelated 8-year-old foster child is
+    a caretaker relative under S25, and so in the parent group; under N.J.A.C. 10:69 the adult has no parent role and
+    falls to the adult group.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/caretaker_relative/any_adult_option.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_parent_for_medicaid_nfc.py
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_child_of_medicaid_caretaker.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10984
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962. Follow S25 over N.J.A.C. 10:69.
+    A state elects the 42 CFR 435.4 paragraph (3) option through its state plan, and S25 is the federally approved
+    description of New Jersey''s parent and caretaker relative group. N.J.A.C. 10:69 also keeps the AFDC-C and AFDC-F
+    segments and the deprivation test (10:69-3.15), which S25 removes for this group and the model leaves out for New
+    Jersey from 2014, so the chapter still carries rules the plan has replaced. Its own "Caretaker relative" definition
+    ("the legally responsible adult or adults residing with the children") names no relationship, and N.J.A.C.
+    10:78-1.1(a) (NJ FamilyCare) covers "parents, caretakers and caretaker relatives", naming caretakers apart from
+    caretaker relatives. A relative caring for a foster child, such as a grandmother, is a caretaker under both texts.
+    No later New Jersey amendment replaces S25.'
+- id: us-nj:medicaid-cover-all-kids-immigration-status
+  program: medicaid
+  years:
+    from: 2023
+    type: calendar
+  question: Does New Jersey enroll children under 19 in NJ FamilyCare whatever their immigration status, as each
+    appropriations act from FY2023 authorizes, although N.J.S.A. 30:4J-11 and N.J.A.C. 10:78-3.2(a) and 10:79-3.2(a)
+    still require citizenship or an eligible immigration status?
+  sources:
+  - kind: statute
+    citation: P.L.2022, c.49 (FY2023 Appropriations Act), Division of Medical Assistance and Health Services language,
+      repeated in P.L.2023, c.74; P.L.2024, c.22; P.L.2025, c.74; and P.L.2026, c.27
+    url: https://pub.njleg.state.nj.us/bills/2022/AL22/49_.PDF#page=106
+  - kind: statute
+    citation: N.J.S.A. 30:4J-11, "qualified applicant" (a)(4), as amended by P.L.2008, c.38, section 3
+    url: https://pub.njleg.gov/bills/2008/PL08/38_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 10:78-3.2(a)
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=33
+  - kind: regulation
+    citation: N.J.A.C. 10:79-3.2(a)
+    url: https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_79%20NJ%20FAMILYCARE-CHILDRENS%20PROGRAM.pdf#page=30
+  - kind: guidance
+    citation: New Jersey Department of Human Services, FY 2022-2023 Discussion Points, response 5
+    url: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2023/DHS_response_2023.pdf#page=12
+  readings:
+    statute: Each appropriations act from FY2023 through FY2027 authorizes payments "to enroll in NJ FamilyCare any
+      child who, except for immigration status, meets financial and other eligibility provisions of the program",
+      "notwithstanding the provisions of any law or regulation to the contrary". The Department of Human Services began
+      enrollment on January 1, 2023.
+    other: N.J.S.A. 30:4J-11 limits a qualified child applicant to one "who is a citizen of the United States, or has
+      been lawfully admitted for permanent residence into and remains lawfully present in the United States", and
+      N.J.A.C. 10:78-3.2(a) requires "a citizen of the United States, an alien lawfully admitted for permanent
+      residence, or an alien who can be classified as an eligible alien". For the NJ FamilyCare-Children's Program,
+      N.J.A.C. 10:79-3.2(a) says "an individual must be a citizen of the United States, or an eligible alien in
+      accordance with this chapter".
+  example: In 2024 an undocumented 12-year-old in a New Jersey family at 202% of the poverty guideline is eligible for
+    the CHIP plans of NJ FamilyCare under the appropriations acts, which PE-US follows, and ineligible under N.J.S.A.
+    30:4J-11 and N.J.A.C. 10:79-3.2(a).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/regardless_of_immigration_status/child_age_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10987
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659
+  note: Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659. PE-US gives New Jersey
+    children under 19 a pass on the Medicaid and CHIP immigration tests from 2023 (child_age_limit.yaml, read in
+    is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py). The later appropriations
+    acts displace the earlier statute and regulations in their own words. Appropriations language lapses each fiscal year; the acts were checked
+    through FY2027, which ends June 30, 2027, and the model carries the age limit forward. P.L.2021, c.132, which the
+    Department of Human Services' Cover All Kids FAQ cites, has no immigration language. The Office of Legislative
+    Services' FY2023 analysis says no federal Medicaid or CHIP reimbursement is available for this group, so the
+    coverage is state-funded. N.J.A.C. 10:79 governs the NJ FamilyCare-Children's Program under N.J.S.A. 30:4D and
+    P.L.1997, c.272, so its citizenship rule reaches children at Medicaid and CHIP income levels. Both chapters were
+    read as published through 57 N.J.R. (June 16, 2025).
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
@@ -9476,13 +10232,63 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit.py
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
-    keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
-    credit under the statute; verify the instructions'' return-level interpretation.'
+    keeps it when the spouse can be claimed (ny_real_property_tax_credit_potential.py). Ruled in October 2026 to
+    retain the credit under the statute; verify the instructions'' return-level interpretation.'
+- id: us-ny:real-property-credit-aged-dependent
+  program: income-tax
+  years:
+    from: 2024
+    to: 2024
+    type: tax
+  question: Before 2025, does a household get the real property tax credit limit for those aged 65 or older when its
+    only member aged 65 or older is claimed as a dependent and so cannot file Form IT-214?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(e)(1)(A)(i), 606(e)(3)(A)(i), 606(e)(6)(A), 606(e)(7)(E)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, page 1
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=1
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, line 7 (page 2) and line 32 chart (page 3)
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2
+  readings:
+    statute: 606(e)(6)(A) gives the credit for those aged 65 or older "where two or more members of a household are
+      able to meet the qualifications of a qualified taxpayer and one of them is sixty-five years of age or more".
+      606(e)(1)(A)(i) defines a qualified taxpayer as "a resident individual of the state who has occupied the same
+      residence for six months or more of the taxable year, and is required or chooses to file a return under this
+      article"; 606(e)(7)(E) denies the credit to a claimed dependent but does not change that definition. Page 1 of
+      the 2024 instructions says "If at least one member of your household is age 65 or older, the credit can be as
+      much as $375."
+    other: Line 7 of the 2024 instructions asks for "any household member who is filing Form IT-214 and was 65 or
+      older on January 1, 2025", and the line 32 chart gives the column from $375 down to $86 only where "you made an
+      entry on line 7". Page 1 requires that "You could not be claimed as a dependent on another taxpayer’s federal
+      income tax return", so a household whose only member aged 65 or older is a claimed dependent gets the column
+      from $75 down to $41.
+  example: In 2024 a 40-year-old with $3,000 of wages pays $4,800 of rent and claims a 70-year-old parent with $12,000
+    of Social Security as a dependent. Household gross income is $15,000, so 25% of the rent ($1,200) less 6.5% of
+    income ($975) leaves $225, and half of it is $112.50. The statute reading caps the credit at $137 and allows
+    $112.50; the line 7 reading caps it at $47.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11170
+  state: open
+  note: PE-US follows the statute. Through 2024 ny_real_property_tax_credit_potential.py gives the elderly limit when
+    any household member is 65 or older, a tax unit dependent included. The readings differ in the model only when
+    every member aged 65 or older is a claimed dependent, because a member who is not a dependent can file Form IT-214
+    and the model gives the household's credit to the tax unit with the largest claim. The cases "2024 - dependent
+    aged 66 makes the elderly maximum cap apply" and "2024 - an aged parent claimed as a dependent gives the household
+    the elderly limit on rent an adult child pays" in ny_real_property_tax_credit.yaml pin the statute reading. From
+    2025, 606(e)(3)(B)(i) counts claimed dependents aged 65 or older. Only the 2024 instructions were checked. The
+    review of PR 11170 agreed to keep the statute; PolicyEngine has recorded no ruling.
 - id: us-ny:ssp-couple-facility-entry-month
   program: ssi-state-supplement
   years:
@@ -9628,6 +10434,55 @@ candidates:
     living alone with no income nothing instead of $87. New York has administered its own supplement since October
     1, 2014. Whether a state regulation that departs from the statute's text binds as a Treasury regulation would
     is not yet ruled.
+- id: us-ny:ccap-child-ssi-state-supplement-exclusion
+  program: child-care-assistance
+  years:
+    from: 2023
+    type: calendar
+  question: Does New York exclude children's SSI and state supplements from child care assistance income from October
+    1, 2023, while LII still reproduces the earlier text without the child exclusion?
+  sources:
+  - kind: regulation
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6)(xxi), current October 1, 2023, pages 10-12
+    url: https://web.archive.org/web/20240522174247id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+  - kind: regulation
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), current November 24, 2021, pages 10-12
+    url: https://web.archive.org/web/20220529152858id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+  - kind: regulation
+    citation: LII reproduction of 18 NYCRR 404.5, retrieved November 13, 2026
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5
+  - kind: rulemaking
+    citation: New York State Register, October 18, 2023, CFS-42-23-00002-EP, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2023/10/101823.pdf#page=7
+  - kind: rulemaking
+    citation: New York State Register, February 28, 2024, CFS-42-23-00002-ERP, printed pages 1-2
+    url: https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=7
+  - kind: rulemaking
+    citation: New York State Register, June 12, 2024, CFS-42-23-00002-A, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7
+  readings:
+    statute: No statute supplied; from October 1, 2023, OCFS excludes children's SSI, including state supplemental
+      payments, from child care assistance income under 404.5(b)(5)(vi) and (b)(6)(xxi).
+    other: LII still reproduces the text in force before October 1, 2023, which matches OCFS's November 24, 2021
+      compilation. Under that text, OCFS counts SSI and State supplemental payments for every member, and the exclusions
+      end at paragraph (xx).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/ocfs/ccap/ny_ccap_countable_income.py
+    - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/child_ssi_exclusion_in_effect.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10827
+  state: unreviewed
+  note: OCFS put the child exclusion into effect on October 1, 2023 through emergency rule CFS-42-23-00002-EP, whose
+    notice says OCFS "further proposes to exclude Supplemental Security Income, including state supplemental payments,
+    received by any child(ren)". Before then, OCFS counted children's SSI and supplements under 404.5(b)(5)(vi). OCFS
+    retained the exclusion in the February 2024 revised rule and adopted it permanently, without further changes,
+    effective June 12, 2024. LII's notes list the 2024 emergency amendments, but its text omits them. PolicyEngine
+    counts children's payments before October 1, 2023 and excludes them from that date. The captures under
+    source_conflicts/sources/us-ny/ preserve both OCFS compilations, LII's text and the three rulemaking notices. We
+    could not reach OCFS's live copy in November 2026, so the current text rests on the archived October 2023
+    compilation and the June 2024 adoption notice.
 - id: us-oh:heap-2026-2027-large-household-smi-amounts
   program: liheap
   years:
@@ -10046,6 +10901,57 @@ candidates:
   note: The model follows the rules and does not require SSI take-up (NOTE in oh_rss.py); integration.yaml Cases
     3 and 13 pin it. Because 5119.41(B) makes eligibility depend on the rules, (A) may describe the program rather
     than add a condition.
+- id: us-ok:eitc-2020-rules-claimant-filing-exception
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Oklahoma's credit uses the federal EITC requirements in effect for 2020. Does a childless filer whom
+    another person could claim qualify when that person has no filing requirement and files no return or files only
+    for a refund?
+  sources:
+  - kind: statute
+    citation: 68 O.S. 2357.43
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=930
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2020-title26/html/USCODE-2020-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: guidance
+    citation: IRS Publication 596 (2020), Rule 12, PDF p. 16
+    url: https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=16
+  - kind: instructions
+    citation: 2020 Form 1040 instructions, EIC Step 4, question 6, PDF p. 43
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=43
+  - kind: guidance
+    citation: IRS Publication 596 (2025), Rule 12, PDF p. 18
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18
+  - kind: manual
+    citation: IRS Publication 4012 (2020 returns), page C-3, note 5
+    url: https://www.irs.gov/pub/irs-prior/p4012--2021.pdf#page=61
+  - kind: manual
+    citation: IRS Publication 4491 (2020 returns), page 5-1
+    url: https://www.irs.gov/pub/irs-prior/p4491--2020.pdf#page=67
+  readings:
+    statute: Congress has not changed the words of IRC 32(c)(1)(A)(ii)(III), the frozen requirement, since 2020.
+      A would-be claimant who has no filing requirement and files no return or only for a refund does not bar the
+      credit. The IRS prints that reading in Publication 596 from 2022, and PE-US applies it to the federal credit
+      in every year.
+    other: The IRS prints no such exception in Rule 12 of the 2020 Publication 596 or in question 6 of the 2020
+      Form 1040 EIC steps, so a filer whom someone else can claim cannot take the credit.
+  example: In 2025, a single childless filer aged 30 has $5,000 of wages. A parent who has no filing requirement
+    and files only for a refund could claim the filer. The filer gets $19.125 (5% of $382.50) under the statute
+    reading and $0 under the 2020 publication.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ok/tax/income/credits/eitc/federal_credit/eligible/ok_federal_eitc_demographic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal helper with the claimant filing exception, as eitc_demographic_eligible does in
+    every year. In its volunteer materials for 2020 returns, the IRS applied the exception to the question whether
+    another taxpayer can claim the filer (Publication 4012, page C-3, note 5; Publication 4491, page 5-1). We pin
+    a filer whose claimant meets the exception ($19.125) and a claimable filer whose claimant does not ($0) in ok_eitc.yaml.
 - id: us-ok:liheap-child-earnings
   program: liheap
   years:
@@ -10625,6 +11531,47 @@ candidates:
     $82,115. PY2027: sizes 7, 9 and 11 are $1 lower ($104,693 and $104,692 at 7); the other sizes are whole-dollar
     products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
     us-or:liheap-final-payment-band-bound.'
+- id: us-or:retirement-credit-capital-loss-carryover
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does household income for Oregon's retirement income credit add back a capital loss carryover that offsets
+    the year's capital gains, as Publication OR-17 directs, when ORS 316.157(2)(c)(B) disallows only net operating loss
+    carryovers by name?
+  sources:
+  - kind: statute
+    citation: ORS 316.157(2)(c) and (2)(c)(B)(i) and (v) (2023 edition, PDF pp.25-26; unchanged in the 2025 edition)
+    url: https://www.oregonlegislature.gov/bills_laws/Archive/2023ors316.pdf#page=25
+  - kind: guidance
+    citation: 2025 Publication OR-17, PDF p.107 ("What's included in household income?")
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=107
+  - kind: guidance
+    citation: 2025 Publication OR-17, household income checklist, PDF p.127 (the 2024 edition has the same text on pp.107
+      and 127)
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=127
+  readings:
+    statute: Income starts from federal adjusted gross income. (B)(i) adds back only "the net loss, in excess of $1,000,
+      from all dispositions of tangible or intangible properties", and (B)(v) adds back "any net operating loss
+      carryovers or carrybacks included in federal adjusted gross income". No item names a capital loss carryover,
+      which IRC 1212(b) nets with the year's capital gains and losses, so a carryover that offsets the year's gains
+      stays in household income, and a net loss it creates counts up to $1,000.
+    other: Publication OR-17 says "Capital loss carryforwards aren't allowed", and its checklist lists "Capital loss
+      carryover No", so the carryover is added back.
+  example: A filer with $10,000 of taxable pension, a $4,000 long-term gain and a $4,000 long-term capital loss
+    carryover has federal AGI of $10,000. Household income is $10,000 under the statute and $14,000 under Publication
+    OR-17.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit_disallowed_losses.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11174
+  state: ruled
+  note: A 2026-11-19 ruling under the statute-first rule follows ORS 316.157(2)(c)(B). Household income starts from
+    federal adjusted gross income, where long_term_capital_gains is net of long_term_capital_loss_carryover, and the
+    disallowed-loss variable does not add the carryover back. The YAML case "A capital loss carryover offsets the year's
+    gain" in or_retirement_credit_household_income.yaml pins the statute's reading at $10,000.
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
@@ -10827,61 +11774,96 @@ candidates:
 - id: us-pa:tax-forgiveness-dependent-parent-exception
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Can a dependent child claim tax forgiveness when the claiming parent qualifies despite the statute's
     dependent exclusion?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   readings:
-    statute: A dependent cannot be a claimant.
-    other: A dependent child may qualify when the claiming parent qualifies.
+    statute: A filer who can be claimed as a dependent cannot claim forgiveness, even without an actual claim or
+      when a parent qualifies.
+    other: A dependent child may qualify when the claiming parent qualifies; Schedule SP asks about an actual
+      federal claim.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s dependent-child exception if confirmed; the requested
-    decision remains open. Code not yet on main: pa_tax_forgiveness_eligible, pa_tax_forgiveness_parent_qualifies,
-    pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes a claimable head or spouse even if no one claims them and has no parent-qualification input.
+    Each year's Schedule SP from 2021 to 2025 asks the same two eligibility questions on page 1 and prints the
+    same dependent-child note on page 3.
 - id: us-pa:tax-forgiveness-one-claimed-spouse-table
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
-  question: Which tax-forgiveness table and allocation apply when one spouse is claimed elsewhere and the other
+  question: Which tax-forgiveness table and allocation apply when one spouse can be claimed elsewhere and the other
     qualifies?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   - kind: guidance
     citation: PA Personal Income Tax Guide, Tax Forgiveness
     url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/tax-forgiveness
   readings:
-    statute: The statute does not specify the table for this mixed-spouse case.
-    other: Schedule SP supplies married treatment; the guide's classification of married-separate claimants points
-      to the single table.
-  example: The supplied case with $3,000 income for each spouse gives $92.10 under Schedule SP.
+    statute: A claimable spouse cannot claim forgiveness. The General Assembly does not specify how the other
+      spouse allocates forgiveness.
+    other: An eligible spouse claims forgiveness on their own tax, using both spouses' eligibility income and the
+      married table under Schedule SP.
+  example: In 2025, with $3,000 income per spouse, the eligible spouse receives $92.10 under Schedule SP.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'PE-US follows Schedule SP''s gap-fill; reconcile it with the guide''s single-claimant category. Code not
-    yet on main: pa_tax_forgiveness_eligible_share, pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes the claimable spouse and allocates forgiveness to the eligible spouse's own tax. Both
+    spouses contribute eligibility income, and the eligible spouse uses the married table. The PIT guide excludes
+    dependent spouses as claimants. Each year's Schedule SP from 2021 to 2025 prints the same line 3c on page 1 and
+    the same separate-filing rule on page 5. PE-US also applies the married table to a joint tax unit whose
+    spouses lived apart for the last six months of the year, where section 304(d)(1) treats a claimant who files
+    a separate return and lives apart as unmarried. In 2025, with $8,000 for the eligible spouse and $1,000 for the
+    claimable spouse, PE-US forgives $245.60 and the unmarried table gives $98.24.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
@@ -11448,10 +12430,10 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
-  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
-    federal 110% poverty-guideline floor?
+  question: Can South Carolina's 60% SMI heating and cooling limit exclude a household of 15 or more whose income is
+    below the federal 110% poverty-guideline floor?
   sources:
   - kind: statute
     citation: 42 U.S.C. 8624(b)(2)(B)
@@ -11459,21 +12441,26 @@ candidates:
   - kind: plan
     citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
     url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  - kind: plan
+    citation: South Carolina FY2027 LIHEAP State Plan, heating and cooling income eligibility (items 2.1 and 3.1), pp.8,
+      10
+    url: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
-    other: The plan's 60% SMI limit falls below that floor from 15 members.
+    other: The plans' 60% SMI limit, used for heating and cooling, falls below that floor from 15 members in FY2026 and
+      FY2027.
   example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
     one-year lag), so they keep the $200 base award.
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_eligible.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (sc_liheap_income_eligible.py).
 - id: us-sc:liheap-low-income-tier-base
   program: liheap
   years:
@@ -12195,6 +13182,43 @@ candidates:
   state: ruled
   note: 'Ruled 2026-10-23: exclude IRA/401(k) withdrawals as the manual does. Code not yet on main:
     tn_liheap_countable_income, gov.states.tn.thda.liheap.income.sources.unearned.'
+- id: us-tn:elderly-relief-nontaxable-retirement-benefits
+  program: property-tax-relief
+  years:
+    from: 2020
+    type: tax
+  question: Does Tennessee's property tax relief for elderly homeowners count the part of retirement and pension
+    benefits that is not taxable by IRS standards, which Rule 0600-03-.08(3) adds to adjusted gross income, or only
+    the taxable amount, as Comptroller Bulletin 2019-01 directs?
+  sources:
+  - kind: regulation
+    citation: Tenn. Comp. R. & Regs. 0600-03-.08(3)
+    url: https://www.law.cornell.edu/regulations/tennessee/Tenn-Comp-R-Regs-0600-03-.08
+  - kind: guidance
+    citation: Tennessee Comptroller Bulletin 2019-01, Counting Income for Tax Relief and Tax Freeze, item 4 (PDF page 1)
+    url: https://www.comptroller.tn.gov/content/dam/cot/pa/documents/manualsandreports/bulletins-and-summaries/Bulletin2019-01CountingIncomeforTaxReliefandTaxFreeze(12-9-2019).pdf#page=1
+  readings:
+    statute: 'T.C.A. 67-5-702(a)(2) tests "annual income from all sources" without defining it. Rule 0600-03-.08(3)
+      lists "retirement and pension benefits after deduction of healthcare insurance premiums" and says the adjusted
+      gross income amount "is added to any income sources specified above which may not be taxable by IRS standards."'
+    other: 'Bulletin 2019-01 item 4 counts "Retirement and pension benefits after deduction of healthcare insurance
+      premiums" and says "Look to the amount listed in box 4b of IRS Form 1040." The bulletin cites 2018 form
+      numbering (Schedule 1 lines 23 through 36), on which Form 1040 line 4b is the taxable amount of IRAs, pensions
+      and annuities.'
+  example: 'In 2026 a homeowner aged 70 whose $40,000 pension includes $10,000 of nontaxable return of after-tax
+    contributions has income of $40,000 under the rule, above the $38,470 limit, and $30,000 under the bulletin,
+    which is under it.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/tn/tax/property/elderly_property_tax_relief/nontaxable_income/sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11166
+  state: unreviewed
+  note: 'PolicyEngine adds tax_exempt_pension_income and tax_exempt_retirement_distributions to adjusted gross income
+    through gov.states.tn.tax.property.elderly_property_tax_relief.nontaxable_income.sources. PolicyEngine has
+    recorded no ruling. The rule text was read on Cornell LII; the Secretary of State''s copy refused automated
+    access.'
 - id: us-tx:ccs-board-psoc-before-tx3c
   program: child-care-assistance
   years:
@@ -12907,6 +13931,84 @@ candidates:
     Utah state supplement (ut_ssp, which adds ut_dws_ssp, a Department of Workforce Services payment, and ut_dhhs_ssp,
     another agency payment that section 405 excludes in the same item). R982-403 is a current rule with its next
     five-year review due June 17, 2027, so decide whether it governs over the manual and plan.
+- id: us-ut:taxpayer-credit-income-tax-paid-and-reported
+  program: income-tax
+  years:
+    from: 2018
+    to: 2025
+    type: tax
+  question: Does Utah subtract the income tax paid and reported, capped at $10,000, or the income tax remaining
+    within the federal SALT deduction after property taxes?
+  sources:
+  - kind: statute
+    citation: Utah H.B. 293 (2018), sections 39 and 46, PDF pages 90 and 99
+    url: https://le.utah.gov/~2018/bills/hbillenr/HB0293.pdf#page=90
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(g) and (1)(h), edition effective May 8, 2018
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2018050820180508.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective July 21, 2018
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2018051620180721.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective May 5, 2021
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2021050520210505.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective May 3, 2023
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.html
+  - kind: instructions
+    citation: 2019 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2019/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2023 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2023/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2025 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=10
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective January 1, 2026
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2026050620260506.pdf#page=1
+  - kind: statute
+    citation: Utah H.B. 77 (2026), sections 17 and 29
+    url: https://le.utah.gov/Session/2026/bills/enrolled/HB0077.pdf#page=138
+  - kind: instructions
+    citation: 2017 TC-40 instructions, line 14 worksheet, printed p.9, PDF p.11
+    url: https://files.tax.utah.gov/tax/forms/2017/tc-40inst.pdf#page=11
+  - kind: instructions
+    citation: 2026 TC-40 draft instructions dated October 20, 2026, line 12, PDF page 11
+    url: https://files.tax.utah.gov/tax/forms/drafts/tc-40inst.pdf#page=11
+  - kind: statute
+    citation: P.L. 119-21 section 70111, replacement of 26 U.S.C. 68 from 2026
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=94
+  readings:
+    statute: Subtract the lesser of $10,000 and the income tax the claimant pays and reports on the federal return,
+      regardless of how much the claimant can deduct. Subtract no income tax when the claimant elects sales tax.
+    other: Filers following the 2025 instructions subtract Schedule A line 5e less lines 5b and 5c, with a zero floor.
+      Filers following the 2019 instructions use line 5a without a stated $10,000 limit.
+      Filers following the 2023 instructions enter up to $10,000.
+  example: On a 2025 joint return with $40,000 of real-estate tax, $15,000 of income tax and $6,000 of charitable gifts,
+    federal itemized deductions total $46,000. A claimant retains $36,000 under the statute and $46,000 under the 2025
+    instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ut/tax/income/credits/taxpayer_credit/ut_federal_deductions_for_taxpayer_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10843
+  state: open
+  note: Maintainers must confirm the 2018-2025 reading before registration. Follow the statute when the federal
+    SALT cap binds. Subtract at most $10,000 for every filing status.
+    Through H.B. 77 sections 17 and 29, Utah's Legislature replaced that limit from 2026 with income tax included
+    and allowed federally.
+    For that allocation, allocate SALT to property taxes before income taxes, following the 2025 instructions.
+    Apply the 2017 instructions' section 68 proration among deductions subject to that limitation before 2018.
+    From 2026, prorate across all itemized deductions because Congress removed section 68's category exclusions.
+    Utah's Tax Commission retains property-first SALT allocation in its October 20 draft of the 2026 instructions.
+    The commission does not specify how to allocate the general section 68 reduction. Confirm that allocation when final instructions appear.
+    Keep the signed deduction difference for 2018 through 2025 because Utah's Legislature supplied no zero floor.
+    Add the Utah personal exemption afterward when computing the initial credit.
+    For example, $5,000 of deductions less $10,000 of income tax leave a deduction base of minus $5,000.
+    Adding a supplied $6,000 personal exemption leaves $1,000, yielding a $60 initial credit.
+    Text captures under source_conflicts/sources/us-ut support registration after maintainer confirmation and merge.
 - id: us-va:ag-entry-month-spouse-at-home
   program: ssi-state-supplement
   years:
@@ -15331,6 +16433,66 @@ candidates:
     Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
     only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
     standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6812820779'
+- id: us:medicaid-adult-group-child-coverage-requirement
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does a parent or caretaker relative lose the Medicaid adult group when a child under the state's age limit
+    has no coverage and is eligible for none of Medicaid, CHIP or the Marketplace, as the regulation and the state plan
+    read, or only when the uninsured child is eligible for Medicaid, as the statute reads?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(k)(3)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#k_3
+  - kind: regulation
+    citation: 42 CFR 435.119(c)
+    url: https://www.law.cornell.edu/cfr/text/42/435.119#c
+  - kind: plan
+    citation: New Jersey approved state plan S32 (NJ-13-0011-MM1), approved 02/28/2014, effective 01/01/2014
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=16
+  - kind: rulemaking
+    citation: 'CMS final rule, Medicaid Program; Eligibility Changes Under the Affordable Care Act of 2010, 77 FR 17144
+      (March 23, 2012), response on 42 CFR 435.119(c) at 17146-17147 #page 3-4'
+    url: https://www.govinfo.gov/content/pkg/FR-2012-03-23/pdf/2012-6560.pdf#page=3
+  readings:
+    statute: 'If an adult group individual "is the parent of a child who is under 19 years of age (or such higher age as
+      the State may have elected) who is eligible for medical assistance under the State plan or under a waiver of such
+      plan ..., the individual may not be enrolled under the State plan unless the individual''s child is enrolled
+      under the State plan or under a waiver of the plan or is enrolled in other health insurance coverage."'
+    regulation: '42 CFR 435.119(c)(1): "A State may not provide Medicaid under this section to a parent or other
+      caretaker relative living with a dependent child if the child is under the age specified in paragraph (c)(2) of
+      this section, unless such child is receiving benefits under Medicaid, the Children''s Health Insurance Program
+      under subchapter D of this chapter, or otherwise is enrolled in minimum essential coverage as defined in § 435.4
+      of this part." New Jersey''s S32 page: "Parents or other caretaker relatives living with a child under the age
+      specified below are not covered unless the child is receiving benefits under Medicaid, CHIP or through the
+      Exchange, or otherwise enrolled in minimum essential coverage". CMS called the rule "consistent with the
+      statutory requirements at sections 1902(k)(3)" and wrote that "if a child''s pending application is denied for
+      all insurance affordability programs ... the child must be enrolled in other minimum essential coverage for the
+      custodial parent or other caretaker relative to be covered". The project lead ruled on 2026-11-15 to follow
+      this reading.'
+  example: A New Jersey parent earning $24,000 in 2026, 111% of the two-person poverty guideline, lives with an
+    undocumented, uninsured 19-year-old full-time student who is eligible for none of Medicaid, CHIP or the
+    Marketplace. Under the regulation and S32 the parent is not in the adult group; under the statute, which reaches
+    only a Medicaid-eligible child, the parent is.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/adult/meets_medicaid_adult_group_child_coverage_requirement.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11012
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/11012#issuecomment-6927858400
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/11012#issuecomment-6927858400. PE-US follows 42 CFR
+    435.119(c) and the state plan S32 page over 42 U.S.C. 1396a(k)(3), so every child under the age limit who lacks
+    Medicaid, CHIP, Marketplace or other minimum essential coverage bars the parent or caretaker relative from the
+    adult group. The readings differ only for an uninsured child who is not eligible for Medicaid, such as an
+    undocumented child above a state''s age limit for coverage regardless of immigration status, or a CHIP-eligible
+    child whose family does not take up CHIP.'
 - id: us:long-term-care-premium-index-adjustment
   program: income-tax
   years:
@@ -16023,30 +17185,57 @@ candidates:
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
-    from: 2026
-    to: 2026
+    from: 1987
     type: calendar
   question: Does the regulation's ineligible-child definition include the claimant's siblings in spouse-to-spouse
     deeming, or does POMS limit it to the couple's children?
   sources:
   - kind: regulation
     citation: 20 CFR 416.1160(d)
-    url: null
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)
+    url: https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(c)(2)
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(c)(2)
+  - kind: regulation
+    citation: 20 CFR 416.1101
+    url: https://www.ecfr.gov/current/title-20/section-416.1101
+  - kind: regulation
+    citation: 20 CFR 416.1132(a)
+    url: https://www.ecfr.gov/current/title-20/section-416.1132#p-416.1132(a)
+  - kind: rulemaking
+    citation: 52 FR 8883 (March 20, 1987)
+    url: https://www.govinfo.gov/content/pkg/FR-1987-03-20/pdf/FR-1987-03-20.pdf
   - kind: manual
-    citation: POMS SI 01310.115 A.3; POMS SI 01310.140 A
+    citation: POMS SI 01310.115 A.3
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310115
+  - kind: manual
+    citation: POMS SI 01310.140 A
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501310140
   readings:
-    statute: The full regulatory definition would include the claimant's own siblings.
-    other: POMS limits spouse-to-spouse deeming to the children of either member of the couple.
+    statute: 416.1160(d) defines an ineligible child to include the natural or adopted child of the claimant's parent
+      or of that parent's spouse, and 416.1160(c)(2) and 416.1163(b) apply that definition in spouse-to-spouse deeming,
+      so the claimant's co-resident siblings and step-siblings receive allocations whether or not the parent lives there.
+    other: POMS SI 01310.140 A forms the spouse-to-spouse deeming household from the couple and the children of either
+      member, so only those children receive allocations.
+  example: In 2026 a claimant with no income, whose spouse has $1,000 of monthly unearned income and whose 15-year-old
+    brother lives with them, gets $994 a month of SSI with the brother's $497 allocation and $511 without it.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spousal_deeming_child_allocations.py
     - policyengine_us/variables/gov/ssa/ssi/eligibility/status/is_ssi_ineligible_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
-  state: unreviewed
-  note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
-    ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+  state: ruled
+  note: Follows the regulation. 416.1160(d) defines an ineligible child once for all deeming, 416.1160(c)(2) applies it
+    to spouse deemors, "you" is the claimant (416.1101), and a household is a place of residence (416.1132(a)). The
+    claimant's co-resident siblings, half-siblings and step-siblings get allocations; the spouse's siblings do not.
+    POMS SI 01310.140 A lists only the couple's children and is not followed. The code finds a sibling through a parent
+    id the claimant and the child share, and a step-sibling when the claimant's parent and that parent's spouse both
+    live in the household. It applies this scope in every year; the 1987 final rule is the earliest text checked.
 - id: us:standard-plan-minimum-consolidated
   program: student-loans
   years:
@@ -16308,6 +17497,45 @@ candidates:
     statute-first rule after resolving the two statutory clauses. Code not yet on main: surviving_spouse_eligible,
     is_child_dependent.'
 
+- id: us:school-meal-state-ssi-supplements
+  program: school-meals
+  years:
+    from: 2009
+    type: calendar
+  question: Should school meal income include state SSI supplements despite USDA's adoption of Social Security Act income exclusions?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(a), (b)(6), (b)(9) and (b)(23)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXVI-partA-sec1382a.htm
+  - kind: regulation
+    citation: 7 CFR 245.6(a)(5)(ii)
+    url: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(a)(5)(ii)
+  - kind: guidance
+    citation: 91 FR 17932, 17933, Definition of Income
+    url: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+  - kind: manual
+    citation: USDA Eligibility Manual for School Meals, June 29, 2017, pages 26, 29 and 30
+    url: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf
+  readings:
+    statute: Congress limits section 1382a's income definition to SSI's statutory subchapter. Section 1382a(b)(6) excludes
+      need-based state assistance for SSI without directing school meal administrators to exclude it. School meal
+      administrators count welfare and other cash income under 7 CFR 245.6(a)(5)(ii).
+    other: Read the Manual's page 30 adoption of Social Security Act exclusions as importing section 1382a(b)(6) into
+      school meals. Under that reading, administrators exclude need-based state SSI supplements. Page 26's regular state
+      cash assistance category can cover payments that do not depend on need.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/income/state_supplement_sources.yaml
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10873
+  state: open
+  note: PolicyEngine counts each modeled state SSI supplement as regular cash assistance from State or local
+    governments, a category on page 26 of the Manual. Page 30's adoption of Social Security Act exclusions supports a
+    competing reading that excludes need-based supplements under section 1382a(b)(6). Congress also excludes some
+    dividends, interest and child support for SSI under section 1382a(b)(9) and (23), and the code counts those sources
+    for school meals, as USDA does. The USDA sources name no state SSI supplement.
 - id: us-ar:low-income-table-dependent-definition
   program: income-tax
   years:
@@ -16506,6 +17734,50 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us:medicaid-parental-child-allocation-ssi-floor
+  program: medicaid
+  years:
+    from: 2015
+    type: calendar
+  question: May a non-209(b) state exclude a child from optional aged, blind or disabled Medicaid parental allocations when SSI includes the child?
+  sources:
+  - kind: statute
+    citation: 42 USC 1396a(r)(2)(A)-(B)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm
+  - kind: regulation
+    citation: 42 CFR 435.601(d)(2)-(3)
+    url: https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)
+  - kind: manual
+    citation: New York Medicaid Reference Guide, Allocation, printed page 233
+    url: https://healthweb-back.health.ny.gov/health_care/medicaid/reference/mrg/income.pdf#page=136
+  - kind: manual
+    citation: Wisconsin Medicaid Eligibility Handbook 15.1.2
+    url: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+  - kind: manual
+    citation: POMS SI 01715.020
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501715020
+  - kind: regulation
+    citation: 42 CFR 435.602(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(d) and 416.1856
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: guidance
+    citation: CMS State Medicaid Manual 3240.4
+    url: https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/p45_03.zip
+  readings:
+    statute: Non-209(b) states allocate for every child SSI does, because a narrower child definition removes allocations and so makes ineligible some people whom SSI's method finds eligible, a more restrictive methodology that 42 USC 1396a(r)(2) and 42 CFR 435.601(d)(2)-(3) bar.
+    other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/deemed/from_ineligible_parent/medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_age_limit.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_requires_nonblind_nondisabled.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10146
+  state: ruled
+  note: Follows the statute. A child definition narrower than SSI's removes allocations and so makes ineligible some people whom SSI's method finds eligible, which 42 USC 1396a(r)(2)(B) and 42 CFR 435.601(d)(3) bar outside 209(b) states. So the model does not apply New York's or Wisconsin's narrower manual definitions, and it can show eligibility those manuals would deny. Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions under 42 USC 1396a(f). Their January 1, 1972 state plans are unchecked.
 - id: us-ut:medicaid-parent-standard-2018-cms-table
   program: medicaid
   years:
@@ -16715,3 +17987,32 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-ma:undocumented-pregnancy-masshealth-standard
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does Massachusetts give a pregnant undocumented resident MassHealth Standard, as 130 CMR 504.006(D)(1) provides, when M.G.L. c. 118E, section 16D(2) bars benefits other than emergency services to undocumented residents unless federal law requires them?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 118E, section 16D(2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+  - kind: regulation
+    citation: 130 CMR 504.006(D)(1), PDF page 13 (Rev. 08/19/22)
+    url: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+  - kind: regulation
+    citation: 130 CMR 505.002(D), PDF page 4 (revised February 13, 2026)
+    url: https://www.mass.gov/doc/130-cmr-505000-masshealth-coverage-types-5/download#page=4
+  readings:
+    statute: Section 16D(2) says "services or benefits other than emergency services shall not be provided to undocumented aliens unless required by federal law".
+    other: 130 CMR 504.006(D)(1) gives other noncitizens "MassHealth Standard, if they are pregnant", and 130 CMR 505.002(D) continues that coverage after the pregnancy ends.
+  example: In model year 2025 the model finds an undocumented Massachusetts resident at 150% of the poverty line who meets Medicaid's other tests eligible for Medicaid during pregnancy and through day 364 after delivery. 130 CMR 505.002(D)(4), in the text revised February 13, 2026, continues eligibility for postpartum care for 12 months after the pregnancy ends and then to the end of the month in which that period ends. If the model followed the statute's emergency-only reading, the resident would not be eligible for Medicaid. The model's CHIP unborn-child route would be open during pregnancy if its other tests pass and would end at delivery. Emergency Medicaid is a separate test.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented/pregnant.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented_immigrant.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11130
+  state: open
+  note: PolicyEngine follows the regulation. Before pull request 11130 the model passed every undocumented Massachusetts resident at every age. No source read for this candidate names a federal law that requires the coverage, or says whether Massachusetts claims federal match for it. A regulation that flatly contradicts its statute goes to the project lead (CONTRIBUTING.md, "Source conflicts").

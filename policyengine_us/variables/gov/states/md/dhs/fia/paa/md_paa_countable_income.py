@@ -37,7 +37,7 @@ class md_paa_countable_income(Variable):
         unearned = (
             _ssi_couple_income(person, period, "ssi_unearned_income")
             + person("ssi_unearned_income_deemed_from_ineligible_parent", period)
-            + person("ssi_in_kind_support_and_maintenance", period)
+            + person("ssi_in_kind_support_and_maintenance_monthly", period)
         )
         personal_countable = _apply_ssi_exclusions_monthly(
             adjusted_earned,

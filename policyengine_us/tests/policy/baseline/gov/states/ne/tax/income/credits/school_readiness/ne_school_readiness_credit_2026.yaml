@@ -1,0 +1,149 @@
+# Supply the published 2025 amounts as a fixture for 2026 lookup coverage.
+# https://revenue.nebraska.gov/school-readiness-tax-credit-staff-member
+# DOR does not list 2026 amounts on the cited page.
+# Set unrelated benefits, health costs and Nebraska child credit to $0.
+# Tax = 0 - 2,992; net income = 0 - (-2,992).
+- name: A level 3 worker lives with a child in 2026 with a 2025 amount fixture
+  period: 2026
+  input:
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.1: 2_373
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.2: 2_683
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.3: 2_992
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.4: 3_302
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.5: 3_611
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      child:
+        age: 3
+    households:
+      household:
+        members: [worker, child]
+        state_code: NE
+        household_benefits: 0
+        household_health_costs: 0
+    tax_units:
+      tax_unit:
+        members: [worker, child]
+        ne_refundable_ctc: 0
+    spm_units:
+      spm_unit:
+        members: [worker, child]
+    families:
+      family:
+        members: [worker, child]
+    marital_units:
+      worker_unit:
+        members: [worker]
+      child_unit:
+        members: [child]
+  output:
+    ne_school_readiness_credit: [2_992, 0]
+    ne_income_tax: -2_992
+    household_net_income: 2_992
+
+# The worker receives $2,992; the spouse has no level and receives $0.
+- name: A level 3 worker lives with a spouse in 2026 with a 2025 amount fixture
+  period: 2026
+  input:
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.1: 2_373
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.2: 2_683
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.3: 2_992
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.4: 3_302
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.5: 3_611
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      spouse:
+        age: 30
+    households:
+      household:
+        members: [worker, spouse]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [worker, spouse]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse]
+    families:
+      family:
+        members: [worker, spouse]
+    marital_units:
+      couple:
+        members: [worker, spouse]
+  output:
+    ne_school_readiness_credit: [2_992, 0]
+
+# Each worker uses their own level: level 3 = $2,992; level 5 = $3,611.
+# Combined credit = 2,992 + 3,611 = 6,603.
+- name: Two workers receive their own level amounts in 2026 with a 2025 amount fixture
+  period: 2026
+  input:
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.1: 2_373
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.2: 2_683
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.3: 2_992
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.4: 3_302
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.5: 3_611
+    people:
+      level_3_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      level_5_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 5
+    households:
+      household:
+        members: [level_3_worker, level_5_worker]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [level_3_worker, level_5_worker]
+    spm_units:
+      spm_unit:
+        members: [level_3_worker, level_5_worker]
+    families:
+      family:
+        members: [level_3_worker, level_5_worker]
+    marital_units:
+      couple:
+        members: [level_3_worker, level_5_worker]
+  output:
+    ne_school_readiness_credit: [2_992, 3_611]
+
+# An omitted level defaults to 0, below the first classification; credit = $0.
+- name: An eligible worker has no level in 2026 with a 2025 amount fixture
+  period: 2026
+  input:
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.1: 2_373
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.2: 2_683
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.3: 2_992
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.4: 3_302
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.5: 3_611
+    ne_school_readiness_credit_eligible_worker: true
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
+
+# Levels -1 and 0 receive $0; level 1 receives $2,373.
+# Level 4 receives $3,302. Cap level 6: min(6, 5) = 5, worth $3,611.
+# The last person has level 3 but lacks worker eligibility, so receives $0.
+- name: Workers cross the level bounds in 2026 with a 2025 amount fixture
+  period: 2026
+  input:
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.1: 2_373
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.2: 2_683
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.3: 2_992
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.4: 3_302
+    gov.states.ne.tax.income.credits.school_readiness.amount.refundable.5: 3_611
+    ne_school_readiness_credit_eligible_worker: [true, true, true, true, true, true, false]
+    ne_school_readiness_credit_child_care_worker_rating: [-1, 0, 1, 4, 5, 6, 3]
+    state_code: [NE, NE, NE, NE, NE, NE, NE]
+  output:
+    ne_school_readiness_credit: [0, 0, 2_373, 3_302, 3_611, 3_611, 0]

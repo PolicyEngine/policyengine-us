@@ -69,3 +69,21 @@
     ar_liheap_household_size: 22
   output:
     ar_liheap_income_limit: 196_725
+
+# FY2027 chart: sizes 1 and 7 print 2_460 and 6_387 (60% of the FY2027 state median income,
+# 94_627 for four, x 0.52 and x 1.35 / 12), sizes 8 and 20 print 6_965 and 15_485 (150% of the
+# 2026 guideline, 15_960 + 5_680 per extra person, / 12), and "ADD $710 FOR EACH ADDITIONAL
+# HOUSEHOLD MEMBER" gives 16_195 for size 21. Annual = monthly x 12: 29_520, 76_644, 83_580,
+# 185_820 and 194_340. Each is at or below the federal maximum: HHS's 60% amounts are
+# floor(94_627 x 0.6) = 56_776 x 0.52 = 29_523 and x 1.35 = 76_647, and 150% of the 2026
+# guideline is 83_580 (size 8), 185_820 (size 20) and 194_340 (size 21).
+- name: Case 5, FY2027 chart rows and the printed additional person amount.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 7, 8, 20, 21]
+  output:
+    ar_liheap_income_limit: [29_520, 76_644, 83_580, 185_820, 194_340]

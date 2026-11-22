@@ -42,6 +42,7 @@ def _apply_ssi_exclusions(
     parameters: ParameterNode,
     period: Period,
     general_exclusion: ArrayLike = None,
+    monthly: bool = False,
 ) -> ArrayLike:
     """
     Applies the standard SSI income exclusions to annual earned and unearned
@@ -49,11 +50,15 @@ def _apply_ssi_exclusions(
     annual countable income. The exclusions are monthly amounts, so this
     converts annual -> monthly, applies them, then goes back to annual.
     """
-    monthly = _apply_ssi_exclusions_monthly(
+    if monthly:
+        return _apply_ssi_exclusions_monthly(
+            earned_income, unearned_income, parameters, period, general_exclusion
+        )
+    monthly_countable = _apply_ssi_exclusions_monthly(
         earned_income / MONTHS_IN_YEAR,
         unearned_income / MONTHS_IN_YEAR,
         parameters,
         period,
         general_exclusion,
     )
-    return monthly * MONTHS_IN_YEAR
+    return monthly_countable * MONTHS_IN_YEAR

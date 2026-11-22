@@ -1,4 +1,4 @@
-description: California CPI (from the current year's June)
+description: California CPI from the current year's June, with forecast proxies after the last published observation.
 values:
   2019-01-01: 280.956
   2020-01-01: 284.835
@@ -13,6 +13,8 @@ metadata:
   unit: currency-USD
   period: year
   label: California income tax CPI uprating
+  # The existing national CPI forecast proxy is a modeling assumption for future years.
+  # Published California June values take precedence.
   uprating: gov.irs.uprating
   reference:
     - title: California Consumer Price Index (1955-2026), All Urban Consumers, June values

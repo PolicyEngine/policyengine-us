@@ -161,3 +161,512 @@
     # Before Oct 2026, refugees have federal eligibility
     is_ca_medicaid_immigration_status_eligible: false
 
+# Start date of each age group for undocumented residents. The variable is
+# YEAR-defined and reads each schedule at January 1 of the period.
+# Ages 19 to 25: California's enacted 2019-20 budget funds the expansion
+# "starting no sooner than January 1, 2020"
+# (https://www.ebudget.ca.gov/2019-20/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=4),
+# and Los Angeles County's manual dates it January 1, 2020.
+
+- name: Case 15, undocumented 22-year-old is ineligible in 2017 (before the 2020 expansion).
+  period: 2017
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket of the undocumented schedule covers ages 19 to 25:
+    # false at 2017-01-01, true from 2020-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 16, undocumented 22-year-old is ineligible in 2019 (before the 2020 expansion).
+  period: 2019
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket of the undocumented schedule covers ages 19 to 25:
+    # false at 2019-01-01, true from 2020-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 17, undocumented 22-year-old is eligible in 2020.
+  period: 2020
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket of the undocumented schedule covers ages 19 to 25:
+    # true at 2020-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 18, undocumented 22-year-old is eligible in 2025.
+  period: 2025
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket of the undocumented schedule covers ages 19 to 25:
+    # true at 2025-01-01, false from 2026-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 19, undocumented 19-year-old is ineligible in 2019.
+  period: 2019
+  input:
+    age: 19
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # Age 19 is the lowest age in the age-19 bracket: false at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 20, undocumented 25-year-old is ineligible in 2019.
+  period: 2019
+  input:
+    age: 25
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # Age 25 is the highest age in the age-19 bracket (the next starts at 26):
+    # false at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 21, undocumented 25-year-old is eligible in 2020.
+  period: 2020
+  input:
+    age: 25
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # Age 25 is the highest age in the age-19 bracket: true at 2020-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 22, undocumented 22-year-old is ineligible in 2015.
+  period: 2015
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket's first value is false at 2016-01-01, and backdating
+    # copies that first value to 2015.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 23, pregnant undocumented 22-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 22
+    is_pregnant: true
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-19 bracket is false at 2019-01-01; the formula adds pregnancy:
+    # false OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# Children: the expansion took effect in May 2016, so the model reads it from 2017.
+
+- name: Case 24, undocumented 10-year-old is ineligible in 2015.
+  period: 2015
+  input:
+    age: 10
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-0 bracket of the undocumented schedule covers ages 0 to 18:
+    # its first value is false at 2016-01-01, and backdating copies it to 2015.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 25, undocumented 10-year-old is ineligible in 2016 (the May 2016 start is read from 2017).
+  period: 2016
+  input:
+    age: 10
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-0 bracket of the undocumented schedule covers ages 0 to 18:
+    # false at 2016-01-01, true from 2016-05-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 26, undocumented 10-year-old is eligible in 2017.
+  period: 2017
+  input:
+    age: 10
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-0 bracket of the undocumented schedule covers ages 0 to 18:
+    # true at 2017-01-01 (true from 2016-05-01).
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 27, undocumented 18-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 18
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # Age 18 is the highest age in the age-0 bracket (the next starts at 19):
+    # true at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# Ages 50 and over: the expansion took effect on May 1, 2022, so the model reads it from 2023.
+
+- name: Case 28, undocumented 55-year-old is ineligible in 2021.
+  period: 2021
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-50 bracket of the undocumented schedule covers ages 50 and over:
+    # false at 2021-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 29, undocumented 55-year-old is ineligible in 2022 (the May 1, 2022 start is read from 2023).
+  period: 2022
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-50 bracket of the undocumented schedule covers ages 50 and over:
+    # false at 2022-01-01, true from 2022-05-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 30, undocumented 55-year-old is eligible in 2023.
+  period: 2023
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-50 bracket of the undocumented schedule covers ages 50 and over:
+    # true at 2023-01-01 (true from 2022-05-01).
+    is_ca_medicaid_immigration_status_eligible: true
+
+# Ages 26 to 49: unchanged, effective January 1, 2024.
+
+- name: Case 31, undocumented 30-year-old is ineligible in 2023.
+  period: 2023
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-26 bracket of the undocumented schedule covers ages 26 to 49:
+    # false at 2023-01-01.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 32, undocumented 30-year-old is eligible in 2024.
+  period: 2024
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    state_code: CA
+  output:
+    # The age-26 bracket of the undocumented schedule covers ages 26 to 49:
+    # true at 2024-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# DACA and TPS holders: DACA recipients read eligible_with_daca, which covers
+# every age. TPS holders read eligible_with_tps. Its dates come from the
+# schedule the three statuses shared, not from a source (see the comment in
+# eligible_with_tps.yaml).
+
+- name: Case 33, DACA 22-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket is true at 2019-01-01 (true from 2016-01-01).
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 34, TPS 22-year-old is eligible in 2017.
+  period: 2017
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
+    # Its age-19 bracket is true at 2017-01-01 (true from 2016-01-01).
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 35, DACA 22-year-old is eligible in 2015.
+  period: 2015
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket's first value is true at 2016-01-01, and backdating
+    # copies that first value to 2015.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 36, TPS 10-year-old is eligible in 2015.
+  period: 2015
+  input:
+    age: 10
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
+    # Its age-0 bracket's first value is true at 2016-01-01, and backdating
+    # copies that first value to 2015.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 37, DACA 16-year-old is eligible in 2016.
+  period: 2016
+  input:
+    age: 16
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # DACA recipients read eligible_with_daca, not the undocumented schedule.
+    # Its one bracket is true at 2016-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 38, TPS 55-year-old is eligible in 2022.
+  period: 2022
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # TPS holders read eligible_with_tps, not the undocumented schedule.
+    # Its age-50 bracket is true at 2022-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# One household with all three statuses: the formula picks each person's schedule.
+- name: Case 39, three 30-year-olds and a child with different statuses in 2019.
+  period: 2019
+  input:
+    people:
+      undocumented_adult:
+        age: 30
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+      daca_adult:
+        age: 30
+        is_pregnant: false
+        immigration_status: DACA
+      tps_adult:
+        age: 30
+        is_pregnant: false
+        immigration_status: TPS
+      undocumented_child:
+        age: 10
+        is_pregnant: false
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [undocumented_adult, daca_adult, tps_adult, undocumented_child]
+        state_code: CA
+  output:
+    # Undocumented, 30: age-26 bracket of the undocumented schedule, false at 2019-01-01.
+    # DACA, 30: the one bracket of eligible_with_daca, true at 2019-01-01.
+    # TPS, 30: age-26 bracket of eligible_with_tps, false at 2019-01-01.
+    # Undocumented, 10: age-0 bracket of the undocumented schedule, true at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: [false, true, false, true]
+
+# 2026: the enrollment freeze reaches ages 19 to 25 as it does older adults.
+- name: Case 40, undocumented 22-year-old not on Medicaid is ineligible in 2026.
+  period: 2026
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    receives_medicaid: false
+    state_code: CA
+  output:
+    # The age-19 bracket is false from 2026-01-01, and the person has no
+    # current Medicaid coverage: false OR false = false.
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 41, undocumented 22-year-old on Medicaid keeps eligibility in 2026.
+  period: 2026
+  input:
+    age: 22
+    is_pregnant: false
+    immigration_status: UNDOCUMENTED
+    receives_medicaid: true
+    state_code: CA
+  output:
+    # The age-19 bracket is false from 2026-01-01, and the person has
+    # current Medicaid coverage: false OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# A pregnant DACA recipient qualifies by age and by pregnancy.
+
+- name: Case 42, pregnant DACA 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: true
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The one bracket of eligible_with_daca is true at 2019-01-01, and the
+    # person is pregnant: true OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# DACA recipients at the ages and years the shared schedule left out.
+# California counts deferred action as PRUCOL. Its general PRUCOL sources
+# give PRUCOL residents state-funded full-scope Medi-Cal and state no age
+# ceiling.
+
+- name: Case 43, DACA 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # eligible_with_daca has one bracket, from age 0: true at 2019-01-01.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 44, DACA 30-year-old is eligible in 2015.
+  period: 2015
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The bracket's first value is true at 2016-01-01, and backdating copies
+    # that first value to 2015.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 45, DACA 40-year-old is eligible in 2023.
+  period: 2023
+  input:
+    age: 40
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The one bracket is true at 2023-01-01. The shared schedule covered ages
+    # 26 to 49 from 2024.
+    is_ca_medicaid_immigration_status_eligible: true
+
+- name: Case 46, DACA 55-year-old is eligible in 2021.
+  period: 2021
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The one bracket is true at 2021-01-01. The shared schedule covered ages
+    # 50 and over from 2022. USCIS requires DACA recipients to be born on or
+    # after June 16, 1981 (https://www.uscis.gov/DACA), so none was 55 in 2021.
+    # This case pins the schedule's lack of an upper age, not a real recipient.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# TPS holders keep the shared schedule's dates.
+
+- name: Case 47, TPS 30-year-old is ineligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-26 bracket of eligible_with_tps is false at 2019-01-01 (true
+    # from 2024-01-01).
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 48, TPS 55-year-old is ineligible in 2021.
+  period: 2021
+  input:
+    age: 55
+    is_pregnant: false
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-50 bracket of eligible_with_tps is false at 2021-01-01 (true
+    # from 2022-01-01).
+    is_ca_medicaid_immigration_status_eligible: false
+
+- name: Case 49, pregnant TPS 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: true
+    immigration_status: TPS
+    state_code: CA
+  output:
+    # The age-26 bracket of eligible_with_tps is false at 2019-01-01; the
+    # formula adds pregnancy: false OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# A DACA adult with no income reaches Medi-Cal through the state-funded route.
+- name: Case 50, DACA 30-year-old with no income is Medicaid eligible in 2019.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+        immigration_status: DACA
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    is_ca_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+    # No income is below California's adult limit of 138% of the poverty line.
+    is_medicaid_eligible: true
+
+# Emergency Medicaid covers a person who meets Medicaid's rules but for
+# immigration status. A DACA adult who passes the immigration test no longer
+# reads it.
+- name: Case 51, DACA 30-year-old with an emergency condition is ineligible for emergency Medicaid in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: false
+    immigration_status: DACA
+    state_code: CA
+    medicaid_category: ADULT
+    has_emergency_medical_condition: true
+  output:
+    # eligible_with_daca is true at 2019-01-01, so the immigration test passes.
+    is_medicaid_immigration_status_eligible: true
+    # Emergency condition AND a Medicaid category AND NOT immigration eligible:
+    # true AND true AND NOT true = false.
+    is_emergency_medicaid_eligible: false

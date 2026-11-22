@@ -4,6 +4,11 @@ AL:
   2015-10-01: false
 AZ:
   2015-10-01: false
+AR:
+  # SNAP Certification Manual Appendix AA: "While households may meet the
+  # BBCE resource limit, they will still need to meet all other financial
+  # and non-financial eligibility rules to receive SNAP benefits."
+  2025-04-04: true
 CA:
   # CalFresh Modified Categorical Eligibility (MCE) has no net income test.
   # An MCE household of three or more receives the allotment the issuance
@@ -109,6 +114,8 @@ metadata:
   period: year
   label: SNAP net income limit for non-elderly/disabled BBCE households
   reference:
+    - title: Arkansas SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)

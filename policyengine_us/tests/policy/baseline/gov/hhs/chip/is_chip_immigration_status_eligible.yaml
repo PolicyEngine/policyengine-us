@@ -358,3 +358,88 @@
         state_code: CO
   output:
     is_chip_immigration_status_eligible: [true, false]
+
+# New Jersey covers children under 19 in the CHIP plans of NJ FamilyCare
+# regardless of immigration status from January 1, 2023.
+- name: Case 17, undocumented 8-year-old in New Jersey passes the CHIP immigration test in 2024.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_chip_immigration_status_eligible: true
+
+# The CHIP pregnancy path has no age cap of its own, so this pins the under-19
+# limit for a pregnant undocumented 19-year-old.
+- name: Case 18, undocumented pregnant 19-year-old in New Jersey is past the under-19 age limit for CHIP.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    is_pregnant: true
+    state_code: NJ
+  output:
+    is_chip_immigration_status_eligible: false
+
+# Child Health Plus is New York's separate route for children under 19,
+# whatever their immigration status (Public Health Law sections 2510(4) and
+# 2511(2)). The model applies this route to undocumented children only: a
+# child with another status that fails the federal test fails this test.
+# The Medicaid pregnancy and postpartum route also applies to children, so
+# the Medicaid immigration test stays false only for an undocumented child
+# who is neither pregnant nor postpartum.
+- name: Case 19, undocumented 8-year-old in New York passes the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    # New York's child term is true, and 8 < 19: true. No Medicaid term applies.
+    is_chip_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 20, undocumented 8-year-old in New York passes the CHIP immigration test in 2017.
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    # Backdating carries the child term's true value to 2015, and 8 < 19: true.
+    is_chip_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 21, undocumented 18-year-old in New York passes the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 18
+    state_code: NY
+  output:
+    # 18 < 19: true.
+    is_chip_immigration_status_eligible: true
+
+- name: Case 22, undocumented 19-year-old in New York is past the CHIP age limit.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    state_code: NY
+  output:
+    # 19 < 19 is false.
+    is_chip_immigration_status_eligible: false
+
+# Massachusetts covers undocumented children through the Children's Medical
+# Security Plan (130 CMR 504.006(D)(3)), which the model does not hold.
+- name: Case 23, undocumented 8-year-old in Massachusetts fails the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: MA
+  output:
+    # Massachusetts's child term is false, and so is the Medicaid flag.
+    is_chip_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false

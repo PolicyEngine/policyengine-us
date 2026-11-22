@@ -16,6 +16,9 @@ class wi_homestead_income(Variable):
         # PDF pages 8, 12-13: claimant/spouse household, qualifying repayments,
         # and exclusion of children's social security and SSI.
         "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=8",
+        # PDF pages 13-14: lines 9d-9j and 11b, nontaxable income added to
+        # Wisconsin income.
+        "https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=13",
     )
     defined_for = StateCode.WI
 
@@ -24,8 +27,14 @@ class wi_homestead_income(Variable):
         # A household is the claimant and the claimant's spouse (Wis. Stat.
         # 71.52(4)), so household income leaves out a tax unit dependent's
         # income, such as a child's social security, SSI or unemployment
-        # compensation.
-        income = tax_unit_non_dep_add(tax_unit, period, p.homestead.income.sources)
+        # compensation. Payments the claimant receives for a dependent, such
+        # as child support, count even when recorded on the dependent.
+        income = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            p.homestead.income.sources,
+            include_dependents=p.homestead.income.all_member_sources,
+        )
         # The filer Social Security source floors combined net benefits at
         # zero for federal taxability. Wisconsin allows qualifying repayments
         # of prior-year nontaxable household income (71.52(6); 2024 Schedule H

@@ -1,0 +1,15 @@
+description: Delaware lets filers at or above the pension exclusion age threshold take the greater of the pension exclusion and the military pension exclusion, if this is true.
+values:
+  # 30 Del. C. 1106(b)(3)b.2: for 2022 through 2026, filers age 60 or older
+  # exclude up to $12,500 of pensions and eligible retirement income.
+  2022-01-01: false
+  # 1106(b)(3)c.2, d.2 and e.2: from 2027 they exclude the greater of that
+  # amount and their United States military pension, up to the military cap.
+  2027-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Delaware military pension exclusion available at or above the age threshold
+  reference:
+    - title: 30 Del. C. § 1106(b)(3)b-e
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
