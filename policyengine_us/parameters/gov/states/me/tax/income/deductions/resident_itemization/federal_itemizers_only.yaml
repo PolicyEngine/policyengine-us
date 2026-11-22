@@ -1,0 +1,10 @@
+description: Maine allows full-year residents to itemize on the state return only if they itemize federally.
+metadata:
+  unit: bool
+  period: year
+  label: Maine requires federal itemization for state itemization
+  reference:
+    - title: 2025 Maine Form 1040ME instructions
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf
+values:
+  2025-01-01: true

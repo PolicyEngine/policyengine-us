@@ -1,6 +1,7 @@
 from itertools import product
 
 import numpy as np
+from policyengine_core.errors import ParameterNotFoundError
 
 from policyengine_us.tools.period_branch import get_override_branch, has_input
 from policyengine_us.variables.gov.states.tax.income.state_deduction_method import (
@@ -67,16 +68,35 @@ def choose_joint_itemization(costs, federal_methods, prefer_federal_itemized):
     return np.where(preferred.any(axis=0), preferred, within_cent).argmax(axis=0)
 
 
+def _resident_itemization_masks(state, state_parameters):
+    states_by_rule = {
+        "independent": [],
+        "federal_itemizers_only": [],
+        "follows_federal": [],
+    }
+    for jurisdiction in state_parameters:
+        try:
+            state_tax = getattr(state_parameters, jurisdiction).tax.income
+            rule = state_tax.deductions.resident_itemization
+        except ParameterNotFoundError:
+            continue
+        for name, jurisdictions in states_by_rule.items():
+            if getattr(rule, name, False):
+                jurisdictions.append(jurisdiction.upper())
+    return tuple(
+        np.isin(state, jurisdictions) for jurisdictions in states_by_rule.values()
+    )
+
+
 def joint_itemization(tax_unit, period, parameters):
     """Evaluate 2025 full-year resident deduction elections on isolated branches."""
     if not tax_unit.count:
         return np.empty(0, dtype=np.int32)
     sim = tax_unit.simulation
     state = tax_unit.household("state_code_str", period)
-    p = parameters(period).gov.simulation.resident_itemization
-    independent = np.isin(state, p.independent_states)
-    federal_itemizers_only = np.isin(state, p.federal_itemizers_only)
-    follows_federal = np.isin(state, p.follows_federal)
+    independent, federal_itemizers_only, follows_federal = _resident_itemization_masks(
+        state, parameters(period).gov.states
+    )
     elected_state = independent | federal_itemizers_only
     status = tax_unit("filing_status", period)
     requires_federal_itemizing = (status == status.possible_values.SEPARATE) & tax_unit(

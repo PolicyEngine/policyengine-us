@@ -1,0 +1,10 @@
+description: Delaware allows full-year residents to use a different deduction method on the state return, subject to state eligibility rules.
+metadata:
+  unit: bool
+  period: year
+  label: Delaware allows independent resident deduction methods
+  reference:
+    - title: 2025 Delaware income tax instructions
+      href: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf
+values:
+  2025-01-01: true

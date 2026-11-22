@@ -1,0 +1,10 @@
+description: Maryland allows full-year residents to itemize on the state return only if they itemize federally.
+metadata:
+  unit: bool
+  period: year
+  label: Maryland requires federal itemization for state itemization
+  reference:
+    - title: 2025 Maryland resident income tax instructions
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf
+values:
+  2025-01-01: true
