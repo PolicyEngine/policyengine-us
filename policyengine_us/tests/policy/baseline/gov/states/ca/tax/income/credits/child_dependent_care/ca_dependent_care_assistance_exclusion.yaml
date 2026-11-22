@@ -242,35 +242,7 @@
     dependent_care_assistance_exclusion: 0
     ca_dependent_care_assistance_exclusion: 0
 
-- name: California counts a grace-period carryover as the federal exclusion does, 2025
-  period: 2025
-  input:
-    people:
-      head:
-        age: 35
-        employment_income: 50_000
-        # FTB 3506 line 14, as Form 2441 line 13.
-        dependent_care_employer_benefits_prior_year_carryover: 1_000
-      child:
-        age: 5
-    tax_units:
-      tax_unit:
-        members: [head, child]
-        filing_status: HEAD_OF_HOUSEHOLD
-        dependent_care_assistance_qualified_expenses: 1_000
-        tax_unit_childcare_expenses: 1_000
-    households:
-      household:
-        members: [head, child]
-        state_code: CA
-  output:
-    # FTB 3506 line 16 and Form 2441 line 15 are both $1,000, all excluded,
-    # so nothing returns to California AGI.
-    dependent_care_assistance_exclusion: 1_000
-    ca_dependent_care_assistance_exclusion: 1_000
-    ca_dependent_care_assistance_addition: 0
-
-- name: California nets forfeited benefits as the federal exclusion does, 2025
+- name: California nets carried-forward benefits as the federal exclusion does, 2025
   period: 2025
   input:
     people:
@@ -279,7 +251,9 @@
         employment_income: 55_000
         # FTB 3506 line 13, as Form 2441 line 12.
         dependent_care_employer_benefits: 5_000
-        # FTB 3506 line 15, as Form 2441 line 14.
+        # FTB 3506 line 15, as Form 2441 line 14. The filer incurred $4,000
+        # of 2025 expenses but claimed only $3,000 from the plan; the $2,000
+        # balance carries forward to the plan's 2026 grace period.
         dependent_care_employer_benefits_forfeited_or_carried_forward: 2_000
       child:
         age: 5
@@ -301,36 +275,3 @@
     ca_dependent_care_assistance_exclusion: 3_000
     ca_dependent_care_assistance_addition: 0
     taxable_dependent_care_benefits: [0, 0]
-
-- name: California counts a grace-period carryover in 2021, when the federal calculation leaves it out
-  period: 2021
-  input:
-    people:
-      head:
-        age: 35
-        employment_income: 63_000
-        dependent_care_employer_benefits: 3_000
-        # Unused 2020 plan-year benefits used in 2021 (Form 2441 line 13).
-        dependent_care_employer_benefits_prior_year_carryover: 2_000
-      child:
-        age: 5
-    tax_units:
-      tax_unit:
-        members: [head, child]
-        filing_status: HEAD_OF_HOUSEHOLD
-        dependent_care_assistance_qualified_expenses: 9_000
-        tax_unit_childcare_expenses: 9_000
-    households:
-      household:
-        members: [head, child]
-        state_code: CA
-  output:
-    # 2021 FTB 3506 instructions, line 14: "Enter the amount from federal
-    # Form 2441, line 13." Line 16: $3,000 + $2,000 = $5,000. Line 22 is a
-    # flat $5,000, with no line 14 addition. Line 26: the smallest of
-    # $5,000, $9,000 of qualified expenses and $60,000 of earned income, so
-    # $5,000. The 2021 Form 2441 also excludes $5,000 (line 21 adds line 13
-    # to the $10,500 cap), so nothing returns to California AGI. The model's
-    # federal exclusion leaves line 13 out in 2021 and is not asserted here.
-    ca_dependent_care_assistance_exclusion: 5_000
-    ca_dependent_care_assistance_addition: 0

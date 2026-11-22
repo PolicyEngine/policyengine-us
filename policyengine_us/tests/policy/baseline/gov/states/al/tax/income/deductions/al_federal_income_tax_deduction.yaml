@@ -293,54 +293,6 @@
     cdcc: 3_500
     al_federal_income_tax_deduction: 4_390
 
-- name: 2021 head of household, two children, $2,000 grace-period carryover - the 2020-rule CDCC counts Form 2441 line 13
-  # 2021 worksheet Part II recomputes lines 3, 4, 8b and 9e "based on 2020
-  # calculations using 2021 information"; line 4 enters the CDCC "based on
-  # 2020 Form 2441 Line 11". On the 2020 form, line 15 combines lines 12
-  # through 14, so it includes the $2,000 carried over from the 2020 plan year
-  # and used in the 2021 grace period (line 13), and line 21 is $5,000 with no
-  # line 13 addition.
-  # Actual 2021: the 2021 form adds line 13 to the $10,500 cap and excludes
-  #   $5,000, so its CDCC is 50% x min(16,000 - 5,000, 9,000 - 5,000) =
-  #   2,000. The model leaves line 13 out for 2021 (exclusion 3,000, CDCC
-  #   3,000), so this case asserts no federal 2021 value. Either way the
-  #   CDCC is refundable. Taxable income 60,000 - 18,800 = 41,200; tax
-  #   1,420 + 12% x 27,000 = 4,660. CTC 3,600 + 3,000 = 6,600, all
-  #   refundable, so Part I is 0.
-  # Part II, 2020 rules: line 15 = 3,000 + 2,000 = 5,000; exclusion
-  #   min(5,000, 9,000, 5,000) = 5,000; limit 6,000 - 5,000 = 1,000; rate 20%;
-  #   CDCC 200. CTC 4,000, all non-refundable. Line 6 = 4,660 - 4,000 - 200 =
-  #   460. Without the carryover the 2020-rule CDCC is 20% x 3,000 = 600 and
-  #   the deduction is 60.
-  absolute_error_margin: 1
-  period: 2021
-  input:
-    people:
-      head:
-        age: 35
-        # Box 1 wages are $60,000 ($63,000 - $3,000 of box 10 benefits).
-        employment_income: 63_000
-        dependent_care_employer_benefits: 3_000
-        dependent_care_employer_benefits_prior_year_carryover: 2_000
-      child1:
-        age: 3
-        is_tax_unit_dependent: true
-      child2:
-        age: 6
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [head, child1, child2]
-        filing_status: HEAD_OF_HOUSEHOLD
-        dependent_care_assistance_qualified_expenses: 9_000
-        tax_unit_childcare_expenses: 9_000
-    households:
-      household:
-        members: [head, child1, child2]
-        state_code: AL
-  output:
-    al_federal_income_tax_deduction: 460
-
 - name: Alabama subtracts payment credits and only refundable AOC
   # Ala. Admin. Code r. 810-3-15-.20(1)(d)2 requires all payment credits.
   # Federal tax already reflects the nonrefundable $1,500 of the total AOC.

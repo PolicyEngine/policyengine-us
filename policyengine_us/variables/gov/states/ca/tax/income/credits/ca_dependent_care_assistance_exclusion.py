@@ -27,16 +27,10 @@ class ca_dependent_care_assistance_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         # FTB 3506 line 16: employer benefits (line 13, as Form 2441 line
-        # 12), plus grace-period carryovers (line 14, "the amount from federal
-        # Form 2441, line 13" in the 2021 instructions), less amounts
-        # forfeited or carried forward (line 15). Line 22 never adds line 14
-        # to California's cap, so line 14 counts in every year, including
-        # 2021 and 2022.
-        benefits = tax_unit.sum(
-            form_2441_line_15(
-                tax_unit.members, period, parameters, always_count_line_13=True
-            )
-        )
+        # 12) less amounts forfeited or carried forward (line 15, as Form 2441
+        # line 14). Line 14, grace-period carryovers used, is not modeled, as
+        # on the federal form.
+        benefits = tax_unit.sum(form_2441_line_15(tax_unit.members, period))
         if not np.any(benefits > 0):
             return np.zeros_like(benefits)
         p = parameters(period).gov.states.ca.tax.income.credits.child_dependent_care
