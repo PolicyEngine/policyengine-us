@@ -515,7 +515,7 @@
 # poverty guidelines (15_960 for one person plus 5_680 for each additional
 # person). Each household below has one full-time worker at Massachusetts's
 # $15.00 minimum wage (M.G.L. c. 151, s. 1): 2_080 hours x 15 = 31_200.
-- name: FY2027 family of four heating with fuel oil, homeowner, with the High Energy Cost Supplement.
+- name: Case 28, FY2027 family of four heating with fuel oil, homeowner, with the High Energy Cost Supplement.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -540,7 +540,7 @@
     ma_liheap_hecs_payment: 200
     ma_liheap: 1_650
 
-- name: FY2027 household of two heating with natural gas, non-subsidized, without the High Energy Cost Supplement.
+- name: Case 29, FY2027 household of two heating with natural gas, non-subsidized, without the High Energy Cost Supplement.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -565,7 +565,7 @@
     ma_liheap_hecs_payment: 0
     ma_liheap: 774
 
-- name: FY2027 subsidized housing family of three with heat included in rent.
+- name: Case 30, FY2027 subsidized housing family of three with heat included in rent.
   period: 2027
   absolute_error_margin: 0.01
   input:
