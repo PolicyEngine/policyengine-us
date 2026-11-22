@@ -34,7 +34,11 @@ class is_snap_alien_military_connected(Variable):
         "under-applies the waiting period. Not modeled: the unremarried "
         "surviving spouse of a deceased veteran and the child of a deceased "
         "veteran who was dependent at the veteran's death. Set this variable "
-        "directly to override the proxies."
+        "directly to override the proxies. 8 U.S.C. 1613(b)(2) gives the same "
+        "exemption for other federal means-tested benefits, so "
+        "is_federal_medicaid_immigration_status_eligible (Medicaid and the "
+        "Medicare Savings Programs) and Nevada LIHEAP also use this variable; "
+        "an override, or a change to its parameters, changes them too."
     )
     definition_period = YEAR
     reference = (

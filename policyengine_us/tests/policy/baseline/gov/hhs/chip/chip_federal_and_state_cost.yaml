@@ -28,3 +28,57 @@
   output:
     chip_federal_cost: 0
     chip_state_cost: 0
+
+# New York covers undocumented children under Child Health Plus with state
+# funds: Public Health Law section 2511(2-b) asks for a Social Security
+# number or citizenship documents only to claim the federal share. A child
+# enrolled through gov.hhs.chip.undocumented.child gets no federal match, and
+# the citizen sibling keeps New York's 65% enhanced match.
+- name: New York undocumented child on CHIP has no federal share and the citizen sibling keeps 65% (2025)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_150
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_150
+      person3:
+        age: 12
+        immigration_status: UNDOCUMENTED
+        takes_up_chip_if_eligible: true
+      person4:
+        age: 7
+        takes_up_chip_if_eligible: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # $64,300 / $32,150 = 2.00: both children are above the Medicaid limit of
+    # 154% and below the CHIP limit of 405%.
+    chip_category: [NONE, NONE, CHILD, CHILD]
+    chip_enrolled: [false, false, true, true]
+    is_federal_chip_immigration_status_eligible: [false, false, false, true]
+    # Per-child cost: $1,026,204,735 / 568,047 enrollees = $1,806.55.
+    chip: [0, 0, 1_806.55, 1_806.55]
+    # Citizen child: FMAP 50% + 30% of 50% = 65%. Undocumented child: 0.
+    chip_federal_share: [0, 0, 0, 0.65]
+    # $1,806.55 x 0.65 = $1,174.26.
+    chip_federal_cost: [0, 0, 0, 1_174.26]
+    # $1,806.55 x (1 - 0) = $1,806.55. $1,806.55 x (1 - 0.65) = $632.29.
+    chip_state_cost: [0, 0, 1_806.55, 632.29]

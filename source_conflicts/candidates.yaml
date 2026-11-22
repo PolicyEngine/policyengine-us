@@ -2267,7 +2267,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
     state median income, or the whole-dollar monthly tables the plan attachment and manual print?
@@ -2281,11 +2281,19 @@ candidates:
   - kind: manual
     citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
     url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  - kind: manual
+    citation: 2026-27 LEAP Operations Manual, eligibility chart, p.99
+    url: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=99
+  - kind: guidance
+    citation: CDHS 2026-27 LEAP Income Limits table, linked from the LEAP page (https://cdhs.colorado.gov/leap)
+    url: https://drive.google.com/file/d/1gfDDrwl3HmZONV3za74lhyXsj8LMdVeF/view
   readings:
     statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
       and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
     other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
-      median income for one person, and the attachment says Colorado "uses the FPL chart".
+      median income for one person, and the attachment says Colorado "uses the FPL chart". For FY2027 the eligibility
+      chart and the income limits table print $3,774 for one person, where 60% of state median income is $45,295 a year
+      ($3,774.58 a month).
   example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
     $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
     under the printed $3,607 and $700 within 60% of state median income ($43,293).
@@ -2298,7 +2306,10 @@ candidates:
   note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
     by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
     The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
-    state median income guidelines".'
+    state median income guidelines". FY2027 follows the same ruling: the 2026-27 manual''s eligibility chart (p.99),
+    both applications (pp.125, 131) and the income limits table on the LEAP page print the floored amount in every
+    row, and only the manual''s rates handout (p.5) prints $10,453 for ten members, against $10,452 elsewhere (PR
+    11138). FY2027 prints only the percentage contribution bands, so their dollar boundaries keep the FY2026 rounding.'
 - id: us-co:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2981,6 +2992,53 @@ candidates:
     checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
     from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
     (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
+- id: us-de:military-pension-survivor-annuity
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does an annuity paid to a uniformed-services member's survivor, such as a Survivor Benefit Plan annuity,
+    count as a "United States military pension" under 30 Del. C. 1106(b)(3), or only the retiree's own retired pay, as
+    the PIT-RES Line 6 instructions provide?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1106(b)(3)f.2, added as (b)(3)c.2 by 84 Del. Laws c. 437 (SB 329, approved September 26, 2024)
+    url: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2024
+    url: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=6
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2025
+    url: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=6
+  readings:
+    statute: '"United States military pension" means a pension received as a result of an individual''s service in the
+      Army, Navy, Air Force, Marine Corps, Space Force, Coast Guard, the commissioned corps of the National Oceanic and
+      Atmospheric Administration, the commissioned corps of the Public Health Service, or the National Guard. A
+      survivor''s annuity is received as a result of the deceased member''s service.'
+    other: The instructions give the military pension exclusion to a filer who "retired from the United States military
+      and received pension income", which leaves a survivor's annuity in the $2,000 or $12,500 pension exclusion.
+  example: In 2024 a 50-year-old with a $3,000 Survivor Benefit Plan annuity and no other income excludes $3,000 under
+    the statute and $2,000 under the instructions. In 2029 a 50-year-old with a $30,000 annuity excludes $25,000 under
+    the statute, and $2,000 if the instructions keep their retiree-only wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/pension/military_income_sources.yaml
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/pension_exclusion/de_pension_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10716
+  state: ruled
+  note: Definitions control, so from 2024 the military pension branch counts retired pay and survivor annuities
+    (military_retirement_pay and military_retirement_pay_survivors), each person's total under one cap. 83 Del. Laws
+    c. 352 (approved July 20, 2022) created the military pension exclusion for 2022 without defining the term, and the
+    2022 and 2023 instructions give it to a filer who retired from the military. 84 Del. Laws c. 437 (approved September
+    26, 2024) put the definition in (b)(3)c., which applies "for the purposes of this paragraph (b)(3)" and so reaches
+    b., the rule for taxable years beginning on or after January 1, 2022; the act has no effective-date or applicability
+    section. Three start years have support, 2022 (when the provision the definition attaches to begins), 2024 (the tax
+    year of approval) and 2025 (the first full tax year after approval). The code starts the definition in 2024 and reads retired
+    pay alone for 2022 and 2023, as those years' instructions did. The SB 219 fiscal note (assumption 4) counts "1,337
+    survivors receiving a military pension" in Delaware. The Axiom corpus holds none of these texts, so captures of
+    1106(b)(3) and both years' Line 6 pages are in source_conflicts/sources/us-de/.
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -17929,3 +17987,32 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-ma:undocumented-pregnancy-masshealth-standard
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does Massachusetts give a pregnant undocumented resident MassHealth Standard, as 130 CMR 504.006(D)(1) provides, when M.G.L. c. 118E, section 16D(2) bars benefits other than emergency services to undocumented residents unless federal law requires them?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 118E, section 16D(2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+  - kind: regulation
+    citation: 130 CMR 504.006(D)(1), PDF page 13 (Rev. 08/19/22)
+    url: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+  - kind: regulation
+    citation: 130 CMR 505.002(D), PDF page 4 (revised February 13, 2026)
+    url: https://www.mass.gov/doc/130-cmr-505000-masshealth-coverage-types-5/download#page=4
+  readings:
+    statute: Section 16D(2) says "services or benefits other than emergency services shall not be provided to undocumented aliens unless required by federal law".
+    other: 130 CMR 504.006(D)(1) gives other noncitizens "MassHealth Standard, if they are pregnant", and 130 CMR 505.002(D) continues that coverage after the pregnancy ends.
+  example: In model year 2025 the model finds an undocumented Massachusetts resident at 150% of the poverty line who meets Medicaid's other tests eligible for Medicaid during pregnancy and through day 364 after delivery. 130 CMR 505.002(D)(4), in the text revised February 13, 2026, continues eligibility for postpartum care for 12 months after the pregnancy ends and then to the end of the month in which that period ends. If the model followed the statute's emergency-only reading, the resident would not be eligible for Medicaid. The model's CHIP unborn-child route would be open during pregnancy if its other tests pass and would end at delivery. Emergency Medicaid is a separate test.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented/pregnant.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented_immigrant.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11130
+  state: open
+  note: PolicyEngine follows the regulation. Before pull request 11130 the model passed every undocumented Massachusetts resident at every age. No source read for this candidate names a federal law that requires the coverage, or says whether Massachusetts claims federal match for it. A regulation that flatly contradicts its statute goes to the project lead (CONTRIBUTING.md, "Source conflicts").

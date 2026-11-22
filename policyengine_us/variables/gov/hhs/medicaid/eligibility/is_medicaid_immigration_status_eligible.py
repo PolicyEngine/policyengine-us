@@ -12,6 +12,8 @@ class is_medicaid_immigration_status_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/8/1641",
         "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim",
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants/",
+        "https://www.nysenate.gov/legislation/laws/SOS/366",
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D",
     )
 
     def formula(person, period, parameters):
@@ -29,7 +31,23 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
         state = person.household("state_code_str", period)
         state_covers_undocumented = p.undocumented_immigrant[state].astype(bool)
-        undocumented_eligible = undocumented & state_covers_undocumented
+        # Some states cover undocumented immigrants only during pregnancy and
+        # the postpartum period, or only at age 65 or older.
+        covers_pregnancy = p.undocumented.pregnant[state].astype(bool)
+        covers_aged = p.undocumented.aged[state].astype(bool)
+        # The pregnancy term reuses the Medicaid pregnancy category's test, so
+        # this term and that category end on the same day by design. The test
+        # counts days since the pregnancy ended. Massachusetts continues
+        # coverage "to the end of the month in which the 12-month period ends"
+        # (130 CMR 505.002(D)(4)), so the model's day count ends before that
+        # continuation does.
+        pregnant = person("is_pregnant_for_medicaid_nfc", period)
+        aged = person("is_ssi_aged", period)
+        undocumented_eligible = undocumented & (
+            state_covers_undocumented
+            | (covers_pregnancy & pregnant)
+            | (covers_aged & aged)
+        )
 
         # Some states cover every child below an age limit with state funds,
         # whatever the child's immigration status.
@@ -40,10 +58,16 @@ class is_medicaid_immigration_status_eligible(Variable):
         ca_eligible_regardless_of_immigration_status = person(
             "is_ca_medicaid_immigration_status_eligible", period
         )
+        # New York covers some statuses outside the federal test with state
+        # funds.
+        ny_state_funded_eligible = person(
+            "is_ny_medicaid_immigration_status_eligible", period
+        )
 
         return (
             federally_eligible
             | undocumented_eligible
             | child_eligible_regardless_of_status
             | ca_eligible_regardless_of_immigration_status
+            | ny_state_funded_eligible
         )

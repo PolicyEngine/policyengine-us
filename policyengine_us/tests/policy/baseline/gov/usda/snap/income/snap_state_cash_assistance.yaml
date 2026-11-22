@@ -1,0 +1,172 @@
+- name: Illinois counts both federal SSI and AABD cash for a renter.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        pre_subsidy_rent: 7_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_housing_assistance_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    ssi: 967
+    il_aabd_person: 6.33
+    snap_unearned_income: 973.33
+
+- name: District of Columbia General Assistance for Children counts as unearned income.
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 4_000
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: false
+    households:
+      household:
+        members: [adult, child]
+        state_code: DC
+  output:
+    tanf: 0
+    dc_gac: 450
+    snap_unearned_income: 450
+
+- name: District of Columbia POWER counts as unearned income.
+  period: 2024-01
+  input:
+    state_code: DC
+    dc_power_eligible: true
+    dc_tanf_standard_payment: 450
+    dc_tanf_countable_income: 0
+  output:
+    dc_power: 450
+    snap_unearned_income: 450
+
+- name: Massachusetts EAEDC is counted at its monthly amount.
+  period: 2022-01
+  input:
+    state_code: MA
+    age: 67
+    is_ssi_eligible: false
+    ma_eaedc_living_arrangement: A
+    ma_tcap_gross_earned_income: 0
+    ma_tcap_gross_unearned_income: 0
+  output:
+    ma_eaedc: 401
+    snap_unearned_income: 401
+
+- name: New York counts reported Safety Net Assistance in SNAP unearned income.
+  period: 2026-01
+  input:
+    state_code: NY
+    age: 30
+    ny_safety_net_assistance: 500
+  output:
+    snap_unearned_income: 500
+    snap_gross_income: 500
+
+- name: Washington State Family Assistance counts as unearned income.
+  period: 2024-01
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_sfa: 706
+    snap_unearned_income: 706
+
+- name: Reported General Assistance remains countable as monthly unearned income.
+  period: 2026-01
+  input:
+    state_code: TX
+    age: 30
+    employment_income: 12_000
+    weekly_hours_worked_before_lsr: 40
+    general_assistance: 2_400
+  output:
+    snap_unearned_income: 200
+
+- name: California counts a paid CAPI grant along with pension income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
+    pension_income: 6_240
+  output:
+    ca_capi_person: 733.94
+    ca_capi_countable_for_snap: 733.94
+    snap_unearned_income: 1_253.94
+
+- name: CAPI that fails the resource test adds no SNAP income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
+    pension_income: 6_240
+    ca_capi_resources: 4_000
+  output:
+    ca_capi_person: 733.94
+    ca_capi: 0
+    snap_unearned_income: 520
+
+- name: CalFresh prorates CAPI for an ineligible recipient living with a SNAP member.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        ssi_qualifying_quarters_earnings: 0
+      member:
+        age: 45
+        weekly_hours_worked_before_lsr: 40
+    households:
+      household:
+        members: [recipient, member]
+        state_code: CA
+  output:
+    ca_capi_person: [1_233.94, 0]
+    snap_income_counted_share: [0.5, 1]
+    snap_unearned_income: 616.97
+
+- name: An annual reported CAPI grant replaces the calculated person grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
+    ca_capi: 6_000
+  output:
+    ca_capi_person: 1_233.94
+    snap_unearned_income: 500
+
+- name: A reported zero Illinois AABD grant replaces the calculated person grant.
+  period: 2025-01
+  input:
+    state_code: IL
+    age: 70
+    ssi: 967
+    il_aabd_person: 6.33
+    il_aabd: 0
+  output:
+    snap_unearned_income: 967

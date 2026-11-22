@@ -20,50 +20,36 @@ class is_chip_immigration_status_eligible(Variable):
         "https://www.medicaid.gov/federal-policy-guidance/downloads/SHO-12-002.pdf#page=1",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho21007.pdf#page=17",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=6",
+        "https://www.nysenate.gov/legislation/laws/PBH/2511",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs
-        medicaid = p.medicaid.eligibility
+        # The federal test: citizens, qualified noncitizens exempt from or
+        # past the five-year bar, and the lawfully residing option where the
+        # state elected it in both CHIP and Medicaid. The routes below are
+        # each state's own.
+        federally_eligible = person(
+            "is_federal_chip_immigration_status_eligible", period
+        )
         status = person("immigration_status", period)
-        status_str = status.decode_to_str()
-        citizen = status == status.possible_values.CITIZEN
-        # CHIP shares the Medicaid qualified-alien statuses (narrowed by section
-        # 71109 from October 2026) and the five-year bar (SHO #26-001).
-        qualified_status = np.isin(status_str, medicaid.eligible_immigration_statuses)
-        bar_exempt_status = np.isin(
-            status_str, medicaid.bar_exempt_immigration_statuses
-        )
-        years_since_entry = person("years_since_us_entry", period)
-        past_five_year_bar = years_since_entry >= medicaid.five_year_bar_years
-        federally_eligible_status = citizen | (
-            qualified_status & (bar_exempt_status | past_five_year_bar)
-        )
-        # The lawfully residing option reaches CHIP only for a group the state
-        # elected in both CHIP and Medicaid.
-        medicaid_option = medicaid.lawfully_residing
-        chip_option = p.chip.lawfully_residing
-        lawfully_residing = np.isin(status_str, medicaid_option.immigration_statuses)
         state = person.household("state_code_str", period)
         age = person("age", period)
-        child = (
-            chip_option.child[state].astype(bool)
-            & medicaid_option.child[state].astype(bool)
-            & (age < p.chip.child.max_age)
-        )
-        # The pregnancy option runs through the state's postpartum period,
-        # including the 12-month extension where elected (SHO 21-007 Q11).
-        pregnant = (
-            chip_option.pregnant[state].astype(bool)
-            & medicaid_option.pregnant[state].astype(bool)
-            & person("is_pregnant_for_medicaid_nfc", period)
-        )
         # States that cover every child below an age limit regardless of
         # immigration status do so in CHIP as well as Medicaid.
-        regardless = medicaid.regardless_of_immigration_status
+        regardless = p.medicaid.eligibility.regardless_of_immigration_status
         child_eligible_regardless_of_status = age < regardless.child_age_limit[state]
+        # Some states cover undocumented children in CHIP alone. These
+        # children pass the Medicaid immigration test only through the
+        # pregnancy term.
+        undocumented = status == status.possible_values.UNDOCUMENTED
+        undocumented_child = (
+            undocumented
+            & p.chip.undocumented.child[state].astype(bool)
+            & (age < p.chip.child.max_age)
+        )
         return (
-            federally_eligible_status
-            | (lawfully_residing & (child | pregnant))
+            federally_eligible
             | child_eligible_regardless_of_status
+            | undocumented_child
         )
