@@ -1,11 +1,10 @@
-description: Alaska excludes all residents of these tribe-served ZIP codes under the Heating Assistance Program.
-# ZIP codes where most residents live in a community that Addendum A marks 0
-# (the tribe serves all residents), from 2020 Census block counts by Census
-# place; 99545 has no Census area and follows its Addendum A row. A community
-# Addendum A does not name inherits the marking of the community whose oil
-# points it takes. Where a ZIP code mixes communities, all its households
-# follow the majority: 99780 follows Tok, so Tetlin's tribal routing is not
-# identified.
+description: Alaska excludes all residents of the tribe-served community that is the largest in each of these ZIP codes under the Heating Assistance Program.
+# Derived list for a household with no listed Census place. ZIP codes where
+# most residents live in a place on tribal_service_places, from 2020 Census
+# block counts by Census place; 99545 has no Census area and follows its
+# Addendum A row. Where a ZIP code mixes communities, all its households
+# follow the majority: 99780 follows Tok, so a Tetlin household that sends
+# only its ZIP code is not routed to the tribe.
 values:
   2026-10-01:
     - "99545"  # Kongiganak (Addendum A)

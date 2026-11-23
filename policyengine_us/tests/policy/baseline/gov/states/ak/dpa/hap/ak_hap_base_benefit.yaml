@@ -6,10 +6,13 @@
 # http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
 # http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
 # https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
-# A listed ZIP code takes the oil and gas points of the community where most of
-# its residents live, and a household with no listed ZIP code takes its
-# borough's most common points; these tables are derived, not a state-issued
-# crosswalk.
+# Census places not named in Addendum A take the oil and gas points of the main
+# community Addendum A lists for their ZIP code (four places) or else of the nearest listed
+# community; these approximations are not a state-issued crosswalk. Oil points follow
+# Addendum A except Loring and Tetlin, which follow Appendix A to 7 AAC 44.
+# A household with no listed place takes the points of the community where most
+# of its ZIP code's residents live, and otherwise its borough's most common
+# points; these tables are derived too.
 # Income ceilings are exact percentages of the guideline: the one-person 25% ceiling
 # is 415.625 a month (4,987.50 a year); Addendum E prints 407.
 # Fuel, dwelling and location are explicit; no new monetary inputs or sentinel defaults.
@@ -40,7 +43,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 2_450
 
@@ -70,7 +73,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 700
 
@@ -100,7 +103,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -130,7 +133,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 700
 
@@ -160,7 +163,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_050
 
@@ -190,7 +193,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 2_275
 
@@ -220,7 +223,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_225
 
@@ -250,7 +253,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -280,7 +283,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -310,7 +313,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -340,12 +343,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
 # FY2027 Addendum A community listing: 8 points * $175 = $1,400.
-- name: Case 12, Fairbanks gas follows the ZIP code crosswalk.
+- name: Case 12, Fairbanks gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -370,12 +373,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_400
 
 # FY2027 Addendum A community listing: 5 points * $175 = $875.
-- name: Case 13, Anchorage gas follows the ZIP code crosswalk.
+- name: Case 13, Anchorage gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -400,12 +403,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
   output:
     ak_hap_base_benefit: 875
 
 # FY2027 Addendum A community listing: 6 points * $175 = $1,050.
-- name: Case 14, Utqiagvik renamed from Barrow gas follows the ZIP code crosswalk.
+- name: Case 14, Utqiagvik renamed from Barrow gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -430,12 +433,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99723'
+        place_fips: '81920'
   output:
     ak_hap_base_benefit: 1_050
 
 # FY2027 Addendum A community listing: 21 points * $175 = $3,675.
-- name: Case 15, Utqiagvik renamed from Barrow oil follows the ZIP code crosswalk.
+- name: Case 15, Utqiagvik renamed from Barrow oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -460,12 +463,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99723'
+        place_fips: '81920'
   output:
     ak_hap_base_benefit: 3_675
 
 # FY2027 Addendum A community listing: 5 points * $175 = $875.
-- name: Case 16, Knik Fairview gas follows the ZIP code crosswalk.
+- name: Case 16, Knik Fairview gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -490,12 +493,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99623'
+        place_fips: '40645'
   output:
     ak_hap_base_benefit: 875
 
 # FY2027 Addendum A community listing: 7 points * $175 = $1,225.
-- name: Case 17, Knik Fairview oil follows the ZIP code crosswalk.
+- name: Case 17, Knik Fairview oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -520,12 +523,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99623'
+        place_fips: '40645'
   output:
     ak_hap_base_benefit: 1_225
 
 # FY2027 Addendum A community listing: 8 points * $175 = $1,400.
-- name: Case 18, North Pole current gas follows the ZIP code crosswalk.
+- name: Case 18, North Pole current gas follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -550,12 +553,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99705'
+        place_fips: '55910'
   output:
     ak_hap_base_benefit: 1_400
 
 # FY2027 Addendum A community listing: 5 points * $175 = $875.
-- name: Case 19, Juneau uniform consolidated oil follows the ZIP code crosswalk.
+- name: Case 19, Juneau uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -580,12 +583,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99801'
+        place_fips: '36400'
   output:
     ak_hap_base_benefit: 875
 
 # FY2027 Addendum A community listing: 6 points * $175 = $1,050.
-- name: Case 20, Sitka uniform consolidated oil follows the ZIP code crosswalk.
+- name: Case 20, Sitka uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -610,12 +613,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99835'
+        place_fips: '70540'
   output:
     ak_hap_base_benefit: 1_050
 
 # FY2027 Addendum A community listing: 5 points * $175 = $875.
-- name: Case 21, Wrangell uniform consolidated oil follows the ZIP code crosswalk.
+- name: Case 21, Wrangell uniform consolidated oil follows the place crosswalk.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -640,12 +643,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99929'
+        place_fips: '86380'
   output:
     ak_hap_base_benefit: 875
 
-# ZIP 99901 follows Ketchikan, where most of its residents live: 4 points * $175 = $700. Was 875 for Loring's Census place (5 points); Loring shares ZIP 99901 and has no value of its own.
-- name: Case 22, ZIP 99901 takes Ketchikan's oil points.
+# 7 AAC 44.080(a) sets community points by Appendix A to 7 AAC 44, which lists Loring at 5 oil points; FY2027 Addendum A lists 4. 5 points * $175 = $875.
+- name: Case 22, Loring oil uses the Appendix A points of 7 AAC 44.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -670,9 +673,9 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99901'
+        place_fips: '45020'
   output:
-    ak_hap_base_benefit: 700
+    ak_hap_base_benefit: 875
 
 # Addendum A lists no gas points for Ester; the nearest listed gas community, Fairbanks, has 8: 8 points * $175 = $1,400.
 - name: Case 23, Ester gas takes the points of the nearest listed gas community.
@@ -700,7 +703,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99725'
+        place_fips: '23460'
   output:
     ak_hap_base_benefit: 1_400
 
@@ -730,7 +733,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99721'
+        place_fips: 02080
   output:
     ak_hap_base_benefit: 1_050
 
@@ -760,7 +763,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
   output:
     ak_hap_base_benefit: 350
 
@@ -790,7 +793,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
   output:
     ak_hap_base_benefit: 0
 
@@ -820,7 +823,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 525
 
@@ -850,7 +853,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -888,7 +891,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 525
 
@@ -926,7 +929,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -957,7 +960,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 525
 
@@ -996,7 +999,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 525
 
@@ -1036,7 +1039,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_050
     ak_hap_household_size: 1
@@ -1079,7 +1082,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_225
     ak_hap_household_size: 1
@@ -1122,7 +1125,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 875
     ak_hap_household_size: 2
@@ -1165,7 +1168,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 700
 
@@ -1195,7 +1198,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99786'
+        place_fips: 01970
   output:
     ak_hap_base_benefit: 6_125
 
@@ -1225,7 +1228,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99786'
+        place_fips: 01970
   output:
     ak_hap_base_benefit: 6_125
 
@@ -1255,7 +1258,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99786'
+        place_fips: 01970
   output:
     ak_hap_base_benefit: 0
 
@@ -1285,7 +1288,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99786'
+        place_fips: 01970
   output:
     ak_hap_base_benefit: 6_125
 
@@ -1316,7 +1319,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -1347,7 +1350,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_050
 
@@ -1378,7 +1381,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 875
 
@@ -1409,7 +1412,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 875
 
@@ -1440,7 +1443,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -1471,7 +1474,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -1502,7 +1505,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_575
 
@@ -1533,7 +1536,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
     ak_hap_countable_income: 0
@@ -1598,7 +1601,7 @@
         - person4
         - person5
         state_code: AK
-        zip_code: '99769'
+        place_fips: '67460'
   output:
     ak_hap_base_benefit: 4_025
     ak_hap_countable_income: 34_800
@@ -1633,7 +1636,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -1665,7 +1668,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -1697,7 +1700,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -1729,7 +1732,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -1760,7 +1763,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99801'
+        place_fips: '36400'
   output:
     ak_hap_base_benefit: 525
 
@@ -1790,7 +1793,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99551'
+        place_fips: '00760'
   output:
     ak_hap_base_benefit: 0
 
@@ -1820,7 +1823,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99551'
+        place_fips: '00760'
   output:
     ak_hap_base_benefit: 0
 
@@ -1850,12 +1853,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99553'
+        place_fips: 01090
   output:
     ak_hap_base_benefit: 1_925
 
-# 7 AAC 44.040(b)(3)(B) excludes a household residing on a military base, and Addendum A marks Fort Greely 0/USA under ZIP 99731, so its residents receive nothing. Without the exclusion, oil 11 * 175 = 1,925.
-- name: Case 58, Fort Greely ZIP code residents live on a military base and receive nothing.
+# 7 AAC 44.040(b)(3)(B) excludes a household residing on a military base, and Addendum A marks Fort Greely 0/USA. Census draws Fort Greely CDP from the installation, so its residents receive nothing. Without the exclusion, oil 11 * 175 = 1,925.
+- name: Case 58, Fort Greely CDP residents live on a military base and receive nothing.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1880,12 +1883,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99731'
+        place_fips: '26100'
   output:
     ak_hap_base_benefit: 0
 
-# ZIP 99780 follows Tok, where most of its residents live: 12 points * $175 = $2,100, with state routing. Was 0 for Tetlin's Census place; Tetlin, which Addendum A marks 0/TCC, shares ZIP 99780, so its tribal routing is not identified.
-- name: Case 59, ZIP 99780 takes Tok's oil points and state routing.
+# Appendix A to 7 AAC 44 lists Tetlin at 16 oil points and FY2027 Addendum A at 12; Addendum A's 0/TCC marker routes all residents to the tribal program, so the state award is zero at either value.
+- name: Case 59, Tetlin is routed to all-resident tribal program.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1910,9 +1913,9 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99780'
+        place_fips: '76590'
   output:
-    ak_hap_base_benefit: 2_100
+    ak_hap_base_benefit: 0
 
 # HH requires at least one citizen or qualified noncitizen.
 - name: Case 60, household with no qualified members is ineligible.
@@ -1940,13 +1943,13 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
     ak_hap_household_size: 0
 
-# ZIP codes are read only under the Alaska state mask.
-- name: Case 61, non Alaska state mask prevents a same-ZIP-code award.
+# Five-digit place identifiers are only meaningful under Alaska state mask.
+- name: Case 61, non Alaska state mask prevents same-place-code award.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -1971,12 +1974,12 @@
         members:
         - person1
         state_code: WA
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
-# No ZIP code: the Fairbanks North Star Borough's most common oil points apply, 10 * $175 = $1,750. Was 0 with no place code.
-- name: Case 62, a household with no ZIP code takes its borough's oil points.
+# No place or ZIP code: the Fairbanks North Star Borough's most common oil points apply, 10 * $175 = $1,750.
+- name: Case 62, a household with no place or ZIP code takes its borough's oil points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2001,12 +2004,13 @@
         members:
         - person1
         state_code: AK
+        place_fips: ''
         county: FAIRBANKS_NORTH_STAR_BOROUGH_AK
   output:
     ak_hap_base_benefit: 1_750
 
-# '99999' is not a listed ZIP code, so the Fairbanks North Star Borough's most common oil points apply, 10 * $175 = $1,750. Was 0 for an unknown place code.
-- name: Case 63, a ZIP code outside the table falls back to the borough's oil points.
+# '99999' is not an Alaska Census place, so the Fairbanks North Star Borough's most common oil points apply, 10 * $175 = $1,750.
+- name: Case 63, a place code outside the Census gazetteer falls back to the borough's oil points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2031,13 +2035,13 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99999'
+        place_fips: '99999'
         county: FAIRBANKS_NORTH_STAR_BOROUGH_AK
   output:
     ak_hap_base_benefit: 1_750
 
-# Numeric 0 represents unavailable geography, not statutory ineligibility: the ZIP code is not listed and no Alaska borough is known.
-- name: Case 64, an unlisted ZIP code with no Alaska borough yields an unavailable modeled amount.
+# Numeric 0 represents unavailable geography, not statutory ineligibility: the place is not listed, and no ZIP code or Alaska borough is known.
+- name: Case 64, seven-digit GEOID supplied instead of place, with no ZIP code or Alaska borough, yields an unavailable modeled amount.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2062,12 +2066,12 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99999'
+        place_fips: '0224230'
         county: UNKNOWN
   output:
     ak_hap_base_benefit: 0
 
-# Addendum A lists Anchorage at 8 oil points under ZIP 99501: 8 * 1 = 8 points * $175 = $1,400.
+# Addendum A lists Anchorage at 8 oil points, and place 03000 covers the whole municipality (Chugiak, listed at 7, lies inside it): 8 * 1 = 8 points * $175 = $1,400.
 - name: Case 65, Anchorage municipality fuel oil uses the Anchorage oil points.
   period: 2027
   absolute_error_margin: 0.01
@@ -2093,7 +2097,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
   output:
     ak_hap_base_benefit: 1_400
 
@@ -2123,7 +2127,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_400
 
@@ -2153,7 +2157,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_400
 
@@ -2183,7 +2187,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -2213,7 +2217,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 1_750
 
@@ -2242,7 +2246,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -2271,7 +2275,7 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_base_benefit: 0
 
@@ -2317,7 +2321,7 @@
         - person1
         - person2
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_household_size:
     - 1
@@ -2386,17 +2390,17 @@
         members:
         - person1
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
       household2:
         members:
         - person2
         state_code: AK
-        zip_code: '99786'
+        place_fips: 01970
       household3:
         members:
         - person3
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_household_size:
     - 1
@@ -2439,7 +2443,7 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
   output:
     ak_hap_base_benefit: 1_575
 
@@ -2481,11 +2485,11 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
       household2:
         members: ["person2"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
   output:
     ak_hap_base_benefit: [0, 350]
 
@@ -2528,15 +2532,15 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
       household2:
         members: ["person2"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
   output:
     ak_hap_base_benefit: [0, 525]
 
-# Koyuk oil 25 (Addendum A; ZIP 99753); income 25,000 gives .5. One-bedroom 25 * .8 * .55 * .5 = 5.5 -> 6; elderly studio 25 * .8 * .15 * .5 + 1 = 2.5 -> 3.
+# Koyuk oil 25 (Addendum A; Census place 41940); income 25,000 gives .5. One-bedroom 25 * .8 * .55 * .5 = 5.5 -> 6; elderly studio 25 * .8 * .15 * .5 + 1 = 2.5 -> 3.
 - name: "Case 77, purchased fuel preserves half-up rounding at exact half points."
   period: 2027
   absolute_error_margin: 0.01
@@ -2576,11 +2580,11 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99753"
+        place_fips: "41940"
       household2:
         members: ["person2"]
         state_code: "AK"
-        zip_code: "99753"
+        place_fips: "41940"
   output:
     ak_hap_base_benefit: [1_050, 525]
 
@@ -2637,20 +2641,20 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
       household2:
         members: ["person2"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
       household3:
         members: ["person3"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
   output:
     ak_hap_base_benefit: [0, 0, 1_400]
 
-# Anchorage wood: oil 8 * .8 = 6.4 -> 6 points * $175 = $1,050. ZIP '99999' with no Alaska borough has no oil points, and selecting coal cannot use gas points instead.
-- name: "Case 79, purchased fuel scales the Anchorage oil points and cannot resolve an unavailable location."
+# Anchorage wood: oil 8 * .8 = 6.4 -> 6 points * $175 = $1,050. Place '99999' with no ZIP code or Alaska borough has no oil points, and selecting coal cannot use gas points instead.
+- name: "Case 79, purchased fuel scales the Anchorage oil points and cannot resolve an unavailable place."
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2687,11 +2691,11 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99501"
+        place_fips: "03000"
       household2:
         members: ["person2"]
         state_code: "AK"
-        zip_code: "99999"
+        place_fips: "99999"
         county: "UNKNOWN"
   output:
     ak_hap_base_benefit: [1_050, 0]
@@ -2722,7 +2726,7 @@
       household1:
         members: ["person1"]
         state_code: "AK"
-        zip_code: "99701"
+        place_fips: "24230"
   output:
     ak_hap_base_benefit: 1_400
 
@@ -2751,7 +2755,7 @@
       household1:
         members: [person1]
         state_code: AK
-        zip_code: '99501'
+        place_fips: '03000'
   output:
     ak_hap_countable_income: 18_000
     ak_hap_income_factor: 0.7
@@ -2783,7 +2787,7 @@
       household1:
         members: [person1]
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_countable_income: 14_800
     ak_hap_income_factor: 0.8
@@ -2814,14 +2818,14 @@
       household1:
         members: [person1]
         state_code: AK
-        zip_code: '99701'
+        place_fips: '24230'
   output:
     ak_hap_countable_income: 40_000
     ak_hap_income_factor: 0
     ak_hap_base_benefit: 0
 
-# ZIP 99652 is not in Addendum A; most of its residents live in Big Lake, which Addendum A lists at 7 oil points under ZIP 99623. 7 * 1 * 1 = 7 points * $175 = $1,225.
-- name: Case 84, a ZIP code Addendum A does not list takes its largest community's oil points.
+# Meadow Lakes CDP (place 47735) is not named in Addendum A; its nearest listed community, Wasilla, has 7 oil points. 7 * 1 * 1 = 7 points * $175 = $1,225.
+- name: Case 84, an unlisted Census place takes its nearest listed community's oil points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2844,12 +2848,12 @@
       household1:
         members: [person1]
         state_code: AK
-        zip_code: '99652'
+        place_fips: '47735'
   output:
     ak_hap_base_benefit: 1_225
 
-# No ZIP code: most Bethel Census Area residents live in communities Addendum A marks 0, which routes all residents to the tribal program, so the state award is zero. Without the routing, the area's 16 oil points * $175 = $2,800.
-- name: Case 85, a household with no ZIP code in a tribe-served census area is routed to the tribal program.
+# Mertarvik CDP (place 48590) is not named in Addendum A. It takes the 25 oil points of its nearest listed community, Newtok, and also its 0/AVCP marker, which routes all residents to the tribal program, so the state award is zero.
+- name: Case 85, an unlisted Census place inherits its nearest community's all-resident tribal routing.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2872,20 +2876,21 @@
       household1:
         members: [person1]
         state_code: AK
-        county: BETHEL_CENSUS_AREA_AK
+        place_fips: '48590'
   output:
     ak_hap_base_benefit: 0
 
 # 7 AAC 44.040(b)(3)(B) excludes a household residing on a military base.
-# Addendum A marks Eielson AFB (ZIP 99702), Fort Richardson (99505) and
-# Elmendorf AFB (99506) 0/USA. Kodiak Station and Eareckson Station, which the
-# earlier Census place codes covered, have no ZIP code of their own. Each
-# member's 24,000 of basic pay is in the 100-125% band
-# (19,950 < 24,000 <= 24,937.50): factor .6. Without the exclusion, Eielson
-# oil 11 * 1 * .6 = 6.6 -> 7 points * $175 = $1,225, and Fort Richardson and
-# Elmendorf oil 8 * 1 * .6 = 4.8 -> 5 points * $175 = $875; on base each award
-# is 0.
-- name: Case 86, Eielson AFB, Fort Richardson and Elmendorf AFB ZIP code residents live on a military base and receive nothing.
+# Addendum A marks Eielson AFB 0/USA, and Census draws Eielson AFB CDP from the
+# installation. Kodiak Station CDP is the housing area of Coast Guard Base
+# Kodiak, whose members living on base in provided housing do not qualify
+# (Addendum A). Eareckson Station CDP is drawn on Shemya Island around
+# Eareckson Air Station. Each member's 24,000 of basic pay is in the 100-125%
+# band (19,950 < 24,000 <= 24,937.50): factor .6. Without the exclusion,
+# Eielson oil 11 * 1 * .6 = 6.6 -> 7 points * $175 = $1,225, and Kodiak
+# Station and Eareckson Station oil 6 * 1 * .6 = 3.6 -> 4 points * $175 = $700;
+# on base each award is 0.
+- name: Case 86, Eielson AFB, Kodiak Station and Eareckson Station CDP residents live on a military base and receive nothing.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2937,27 +2942,29 @@
       household1:
         members: [person1]
         state_code: AK
-        zip_code: '99702'
+        place_fips: '21370'
       household2:
         members: [person2]
         state_code: AK
-        zip_code: '99505'
+        place_fips: '41210'
       household3:
         members: [person3]
         state_code: AK
-        zip_code: '99506'
+        place_fips: '20716'
   output:
     ak_hap_countable_income: [24_000, 24_000, 24_000]
     ak_hap_income_factor: [0.6, 0.6, 0.6]
     ak_hap_base_benefit: [0, 0, 0]
 
-# ZIP 99827 takes the points of Haines (6 oil points, tribal service for
-# Natives only), its largest community, although Addendum A also lists
-# Excursion Inlet and Klukwan there; ZIP 99709 takes those of College (10 oil
-# points). Neither is an all-resident tribal ZIP code. With no income the
-# factor is 1.0 (0 <= 25% of the guideline): ZIP 99827 6 * 1 * 1.0 = 6 points
-# * $175 = $1,050; ZIP 99709 10 * 1 * 1.0 = 10 points * $175 = $1,750.
-- name: Case 87, ZIP codes 99827 and 99709 take the oil points of their largest communities.
+# Addendum A lists College (10 oil points) as the main community for ZIP 99709
+# and Haines (6 oil points, tribal service for Natives only) as the main
+# community for ZIP 99827, which also lists Excursion Inlet and Klukwan. Most addresses in
+# Chena Ridge CDP use ZIP 99709, and Covenant Life CDP uses ZIP 99827, so
+# they take those communities' points; Covenant Life is not an all-resident
+# tribal place. With no income the factor is 1.0 (0 <= 25% of the guideline):
+# Covenant Life 6 * 1 * 1.0 = 6 points * $175 = $1,050; Chena Ridge
+# 10 * 1 * 1.0 = 10 points * $175 = $1,750.
+- name: Case 87, Covenant Life CDP and Chena Ridge CDP take the oil points of the main community listed for their ZIP code.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2993,18 +3000,213 @@
       household1:
         members: [person1]
         state_code: AK
+        place_fips: '17670'
+      household2:
+        members: [person2]
+        state_code: AK
+        place_fips: '12920'
+  output:
+    ak_hap_countable_income: [0, 0]
+    ak_hap_income_factor: [1, 1]
+    ak_hap_base_benefit: [1_050, 1_750]
+
+# No listed place: a ZIP code takes the points of the community where most of
+# its residents live. ZIP 99827 takes those of Haines (6 oil points), although
+# Addendum A also lists Excursion Inlet and Klukwan there; ZIP 99709 takes
+# those of College (10). With no income the factor is 1.0: 6 * $175 = $1,050
+# and 10 * $175 = $1,750.
+- name: Case 88, a household with no place takes the oil points of its ZIP code's largest community.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
         zip_code: '99827'
       household2:
         members: [person2]
         state_code: AK
         zip_code: '99709'
   output:
-    ak_hap_countable_income: [0, 0]
-    ak_hap_income_factor: [1, 1]
     ak_hap_base_benefit: [1_050, 1_750]
 
-# No ZIP code: the Anchorage municipality's gas points apply, 5 * $175 = $875, as in Case 13.
-- name: Case 88, a household with no ZIP code takes its borough's gas points.
+# ZIP 99701 takes Fairbanks's 8 gas points, as place 24230 does in Case 12:
+# 8 * $175 = $1,400.
+- name: Case 89, a household with no place takes its ZIP code's gas points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        gas_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        zip_code: '99701'
+  output:
+    ak_hap_base_benefit: 1_400
+
+# Most residents of ZIP 99559 live in Bethel, which Addendum A marks 0, so all
+# the ZIP code's residents are routed to the tribal program. Without the
+# routing, 16 oil points * $175 = $2,800.
+- name: Case 90, a tribe-served ZIP code is routed to the tribal program.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        zip_code: '99559'
+  output:
+    ak_hap_base_benefit: 0
+
+# The listed place governs the points and the routing. Tetlin (place 76590,
+# marked 0) is tribe-served although its ZIP code follows Tok. ZIP 99780 alone
+# takes Tok's 12 oil points and state routing: 12 * $175 = $2,100. Gustavus
+# (place 30940, state-served) has 6 oil points, 6 * $175 = $1,050, although
+# most Hoonah-Angoon Census Area residents live in tribe-served communities,
+# which routes a household with only that census area to the tribe.
+- name: Case 91, a listed place overrides the routing of its ZIP code and of its borough.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person4:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit4:
+        members: [person4]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '76590'
+        zip_code: '99780'
+      household2:
+        members: [person2]
+        state_code: AK
+        zip_code: '99780'
+      household3:
+        members: [person3]
+        state_code: AK
+        place_fips: '30940'
+        county: HOONAH_ANGOON_CENSUS_AREA_AK
+      household4:
+        members: [person4]
+        state_code: AK
+        county: HOONAH_ANGOON_CENSUS_AREA_AK
+  output:
+    ak_hap_base_benefit: [0, 2_100, 1_050, 0]
+
+# No place or ZIP code: the Anchorage municipality's gas points apply,
+# 5 * $175 = $875, as in Case 13.
+- name: Case 92, a household with no place or ZIP code takes its borough's gas points.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -3034,7 +3236,7 @@
 # A listed ZIP code governs both the points and the routing. ZIP 99801 (Juneau)
 # has 5 oil points and state routing: 5 * $175 = $875. The Bethel Census Area
 # alone would give 16 points and tribal routing, a state award of 0.
-- name: Case 89, a listed ZIP code overrides the borough's points and tribal routing.
+- name: Case 93, a listed ZIP code overrides the borough's points and tribal routing.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -3061,3 +3263,85 @@
         county: BETHEL_CENSUS_AREA_AK
   output:
     ak_hap_base_benefit: 875
+
+# ZIP 99567 takes Chugiak's 7 oil points, which Addendum A and Appendix A to
+# 7 AAC 44 both list; Eklutna and Peters Creek, also under 99567, have 8, the
+# value place 03000 gives the whole municipality in Case 65.
+# 7 * 1 * 1.0 = 7 points * $175 = $1,225.
+- name: Case 94, the Chugiak ZIP code takes Chugiak's seven oil points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        zip_code: '99567'
+  output:
+    ak_hap_base_benefit: 1_225
+
+# 7 AAC 44.040(b)(3)(B) makes a household residing on a military base
+# ineligible. ZIP 99703 is Fort Wainwright, inside the city of Fairbanks
+# (place 24230), which Addendum A lists without the 0/USA marking; ZIP 99505
+# is Fort Richardson, marked 0/USA, inside the Anchorage municipality. Neither
+# base has a Census place of its own. Off base, Fairbanks's 10 oil points
+# would pay $1,750 and Anchorage's 8 would pay $1,400.
+- name: Case 95, a military base ZIP code excludes a household whatever its place.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+        zip_code: '99703'
+      household2:
+        members: [person2]
+        state_code: AK
+        zip_code: '99505'
+  output:
+    ak_hap_base_benefit: [0, 0]

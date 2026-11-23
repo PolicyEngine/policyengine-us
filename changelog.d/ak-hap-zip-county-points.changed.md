@@ -1,1 +1,1 @@
-Alaska Heating Assistance Program community heating points now read `zip_code`, with a borough or census area fallback from `county`, instead of `place_fips`.
+Alaska Heating Assistance Program community heating points now fall back to `zip_code`, and then to the borough or census area from `county`, for a household with no listed `place_fips`.

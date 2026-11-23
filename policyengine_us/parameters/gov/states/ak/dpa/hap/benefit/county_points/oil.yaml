@@ -1,11 +1,12 @@
-description: Alaska assigns these oil heating points by borough or census area, for households with no listed ZIP code, under the Heating Assistance Program.
-# Derived fallback; this is not a state-issued table. Addendum A assigns points
-# to communities. Each borough or census area takes the most common oil points
-# among its residents' communities, weighted by 2020 Census block counts by
-# Census place; the comment names the largest community with those points.
-# Seven of the 30 have one value throughout. Elsewhere the points vary by
-# community (11 to 33 in the Yukon-Koyukuk Census Area), and about 83% of
-# Alaskans in a Census place have their borough's points.
+description: Alaska assigns these oil heating points to the communities holding the largest share of residents in each borough or census area under the Heating Assistance Program.
+# Derived fallback for a household with no listed Census place or ZIP code;
+# this is not a state-issued table. Addendum A assigns points to communities.
+# Each borough or census area takes the most common oil points among its
+# residents' communities, weighted by 2020 Census block counts by Census
+# place; the comment names the largest community with those points. Seven of
+# the 30 have one value throughout. Elsewhere the points vary by community (11
+# to 33 in the Yukon-Koyukuk Census Area), and about 83% of Alaskans in a
+# Census place have their borough's points.
 ALEUTIANS_EAST_BOROUGH_AK: # Akutan
   2026-10-01: 11
 ALEUTIANS_WEST_CENSUS_AREA_AK: # Unalaska

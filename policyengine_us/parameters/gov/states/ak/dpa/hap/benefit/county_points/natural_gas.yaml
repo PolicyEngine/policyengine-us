@@ -1,8 +1,9 @@
-description: Alaska assigns these natural gas heating points by borough or census area, for households with no listed ZIP code, under the Heating Assistance Program.
-# Derived fallback; this is not a state-issued table. Each borough or census
-# area takes the most common natural gas points among its residents'
-# communities, as county_points/oil.yaml describes; the comment names the
-# largest community with the borough's oil points.
+description: Alaska assigns these natural gas heating points to the communities holding the largest share of residents in each borough or census area under the Heating Assistance Program.
+# Derived fallback for a household with no listed Census place or ZIP code;
+# this is not a state-issued table. Each borough or census area takes the most
+# common natural gas points among its residents' communities, as
+# county_points/oil.yaml describes; the comment names the largest community
+# with the borough's oil points.
 ALEUTIANS_EAST_BOROUGH_AK: # Akutan
   2026-10-01: 6
 ALEUTIANS_WEST_CENSUS_AREA_AK: # Unalaska

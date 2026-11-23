@@ -1,13 +1,19 @@
-description: Alaska excludes residents of these military base ZIP codes under the Heating Assistance Program.
-# The ZIP codes Addendum A prints beside the four installations it marks
-# 0/USA. Kodiak Station CDP, the housing area of Coast Guard Base Kodiak,
-# shares ZIP 99615 with the city of Kodiak, so its residents cannot be
-# identified.
+description: Alaska excludes households residing on the military bases with these ZIP codes under the Heating Assistance Program.
+# 7 AAC 44.040(b)(3)(B) makes a household residing on a military base
+# ineligible. Addendum A prints these ZIP codes beside the five installations
+# and marks four of them 0/USA; its Fort Wainwright row has a blank Served By
+# column. The 2020 Census puts all 8,749 residents of ZIP 99703 in special
+# land-use tract 9800, as it puts the residents of 99505, 99506 and 99702 in
+# tracts 9801 and 9802, so the exclusion covers the whole ZIP code. Kodiak
+# Station CDP, the housing area of Coast Guard Base Kodiak, shares ZIP 99615
+# with the city of Kodiak, so only military_base_places identifies its
+# residents.
 values:
   2026-10-01:
     - "99505"  # Fort Richardson
     - "99506"  # Elmendorf AFB
     - "99702"  # Eilson AFB
+    - "99703"  # Fort Wainwright
     - "99731"  # Fort Greely
 
 metadata:
@@ -19,3 +25,7 @@ metadata:
       href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
     - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing and symbol key
       href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: 2020 Census Redistricting Data (P.L. 94-171), Alaska geographic header
+      href: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Alaska/ak2020.pl.zip
+    - title: 2020 Census ZIP Code Tabulation Area to tabulation block relationship file
+      href: https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/tab20_zcta520_tabblock20_natl.txt

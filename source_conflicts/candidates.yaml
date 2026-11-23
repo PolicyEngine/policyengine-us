@@ -41,6 +41,39 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10836
   state: open
   note: PolicyEngine pays $900 in every placement from January 2022 through June 2026, as ACL 21-123 directs. From July 2026 it pays $1,429 in group homes and short-term residential therapeutic programs. ACL 26-44 lists that amount for short-term residential therapeutic programs and no amount for group homes. PolicyEngine applies it to group homes as an interpretation of subdivision (d)(2). PolicyEngine has recorded no ruling.
+- id: us-ak:hap-fort-wainwright-military-base
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Is a household living on Fort Wainwright ineligible for heating assistance as a household residing on a
+    military base, although Addendum A does not mark Fort Wainwright 0/USA as it marks four other installations?
+  sources:
+  - kind: regulation
+    citation: 7 AAC 44.040(b)(3)(B)
+    url: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+  - kind: manual
+    citation: Alaska HAP Manual Addendum A, FFY2027 Community Listing, 99703 Fort Wainwright
+    url: null
+  readings:
+    statute: No statute is supplied; 7 AAC 44.040(b)(3)(B) makes a household ineligible if it "resides ... on a
+      military base".
+    other: Addendum A lists Fort Wainwright with a blank Served By column ("99703 Fort Wainwright/10/00/"), which its
+      key gives to communities the Division of Public Assistance serves. It marks Eilson AFB, Elmendorf AFB, Fort
+      Greely and Fort Richardson 0/USA ("Service members living on base do not qualify").
+  example: A Fort Wainwright adult aged 40 with no income, a two-bedroom house and an oil bill receives nothing under
+    7 AAC 44.040(b)(3)(B), and 10 points, $1,750, if the blank Served By column makes the household state-served.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/military_base_zip_codes.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11229
+  state: unreviewed
+  note: The code pays nothing to a household whose ZIP code is 99703. The 2020 Census puts all 8,749 residents of that
+    ZIP Code Tabulation Area in special land-use tract 9800 of the Fairbanks North Star Borough. The manual is served
+    only over http, at http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
 - id: us-ak:hap-general-relief-assistance
   program: liheap
   years:
@@ -133,16 +166,17 @@ candidates:
   example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 5 points, $875, under
     Appendix A and 4 points, $700, under Addendum A.
   pe_us:
-    follows: not-modelled
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/community_points/oil.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
   state: unreviewed
-  note: The points tables are keyed by ZIP code, and Loring has no ZIP code of its own. ZIP 99901 takes the 4 oil
-    points of Ketchikan, where most of its residents live, so the code holds no separate Loring value. Tetlin also
-    differs (Addendum A 12, Appendix A 16); ZIP 99780 takes the 12 points and state routing of Tok. The manual is
-    served only over http, at http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
+  note: The code gives Loring Appendix A's 5 oil points. Tetlin also differs (Addendum A 12, Appendix A 16), and the
+    code uses Appendix A's 16; its residents are routed to their tribal program, so that value does not change
+    results. A household that sends only ZIP 99901 or 99780, with no Census place, takes the points of Ketchikan (4)
+    or Tok (12), where most of each ZIP code's residents live. The manual is served only over http, at
+    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
 - id: us-ak:hap-one-person-lowest-income-limit
   program: liheap
   years:

@@ -1,10 +1,11 @@
-description: Alaska excludes all residents of these tribe-served boroughs and census areas, for households with no listed ZIP code, under the Heating Assistance Program.
-# Derived fallback. Boroughs and census areas where most residents live in a
-# community that Addendum A marks 0 (the tribe serves all residents), from 2020
-# Census block counts by Census place. The share is at least 99% in the
-# Bethel, Dillingham, Kusilvak and Yukon-Koyukuk Census Areas and the Bristol
-# Bay and Yakutat boroughs, 79% in Prince of Wales-Hyder, 78% in Lake and
-# Peninsula and 61% in Hoonah-Angoon.
+description: Alaska excludes all residents of the tribe-served communities that hold most residents of these boroughs and census areas under the Heating Assistance Program.
+# Derived fallback for a household with no listed Census place or ZIP code.
+# Boroughs and census areas where most residents live in a community that
+# Addendum A marks 0 (the tribe serves all residents), from 2020 Census block
+# counts by Census place. The share is at least 99% in the Bethel, Dillingham,
+# Kusilvak and Yukon-Koyukuk Census Areas and the Bristol Bay and Yakutat
+# boroughs, 79% in Prince of Wales-Hyder, 78% in Lake and Peninsula and 61% in
+# Hoonah-Angoon.
 values:
   2026-10-01:
     - BETHEL_CENSUS_AREA_AK
