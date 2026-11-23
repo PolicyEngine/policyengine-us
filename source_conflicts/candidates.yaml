@@ -8023,6 +8023,77 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Follows the regulation. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
+- id: us-mt:age-65-subtraction-2026-indexed-amount
+  program: income-tax
+  years:
+    from: 2026
+    to: 2026
+    type: tax
+  question: Is Montana's 2026 age-65 subtraction the $5,810 that MCA 15-30-2120(7) and 15-30-2101(12) give from June
+    2025 CPI-U, or the $5,660 that the Department's 2026 Publication 1 prints?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2120(3)(g), (5)(a), (7) and (11)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+  - kind: statute
+    citation: MCA 15-30-2101(1) and (12)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html
+  - kind: statute
+    citation: HB 129, 2025 Mont. Laws ch. 638, section 2 (enrolled bill, PDF page 7)
+    url: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0638.pdf#page=7
+  - kind: guidance
+    citation: 2025 Montana Publication 1, estimated tax subtractions list, printed page 9
+    url: https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2025.pdf#page=11
+  - kind: guidance
+    citation: 2026 Montana Publication 1, estimated tax subtractions list, printed page 9
+    url: https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf#page=11
+  - kind: guidance
+    citation: BLS Handbook of Methods, Consumer Price Index, Presentation (revisions)
+    url: https://www.bls.gov/opub/hom/cpi/presentation.htm
+  - kind: guidance
+    citation: BLS Consumer Price Index Frequently Asked Questions (escalation and seasonal adjustment)
+    url: https://www.bls.gov/cpi/questions-and-answers.htm
+  - kind: guidance
+    citation: BLS CPI-U data file, June 2023 to 2025 rows for CUUR0000SA0 and CUSR0000SA0
+    url: https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems
+  readings:
+    statute: (3)(g) allows "an additional subtraction of $5,500" for each taxpayer aged 65 or older; (7) has the
+      Department multiply it "by the inflation factor for that tax year" and round to the nearest $10, and "The
+      resulting amounts are effective for that tax year". The (12) factor divides the June index for the previous tax
+      year by the June 2023 index, and 15-30-2101(1) defines the index as the CPI-U "as published by the bureau of
+      labor statistics", naming no seasonal adjustment. With the unadjusted series (CUUR0000SA0), for 2026,
+      5,500 x 322.561 / 305.109 = 5,814.60, or $5,810. The same formula gives the Department's $5,660 for 2025
+      (5,500 x 314.175 / 305.109 = 5,663.43), but so does the seasonally adjusted series (5,500 x 313.044 / 304.014
+      = 5,663.36), so the 2025 amount does not show which series the Department uses.
+    other: Publication 1 for 2026, created November 20, 2025, lists "A subtraction of $5,660 for taxpayers 65 and
+      older", the indexed amount already listed in the 2025 guide, created November 27, 2024. The 2026 guide also
+      prints the 529 cap at $4,500 per individual, while 15-30-2120(11) indexes it to $4,600 for 2026, as modeled
+      in the tuition cap parameter. The same list gives $3,000 for qualified volunteer firefighters and volunteer
+      emergency care providers.
+  example: A 2026 joint return with federal taxable income of $17,100 and both spouses 65 or older has Montana taxable
+    income of $5,480 and tax of $257.56 under the statute, against $5,780 and $271.66 at $5,660 each.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/subtractions/old_age/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10805
+  state: ruled
+  note: The statute fixes the amount by formula and specifies rounding to the nearest $10, so the statute-first rule applies.
+    The unadjusted result is about $0.40 below the $5,815 midpoint (322.584 is the first three-decimal June 2025 CPI-U
+    at which it rounds up), and the seasonally adjusted BLS series CUSR0000SA0 would give 5,500 x 321.435 / 304.014
+    = $5,815.17, rounded to $5,820. PolicyEngine reads (1) as the unadjusted series. BLS issues the unadjusted CPI-U as
+    final, correcting it only in the rare case of an error, while it revises seasonally adjusted indexes for the
+    previous 5 years with the release of January data, and it recommends indexes that are not seasonally adjusted
+    for escalation.
+    HB 129, section 2, makes the inflation adjustment for the $3,000 subtraction under (3)(o) applicable to income tax
+    years beginning after December 31, 2026. That transition explains the $3,000 printed for 2026. The age-65
+    subtraction under (3)(g) continues to be indexed in 2026 under (7). The HB 129 and Publication 1 excerpts are
+    captured under source_conflicts/sources/us-mt/, and the BLS passages and June CPI rows under
+    source_conflicts/sources/us/ (bls-cpi-handbook-presentation-revisions.txt, bls-cpi-faq-escalation.txt and
+    bls-cpi-u-june-2023-2025.txt).
+    The Department had published no 2026 tax tables page or 2026 Form 2 instructions by November 11, 2026. If its
+    2026 Form 2 prints a different figure, recheck the CPI values and the rounding before changing the parameter.
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
