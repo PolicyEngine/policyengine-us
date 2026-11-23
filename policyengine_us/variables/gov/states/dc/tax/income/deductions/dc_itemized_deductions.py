@@ -8,6 +8,7 @@ class dc_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.04",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=18",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=17",
         # D.C. Code 47-1803.03(b-4)(2)(B): deductions outside the phase-out
@@ -30,7 +31,10 @@ class dc_itemized_deductions(Variable):
             "wagering_losses_deduction",
         ]
         exempt_deds = add(tax_unit, period, EXEMPT_ITEMS)
-        nonexempt_deds = max_(0, dc_itm_deds - exempt_deds)
+        # Section 47-1803.04(a)(1) includes subsection (e) in itemized
+        # deductions, so subsection (c)(2) reduces them with the nonexempt pool.
+        additional_deductions = tax_unit("dc_additional_deductions", period)
+        nonexempt_deds = max_(0, dc_itm_deds - exempt_deds) + additional_deductions
         dc_agi = add(tax_unit, period, ["dc_agi"])
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.dc.tax.income.deductions
