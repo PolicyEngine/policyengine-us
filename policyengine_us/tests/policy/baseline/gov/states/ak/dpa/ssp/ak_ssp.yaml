@@ -117,3 +117,33 @@
     # marital_unit.sum = 3_168 + 3_168 = 6_336
     # Each gets 6_336 / 2 = 3_168
     ak_ssp: [3_168, 3_168]
+
+# A situation that omits marital units puts the three adults in one marital
+# unit. The husband and wife are the SSI joint claim (the tax-unit head and
+# spouse) and split the $528 independent-living couple standard; the third
+# adult gets the $362 individual standard, the same as with explicit
+# marital units.
+- name: Case 9, married couple and a third aged adult without marital units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age: 70
+        is_tax_unit_head: true
+      wife:
+        age: 70
+        is_tax_unit_spouse: true
+      third_adult:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code: AK
+  output:
+    ak_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE, INDIVIDUAL]
+    ak_ssp: [264, 264, 362]

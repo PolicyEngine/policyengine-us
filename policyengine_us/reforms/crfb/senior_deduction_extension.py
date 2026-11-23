@@ -12,7 +12,6 @@ def create_senior_deduction_extension() -> Reform:
             start=instant("2029-01-01"),
             value=[
                 "qualified_business_income_deduction",
-                "wagering_losses_deduction",
                 "itemized_taxable_income_deductions",
                 "tip_income_deduction",
                 "overtime_income_deduction",
@@ -51,7 +50,7 @@ def create_senior_deduction_extension_reform(parameters, period, bypass: bool = 
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).applies:
             reform_active = True
             break

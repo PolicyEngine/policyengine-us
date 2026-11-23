@@ -62,6 +62,25 @@ INGRESS_OUTCOMES = (
 )
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
 REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
+# Requests that differ from REVIEWED_MAIN_SHA for reasons outside Social
+# Security ingress. The reference predates the Medicare premium projection,
+# so its 2027 Part B premium differs. The medicare_irmaa_magi requests still
+# pin the IRMAA ingress path. Remove this entry once REVIEWED_MAIN_SHA
+# includes the projection.
+CHANGED_SINCE_REFERENCE = {"medicare_part_b_premium@2027"}
+# Rev. Proc. 2026-35 replaced the 2027 federal forecasts that the reviewed
+# main used (brackets, standard deduction and other indexed amounts). On these
+# routes 2027 income tax falls by exactly these amounts and household net
+# income rises by the same amounts; every other route and output must still
+# equal main.
+INCOME_TAX_CHANGE_2027 = {
+    "same_period_override_simulation": -7.0,
+    "same_period_override_microsimulation": -7.0,
+    "extraction_future_reload_simulation": -7.0,
+    "extraction_future_reload_microsimulation": -7.0,
+    "extraction_rewrite_simulation": -24.5,
+    "extraction_rewrite_microsimulation": -24.5,
+}
 # Hand-computed per-person growth from calibration.gov.cbo.social_security
 # divided by calibration.gov.census.populations.total in each year. The IRS
 # SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
@@ -113,6 +132,11 @@ def extraction_situation():
     for plural in ("households", "tax_units", "spm_units", "families", "marital_units"):
         result[plural] = {"group": {"members": ["retiree"]}}
     result["households"]["group"]["state_code"] = {2024: "TX"}
+    # state_code has a formula, so a 2024 input alone leaves later years on
+    # the default state (CA), where unrelated California tax changes reach
+    # household_net_income. state_fips has none and carries forward, keeping
+    # the household in Texas without a second input period.
+    result["households"]["group"]["state_fips"] = {2024: 48}
     return result
 
 
@@ -1078,6 +1102,8 @@ def differential(tmp_path_factory):
 def test_legacy_public_ingress_matches_unmodified_main(differential, route):
     current, main, _ = differential
     for request in main[route]:
+        if request in CHANGED_SINCE_REFERENCE:
+            continue
         if request in current[route] and not np.array_equal(
             current[route][request], main[route][request]
         ):
@@ -1094,6 +1120,24 @@ def test_legacy_public_ingress_matches_unmodified_main(differential, route):
             )
     assert current[route].keys() == main[route].keys()
     for request in main[route]:
+        if request in CHANGED_SINCE_REFERENCE:
+            continue
+        if route in INCOME_TAX_CHANGE_2027 and request in (
+            "income_tax@2027",
+            "household_net_income@2027",
+        ):
+            change = INCOME_TAX_CHANGE_2027[route]
+            if request == "household_net_income@2027":
+                change = -change
+            np.testing.assert_allclose(
+                np.asarray(current[route][request]) - np.asarray(main[route][request]),
+                [change],
+                rtol=0,
+                atol=0.01,
+                err_msg=f"Legacy public ingress differs on {route}: {request} "
+                "beyond the Rev. Proc. 2026-35 income tax change",
+            )
+            continue
         np.testing.assert_array_equal(
             current[route][request],
             main[route][request],

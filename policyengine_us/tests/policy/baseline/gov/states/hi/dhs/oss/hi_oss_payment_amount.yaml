@@ -1,0 +1,35 @@
+# POMS SI 01415.058 E.2: community care pays $1,995 per eligible couple, so each spouse receives $997.50. The third adult is outside a qualifying care setting and receives $0.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#e2
+- name: Hawaii compares only spouses when applying the community care couple rate
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        hi_oss_care_facility_type: COMMUNITY_CARE
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: HI
+  output:
+    hi_oss_couple_rate_applies: [true, true, false]
+    hi_oss_payment_amount: [997.5, 997.5, 0]

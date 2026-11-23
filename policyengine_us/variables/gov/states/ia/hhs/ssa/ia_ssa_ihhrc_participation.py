@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ia_ssa_ihhrc_participation(Variable):
@@ -28,7 +31,11 @@ class ia_ssa_ihhrc_participation(Variable):
         deductions = max_(person("ia_ssa_care_additional_deductions", period), 0)
         has_spouse = person("ia_ssa_has_spouse", period)
         maintenance = where(has_spouse, ssi.amount.couple, ssi.amount.individual)
-        deductions = where(has_spouse, person.marital_unit.sum(deductions), deductions)
+        deductions = where(
+            has_spouse,
+            _ssi_couple_total(person, period.this_year, deductions),
+            deductions,
+        )
         # 441 IAC 177.2(1)"f"(3) disregards "The amount of the SSI standard for
         # a dependent plus any established unmet medical needs for each
         # dependent living in the home. Any income of the dependent shall be
@@ -48,7 +55,7 @@ class ia_ssa_ihhrc_participation(Variable):
         # (ia_ssa.yaml Case 50).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         dependents = head_or_spouse * person.tax_unit.sum(
-            person("ssi_ineligible_child_allocation", period)
+            person("ssi_ineligible_child_allocation_monthly", period)
         )
         participation = max_(income - maintenance - dependents - deductions, 0)
         # No client participation is required in a first partial month.

@@ -35,3 +35,27 @@
     medicare_enrolled: true
   output:
     medicare_enrolled: true
+
+# 8 U.S.C. 1611(b)(3) limits Medicare benefits to noncitizens lawfully present.
+- name: Undocumented person aged 65 or older is not enrolled.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+    pension_income: 10_000
+    state_code: TX
+  output:
+    medicare_enrolled: false
+
+# Allowed in 2026 because the model treats everyone as grandfathered under
+# 42 U.S.C. 1395mmm(b)(1) through 2026.
+- name: Person with temporary protected status and Part A work history is enrolled.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 10_000
+    state_code: TX
+  output:
+    medicare_enrolled: true

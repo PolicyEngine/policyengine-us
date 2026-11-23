@@ -37,9 +37,9 @@ independently. For every tax unit:
 
 1. Accounting (2021-2023): the joint deduction is
    max(0, other expenses - 7.5% x Montana AGI) + lines 2 and 3, held by the
-   head. The separate variant is max(0, own other expenses - 7.5% x own
-   Montana AGI) + own lines 2 and 3 for the head and spouse; dependents hold
-   nothing.
+   head. The separate variant is max(0, line 1a in the column (property 10)
+   - 7.5% x own Montana AGI) + own lines 2 and 3 for the head and spouse;
+   dependents hold nothing.
 2. Premium conservation against closed forms. Per-person helpers:
    line 2 + line 3 = max(0, premiums + long-term care
    premiums - own deduction), and line 2 = premiums - min(premiums, own
@@ -55,8 +55,10 @@ independently. For every tax unit:
    Montana AGI is unchanged by those increases (asserted).
 5. Pre-tax premiums never change lines 2 or 3.
 6. Line 1 base: other expenses equal federal itemized medical expenses plus
-   the self-employed premiums those exclude, less the premiums. Line 1
-   therefore tracks the federal definition apart from the premiums.
+   the self-employed premiums those exclude, less the medical and eligible
+   long-term care premiums (a dependent's less the long-term care part of the
+   dependent's own deduction). Line 1 therefore tracks the federal
+   definition apart from the premiums.
 7. Differential (2021-2023): for single filers whose deduction is recorded
    per person, the joint and separate variants agree.
 8. From 2024 the joint deduction is the federal medical expense deduction and
@@ -65,6 +67,20 @@ independently. For every tax unit:
    exclusion of all premiums the self-employed deduction took (medical
    first), and the long-term care premiums still inside gives the same
    Montana deduction as the computed path.
+10. Line 1a on separate returns (2021-2023): other medical expenses sit on
+   the person cared for, so a dependent's are not clearly attributable to
+   one spouse. Each spouse's column holds their own other expenses plus
+   their share of the dependents': the head's share is
+   mt_dependent_medical_expense_head_share (between 0 and 1, chosen to
+   minimize the couple's tax; its own invariants are in
+   test_mt_dependent_medical_split_invariants.py) and the spouse's the rest;
+   an unmarried head's column holds all of the dependents'.
+   Conservation: the head's and spouse's columns sum to every member's
+   other medical expenses, the joint return's line 1 base. Dependents hold
+   nothing.
+11. Differential (2021-2023): for heads of household whose deduction is
+   recorded per person, the joint and separate variants agree, dependents'
+   expenses included.
 """
 
 import numpy as np
@@ -300,7 +316,10 @@ def _situation(units, year, mode, unit_inputs=None):
 
 PERSON_VARIABLES = [
     "other_medical_expenses",
+    "mt_medical_and_dental_expenses_indiv",
     "long_term_health_insurance_premiums",
+    "eligible_long_term_care_premiums",
+    "self_employed_health_insurance_ald_long_term_care_part",
     "medical_expense_health_insurance_premiums",
     "self_employed_health_insurance_ald_person",
     "mt_eligible_medical_insurance_premiums",
@@ -311,6 +330,7 @@ PERSON_VARIABLES = [
 ]
 UNIT_VARIABLES = [
     "mt_agi_joint",
+    "mt_dependent_medical_expense_head_share",
     "self_employed_health_insurance_ald",
     "mt_premium_deduction_joint",
     "itemized_medical_expenses",
@@ -360,6 +380,7 @@ def _check(units, year, mode):
             deduction, run["medical_expense_deduction"], atol=TOLERANCE
         )
         assert (indiv == 0).all()
+        assert (run["mt_medical_and_dental_expenses_indiv"] == 0).all()
         return None
 
     premium = run["medical_expense_health_insurance_premiums"]
@@ -409,11 +430,35 @@ def _check(units, year, mode):
     full = run["mt_premium_deduction_joint"]
     np.testing.assert_allclose(full, expected_joint_premiums, atol=TOLERANCE)
 
+    # 10. Line 1a in each separate column, from the inputs' roles.
+    unit = run["unit"]
+    married = _unit_sum(run, role == "spouse") > 0
+    head_share = run["mt_dependent_medical_expense_head_share"][unit]
+    assert ((head_share >= 0) & (head_share <= 1)).all()
+    spouse_share = 1 - head_share
+    share = np.where(
+        married[unit],
+        np.where(
+            role == "head", head_share, np.where(role == "spouse", spouse_share, 0)
+        ),
+        role == "head",
+    )
+    dependent_other = _unit_sum(run, ~filer * other)
+    expected_line_1a = filer * other + share * dependent_other[unit]
+    line_1a = run["mt_medical_and_dental_expenses_indiv"]
+    np.testing.assert_allclose(line_1a, expected_line_1a, atol=TOLERANCE)
+    np.testing.assert_allclose(
+        _unit_sum(run, line_1a), _unit_sum(run, other), atol=TOLERANCE
+    )
+    assert (line_1a[~filer] == 0).all()
+
     # 1. Accounting, joint and separate.
     floored = np.maximum(_unit_sum(run, other) - FORM_FLOOR * run["mt_agi_joint"], 0)
     np.testing.assert_allclose(deduction, floored + full, atol=TOLERANCE)
     expected_indiv = filer * (
-        np.maximum(other - FORM_FLOOR * run["mt_agi_indiv"], 0) + line_2 + line_3
+        np.maximum(expected_line_1a - FORM_FLOOR * run["mt_agi_indiv"], 0)
+        + line_2
+        + line_3
     )
     np.testing.assert_allclose(indiv, expected_indiv, atol=TOLERANCE)
 
@@ -441,15 +486,20 @@ def _check(units, year, mode):
     )
 
     # 6. Line 1 base tracks the federal definition apart from the premiums.
-    # The generator never supplies the subtotal, so it holds no long-term care
-    # premiums.
-    assert (run["itemized_medical_expenses_long_term_care_premiums"] == 0).all()
+    # The computed subtotal holds the members' eligible long-term care
+    # premiums less the part the self-employed deduction took, and the
+    # applied exclusion restores that part. A dependent's own deduction
+    # took the dependent's long-term care part, which stays out.
+    eligible_long_term_care = (
+        run["eligible_long_term_care_premiums"]
+        - ~filer * run["self_employed_health_insurance_ald_long_term_care_part"]
+    )
     np.testing.assert_allclose(
         _unit_sum(run, other),
         run["itemized_medical_expenses"]
         + run["itemized_medical_expenses_applied_exclusion"]
         - _unit_sum(run, premium)
-        - run["itemized_medical_expenses_long_term_care_premiums"],
+        - _unit_sum(run, eligible_long_term_care),
         atol=TOLERANCE,
     )
 
@@ -458,6 +508,16 @@ def _check(units, year, mode):
         single = run["filing_status"] == "SINGLE"
         np.testing.assert_allclose(
             deduction[single], _unit_sum(run, indiv)[single], atol=TOLERANCE
+        )
+
+    # 11. So do heads of household, whose columns hold their dependents'
+    # expenses.
+    if mode != "unit":
+        head_of_household = run["filing_status"] == "HEAD_OF_HOUSEHOLD"
+        np.testing.assert_allclose(
+            deduction[head_of_household],
+            _unit_sum(run, indiv)[head_of_household],
+            atol=TOLERANCE,
         )
     return run, floored, full
 
@@ -521,6 +581,21 @@ def test_seeded_population(year, mode):
     assert np.any((full > 0) & (floored > 0))
     assert np.any(run["filing_status"] == "SINGLE")
     assert np.any(run["filing_status"] == "JOINT")
+    # Properties 10 and 11 bind: dependents' expenses raise the separate
+    # line 1 of some spouse, some married head and some head of household.
+    role = run["role"]
+    filer = role != "dependent"
+    unit = run["unit"]
+    agi_floor_indiv = FORM_FLOOR * run["mt_agi_indiv"]
+    own_line_1 = filer * np.maximum(run["other_medical_expenses"] - agi_floor_indiv, 0)
+    line_1 = filer * np.maximum(
+        run["mt_medical_and_dental_expenses_indiv"] - agi_floor_indiv, 0
+    )
+    raised = line_1 > own_line_1 + 1
+    head_of_household = (run["filing_status"] == "HEAD_OF_HOUSEHOLD")[unit]
+    assert np.any(raised & (role == "spouse"))
+    assert np.any(raised & (role == "head") & ~head_of_household)
+    assert np.any(raised & (role == "head") & head_of_household)
     deduction = run["self_employed_health_insurance_ald_person"]
     premiums = run["medical_expense_health_insurance_premiums"]
     long_term_care = run["long_term_health_insurance_premiums"]
@@ -543,11 +618,11 @@ def test_seeded_population(year, mode):
 def _check_net_subtotal(run, units, year, mode):
     """9. A net Schedule A subtotal gives the computed path's deduction.
 
-    Supply, for every return, the subtotal as Schedule A line 1 would hold it
-    (the computed subtotal plus the filers' long-term care premiums the
-    self-employed deduction did not take), the exclusion as all premiums that
-    deduction took (medical first), and the long-term care premiums still
-    inside. Montana's deduction must not change.
+    Supply, for every return, the computed path's own values: the subtotal,
+    which already holds the eligible long-term care premiums the
+    self-employed deduction did not take, the applied exclusion of all
+    premiums that deduction took, and the long-term care premiums still
+    inside the subtotal. Montana's deduction must not change.
     """
     filer = run["role"] != "dependent"
     return_deduction = np.maximum(run["self_employed_health_insurance_ald"], 0)
@@ -558,16 +633,18 @@ def _check_net_subtotal(run, units, year, mode):
     long_term_care_excluded = np.minimum(
         filer_long_term_care, return_deduction - medical_excluded
     )
-    inside = filer_long_term_care - long_term_care_excluded
     net = _run(
         units,
         year,
         mode,
         {
-            "itemized_medical_expenses": run["itemized_medical_expenses"] + inside,
-            "itemized_medical_expenses_applied_exclusion": medical_excluded
-            + long_term_care_excluded,
-            "itemized_medical_expenses_long_term_care_premiums": inside,
+            "itemized_medical_expenses": run["itemized_medical_expenses"],
+            "itemized_medical_expenses_applied_exclusion": run[
+                "itemized_medical_expenses_applied_exclusion"
+            ],
+            "itemized_medical_expenses_long_term_care_premiums": run[
+                "itemized_medical_expenses_long_term_care_premiums"
+            ],
         },
     )
     np.testing.assert_allclose(net["mt_agi_joint"], run["mt_agi_joint"], atol=TOLERANCE)
@@ -578,8 +655,8 @@ def _check_net_subtotal(run, units, year, mode):
     )
     # Non-vacuity: with supplied deductions, some exclusions cover long-term
     # care premiums on returns with dependents' premiums, where taking the
-    # exclusion from every member's premiums would differ. A derived
-    # deduction never exceeds the filers' own medical premiums.
+    # exclusion from every member's premiums would differ. The derived mode
+    # is left out here; the supplied modes reach these returns.
     if mode != "derived":
         dependent_premiums = _unit_sum(
             run, ~filer * run["medical_expense_health_insurance_premiums"]

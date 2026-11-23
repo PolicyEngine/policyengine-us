@@ -18,6 +18,7 @@ from policyengine_us.variables.household.demographic.geographic.state_code impor
     StateCode,
 )
 from policyengine_us.tools.parameters import (
+    EARLIEST_STRUCTURAL_REFORM_YEAR,
     FIRST_MODELED_YEAR,
     backdate_parameters,
 )
@@ -38,6 +39,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.marital_units import infer_missing_marital_units
 from .tools.tob import TobCalculationMixin
 from .tools.period_branch import delete_input_values
 from .tools.social_security_inputs import (
@@ -50,6 +52,7 @@ from .tools.per_capita_uprating import (
     add_per_capita_uprating,
 )
 from policyengine_us.data.dataset_schema import (
+    _DEFAULT_TIME_PERIOD,
     US_ENTITIES,
     USSingleYearDataset,
     USMultiYearDataset,
@@ -67,11 +70,13 @@ install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2024
-DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
+CURRENT_YEAR = 2026
+# Structural-reform checks start here rather than at CURRENT_YEAR, so moving the
+# default calculation year does not stop reforms from earlier years applying.
+DEFAULT_START_DATE = f"{EARLIEST_STRUCTURAL_REFORM_YEAR}-01-01"
 
-# Certified Populace build (primary-source US microdata), pinned by build id.
-# Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
+# Certified Microcosm build (primary-source US microdata), pinned by build id.
+# Microcosm ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
 # prefix handled in `_resolve_dataset_path`.
 DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909"
 # Content hash of the certified build the default URI must resolve to.
@@ -97,11 +102,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         If no reform is applied, the system will be initialized with the
         default tax/benefit parameters.
 
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     variables_dir = COUNTRY_DIR / "variables"
@@ -113,6 +118,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         "age",
     ]
     modelled_policies = COUNTRY_DIR / "programs.yaml"
+
+    def preprocess_situation(self, situation, default_period=None):
+        return infer_missing_marital_units(situation, default_period, self)
 
     def __init__(
         self,
@@ -336,11 +344,11 @@ class Simulation(TobCalculationMixin, SPMSimulationMixin, CoreSimulation):
     does not include society-wide microdata.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -398,7 +406,7 @@ def _download_or_explain(dataset_str, download):
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
     if dataset_str.startswith("hf://datasets/"):
-        # Hugging Face *dataset* repos (e.g. Populace). `download_huggingface_dataset`
+        # Hugging Face *dataset* repos (e.g. Microcosm). `download_huggingface_dataset`
         # assumes a model repo, so resolve dataset repos directly. URL form:
         # hf://datasets/<owner>/<repo>/<path/to/file>[@<revision>]
         from huggingface_hub import hf_hub_download
@@ -503,11 +511,11 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     thus suitable for society-level impacts.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
         dataset_end_year(int | None): Optional; The final year to create when
         automatically extending an entity-level single-year dataset. Defaults
         to the latest supported economic-assumption year. This option applies
@@ -518,10 +526,12 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_dataset = DEFAULT_DATASET
-    default_dataset_year = CURRENT_YEAR
+    # Microdata stays in its base year: core labels a dataset without its own
+    # year with the default input period, and values are not uprated for it.
+    default_dataset_year = _DEFAULT_TIME_PERIOD
     default_role = "member"
-    default_calculation_period = CURRENT_YEAR
-    default_input_period = CURRENT_YEAR
+    default_calculation_period = _DEFAULT_TIME_PERIOD
+    default_input_period = _DEFAULT_TIME_PERIOD
 
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
@@ -539,7 +549,7 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
         if dataset is None:
             # Route the class default through the same interception below as an
             # explicit dataset, so an entity-level (HDFStore) default such as
-            # Populace is loaded via USSingleYearDataset rather than core's
+            # Microcosm is loaded via USSingleYearDataset rather than core's
             # variable-centric loader.
             dataset = self.default_dataset
             kwargs["dataset"] = dataset

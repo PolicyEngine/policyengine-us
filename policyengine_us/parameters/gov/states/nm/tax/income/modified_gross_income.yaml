@@ -2,30 +2,81 @@ description: New Mexico includes these income sources in its modified gross inco
 values:
   2021-01-01:
     - tax_unit_social_security
-    - capital_gains
+    # NMSA 1978 § 7-2-2(L)(3) gains from dealings in property; PIT-RC line 9:
+    # "Enter your gross capital gains. Do not reduce them by capital losses."
+    # The short- and long-term parts are listed separately so one never
+    # reduces the other, and the long-term part is taken before the prior-year
+    # capital loss carryover.
+    - short_term_capital_gains
+    - nm_modified_gross_income_long_term_capital_gains
+    # Capital gain distributions reported without Schedule D (§ 7-2-2(L)(3);
+    # PIT-RC line 9).
+    - non_sch_d_capital_gains
+    # Form 4797 ordinary gains: PIT-RC line 11, "All ordinary gains from
+    # dealing in or selling property".
+    - other_net_gain
     - tanf
     - ssi
+    # § 7-2-2(L)(19) public assistance and welfare benefits; 3.3.1.10(A)(1)(d)
+    # NMAC names general assistance; PIT-RC line 7.
+    - general_assistance
     - interest_income
     - dividend_income
     - alimony_income
     - child_support_received
     - rental_income
+    # § 7-2-2(L)(2) net profit from business, (5) net rents; PIT-RC line 8:
+    # net profit from business, farm, or rentals.
+    - farm_operations_income
+    - farm_rent_income
+    # § 7-2-2(L)(13) distributive share of partnership income; PIT-RC line 11:
+    # "Distributions from partnerships, S corporations, or similar
+    # pass-through entities". 3.3.1.10(B) NMAC: "The loss from one business
+    # or activity shall not reduce the income from another business or
+    # activity", so the helper floors partnership and S corporation income
+    # each on its own, falling back to a combined amount entered directly.
+    - nm_modified_gross_income_partnership_s_corp_income
     - pension_income
+    # NMSA 1978 § 7-2-2(L)(9), (11): annuities and pensions, including military
+    # retired pay and survivor annuities, which pension_income leaves out.
+    - military_retirement_income
     - retirement_distributions
     - total_unemployment_compensation
+    # § 7-2-2(L)(18) workers' compensation benefits; PIT-RC line 6.
+    - workers_compensation
+    # 3.3.1.10(C) NMAC: "disability payments from whatever source", both the
+    # taxable and the tax-exempt part.
+    - disability_benefits
     - irs_employment_income
     - self_employment_income
     - sstb_self_employment_income
     - veterans_benefits
     # NMSA 1978 § 7-2-2(L)(15): income from an interest in an estate or a trust
     - estate_income
-    # income such as gambling winnings, insurance settlements, scholarships,
-    # grants and inheritance,
+    # § 7-2-2(L)(12) discharge of indebtedness; PIT-RC line 11. The input does
+    # not separate the bankruptcy discharges the line leaves out.
+    - debt_relief
+    # PIT-RC line 11: "Gross gambling, gaming, and lottery winnings from any
+    # source without reducing winnings by any losses".
+    - gambling_winnings
+    # § 7-2-2(L)(21) gifts; PIT-RC line 10: all gifts of cash.
+    - financial_assistance
+    # 3.3.1.10(A)(2) NMAC: scholarships, grants, fellowships or similar
+    # payments which do not have to be repaid; PIT-RC line 11.
+    - educational_assistance
+    # § 7-2-2(L): all income "from whatever source"; PIT-RC line 11: all income
+    # not included on lines 4 to 10, such as other cash prizes and awards.
+    - miscellaneous_income
+    # PIT-RC: all income "regardless of whether that income is taxable by the
+    # U.S. Government", so foreign earned income excluded under IRC 911 counts.
+    - section_911_excluded_income
 metadata:
   unit: list
   label: New Mexico modified gross income elements
   reference:
     - title: New Mexico Income Tax Act, Chapter 7 - Taxation, 7-2-2. Definitions, L
       href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503656/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsfYQEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA
-    - title: 2025 PIT-RC instructions, line 11 (income from an estate or trust)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2025/NM_PIT_RC_INST.PDF#page=4
+    - title: "2025 PIT-RC instructions, modified gross income (records table: an annuity, pension, retirement pay or sick pay; general definition and lines 4 to 11) #page 2,4"
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2025/NM_PIT_RC_INST.PDF#page=2
+    - title: 3.3.1.10 NMAC, Modified gross income (A)(1)(d), (A)(2), (B), (C)
+      href: https://www.law.cornell.edu/regulations/new-mexico/N-M-Admin-Code-SS-3.3.1.10

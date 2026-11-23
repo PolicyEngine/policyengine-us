@@ -1,6 +1,7 @@
 # 18 NYCRR 404.5(b)(5) sets what New York counts. Each case adds one source
 # on top of the same $10,000 of employment income so that deleting any single
 # entry from countable_income/sources.yaml fails a test.
+# Set Family Assistance and state supplements to zero to isolate these sources.
 
 - name: Case 1, employment income alone.
   period: 2025
@@ -8,10 +9,12 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -25,11 +28,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         child_support_received: 5_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -43,11 +48,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         unemployment_compensation: 4_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -61,11 +68,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         workers_compensation: 3_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -79,11 +88,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         social_security_retirement: 6_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -99,11 +110,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         veterans_benefits: 7_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -119,11 +132,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         ssi: 1_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -137,13 +152,16 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
       child:
         age: 5
+        ny_ssp: 0
         ssi: 1_000
     spm_units:
       spm_unit:
         members: [parent, child]
+        ny_tanf: 0
     households:
       household:
         members: [parent, child]
@@ -151,18 +169,20 @@
   output:
     ny_ccap_countable_income: 10_000
 
-# TANF is countable under 404.5(b)(5)(vi) but is deliberately omitted to
-# avoid the CCAP-to-TANF circular dependency; this pins that decision.
-- name: Case 9, TANF is not counted.
+# CCAP reads New York Family Assistance directly. The federal aggregate
+# does not supply a separate income source.
+- name: Case 9, the federal TANF aggregate is not counted separately.
   period: 2025
   input:
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
         tanf: 6_000
     households:
       household:
@@ -179,11 +199,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         long_term_capital_gains: 20_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -198,11 +220,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         railroad_benefits: 8_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -218,13 +242,16 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
       child:
         age: 16
+        ny_ssp: 0
         employment_income: 8_000
     spm_units:
       spm_unit:
         members: [parent, child]
+        ny_tanf: 0
     households:
       household:
         members: [parent, child]
@@ -239,13 +266,16 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
       other:
         age: 18
+        ny_ssp: 0
         employment_income: 8_000
     spm_units:
       spm_unit:
         members: [parent, other]
+        ny_tanf: 0
     households:
       household:
         members: [parent, other]
@@ -261,14 +291,17 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         ssi: 1_000
       child:
         age: 5
+        ny_ssp: 0
         ssi: 1_000
     spm_units:
       spm_unit:
         members: [parent, child]
+        ny_tanf: 0
     households:
       household:
         members: [parent, child]
@@ -282,10 +315,12 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         self_employment_income: -60_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]
@@ -301,11 +336,13 @@
     people:
       parent:
         age: 30
+        ny_ssp: 0
         employment_income: 10_000
         military_retirement_pay_survivors: 6_000
     spm_units:
       spm_unit:
         members: [parent]
+        ny_tanf: 0
     households:
       household:
         members: [parent]

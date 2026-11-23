@@ -9,6 +9,9 @@ class ny_heap(Variable):
     unit = USD
     defined_for = "ny_heap_eligible"
     reference = (
+        "https://otda.ny.gov/programs/heap/",
+        # PDF pages 9, 10.
+        "https://liheapch.acf.gov/docs/2027/state-plans/NY_Plan_2027.pdf#page=9",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
         # PDF pages 9, 10.
         "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9",
@@ -17,8 +20,9 @@ class ny_heap(Variable):
     )
     documentation = (
         "Annual regular heating benefit and ordinary Tier I/vulnerability supplements, "
-        "verified for FY2024 to FY2026; only the Tier I supplement changed across "
-        "those years. Earlier years are unverified backfilled estimates. Housing "
+        "with payment schedules verified for FY2017 to FY2027. Eligibility before "
+        "FY2024 remains unverified. The annual model uses FFY schedules and does "
+        "not model application dates or the timing of retroactive supplements. Housing "
         "assistance approximates subsidized rent (market-rent voucher exceptions are "
         "unsupported). An unknown direct-heating fuel returns zero as a coverage gap, "
         "tracked in issue 9754; solar falls within other fuels. No bill cap. Crisis, "

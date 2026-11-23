@@ -6,7 +6,18 @@ values:
   # do not qualify and omits Plan Type 3D (400.1-500% FPL) from its band table. The
   # amended 956 CMR 12.04(3)(a)1 still reads "at or below 500 percent of the FPL"
   # and still defines Plan Type 3D, but that superseded pilot text is not modeled.
+  # Incomes over 300% FPL qualify only under the ConnectorCare Expansion Pilot,
+  # St. 2023 c.28 s.81, which applies "notwithstanding" the 300% limit in
+  # M.G.L. c.176Q s.3(b) and began by January 1, 2024. St. 2025 c.9 s.96 made
+  # it a 3-year pilot, and the FY2027 budget (St. 2026 c.137) s.92 makes it a
+  # 4-year pilot, so it covers plan years 2024 to 2027; s.102 funds "the fourth
+  # year of the pilot program". The 2027 Guide to Subsidies keeps Plan Type 3C
+  # (300% to 400% FPL) for plan year 2027.
   2026-01-01: 4
+  # From PY2028 the pilot has ended, so the limit returns to the statutory
+  # "at or below 300 per cent of the federal poverty guidelines" of M.G.L.
+  # c.176Q s.3(b), applied as "<=". Plan Type 3C ends with it.
+  2028-01-01: 3
 
 metadata:
   unit: /1
@@ -19,3 +30,13 @@ metadata:
       href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
     - title: ConnectorCare Overview 2026, Table 2 income bands
       href: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+    - title: M.G.L. c.176Q s.3(b), premium assistance at or below 300% of the federal poverty guidelines
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter176Q/Section3
+    - title: St. 2023 c.28 s.81, ConnectorCare Expansion Pilot
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter28
+    - title: St. 2026 c.137 (FY2027 General Appropriation Act) s.92 (4-year pilot) and s.102 (fourth year of the pilot)
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter137
+    - title: Health Connector 2027 Guide to Subsidies, Plan Type 3C (300% to 400% FPL) in plan year 2027
+      href: https://www.mahealthconnector.org/wp-content/uploads/Health-Connector-Guide-to-Subsidies-2027-ENG.pdf#page=1
+    - title: Executive Office for Administration and Finance, FY2027 Budget Brief, Health Care Insurance (pilot through December 2027)
+      href: https://budget.digital.mass.gov/govbudget/fy27/budbriefpdf/bb10_fy27_health_care_insurance.pdf#page=6

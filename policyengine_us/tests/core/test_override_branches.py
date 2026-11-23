@@ -29,7 +29,10 @@ A seeded sample of households shares one simulation; the tests check:
    on the seeded sample and on random households (Hypothesis).
 3. Each comparison branch equals a fresh simulation that sets the overridden
    input before anything is calculated (a differential test of the branch
-   against the reference path).
+   against the reference path). These households repay no claim of right
+   income; with a qualifying repayment the itemizing branches also fix the
+   claim of right method, so a reference must fix it too
+   (``test_claim_of_right_section_1341_properties.py`` covers that case).
 4. The same holds when the parent has already calculated the overridden
    input, and when an earlier year was calculated first.
 5. When the branch drops what it copied, it keeps exactly the values set as

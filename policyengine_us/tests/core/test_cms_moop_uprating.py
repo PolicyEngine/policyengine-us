@@ -5,8 +5,10 @@ CMS's National Health Expenditure (NHE) projections (Table 3, 2025-2034
 release) report out-of-pocket spending per capita for 2018 to 2034: historical
 estimates through 2024 and projections from 2025. The parameter holds that
 column. 2015 to 2017 come from CMS's historical accounts by the rule that
-reproduces Table 3's 2018-2024 values, and 2035 to 2100 grow at the 2033-2034
-rate.
+reproduces Table 3's 2018-2024 values. From 2035, growth glides from the
+2033-2034 rate to the 2026 Medicare Trustees' long-range per capita health
+spending rates: 4.3 percent in 2050 and 4.1 percent in 2100 (Trustees Report,
+file page 173).
 
 These tests read only the parameter tree and the parameter's YAML file.
 
@@ -27,14 +29,18 @@ Invariants:
 4. Bounds and order: the series is positive in every year. It is strictly
    increasing over 2015-2019 and 2020-2100; its one decline, 2019 to 2020
    (1,269 to 1,239), is CMS's and is intended.
-5. Extension rule: each year from 2035 to 2100 grows by 2,512 / 2,412, so the
-   value equals the closed form 2,512 * (2,512 / 2,412) ** (year - 2034); later
-   years hold the 2100 value.
+5. Extension rule: with g = 2,512 / 2,412 - 1, the 2033-2034 growth rate,
+   growth moves in a straight line from g at 2034 to 4.3 percent in 2050, then
+   to 4.1 percent in 2100, so 2035 grows by g + (0.043 - g) / 16. Each value
+   is 2,512 times the product of one plus each year's rate since 2034, checked
+   against an independent np.interp and np.prod. Later years hold the 2100
+   value.
 """
 
 import math
 from pathlib import Path
 
+import numpy as np
 import pytest
 import yaml
 from hypothesis import given
@@ -142,7 +148,10 @@ NHE_MILLIONS = dict(
         ),
     )
 )
-EXTENSION_GROWTH = 2_512 / 2_412
+# 2033-2034 growth, from which the extension glides to the Trustees'
+# long-range per capita health spending rates (file page 173).
+LAST_PROJECTED_GROWTH = 2_512 / 2_412 - 1
+TRUSTEES_KNOTS = {2050: 0.043, END_YEAR: 0.041}
 
 
 def _index(year):
@@ -242,11 +251,27 @@ def test_the_only_decline_is_cms_2019_to_2020():
     assert (_index(2019), _index(2020)) == (1_269, 1_239)
 
 
+def _growth(year):
+    return _index(year) / _index(year - 1) - 1
+
+
+def test_extension_glides_from_the_last_projected_rate_to_the_trustees_rates():
+    g = LAST_PROJECTED_GROWTH
+    # 2035 is one sixteenth of the way from the 2034 rate to 4.3% in 2050.
+    assert _growth(2035) == pytest.approx(g + (0.043 - g) / 16, rel=1e-12)
+    assert _growth(2050) == pytest.approx(0.043, rel=1e-12)
+    assert _growth(END_YEAR) == pytest.approx(0.041, rel=1e-12)
+
+
 @given(st.integers(LAST_PROJECTED_YEAR + 1, END_YEAR))
-def test_extension_holds_the_last_projected_growth_rate(year):
-    growth = _index(year) / _index(year - 1)
-    assert growth == pytest.approx(EXTENSION_GROWTH, rel=1e-12)
-    closed_form = 2_512 * EXTENSION_GROWTH ** (year - LAST_PROJECTED_YEAR)
+def test_extension_matches_an_independent_closed_form(year):
+    years = np.arange(LAST_PROJECTED_YEAR + 1, year + 1)
+    rates = np.interp(
+        years,
+        [LAST_PROJECTED_YEAR, *TRUSTEES_KNOTS],
+        [LAST_PROJECTED_GROWTH, *TRUSTEES_KNOTS.values()],
+    )
+    closed_form = 2_512 * np.prod(1 + rates)
     assert _index(year) == pytest.approx(closed_form, rel=1e-12)
 
 

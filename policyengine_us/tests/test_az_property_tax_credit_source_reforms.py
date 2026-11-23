@@ -3,9 +3,9 @@ income source.
 
 az_property_tax_credit_agi takes taxable_unemployment_compensation out of
 federal AGI, and az_property_tax_credit_nontaxable_income adds the alimony
-that federal gross income leaves out, only as far as
-gov.irs.gross_income.sources lists the source. These tests drop both sources
-and check that each amount is still counted exactly once.
+and strike benefits that federal gross income leaves out, only as far as
+gov.irs.gross_income.sources lists the source. These tests drop all three
+sources and check that each amount is still counted exactly once.
 
 Two Arizona single filers, one per household, aged 40, with no other income
 or deductions:
@@ -15,6 +15,8 @@ or deductions:
   (excluded by ARS 43-1072(I)).
 - "alimony": $20,000 wages and $4,000 alimony under a 2010 divorce, so
   taxable_alimony_income is the full $4,000 at baseline.
+- "strike": $20,000 wages and $6,000 strike benefits, $1,000 of them a gift,
+  so taxable_strike_benefits is $5,000 at baseline.
 """
 
 import numpy as np
@@ -27,11 +29,15 @@ from policyengine_us import Simulation
 YEAR = 2025
 
 
-DROPPED = ["taxable_unemployment_compensation", "taxable_alimony_income"]
+DROPPED = [
+    "taxable_unemployment_compensation",
+    "taxable_alimony_income",
+    "taxable_strike_benefits",
+]
 
 
 class drop_sources(Reform):
-    # One reform drops both sources: neither filer has the other's income, so
+    # One reform drops all three sources: no filer has another's income, so
     # each branch is checked on its own household, and only one reformed
     # system is built.
     def apply(self):
@@ -60,6 +66,12 @@ def _situation() -> dict:
             "alimony_income": {year: 4_000},
             "divorce_year": {year: 2010},
         },
+        "strike": {
+            "age": {year: 40},
+            "employment_income": {year: 20_000},
+            "strike_benefits": {year: 6_000},
+            "tax_exempt_strike_benefits": {year: 1_000},
+        },
     }
     return {
         "people": people,
@@ -71,7 +83,8 @@ def _situation() -> dict:
     }
 
 
-UC, ALIMONY = 0, 1  # Index of each filer's person, tax unit and household.
+# Index of each filer's person, tax unit and household.
+UC, ALIMONY, STRIKE = 0, 1, 2
 
 
 @pytest.fixture(scope="module")
@@ -121,4 +134,26 @@ def test_alimony_left_out_of_gross_income_is_added_in_full(baseline, reformed):
         assert np.isclose(
             sim.calculate("az_property_tax_credit_household_income", YEAR)[ALIMONY],
             24_000,
+        )
+
+
+def test_strike_benefits_left_out_of_gross_income_are_added_in_full(baseline, reformed):
+    # $6,000 of strike benefits less the $1,000 gift.
+    assert baseline.calculate("taxable_strike_benefits", YEAR)[STRIKE] == 5_000
+    # Federal AGI: 20,000 + 5,000 = 25,000 at baseline, 20,000 under the reform.
+    assert baseline.calculate("adjusted_gross_income", YEAR)[STRIKE] == 25_000
+    assert reformed.calculate("adjusted_gross_income", YEAR)[STRIKE] == 20_000
+    # Nontaxable strike benefits (line I) = strike benefits - the part federal
+    # gross income holds. Baseline: 6,000 - 5,000 = 1,000. Reform: none is
+    # held, so all 6,000. Reading taxable_strike_benefits under the reform
+    # would give 1,000.
+    nontaxable = "az_property_tax_credit_nontaxable_income"
+    assert baseline.calculate(nontaxable, YEAR)[STRIKE] == 1_000
+    assert reformed.calculate(nontaxable, YEAR)[STRIKE] == 6_000
+    # Household income counts the strike benefits once either way:
+    # baseline 25,000 + 1,000; reform 20,000 + 6,000. Both 26,000.
+    for sim in (baseline, reformed):
+        assert np.isclose(
+            sim.calculate("az_property_tax_credit_household_income", YEAR)[STRIKE],
+            26_000,
         )

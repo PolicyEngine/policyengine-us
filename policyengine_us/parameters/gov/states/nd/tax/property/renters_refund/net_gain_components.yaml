@@ -1,0 +1,18 @@
+description: North Dakota counts these market income components only as a net gain under the Renter's Refund program, so a net loss doesn't reduce income.
+values:
+  2025-01-01:
+    # Gains and losses from sales of capital assets. The applicant's and
+    # spouse's amounts net together, as on line 7, and each dependent's amount
+    # nets on its own, as on line 8; a net loss counts as zero.
+    - capital_gains
+metadata:
+  unit: list
+  period: year
+  label: North Dakota Renter's Refund net gain components
+  reference:
+    - title: N.D.C.C. § 57-02-08.1(5)(c)
+      href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+    - title: "North Dakota Office of State Tax Commissioner | SFN 24777 (10-2025), Application for Senior Citizens or Permanently and Totally Disabled Renter's Property Tax Refund, lines 7 and 8 and the instructions for lines 4 to 9 #page 1-2"
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+    - title: North Dakota Office of State Tax Commissioner | Property Tax Credits for North Dakota Homeowners and Renters, item 10
+      href: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2

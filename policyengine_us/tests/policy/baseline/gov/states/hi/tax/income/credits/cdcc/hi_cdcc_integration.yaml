@@ -166,6 +166,10 @@
       tax_unit:
         members: [person1, person2]
         hi_agi: 38_000
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 12_000
         tax_unit_childcare_expenses: 0
     households:
       household:

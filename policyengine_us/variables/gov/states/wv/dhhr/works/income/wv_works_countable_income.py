@@ -7,7 +7,7 @@ class wv_works_countable_income(Variable):
     label = "West Virginia WV Works countable income"
     unit = USD
     definition_period = MONTH
-    reference = "https://bfa.wv.gov/media/40005/download?inline#page=593"
+    reference = "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=593"
     defined_for = StateCode.WV
 
     # Step 7: Add together the total countable earned and unearned income

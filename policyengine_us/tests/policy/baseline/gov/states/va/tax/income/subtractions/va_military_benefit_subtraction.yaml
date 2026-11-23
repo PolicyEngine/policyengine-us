@@ -249,3 +249,71 @@
   output:
     # Under $40,000 limit, full amount subtracted
     va_military_benefit_subtraction: 35_000
+
+- name: Virginia does not subtract a nonspouse survivor annuity on the survivor's own return.
+  period: 2024
+  input:
+    state_code: VA
+    age: 20
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    va_military_benefit_subtraction: 0
+
+- name: Virginia subtracts an eligible surviving spouse annuity without an age minimum in 2024.
+  period: 2024
+  input:
+    state_code: VA
+    age: 40
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    va_military_benefit_subtraction: 10_000
+
+- name: Virginia's surviving spouse subtraction retains the age minimum in 2023.
+  period: 2023
+  input:
+    state_code: VA
+    age: 54
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    va_military_benefit_subtraction: 0
+
+- name: Virginia applies the 2023 cap to an age-eligible surviving spouse.
+  period: 2023
+  input:
+    state_code: VA
+    age: 55
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    va_military_benefit_subtraction: 20_000
+
+- name: Virginia keeps own retirement pay separate from a nonspouse survivor annuity.
+  period: 2025
+  input:
+    state_code: VA
+    age: 60
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 20_000
+  output:
+    va_military_benefit_subtraction: 30_000
+
+- name: Virginia applies one cap to own pay and eligible surviving spouse benefits.
+  period: 2025
+  input:
+    state_code: VA
+    age: 60
+    is_surviving_spouse: true
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 20_000
+  output:
+    va_military_benefit_subtraction: 40_000

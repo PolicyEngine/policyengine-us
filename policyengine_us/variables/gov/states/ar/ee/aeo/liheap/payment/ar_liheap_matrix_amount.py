@@ -10,6 +10,16 @@ class ar_liheap_matrix_amount(Variable):
     defined_for = StateCode.AR
     reference = (
         # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/electric-benefit-matrix-fy-2027.pdf#page=1",
+        # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/natural-gas-benefit-matrix-fy-2027.pdf#page=1",
+        # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/propane-benefit-matrix-fy-2027.pdf#page=1",
+        # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/fuel-oil-benefit-matrix-fy-2027.pdf#page=1",
+        # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/other-benefit-matrix-fy-2027.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf#page=1",
         # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Natural-Gas.pdf#page=1",

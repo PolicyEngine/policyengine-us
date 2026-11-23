@@ -4,8 +4,9 @@ NMSA 7-2-18.34(J)(2) defines the child income tax credit's "qualifying child"
 by IRC 152(c), which has no taxpayer identification number requirement, so
 `nm_ctc_qualifying_children` counts 152(c) children whatever their Social
 Security number status. NMSA 7-2-5.9 gives $3,000 to a filer or spouse 65 or
-older with at least $28,000 of medical care expenses (the PIT-ADJ reading of
-the threshold), with no halving for married filing separately.
+older with more than $28,000 of medical care expenses (NMSA 7-2-5.9(A); the
+PIT-ADJ instructions' "$28,000 or more" is not followed), with no halving for
+married filing separately.
 
 For households drawn by Hypothesis and a seeded population, in 2023-2026:
 
@@ -25,8 +26,8 @@ For households drawn by Hypothesis and a seeded population, in 2023-2026:
 5. Separate filing: a single adult filing separately gets half of `nm_ctc`
    (7-2-18.34(G)) and the whole `nm_medical_expense_exemption`.
 6. Reference exemption: `nm_medical_expense_exemption` is $3,000 exactly when
-   a filer (not a dependent) is 65 or older and medical expenses are at least
-   $28,000, and 0 otherwise.
+   a filer (not a dependent) is 65 or older and medical expenses are more than
+   $28,000 (NMSA 7-2-5.9(A)), and 0 otherwise.
 """
 
 import numpy as np
@@ -182,7 +183,7 @@ def _crafted_units():
         unit([adult(25), adult(20)], [dependent(22, student=True)]),
         # The only 65+ person is a dependent parent.
         unit([adult(40)], [elderly_parent], expenses=30_000.0),
-        # A 65+ filer with exactly $28,000 of expenses.
+        # A 65+ filer with exactly $28,000 of expenses (not over $28,000).
         unit([adult(70)], [], expenses=28_000.0),
     ]
 
@@ -268,7 +269,8 @@ def _reference_exemption(unit):
     if unit["state"] != "NM":
         return 0
     filer_65 = any(a["age"] >= 65 for a in unit["adults"])
-    return EXEMPTION * (filer_65 and unit["medical_expenses"] >= MIN_EXPENSES)
+    # NMSA 7-2-5.9(A): expenses that "exceed" $28,000.
+    return EXEMPTION * (filer_65 and unit["medical_expenses"] > MIN_EXPENSES)
 
 
 def _describe(unit):
@@ -336,7 +338,7 @@ def _assert_coverage(drawn_units, credit, exemption):
             u["state"] == "NM"
             and all(a["age"] < 65 for a in u["adults"])
             and any(d["age"] >= 65 for d in u["dependents"])
-            and u["medical_expenses"] >= MIN_EXPENSES
+            and u["medical_expenses"] > MIN_EXPENSES
             for u in drawn_units
         ]
     )

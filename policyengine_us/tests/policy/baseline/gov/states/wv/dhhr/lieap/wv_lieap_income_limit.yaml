@@ -1,0 +1,348 @@
+# Sources: the FY2026 chart prints sizes 1-10 and adds $688 for each further person.
+# https://bfa.wv.gov/utility-assistancelieap
+# https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1780
+# FY2027 adopted operational IMM gives separately verified sizes 1-11.
+# https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1775
+# The 60% SMI through 7 and 150% FPG from 8 split is explicit in the accepted FY2026 plan.
+# https://liheapch.acf.gov/docs/2026/state-plans/WV_Plan_2026.pdf#page=11
+# Expected limits are the published monthly amounts x 12, stopped at the ceiling of
+# 42 U.S.C. 8624(b)(2)(B): HHS's 60% SMI amounts through 7, 150% of the guideline from 8.
+# https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=3
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=3
+# Both were checked independently by hand; no model formula was used.
+# FY2026 size 11 is 8831/month: the chart's 8144 + 688 = 8832 is above 150% of the
+# guideline, 8831.25.
+# Payment-grid overlaps and larger-family defects are outside this component.
+
+- name: Case 1, FY2026 limits for 1 through 11 qualified members stop at the federal ceiling.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Size 1: 60% of requested-year SMI; published $2,454/month x 12 = $29,448/year.
+  # Size 2: 60% of requested-year SMI; published $3,209/month x 12 = $38,508/year.
+  # Size 3: published $3,965/month x 12 = $47,580/year, above HHS's $47,575.
+  # Size 4: published $4,720/month x 12 = $56,640/year, above HHS's $56,637.
+  # Size 5: published $5,475/month x 12 = $65,700/year, above HHS's $65,698.
+  # Size 6: 60% of requested-year SMI; published $6,230/month x 12 = $74,760/year.
+  # Size 7: published $6,372/month x 12 = $76,464/year, above HHS's $76,459.
+  # Size 8: published $6,769/month x 12 = $81,228/year, above 1.5 x $54,150 = $81,225.
+  # Size 9: 150% of prior-year FPG; published $7,456/month x 12 = $89,472/year.
+  # Size 10: published $8,144/month x 12 = $97,728/year, above 1.5 x $65,150 = $97,725.
+  # Size 11: 150% of prior-year FPG; published $8,831/month x 12 = $105,972/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 70, is_citizen_or_legal_immigrant: true}
+      person3: {age: 68, is_citizen_or_legal_immigrant: true}
+      person4: {age: 70, is_citizen_or_legal_immigrant: true}
+      person5: {age: 68, is_citizen_or_legal_immigrant: true}
+      person6: {age: 45, is_citizen_or_legal_immigrant: true}
+      person7: {age: 70, is_citizen_or_legal_immigrant: true}
+      person8: {age: 68, is_citizen_or_legal_immigrant: true}
+      person9: {age: 45, is_citizen_or_legal_immigrant: true}
+      person10: {age: 44, is_citizen_or_legal_immigrant: true}
+      person11: {age: 70, is_citizen_or_legal_immigrant: true}
+      person12: {age: 68, is_citizen_or_legal_immigrant: true}
+      person13: {age: 45, is_citizen_or_legal_immigrant: true}
+      person14: {age: 44, is_citizen_or_legal_immigrant: true}
+      person15: {age: 22, is_citizen_or_legal_immigrant: true}
+      person16: {age: 70, is_citizen_or_legal_immigrant: true}
+      person17: {age: 68, is_citizen_or_legal_immigrant: true}
+      person18: {age: 45, is_citizen_or_legal_immigrant: true}
+      person19: {age: 44, is_citizen_or_legal_immigrant: true}
+      person20: {age: 22, is_citizen_or_legal_immigrant: true}
+      person21: {age: 17, is_citizen_or_legal_immigrant: true}
+      person22: {age: 70, is_citizen_or_legal_immigrant: true}
+      person23: {age: 68, is_citizen_or_legal_immigrant: true}
+      person24: {age: 45, is_citizen_or_legal_immigrant: true}
+      person25: {age: 44, is_citizen_or_legal_immigrant: true}
+      person26: {age: 22, is_citizen_or_legal_immigrant: true}
+      person27: {age: 17, is_citizen_or_legal_immigrant: true}
+      person28: {age: 15, is_citizen_or_legal_immigrant: true}
+      person29: {age: 70, is_citizen_or_legal_immigrant: true}
+      person30: {age: 68, is_citizen_or_legal_immigrant: true}
+      person31: {age: 45, is_citizen_or_legal_immigrant: true}
+      person32: {age: 44, is_citizen_or_legal_immigrant: true}
+      person33: {age: 22, is_citizen_or_legal_immigrant: true}
+      person34: {age: 17, is_citizen_or_legal_immigrant: true}
+      person35: {age: 15, is_citizen_or_legal_immigrant: true}
+      person36: {age: 12, is_citizen_or_legal_immigrant: true}
+      person37: {age: 70, is_citizen_or_legal_immigrant: true}
+      person38: {age: 68, is_citizen_or_legal_immigrant: true}
+      person39: {age: 45, is_citizen_or_legal_immigrant: true}
+      person40: {age: 44, is_citizen_or_legal_immigrant: true}
+      person41: {age: 22, is_citizen_or_legal_immigrant: true}
+      person42: {age: 17, is_citizen_or_legal_immigrant: true}
+      person43: {age: 15, is_citizen_or_legal_immigrant: true}
+      person44: {age: 12, is_citizen_or_legal_immigrant: true}
+      person45: {age: 9, is_citizen_or_legal_immigrant: true}
+      person46: {age: 70, is_citizen_or_legal_immigrant: true}
+      person47: {age: 68, is_citizen_or_legal_immigrant: true}
+      person48: {age: 45, is_citizen_or_legal_immigrant: true}
+      person49: {age: 44, is_citizen_or_legal_immigrant: true}
+      person50: {age: 22, is_citizen_or_legal_immigrant: true}
+      person51: {age: 17, is_citizen_or_legal_immigrant: true}
+      person52: {age: 15, is_citizen_or_legal_immigrant: true}
+      person53: {age: 12, is_citizen_or_legal_immigrant: true}
+      person54: {age: 9, is_citizen_or_legal_immigrant: true}
+      person55: {age: 7, is_citizen_or_legal_immigrant: true}
+      person56: {age: 70, is_citizen_or_legal_immigrant: true}
+      person57: {age: 68, is_citizen_or_legal_immigrant: true}
+      person58: {age: 45, is_citizen_or_legal_immigrant: true}
+      person59: {age: 44, is_citizen_or_legal_immigrant: true}
+      person60: {age: 22, is_citizen_or_legal_immigrant: true}
+      person61: {age: 17, is_citizen_or_legal_immigrant: true}
+      person62: {age: 15, is_citizen_or_legal_immigrant: true}
+      person63: {age: 12, is_citizen_or_legal_immigrant: true}
+      person64: {age: 9, is_citizen_or_legal_immigrant: true}
+      person65: {age: 7, is_citizen_or_legal_immigrant: true}
+      person66: {age: 3, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1: {members: [person1]}
+      spm_unit2: {members: [person2, person3]}
+      spm_unit3: {members: [person4, person5, person6]}
+      spm_unit4: {members: [person7, person8, person9, person10]}
+      spm_unit5: {members: [person11, person12, person13, person14, person15]}
+      spm_unit6: {members: [person16, person17, person18, person19, person20, person21]}
+      spm_unit7: {members: [person22, person23, person24, person25, person26, person27, person28]}
+      spm_unit8: {members: [person29, person30, person31, person32, person33, person34, person35, person36]}
+      spm_unit9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45]}
+      spm_unit10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55]}
+      spm_unit11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66]}
+    households:
+      household1: {members: [person1], state_code: WV}
+      household2: {members: [person2, person3], state_code: WV}
+      household3: {members: [person4, person5, person6], state_code: WV}
+      household4: {members: [person7, person8, person9, person10], state_code: WV}
+      household5: {members: [person11, person12, person13, person14, person15], state_code: WV}
+      household6: {members: [person16, person17, person18, person19, person20, person21], state_code: WV}
+      household7: {members: [person22, person23, person24, person25, person26, person27, person28], state_code: WV}
+      household8: {members: [person29, person30, person31, person32, person33, person34, person35, person36], state_code: WV}
+      household9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45], state_code: WV}
+      household10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55], state_code: WV}
+      household11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66], state_code: WV}
+  output:
+    wv_lieap_income_limit:
+      - 29_448
+      - 38_508
+      - 47_575
+      - 56_637
+      - 65_698
+      - 74_760
+      - 76_459
+      - 81_225
+      - 89_472
+      - 97_725
+      - 105_972
+
+- name: Case 2, FY2027 limits for 1 through 11 qualified members stop at the federal ceiling.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Size 1: 60% of requested-year SMI; published $2,550/month x 12 = $30,600/year.
+  # Size 2: published $3,335/month x 12 = $40,020/year, above HHS's $40,019.
+  # Size 3: published $4,120/month x 12 = $49,440/year, above HHS's $49,435.
+  # Size 4: 60% of requested-year SMI; published $4,904/month x 12 = $58,848/year.
+  # Size 5: 60% of requested-year SMI; published $5,689/month x 12 = $68,268/year.
+  # Size 6: published $6,474/month x 12 = $77,688/year, above HHS's $77,684.
+  # Size 7: published $6,621/month x 12 = $79,452/year, above HHS's $79,450.
+  # Size 8: 150% of prior-year FPG; published $6,965/month x 12 = $83,580/year.
+  # Size 9: 150% of prior-year FPG; published $7,675/month x 12 = $92,100/year.
+  # Size 10: 150% of prior-year FPG; published $8,385/month x 12 = $100,620/year.
+  # Size 11: 150% of prior-year FPG; published $9,095/month x 12 = $109,140/year.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 70, is_citizen_or_legal_immigrant: true}
+      person3: {age: 68, is_citizen_or_legal_immigrant: true}
+      person4: {age: 70, is_citizen_or_legal_immigrant: true}
+      person5: {age: 68, is_citizen_or_legal_immigrant: true}
+      person6: {age: 45, is_citizen_or_legal_immigrant: true}
+      person7: {age: 70, is_citizen_or_legal_immigrant: true}
+      person8: {age: 68, is_citizen_or_legal_immigrant: true}
+      person9: {age: 45, is_citizen_or_legal_immigrant: true}
+      person10: {age: 44, is_citizen_or_legal_immigrant: true}
+      person11: {age: 70, is_citizen_or_legal_immigrant: true}
+      person12: {age: 68, is_citizen_or_legal_immigrant: true}
+      person13: {age: 45, is_citizen_or_legal_immigrant: true}
+      person14: {age: 44, is_citizen_or_legal_immigrant: true}
+      person15: {age: 22, is_citizen_or_legal_immigrant: true}
+      person16: {age: 70, is_citizen_or_legal_immigrant: true}
+      person17: {age: 68, is_citizen_or_legal_immigrant: true}
+      person18: {age: 45, is_citizen_or_legal_immigrant: true}
+      person19: {age: 44, is_citizen_or_legal_immigrant: true}
+      person20: {age: 22, is_citizen_or_legal_immigrant: true}
+      person21: {age: 17, is_citizen_or_legal_immigrant: true}
+      person22: {age: 70, is_citizen_or_legal_immigrant: true}
+      person23: {age: 68, is_citizen_or_legal_immigrant: true}
+      person24: {age: 45, is_citizen_or_legal_immigrant: true}
+      person25: {age: 44, is_citizen_or_legal_immigrant: true}
+      person26: {age: 22, is_citizen_or_legal_immigrant: true}
+      person27: {age: 17, is_citizen_or_legal_immigrant: true}
+      person28: {age: 15, is_citizen_or_legal_immigrant: true}
+      person29: {age: 70, is_citizen_or_legal_immigrant: true}
+      person30: {age: 68, is_citizen_or_legal_immigrant: true}
+      person31: {age: 45, is_citizen_or_legal_immigrant: true}
+      person32: {age: 44, is_citizen_or_legal_immigrant: true}
+      person33: {age: 22, is_citizen_or_legal_immigrant: true}
+      person34: {age: 17, is_citizen_or_legal_immigrant: true}
+      person35: {age: 15, is_citizen_or_legal_immigrant: true}
+      person36: {age: 12, is_citizen_or_legal_immigrant: true}
+      person37: {age: 70, is_citizen_or_legal_immigrant: true}
+      person38: {age: 68, is_citizen_or_legal_immigrant: true}
+      person39: {age: 45, is_citizen_or_legal_immigrant: true}
+      person40: {age: 44, is_citizen_or_legal_immigrant: true}
+      person41: {age: 22, is_citizen_or_legal_immigrant: true}
+      person42: {age: 17, is_citizen_or_legal_immigrant: true}
+      person43: {age: 15, is_citizen_or_legal_immigrant: true}
+      person44: {age: 12, is_citizen_or_legal_immigrant: true}
+      person45: {age: 9, is_citizen_or_legal_immigrant: true}
+      person46: {age: 70, is_citizen_or_legal_immigrant: true}
+      person47: {age: 68, is_citizen_or_legal_immigrant: true}
+      person48: {age: 45, is_citizen_or_legal_immigrant: true}
+      person49: {age: 44, is_citizen_or_legal_immigrant: true}
+      person50: {age: 22, is_citizen_or_legal_immigrant: true}
+      person51: {age: 17, is_citizen_or_legal_immigrant: true}
+      person52: {age: 15, is_citizen_or_legal_immigrant: true}
+      person53: {age: 12, is_citizen_or_legal_immigrant: true}
+      person54: {age: 9, is_citizen_or_legal_immigrant: true}
+      person55: {age: 7, is_citizen_or_legal_immigrant: true}
+      person56: {age: 70, is_citizen_or_legal_immigrant: true}
+      person57: {age: 68, is_citizen_or_legal_immigrant: true}
+      person58: {age: 45, is_citizen_or_legal_immigrant: true}
+      person59: {age: 44, is_citizen_or_legal_immigrant: true}
+      person60: {age: 22, is_citizen_or_legal_immigrant: true}
+      person61: {age: 17, is_citizen_or_legal_immigrant: true}
+      person62: {age: 15, is_citizen_or_legal_immigrant: true}
+      person63: {age: 12, is_citizen_or_legal_immigrant: true}
+      person64: {age: 9, is_citizen_or_legal_immigrant: true}
+      person65: {age: 7, is_citizen_or_legal_immigrant: true}
+      person66: {age: 3, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1: {members: [person1]}
+      spm_unit2: {members: [person2, person3]}
+      spm_unit3: {members: [person4, person5, person6]}
+      spm_unit4: {members: [person7, person8, person9, person10]}
+      spm_unit5: {members: [person11, person12, person13, person14, person15]}
+      spm_unit6: {members: [person16, person17, person18, person19, person20, person21]}
+      spm_unit7: {members: [person22, person23, person24, person25, person26, person27, person28]}
+      spm_unit8: {members: [person29, person30, person31, person32, person33, person34, person35, person36]}
+      spm_unit9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45]}
+      spm_unit10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55]}
+      spm_unit11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66]}
+    households:
+      household1: {members: [person1], state_code: WV}
+      household2: {members: [person2, person3], state_code: WV}
+      household3: {members: [person4, person5, person6], state_code: WV}
+      household4: {members: [person7, person8, person9, person10], state_code: WV}
+      household5: {members: [person11, person12, person13, person14, person15], state_code: WV}
+      household6: {members: [person16, person17, person18, person19, person20, person21], state_code: WV}
+      household7: {members: [person22, person23, person24, person25, person26, person27, person28], state_code: WV}
+      household8: {members: [person29, person30, person31, person32, person33, person34, person35, person36], state_code: WV}
+      household9: {members: [person37, person38, person39, person40, person41, person42, person43, person44, person45], state_code: WV}
+      household10: {members: [person46, person47, person48, person49, person50, person51, person52, person53, person54, person55], state_code: WV}
+      household11: {members: [person56, person57, person58, person59, person60, person61, person62, person63, person64, person65, person66], state_code: WV}
+  output:
+    wv_lieap_income_limit:
+      - 30_600
+      - 40_019
+      - 49_435
+      - 58_848
+      - 68_268
+      - 77_684
+      - 79_450
+      - 83_580
+      - 92_100
+      - 100_620
+      - 109_140
+
+- name: Case 3, eight residents with seven qualified members stay on the SMI branch.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Qualified size 7: HHS's FY2026 amount 76459, below the chart's 6372 x 12 = 76464.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 76_459
+
+- name: Case 4, nine residents with eight qualified members use the FPG branch.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Qualified size 8: 1.5 x 54150 = 81225, below the chart's 6769 x 12 = 81228.
+  input:
+    people:
+      person1: {age: 70, is_citizen_or_legal_immigrant: true}
+      person2: {age: 68, is_citizen_or_legal_immigrant: true}
+      person3: {age: 45, is_citizen_or_legal_immigrant: true}
+      person4: {age: 44, is_citizen_or_legal_immigrant: true}
+      person5: {age: 22, is_citizen_or_legal_immigrant: true}
+      person6: {age: 17, is_citizen_or_legal_immigrant: true}
+      person7: {age: 15, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 9, is_citizen_or_legal_immigrant: false}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: 81_225
+
+- name: Case 5, mixed WV and neighboring-state households retain independent limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  # WV size 1 uses 2454 monthly and size 8 stops at 81225; the WV variable is zero in Ohio.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 70, is_citizen_or_legal_immigrant: true}
+      person3: {age: 68, is_citizen_or_legal_immigrant: true}
+      person4: {age: 45, is_citizen_or_legal_immigrant: true}
+      person5: {age: 44, is_citizen_or_legal_immigrant: true}
+      person6: {age: 22, is_citizen_or_legal_immigrant: true}
+      person7: {age: 17, is_citizen_or_legal_immigrant: true}
+      person8: {age: 15, is_citizen_or_legal_immigrant: true}
+      person9: {age: 12, is_citizen_or_legal_immigrant: true}
+      person10: {age: 70, is_citizen_or_legal_immigrant: true}
+      person11: {age: 68, is_citizen_or_legal_immigrant: true}
+      person12: {age: 45, is_citizen_or_legal_immigrant: true}
+      person13: {age: 44, is_citizen_or_legal_immigrant: true}
+      person14: {age: 22, is_citizen_or_legal_immigrant: true}
+      person15: {age: 17, is_citizen_or_legal_immigrant: true}
+      person16: {age: 15, is_citizen_or_legal_immigrant: true}
+      person17: {age: 12, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2, person3, person4, person5, person6, person7, person8, person9]
+      spm_unit3:
+        members: [person10, person11, person12, person13, person14, person15, person16, person17]
+    households:
+      household1:
+        members: [person1]
+        state_code: WV
+      household2:
+        members: [person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: OH
+      household3:
+        members: [person10, person11, person12, person13, person14, person15, person16, person17]
+        state_code: WV
+  output:
+    wv_lieap_income_limit: [29448, 0, 81225]

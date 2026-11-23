@@ -1,5 +1,11 @@
 # NM Admin Code 3.3.1.10: "zero is the lowest amount which may be reported
 # for any item in computing modified gross income"
+# NMSA 1978 7-2-2(L): "modified gross income" means all income of the
+# taxpayer and, if any, the taxpayer's spouse and dependents, undiminished by
+# losses and from whatever source, including the 21 listed items.
+# 3.3.1.10(B) NMAC: the loss from one business or activity shall not reduce
+# the income from another business or activity.
+# PIT-RC lines are those of the 2025 PIT-RC instructions, PDF page 4.
 
 - name: NM modified gross income with positive income only
   period: 2024
@@ -36,7 +42,8 @@
     short_term_capital_gains: -20_000
     long_term_capital_gains: -10_000
   output:
-    # Capital gains undiminished by losses: floor to zero
+    # Each capital gain part is floored at zero:
+    # 50,000 + max(-20,000, 0) + max(-10,000, 0) = 50,000.
     nm_modified_gross_income: 50_000
 
 - name: NM rental loss should not reduce modified gross income
@@ -59,12 +66,16 @@
     long_term_capital_gains: -15_000
     dividend_income: 5_000
   output:
-    # interest: max(100000, 0) = 100000
-    # self_employment: max(-50000, 0) = 0
-    # rental: max(-20000, 0) = 0
-    # capital_gains: max(10000 + -15000, 0) = max(-5000, 0) = 0
-    # dividends: max(5000, 0) = 5000
-    nm_modified_gross_income: 105_000
+    # interest: max(100,000, 0) = 100,000
+    # self_employment: max(-50,000, 0) = 0
+    # rental: max(-20,000, 0) = 0
+    # short-term capital gains: max(10,000, 0) = 10,000
+    # long-term capital gains: max(-15,000 + 0 carryover, 0) = 0
+    # dividends: max(5,000, 0) = 5,000
+    # PIT-RC line 9: gross capital gains, not reduced by capital losses, so
+    # the long-term loss does not offset the short-term gain.
+    # 100,000 + 10,000 + 5,000 = 115,000
+    nm_modified_gross_income: 115_000
 
 - name: NM modified gross income includes retirement distributions for rebate eligibility
   period: 2026
@@ -110,3 +121,319 @@
   output:
     # § 7-2-2(L): "undiminished by losses". max(-5,000, 0) = 0, so 20,000.
     nm_modified_gross_income: 20_000
+
+- name: NM modified gross income includes military retired pay and survivor annuities
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 6_000
+  output:
+    # § 7-2-2(L)(9), (11): annuities and pensions, so military retired pay and
+    # a survivor annuity count:
+    # 20,000 + 30,000 + 6,000.
+    nm_modified_gross_income: 56_000
+
+- name: NM modified gross income includes farm income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    farm_operations_income: 15_000
+    farm_rent_income: 1_000
+  output:
+    # 7-2-2(L)(2) net profit from business and (L)(5) net rents; PIT-RC line
+    # 8, net profit from business, farm, or rentals.
+    # 20,000 + 15,000 + 1,000 = 36,000.
+    nm_modified_gross_income: 36_000
+
+- name: NM farm loss does not reduce other income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    farm_operations_income: -8_000
+  output:
+    # PIT-RC line 8: a farm loss enters as zero and may not offset any other
+    # source of income. 20,000 + max(-8,000, 0) = 20,000.
+    nm_modified_gross_income: 20_000
+
+- name: NM modified gross income includes partnership income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    partnership_income: 12_000
+  output:
+    # 7-2-2(L)(13) distributive share of partnership income; PIT-RC line 11,
+    # distributions from partnerships, S corporations, or similar entities.
+    # 20,000 + 12,000 = 32,000.
+    nm_modified_gross_income: 32_000
+
+- name: NM one spouse's business loss does not reduce the other spouse's business income
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        self_employment_income: 30_000
+      spouse:
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    # 3.3.1.10(B) NMAC and PIT-RC line 8: the spouse's business counts as zero
+    # and its loss does not reduce the head's business income.
+    # max(30,000, 0) + max(-10,000, 0) = 30,000.
+    nm_modified_gross_income: 30_000
+
+- name: NM one spouse's capital loss does not reduce the other spouse's capital gain
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        long_term_capital_gains: 10_000
+      spouse:
+        is_tax_unit_spouse: true
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    # 3.3.1.10(B) NMAC; PIT-RC line 9: gross capital gains, not reduced by
+    # capital losses. Each spouse's gain is floored on its own:
+    # max(10,000, 0) + max(-3,000, 0) = 10,000.
+    nm_modified_gross_income: 10_000
+
+- name: NM capital gains are not reduced by capital losses
+  period: 2025
+  input:
+    state_code: NM
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: -4_000
+  output:
+    # PIT-RC line 9: gross capital gains, not reduced by capital losses.
+    # max(10,000, 0) + max(-4,000, 0) = 10,000.
+    nm_modified_gross_income: 10_000
+
+- name: NM capital gains are not reduced by a prior-year capital loss carryover
+  period: 2025
+  input:
+    state_code: NM
+    # The year's own long-term gain is 7,000; long_term_capital_gains nets
+    # the 5,000 carryover against it, as Schedule D line 15 does.
+    long_term_capital_gains: 2_000
+    long_term_capital_loss_carryover: 5_000
+  output:
+    # PIT-RC line 9: gross capital gains, not reduced by capital losses.
+    # 2,000 + 5,000 = 7,000.
+    nm_modified_gross_income_long_term_capital_gains: 7_000
+    nm_modified_gross_income: 7_000
+
+- name: NM carryover larger than the year's gain restores only the gain
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    # The year's own long-term gain is 3,000; netting the 5,000 carryover
+    # leaves -2,000.
+    long_term_capital_gains: -2_000
+    long_term_capital_loss_carryover: 5_000
+  output:
+    # -2,000 + 5,000 = 3,000; the unused 2,000 of the carryover never counts
+    # as income. 20,000 + 3,000 = 23,000.
+    nm_modified_gross_income_long_term_capital_gains: 3_000
+    nm_modified_gross_income: 23_000
+
+- name: NM long-term loss for the year with a carryover counts as zero
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    # The year's own long-term loss is 1,000, plus the 5,000 carryover.
+    long_term_capital_gains: -6_000
+    long_term_capital_loss_carryover: 5_000
+  output:
+    # -6,000 + 5,000 = -1,000, floored at zero. 20,000 + 0 = 20,000.
+    nm_modified_gross_income_long_term_capital_gains: -1_000
+    nm_modified_gross_income: 20_000
+
+- name: NM modified gross income includes capital gain distributions
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    non_sch_d_capital_gains: 500
+  output:
+    # 7-2-2(L)(3) gains from dealings in property; PIT-RC line 9.
+    # 20,000 + 500 = 20,500.
+    nm_modified_gross_income: 20_500
+
+- name: NM modified gross income includes Form 4797 ordinary gains
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    other_net_gain: 3_000
+  output:
+    # 7-2-2(L)(3); PIT-RC line 11, all ordinary gains from dealing in or
+    # selling property. 20,000 + 3,000 = 23,000.
+    nm_modified_gross_income: 23_000
+
+- name: NM Form 4797 loss does not reduce other income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    other_net_gain: -5_000
+  output:
+    # other_net_gain is a tax-unit amount, floored for the tax unit:
+    # 20,000 + max(-5,000, 0) = 20,000.
+    nm_modified_gross_income: 20_000
+
+- name: NM modified gross income includes general assistance
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 5_000
+    general_assistance: 3_000
+  output:
+    # 7-2-2(L)(19) public assistance and welfare benefits; 3.3.1.10(A)(1)(d)
+    # NMAC names general assistance; PIT-RC line 7.
+    # 5,000 + 3,000 = 8,000.
+    nm_modified_gross_income: 8_000
+
+- name: NM modified gross income includes workers' compensation
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    workers_compensation: 8_000
+  output:
+    # 7-2-2(L)(18) workers' compensation benefits; PIT-RC line 6.
+    # 20,000 + 8,000 = 28,000.
+    nm_modified_gross_income: 28_000
+
+- name: NM modified gross income includes disability benefits
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    disability_benefits: 6_000
+  output:
+    # 3.3.1.10(C) NMAC: sick pay and disability payments from whatever
+    # source are modified gross income.
+    # 20,000 + 6,000 = 26,000.
+    nm_modified_gross_income: 26_000
+
+- name: NM modified gross income includes discharge of indebtedness
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    debt_relief: 5_000
+  output:
+    # 7-2-2(L)(12) discharge of indebtedness; PIT-RC line 11.
+    # 20,000 + 5,000 = 25,000.
+    nm_modified_gross_income: 25_000
+
+- name: NM modified gross income includes gross gambling winnings
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    gambling_winnings: 4_000
+    gambling_losses: 4_000
+  output:
+    # PIT-RC line 11: gross gambling, gaming and lottery winnings from any
+    # source, without reducing winnings by any losses.
+    # 20,000 + 4,000 = 24,000.
+    nm_modified_gross_income: 24_000
+
+- name: NM modified gross income includes gifts of cash
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    financial_assistance: 2_000
+  output:
+    # 7-2-2(L)(21) gifts; PIT-RC line 10, all gifts of cash.
+    # 20,000 + 2,000 = 22,000.
+    nm_modified_gross_income: 22_000
+
+- name: NM modified gross income includes scholarships and grants
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    educational_assistance: 4_000
+  output:
+    # 3.3.1.10(A)(2) NMAC: scholarships, grants, fellowships or similar
+    # payments which do not have to be repaid are modified gross income;
+    # PIT-RC line 11.
+    # 20,000 + 4,000 = 24,000.
+    nm_modified_gross_income: 24_000
+
+- name: NM modified gross income includes miscellaneous income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    miscellaneous_income: 1_500
+  output:
+    # 7-2-2(L): all income from whatever source; PIT-RC line 11, all income
+    # not included on lines 4 to 10 (other cash prizes and awards and the
+    # like).
+    # 20,000 + 1,500 = 21,500.
+    nm_modified_gross_income: 21_500
+
+- name: NM modified gross income includes foreign earned income excluded from federal income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    # Wage inputs are the amounts left after the IRC 911 exclusion.
+    foreign_earned_income_exclusion: 10_000
+  output:
+    # 7-2-2(L): all income from whatever source. PIT-RC: all income and
+    # other compensation from all sources, regardless of whether that income
+    # is taxable by the U.S. Government.
+    # 20,000 + 10,000 = 30,000.
+    nm_modified_gross_income: 30_000
+
+- name: NM S corporation loss does not reduce partnership income
+  period: 2025
+  input:
+    state_code: NM
+    partnership_income: 30_000
+    s_corp_income: -20_000
+  output:
+    # 3.3.1.10(B) NMAC: the loss from one business or activity shall not
+    # reduce the income from another business or activity, and zero is the
+    # lowest amount reported for any item. Each source is floored on its own:
+    # max(30,000, 0) + max(-20,000, 0) = 30,000 + 0 = 30,000.
+    nm_modified_gross_income: 30_000
+
+- name: NM modified gross income counts partnership and S corporation income entered as one amount
+  period: 2025
+  input:
+    state_code: NM
+    partnership_s_corp_income: 50_000
+  output:
+    # partnership_income and s_corp_income are both zero, so the combined
+    # amount entered directly is used: max(50,000, 0) = 50,000.
+    nm_modified_gross_income: 50_000

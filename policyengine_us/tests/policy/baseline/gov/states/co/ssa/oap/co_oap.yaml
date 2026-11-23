@@ -572,3 +572,43 @@
     ssi: 1_368
     co_oap_countable_income: 10_560
     co_oap: 2_268
+
+# State supplement regressions for an eligible couple sharing a household
+# and tax unit with a third adult, without explicit marital units.
+# Each case cites the state rule and computes its expectation independently.
+
+# 9 CCR 2503-5 3.533(A)(2)(c): married clients split the $20 disregard.
+# 3.534(C) exempts spouses receiving SSI/OAP within the $1,032 OAP limit.
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=76
+# SSI = (1,491 - (300 + 200 - 20)) / 2 = $505.50 each; third = $614.
+# Own OAP incomes = $290/$190/$380. No spouse income is deemed.
+# Monthly OAP = 1,032 - 505.50 - 290/190 = $236.50/$336.50;
+# third = 1,032 - 614 - 380 = $38, raised to the $189 payment floor.
+- name: CO OAP counts only the spouse in a default marital unit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age: 70
+        pension_income: 3_600
+        is_tax_unit_head: true
+      wife:
+        age: 70
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+      third_adult:
+        age: 70
+        pension_income: 4_800
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [3_480, 2_280, 4_560]
+    co_oap_deemed_income: [0, 0, 0]
+    co_oap: [2_838, 4_038, 2_268]

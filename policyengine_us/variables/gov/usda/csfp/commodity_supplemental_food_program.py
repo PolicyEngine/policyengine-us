@@ -8,4 +8,8 @@ class commodity_supplemental_food_program(Variable):
     definition_period = YEAR
     label = "Commodity Supplemental Food Program"
     defined_for = "commodity_supplemental_food_program_eligible"
-    adds = ["gov.usda.csfp.amount"]
+
+    def formula(person, period, parameters):
+        amount = parameters(period).gov.usda.csfp.amount
+        takes_up = person("takes_up_csfp_if_eligible", period)
+        return amount * takes_up

@@ -1,0 +1,17 @@
+- name: 2017 subtractions total U.S. obligation interest, taxable state refunds and other subtractions.
+  period: 2017
+  input:
+    state_code: VT
+    us_govt_interest: 1_000
+    salt_refund_income: 300
+    vt_2017_other_subtractions: 2_000
+  output:
+    vt_2017_subtractions: 3_300
+
+- name: No subtractions outside Vermont.
+  period: 2017
+  input:
+    state_code: NH
+    us_govt_interest: 1_000
+  output:
+    vt_2017_subtractions: 0

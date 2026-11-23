@@ -97,3 +97,127 @@
     spm_unit_is_married: false
   output:
     msp_category: NONE
+
+- name: Case 8, undocumented person is not on Medicare and gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+    pension_income: 10_000
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+# Medicare comes through Part A work history, but 42 U.S.C. 1396b(v) bars federal
+# Medicaid payment, which includes Medicare Savings Program benefits.
+- name: Case 9, person with temporary protected status on Medicare gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    pension_income: 10_000
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+- name: Case 10, permanent resident on Medicare but inside the five-year Medicaid bar gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    pension_income: 10_000
+    years_since_us_entry: 2
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+# 2026 individual FPL: $15,960 / 12 = $1,330 a month.
+# SLMB band: above $1,330 and below 120% = $1,596.
+# $18,240 pension: $18,240 / 12 - $20 = $1,500 countable, inside the band.
+- name: Case 11, citizen in the SLMB income band gets SLMB.
+  period: 2026
+  input:
+    age: 70
+    pension_income: 18_240
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: SLMB
+
+# Same income as Case 11, but the Medicaid immigration test bars the SLMB benefit.
+- name: Case 12, person with temporary protected status in the SLMB band gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+# QI band: at least 120% = $1,596 and below 135% = $1,795.50.
+# $20,640 pension: $20,640 / 12 - $20 = $1,700 countable, inside the band.
+- name: Case 13, citizen in the QI income band gets QI.
+  period: 2026
+  input:
+    age: 70
+    pension_income: 20_640
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: QI
+
+# Same income as Case 13, but the Medicaid immigration test bars the QI benefit.
+- name: Case 14, person with temporary protected status in the QI band gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 20_640
+    state_code: TX
+  output:
+    msp_category:
+      2026-01: NONE
+
+# QMB is a federal Medicaid benefit (42 U.S.C. 1396a(a)(10)(E), 1396d(p)), and
+# 42 U.S.C. 1396b(v)(1) bars federal payment for a person with temporary protected
+# status. California's state-funded Medi-Cal covers this person, but that coverage
+# does not open a Medicare Savings Program. Same household as Case 9, in California.
+- name: Case 15, California person with temporary protected status on Medicare gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    pension_income: 10_000
+    state_code: CA
+  output:
+    is_medicare_eligible: true
+    is_medicaid_immigration_status_eligible: true
+    is_federal_medicaid_immigration_status_eligible: false
+    msp_category:
+      2026-01: NONE
+
+# Pins the SLMB gate on the federal test. $18,240 pension: $18,240 / 12 - $20 =
+# $1,500 countable, inside the SLMB band ($1,330 to $1,596). Temporary protected
+# status fails the federal Medicaid immigration test, so no tier, although the
+# broader is_medicaid_immigration_status_eligible is true in California.
+# Same household as Case 12, in California.
+- name: Case 16, California person with temporary protected status in the SLMB band gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: CA
+  output:
+    is_medicaid_immigration_status_eligible: true
+    is_federal_medicaid_immigration_status_eligible: false
+    msp_category:
+      2026-01: NONE

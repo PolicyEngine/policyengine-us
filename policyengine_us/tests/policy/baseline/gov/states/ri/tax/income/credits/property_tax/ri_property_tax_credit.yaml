@@ -2,7 +2,7 @@
   period: 2022
   input:
     ri_property_tax_household_income: 3_000
-    tax_unit_size: 1
+    household_size: 1
     real_estate_taxes: 50
     rent: 0
     ri_property_tax_credit_eligible: true
@@ -14,7 +14,7 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 20_000
-    tax_unit_size: 1
+    household_size: 1
     real_estate_taxes: 1_000
     rent: 5_000
     ri_property_tax_credit_eligible: true
@@ -26,7 +26,7 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 3_000
-    tax_unit_size: 2
+    household_size: 2
     real_estate_taxes: 150
     rent: 0
     ri_property_tax_credit_eligible: true
@@ -38,7 +38,7 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 13_000
-    tax_unit_size: 2
+    household_size: 2
     real_estate_taxes: 0
     rent: 3_500
     ri_property_tax_credit_eligible: true
@@ -55,7 +55,7 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 8_000
-    tax_unit_size: 1
+    household_size: 1
     real_estate_taxes: 2_000
     rent: 0
     ri_property_tax_credit_eligible: true
@@ -71,7 +71,7 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 15_000
-    tax_unit_size: 1
+    household_size: 1
     real_estate_taxes: 1_200
     rent: 0
     ri_property_tax_credit_eligible: true
@@ -85,9 +85,1921 @@
   input:
     state_code: RI
     ri_property_tax_household_income: 45_000
-    tax_unit_size: 1
+    household_size: 1
     real_estate_taxes: 2_000
     rent: 0
-    greater_age_head_spouse: 70
+    # The claimant's own age now sets eligibility (R.I. Gen. Laws 44-33-3),
+    # so the income cutoff alone makes this filer ineligible.
+    age: 70
   output:
+    ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
+
+# Financial-component examples, not an income-aggregation validation or an
+# earnings trajectory. Each household's otherwise-known entire-household income
+# is supplied directly below; it is not federal AGI or inferred from an output.
+# All members are full-year Rhode Island resident owners aged 70, unclaimed
+# filers. Taxes are paid/current and net of disallowed public-assistance funds;
+# rent is zero. Every entity has the same real household membership.
+# Source: 2017 RI-1040H, question E and physical page 3 computation table:
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2017/Income/2017-1040H_m.pdf
+# The highest admitted band is 6% for either size; income must be $30,000 or less.
+# Taxes $1,900 with income $29,900/$30,000/$30,001 give $106/$100/$0.
+# Taxes $1,000 with income $29,999/$30,000/$30,001 give $0/$0/$0.
+# These whole-dollar results do not reach the 2017 maximum credit of $350.
+- name: 2017 admitted_ceiling_vector for one- and two-adult RI households
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income29900_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income29999_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29900
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29999
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29900
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29999
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+    spm_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    families:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    marital_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    households:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        state_code: RI
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        state_code: RI
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        state_code: RI
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        state_code: RI
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        state_code: RI
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        state_code: RI
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        state_code: RI
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        state_code: RI
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        state_code: RI
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        state_code: RI
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        state_code: RI
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible:
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    ri_property_tax_credit:
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+
+# Same isolated financial-component and household premises as the 2017 vector.
+# Source: 2018 RI-1040H, question E and physical page 3 computation table.
+# https://tax.ri.gov/forms/2018/Income/2018%20RI-1040H_m.pdf#page=3
+- name: Case 9, 2018 admitted ceiling for one- and two-adult RI households.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income29900_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income29999_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29900
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29999
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29900
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29999
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+    spm_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    families:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    marital_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    households:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        state_code: RI
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        state_code: RI
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        state_code: RI
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        state_code: RI
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        state_code: RI
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        state_code: RI
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        state_code: RI
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        state_code: RI
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        state_code: RI
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        state_code: RI
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        state_code: RI
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible:
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    ri_property_tax_credit:
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+
+# Same isolated financial-component and household premises as the 2017 vector.
+# Source: 2019 RI-1040H, question E and physical page 3 computation table.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2019/Income/2019-RI-1040H_m.pdf#page=3
+- name: Case 10, 2019 admitted ceiling for one- and two-adult RI households.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income29900_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income29999_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29900
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29999
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29900
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29999
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+    spm_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    families:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    marital_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    households:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        state_code: RI
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        state_code: RI
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        state_code: RI
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        state_code: RI
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        state_code: RI
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        state_code: RI
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        state_code: RI
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        state_code: RI
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        state_code: RI
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        state_code: RI
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        state_code: RI
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible:
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    ri_property_tax_credit:
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+
+# Same isolated financial-component and household premises as the 2017 vector.
+# Source: 2020 RI-1040H, question E and physical page 3 computation table.
+# https://tax.ri.gov/forms/2020/Income/2020%20RI-1040H_w.pdf#page=3
+- name: Case 11, 2020 admitted ceiling for one- and two-adult RI households.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      one_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      one_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1900_income29900_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income29900_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1900_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income29999_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income29999_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+      two_tax1000_income30001_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1000
+        rent: 0
+      two_tax1000_income30001_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29900
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 29999
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30000
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        filing_status: SINGLE
+        ri_property_tax_household_income: 30001
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29900
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 29999
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30000
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        filing_status: JOINT
+        ri_property_tax_household_income: 30001
+    spm_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    families:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    marital_units:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+    households:
+      one_tax1900_income29900:
+        members:
+        - one_tax1900_income29900_head
+        state_code: RI
+      one_tax1900_income30000:
+        members:
+        - one_tax1900_income30000_head
+        state_code: RI
+      one_tax1900_income30001:
+        members:
+        - one_tax1900_income30001_head
+        state_code: RI
+      one_tax1000_income29999:
+        members:
+        - one_tax1000_income29999_head
+        state_code: RI
+      one_tax1000_income30000:
+        members:
+        - one_tax1000_income30000_head
+        state_code: RI
+      one_tax1000_income30001:
+        members:
+        - one_tax1000_income30001_head
+        state_code: RI
+      two_tax1900_income29900:
+        members:
+        - two_tax1900_income29900_head
+        - two_tax1900_income29900_spouse
+        state_code: RI
+      two_tax1900_income30000:
+        members:
+        - two_tax1900_income30000_head
+        - two_tax1900_income30000_spouse
+        state_code: RI
+      two_tax1900_income30001:
+        members:
+        - two_tax1900_income30001_head
+        - two_tax1900_income30001_spouse
+        state_code: RI
+      two_tax1000_income29999:
+        members:
+        - two_tax1000_income29999_head
+        - two_tax1000_income29999_spouse
+        state_code: RI
+      two_tax1000_income30000:
+        members:
+        - two_tax1000_income30000_head
+        - two_tax1000_income30000_spouse
+        state_code: RI
+      two_tax1000_income30001:
+        members:
+        - two_tax1000_income30001_head
+        - two_tax1000_income30001_spouse
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible:
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    ri_property_tax_credit:
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+    - 106
+    - 100
+    - 0
+    - 0
+    - 0
+    - 0
+
+# Native prior-year form confirms the same admitted-ceiling six-percent rule.
+# Known entire-household income is $30,000; current property taxes are $1,900.
+# These full-year owners and entity memberships match the 2017 premises.
+# https://tax.ri.gov/forms/2015/Income/2015%201040H_mmm.pdf#page=3
+- name: "Case 12, 2015 admitted ceiling retains six percent for one- and two-adult RI households."
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+        filing_status: "SINGLE"
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+        filing_status: "JOINT"
+        ri_property_tax_household_income: 30000
+    spm_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    families:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    marital_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    households:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+        state_code: "RI"
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+        state_code: "RI"
+  output:
+    ri_property_tax_credit_eligible: [true, true]
+    ri_property_tax_credit: [100, 100]
+
+# Native prior-year form confirms the same admitted-ceiling six-percent rule.
+# Known entire-household income is $30,000; current property taxes are $1,900.
+# These full-year owners and entity memberships match the 2017 premises.
+# https://tax.ri.gov/forms/2016/Income/2016%201040H_h.pdf#page=3
+- name: "Case 13, 2016 admitted ceiling retains six percent for one- and two-adult RI households."
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      one_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 1900
+        rent: 0
+      two_tax1900_income30000_spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+        filing_status: "SINGLE"
+        ri_property_tax_household_income: 30000
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+        filing_status: "JOINT"
+        ri_property_tax_household_income: 30000
+    spm_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    families:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    marital_units:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+    households:
+      one_tax1900_income30000:
+        members: ["one_tax1900_income30000_head"]
+        state_code: "RI"
+      two_tax1900_income30000:
+        members: ["two_tax1900_income30000_head", "two_tax1900_income30000_spouse"]
+        state_code: "RI"
+  output:
+    ri_property_tax_credit_eligible: [true, true]
+    ri_property_tax_credit: [100, 100]
+
+# R.I. Gen. Laws 44-33-9(1) bases the percentage on household size, and
+# RI-1040H line 1f counts every person in the household, including members who
+# file their own returns. In the 2025 band from 13,971 to 17,460 the one-person
+# column is 6% and the two-or-more-persons column is 5%.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%201040H_w.pdf#page=3
+- name: "Case 14, 2025 household of two that spans two tax units uses the two-or-more-persons percentage."
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        taxable_private_pension_income: 13_000
+        real_estate_taxes: 1_500
+      child:
+        age: 40
+        employment_income: 3_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    # The parent's countable income, 13,000 / 12 - 20 = 1,063.33 a month, is
+    # above the SSI benefit rate plus the state supplement (967 + 39.92), so
+    # neither is paid. Household income: pension 13,000 + the child's wages
+    # 3,000 = 16,000 for either tax unit. A household of two in the 13,971 to
+    # 17,460 band uses 5%: 16,000 x 5% = 800, and the credit is
+    # min(1,500 - 800, 700) = 700. The one-person 6% would give
+    # 1,500 - 960 = 540. The child is 40 and not disabled, so the child's tax
+    # unit has no claimant.
+    household_size: 2
+    ri_property_tax_household_income: [16_000, 16_000]
+    ri_property_tax_credit_eligible: [true, false]
+    ri_property_tax_credit: [700, 0]

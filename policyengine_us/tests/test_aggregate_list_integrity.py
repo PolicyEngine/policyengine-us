@@ -14,6 +14,11 @@ reforms replace household_benefits or spm_unit_benefits with their own
 hardcoded list, so a contributed program added to the baseline aggregates is
 silently dropped under those reforms unless it is added to every copy. That
 shipped with the Trump dividend, which #9430 added to the baseline lists only.
+
+The last test keeps reforms from copying the household tax totals at all. The
+abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
+separate list that lost the Idaho permanent building fund tax, five states'
+use taxes and every local tax except New York City's.
 """
 
 import ast
@@ -31,7 +36,9 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_eitcs.yaml",
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
+    "gov/hhs/liheap/regular_payments.yaml",
     "gov/household/household_state_benefits.yaml",
+    "gov/states/household/state_property_tax_refunds.yaml",
 ]
 
 # Gates that restrict a variable geographically without a StateCode
@@ -168,6 +175,65 @@ def test_no_silent_removals_between_year_blocks(list_path):
         )
 
 
+LIHEAP_PAYMENTS = "gov/hhs/liheap/regular_payments.yaml"
+
+# Registry payment variables that reach the national LIHEAP total through
+# other list entries, or not at all. Every other registry payment variable must
+# be in the list itself.
+LIHEAP_PAYMENT_STAND_INS = {
+    # il_liheap also counts crisis assistance; its regular part is summed.
+    "il_liheap": {"il_liheap_regular_heating"},
+    # California's three regular components are exclusive by eligibility.
+    "ca_liheap_utility_heating": {
+        "ca_liheap_utility_heating",
+        "ca_liheap_covered_liquid_heating",
+        "ca_liheap_wood_heating",
+    },
+    # The Home Heating Credit already counts as a refundable state credit.
+    "mi_home_heating_credit": set(),
+}
+
+
+def test_liheap_total_sums_every_registered_state_payment(variables):
+    """A state payment in the registry must reach the national total.
+
+    The LIHEAP registry entry names one variable per state implementation.
+    Each one that is a dollar amount belongs in the list `liheap` sums, or its
+    stand-ins in LIHEAP_PAYMENT_STAND_INS do, so a new state payment, or a list
+    line deleted or swapped by mistake, cannot drop a state from the total
+    unnoticed. A registry variable that a stand-in replaces must stay out of
+    the list, so it is not counted twice. Eligibility flags carry no amount.
+    """
+    programs = yaml.safe_load((PACKAGE / "programs.yaml").read_text())["programs"]
+    liheap = next(program for program in programs if program["id"] == "liheap")
+    payments = {
+        implementation["variable"]
+        for implementation in liheap["state_implementations"]
+        if variables[implementation["variable"]].value_type is float
+    }
+    listed = members_of(LIHEAP_PAYMENTS)
+    missing = sorted(
+        entry
+        for payment in payments
+        for entry in LIHEAP_PAYMENT_STAND_INS.get(payment, {payment})
+        if entry not in listed
+    )
+    assert not missing, (
+        f"{LIHEAP_PAYMENTS} lacks these state payments from the LIHEAP "
+        f"registry entry: {missing}. Add each to the list, or record what "
+        "stands in for it in LIHEAP_PAYMENT_STAND_INS in this test."
+    )
+    double_counted = sorted(
+        payment
+        for payment, stand_ins in LIHEAP_PAYMENT_STAND_INS.items()
+        if payment not in stand_ins and payment in listed
+    )
+    assert not double_counted, (
+        f"{LIHEAP_PAYMENTS} lists {double_counted}, which "
+        "LIHEAP_PAYMENT_STAND_INS replaces or leaves out on purpose."
+    )
+
+
 # --- Reform-side copies of the benefit aggregates -------------------------
 
 AGGREGATE_VARIABLES = ("household_benefits", "spm_unit_benefits")
@@ -284,6 +350,7 @@ SHARED_CASH_PROGRAMS = {
         "ma_eaedc",
         "nj_property_tax_relief",
         "ny_drive_clean_rebate",
+        "state_property_tax_refunds",
     },
     "household_benefits": {
         "ak_energy_relief",
@@ -305,4 +372,78 @@ def test_reform_aggregates_keep_shared_cash_programs(
     assert not missing, (
         f"{source_path} redefines {variable_name} and drops {missing}, which "
         "both income totals count. Add them to this copy."
+    )
+
+
+# --- Household tax totals -------------------------------------------------
+
+HOUSEHOLD_TAX_TOTALS = {
+    "household_tax_before_refundable_credits",
+    "household_state_tax_before_refundable_credits",
+    "state_income_tax_before_refundable_credits",
+    "state_use_tax",
+    "local_income_tax_before_refundable_credits",
+    "local_occupational_tax",
+    "household_refundable_tax_credits",
+    "income_tax_refundable_credits_in_force",
+    "premium_tax_credit_in_force",
+    "federal_income_tax_in_force",
+    "household_refundable_state_tax_credits",
+    "household_refundable_local_tax_credits",
+    "household_tax",
+    "household_net_income",
+}
+
+
+def test_no_reform_redefines_a_household_tax_total():
+    """Change a component or the baseline formula instead of copying a total.
+
+    A copy keeps the components it was written with, so it misses any that
+    the baseline total gains later.
+    """
+    redefinitions = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in HOUSEHOLD_TAX_TOTALS:
+                redefinitions.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not redefinitions, (
+        "Reforms redefine household tax totals, which then drift from the "
+        f"baseline: {redefinitions}"
+    )
+
+
+# Components that the abolish parameters zero in their own formulas. The
+# household totals rely on those checks, so a reform that replaces one of
+# these variables must keep reading the parameter.
+ABOLITION_CHECKS = {
+    "income_tax": "abolish_federal_income_tax",
+    "income_tax_before_refundable_credits": "abolish_federal_income_tax",
+    "income_tax_chapter_1": "abolish_federal_income_tax",
+    "employee_payroll_tax": "abolish_payroll_tax",
+}
+
+
+def test_reforms_replacing_an_abolished_tax_keep_the_abolition_check():
+    """A replacement without the check would charge the tax again.
+
+    Before the abolish parameters relied on the baseline formulas alone, the
+    structural reforms dropped the abolished tax from the household total by
+    name. Now only the check inside each formula drops it.
+    """
+    missing = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in ABOLITION_CHECKS:
+                reads_parameter = any(
+                    isinstance(child, ast.Attribute)
+                    and child.attr == ABOLITION_CHECKS[node.name]
+                    for child in ast.walk(node)
+                )
+                if not reads_parameter:
+                    missing.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not missing, (
+        "Reforms replace a tax the abolish parameters zero without reading "
+        f"the parameter: {missing}"
     )

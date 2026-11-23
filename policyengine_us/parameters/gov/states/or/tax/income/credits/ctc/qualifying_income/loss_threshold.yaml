@@ -1,0 +1,20 @@
+description: Oregon adds the losses of a filer exceeding this amount back to qualifying income for its Kids Credit.
+values:
+  # ORS 315.273(5) adjusts only the credit amount and the phase-out start in
+  # subsections (3) and (4) for inflation, so this amount is fixed.
+  2023-01-01: 20_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oregon Kids Credit loss add-back threshold
+  reference:
+    - title: 2023R1 House Bill 3235 Section 2 (1)(c)
+      href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=1
+    - title: Oregon Laws 2025, chapter 321, section 16 (ORS 315.273(1)(c)(A)(i))
+      href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2025orlaw0321.pdf#page=7
+    - title: 2023 Oregon Income Tax Form OR-40 Instructions, Oregon Kids Credit worksheet line 10
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=19
+    - title: 2024 Oregon Income Tax Form OR-40 Instructions, Oregon Kids Credit worksheet line 10
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=20
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions, Oregon Kids Credit worksheet line 11
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=24

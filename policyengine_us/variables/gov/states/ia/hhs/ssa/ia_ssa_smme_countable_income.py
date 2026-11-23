@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
     ia_ssa_smme_spouse_income,
     ia_ssa_smme_spouse_is_sga_applicant,
@@ -38,7 +41,7 @@ class ia_ssa_smme_countable_income(Variable):
         # nothing, 8-E p.12 says to "Process as a one-person household"
         # (Cases 83-84).
         # NOTE: Group-specific Medicaid budgeting is not modeled.
-        income = person("ssi_countable_income", period) + person("ssi", period)
+        income = person("ssi_countable_income_monthly", period) + person("ssi", period)
         # SSI counts income only for people it treats as aged, blind or
         # disabled, so ssi_countable_income is 0 for a disabled person working
         # above the SGA level, whom SMME still covers (Iowa Code
@@ -69,7 +72,7 @@ class ia_ssa_smme_countable_income(Variable):
             0,
         )
         unearned = person("ssi_unearned_income", period) + person(
-            "ssi_in_kind_support_and_maintenance", period
+            "ssi_in_kind_support_and_maintenance_monthly", period
         )
         deemed = person("ia_ssa_smme_spousal_deeming_applies", period)
         spouse_earned, spouse_unearned = ia_ssa_smme_spouse_income(person, period)
@@ -94,11 +97,13 @@ class ia_ssa_smme_countable_income(Variable):
         # combined income, not SSI's deeming from the applicant (Cases 98 and
         # 102).
         applicant = deemed & person("ia_ssa_smme_coverage_eligible", period)
-        combined = person.marital_unit.sum(where(applicant, income, 0))
+        combined = _ssi_couple_total(
+            person, period.this_year, where(applicant, income, 0)
+        )
         income = where(
             ia_ssa_smme_spouse_is_sga_applicant(person, period), combined, income
         )
         # NOTE: For an eligible couple, ssi_countable_income takes off only
         # half of a student spouse's earned income exclusion (issue 10456).
         joint = person("ssi_couple_computation_applies", period)
-        return where(joint, person.marital_unit.sum(income), income)
+        return where(joint, _ssi_couple_total(person, period.this_year, income), income)

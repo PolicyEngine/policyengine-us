@@ -64,20 +64,20 @@
   output:
     tax_units:
       tax_unit:
-        # 1 child, earnings 20,000: 649 x (32,901 - 20,000) / 20,833.48
-        # = 401.89.
-        ca_eitc: 401.89
-        # Child age 3, earnings below 28,046.53 -> full 1,215.95.
-        ca_yctc: 1_215.95
-        # Former foster youth head age 24 -> full 1,215.95.
-        ca_foster_youth_tax_credit: 1_215.95
-        # Refundable stack: 401.89 + 1,215.95 + 1,215.95 = 2,833.78.
-        ca_refundable_credits: 2_833.78
-        # HOH taxable = 20,000 - 11,670.63 = 8,329.37 -> tax 83.29; exemption
-        # credits 642.23 cap it to 0.
+        # 1 child, earnings 20,000: 656 x (32,901 - 20,000) / 20,702.14
+        # = 408.80.
+        ca_eitc: 408.80
+        # Child age 3, earnings below 28,351.35 -> full 1,229.16.
+        ca_yctc: 1_229.16
+        # Former foster youth head age 24 -> full 1,229.16.
+        ca_foster_youth_tax_credit: 1_229.16
+        # Refundable stack: 408.80 + 1,229.16 + 1,229.16 = 2,867.12.
+        ca_refundable_credits: 2_867.12
+        # HOH taxable = 20,000 - 11,800 = 8,200 -> tax 82.00; exemption
+        # credits 649.00 cap it to 0.
         ca_income_tax_before_refundable_credits: 0.0
-        # Refundable credits push CA income tax negative: 0 - 2,833.78.
-        ca_income_tax: -2_833.78
+        # Refundable credits push CA income tax negative: 0 - 2,867.12.
+        ca_income_tax: -2_867.12
 - name: ca_credits_nonrefundable_capped_renter_family (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -156,23 +156,23 @@
   output:
     tax_units:
       tax_unit:
-        # 1 child, joint earnings 30,000: 649 x (32,901 - 30,000) / 20,833.48
-        # = 90.37.
-        ca_eitc: 90.37
-        # Child age 4: 1,215.95 - (30,000 - 28,046.53) / 100 x 21.71 = 791.85.
-        ca_yctc: 791.85
-        # Joint AGI 30,000 under the 110,434.30 cap with rent -> 120.
+        # 1 child, joint earnings 30,000: 656 x (32,901 - 30,000) / 20,702.14
+        # = 91.93.
+        ca_eitc: 91.93
+        # Child age 4: 1,229.16 - (30,000 - 28,351.35) / 100 x 21.71 = 871.24.
+        ca_yctc: 871.24
+        # Joint AGI 30,000 under the 111,660 cap with rent -> 120.
         ca_renter_credit: 120.0
         # Federal CDCC is 0 (federal taxable income is 0 -> liability cap),
         # so the CA match is 0 despite $3,000 of childcare expenses.
         ca_cdcc: 0.0
-        # Exemptions (2 x 156.47 + 485.76 = 469.4... = 798.70) + renter 120
-        # = 918.70.
-        ca_non_refundable_credits: 918.7
-        # Joint taxable = 30,000 - 11,670.63 = 18,329.37 -> tax 183.29; the
-        # 918.70 nonrefundable stack caps it at 0 (renter credit partially
+        # Exemptions (2 x 158 + 491 = 807.00) + renter 120
+        # = 927.00.
+        ca_non_refundable_credits: 927.0
+        # Joint taxable = 30,000 - 11,800 = 18,200 -> tax 182.00; the
+        # 927.00 nonrefundable stack caps it at 0 (renter credit partially
         # wasted).
         ca_income_tax_before_refundable_credits: 0.0
-        # Refundable stack still pays out: 90.37 + 791.85 = 882.22.
-        ca_refundable_credits: 882.22
-        ca_income_tax: -882.22
+        # Refundable stack still pays out: 91.93 + 871.24 = 963.17.
+        ca_refundable_credits: 963.17
+        ca_income_tax: -963.17

@@ -1,0 +1,39 @@
+description: South Carolina provides these base and supplemental regular heating amounts under the Low Income Home Energy Assistance Program.
+# The FY2027 plan's items 2.3 (including its "Other" row), 2.5 and 2.6 print the
+# same heating amounts, and item 11.5 repeats the 1,000 maximum. In both years
+# the amounts sum to exactly the maximum.
+base:
+  2025-10-01: 200
+  2026-10-01: 300
+elderly:
+  2025-10-01: 75
+  2026-10-01: 50
+child:
+  2025-10-01: 50
+disabled:
+  2025-10-01: 50
+veteran:
+  2025-10-01: 50
+low_income:
+  2025-10-01: 175
+  2026-10-01: 150
+high_burden:
+  2025-10-01: 175
+  2026-10-01: 200
+fuel:
+  2025-10-01: 75
+  2026-10-01: 150
+maximum:
+  2025-10-01: 850
+  2026-10-01: 1_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Carolina LIHEAP regular heating amounts
+  reference:
+    - title: "South Carolina FY2026 LIHEAP Detailed Model Plan, items 2.3, 2.5 and 2.6 #page 8-9"
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+    - title: "South Carolina FY2027 LIHEAP Detailed Model Plan, items 2.3, 2.5 and 2.6 #page 8-9"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8
+    - title: "South Carolina FY2027 LIHEAP Detailed Model Plan, item 11.5 #page 26"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=26

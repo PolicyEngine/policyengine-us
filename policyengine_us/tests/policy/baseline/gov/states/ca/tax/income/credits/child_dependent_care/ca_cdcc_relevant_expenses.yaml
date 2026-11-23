@@ -84,10 +84,16 @@
     count_cdcc_eligible: 2
     min_head_spouse_earned: 50_000
     ca_cdcc_min_head_spouse_earned: 50_000
+    # Synthetic component facts: $5,000 of employer assistance and $10,000
+    # of independently known current-year qualifying work-care costs for
+    # these two qualifying individuals, net of disallowed public reimbursement, with
+    # no carryovers or forfeitures; not inferred from the federal override.
+    dependent_care_employer_benefits: 5_000
+    dependent_care_assistance_qualified_expenses: 10_000
     dependent_care_assistance_exclusion: 5_000
   output:
-    # California earned income equals federal earned income, so the
-    # California exclusion is the federal 5,000, within the $5,000 cap.
+    # min(5,000 benefits, 10,000 qualified costs, 5,000 California cap,
+    # 50,000 California earned income) = 5,000, independently of the override.
     ca_dependent_care_assistance_exclusion: 5_000
     # min(10_000 expenses, $6,000 two-child cap - $5,000 exclusion, 50_000) = 1_000.
     ca_cdcc_relevant_expenses: 1_000
@@ -112,6 +118,10 @@
       tax_unit:
         members: [person1, person2, person3]
         filing_status: SEPARATE
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 10_000
         tax_unit_childcare_expenses: 10_000
     households:
       household:
@@ -144,6 +154,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 12_000
         tax_unit_childcare_expenses: 12_000
     households:
       household:
@@ -156,7 +170,8 @@
     ca_dependent_care_assistance_exclusion: 5_000
     # min($12,000, $6,000 two-person 2020 limit - $5,000, $40,000) = $1,000.
     ca_cdcc_relevant_expenses: 1_000
-    # AGI $95,000: the 2020 rate is 35% less 1 point per $2,000 over $15,000,
+    # AGI $86,000 ($95,000 of employment_income less the $9,000 of excluded
+    # benefits): the 2020 rate is 35% less 1 point per $2,000 over $15,000,
     # floored at 20%. $1,000 x 20% = $200.
     ca_federal_cdcc: 200
     # California matches 34% for AGI over $70,000 and not over $100,000.
@@ -180,13 +195,18 @@
       tax_unit:
         members: [head, child1, child2]
         filing_status: SEPARATE
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 12_000
         tax_unit_childcare_expenses: 12_000
     households:
       household:
         members: [head, child1, child2]
         state_code: CA
   output:
-    # Treated as unmarried: federal min($6,000, $10,500, $50,000) = $6,000.
+    # Treated as unmarried: federal min($6,000, $10,500, $44,000) = $6,000,
+    # where $44,000 is the $50,000 of wages less the $6,000 of benefits.
     # California line 22 is $5,000 (FTB 3506 line 20 instructions), so the
     # state exclusion is $5,000 and its remaining limit is $1,000.
     # The federal $16,000 - $6,000 limit does not further reduce the base.
@@ -213,6 +233,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 12_000
         tax_unit_childcare_expenses: 12_000
     households:
       household:
@@ -250,6 +274,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 6_500
         tax_unit_childcare_expenses: 6_500
     households:
       household:
@@ -268,7 +296,8 @@
     # Using federal line 29 alone incorrectly gives a $1,000 California base.
     # https://www.ftb.ca.gov/forms/2021/2021-3506.pdf#page=2
     ca_cdcc_relevant_expenses: 500
-    # FTB 3506 lines 7-10: AGI $95,000 gives 20% and a 34% state match.
+    # FTB 3506 lines 7-10: AGI $89,000 ($95,000 of employment_income less the
+    # $6,000 of excluded benefits) gives 20% and a 34% state match.
     ca_federal_cdcc: 100
     ca_federal_capped_cdcc: 100
     ca_cdcc: 34

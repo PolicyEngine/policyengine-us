@@ -8,6 +8,8 @@
     state_code: UT
   output:
     ut_homeowner_renter_relief: 1_140
+    ut_renters_credit: 1_140
+    ut_homeowners_credit: 0
 
 - name: Case 2, renter credit capped by maximum amount.
   period: 2025
@@ -54,6 +56,8 @@
           2025: UT
   output:
     ut_homeowner_renter_relief: 429
+    ut_renters_credit: 0
+    ut_homeowners_credit: 429
 
 - name: Case 5, homeowner credit capped by property tax paid.
   period: 2025
@@ -114,7 +118,10 @@
           2024: UT
           2025: UT
   output:
-    ut_homeowner_renter_relief: 1_550
+    # 10,000 + SSI 7,114 = 17,114: 8.5% of 10,000 rent = 850, + 600 homeowner's.
+    ut_homeowner_renter_relief: 1_450
+    ut_renters_credit: 850
+    ut_homeowners_credit: 600
 
 - name: Case 8, ineligible claimant receives no relief.
   period: 2025
@@ -155,7 +162,8 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_homeowner_renter_relief: [550, 0]
+    # 10,000 + SSI 7,114 + 15,058 = 32,172: 4% of 10,000 rent.
+    ut_homeowner_renter_relief: [400, 0]
 
 - name: Case 10, homeowner credit uses prior-year household income.
   period: 2025
@@ -211,10 +219,12 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_homeowner_renter_relief: [850, 0]
+    # 2 x (10,000 + SSI 7,114) = 34,228: 4% of 10,000 rent.
+    ut_homeowner_renter_relief: [400, 0]
 
 - name: Case 12, nontaxable income uses self-employed pension contributions.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -230,5 +240,293 @@
         members: [person1]
         state_code: UT
   output:
-    self_employed_pension_contributions: 72_000
-    ut_homeowner_renter_relief_nontaxable_income: 72_000
+    # Pub. 560 worksheet: 20% x 92,935.23 of earned income + 24,500 of
+    # deferrals + the 8,000 catch-up at age 66.
+    self_employed_pension_contributions: 51_087.05
+    ut_homeowner_renter_relief_nontaxable_income: 51_087.05
+
+# Utah Code 59-2a-101(17): "Income" means the sum of "federal adjusted gross
+# income as defined in Section 62, Internal Revenue Code" and "nontaxable
+# income". (20)(a): "Nontaxable income" means "amounts excluded from adjusted
+# gross income under the Internal Revenue Code, including: ...". The cases
+# below enter no SSI unless SSI is the point, since (20)(a)(vii) counts it.
+- name: Case 13, taxable alimony is counted once, through federal adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        # A pre-2019 instrument (also the input's default), so the alimony is
+        # in federal gross income.
+        divorce_year: 2010
+        rent: 12_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    taxable_alimony_income: 10_000
+    adjusted_gross_income: 10_000
+    # Alimony in federal AGI is not an amount "excluded from adjusted gross
+    # income".
+    ut_homeowner_renter_relief_nontaxable_alimony: 0
+    ut_homeowner_renter_relief_nontaxable_income: 0
+    # 10,000 of AGI + 0.
+    ut_homeowner_renter_relief_household_income: 10_000
+    # $0 to $15,033 of household income: 9.5% x 12,000 = 1,140, under the
+    # $1,412 maximum (as in Case 1).
+    ut_renters_credit: 1_140
+
+- name: Case 14, alimony outside federal AGI is support money received.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        divorce_year: 2020
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    taxable_alimony_income: 0
+    # 59-2a-101(20)(a)(iv): "support money received".
+    ut_homeowner_renter_relief_nontaxable_alimony: 10_000
+    ut_homeowner_renter_relief_nontaxable_income: 10_000
+    ut_homeowner_renter_relief_household_income: 10_000
+
+- name: Case 14b, under a reform that takes alimony out of federal gross income, all alimony is support money received.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without taxable_alimony_income.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, salt_refund_income, military_retirement_income]
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        divorce_year: 2010
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 0
+    # Federal AGI no longer holds the pre-2019 alimony, so all of it is
+    # excluded from adjusted gross income.
+    ut_homeowner_renter_relief_nontaxable_alimony: 10_000
+    ut_homeowner_renter_relief_household_income: 10_000
+
+- name: Case 15, SSI is a payment received under the Social Security Act.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 6_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # 59-2a-101(20)(a)(vii) counts "payments received under the Social
+    # Security Act" other than social security disability income ((20)(b)(vi));
+    # SSI is title XVI of that act and is not in the definition of "public
+    # assistance" (59-2a-101(24)).
+    ut_homeowner_renter_relief_nontaxable_income: 6_000
+    ut_homeowner_renter_relief_household_income: 6_000
+
+- name: Case 16, SSI the model computes counts with nontaxable Social Security.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        rent: 6_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # SSI: 6,000 / 12 = 500 of Social Security a month, less the 20 general
+    # exclusion = 480 countable; 967 - 480 = 487 a month; 487 x 12 = 5,844.
+    ssi: 5_844
+    # Provisional income 6,000 / 2 = 3,000 is under 25,000, so no Social
+    # Security is taxable and federal AGI is 0.
+    adjusted_gross_income: 0
+    # 6,000 of nontaxable Social Security + 5,844 of SSI.
+    ut_homeowner_renter_relief_nontaxable_income: 11_844
+    ut_homeowner_renter_relief_household_income: 11_844
+    # $0 to $15,033: 9.5% x 6,000 = 570, under the $1,412 maximum.
+    ut_renters_credit: 570
+
+- name: Case 17, nontaxable disability insurance benefits are loss of time insurance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        # A policy the claimant paid for: all 6,000 is excluded from federal
+        # gross income (IRC 104(a)(3)).
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 6_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    # 59-2a-101(20)(a)(xi): "the gross amount of 'loss of time' insurance".
+    ut_homeowner_renter_relief_nontaxable_income: 6_000
+    # 10,000 + 6,000.
+    ut_homeowner_renter_relief_household_income: 16_000
+
+- name: Case 18, partly taxable disability insurance benefits count at their gross amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        # A plan the claimant and employer shared: the claimant's 2,000 share
+        # is excluded (IRC 104(a)(3)) and the employer's 4,000 share is in
+        # gross income (IRC 105(a)).
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 2_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # 10,000 of pension + 4,000 of taxable disability benefits.
+    adjusted_gross_income: 14_000
+    ut_homeowner_renter_relief_nontaxable_income: 2_000
+    # 14,000 + 2,000 = 16,000: the gross 6,000 of benefits counts once.
+    ut_homeowner_renter_relief_household_income: 16_000
+
+- name: Case 19, a capital loss carryover claimed in the year is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        # A 4,000 gain in the year less a 4,000 long-term carryover from an
+        # earlier year: long_term_capital_gains is net of the carryover.
+        long_term_capital_gains: 0
+        long_term_capital_loss_carryover: 4_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    # 59-2a-101(20)(a)(ii): "loss carry forwards claimed during the taxable
+    # year"; TC-90CB line 5: "Capital gain/loss (exclude
+    # carryforwards/carrybacks)". All 4,000 of the carryover was used against
+    # the year's gain.
+    ut_homeowner_renter_relief_loss_carryforward: 4_000
+    # 10,000 + 4,000 = 14,000.
+    ut_homeowner_renter_relief_household_income: 14_000
+
+- name: Case 19b, under a reform that takes capital gains out of federal gross income, no carryover reaches AGI to add back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without capital_gains.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income, military_retirement_income]
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        long_term_capital_gains: 0
+        long_term_capital_loss_carryover: 4_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    ut_homeowner_renter_relief_loss_carryforward: 0
+    ut_homeowner_renter_relief_household_income: 10_000
+
+- name: Case 19c, under a reform that takes capital gain distributions out of federal gross income, the carryover is still added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without non_sch_d_capital_gains.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income, military_retirement_income]
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        long_term_capital_gains: 0
+        long_term_capital_loss_carryover: 4_000
+        ssi: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    # As in Case 19: the 4,000 carryover used against the year's gain.
+    ut_homeowner_renter_relief_loss_carryforward: 4_000
+    ut_homeowner_renter_relief_household_income: 14_000

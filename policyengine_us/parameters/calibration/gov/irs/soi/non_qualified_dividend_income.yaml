@@ -1,11 +1,28 @@
 description: Total non-qualified dividend income.
 values:
+  # IRS SOI Publication 1304 Table 1.4, all returns: ordinary dividends less
+  # qualified dividends. Amounts are published in thousands of dollars. Each
+  # value is for the tax year of its date.
   2015-01-01: 57_064_932_000
+  2016-01-01: 52_031_360_000
+  2017-01-01: 65_489_076_000
+  2018-01-01: 77_324_260_000
+  2019-01-01: 83_600_037_000
   2020-01-01: 67_632_347_000
 metadata:
   unit: currency-USD
   label: SOI non-qualified dividend income
   uprating: calibration.gov.cbo.income_by_source.qualified_dividend_income
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/15in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2016, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/16in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2017, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/17in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2018, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/18in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2019, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/19in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2020, ordinary dividends and qualified dividends
+      href: https://www.irs.gov/pub/irs-soi/20in14ar.xls

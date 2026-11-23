@@ -33,8 +33,9 @@ amount, and the same amount entered as rental income instead. For every filer:
    concept exactly as the same amount of rental income does, loss or gain.
    Each state puts both on the same form line or under the same loss rule.
 
-The identities hold for this income mix. The federal EITC is set to zero
-because Oklahoma counts it (Form 538-S line 9) and an estate loss changes it.
+The identities hold for this income mix. The federal and Oklahoma EITCs are
+set to zero because Oklahoma counts both (Form 538-S line 9) and an estate
+loss or rental income changes them.
 """
 
 import numpy as np
@@ -127,7 +128,11 @@ def _situation(units):
                         unit["estate"] if variant == "rental" else 0.0
                     ),
                 }
-                tax_units[name] = {"members": [name], "eitc": every_year(0)}
+                tax_units[name] = {
+                    "members": [name],
+                    "eitc": every_year(0),
+                    "ok_eitc": every_year(0),
+                }
                 households[name] = {
                     "members": [name],
                     "state_code": every_year(state),

@@ -1,0 +1,15 @@
+description: South Carolina counts these unearned income sources of household members younger than the adult income age under the Low Income Home Energy Assistance Program.
+# The guide names "Social Security or Disability income". SSI is read as a child's
+# disability income, and disability_benefits carries other disability income.
+values:
+  2025-10-01:
+    - social_security
+    - ssi
+    - disability_benefits
+metadata:
+  unit: list
+  period: year
+  label: South Carolina LIHEAP minor unearned income sources
+  reference:
+    - title: South Carolina 2024 Administrative Guide, income from minors
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=529

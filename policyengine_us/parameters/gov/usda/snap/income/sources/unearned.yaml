@@ -4,7 +4,11 @@ values:
   2009-01-01:
     # (i)
     - ssi
+    # Reported GA amounts that are distinct from the named grants.
     - general_assistance
+    - ca_capi_countable_for_snap
+    # Illinois counts AABD Cash in SNAP under IDHS PM 08-04-04-c.
+    - il_aabd_countable_for_snap
     # (i) State SSI supplements. 273.9(b)(2)(i) counts "assistance payments
     # from Federal or federally aided public assistance programs, such as
     # supplemental security income (SSI) ... or other assistance programs
@@ -21,6 +25,8 @@ values:
     # facility on the recipient's behalf.
     - ak_ssp
     - al_ssp
+    # ca_state_supplement only adds up this person-level variable.
+    - ca_state_supplement_person
     # co_oap has an annual definition period; policyengine-core's
     # calculate_divide converts it to a monthly amount here.
     - co_oap
@@ -74,10 +80,6 @@ values:
     # special need payments (or_ssp) from SNAP income as reimbursements. Its
     # nursing facility payment goes to institution residents, who are not SNAP
     # households under 7 CFR 273.1(b)(7)(vi).
-    # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
-    # person-level counterpart. policyengine-core projects a group value onto
-    # every member, so listing it here would count it once per person in the
-    # SPM unit. It is listed in unearned_spm_unit.yaml instead.
     # (ii)
     - pension_income # Includes annuities.
     - veterans_benefits
@@ -124,3 +126,7 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9
     - title: POMS SI 01401.001 General Information about State Supplementation
       href: https://secure.ssa.gov/poms.nsf/lnx/0501401001
+    - title: Illinois IDHS PM 08-04-04-c, Nonexempt Unearned Income
+      href: https://www.dhs.state.il.us/page.aspx?item=15627
+    - title: Santa Clara CalFresh handbook, Public Assistance Payments Based on Need
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/calfresh/assets/CalFresh/Income_Definitions_and_Exemptions/Unearned.htm

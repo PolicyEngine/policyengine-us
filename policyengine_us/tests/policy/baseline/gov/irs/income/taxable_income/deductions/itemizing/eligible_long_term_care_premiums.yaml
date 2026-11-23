@@ -1,0 +1,234 @@
+# 26 U.S.C. 213(d)(10): premiums for a qualified long-term care insurance
+# contract count as medical care up to a limit set by the insured person's
+# attained age before the close of the taxable year. The limits below are the
+# Rev. Proc. tables ("40 or less", "more than 40 but not more than 50", ...);
+# the 2022 Schedule A instructions (PDF p. 2) restate them by "age at the end
+# of 2022": 40 or under $450, 41-50 $850, 51-60 $1,690, 61-70 $4,510, 71 or
+# older $5,640.
+
+- name: 2022, age 40 is in the lowest band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 450
+
+- name: 2022, age 41 starts the second band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 41
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 850
+
+- name: 2022, age 50 is still in the second band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 50
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 850
+
+- name: 2022, age 51 starts the third band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 51
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 1_690
+
+- name: 2022, age 60 is still in the third band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 60
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 1_690
+
+- name: 2022, age 61 starts the fourth band, which fell from 2021's 4,520.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 61
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 4_510
+
+- name: 2022, age 70 is still in the fourth band.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 4_510
+
+- name: 2022, age 71 is over 70.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 71
+    long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: 5_640
+
+- name: Premiums under the limit count in full.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+    long_term_health_insurance_premiums: 3_000
+  output:
+    eligible_long_term_care_premiums: 3_000
+
+- name: No premiums, nothing eligible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+  output:
+    eligible_long_term_care_premiums: 0
+
+- name: 2021 limits (Rev. Proc. 2020-45, section 3.28).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [450, 850, 1_690, 4_520, 5_640]
+
+- name: 2023 limits (Rev. Proc. 2022-38, section 3.28).
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [480, 890, 1_790, 4_770, 5_960]
+
+- name: 2024 limits fell from 2023 (Rev. Proc. 2023-34, section 3.28).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [470, 880, 1_760, 4_710, 5_880]
+
+- name: 2025 limits (Rev. Proc. 2024-40, section 3.28).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [480, 900, 1_800, 4_810, 6_020]
+
+- name: 2026 limits (Rev. Proc. 2025-32, section 3.27).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [500, 930, 1_860, 4_960, 6_200]
+
+- name: 2018 limits (Rev. Proc. 2017-58, section 3.26; Publication 502 (2018)).
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      age_35:
+        age: 35
+        long_term_health_insurance_premiums: 10_000
+      age_45:
+        age: 45
+        long_term_health_insurance_premiums: 10_000
+      age_55:
+        age: 55
+        long_term_health_insurance_premiums: 10_000
+      age_65:
+        age: 65
+        long_term_health_insurance_premiums: 10_000
+      age_75:
+        age: 75
+        long_term_health_insurance_premiums: 10_000
+  output:
+    eligible_long_term_care_premiums: [420, 780, 1_560, 4_160, 5_200]

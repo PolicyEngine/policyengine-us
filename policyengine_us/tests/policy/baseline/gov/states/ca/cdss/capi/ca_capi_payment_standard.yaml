@@ -320,7 +320,7 @@
     # code C would add 128.87 to the one-blind rate instead (2,367.31).
     ca_capi_payment_standard: [1_178.285, 1_178.285]
 
-- name: Case 14, 2024 independent-living standard is floored at the federal benefit rate.
+- name: Case 14, 2024 independent-living standard adds the state share to the federal benefit rate.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -335,13 +335,9 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state supplement parameters hold the 1991 aged amount of 630 until
-    # 2025 (issue 7787), below the 2024 federal benefit rate of 943. CAPI
-    # equals SSI/SSP (WIC 18941), so the stopgap floor gives max(630, 943) =
-    # 943. This pins a known-low value: the published January 2024 aged
-    # standard is 943 + 239.94 = 1,182.94 (POMS SI 01415.056); issue 10480
-    # backfills the totals and removes the floor.
-    ca_capi_payment_standard: 943
+    # CAPI equals SSI/SSP (WIC 18941), so the standard is 943 + 239.94 =
+    # 1,182.94, the published January 2024 aged standard (POMS SI 01415.056).
+    ca_capi_payment_standard: 1_182.94
 
 - name: Case 15, the 10 individual offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -358,16 +354,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # The state supplement parameters hold the 1991 aged amount of 630 until
-    # 2025 (issue 7787), so the model floors the standard at the 2019 federal
-    # benefit rate: max(630, 771) = 771. The actual 2019 SSI/SSP standard was
-    # 931.72 (ACIN I-23-19), so these are known-low values from the stopgap
-    # floor (issue 10480). This case pins only the offset boundary:
-    # 771 - 10 = 761 through May 2019 (MPP 49-050.11) and 771 - 0 = 771 from
-    # June 1, 2019 (WIC 18941).
+    # The 2019 standard is 771 + 160.72 = 931.72 (POMS SI 01415.051; ACIN
+    # I-23-19): 931.72 - 10 = 921.72 through May 2019 (MPP 49-050.11) and
+    # 931.72 from June 1, 2019 (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: 761
-      2019-06: 771
+      2019-05: 921.72
+      2019-06: 931.72
 
 - name: Case 16, CAPI couple, the 20 couple offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -391,12 +383,12 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Couple standard max(1,167, 2019 couple FBR 1,157) = 1,167 (known-low,
-    # issue 10480). May: (1,167 - 20) / 2 = 573.50 each (MPP 49-050.12).
-    # June: 1,167 / 2 = 583.50 each (WIC 18941).
+    # Couple standard 1,157 + 407.14 = 1,564.14 (POMS SI 01415.051).
+    # May: (1,564.14 - 20) / 2 = 772.07 each (MPP 49-050.12).
+    # June: 1,564.14 / 2 = 782.07 each (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: [573.5, 573.5]
-      2019-06: [583.5, 583.5]
+      2019-05: [772.07, 772.07]
+      2019-06: [782.07, 782.07]
 
 - name: Case 17, mixed couple, the 10 mixed-couple offset applies through May 2019 and ends in June 2019.
   period: 2019
@@ -420,13 +412,13 @@
         living_arrangements_allow_for_food_preparation: true
   output:
     # The citizen is paid SSI, so the CAPI member takes the couple standard
-    # 1,167 (known-low, issue 10480). May: 1,167 - 10 = 1,157 (MPP
-    # 49-050.13). June: 1,167 (WIC 18941).
+    # 1,157 + 407.14 = 1,564.14 (POMS SI 01415.051). May: 1,564.14 - 10 =
+    # 1,554.14 (MPP 49-050.13). June: 1,564.14 (WIC 18941).
     ca_capi_payment_standard:
-      2019-05: [0, 1_157]
-      2019-06: [0, 1_167]
+      2019-05: [0, 1_554.14]
+      2019-06: [0, 1_564.14]
 
-- name: Case 18, 2024 CAPI couple standard is floored at the couple federal benefit rate.
+- name: Case 18, 2024 CAPI couple standard adds the state share to the couple federal benefit rate.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -448,12 +440,11 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Stopgap floor: max(1,167, 2024 couple FBR 1,415) / 2 = 707.50 each. A
-    # known-low value: the published 2024 couple standard is higher (issue
-    # 10480).
-    ca_capi_payment_standard: [707.5, 707.5]
+    # (1,415 + 607.83) / 2 = 1,011.415 each; the published January 2024 couple
+    # standard is 2,022.83 (POMS SI 01415.056).
+    ca_capi_payment_standard: [1_011.415, 1_011.415]
 
-- name: Case 19, 2024 out-of-home care standard is floored at the federal benefit rate.
+- name: Case 19, 2024 out-of-home care standard adds the state share to the federal benefit rate.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -469,9 +460,8 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # Stopgap floor: (1,167 + 709) / 2 = 938, floored at the 943 FBR. A
-    # known-low value: POMS SI 01415.056 gives 1,575.07 (issue 10480).
-    ca_capi_payment_standard: 943
+    # 943 + 632.07 = 1,575.07 (POMS SI 01415.056).
+    ca_capi_payment_standard: 1_575.07
 
 - name: Case 20, CAPI couple with one spouse in a Title XIX facility is computed as two individuals.
   period: 2026-01
@@ -501,3 +491,177 @@
     # the aged individual standard 994 + 239.94 = 1,233.94.
     ca_capi_payment_standard: [62, 1_233.94]
     ca_capi_person: [62, 1_233.94]
+
+- name: Case 21, CAPI spouses who are both a third adult's tax dependents take half the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 100_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+      person3:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_capi_eligible_person: [false, true, true]
+    # The couple computation applies: (1,491 + 607.83) / 2 = 1,049.415 each.
+    # As individuals each would take 994 + 239.94 = 1,233.94.
+    ca_capi_payment_standard: [0, 1_049.415, 1_049.415]
+
+# Marital units are deliberately omitted. Tax roles identify the actual
+# spouses, and the unrelated adult has separate tax and SPM units.
+# MPP 49-050.12/.13 and 49-055.32/.4 apply only the actual couple's standard,
+# income and SSI/SSP payments. MPP 49-050.26 separates a facility spouse.
+# https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf
+
+- name: CAPI ignores an unrelated adult's facility residence and payment-standard share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      third:
+        age: 40
+        is_tax_unit_head: true
+        ca_in_medical_care_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      couple:
+        members: [head, spouse]
+      other:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      other:
+        members: [third]
+    households:
+      home:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    # The unrelated facility input does not separate these spouses. Only
+    # their two shares of the aged couple standard count: 2,098.83 / 2.
+    ssi_couple_computation_applies: [true, true, false]
+    ca_capi_payment_standard: [1_049.415, 1_049.415, 0]
+    ca_capi_person: [1_049.415, 1_049.415, 0]
+
+- name: CAPI excludes an unrelated blind recipient from the couple's category count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      spouse:
+        age: 60
+        is_blind: true
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+      third:
+        age: 70
+        is_blind: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    tax_units:
+      couple:
+        members: [head, spouse]
+      other:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      other:
+        members: [third]
+    households:
+      home:
+        members: [head, spouse, third]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # One blind spouse: 2,238.44 / 2 = 1,119.22. Only one actual spouse is
+    # aged or disabled, so the couple food allowance does not apply. The
+    # unrelated blind, aged recipient takes the higher individual aged
+    # no-cooking standard: 1,233.94 + 128.87 = 1,362.81.
+    ca_capi_payment_standard: [1_119.22, 1_119.22, 1_362.81]
+    ca_capi_person: [1_119.22, 1_119.22, 1_362.81]
+
+- name: CAPI excludes an unrelated CAPI recipient from a mixed couple's membership count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 72
+        is_tax_unit_head: true
+        ssi: 994
+        ssi_countable_income: {2026: 0}
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 5_040
+        ssi_countable_income: {2026: 4_800}
+      third:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+    tax_units:
+      couple:
+        members: [head, spouse]
+      other:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+        ca_state_supplement: 239.94
+      other:
+        members: [third]
+    households:
+      home:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    # The CAPI spouse gets the whole mixed-couple standard, then subtracts
+    # the pair's income and citizen spouse's SSI/SSP:
+    # 2,098.83 - 400 - 994 - 239.94 = 464.89.
+    ca_capi_payment_standard: [0, 2_098.83, 1_233.94]
+    ca_capi_person: [0, 464.89, 1_233.94]

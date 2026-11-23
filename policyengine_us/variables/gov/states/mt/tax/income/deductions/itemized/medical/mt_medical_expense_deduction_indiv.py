@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.mt_separate_return import mt_medical_deduction
 
 
 class mt_medical_expense_deduction_indiv(Variable):
@@ -21,35 +22,20 @@ class mt_medical_expense_deduction_indiv(Variable):
     documentation = (
         "Each spouse's medical deduction when filing separately on the same "
         "form. While the Itemized Deductions Schedule applies (2021-2023), "
-        "line 1 floors the spouse's medical and dental expenses other than "
-        "premiums at 7.5% of their Montana AGI, and lines 2 and 3 add their "
-        "medical and long-term care insurance premiums in full, net of their "
-        "self-employed health insurance deduction. If a reform allows "
-        "separate filing in a later year, the premiums net of that deduction "
-        "stay under the floor with the other expenses. Premium inputs use "
-        "payer attribution: report all premiums paid by a person on that "
-        "person, including family coverage regardless of the covered "
-        "beneficiary."
+        "line 1 floors the medical and dental expenses other than premiums "
+        "in the spouse's column (mt_medical_and_dental_expenses_indiv: their "
+        "own expenses and their share of the dependents') at 7.5% of their "
+        "Montana AGI, and lines 2 and 3 add their medical and long-term care "
+        "insurance premiums in full, net of their self-employed health "
+        "insurance deduction. If a reform allows separate filing in a later "
+        "year, the premiums net of that deduction stay under the floor with "
+        "the other expenses. Premium inputs use payer attribution: report "
+        "all premiums paid by a person on that person, including family "
+        "coverage regardless of the covered beneficiary."
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
-        floor = parameters(period).gov.irs.deductions.itemized.medical.floor
-        expense = person("other_medical_expenses", period)
-        # Law does not define Montana AGI as the cap.
-        # Tax form points to page 1, line 14, which is Montana AGI.
-        medical_floor = floor * person("mt_agi_indiv", period)
-        premiums = person("mt_eligible_medical_insurance_premiums", period)
-        if p.state_specific_deduction_applies:
-            # Line 1 floors expenses other than premiums; lines 2 and 3
-            # deduct the premiums in full.
-            long_term_care_premiums = person(
-                "mt_eligible_long_term_care_insurance_premiums", period
-            )
-            deduction = (
-                max_(0, expense - medical_floor) + premiums + long_term_care_premiums
-            )
-        else:
-            deduction = max_(0, premiums + expense - medical_floor)
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return is_head_or_spouse * deduction
+        line_1a = person("mt_medical_and_dental_expenses_indiv", period)
+        # Law does not define Montana AGI as the floor's base; the form points
+        # to page 1, line 14, which is Montana AGI.
+        return mt_medical_deduction(person, period, parameters, line_1a)

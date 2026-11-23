@@ -1,0 +1,318 @@
+# 9 CCR 2503-5 3.549(F): no income is deemed to an AND-CS client from a
+# spouse or parent who receives Adult Financial grant payments, SSI or
+# Medicaid "and has income no greater than the SSI limit". Each case is a
+# married couple: the head is a disabled AND-CS client on SSI, and the case
+# tests the spouse. The SSI limit is read as SSI's income test for an
+# individual: own countable income after SSI's exclusions no greater than the
+# $994 individual benefit rate (2026). The client, on SSI with no other
+# income, is exempt in every case from March 2020.
+
+- name: Case 1, a spouse on SSI is exempt.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 500
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 2, reported SSI receipt is enough.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        receives_ssi: true
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 3, a spouse enrolled in Medicaid with no income is exempt.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        co_adult_financial_medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 4, a spouse receiving Old Age Pension with no other income is exempt.
+  # The spouse is 65, not on SSI or Medicaid, and has no income, so their OAP
+  # grant is the $1,032 standard (3.532(B)).
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 65
+        ssi: 0
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 5, a Medicaid spouse at the SSI limit is exempt.
+  # Earnings of $2,073/month: SSI countable income (2,073 - 20 - 65) / 2 =
+  # 994, no greater than the $994 individual benefit rate.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        employment_income: 24_876
+        co_adult_financial_medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 6, a Medicaid spouse without SSI above the SSI limit is not exempt.
+  # Earnings of $2,074/month: (2,074 - 85) / 2 = 994.50 exceeds the $994
+  # individual rate. Without SSI the spouse must meet that limit on their own
+  # income; Case 7's SSI spouse with the same earnings is exempt.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        employment_income: 24_888
+        co_adult_financial_medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, false]
+
+- name: Case 7, an SSI spouse with own income above the individual rate is exempt.
+  # Earnings of $2,074/month give own countable income of 994.50, above the
+  # $994 individual rate. 3.549(F)'s SSI limit is the one SSI applies to the
+  # person, and SSI's own test held this spouse within the couple rate, so
+  # receiving SSI meets the income condition.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 100
+        employment_income: 24_888
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 8, a spouse on none of the programs is not exempt.
+  # The spouse is 45, too young for OAP.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, false]
+
+- name: Case 9, a Medicaid spouse is exempt from March 2020 and not before.
+  # 3.545(F) (effective March 2, 2014) excluded only the income from those
+  # benefits; 3.549(F) took effect March 1, 2020. Yearly inputs are keyed by
+  # year so that they cover both months.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi:
+          2020-02: 400
+          2020-03: 400
+      spouse:
+        age: 45
+        ssi:
+          2020-02: 0
+          2020-03: 0
+        co_adult_financial_medicaid_enrolled:
+          2020: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code:
+          2020: CO
+  output:
+    co_state_supplement_deeming_exempt:
+      2020-02: [false, false]
+      2020-03: [true, true]
+
+- name: Case 10, before March 2020 an SSI spouse's other income was deemed.
+  # 3.545(F) excluded only the SSI itself, which is not a deemed income
+  # source.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi:
+          2020-02: 400
+      spouse:
+        age: 45
+        ssi:
+          2020-02: 400
+        co_adult_financial_medicaid_enrolled:
+          2020: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code:
+          2020: CO
+  output:
+    co_state_supplement_deeming_exempt:
+      2020-02: [false, false]
+
+- name: Case 11, a spouse who reports Medicaid coverage is exempt.
+  # 3.549(F) and 3.534(C) say "receiving ... Medicaid": reported current
+  # coverage counts whatever projected enrollment says.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 45
+        ssi: 0
+        receives_medicaid: true
+        medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_adult_financial_medicaid_enrolled: [false, true]
+    co_state_supplement_deeming_exempt: [true, true]
+
+- name: Case 12, an Old Age Pension spouse above the individual rate fails the exemption's income test.
+  # The spouse, 65, receives OAP but not SSI or Medicaid, and has a $1,030
+  # monthly pension. OAP: own countable 1,030 - 10 = 1,020, below the $1,032
+  # standard, so Colorado pays OAP. SSI countable income 1,030 - 20 = 1,010
+  # exceeds the $994 individual rate, so the spouse fails 3.549(F)'s income
+  # condition.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        ssi: 500
+      spouse:
+        age: 65
+        ssi: 0
+        pension_income: 12_360
+        co_adult_financial_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, false]

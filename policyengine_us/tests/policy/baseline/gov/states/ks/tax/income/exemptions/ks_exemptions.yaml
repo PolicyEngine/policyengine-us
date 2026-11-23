@@ -51,3 +51,195 @@
         state_code: KS
   output:
     ks_exemptions: 9_000
+
+
+- name: 2024 single filer who can be claimed as a dependent keeps the personal exemption allowance but no dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # K.S.A. 79-32,121b: $9,160; a claimable taxpayer "will qualify for the
+    # personal exemption allowance of $9,160" (KDOR FAQ). No $2,320 dependent
+    # exemption: "enter '0' in the number of dependents box".
+    ks_exemptions: 9160
+
+- name: 2024 joint return with one claimable spouse keeps the joint allowance but no dependent exemption (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # $18,320 joint allowance; no dependents under IRC 152(b)(1).
+    ks_exemptions: 18320
+
+- name: 2024 joint return with one claimable spouse keeps the joint allowance but no dependent exemption (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: KS
+  output:
+    ks_exemptions: 18320
+
+- name: 2024 joint return with both spouses claimable keeps the joint allowance but no dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    ks_exemptions: 18320
+
+- name: 2024 joint return with no claimable spouse gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # $18,320 + $2,320 = $20,640.
+    ks_exemptions: 20640
+
+
+- name: 2024 single filer whose claimant meets the filing exception gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $9,160 + $2,320 = $11,480.
+    ks_exemptions: 11480
+
+- name: 2024 actually claimed single filer whose claimant meets the filing exception keeps the dependent exemption
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_name: KS
+  output:
+    # K.S.A. 79-32,121b federal entitlement preserves this dependent under
+    # the filing exception: $9,160 + $2,320 = $11,480. The K-40 instruction
+    # to enter zero dependents for actually claimed taxpayers gives $9,160.
+    ks_exemptions: 11_480

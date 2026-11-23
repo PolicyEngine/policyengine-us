@@ -151,7 +151,9 @@ def calculate(cases):
     dependent = np.asarray(simulation.calculate("is_tax_unit_dependent", YEAR))
     other_refundable_credits = np.asarray(
         simulation.calculate(
-            "mt_refundable_credits_before_renter_credit", YEAR, map_to="household"
+            "mt_elderly_homeowner_or_renter_credit_state_refundable_credits",
+            YEAR,
+            map_to="household",
         )
     )
     federal_refundable_credits = np.asarray(

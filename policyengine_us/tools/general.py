@@ -186,6 +186,33 @@ def person_share_of_tax_unit_amount(
     return where(filer, filer_share, own)
 
 
+def person_non_dep_add(person, period, variables, include_dependents=()):
+    """
+    Add person-level variables for each person, leaving out dependents' own.
+
+    Like `add` over people, for per-person amounts that are later pooled into
+    the filer's return. A tax unit dependent's own items belong on their own
+    return, as irs_gross_income leaves their income off this one, so a
+    dependent gets zero for every variable except those named in
+    `include_dependents`: the filer's amounts even when recorded on a
+    dependent, such as medical expenses the filer paid for them. Variables
+    must be person-level; `add` rejects others.
+    """
+    if not person.entity.is_person:
+        raise ValueError(
+            f"person_non_dep_add needs a person, not a {person.entity.key}."
+        )
+    filer = ~person("is_tax_unit_dependent", period)
+    total = np.zeros(person.count, dtype=np.float32)
+    for variable in variables:
+        amount = add(person, period, [variable])
+        if variable in include_dependents:
+            total = total + amount
+        else:
+            total = total + filer * amount
+    return total
+
+
 def filer_share(person, period, amounts):
     """
     Each head's or spouse's share of the tax unit's total of `amounts`.
@@ -218,15 +245,25 @@ def get_itemization_branch(tax_unit, period, itemizes: bool):
     """
     The branch of ``tax_unit``'s simulation that fixes ``tax_unit_itemizes``.
 
-    It is named ``itemizing`` or ``not_itemizing``. Every caller asks for the
-    same inputs, so they share one branch: the choice itself and the tax
-    liabilities it compares.
+    It is named ``itemizing`` or ``not_itemizing``. When some tax unit repays
+    more than $3,000 of claim of right income (26 U.S.C. 1341), the branch
+    also takes this simulation's method, ``claim_of_right_credit_applies``, as
+    an input, so it never chooses one for itself: with itemizing fixed, a
+    branch would choose the method best for that choice, not the method this
+    simulation uses. Every caller asks for the same inputs, so they share one
+    branch. With no qualifying repayment the method is false everywhere and is
+    left out, which keeps the branch sharing this simulation's cache.
     """
+    overrides = {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)}
+    if tax_unit("claim_of_right_section_1341_eligible", period).any():
+        overrides["claim_of_right_credit_applies"] = tax_unit(
+            "claim_of_right_credit_applies", period
+        )
     return get_override_branch(
         tax_unit.simulation,
         "itemizing" if itemizes else "not_itemizing",
         period,
-        {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)},
+        overrides,
     )
 
 

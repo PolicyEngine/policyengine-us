@@ -1,0 +1,87 @@
+# 8 CCR 1403-1 3.124(A) and (P)(3), PDF pages 79 and 84 of ruleVersionId 12658:
+# the fee counts the children for whom the household requests care. Reported
+# hours or days show care, and so does a child care or after-school expense.
+- name: Case 1, schedules and expenses each show care for an eligible child.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+      hours:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+      expense:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 6_000
+      nothing:
+        age: 4
+        is_tax_unit_dependent: true
+      teenager:
+        age: 15
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+      weekly_days:
+        age: 7
+        is_tax_unit_dependent: true
+        childcare_days_per_week: 3
+      after_school:
+        age: 10
+        is_tax_unit_dependent: true
+        after_school_expenses: 2_000
+      monthly_days:
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 12
+      weekly_hours:
+        age: 6
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [parent, hours, expense, nothing, teenager, weekly_days, after_school, monthly_days, weekly_hours]
+    households:
+      household:
+        members: [parent, hours, expense, nothing, teenager, weekly_days, after_school, monthly_days, weekly_hours]
+        state_code: CO
+  output:
+    # The parent is no eligible child, the 4-year-old with nothing reported
+    # has no care, and the 15-year-old is past the age limit.
+    co_ccap_child_in_care: [false, true, true, false, false, true, true, true, true]
+    co_ccap_children_in_care: 6
+
+- name: Case 2, the SPM unit's child care expense puts each eligible child in care.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CO
+  output:
+    # Each child holds 6,000 of the expense.
+    co_ccap_child_in_care: [false, true, true]
+    co_ccap_children_in_care: 2
+
+- name: Case 3, a child outside Colorado.
+  period: 2026-01
+  input:
+    age: 4
+    is_tax_unit_dependent: true
+    childcare_hours_per_day: 8
+    state_code: TX
+  output:
+    co_ccap_child_in_care: false

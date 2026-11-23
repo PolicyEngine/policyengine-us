@@ -42,3 +42,50 @@
     ma_liheap_income: 81_562
   output:
     ma_liheap_benefit_level: 6
+
+# FY2027 chart, household of four: 100% of the poverty level is 33_000 and 200%
+# is 66_000. Each column pays households up to and including its income figure.
+- name: Case 6, fiscal year 2027, household size of 4 exactly at 100% of the poverty level.
+  period: 2027
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 33_000
+  output:
+    ma_liheap_benefit_level: 1
+
+- name: Case 7, fiscal year 2027, household size of 4 one dollar above 100% of the poverty level.
+  period: 2027
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 33_001
+  output:
+    ma_liheap_benefit_level: 2
+
+- name: Case 8, fiscal year 2027, household size of 4 exactly at 200% of the poverty level.
+  period: 2027
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 66_000
+  output:
+    ma_liheap_benefit_level: 5
+
+- name: Case 9, fiscal year 2027, household size of 4 one dollar above 200% of the poverty level.
+  period: 2027
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 66_001
+  output:
+    ma_liheap_benefit_level: 6
+
+- name: Case 10, fiscal year 2027, household size of 4 with no income.
+  period: 2027
+  input:
+    spm_unit_size: 4
+    state_code: MA
+    ma_liheap_income: 0
+  output:
+    ma_liheap_benefit_level: 1

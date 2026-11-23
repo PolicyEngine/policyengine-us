@@ -67,7 +67,6 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 16
         is_tax_unit_dependent: true
@@ -79,7 +78,6 @@
         self_employed_pension_contributions: 600
         long_term_capital_gains: -3_000
         rental_income: -2_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -104,14 +102,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 16
         is_tax_unit_dependent: true
         employment_income: 10_000
         qualified_adoption_assistance_expense: 500
         us_bonds_for_higher_ed: 700
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -123,8 +119,14 @@
   output:
     # The established filer_amounts_recorded_on_dependents convention puts
     # 500 + 700 = 1,200 on the parent's return: 20,000 - 1,200 = 18,800.
-    # Neither is the dependent's own deduction: their income stays 10,000.
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_800, 10_000]
+    # Neither is the dependent's own deduction, so neither reduces the
+    # dependent's 10,000. The 700 of savings bond interest excluded under
+    # IRC 135 is nontaxable interest that gross household income counts
+    # (§ 15-30-2337(9)(a)(vii); 2024 Schedule 2EC line 2, "all interest,
+    # both taxable and nontaxable"). It is added back on the record that
+    # holds it: 10,000 + 700 = 10,700. Household: 18,800 + 10,700 = 29,500
+    # = 20,000 + 10,000 - 500 adoption assistance.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_800, 10_700]
 
 - name: Dependent educator and IRA deductions retain their statutory annual caps
   period: 2023
@@ -134,14 +136,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 19
         is_tax_unit_dependent: true
         employment_income: 10_000
         traditional_ira_contributions: 10_000
         educator_expense: 1_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -169,14 +169,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 19
         is_tax_unit_dependent: true
         employment_income: 2_000
         traditional_ira_contributions: 10_000
         educator_expense: 1_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]

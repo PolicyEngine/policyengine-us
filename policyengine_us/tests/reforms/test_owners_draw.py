@@ -19,7 +19,7 @@ import weakref
 import numpy as np
 import pytest
 from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
-from hypothesis import HealthCheck, example, given, settings
+from hypothesis import HealthCheck, Phase, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import period
 from policyengine_core.reforms import Reform
@@ -36,8 +36,14 @@ from policyengine_us.variables.gov.contrib.congress.s770.s770_active_business_in
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employed_health_insurance_earned_income_limit import (
     self_employed_health_insurance_earned_income_limit,
 )
+from policyengine_us.variables.household.expense.health.self_employed_health_insurance_plan_business import (
+    SelfEmployedHealthInsurancePlanBusiness,
+)
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person,
+)
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_earned_income import (
+    self_employed_pension_earned_income,
 )
 from policyengine_us.variables.gov.irs.tax.payroll.social_security.taxable_earnings_for_social_security import (
     taxable_earnings_for_social_security,
@@ -70,6 +76,7 @@ BASELINE_VARIABLES = {
         self_employment_tax,
         self_employment_tax_ald_person,
         self_employed_health_insurance_earned_income_limit,
+        self_employed_pension_earned_income,
     )
 }
 PERIOD = period("2027")
@@ -150,6 +157,7 @@ def _calculate(variables, parameters, inputs, outputs=None):
         "farm_operations_income": 0,
         "payroll_tax_gross_wages": 0,
         "self_employed_pension_contribution_ald_person": 0,
+        "s_corp_shareholder_medicare_wages": 0,
         **inputs,
     }
 
@@ -165,6 +173,16 @@ def _calculate(variables, parameters, inputs, outputs=None):
     values.setdefault(
         "total_self_employment_income",
         values["self_employment_income"] + values["sstb_self_employment_income"],
+    )
+    # The oracles below take the Schedule C business as the plan business.
+    values.setdefault(
+        "self_employed_health_insurance_plan_business",
+        SelfEmployedHealthInsurancePlanBusiness.encode(
+            np.full(
+                np.atleast_1d(values["total_self_employment_income"]).shape,
+                SelfEmployedHealthInsurancePlanBusiness.SCHEDULE_C,
+            )
+        ),
     )
 
     def person(name, instant, options=None):
@@ -1059,6 +1077,7 @@ def test_examples_keep_what_the_property_holds_until_teardown(collection_calls):
 SIMULATION_SETTINGS = {
     **SETTINGS,
     "max_examples": 2,
+    "phases": [phase for phase in Phase if phase is not Phase.explain],
     "suppress_health_check": [
         *SETTINGS["suppress_health_check"],
         HealthCheck.function_scoped_fixture,

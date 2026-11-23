@@ -93,8 +93,10 @@
     spm_units:
       spm_unit:
         # Both aged: married standard 2,098.83 (no food allowance);
-        # SSI couple FBR 1,491. SSP: (2,098.83 - 1,491) x 12 = 607.83 x 12 = 7,293.96.
-        ca_state_supplement: 7_293.96
+        # SSI couple FBR 1,491. State share 2,098.83 - 1,491 = 607.83, or 303.915
+        # per spouse, rounded up to 303.92 (POMS SI 02001.010 A.2).
+        # SSP: 303.92 x 2 x 12 = 7,294.08.
+        ca_state_supplement: 7_294.08
 - name: ca_state_supplement_aged_single_earnings_partial (ca)
   period: 2026
   absolute_error_margin: 0.1

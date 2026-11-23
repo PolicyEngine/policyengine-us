@@ -1,0 +1,12 @@
+description: The IRS applies the alternative minimum tax child exemption limitation to a child at or above the support test age only if the child's earned income does not exceed this share of the child's support.
+values:
+  2013-01-01: 0.5
+metadata:
+  unit: /1
+  period: year
+  label: AMT child exemption limitation support test rate
+  reference:
+    - title: 26 U.S. Code § 1(g)(2)(A)(ii)(II) (2016 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapA-partI-sec1.htm
+    - title: 2017 Instructions for Form 6251, Exemption Worksheet - Line 29 (Certain Children Under Age 24)
+      href: https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10

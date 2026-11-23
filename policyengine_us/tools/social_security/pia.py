@@ -260,14 +260,19 @@ def compute_pia(
     bend_points: tuple[Number, Number],
     factors: tuple[Number, Number, Number] = DEFAULT_FACTORS,
     round_result: bool = True,
-) -> Decimal:
+    exact_result: bool = False,
+) -> Decimal | Fraction:
     """Compute a monthly PIA from supplied AIME and eligibility-year inputs.
 
     Direct household AIME inputs must be whole dollars (the household adapter
     validates this). Fractional AIME remains supported here for the documented
     inverse lower-endpoint convention and continuous reform sensitivities.
     ``round_result=False`` exposes the formula before statutory dime truncation.
+    Also requesting ``exact_result=True`` returns its exact rational value for
+    mini-PIA aggregation; this requires ``round_result=False``.
     """
+    if exact_result and round_result:
+        raise ValueError("exact_result requires round_result=False")
     year = _computation_years(eligibility_year, payment_year, recompute_mode)
     amount = _number(aime, "AIME")
     if amount < 0:
@@ -329,7 +334,7 @@ def compute_pia(
         # Rational arithmetic keeps exact dime boundaries exact; binary floats
         # and finite Decimal approximations cannot accidentally lose one dime.
         return Decimal((result * 10).numerator // (result * 10).denominator) / 10
-    return _decimal(result)
+    return result if exact_result else _decimal(result)
 
 
 def inverse_unrounded(

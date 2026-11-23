@@ -154,24 +154,61 @@ class mi_household_resources(Variable):
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the
-        # person's family". health_insurance_premiums records the premiums
-        # each person paid, so the claimant's and spouse's amounts, which
-        # may include family coverage they bought, come off. A premium a
-        # dependent paid is not one the claimant or spouse paid.
-        premiums = tax_unit_non_dep_add(tax_unit, period, ["health_insurance_premiums"])
+        # person's family". medical_expense_health_insurance_premiums
+        # records the premiums each person paid: a nonzero direct
+        # health_insurance_premiums input, or else the decomposed inputs,
+        # premiums other than Medicare Part B
+        # (health_insurance_premiums_without_medicare_part_b, where survey
+        # data carry them) plus the modeled Part B premium the person pays.
+        # It leaves out pretax payroll premiums, which line 31 also leaves
+        # out ("amounts paid by an employer with pre-tax payroll
+        # contributions", 2025 MI-1040 book, page 33). The claimant's and
+        # spouse's amounts, which may include family coverage they bought,
+        # come off. A premium a dependent paid is not one the claimant or
+        # spouse paid.
+        premiums = tax_unit_non_dep_add(
+            tax_unit, period, ["medical_expense_health_insurance_premiums"]
+        )
         # "Do not include any insurance premiums deducted on lines 21 or 30"
         # (2025 MI-1040 book, page 33). Line 30 includes the self-employed
-        # health insurance deduction (Schedule 1 line 17), so those premiums
-        # leave line 31 and each premium dollar is subtracted once.
+        # health insurance deduction (Schedule 1 line 17). Its medical part
+        # (Form 7206 line 1) took premiums from the direct
+        # health_insurance_premiums input, which line 31 then holds, so
+        # those leave line 31 and each premium dollar is subtracted once.
+        # Its long-term care part (line 2) took
+        # long-term care premiums, which line 31 does not hold, so it takes
+        # nothing off line 31: the head's and spouse's deduction less the
+        # long-term care parts of their own deductions comes off.
         # A supplied tax-unit deduction is assumed to cover premiums also
-        # represented in health_insurance_premiums. The aggregate inputs do
-        # not identify the overlap if the deducted plan's premiums are omitted.
+        # represented in the line 31 premiums, apart from the long-term
+        # care part the person amounts show it reached after their medical
+        # parts. The aggregate inputs do not
+        # identify the overlap if the deducted plan's premiums are omitted.
         # Line 21 nets out Medicare premiums withheld from Social Security or
         # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
-        # gross benefits and line 31 the premiums, which subtracts them once
-        # as well.
+        # gross benefits and line 31 the premiums: the modeled Part B
+        # premium, net of Medicare Savings Program and Medicaid buy-in
+        # coverage, or a direct input that replaces it. That subtracts them
+        # once as well, and a Part B premium billed to the enrollee rather
+        # than withheld comes off on line 31 as medical insurance.
+        person = tax_unit.members
+        filer = not_(person("is_tax_unit_dependent", period))
+        own_deduction = max_(
+            0, person("self_employed_health_insurance_ald_person", period)
+        )
+        own_long_term_care_part = person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
+        )
+        medical_parts = tax_unit.sum((own_deduction - own_long_term_care_part) * filer)
+        return_deduction = max_(
+            0, tax_unit("self_employed_health_insurance_ald", period)
+        )
+        long_term_care_taken = min_(
+            tax_unit.sum(own_long_term_care_part * filer),
+            max_(0, return_deduction - medical_parts),
+        )
         premiums_on_line_30 = (
-            tax_unit("self_employed_health_insurance_ald", period)
+            return_deduction - long_term_care_taken
             if "self_employed_health_insurance_ald" in deductions
             else 0
         )

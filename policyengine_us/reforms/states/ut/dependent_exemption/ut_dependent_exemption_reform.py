@@ -21,7 +21,7 @@ def create_ut_dependent_exemption_reform() -> Reform:
             pc = parameters(period).gov.contrib.states.ut.dependent_exemption
             # Only apply the reform pricing in periods where the reform is
             # in effect — the reform is installed for the whole simulation
-            # whenever it activates in any of the next five years, so this
+            # whenever it activates in any year of the lookahead window, so this
             # per-period gate prevents the reform amount leaking into
             # pre-activation years.
             if not pc.in_effect:
@@ -33,7 +33,11 @@ def create_ut_dependent_exemption_reform() -> Reform:
                 return p.personal_exemption * total_dependents
             person = tax_unit.members
             age = person("age", period)
-            dependent = person("is_tax_unit_dependent", period)
+            # Count the baseline's qualifying dependents (59-10-1018(1)(c)):
+            # those for whom the claimant is allowed an IRC 24 credit, which
+            # a return on which a filer can be claimed as a dependent has none
+            # of (IRC 152(b)(1)) outside the claimant filing exception.
+            dependent = person("ut_qualifying_dependent", period)
             # Dependents under the age threshold (all dependents when the
             # age limit is off) take the contrib amount; older dependents
             # keep the baseline (uprated) personal-exemption amount.
@@ -74,7 +78,7 @@ def create_ut_dependent_exemption_reform_fn(parameters, period, bypass: bool = F
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

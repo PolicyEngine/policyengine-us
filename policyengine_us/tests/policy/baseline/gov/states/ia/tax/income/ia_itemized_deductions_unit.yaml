@@ -95,3 +95,56 @@
     deductible_mortgage_insurance_premiums: 2_000
     interest_deduction: 12_000
     ia_itemized_deductions_unit: 12_000
+
+# 2018 IA Schedule A lines 19 to 24: unreimbursed employee expenses and tax
+# preparation fees above 2% of federal AGI, which the federal return suspends.
+- name: 2018 Iowa keeps the miscellaneous deduction above 2% of federal AGI
+  period: 2018
+  input:
+    unreimbursed_business_employee_expenses: 3_000
+    tax_preparation_fees: 500
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 2_000
+    state_code: IA
+  output:
+    misc_deduction: 0
+    # 2,000 + (3,500 - 2% * 50,000)
+    ia_itemized_deductions_unit: 4_500
+
+- name: 2019 Iowa follows the federal suspension of the miscellaneous deduction
+  period: 2019
+  input:
+    unreimbursed_business_employee_expenses: 3_000
+    tax_preparation_fees: 500
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 2_000
+    state_code: IA
+  output:
+    ia_itemized_deductions_unit: 2_000
+
+- name: 2018 Iowa miscellaneous deduction is zero when 2% of federal AGI exceeds the expenses
+  period: 2018
+  input:
+    filing_status: SINGLE
+    unreimbursed_business_employee_expenses: 3_000
+    tax_preparation_fees: 500
+    adjusted_gross_income: 200_000
+    real_estate_taxes: 2_000
+    state_code: IA
+  output:
+    # 2018 IA Schedule A lines 22 to 24: 3,500 - 2% * 200,000 = -500, so 0.
+    # Federal AGI is below the $266,700 single amount on the IA 104, line 8.
+    ia_itemized_deductions_unit: 2_000
+
+- name: 2017 Iowa takes the federal miscellaneous deduction once
+  period: 2017
+  input:
+    unreimbursed_business_employee_expenses: 3_000
+    tax_preparation_fees: 500
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 2_000
+    state_code: IA
+  output:
+    # The federal deduction still applies in 2017: 3,500 - 2% * 50,000.
+    misc_deduction: 2_500
+    ia_itemized_deductions_unit: 4_500

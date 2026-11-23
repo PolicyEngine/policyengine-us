@@ -162,3 +162,147 @@
     # The child takes it on their own return.
     self_employed_health_insurance_ald: 0
     dependents_self_employed_health_insurance_ald: 2_788.05675
+
+- name: Case 9, a farmer whose plan is established under the farm deducts up to farm earned income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    farm_operations_income: 20_000
+    health_insurance_premiums: 25_000
+  output:
+    # Form 7206: line 3 is 25,000; line 13 is 20,000 - 1,412.955.
+    self_employed_health_insurance_ald_person: 18_587.045
+    # 20,000 - 1,412.955 - 18,587.045.
+    adjusted_gross_income: 0
+
+- name: Case 10, a partner deducts up to their K-1 box 14 code A earnings less half of self-employment tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    partnership_income: 30_000
+    partnership_self_employment_net_earnings: 30_000
+    health_insurance_premiums: 40_000
+  output:
+    # Form 7206 line 13: 30,000 - 2,119.4325.
+    self_employed_health_insurance_ald_person: 27_880.5675
+    adjusted_gross_income: 0
+
+- name: Case 11, an S corporation shareholder deducts up to their wages from the corporation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    # The corporation reimburses the 12,000 of premiums and reports them in
+    # W-2 box 1, so box 1 wages are 22,000. Box 5 Medicare wages leave them
+    # out (26 U.S.C. 3121(a)(2)(B)): 10,000.
+    employment_income: 22_000
+    s_corp_shareholder_medicare_wages: 10_000
+    health_insurance_premiums: 12_000
+  output:
+    # Form 7206: line 3 is 12,000; line 13 is line 11, 10,000.
+    self_employed_health_insurance_ald_person: 10_000
+    # 22,000 - 10,000.
+    adjusted_gross_income: 12_000
+
+- name: Case 12, a plan named under the smaller farm is limited to the farm's earned income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 30_000
+    farm_operations_income: 10_000
+    self_employed_health_insurance_plan_business: SCHEDULE_F
+    health_insurance_premiums: 20_000
+  output:
+    # Form 7206 line 13: 10,000 - 0.25 x 2,825.91.
+    self_employed_health_insurance_ald_person: 9_293.5225
+
+- name: Case 13, an S corporation shareholder's wages cover the medical premiums first, then eligible long-term care premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    is_self_employed: true
+    # The corporation pays the 8,500 of premiums and reports them in W-2
+    # box 1 (Form 7206 instructions), so box 1 wages are 15,500. The case
+    # sets box 5 Medicare wages to 7,000.
+    employment_income: 15_500
+    s_corp_shareholder_medicare_wages: 7_000
+    health_insurance_premiums: 6_000
+    long_term_health_insurance_premiums: 2_500
+  output:
+    # Line 1 is 6,000; line 2 is min(2,500, 1,860) = 1,860 (ages 51 to 60);
+    # line 3 is 7,860; line 13 is line 11, 7,000.
+    self_employed_health_insurance_ald_person: 7_000
+    # 7,000 - 6,000 of medical premiums.
+    self_employed_health_insurance_ald_long_term_care_part: 1_000
+    # Schedule A keeps line 3 less the deduction: 7,860 - 7,000.
+    itemized_medical_expenses: 860
+    # 15,500 - 7,000.
+    adjusted_gross_income: 8_500
+
+- name: Case 14, a farmer whose plan is established under the farm deducts eligible long-term care premiums up to farm earned income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 75
+    is_self_employed: true
+    farm_operations_income: 20_000
+    health_insurance_premiums: 15_000
+    long_term_health_insurance_premiums: 7_000
+  output:
+    # Line 2 is min(7,000, 5,880) = 5,880 (over 70); line 3 is 20,880.
+    # Line 13: 20,000 - 20,000 x 0.9235 x 0.153 / 2 = 18,587.045.
+    self_employed_health_insurance_ald_person: 18_587.045
+    # 18,587.045 - 15,000 of medical premiums.
+    self_employed_health_insurance_ald_long_term_care_part: 3_587.045
+    # 20,880 - 18,587.045.
+    itemized_medical_expenses: 2_292.955
+    # 20,000 - 1,412.955 - 18,587.045.
+    adjusted_gross_income: 0
+
+- name: Case 15, a partner deducts eligible long-term care premiums up to their K-1 box 14 code A earnings less half of self-employment tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    is_self_employed: true
+    partnership_income: 10_000
+    partnership_self_employment_net_earnings: 10_000
+    health_insurance_premiums: 8_000
+    long_term_health_insurance_premiums: 6_000
+  output:
+    # Line 2 is min(6,000, 4,810) = 4,810 (ages 61 to 70); line 3 is 12,810.
+    # Line 13: 10,000 - 10,000 x 0.9235 x 0.153 / 2 = 9,293.5225.
+    self_employed_health_insurance_ald_person: 9_293.5225
+    # 9,293.5225 - 8,000 of medical premiums.
+    self_employed_health_insurance_ald_long_term_care_part: 1_293.5225
+    # 12,810 - 9,293.5225.
+    itemized_medical_expenses: 3_516.4775
+    # 10,000 - 706.4775 - 9,293.5225.
+    adjusted_gross_income: 0
+
+- name: Case 16, with no plan business named, the larger farm's earned income covers line 3, long-term care premiums included.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    is_self_employed: true
+    self_employment_income: 2_000
+    farm_operations_income: 30_000
+    health_insurance_premiums: 20_000
+    long_term_health_insurance_premiums: 1_500
+  output:
+    # Line 15: 32,000 x 0.9235 x 0.153 / 2 = 2,260.728. Line 13 for the farm
+    # is 30,000 - 30/32 x 2,260.728 = 27,880.5675, and for the Schedule C
+    # business 2,000 - 2/32 x 2,260.728 = 1,858.7045. The model takes the farm.
+    self_employed_health_insurance_earned_income_limit: 27_880.5675
+    # Line 2 is min(1,500, 930) = 930 (ages 41 to 50); line 3 is 20,930.
+    self_employed_health_insurance_ald_person: 20_930
+    self_employed_health_insurance_ald_long_term_care_part: 930
+    # 20,930 - 20,930.
+    itemized_medical_expenses: 0
+    # 32,000 - 2,260.728 - 20,930.
+    adjusted_gross_income: 8_809.272

@@ -21,7 +21,17 @@ def create_az_dependent_credit() -> Reform:
                 period
             ).gov.states.az.tax.income.credits.dependent_credit
             p = parameters(period).gov.contrib.states.az.dependent_credit
-            dependent = person("is_tax_unit_dependent", period)
+            # As in the baseline, a return on which the filer (or, if joint,
+            # either spouse) can be claimed has no dependents (A.R.S.
+            # 43-1001(3), IRC 152(b)(1)).
+            # The would-be claimant's filing exception (not required to file and
+            # filing only for a refund, Publication 501) restores the dependents.
+            filer_is_dependent = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
+                filer_is_dependent
+            )
             age = person("age", period)
             if p.age_limit.in_effect:
                 eligible = dependent & (age < p.age_limit.threshold)
@@ -53,7 +63,7 @@ def create_az_dependent_credit_reform_fn(parameters, period, bypass: bool = Fals
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break
@@ -113,7 +123,7 @@ def create_az_refundable_dependent_credit() -> Reform:
             unused_credit = max_(potential - non_refundable, 0)
             # Only pay the refund in periods where the reform is in effect.
             # The reform is installed for the whole simulation whenever it
-            # activates in any of the next five years (see
+            # activates in any year of the lookahead window (see
             # create_az_refundable_dependent_credit_reform_fn), so this
             # per-period gate prevents a refund leaking into
             # pre-activation years.
@@ -151,7 +161,7 @@ def create_az_refundable_dependent_credit_reform_fn(
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).refundable.in_effect:
             reform_active = True
             break

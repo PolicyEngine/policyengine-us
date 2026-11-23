@@ -114,11 +114,12 @@ def create_tx_rebate() -> Reform:
                 "trump_dividend",
                 # Cash programs that household_benefits also counts.
                 "ca_capi",  # California Cash Assistance Program for Immigrants.
-                "ca_la_expectant_parent_payment",  # Los Angeles County.
-                "ca_la_infant_supplement",  # Los Angeles County.
+                "ca_la_expectant_parent_payment",  # California.
+                "ca_la_infant_supplement",  # California.
                 "co_denver_property_tax_relief",  # Denver.
                 "ma_eaedc",  # Massachusetts.
                 "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
+                "state_property_tax_refunds",  # Paid outside the income tax.
                 "ny_drive_clean_rebate",
                 "tx_rebate",
             ]
@@ -158,7 +159,7 @@ def create_tx_rebate_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for i in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

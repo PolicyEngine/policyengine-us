@@ -1,0 +1,93 @@
+- name: Colorado comparison preserves ordinary refundable credits
+  period: 2021
+  input:
+    state_code: CO
+    co_income_tax_before_refundable_credits: 1000
+    co_amt: 0
+    co_cdcc: 0
+    co_low_income_cdcc: 0
+    co_eitc: 100
+    co_sales_tax_refund: 56
+    co_tabor_cash_back: 750
+  output:
+    state_income_tax_before_refundable_credits: 1000
+    state_refundable_credits: 906
+    state_income_tax: 94
+    # Restore only the one-time 750 Cash Back: 94 + 750 = 844. The 100 EITC
+    # and the recurring 56 sales tax refund stay in liability.
+    state_income_tax_rebate_adjustment: 750
+    state_income_tax_before_one_time_rebates: 844
+
+- name: Pre-rebate tax can remain negative with ordinary refundable credits
+  period: 2021
+  input:
+    state_code: CO
+    co_income_tax_before_refundable_credits: 0
+    co_amt: 0
+    co_cdcc: 0
+    co_low_income_cdcc: 0
+    co_eitc: 100
+    co_sales_tax_refund: 56
+    co_tabor_cash_back: 750
+  output:
+    state_income_tax: -906
+    # -906 + 750 = -156.
+    state_income_tax_rebate_adjustment: 750
+    state_income_tax_before_one_time_rebates: -156
+
+- name: Virginia comparison restores only the final tax effect
+  period: 2021
+  input:
+    state_code: VA
+    va_income_tax_before_non_refundable_credits: 120
+    va_non_refundable_eitc: 20
+    va_spouse_tax_adjustment: 30
+    va_rebate: 250
+    va_refundable_credits: 10
+  output:
+    state_income_tax: -10
+    state_income_tax_rebate_adjustment: 70
+    state_income_tax_before_one_time_rebates: 60
+
+- name: Massachusetts reconciliation holds the 62F premium-pay interaction fixed
+  # 62F = 14.0312% x (2000 - 500 premium pay - 100 ordinary EITC).
+  # Restore the calculated 196.4368 refund plus 500, leaving tax at 1900.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: MA
+    ma_income_tax_before_refundable_credits: 2000
+    ma_eitc: 100
+    ma_child_and_family_credit_or_dependent_care_credit: 0
+    ma_senior_circuit_breaker: 0
+    ma_covid_19_essential_employee_premium_pay_program: 500
+  output:
+    ma_taxpayer_refund_rebate: 196.4368
+    state_income_tax: 1203.5632
+    state_income_tax_rebate_adjustment: 696.4368
+    state_income_tax_before_one_time_rebates: 1900
+
+- name: Comparison leaves existing household income and tax decomposition unchanged
+  # 2022 Colorado single filer with 100,000 of wages.
+  # Federal: taxable income 100,000 - 12,950 = 87,050; tax
+  #   1,027.50 + 3,780 + 22% * 45,275 = 14,768.
+  # FICA: 7.65% * 100,000 = 7,650.
+  # Colorado: 4.4% * 87,050 = 3,830.20, less the 234 sales tax refund
+  #   = 3,596.20. The refund recurs, so nothing is restored.
+  # FAMLI: C.R.S. 8-13.3-507 starts premiums on January 1, 2023, so there is
+  #   no 2022 premium (the rate file is zero before 2023).
+  # Net income: 100,000 - 14,768 - 7,650 - 3,596.20 = 73,985.80.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 100000
+    state_code: CO
+  output:
+    co_sales_tax_refund: 234
+    co_tabor_cash_back: 0
+    state_income_tax: 3596.20
+    state_income_tax_rebate_adjustment: 0
+    state_income_tax_before_one_time_rebates: 3596.20
+    co_employee_famli_contribution: 0
+    household_net_income: 73985.80

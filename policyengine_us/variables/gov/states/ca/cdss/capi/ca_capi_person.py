@@ -2,11 +2,16 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
-    ca_capi_in_title_xix_facility,
     ca_capi_spouse_ssi_ssp,
     ca_capi_ssi_ssp_standard,
+)
+from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
+    ca_in_title_xix_facility,
 )
 
 
@@ -45,15 +50,17 @@ class ca_capi_person(Variable):
             / MONTHS_IN_YEAR
         )
         countable_income = where(
-            separated, own_alone, person("ssi_countable_income", period)
+            separated, own_alone, person("ca_capi_countable_income", period)
         )
         payment_standard = person("ca_capi_payment_standard", period)
-        deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
+        deemed_income = person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
+        )
         own_income = max_(countable_income - deemed_income, 0)
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
         # only their own income.
-        medical_facility = ca_capi_in_title_xix_facility(person, period)
+        medical_facility = ca_in_title_xix_facility(person, period)
         income = where(medical_facility, own_income, countable_income)
         # NOTE: the reduced-needs standards for another person's household are
         # not modeled (issue 7892), so those recipients get the
@@ -67,9 +74,11 @@ class ca_capi_person(Variable):
         # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = ca_capi_couple_computation(person, period)
-        couple_with_spouse = joint & ~(person.marital_unit.sum(capi_eligible) > 1)
+        couple_with_spouse = joint & ~(
+            _ssi_couple_total(person, period.this_year, capi_eligible.astype(int)) > 1
+        )
         spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
-        couple_income = person.marital_unit.sum(countable_income)
+        couple_income = _ssi_couple_total(person, period.this_year, countable_income)
         # A spouse counts as an eligible spouse only while receiving SSI/SSP
         # (MPP 49-005(e)(3), 49-050.13). A spouse paid neither is an
         # ineligible spouse (MPP 49-005(i)(2)), whose income is deemed.
@@ -77,6 +86,16 @@ class ca_capi_person(Variable):
         mixed = couple_with_spouse & spouse_paid
         unpaid_spouse = couple_with_spouse & ~spouse_paid
         mixed_benefit = max_(payment_standard - couple_income - spouse_ssi_ssp, 0)
+        # Stored standards and payments use float32; couple income uses
+        # float64. Normalize cancellation within the stored standard's
+        # precision so an exhausted benefit cannot create income eligibility.
+        exhausted = np.isclose(
+            payment_standard,
+            couple_income + spouse_ssi_ssp,
+            rtol=np.finfo(payment_standard.dtype).eps,
+            atol=0,
+        )
+        mixed_benefit = where(exhausted, 0, mixed_benefit)
 
         # MPP 49-035.71 follows the SSI spouse-to-spouse deeming steps: the
         # federal and state parts are each the lesser of the individual and the
@@ -103,7 +122,7 @@ class ca_capi_person(Variable):
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         deemed_benefit = max_(federal + supplement - p.single, 0)
         deeming = (
-            (person("is_ssi_spousal_deeming_applies", period.this_year) & ~joint)
+            (person("is_ssi_spousal_deeming_applies_monthly", period) & ~joint)
             | unpaid_spouse
         ) & ~medical_facility
         return select(

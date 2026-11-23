@@ -4,8 +4,9 @@
 # Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
 # Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
 # Final modeled awards use the larger of the actual and estimated costs and the
-# ordinary fuel schedule. Unsubsidized heat in rent gets no further reduction because
-# the PY2027 schedule (page 78) prints none; unsupported fuel amounts remain zero.
+# ordinary fuel schedule. Unsubsidized heat in rent receives 0.625 of that amount,
+# rounded up, a rate inferred from each state plan's estimated minimum benefit; unsupported
+# fuel amounts remain zero.
 
 # Manual p78, delivered DD/A cell. Actual annual primary-fuel bill selects the row.
 - name: "Case 1, delivered matrix cost tier DD and income band A."
@@ -2154,11 +2155,13 @@
     nh_fap_heating_cost: [561.365854, 4_000]
     nh_fap: [563, 1_875]
 
-# The PY2027 schedule prints no heat-in-rent reduction, so the ordinary schedule applies.
+# Heat in rent pays 0.625 of the scheduled amount (FY2027 state plan, item 2.3; the
+# rate is inferred from the plan's estimated minimum benefit, and so is the rounding).
 # Manual pp76-78: default single-family factor 2000, Belknap HDD 6610,
 # 3 bedrooms used as rooms, electricity 64.706/MBTU at efficiency 1.
 # Estimated cost = 2000 * 3 * 6610 / 1_000_000 * 64.706 = 2566.23996.
-# Income band A and cost band BB: 2350 * 0.75, rounded half up = 1763.
+# Income band A and cost band BB: 2350 * 0.75 = 1762.5, rounded up to 1763;
+# 1763 * 0.625 = 1101.875, rounded up to 1102.
 - name: Case 79, unsubsidized heat-in-rent with three bedrooms and electricity receives the modeled final award.
   period: 2027
   absolute_error_margin: 0.01
@@ -2194,12 +2197,13 @@
     nh_fap_countable_income: 10_000
     nh_fap_heating_cost: 2_566.23996
     nh_fap_eligible: true
-    nh_fap: 1_763
+    nh_fap: 1_102
 
 # Manual p78 AA/A: delivered 2500; electricity and gas 2500 * 0.75 = 1875.
-# That fuel schedule applies once to direct-pay and heat-in-rent households.
+# Heat-in-rent households receive 0.625 of their fuel's scheduled amount, rounded
+# up: 1875 * 0.625 = 1171.875 -> 1172 and 2500 * 0.625 = 1562.5 -> 1563.
 # Manual p21 excludes subsidized heat-in-rent, not subsidized direct-pay households.
-- name: Case 80, heat-in-rent retains each fuel schedule while subsidized heat-in-rent is excluded.
+- name: Case 80, heat-in-rent receives 0.625 of each fuel schedule while subsidized heat-in-rent is excluded.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -2336,7 +2340,7 @@
         bedrooms: 3
   output:
     nh_fap_eligible: [true, true, true, true, true, true, false, true]
-    nh_fap: [1_875, 1_875, 1_875, 1_875, 2_500, 2_500, 0, 1_875]
+    nh_fap: [1_875, 1_172, 1_875, 1_172, 2_500, 1_563, 0, 1_875]
 
 # Manual page 15 counts ordinary DoD retirement separately from pension/VA income.
 # Primary pay of 50,000 exceeds the one-person 48,713 ceiling. The 10,000 control
@@ -2762,7 +2766,8 @@
 # Manual pp12,18,21,77-78: unsubsidized heat in rent with no bill and no bedrooms.
 # Unit 1: one room in Belknap County,
 # 2,000 * 1 * 6,610 / 1,000,000 * 28.881 / 0.78 = 489.50, tier DD; 10,000 is within
-# 75% of 15,960 (11,970), band A; DD/A = 750.
+# 75% of 15,960 (11,970), band A; DD/A = 750. Heat in rent pays
+# 750 * 0.625 = 468.75, rounded up to 469.
 # Unit 2: an unknown county gives no estimate, so the cost is 0 and no award is paid
 # although the household is eligible.
 - name: "Case 85, heat in rent with no bill uses the one-room estimate, and no estimate pays nothing."
@@ -2805,12 +2810,12 @@
   output:
     nh_fap_heating_cost: [489.495923, 0]
     nh_fap_eligible: [true, true]
-    nh_fap: [750, 0]
+    nh_fap: [469, 0]
 
 # Manual pp15,17: Social Security of 28,000 is 2,333.33 a month, or 2,313.33 after
 # the $20 exclusion, above the MSP limit (135% of the 2027 one-person guideline,
-# about 1,838), so the enrollee pays 202.90 * 12 = 2,434.80.
-# 28,000 - 2,434.80 = 25,565.20, 160.2% of 15,960: above 150% (23,940) and within
+# about 1,838), so the enrollee pays the projected 2027 premium of 209.50 * 12 = 2,514.
+# 28,000 - 2,514 = 25,486, 159.7% of 15,960: above 150% (23,940) and within
 # 175% (27,930), band E. The 2,000 oil bill is in tier BB; BB/E = 1,100.
 - name: "Case 86, the Part B deduction moves a Social Security recipient into a higher-paying band."
   period: 2027
@@ -2836,8 +2841,8 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
-    nh_fap_countable_income: 25_565.2
+    medicare_part_b_premium: 2_514
+    nh_fap_countable_income: 25_486
     nh_fap: 1_100
 
 # Manual p15 and plan item 1.9: municipal general assistance is not counted.
@@ -2899,3 +2904,335 @@
   output:
     nh_fap_heating_cost: 1_200
     nh_fap: 1_095
+
+# Period 2026 uses the PY26 Fuel Assistance Program Benefits chart
+# (https://liheapch.acf.gov/docs/2026/benefits-matricies/NH_BenefitMatrix_2026.pdf)
+# with the 2025 one-person guideline of 15,650: 10,000 is band A (at or below
+# 75%, 11,737.50) and 40,000 is band F (above 175%, 27,387.50, and at or below
+# the 47,604 limit). Cost tiers start at 1,000 (CC), 1,500 (BB) and 1,750 (AA).
+# Each household repeats a period 2027 case above.
+
+# PY26 chart, deliverable heat DD/A cell. Case 1's household.
+- name: "Case 89, PY26 delivered matrix cost tier DD and income band A."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 677
+
+# PY26 chart, utility heat DD/A cell: 677 * 0.625 = 423.125, published as 424.
+# Case 2's household.
+- name: "Case 90, PY26 utility matrix cost tier DD and income band A rounds up."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 424
+
+# PY26 chart, deliverable heat AA/F cell. Case 47's household: 4,000 is at or
+# above 1,750, tier AA, where period 2027 needs 3,500.
+- name: "Case 91, PY26 delivered matrix cost tier AA and income band F."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 726
+
+# PY26 chart, utility heat CC/A cell: 1,016 * 0.625 = 635.
+- name: "Case 92, PY26 utility annual cost 1499.99 stays in cost tier CC."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_499.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 635
+
+# PY26 chart, utility heat BB/A cell: 1,355 * 0.625 = 846.875, published as 847.
+# The chart's "$1,000 UP TO $1,500" and "$1,500 UP TO $1,750" labels overlap at
+# 1,500; the model reads the lower bound as inclusive.
+- name: "Case 93, PY26 utility annual cost 1500 enters cost tier BB."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 847
+
+# PY26 chart, utility heat BB/A cell. Case 61's household.
+- name: "Case 94, PY26 utility annual cost 1749.99 stays in cost tier BB."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_749.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 847
+
+# PY26 chart, utility heat AA/A cell ("$1,750 & UP"): 2,177 * 0.625 = 1,360.625,
+# published as 1,361. Case 62's household.
+- name: "Case 95, PY26 utility annual cost 1750 enters cost tier AA."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_750
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_361
+
+# Heat included in rent in period 2026. The FY2026 state plan, item 2.3, reduces
+# these renters' benefit, and item 2.6 lists an estimated minimum benefit of 100.
+# The rate of 0.625 is inferred: the PY26 chart's lowest cell, utility DD/F at 160,
+# times 0.625 is that minimum. The plan does not name the minimum as a heat-in-rent
+# award. With no bill, the one-room Belknap County estimate sets
+# the cost: natural gas 2,000 * 1 * 6,610 / 1,000,000 * 15 / 0.82 = 241.83, tier
+# DD. Income of 40,000 is band F. Deliverable DD/F 256 * 0.625 = 160 for utility
+# heat, and 160 * 0.625 = 100.
+- name: "Case 96, PY26 heat in rent with gas heat and band F income receives the plan's estimated 100 minimum."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "BELKNAP_COUNTY_NH"
+  output:
+    nh_fap_heating_cost: 241.829268
+    nh_fap_eligible: true
+    nh_fap: 100
+
+# Case 89's household with heat included in rent and no bill. The one-room
+# Belknap County oil estimate, 2,000 * 1 * 6,610 / 1,000,000 * 28.881 / 0.78 =
+# 489.50, is tier DD. Deliverable DD/A is 677, and 677 * 0.625 = 423.125, rounded
+# up to 424. The rate and the rounding of this heat-in-rent amount are inferred, not
+# published: 424 is the PY26 utility DD/A cell, which the chart rounds up, and
+# rounding half up would give 423. Case 89 pays the same household 677 when it buys
+# oil directly.
+- name: "Case 97, PY26 heat in rent with oil heat receives 0.625 of the deliverable award."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "BELKNAP_COUNTY_NH"
+  output:
+    nh_fap_heating_cost: 489.495923
+    nh_fap_eligible: true
+    nh_fap: 424
+
+# Heat included in rent in period 2027. The FY2027 state plan, item 2.3, reduces
+# these renters' benefit, and item 2.6 lists an estimated minimum benefit of 188.
+# The rate of 0.625 is inferred, and the plan does not name the minimum as a
+# heat-in-rent award. The PY2027 schedule's lowest cell is utility heat under
+# 1,000 in band F: deliverable 400 * 0.75 = 300. 300 * 0.625 = 187.5, which is
+# 188 rounded up or half up. With no bill, the
+# one-room Belknap County gas estimate, 2,000 * 1 * 6,610 / 1,000,000 * 15 / 0.82 =
+# 241.83, sets the cost. Income of 40,000 is above 175% of 15,960 (27,930) and at
+# or below the 48,713 limit, band F. Case 96's household in period 2027.
+- name: "Case 98, PY27 heat in rent with gas heat and band F income receives the plan's estimated 188 minimum."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+        county_str: "BELKNAP_COUNTY_NH"
+  output:
+    nh_fap_heating_cost: 241.829268
+    nh_fap_eligible: true
+    nh_fap: 188
+
+# PY26 chart, utility heat CC/A cell: 1,016 * 0.625 = 635. The chart's
+# "$1,000 OR LESS" and "$1,000 UP TO $1,500" labels overlap at 1,000; the model
+# reads the lower bound as inclusive, so a cost of exactly 1,000 is tier CC. Tier
+# DD would pay 424 (Case 90). The chart does not settle which tier applies.
+# Case 92's household.
+- name: "Case 99, PY26 utility annual cost 1000 enters cost tier CC."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 635

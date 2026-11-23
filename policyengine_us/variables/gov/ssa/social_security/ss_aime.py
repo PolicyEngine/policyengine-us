@@ -1,5 +1,9 @@
 from policyengine_us.model_api import *
 import numpy as np
+from policyengine_us.tools.social_security.earnings import (
+    highest_earnings,
+    index_covered_earnings,
+)
 
 
 class ss_aime(Variable):
@@ -83,8 +87,8 @@ def _compute_aime(person, period, parameters, additional_earnings_variable=None)
                         if idx_years_ago >= 0:
                             idx_period = period.this_year.offset(-int(idx_years_ago))
                             idx_nawi = parameters(idx_period).gov.ssa.nawi
-                            indexed_amount[idx_mask] = covered_earnings[idx_mask] * (
-                                idx_nawi / year_nawi
+                            indexed_amount[idx_mask] = index_covered_earnings(
+                                covered_earnings[idx_mask], year_nawi, idx_nawi
                             )
 
             indexed_amount[no_indexing] = covered_earnings[no_indexing]
@@ -96,14 +100,6 @@ def _compute_aime(person, period, parameters, additional_earnings_variable=None)
     else:
         earnings_matrix = np.zeros((person.count, 1))
 
-    sorted_earnings = np.sort(earnings_matrix, axis=1)[:, ::-1]
-
-    top_n = min(sorted_earnings.shape[1], p.years_of_earnings)
-    top_earnings = sorted_earnings[:, :top_n]
-
-    if top_n < p.years_of_earnings:
-        padding = np.zeros((person.count, p.years_of_earnings - top_n))
-        top_earnings = np.hstack([top_earnings, padding])
-
+    top_earnings = highest_earnings(earnings_matrix, p.years_of_earnings)
     total_indexed = np.sum(top_earnings, axis=1)
     return total_indexed / (p.years_of_earnings * p.months_per_year)

@@ -1,0 +1,17 @@
+description: Colorado tabulates income limits through this household size under the Low-income Energy Assistance Program.
+# FY2026 prints limits through size 8 and a fixed amount for each additional
+# member; FY2027 prints every size through the 15-member maximum, so the
+# additional member amounts no longer apply.
+values:
+  2025-11-01: 8
+  2026-11-01: 15
+
+metadata:
+  unit: person
+  period: year
+  label: Colorado LEAP maximum tabulated household size
+  reference:
+    - title: Colorado 2026–27 LEAP Training Operations Manual
+      href: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=5
+    - title: Colorado 2025–26 LEAP Training Operations Manual
+      href: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4

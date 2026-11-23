@@ -1,273 +1,578 @@
-- name: One parent with two children, agi > hhs_fpg, both children eligible for cccap but not eligible for quality rating facility discount.
-  absolute_error_margin: 0.1
-  period: 2023
+# 8 CCR 1403-1 3.124, PDF pages 79-85 of ruleVersionId 12658. A county charges
+# one fee per household: the base fee on gross income ((P)(1) and (P)(2)) plus
+# $15 for each child in care after the first above the guideline ((P)(3)), in
+# whole dollars ((A)), at 55% when every child in care receives part-time
+# care ((U) and (W)), and 20% lower at a provider in the top three quality
+# levels ((H)). CDEC's parent fee tool drops the cents after each step, in that order:
+# https://drive.google.com/file/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/view
+# January to September 2026 use the guideline in 3.111(H)(2), and October to
+# December 2026 the one in 3.111(H)(3).
+- name: Case 1, a parent earning $40,000 with two children in full-time care.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       parent:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
+        age: 35
+        employment_income: 40_000
       child1:
-        is_disabled: false
+        age: 3
         is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 20
-        co_quality_rating_of_child_care_facility: 1
+        childcare_hours_per_day: 8
       child2:
-        is_disabled: true
+        age: 5
         is_tax_unit_dependent: true
-        age: 17
-        childcare_hours_per_day: 4
-        co_quality_rating_of_child_care_facility: 1
+        childcare_hours_per_day: 8
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        co_ccap_eligible: 
-          2023-01: true
-        co_ccap_countable_income: 46_000
-        co_ccap_base_parent_fee: 
-          2023-01: 287.18
-        co_ccap_add_on_parent_fee: 
-          2023-01: 15
     households:
-      household: 
+      household:
         members: [parent, child1, child2]
-        county_str: BACA_COUNTY_CO
         state_code: CO
   output:
-    co_ccap_parent_fee: 
-      2023-01: 770.56
-    # base + add_on: 287.18 + 15 = 302.18; 
-    # child1: 302.18 * 2 + child2: 302.18 * .55 = 770.56;
-    # not qualified for quality rating discount;
-    # final parent fee: 770.56
+    # 40,000 / 12 = 3,333.33
+    co_ccap_countable_income: 3_333.33
+    # (15,650 + 2 * 5,500) / 12 = 2,220.83
+    co_ccap_fpg: 2_220.83
+    # 0.01 * 3,333.33 + 0.14 * (3,333.33 - 2,220.83) = 33.33 + 155.75 = 189.08,
+    # which drops its cents to 189.
+    co_ccap_base_parent_fee: 189
+    # (2 - 1) * 15
+    co_ccap_add_on_parent_fee: 15
+    # 189 + 15 = 204.
+    co_ccap_parent_fee: 204
 
-- name: Two parents with two children, agi > hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
-  absolute_error_margin: 0.1  
-  period: 2023
+- name: Case 2, the same family in October 2026, matching CDEC's parent fee tool.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  # A test of a month other than January applies yearly inputs only when they
+  # carry their year.
   input:
     people:
-      parent1:
-        is_disabled: true
-        is_tax_unit_dependent: false
-        age: 45
-      parent2:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
+      parent:
+        age:
+          2026: 35
+        employment_income:
+          2026: 40_000
       child1:
-        is_disabled: false
-        is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 20
-        co_quality_rating_of_child_care_facility: 3
+        age:
+          2026: 3
+        is_tax_unit_dependent:
+          2026: true
+        childcare_hours_per_day:
+          2026: 8
       child2:
-        is_disabled: true
-        is_tax_unit_dependent: true
-        age: 17
-        childcare_hours_per_day: 4
-        co_quality_rating_of_child_care_facility: 1
+        age:
+          2026: 5
+        is_tax_unit_dependent:
+          2026: true
+        childcare_hours_per_day:
+          2026: 8
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
-        co_ccap_eligible: 
-          2023-01: true
-        co_ccap_countable_income: 90_000
-        co_ccap_base_parent_fee: 
-          2023-01: 749.38
-        co_ccap_add_on_parent_fee: 
-          2023-01: 15
+        members: [parent, child1, child2]
     households:
-      household: 
-        members: [parent1, parent2, child1, child2]
-        county_str: BACA_COUNTY_CO
-        state_code: CO
+      household:
+        members: [parent, child1, child2]
+        state_code:
+          2026: CO
   output:
-    co_ccap_parent_fee: 
-      2023-01: 1_559.34
-    # base + add_on: 749.38 + 15 = 764.38; 
-    # child1: 764.38 * 2 + child2: 764.38 * .55 = 1_949.17;
-    # quality rating discount: 1_949.17 * .8 = 1_559.34
-    # final parent fee: 1_559.34
+    # (15,960 + 2 * 5,680) / 12 = 2,276.67
+    co_ccap_fpg: 2_276.67
+    # 0.01 * 3,333.33 + 0.14 * (3,333.33 - 2,276.67) = 33.3333 + 147.9324 =
+    # 181.2657, which drops its cents to 181.
+    co_ccap_base_parent_fee: 181
+    # 181 + 15 = 196. The tool, with a family of 3, $40,000 a year and 2
+    # children, gives the same full-time fee.
+    co_ccap_parent_fee: 196
 
-- name: Two parents with two children, agi <= hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
-  absolute_error_margin: 0.1  
-  period: 2023
+- name: Case 3, with no recorded hours the children count as in full-time care.
+  period: 2026-01
   input:
     people:
-      parent1:
-        is_disabled: true
-        is_tax_unit_dependent: false
-        age: 45
-      parent2:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
+      parent:
+        age: 35
+        employment_income: 40_000
       child1:
-        is_disabled: false
+        age: 3
         is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 20
-        co_quality_rating_of_child_care_facility: 3
       child2:
-        is_disabled: true
+        age: 5
         is_tax_unit_dependent: true
-        age: 17
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CO
+  output:
+    co_ccap_children_in_care: 2
+    co_ccap_child_in_part_time_care: [false, false, false]
+    co_ccap_parent_fee: 204
+
+- name: Case 4, both children in part-time care pay 55% of the fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
         childcare_hours_per_day: 4
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CO
+  output:
+    # Each child has 0.55 * 21.67 = 11.92 units a month, under 13.
+    co_ccap_child_in_part_time_care: [false, true, true]
+    # 204 * 0.55 = 112.2, which drops its cents to 112.
+    co_ccap_parent_fee: 112
+
+- name: Case 5, one child in full-time care keeps the full fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CO
+  output:
+    co_ccap_child_in_part_time_care: [false, true, false]
+    co_ccap_parent_fee: 204
+
+- name: Case 6, the part-time rate and then the quality discount, each dropping cents.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 28_020
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 28,020 / 12 = 2,335; the guideline for two is 21,150 / 12 = 1,762.50.
+    # 0.01 * 2,335 + 0.14 * (2,335 - 1,762.50) = 23.35 + 80.15 = 103.50, so 103.
+    co_ccap_base_parent_fee: 103
+    # Full time: 103. Part time: 103 * 0.55 = 56.65, so 56. Quality level 3:
+    # 56 * 0.8 = 44.8, so 44. The discount before the part-time rate would
+    # give 45, and so would rounding once at the end.
+    co_ccap_parent_fee: 44
+
+- name: Case 7, a child in school with short days pays the part-time fee under section 3.124(W).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 0.55 * 24 = 13.2 units, but section 3.124(W) covers the 8-year-old.
+    co_ccap_full_time_equivalent_units: [0, 13.2]
+    co_ccap_child_in_part_time_care: [false, true]
+    # 0.01 * 2,500 + 0.14 * (2,500 - 1,762.50) = 25 + 103.25 = 128.25, so 128;
+    # 128 * 0.55 = 70.4, so 70.
+    co_ccap_parent_fee: 70
+
+- name: Case 8, a kindergartner with the same schedule pays the full fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_child_in_part_time_care: [false, false]
+    co_ccap_parent_fee: 128
+
+- name: Case 9, a family with no income pays no fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 0
+
+- name: Case 10, a family with no child in care pays no fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_children_in_care: 0
+    co_ccap_parent_fee: 0
+
+- name: Case 11, income below the guideline adds no fee for the second child.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 20_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CO
+  output:
+    co_ccap_add_on_parent_fee: 0
+    # 0.01 * 1,666.67 = 16.67, so 16.
+    co_ccap_parent_fee: 16
+
+- name: Case 12, a teenager sharing the expense adds no fee for an additional child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+      teenager:
+        age: 15
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, teenager]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [parent, child1, child2, teenager]
+        state_code: CO
+  output:
+    co_ccap_child_in_care: [false, true, true, false]
+    # 50,000 / 12 = 4,166.67; the guideline for four is 32,150 / 12 = 2,679.17.
+    # 0.01 * 4,166.67 + 0.14 * 1,487.50 = 41.67 + 208.25 = 249.92, so 249.
+    co_ccap_base_parent_fee: 249
+    co_ccap_add_on_parent_fee: 15
+    # 249 + 15 = 264.
+    co_ccap_parent_fee: 264
+
+- name: Case 13, one provider in the top three quality levels is enough.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        co_quality_rating_of_child_care_facility: 2
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
         co_quality_rating_of_child_care_facility: 4
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1, child2]
-        co_ccap_eligible: 
-          2023-01: true
-        co_ccap_countable_income: 20_000
-        co_ccap_base_parent_fee: 
-          2023-01: 16.67
-        co_ccap_add_on_parent_fee: 
-          2023-01: 0
+        members: [parent, child1, child2]
     households:
-      household: 
-        members: [parent1, parent2, child1, child2]
-        county_str: CROWLEY_COUNTY_CO
+      household:
+        members: [parent, child1, child2]
         state_code: CO
   output:
-    co_ccap_parent_fee: 
-      2023-01: 34.01
-    # base + add_on: 16.67 + 0 = 16.67; 
-    # child1: 16.67 * 2 + child2: 16.67 * .55 = 42.51;
-    # quality rating discount: 42.51 * .8 = 34.01
-    # final parent fee: 34.01
+    # 204 * 0.8 = 163.2, so 163.
+    co_ccap_parent_fee: 163
 
-- name: Two parents with one child, agi <= hhs_fpg, child eligible for cccap and quality rating facility discount.
-  absolute_error_margin: 0.1  
-  period: 2023
+- name: Case 14, a rated provider for a child outside care gives no discount.
+  period: 2026-01
   input:
     people:
-      parent1:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
-      parent2:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
-      child1:
-        is_disabled: false
+      parent:
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 3
         is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 15
+        childcare_hours_per_day: 8
+      teenager:
+        age: 15
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
         co_quality_rating_of_child_care_facility: 5
     spm_units:
       spm_unit:
-        members: [parent1, parent2, child1]
-        co_ccap_eligible: 
-          2023-01: true
-        co_ccap_countable_income: 20_000
-        co_ccap_base_parent_fee: 
-          2023-01: 16.67
-        co_ccap_add_on_parent_fee: 
-          2023-01: 0
+        members: [parent, child, teenager]
     households:
-      household: 
-        members: [parent1, parent2, child1]
-        county_str: CROWLEY_COUNTY_CO
+      household:
+        members: [parent, child, teenager]
         state_code: CO
   output:
-    co_ccap_parent_fee: 
-      2023-01: 20.67
-    # base + add_on: 16.67 + 0 = 16.67; 
-    # child1: 16.67 * 1.55 = 25.84;
-    # quality rating discount: 25.84 * .8 = 20.67
-    # final parent fee: 20.67
+    # One child in care, so no fee for an additional child: 189.08, so 189.
+    co_ccap_parent_fee: 189
 
-- name: Two parents with two children, agi <= hhs_fpg, one eligible for cccap and quality rating facility discount, the other not.
-  absolute_error_margin: 0.1  
-  period: 2022
-  input:
-    people:
-      parent1:
-        is_disabled: true
-        is_tax_unit_dependent: false
-        age: 45
-      parent2:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
-      child1:
-        is_disabled: false
-        is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 20
-        co_quality_rating_of_child_care_facility: 3
-      child2:
-        is_disabled: false
-        is_tax_unit_dependent: true
-        age: 17
-        childcare_hours_per_day: 4
-        co_quality_rating_of_child_care_facility: 4
-    spm_units:
-      spm_unit:
-        members: [parent1, parent2, child1, child2]
-        co_ccap_eligible: 
-          2022-12: true
-        co_ccap_countable_income: 20_000
-        co_ccap_base_parent_fee: 
-          2022-12: 16.67
-        co_ccap_add_on_parent_fee: 
-          2022-12: 0
-    households:
-      household: 
-        members: [parent1, parent2, child1, child2]
-        county_str: CROWLEY_COUNTY_CO
-        state_code: CO
-  output:
-    co_ccap_parent_fee: 
-      2022-12: 26.67
-    # base + add_on: 16.67 + 0 = 16.67; 
-    # child1: 16.67 * 2  = 33.34;
-    # quality rating discount: 33.34 * .8 = 26.67
-    # final parent fee: 26.67
-
-- name: One parent with two children, agi > hhs_fpg, one eligible for cccap but not eligible for quality rating facility discount, the other not eligible for cccap.
-  absolute_error_margin: 0.1    
-  period: 2022
+- name: Case 15, a household outside Colorado.
+  period: 2026-01
   input:
     people:
       parent:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        age: 45
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    co_ccap_parent_fee: 0
+
+- name: Case 16, weekly hours of care set the part-time rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 20 hours over five weekdays: 4 hours a day, 0.55 * 21.67 = 11.92 units.
+    co_ccap_care_hours_per_day: [0, 4]
+    co_ccap_child_in_part_time_care: [false, true]
+    # 40,000 / 12 = 3,333.33; the guideline for two is 21,150 / 12 = 1,762.50.
+    # 0.01 * 3,333.33 + 0.14 * 1,570.83 = 33.33 + 219.92 = 253.25, so 253.
+    # 253 * 0.55 = 139.15, so 139.
+    co_ccap_parent_fee: 139
+
+- name: Case 17, a child in grade school with only after-school expenses pays the part-time fee.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        after_school_expenses: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_child_in_part_time_care: [false, true]
+    # 253 * 0.55 = 139.15, so 139.
+    co_ccap_parent_fee: 139
+
+- name: Case 18, a fee just short of a whole dollar drops to the dollar below.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 23_999.64
       child1:
-        is_disabled: false
+        age: 3
         is_tax_unit_dependent: true
-        age: 6
-        childcare_hours_per_day: 20
-        co_quality_rating_of_child_care_facility: 1
+        childcare_hours_per_day: 8
       child2:
-        is_disabled: false
+        age: 5
         is_tax_unit_dependent: true
-        age: 17
-        childcare_hours_per_day: 4
-        co_quality_rating_of_child_care_facility: 4
+        childcare_hours_per_day: 8
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        co_ccap_eligible: 
-          2022-12: true
-        co_ccap_countable_income: 46_000
-        co_ccap_base_parent_fee: 
-          2022-12: 287.18
-        co_ccap_add_on_parent_fee: 
-          2022-12: 0
     households:
-      household: 
+      household:
         members: [parent, child1, child2]
-        county_str: BACA_COUNTY_CO
         state_code: CO
   output:
-    co_ccap_parent_fee: 
-      2022-12: 574.36
-    # base + add_on: 287.18 + 0 = 287.18; 
-    # child1: 287.18 * 2 = 574.36;
-    # not qualified for quality rating discount
-    # final parent fee: 574.36
+    # 23,999.64 / 12 = 1,999.97, below the 2,220.83 guideline.
+    # 0.01 * 1,999.97 = 19.9997, so 19.
+    co_ccap_parent_fee: 19
+
+- name: Case 19, July 2028 still charges the section 3.124(P) fee.
+  period: 2028-07
+  input:
+    people:
+      parent:
+        age:
+          2028: 35
+      child1:
+        age:
+          2028: 3
+        is_tax_unit_dependent:
+          2028: true
+        childcare_hours_per_day:
+          2028: 8
+      child2:
+        age:
+          2028: 5
+        is_tax_unit_dependent:
+          2028: true
+        childcare_hours_per_day:
+          2028: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        co_ccap_countable_income: 3_500
+        co_ccap_fpg: 2_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code:
+          2028: CO
+  output:
+    # 0.01 * 3,500 + 0.14 * 1,500 = 35 + 210 = 245, and 15 for the second child.
+    co_ccap_base_parent_fee: 245
+    co_ccap_add_on_parent_fee: 15
+    co_ccap_parent_fee: 260
+
+- name: Case 20, August 2028 charges the section 3.124(Q) fee, with no add-on.
+  period: 2028-08
+  input:
+    people:
+      parent:
+        age:
+          2028: 35
+      child1:
+        age:
+          2028: 3
+        is_tax_unit_dependent:
+          2028: true
+        childcare_hours_per_day:
+          2028: 8
+      child2:
+        age:
+          2028: 5
+        is_tax_unit_dependent:
+          2028: true
+        childcare_hours_per_day:
+          2028: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        co_ccap_countable_income: 3_500
+        co_ccap_fpg: 2_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code:
+          2028: CO
+  output:
+    # 1% of 2,000, 3% of 600 (to 130%), 5% of 600 (to 160%) and 7% of the
+    # last 300: 20 + 18 + 30 + 21 = 89.
+    co_ccap_base_parent_fee: 89
+    co_ccap_add_on_parent_fee: 0
+    co_ccap_parent_fee: 89

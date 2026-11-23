@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class KYSSPClaimType(Enum):
@@ -32,13 +36,13 @@ class ky_ssp_claim_type(Variable):
         category = person("ky_ssp_category", period)
         in_qualifying_category = category != category.possible_values.NONE
         ssp_categorically_eligible = is_ssi_eligible & is_adult & in_qualifying_category
-        eligible_count = person.marital_unit.sum(ssp_categorically_eligible)
-        marital_unit_size = person.marital_unit.nb_persons()
+        eligible_count = _ssi_couple_total(
+            person, period.this_year, ssp_categorically_eligible.astype(int)
+        )
+        married = _ssi_spouse_index(person, period.this_year) >= 0
         both_eligible = (eligible_count == 2) & ssp_categorically_eligible
         one_eligible_couple = (
-            (eligible_count == 1)
-            & ssp_categorically_eligible
-            & (marital_unit_size == 2)
+            (eligible_count == 1) & ssp_categorically_eligible & married
         )
         return select(
             [both_eligible, one_eligible_couple],
