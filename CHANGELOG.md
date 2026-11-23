@@ -1,3 +1,10 @@
+## [2.153.2] - 2026-11-23
+
+### Changed
+
+- Update the Virginia EAP value per point to the published FFY2026 amount of $3.950584.
+
+
 ## [2.153.1] - 2026-11-23
 
 ### Fixed
