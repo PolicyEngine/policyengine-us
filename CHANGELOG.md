@@ -1,3 +1,15 @@
+## [2.153.8] - 2026-11-23
+
+### Changed
+
+- Update Massachusetts HEAP to the FY2027 benefit levels and High Energy Cost Supplement thresholds.
+- Apply New Hampshire's PY26 Fuel Assistance Program benefit chart and heating cost tiers to period 2026, and pay renters with heat included in rent 62.5% of the scheduled award.
+
+### Fixed
+
+- Keep a Massachusetts HEAP household whose income equals a benefit-level cutoff in the lower-numbered level.
+
+
 ## [2.153.7] - 2026-11-23
 
 ### Fixed
