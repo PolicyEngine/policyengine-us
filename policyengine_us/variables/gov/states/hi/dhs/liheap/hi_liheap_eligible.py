@@ -57,4 +57,8 @@ class hi_liheap_eligible(Variable):
         responsible = (
             (gas_bill | electric_bill | utilities_in_rent) & (fuel != types.UNSPECIFIED)
         ) | (heat_in_rent & rent_fuel)
-        return (size > 0) & (income_eligible | categorical) & responsible
+        # Draft 2.12 and 4.2 require PV households to have billed usage in
+        # excess of generation. A positive bill can consist of account fees.
+        pv_status = spm_unit("hi_liheap_photovoltaic_status", period)
+        pv_eligible = pv_status != pv_status.possible_values.PV_WITHOUT_NET_USAGE
+        return (size > 0) & (income_eligible | categorical) & responsible & pv_eligible
