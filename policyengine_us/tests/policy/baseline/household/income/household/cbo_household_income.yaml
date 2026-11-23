@@ -35,14 +35,19 @@
     cbo_household_market_income: 49_102
     # CMS Medicare spending per enrollee, 2025.
     medicare_gross_cost: 17_751
-    # $12,000 + $17,751 + $2,000 + $1,000.
-    cbo_household_social_insurance_benefits: 32_751
-    cbo_household_income_before_transfers_and_taxes: 81_853
-    cbo_household_income: 81_853
+    # CBO counts Medicare net of premiums: $17,751 less the 2025 standard
+    # Part B premium of $185 a month ($2,220); Part A is premium-free with
+    # 40 quarters of coverage.
+    medicare_cost: 15_531
+    # $12,000 + $15,531 + $2,000 + $1,000.
+    cbo_household_social_insurance_benefits: 30_531
+    cbo_household_income_before_transfers_and_taxes: 79_633
+    cbo_household_income: 79_633
 
 - name: CBO means-tested transfers include only the listed programs
   period: 2026
   input:
+    state_code: WA
     medicaid: 10
     chip: 5
     snap: 7
@@ -54,16 +59,27 @@
     reduced_price_school_meals: 1
     spm_unit_energy_subsidy: 9
     general_assistance: 6
-    wic: 100
+    # WIC is a child nutrition program (42 U.S.C. 1786).
+    wic: 11
+    # Medicare Savings Programs pay Medicare premiums and cost sharing for
+    # low-income enrollees through Medicaid (42 U.S.C. 1396a(a)(10)(E)).
+    msp_cost: 12
+    # Washington's SSI state supplement and State Family Assistance.
+    wa_ssp: 13
+    wa_sfa: 14
     head_start: 100
     early_head_start: 100
     basic_income: 100
     household_state_benefits: 100
     household_health_benefits: 100
+    veterans_benefits: 100
+    # CBO subtracts the premium tax credit from federal income taxes.
+    assigned_aca_ptc: 100
   output:
-    cbo_household_means_tested_transfers: 55
+    # $55 from the federal programs above WIC, plus $11 + $12 + $13 + $14.
+    cbo_household_means_tested_transfers: 105
 
-- name: CBO after-tax income uses federal taxes only and keeps negative income tax
+- name: CBO after-tax income uses federal taxes only, keeps negative income tax and subtracts the premium tax credit
   period: 2025
   input:
     age: 40
@@ -84,9 +100,44 @@
     self_employment_tax: 0
     cbo_corporate_income_tax: 100
     cbo_excise_tax: 20
+    assigned_aca_ptc: 800
     household_state_tax_before_refundable_credits: 9_999
   output:
-    cbo_household_income_before_transfers_and_taxes: 37_337
+    # $30,000 + $1,860 + $435 + $42 + $100 of corporate income tax, which
+    # CBO counts in market income as well as in taxes, plus $5,000.
+    cbo_household_income_before_transfers_and_taxes: 37_437
     cbo_household_means_tested_transfers: 11_000
-    cbo_household_federal_taxes: 3_252
-    cbo_household_income_after_transfers_and_taxes: 45_085
+    # -$1,500 + $1,860 + $435 + $1,860 + $435 + $42 + $100 + $20 - $800.
+    cbo_household_federal_taxes: 2_452
+    # $37,437 + $11,000 - $2,452.
+    cbo_household_income_after_transfers_and_taxes: 45_985
+
+- name: CBO market income adds retirement income and private transfers but not veterans' benefits or educational assistance
+  period: 2026
+  input:
+    state_code: TX
+    age: 40
+    employment_income: 100_000
+    employer_social_security_tax: 6_200
+    employer_medicare_tax: 1_450
+    employer_federal_unemployment_tax: 42
+    # Income received in retirement for past services.
+    railroad_benefits: 1_200
+    survivor_benefits: 700
+    # Other nongovernmental sources.
+    child_support_received: 800
+    financial_assistance: 250
+    cbo_corporate_income_tax: 100
+    # Educational assistance mixes Pell Grants and other government aid with
+    # private scholarships, and CBO's other income covers only
+    # nongovernmental sources.
+    educational_assistance: 900
+    # CBO's income categories have not named veterans' benefits since its
+    # report on 2014, published in March 2018.
+    veterans_benefits: 3_000
+  output:
+    # $100,000 + $6,200 + $1,450 + $42 + $1,200 + $700 + $800 + $250 + $100.
+    cbo_household_market_income: 110_742
+    cbo_household_social_insurance_benefits: 0
+    cbo_household_means_tested_transfers: 0
+    cbo_household_income_before_transfers_and_taxes: 110_742

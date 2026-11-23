@@ -157,10 +157,26 @@ def test_members_are_state_gated(list_path, variables):
     )
 
 
-# household_benefits needs no state gate, because most members are national.
-@pytest.mark.parametrize(
-    "list_path", [*AGGREGATE_LISTS, "gov/household/household_benefits.yaml"]
-)
+# household_benefits and the income concept lists need no state gate, because
+# most of their members are national. Each CBO and Census list has one block
+# today, so for them the check guards the blocks added later.
+INCOME_CONCEPT_LISTS = [
+    "gov/household/household_benefits.yaml",
+    *sorted(
+        str(path.relative_to(PARAMETERS))
+        for path in (PARAMETERS / "gov/household").glob("cbo_*.yaml")
+    ),
+    *sorted(
+        str(path.relative_to(PARAMETERS))
+        for path in (PARAMETERS / "gov/household/census_money_income_sources").glob(
+            "*.yaml"
+        )
+        if path.name != "index.yaml"
+    ),
+]
+
+
+@pytest.mark.parametrize("list_path", [*AGGREGATE_LISTS, *INCOME_CONCEPT_LISTS])
 def test_no_silent_removals_between_year_blocks(list_path):
     blocks = blocks_of(list_path)
     for (_, prev), (date, curr) in zip(blocks, blocks[1:]):
