@@ -1,0 +1,32 @@
+description: Vermont adds these federal above-the-line deductions back to federal adjusted gross income for the renter credit.
+values:
+  # 32 V.S.A. 6061(18)(D) adds back, "to the extent excluded from federal
+  # adjusted gross income", the deductions listed below. Its other items,
+  # business expenses of reservists, performing artists and fee-basis
+  # government officials (Schedule 1 line 12) and moving expenses for members
+  # of the Armed Forces (line 14), have no variable in this model. Line
+  # numbers are those of the 2025 Schedule 1 (Form 1040), Part II.
+  2021-01-01:
+    - educator_expense_ald # line 11
+    - health_savings_account_ald # line 13
+    - self_employment_tax_ald # line 15
+    - self_employed_pension_contribution_ald # line 16
+    - self_employed_health_insurance_ald # line 17
+    - early_withdrawal_penalty # line 18
+    - alimony_expense_ald # line 19a
+    - traditional_ira_deduction # line 20
+    - student_loan_interest_ald # line 21
+    # The tuition and fees deduction (IRC 222) is off the federal list from
+    # 2021, so it adds nothing unless a reform restores it.
+    - capped_qualified_tuition_expenses_ald
+metadata:
+  unit: list
+  period: year
+  label: Vermont renter credit deduction add-backs
+  reference:
+    - title: 32 V.S.A. § 6061(18)(D)
+      href: https://legislature.vermont.gov/statutes/section/32/154/06061
+    - title: 2025 Form RCC-146, Vermont Renter Credit Claim, line 10
+      href: https://tax.vermont.gov/sites/tax/files/documents/RCC-146-2025.pdf#page=1
+    - title: 2025 Schedule 1 (Form 1040), Part II, Adjustments to Income
+      href: https://www.irs.gov/pub/irs-prior/f1040s1--2025.pdf#page=2

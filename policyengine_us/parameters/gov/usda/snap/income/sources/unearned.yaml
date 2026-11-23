@@ -4,7 +4,11 @@ values:
   2009-01-01:
     # (i)
     - ssi
+    # Reported GA amounts that are distinct from the named grants.
     - general_assistance
+    - ca_capi_countable_for_snap
+    # Illinois counts AABD Cash in SNAP under IDHS PM 08-04-04-c.
+    - il_aabd_countable_for_snap
     # (i) State SSI supplements. 273.9(b)(2)(i) counts "assistance payments
     # from Federal or federally aided public assistance programs, such as
     # supplemental security income (SSI) ... or other assistance programs
@@ -122,3 +126,7 @@ metadata:
       href: https://www.law.cornell.edu/cfr/text/7/273.9
     - title: POMS SI 01401.001 General Information about State Supplementation
       href: https://secure.ssa.gov/poms.nsf/lnx/0501401001
+    - title: Illinois IDHS PM 08-04-04-c, Nonexempt Unearned Income
+      href: https://www.dhs.state.il.us/page.aspx?item=15627
+    - title: Santa Clara CalFresh handbook, Public Assistance Payments Based on Need
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/calfresh/assets/CalFresh/Income_Definitions_and_Exemptions/Unearned.htm

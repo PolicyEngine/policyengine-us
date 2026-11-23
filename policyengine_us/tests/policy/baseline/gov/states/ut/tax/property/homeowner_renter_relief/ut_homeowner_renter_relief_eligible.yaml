@@ -108,7 +108,8 @@
         members: [person1, person2]
         state_code: UT
   output:
-    ut_homeowner_renter_relief_household_income: 70_000
+    # 10,000 + SSI 7,114 + 60,000 = 77,114.
+    ut_homeowner_renter_relief_household_income: 77_114
     ut_homeowner_renter_relief_eligible: [false, false]
 
 - name: Case 9, nontaxable income counts.

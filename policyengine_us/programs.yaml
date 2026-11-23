@@ -1134,11 +1134,11 @@ programs:
         notes: FY2025-FY2026 regular cooling benefit of $500 (Level I) or $400 (Level II), with the heating income test. Crisis cooling and air-conditioner purchase are out of scope.
       - state: HI
         status: partial
-        name: Hawaii LIHEAP subsidized dwelling benefit
-        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
-        variable: hi_liheap_subsidized_amount
+        name: Hawaii LIHEAP
+        full_name: Hawaii Low Income Home Energy Assistance Program
+        variable: hi_liheap
         parameter_prefix: gov.states.hi.dhs.liheap
-        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points for the Energy Credit on a gas (heating) or electric (cooling) account for any eligible household with that bill or with utilities in its rent; no private-dwelling dollar award because its statewide value per point was not located. Crisis, weatherization and equipment assistance are out of scope.
+        notes: FY2026 Energy Credit on a gas (heating) or electric (cooling) account, with a flat benefit for subsidized dwellings and photovoltaic households with net billed electricity usage. Private-dwelling points use an estimated $140 per point, the benefit matrix's example value. Crisis, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1372,7 +1372,7 @@ programs:
         variable: nh_fap
         parameter_prefix: gov.states.nh.doe.fap
         verified_years: "2027"
-        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; unsubsidized heat in rent receives the ordinary schedule, which prints no heat-in-rent reduction. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
+        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; renters with unsubsidized heat in rent receive 62.5% of the schedule, a rate inferred from each state plan's estimated minimum benefit. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
       - state: NJ
         status: partial
         name: New Jersey LIHEAP
@@ -1474,7 +1474,7 @@ programs:
         variable: va_eap
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
-        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
+        notes: FFY2026 Fuel Assistance only, with placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
       - state: VA
         status: partial
         name: Virginia EAP cooling

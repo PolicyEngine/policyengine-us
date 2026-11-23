@@ -170,9 +170,9 @@
     va_eap_cooling: 0
 
 # The Fairfax County retiree of the heating integration tests (Social Security
-# 11,736, countable 11,736 - 600 = 11,136, gas heat, 103 points x 4.531665 =
-# 466.76) also has a cooling cost and the $1,800 electric bill. Cooling pays
-# min(1,800, 365) = 365. The national LIHEAP total is 466.76 + 365 = 831.76.
+# 11,736, countable 11,736 - 600 = 11,136, gas heat, 103 points x 3.950584 =
+# 406.91) also has a cooling cost and the $1,800 electric bill. Cooling pays
+# min(1,800, 365) = 365. The national LIHEAP total is 406.91 + 365 = 771.91.
 - name: Case 8, a retiree receives both the heating and the cooling payment.
   period: 2026
   absolute_error_margin: 0.01
@@ -195,6 +195,6 @@
         state_code: VA
         county: FAIRFAX_COUNTY_VA
   output:
-    va_eap: 466.76
+    va_eap: 406.91
     va_eap_cooling: 365
-    liheap: 831.76
+    liheap: 771.91

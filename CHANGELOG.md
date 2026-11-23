@@ -1,3 +1,123 @@
+## [2.153.8] - 2026-11-23
+
+### Changed
+
+- Update Massachusetts HEAP to the FY2027 benefit levels and High Energy Cost Supplement thresholds.
+- Apply New Hampshire's PY26 Fuel Assistance Program benefit chart and heating cost tiers to period 2026, and pay renters with heat included in rent 62.5% of the scheduled award.
+
+### Fixed
+
+- Keep a Massachusetts HEAP household whose income equals a benefit-level cutoff in the lower-numbered level.
+
+
+## [2.153.7] - 2026-11-23
+
+### Fixed
+
+- Vermont renter credit income now adds back business, rental, farm and capital losses and the listed above-the-line deductions under 32 V.S.A. 6061(18)(A) and (D), and counts only the claimant's and spouse's nontaxable Social Security, not a dependent's.
+
+
+## [2.153.6] - 2026-11-23
+
+### Fixed
+
+- Maine sales and property tax fairness credit income now counts the head's and spouse's SSI and adds back only the net loss from combining the Schedule E items on Schedule 1 line 5, as 36 M.R.S. 5213-A and 5219-KK provide. A capital loss absorbed by the same filer's other-term gains is now added back too, so every capital loss in federal adjusted gross income comes back once.
+
+
+## [2.153.5] - 2026-11-23
+
+### Fixed
+
+- Utah homeowner's and renter's relief household income now counts alimony once, and adds SSI, nontaxable disability insurance benefits and capital loss carryovers claimed in the year. The Utah child tax credit now phases out on modified adjusted gross income (total income plus tax-exempt interest) without subtracting Utah subtractions or the state tax refund.
+
+
+## [2.153.4] - 2026-11-23
+
+### Fixed
+
+- Montana's SALT withholding estimate uses the filing-status brackets, federal standard deduction and capital gains rates Montana applies from 2024.
+
+
+## [2.153.3] - 2026-11-23
+
+### Fixed
+
+- Idaho LIHEAP applies the FY2027 income limit to households of eight, which stay on 60% of state median income.
+
+
+## [2.153.2] - 2026-11-23
+
+### Changed
+
+- Update the Virginia EAP value per point to the published FFY2026 amount of $3.950584.
+
+
+## [2.153.1] - 2026-11-23
+
+### Fixed
+
+- Remove the SNAP net income test from Colorado's Expanded Categorical Eligibility from June 2018 rather than from July 2024.
+- Apply the SNAP net income limit to Idaho broad-based categorically eligible households with an elderly or disabled member before July 2024, so they no longer qualify at any income.
+- Missouri property tax credit household income now counts military retirement benefits, U.S. obligation interest, tax-exempt retirement account distributions, general assistance, Missouri state supplementary payments, and rental, farm rental and estate losses. It adds back a nonbusiness loss only to the extent it lowered federal adjusted gross income to zero, leaves out a dependent's pensions, retirement distributions and exempt interest, and leaves out all veterans benefits when the claimant or spouse is a 100 percent service-connected disabled veteran.
+- Count alimony outside federal AGI, IRC 135 savings bond interest, IRC 911 excluded foreign income and tax-exempt 401(k), 403(b) and SEP distributions in Montana's elderly homeowner/renter credit gross household income.
+
+
+## [2.153.0] - 2026-11-23
+
+### Added
+
+- Hawaii LIHEAP private-dwelling Energy Credit at an estimated $140 per point and a flat credit for photovoltaic households with net electricity use, in a new `hi_liheap` total that replaces `hi_liheap_subsidized_amount`.
+
+
+## [2.152.17] - 2026-11-23
+
+### Fixed
+
+- Alaska, Missouri and Montana heating assistance now read `rent` for households with heat included in rent, so a request that sends `rent` is no longer treated as paying no rent.
+
+
+## [2.152.16] - 2026-11-22
+
+### Fixed
+
+- Let Deferred Action for Childhood Arrivals recipients pass New York's state-funded Medicaid immigration test at every age in model years 2015 to 2024. The model applies the August 2024 transition from 2025, when only recipients under 19 or aged 65 or older keep the route. The model leaves out the July 2026 return of some adults to Medicaid.
+
+
+## [2.152.15] - 2026-11-21
+
+### Fixed
+
+- Undocumented residents of New York now pass the Medicaid immigration test only during pregnancy and the postpartum period and, from 2024, at age 65 or older. Undocumented New York children under 19 pass the Children's Health Insurance Program's immigration test, and those who enroll through that route in the program's child category carry a zero federal share. Undocumented residents of Massachusetts now pass the Medicaid immigration test only during pregnancy and the postpartum period. Before this change, the model passed undocumented residents of every age in both states through the Medicaid immigration test from 2015.
+
+
+## [2.152.14] - 2026-11-21
+
+### Fixed
+
+- Cover Deferred Action for Childhood Arrivals recipients under California's state-funded Medi-Cal at every age from 2015, the first modeled year. The old age schedule excluded ages 26 to 49 before 2024 and ages 50 and over before 2022. Pregnancy already provided a separate route. No recipient had reached 50 before 2022: USCIS requires birth on or after June 16, 1981.
+
+
+## [2.152.13] - 2026-11-21
+
+### Fixed
+
+- Medicaid federal share is now zero for enrollees who fail the federal immigration test and reach Medicaid only through state-funded coverage, such as California's state-funded Medi-Cal, Illinois Health Benefits for Immigrants and states that cover undocumented immigrants. The federal Medicaid immigration test now exempts qualified noncitizens who are veterans, on active duty, or their spouses or dependent children from the five-year bar.
+
+
+## [2.152.12] - 2026-11-21
+
+### Fixed
+
+- Count additional state and local need-based cash benefits as SNAP unearned income.
+
+
+## [2.152.11] - 2026-11-21
+
+### Fixed
+
+- Raise Delaware's military pension exclusion cap to $15,000 for 2027, $20,000 for 2028 and $25,000 from 2029, let filers age 60 or older take the greater of the $12,500 pension exclusion and the military pension exclusion from 2027, and apply the domicile requirement for filers 60 or older from 2027, under 30 Del. C. § 1106(b)(3) as 85 Del. Laws c. 426 amended it. Count military survivor annuities as a United States military pension from 2024, when 84 Del. Laws c. 437 defined the term as a pension received as a result of an individual's service.
+
+
 ## [2.152.10] - 2026-11-21
 
 ### Fixed
