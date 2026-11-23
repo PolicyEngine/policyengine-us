@@ -70,6 +70,14 @@ BASE_MODE_PARAMETERS = _base_mode_parameters()
 BASE_MODE_IDS = [parameter.name for parameter in BASE_MODE_PARAMETERS]
 
 NYC_THRESHOLDS = "gov.local.ny.nyc.tax.income.credits.income_tax_elimination"
+ME_STFC_START = "gov.states.me.tax.income.credits.fairness.sales_tax.reduction.start"
+ME_STFC_STATUSES = (
+    "SINGLE",
+    "SEPARATE",
+    "HEAD_OF_HOUSEHOLD",
+    "JOINT",
+    "SURVIVING_SPOUSE",
+)
 
 
 def test_base_mode_covers_the_statutory_amounts():
@@ -90,6 +98,7 @@ def test_base_mode_covers_the_statutory_amounts():
         "gov.states.az.tax.income.deductions.standard.amount.SINGLE",
         "gov.states.az.tax.income.deductions.standard.amount.SEPARATE",
         "gov.states.az.tax.income.deductions.standard.amount.HEAD_OF_HOUSEHOLD",
+        *(f"{ME_STFC_START}.{status}" for status in ME_STFC_STATUSES),
         *(
             "gov.irs.deductions.itemized.medical.long_term_care_premium_limit"
             f"[{bracket}].amount"
@@ -355,6 +364,26 @@ STATUTE = {
     "gov.states.or.tax.income.credits.ctc.reduction.start": Statute(
         "ORS 315.273(3)(a), (5)", OR_INDEX, 25_000, 2023, True, "downwards", 50
     ),
+    # These Maine rows specify the model's projection, not the statute's
+    # formula. 36 M.R.S. 5403(5)(C) indexes the 5213-A(4) thresholds from June
+    # 2015 by Maine's chained CPI for the 12 months ending June 30, and 5403's
+    # closing paragraph rounds down to $50. The model has no Maine index, so it
+    # projects from the 2025 amounts Maine Revenue Services published with
+    # gov.irs.uprating, as main did before the explicit 2026 values. SEPARATE
+    # is a zero placeholder: 5213-A(6)(A) excludes married taxpayers filing
+    # separate returns.
+    **{
+        f"{ME_STFC_START}.{status}": Statute(
+            "36 M.R.S. 5213-A(4), 5403(5)(C)",
+            IRS_UPRATING,
+            None,
+            2025,
+            False,
+            "downwards",
+            50,
+        )
+        for status in ME_STFC_STATUSES
+    },
 }
 # NY Tax Law 1310(h)(1)(B)(iii): each 2025 amount times one plus the
 # percentage by which the CPI for the preceding year exceeds the 2024 CPI; no
