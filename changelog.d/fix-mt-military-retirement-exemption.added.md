@@ -1,0 +1,1 @@
+Montana's working military retirement and survivor benefit exemption (MCA 15-30-2120(3)(n)) from tax year 2024: the lesser of half the return's military retirement pay or its Montana earned income, plus half of military survivor benefits.
