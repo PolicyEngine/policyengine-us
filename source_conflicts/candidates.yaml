@@ -8170,6 +8170,60 @@ candidates:
     "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
     The 2009 statute, the three ARM 42.4.301 expressions in force from 8/20/2004 to 11/9/2017 (whose (2) text is
     the same) and the 2016 booklet pages are captured under source_conflicts/sources/us-mt/.
+- id: us-mt:elderly-credit-ira-distribution-basis
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2024
+    type: tax
+  question: Does gross household income count a nontaxable IRA distribution, such as a qualified Roth IRA distribution,
+    less the taxpayer's basis under the statute, or in full under Schedule 2EC line 4 and, on one reading, the
+    regulation?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(b)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - kind: regulation
+    citation: ARM 42.4.301(2)(d), expression effective 9/7/2024
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7
+  - kind: instructions
+    citation: 2024 Montana Form 2 instructions, Schedule 2EC lines 4 and 5, PDF page 47
+    url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
+  - kind: instructions
+    citation: 2025 Montana Form 2 instructions, Schedule 2EC lines 4 and 5, PDF page 45
+    url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
+  readings:
+    statute: '(9)(b): "For the purposes of this subsection (9), income is reduced by the taxpayer''s basis", so a
+      nontaxable IRA distribution counts only the part above the taxpayer''s basis, such as the Roth IRA contributions
+      it returns.'
+    other: 'Schedule 2EC line 4 says "Enter all IRA distributions, both taxable and nontaxable, received during the tax
+      year" and leaves out only "nontaxable rollovers"; line 5, for pensions and annuities, also leaves out "your cost
+      or net investment". Read as displacing the basis reduction for IRAs, ARM 42.4.301(2)(d) counts "all federal
+      taxable and nontaxable pension, annuity, and IRA payments received during the year" to the same effect.'
+  example: A claimant with a $20,000 taxable pension and a $10,000 qualified Roth IRA distribution, $7,000 of it the
+    claimant's own contributions, has 2025 gross household income of $23,000 under the statute and $30,000 under
+    line 4, which is what PE-US computes.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11180
+  state: open
+  note: 'PE-US counts tax_exempt_ira_distributions in full, through tax_exempt_retirement_distributions in
+    elderly_homeowner_or_renter/gross_income_sources.yaml, because the inputs are whole distributions, basis included,
+    and no input holds basis, so the statute''s reduction cannot be modelled. tax_exempt_401k_distributions,
+    tax_exempt_403b_distributions and tax_exempt_sep_distributions count in full for the same reason; issue 11198
+    tracks their basis, and issue 10802 that of tax_exempt_pension_income. That describes what the code does; no one
+    has ruled between (9)(b) and the regulation, and how far a Montana rule binds against its statute is open for the
+    project lead. ARM 42.4.301(2)(d) can be read two ways. ARM 42.4.301(2) opens ''"Gross household income" means
+    the same as the term defined in 15-30-2337, MCA'', and the same words, "nontaxable pension, annuity, and IRA
+    payments", cover the pensions and annuities that Schedule 2EC line 5 counts without "your cost or net
+    investment". Read that way, (2)(d) works with (9)(b), and the conflict is only with line 4''s instructions. Read
+    the other way, "all ... nontaxable ... IRA payments" displaces the basis reduction for IRAs. Through 2023 the
+    instructions let a household member reduce an item of income by basis, so the conflict starts in 2024. Its
+    texts for the register are captured in source_conflicts/sources/us-mt/arm-42-4-301-2024.html (the expression
+    effective 9/7/2024, with (2)(d)), form-2-instructions-2024-p47.txt and form-2-instructions-2025-p45.txt
+    (Schedule 2EC lines 4 and 5).'
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:
