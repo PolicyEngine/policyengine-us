@@ -13,6 +13,7 @@ class id_liheap_income_limit(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8",
+        "https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8",
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
         "https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance",
     )
@@ -37,8 +38,9 @@ class id_liheap_income_limit(Variable):
             parameters,
             year_lag=eligibility.fpg_year_lag,
         )
-        # The plan explicitly switches to FPG at size eight, even though this
-        # lowers the limit; using max(SMI, FPG) would contradict its table.
+        # Each plan's table names the size where it switches to FPG: eight in
+        # FY2026, even though this lowers the limit, and ten in FY2027. Using
+        # max(SMI, FPG) would contradict the FY2026 table.
         annual_limit = where(
             size <= eligibility.smi_max_household_size,
             min_(monthly_smi * MONTHS_IN_YEAR, annual_smi),

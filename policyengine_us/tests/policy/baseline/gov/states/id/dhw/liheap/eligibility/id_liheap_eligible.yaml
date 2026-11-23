@@ -56,3 +56,64 @@
     id_liheap_income_eligible: [true, true, true]
   output:
     id_liheap_eligible: [false, false, true]
+
+- name: Case 5, FY2027 heat in rent still has no specific obligation.
+  period: 2027
+  # The FY2027 plan omits the FY2026 sentence, but IDAPA 16.03.08.200.07 (in force from
+  # July 1, 2026) requires costs incurred directly or as a designated portion of rent.
+  input:
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, false]
+    gas_expense: [0, 900]
+    id_liheap_income_eligible: [true, true]
+  output:
+    id_liheap_eligible: [false, true]
+
+- name: Case 6, FY2027 family of eight with 85_000 of wages qualifies under the state median income limit.
+  period: 2027
+  absolute_error_margin: 0.01
+  # Two adults and six children; one adult earns 85_000. No SNAP or SSI.
+  # FY2027 limit for eight: floor(floor(109_072 x 0.6) x 1.38) = 90_311, so 85_000 qualifies.
+  # The FY2026 switch at size eight would stop at 83_580 and deny this family.
+  # The family pays a natural gas bill in Ada County, Area I.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income_before_lsr: 85_000}
+      person2: {age: 38, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person3: {age: 17, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person4: {age: 16, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person5: {age: 15, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person6: {age: 14, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person7: {age: 13, is_citizen_or_legal_immigrant: true, ssi: 0}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        snap:
+          2026-09: 0
+          2026-10: 0
+          2026-11: 0
+          2026-12: 0
+          2027-01: 0
+          2027-02: 0
+          2027-03: 0
+          2027-04: 0
+          2027-05: 0
+          2027-06: 0
+          2027-07: 0
+          2027-08: 0
+          2027-09: 0
+          2027-10: 0
+          2027-11: 0
+          2027-12: 0
+    households:
+      household: {members: [person1, person2, person3, person4, person5, person6, person7, person8], state_code: ID, county: ADA_COUNTY_ID}
+  output:
+    id_liheap_countable_income: 85_000
+    id_liheap_income_limit: 90_311
+    id_liheap_income_eligible: true
+    id_liheap_eligible: true

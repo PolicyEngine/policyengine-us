@@ -156,3 +156,52 @@
       household2: {members: [person2], state_code: CA}
   output:
     id_liheap_income_limit: [32_835, 0]
+
+- name: Case 4, FY2027 uses state median income through size nine and the guideline from size ten.
+  period: 2027
+  absolute_error_margin: 0.01
+  # The accepted FY2027 plan lists sizes 1-9 at 60% of SMI and 10-15 at 150% of the guideline.
+  # https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8
+  # FFY2027 Idaho four-person SMI 109_072: floor(109_072 x 0.6) = 65_443.
+  # Size 8: floor(65_443 x 1.38) = 90_311. Size 9: floor(65_443 x 1.41) = 92_274.
+  # Size 10, 2026 guideline: 1.5 x (15_960 + 9 x 5_680) = 100_620.
+  # The FY2026 switch at size eight would give sizes 8 and 9 only 83_580 and 92_100.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true}
+      person2: {age: 38, is_citizen_or_legal_immigrant: true}
+      person3: {age: 17, is_citizen_or_legal_immigrant: true}
+      person4: {age: 16, is_citizen_or_legal_immigrant: true}
+      person5: {age: 15, is_citizen_or_legal_immigrant: true}
+      person6: {age: 14, is_citizen_or_legal_immigrant: true}
+      person7: {age: 13, is_citizen_or_legal_immigrant: true}
+      person8: {age: 12, is_citizen_or_legal_immigrant: true}
+      person9: {age: 40, is_citizen_or_legal_immigrant: true}
+      person10: {age: 38, is_citizen_or_legal_immigrant: true}
+      person11: {age: 17, is_citizen_or_legal_immigrant: true}
+      person12: {age: 16, is_citizen_or_legal_immigrant: true}
+      person13: {age: 15, is_citizen_or_legal_immigrant: true}
+      person14: {age: 14, is_citizen_or_legal_immigrant: true}
+      person15: {age: 13, is_citizen_or_legal_immigrant: true}
+      person16: {age: 12, is_citizen_or_legal_immigrant: true}
+      person17: {age: 11, is_citizen_or_legal_immigrant: true}
+      person18: {age: 40, is_citizen_or_legal_immigrant: true}
+      person19: {age: 38, is_citizen_or_legal_immigrant: true}
+      person20: {age: 17, is_citizen_or_legal_immigrant: true}
+      person21: {age: 16, is_citizen_or_legal_immigrant: true}
+      person22: {age: 15, is_citizen_or_legal_immigrant: true}
+      person23: {age: 14, is_citizen_or_legal_immigrant: true}
+      person24: {age: 13, is_citizen_or_legal_immigrant: true}
+      person25: {age: 12, is_citizen_or_legal_immigrant: true}
+      person26: {age: 11, is_citizen_or_legal_immigrant: true}
+      person27: {age: 10, is_citizen_or_legal_immigrant: true}
+    spm_units:
+      spm_unit1: {members: [person1, person2, person3, person4, person5, person6, person7, person8], heating_type: NATURAL_GAS}
+      spm_unit2: {members: [person9, person10, person11, person12, person13, person14, person15, person16, person17], heating_type: NATURAL_GAS}
+      spm_unit3: {members: [person18, person19, person20, person21, person22, person23, person24, person25, person26, person27], heating_type: NATURAL_GAS}
+    households:
+      household1: {members: [person1, person2, person3, person4, person5, person6, person7, person8], state_code: ID}
+      household2: {members: [person9, person10, person11, person12, person13, person14, person15, person16, person17], state_code: ID}
+      household3: {members: [person18, person19, person20, person21, person22, person23, person24, person25, person26, person27], state_code: ID}
+  output:
+    id_liheap_income_limit: [90_311, 92_274, 100_620]
