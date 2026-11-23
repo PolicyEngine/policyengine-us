@@ -1,3 +1,10 @@
+## [2.153.6] - 2026-11-23
+
+### Fixed
+
+- Maine sales and property tax fairness credit income now counts the head's and spouse's SSI and adds back only the net loss from combining the Schedule E items on Schedule 1 line 5, as 36 M.R.S. 5213-A and 5219-KK provide. A capital loss absorbed by the same filer's other-term gains is now added back too, so every capital loss in federal adjusted gross income comes back once.
+
+
 ## [2.153.5] - 2026-11-23
 
 ### Fixed
