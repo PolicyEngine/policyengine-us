@@ -74,10 +74,10 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # half points and the 2.0 minimum compare exactly.
     points = np.round(points, 9)
     # Full annual rent satisfies the expense test for nonsubsidized
-    # heat-in-rent households. Pre-subsidy rent avoids benefit feedback.
+    # heat-in-rent households.
     expense = where(
         heat_in_rent,
-        add(spm_unit, period, ["pre_subsidy_rent"]),
+        add(spm_unit, period, ["rent"]),
         spm_unit("heating_expense", period),
     )
     # The table identifies all-resident tribal routing. Native-only tribal
