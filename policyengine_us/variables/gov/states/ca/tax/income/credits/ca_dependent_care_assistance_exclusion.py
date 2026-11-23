@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.income.person.dependent_care_employer_benefits import (
+    form_2441_line_15,
+)
 
 
 class ca_dependent_care_assistance_exclusion(Variable):
@@ -23,7 +26,11 @@ class ca_dependent_care_assistance_exclusion(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
+        # FTB 3506 line 16: employer benefits (line 13, as Form 2441 line
+        # 12) less amounts forfeited or carried forward (line 15, as Form 2441
+        # line 14). Line 14, grace-period carryovers used, is not modeled, as
+        # on the federal form.
+        benefits = tax_unit.sum(form_2441_line_15(tax_unit.members, period))
         if not np.any(benefits > 0):
             return np.zeros_like(benefits)
         p = parameters(period).gov.states.ca.tax.income.credits.child_dependent_care

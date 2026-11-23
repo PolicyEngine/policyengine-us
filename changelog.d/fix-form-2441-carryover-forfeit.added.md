@@ -1,0 +1,1 @@
+Add the person-level amounts a caller can supply: `dependent_care_employer_benefits_forfeited_or_carried_forward` (Form 2441 line 14) and `taxable_dependent_care_benefits_reported` (a supplied Form 2441 line 26 amount, used in place of the computed share of taxable dependent care benefits). Each applies only to the year entered.

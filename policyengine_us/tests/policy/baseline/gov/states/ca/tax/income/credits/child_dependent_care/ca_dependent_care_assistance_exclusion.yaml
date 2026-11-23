@@ -1,5 +1,6 @@
-# Component arithmetic assumes no carryovers, forfeitures or disallowed
-# public reimbursement. Costs are independent IRC 129/FTB 3506 line 17 facts.
+# Unless a case says otherwise, component arithmetic assumes no carryovers,
+# forfeitures or disallowed public reimbursement. Costs are independent IRC
+# 129/FTB 3506 line 17 facts.
 # FTB 3506 Part IV line 22 caps California's excluded dependent care benefits
 # at $5,000 ($2,500 for a separate return). California did not adopt the 2021
 # federal cap of $10,500 ($5,250) (ARPA section 9632) or the 2026 federal cap
@@ -240,3 +241,37 @@
     # Independent costs bind despite the1,000 California earnings increase.
     dependent_care_assistance_exclusion: 0
     ca_dependent_care_assistance_exclusion: 0
+
+- name: California nets carried-forward benefits as the federal exclusion does, 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 55_000
+        # FTB 3506 line 13, as Form 2441 line 12.
+        dependent_care_employer_benefits: 5_000
+        # FTB 3506 line 15, as Form 2441 line 14. The filer incurred $4,000
+        # of 2025 expenses but claimed only $3,000 from the plan; the $2,000
+        # balance carries forward to the plan's 2026 grace period.
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 2_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 4_000
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # Line 16 (FTB) and line 15 (federal): $5,000 - $2,000 = $3,000, below
+    # the $4,000 of qualified expenses and the $5,000 cap, so it limits both
+    # exclusions. Without line 14 (FTB line 15) both would be $4,000.
+    dependent_care_assistance_exclusion: 3_000
+    ca_dependent_care_assistance_exclusion: 3_000
+    ca_dependent_care_assistance_addition: 0
+    taxable_dependent_care_benefits: [0, 0]

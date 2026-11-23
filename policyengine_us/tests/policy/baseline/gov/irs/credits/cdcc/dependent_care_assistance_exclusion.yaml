@@ -1,9 +1,13 @@
 # IRC section 129 dependent care assistance exclusion, as reconciled on
 # Form 2441 Part III. Dollar/earnings-limit unit cases explicitly supply
 # sufficient qualified expenses; the full-household cases also test that limit.
-# The exclusion is the lesser of qualified expenses, employer benefits,
-# the section 129(a)(2)(A) dollar cap (by filing status), and the section
-# 129(b) earned-income limit.
+# The exclusion is the lesser of qualified expenses, employer benefits
+# (Form 2441 line 15: line 12 less amounts forfeited or carried forward on
+# line 14), the section 129(a)(2)(A) dollar cap (by filing status), and the
+# section 129(b) earned-income limit. Line 12 is
+# dependent_care_employer_benefits: W-2 box 10, not counting any amount
+# above the plan's exclusion, which box 1 already includes as wages. Line 13
+# (grace-period carryovers used) is not modeled.
 
 - name: No employer dependent care benefits gives no exclusion
   period: 2024
@@ -940,3 +944,89 @@
     # The omitted input defaults0; this does not establish actual costs0.
     dependent_care_assistance_exclusion: 0
     taxable_dependent_care_benefits: [2_000, 0]
+
+- name: IRS 2025 line 14 example, $5,000 set aside and $50 forfeited.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 45_000
+        dependent_care_employer_benefits: 5_000
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 50
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 4_950
+        tax_unit_childcare_expenses: 4_950
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 2025 Form 2441 instructions, line 14: $5,000 on line 12 and $50 on
+    # line 14, after $4,950 of qualified expenses was incurred and
+    # reimbursed. Line 15 is $4,950, all excluded; line 26 is $0.
+    dependent_care_assistance_exclusion: 4_950
+    taxable_dependent_care_benefits: [0, 0]
+
+- name: A negative line 14 entry counts as zero.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+        dependent_care_employer_benefits: 3_000
+        dependent_care_employer_benefits_forfeited_or_carried_forward: -2_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 9_000
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15 is the $3,000 on line 12; the negative entry cannot raise it.
+    dependent_care_assistance_exclusion: 3_000
+    taxable_dependent_care_benefits: [0, 0]
+
+- name: Benefits carried forward on line 14 limit the exclusion below qualified expenses.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 45_000
+        dependent_care_employer_benefits: 5_000
+        # The filer incurred $5,000 of 2025 expenses but claimed only $4,000
+        # from the plan; the $1,000 balance carries forward to the plan's
+        # 2026 grace period. Line 14 enters it: "Any amount you didn't
+        # receive but are permitted by your employer to carry forward".
+        dependent_care_employer_benefits_forfeited_or_carried_forward: 1_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 5_000
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Line 15: $5,000 - $1,000 = $4,000, below the $5,000 of qualified
+    # expenses (line 16) and the $5,000 cap, so line 25 is $4,000. Without
+    # line 14 it would be $5,000. Line 26: $0.
+    dependent_care_assistance_exclusion: 4_000
+    taxable_dependent_care_benefits: [0, 0]
