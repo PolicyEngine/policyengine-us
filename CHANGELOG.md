@@ -1,3 +1,10 @@
+## [2.153.3] - 2026-11-23
+
+### Fixed
+
+- Idaho LIHEAP applies the FY2027 income limit to households of eight, which stay on 60% of state median income.
+
+
 ## [2.153.2] - 2026-11-23
 
 ### Changed
