@@ -1,0 +1,139 @@
+description: States cover undocumented children under the Children's Health Insurance Program if this is true.
+# is_chip_immigration_status_eligible applies gov.hhs.chip.child.max_age, and
+# chip_federal_share gives a child enrolled in CHIP's child category through
+# this route no federal match.
+# These children pass the Medicaid immigration test only through the
+# pregnancy term. States that cover them under both programs use
+# gov.hhs.medicaid.eligibility.regardless_of_immigration_status.child_age_limit.
+# States other than New York read false until researched.
+metadata:
+  unit: bool
+  period: year
+  label: CHIP undocumented child coverage
+  breakdown:
+    - state_code
+  reference:
+    - title: New York Public Health Law section 2510
+      href: https://www.nysenate.gov/legislation/laws/PBH/2510
+    - title: New York Public Health Law section 2511
+      href: https://www.nysenate.gov/legislation/laws/PBH/2511
+    - title: "New York State Department of Health, GIS 08 MA/009 attachment (March 3, 2008)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/08ma009att.pdf
+
+AL:
+  2021-01-01: false
+AK:
+  2021-01-01: false
+AZ:
+  2021-01-01: false
+AR:
+  2021-01-01: false
+CA:
+  2021-01-01: false
+CO:
+  2021-01-01: false
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: false
+DE:
+  2021-01-01: false
+FL:
+  2021-01-01: false
+GA:
+  2021-01-01: false
+HI:
+  2021-01-01: false
+ID:
+  2021-01-01: false
+IL:
+  2021-01-01: false
+IN:
+  2021-01-01: false
+IA:
+  2021-01-01: false
+KS:
+  2021-01-01: false
+KY:
+  2021-01-01: false
+LA:
+  2021-01-01: false
+ME:
+  2021-01-01: false
+MD:
+  2021-01-01: false
+MA:
+  2021-01-01: false
+MI:
+  2021-01-01: false
+MN:
+  2021-01-01: false
+MS:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MT:
+  2021-01-01: false
+NE:
+  2021-01-01: false
+NV:
+  2021-01-01: false
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: false
+NM:
+  2021-01-01: false
+NY:
+  # Child Health Plus covers children "under the age of nineteen" (Public
+  # Health Law section 2510(4)). Section 2511(2) sets the criteria for a
+  # subsidy payment: household income at or below 400% of the poverty level,
+  # no Medicaid eligibility, no other coverage and New York residence. None
+  # of the criteria tests immigration status. The reference list also holds
+  # the Department of Health's 2008 documentation guide (GIS 08 MA/009),
+  # cited as listing Child Health Plus among the programs open at any
+  # status; that reading of the guide is unverified. The model's New York
+  # CHIP income limit of 405% is a separate modeling choice. Between the
+  # 400% premium threshold and that limit the model applies its
+  # full-premium schedule, whose full-premium rates start in 2024. The 2021
+  # date follows the all-ages Medicaid flag this route replaces, and
+  # backdating carries it to 2015. The route takes the national CHIP age
+  # limit (gov.hhs.chip.child.max_age) because section 2510(4) sets the
+  # same 19.
+  2021-01-01: true
+NC:
+  2021-01-01: false
+ND:
+  2021-01-01: false
+OH:
+  2021-01-01: false
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: false
+PA:
+  2021-01-01: false
+RI:
+  2021-01-01: false
+SC:
+  2021-01-01: false
+SD:
+  2021-01-01: false
+TN:
+  2021-01-01: false
+TX:
+  2021-01-01: false
+UT:
+  2021-01-01: false
+VT:
+  2021-01-01: false
+VA:
+  2021-01-01: false
+WA:
+  2021-01-01: false
+WV:
+  2021-01-01: false
+WI:
+  2021-01-01: false
+WY:
+  2021-01-01: false

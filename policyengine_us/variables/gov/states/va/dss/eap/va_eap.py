@@ -10,9 +10,9 @@ class va_eap(Variable):
     documentation = (
         "Annual Virginia Energy Assistance Program fuel assistance (regular "
         "heating) benefit: the household's benefit points times the statewide "
-        "value per point. For period 2026 (FFY2026) the value per point is the "
-        "latest published value, $4.531665 for FFY2025, because VDSS reports "
-        "each season's value only after the December calculation. The primary "
+        "value per point. The FFY2026 value per point is $3.950584. Period 2027 "
+        "carries it forward, because VDSS reports each season's value in the "
+        "following year's state plan, after the December calculation. The primary "
         "fuel and energy burden points are PolicyEngine placeholders (10 and "
         "13 points). No minimum, maximum or cap at heating charges is applied; "
         "the March 31 vendor-payment limit is not modeled. Eligibility and the "
@@ -23,6 +23,7 @@ class va_eap(Variable):
     reference = (
         "https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section30/",
         "https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=9",
+        "https://liheapch.acf.gov/docs/2027/state-plans/VA_Plan_2027.pdf#page=9",
         # PDF pages 52-53
         "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=52",
         # PDF pages 6-7

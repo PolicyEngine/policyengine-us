@@ -8,7 +8,10 @@ class ca_liheap_income_group(Variable):
     definition_period = YEAR
     label = "California LIHEAP poverty group"
     defined_for = StateCode.CA
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184"
+    reference = (
+        "https://www.csd.ca.gov/Shared%20Documents/2027-Final-LIHEAP-State-Plan.pdf#page=197",
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.income
@@ -25,8 +28,9 @@ class ca_liheap_income_group(Variable):
         )
         group = 1
         for rate in p.poverty_group_rates:
-            threshold_cents = np.floor(
-                guideline * rate / MONTHS_IN_YEAR / p.monthly_rounding_increment + 0.5
+            cents = guideline * rate / MONTHS_IN_YEAR / p.monthly_rounding_increment
+            threshold_cents = where(
+                p.fpg_threshold_truncated, np.floor(cents), np.floor(cents + 0.5)
             )
             group = group + (monthly_income_cents > threshold_cents)
         above_smi = income > spm_unit("ca_liheap_income_limit", period)

@@ -1,6 +1,7 @@
-# FY2026 matrix: eligible size 1-2 -> 375; 3-5 -> 425; 6+ -> 475.
+# FY2026 matrix: subsidized dwellings receive 375 for eligible size 1-2, 425 for
+# 3-5 and 475 for 6+.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2
-# Private dwellings stay at zero here because this output covers subsidized dwellings only.
+# Private dwellings receive points times 140, the matrix's example value per point.
 
 - name: Case 1, the flat benefit covers every size boundary and the open final band.
   period: 2026
@@ -180,7 +181,7 @@
         state_code: HI
         county: HONOLULU_COUNTY_HI
   output:
-    hi_liheap_subsidized_amount: [375, 375, 425, 425, 475, 475]
+    hi_liheap: [375, 375, 425, 425, 475, 475]
 
 - name: Case 2, the flat benefit uses qualified size without an additional household share.
   period: 2026
@@ -254,13 +255,14 @@
         county: LOS_ANGELES_COUNTY_CA
   output:
     hi_liheap_household_size: [1, 0, 0]
-    hi_liheap_subsidized_amount: [375, 0, 0]
+    hi_liheap: [375, 0, 0]
 
-- name: Case 3, eligibility and subsidized housing are both required.
+- name: Case 3, eligibility is required and a private dwelling is paid by points.
   period: 2026
   absolute_error_margin: 0.01
-  # Gas in subsidized rent pays 375. Income of 500_000 is above the limit. An eligible
-  # private dwelling is outside this output, which reads zero for it.
+  # Gas in subsidized rent pays 375. Income of 500_000 is above the limit. The
+  # eligible private dwelling was 0, now 700: no income gives three points, size
+  # one gives one and Oahu gives one, and 5 x 140 = 700.
   input:
     people:
       person1:
@@ -314,7 +316,7 @@
         county: HONOLULU_COUNTY_HI
   output:
     hi_liheap_eligible: [true, false, true]
-    hi_liheap_subsidized_amount: [375, 0, 0]
+    hi_liheap: [375, 0, 700]
 
 - name: Case 4, public housing without a voucher receives the flat benefit.
   period: 2026
@@ -347,7 +349,7 @@
   output:
     hi_liheap_countable_income: 30_000
     hi_liheap_eligible: true
-    hi_liheap_subsidized_amount: 425
+    hi_liheap: 425
 
 - name: Case 5, a subsidized household with no heating receives the flat benefit on its electric account.
   period: 2026
@@ -357,9 +359,11 @@
   # Hawaii's $16 minimum wage from 2026 (HRS 387-2): 16 x 2_080 = 33_280, under the
   # one-person limit of 41_941 and the three-person limit of 67_751. The electric
   # bill is 2_016 (168 x 12, Case 5 of hi_liheap_eligible). A voucher holder pays
-  # 375 for size one and a public-housing family of three pays 425. A private
-  # dwelling is eligible, but this output reads zero for it. Hawaii asks no
-  # cooling cost, so the electric bill qualifies without one.
+  # 375 for size one and a public-housing family of three pays 425. The private
+  # dwelling was 0, now 280: wages above 150% of the one-person guideline
+  # (26_985) give no income point, size one gives one and Oahu gives one, and
+  # 2 x 140 = 280. Hawaii asks no cooling cost, so the electric bill qualifies
+  # without one.
   input:
     people:
       person1:
@@ -433,7 +437,7 @@
   output:
     hi_liheap_countable_income: [33_280, 33_280, 33_280, 33_280]
     hi_liheap_eligible: [true, true, true, true]
-    hi_liheap_subsidized_amount: [375, 0, 375, 425]
+    hi_liheap: [375, 280, 375, 425]
 
 - name: Case 6, a public-housing tenant whose utilities are in the rent receives the flat benefit.
   period: 2026
@@ -463,4 +467,149 @@
         tenant_pays_utilities: false
   output:
     hi_liheap_eligible: true
-    hi_liheap_subsidized_amount: 375
+    hi_liheap: 375
+
+- name: Case 7, a neighbor-island private dwelling with four points matches the matrix's worked example.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The matrix's example pays 4 points x 140 = 560. A Maui couple with one
+  # full-time worker at Hawaii's $16 minimum wage has 33_280, between 100% and
+  # 150% of the two-person guideline (24_320 to 36_480): one income point, one
+  # size point and two neighbor-island points. The electric bill of 2_016 is
+  # under 30% of income and neither adult is vulnerable.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person2:
+        age: 33
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+        county: MAUI_COUNTY_HI
+  output:
+    hi_liheap_eligible: true
+    hi_liheap_points: 4
+    hi_liheap: 560
+
+- name: Case 8, a private dwelling with the ten-point maximum receives the plan's maximum benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Plan 2.6 and 3.6 give a 1_400 maximum, which is 10 points x 140. A Hawaii
+  # Island family of six has one adult working 15 hours a week at the $16
+  # minimum wage: 16 x 15 x 52 = 12_480, under half the six-person guideline
+  # (24_820), for three income points. Size six gives three, a neighbor island
+  # two and the three-year-old one. The electric bill is 4_032, twice the 2_016
+  # state average for this larger home and over 30% of income (3_744), for the
+  # tenth point.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 12_480
+      person2:
+        age: 33
+        ssi: 0
+      person3:
+        age: 12
+        ssi: 0
+      person4:
+        age: 9
+        ssi: 0
+      person5:
+        age: 6
+        ssi: 0
+      person6:
+        age: 3
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 4_032
+        hi_tanf: 0
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: HI
+        county: HAWAII_COUNTY_HI
+  output:
+    hi_liheap_countable_income: 12_480
+    hi_liheap_eligible: true
+    hi_liheap_points: 10
+    hi_liheap: 1_400
+
+- name: Case 9, photovoltaic net usage determines eligibility and the flat benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # All three adults earn 33_280 on Oahu. The benefit matrix pays 375 to
+  # the electric-heated home with net PV usage. The solar-thermal home
+  # leaves PV status blank and gets 280 (two points at 140). Draft manual
+  # 4.2 requires net billed usage for PV homes, so the home with only PV
+  # account fees receives 0.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person2:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person3:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        hi_liheap_photovoltaic_status: PV_WITH_NET_USAGE
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: ELECTRICITY
+        hi_liheap_photovoltaic_status: PV_WITHOUT_NET_USAGE
+        pre_subsidy_electricity_expense: 240
+        hi_tanf: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_eligible: [true, true, false]
+    hi_liheap_points: [2, 2, 2]
+    hi_liheap: [375, 280, 0]
+    liheap: [375, 280, 0]

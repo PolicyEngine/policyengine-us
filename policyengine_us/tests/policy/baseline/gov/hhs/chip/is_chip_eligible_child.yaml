@@ -1104,3 +1104,88 @@
     # New Jersey separate CHIP spending / enrollment in 2024:
     # $579,649,320 / 203,130 = $2,853.59.
     chip: [0, 0, 2_853.59, 2_853.59]
+
+# New York Child Health Plus. Two undocumented parents, an undocumented
+# 12-year-old and a citizen 7-year-old. New York's Medicaid limit for older
+# children is 154% of the poverty guideline, and its CHIP limit is 405%. The
+# 2025 guideline for four people is $32,150.
+- name: Case 39, New York undocumented child and citizen child both qualify for CHIP above the Medicaid limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_150
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 32_150
+      person3:
+        age: 12
+        immigration_status: UNDOCUMENTED
+      person4:
+        age: 7
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # $64,300 / $32,150 = 2.00: above 154%, below 405%. Both children fail
+    # Medicaid on income and get CHIP. The parents fail the adult limit of 138%.
+    medicaid_household_size: [4, 4, 4, 4]
+    is_medicaid_eligible: [false, false, false, false]
+    is_chip_eligible_child: [false, false, true, true]
+    chip_category: [NONE, NONE, CHILD, CHILD]
+
+- name: Case 40, New York undocumented child qualifies for CHIP where the citizen child qualifies for Medicaid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+      person3:
+        age: 12
+        immigration_status: UNDOCUMENTED
+      person4:
+        age: 7
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # $40,000 / $32,150 = 1.24: below 154%. The citizen child gets Medicaid.
+    # The undocumented child fails the Medicaid immigration test and gets CHIP.
+    # The undocumented parents fail the Medicaid immigration test.
+    medicaid_household_size: [4, 4, 4, 4]
+    is_medicaid_eligible: [false, false, false, true]
+    is_chip_eligible_child: [false, false, true, false]
+    chip_category: [NONE, NONE, CHILD, NONE]

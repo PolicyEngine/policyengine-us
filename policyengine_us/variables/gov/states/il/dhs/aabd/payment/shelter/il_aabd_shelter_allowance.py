@@ -14,11 +14,14 @@ class il_aabd_shelter_allowance(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.payment.shelter_allowance
-        rent_expense = person("rent", period)
+        rent_expense = np.asarray(person("rent", period))
         renter = rent_expense > 0
         rent_allowance = min_(rent_expense, p.rent)
         # Housing cost = rent + property tax + homeowners insurance + HOA fees.
-        homestead_property_cost = person.spm_unit("housing_cost", period) - rent_expense
+        # The projection is in person order and can retain SPM unit labels.
+        # Subtract the expenses by position to preserve one value per person.
+        housing_cost = np.asarray(person.spm_unit("housing_cost", period))
+        homestead_property_cost = housing_cost - rent_expense
         homestead_property_allowance = min_(homestead_property_cost, p.homestead)
 
         total_allowance = where(renter, rent_allowance, homestead_property_allowance)

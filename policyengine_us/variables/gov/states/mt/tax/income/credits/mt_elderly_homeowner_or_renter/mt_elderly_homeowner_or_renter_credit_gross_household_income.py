@@ -20,6 +20,13 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # 2024 Schedule 2EC, line 17: income received by other members of
         # the household
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48",
+        # 2025 Schedule 2EC, line 1: wages from Form 1040 line 1z, which
+        # include foreign earned income before the IRC 911 exclusion
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45",
+        # Form 2555 instructions, line 45: the exclusion goes on Schedule 1
+        # line 8d as a negative amount
+        "https://www.irs.gov/pub/irs-prior/i2555--2025.pdf#page=7",
+        "https://www.law.cornell.edu/uscode/text/26/911",
         # The statutory federal-AGI definition remains after the 2024 form
         # began displaying separate income categories: HB191 § 1(9), p.2.
         "https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2",
@@ -74,6 +81,20 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
+        # Foreign earned income and housing amounts excluded under IRC 911
+        # are nontaxable income (§ 15-30-2337(9)(a)); Schedule 2EC line 1
+        # takes wages from Form 1040 line 1z, before Schedule 1 line 8d
+        # subtracts the exclusion. The income inputs are the amounts left
+        # after the exclusion, so the excluded amount, Form 2555 line 45, is
+        # added once, to the head. section_911_excluded_income also holds the
+        # line 50 foreign housing deduction, which is a deduction in figuring
+        # AGI rather than income, so it comes out. A negative line 45 adds
+        # nothing.
+        excluded_foreign_income = head * max_(
+            0,
+            person.tax_unit("section_911_excluded_income", period)
+            - person.tax_unit("foreign_housing_deduction", period),
+        )
         # Count each person's capital gains without losses, as 2024 Schedule
         # 2EC line 7 requires ("do not include any capital losses"). Two
         # losses reduce the gains the income paths count without reaching
@@ -128,5 +149,6 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             + dependent_income
             + untaxed_social_security
             + losses
+            + excluded_foreign_income
             + lost_capital_gains
         )

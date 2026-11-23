@@ -1,0 +1,155 @@
+description: States cover undocumented immigrants during pregnancy and the postpartum period under the Medicaid program if this is true.
+# is_medicaid_immigration_status_eligible applies each state's postpartum
+# period through is_pregnant_for_medicaid_nfc. States that cover undocumented
+# immigrants of every age read true in undocumented_immigrant.yaml and false
+# here. States other than Massachusetts and New York read false until
+# researched.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid undocumented immigrant pregnancy coverage
+  breakdown:
+    - state_code
+  reference:
+    - title: New York State Department of Health, client notice D61-C0332
+      href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
+    - title: New York Social Services Law section 366
+      href: https://www.nysenate.gov/legislation/laws/SOS/366
+    - title: "New York Laws of 2022, chapter 56, part CCC"
+      href: https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=A09006&term=2021&Summary=Y&Actions=Y&Text=Y
+    - title: "New York State Department of Health, 04 OMM/ADM-7 (October 26, 2004)"
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/adm/04adm-7.pdf
+    - title: "New York section 1332 waiver application (December 18, 2023)"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=32
+    - title: "130 CMR 504.000, MassHealth: Citizenship and Immigration"
+      href: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+    - title: "MassHealth Eligibility Letter 213 (January 1, 2014)"
+      href: https://www.mass.gov/files/documents/2016/07/xg/el-213.pdf#page=63
+    - title: "130 CMR 505.000, MassHealth: Coverage Types (revised February 13, 2026)"
+      href: https://www.mass.gov/doc/130-cmr-505000-masshealth-coverage-types-5/download#page=4
+
+AL:
+  2021-01-01: false
+AK:
+  2021-01-01: false
+AZ:
+  2021-01-01: false
+AR:
+  2021-01-01: false
+CA:
+  2021-01-01: false
+CO:
+  2021-01-01: false
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: false
+DE:
+  2021-01-01: false
+FL:
+  2021-01-01: false
+GA:
+  2021-01-01: false
+HI:
+  2021-01-01: false
+ID:
+  2021-01-01: false
+IL:
+  2021-01-01: false
+IN:
+  2021-01-01: false
+IA:
+  2021-01-01: false
+KS:
+  2021-01-01: false
+KY:
+  2021-01-01: false
+LA:
+  2021-01-01: false
+ME:
+  2021-01-01: false
+MD:
+  2021-01-01: false
+MA:
+  # 130 CMR 504.006(D)(1) gives undocumented residents ("other
+  # noncitizens") MassHealth Standard if they are pregnant. 130 CMR
+  # 505.002(D) sets that coverage at up to 200% of the poverty level. Its
+  # 2014 text (Eligibility Letter 213) continues the coverage for 60 days
+  # after the pregnancy ends, and its text revised February 13, 2026 for 12
+  # months. The formula applies the state's postpartum period, which reads
+  # 365 days from 2023. No text cited here dates the longer period for
+  # undocumented residents. The 2014 and 2022 texts of 504.006(D) read the
+  # same. The 2021 date follows the all-ages flag this value replaces, and
+  # backdating carries it to 2015.
+  2021-01-01: true
+MI:
+  2021-01-01: false
+MN:
+  2021-01-01: false
+MS:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MT:
+  2021-01-01: false
+NE:
+  2021-01-01: false
+NV:
+  2021-01-01: false
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: false
+NM:
+  2021-01-01: false
+NY:
+  # The Department of Health's notice D61-C0332, dated October 10, 2014,
+  # gives people without satisfactory immigration status Medicaid "for
+  # medical services provided to pregnant women" and ends it when "the
+  # sixty-day postpartum period has ended". From March 1, 2023, part CCC of
+  # chapter 56 of the Laws of 2022 continues for one year the eligibility of
+  # a pregnant woman eligible under Social Services Law section 366(1)(b)(2)
+  # or (4) (section 366(4)(b)(1)). The formula applies the state's postpartum
+  # period to undocumented residents too, which the notice supports for the
+  # sixty-day period only. New York's waiver application dates the change
+  # from 60 to 365 days to 2023. The reference list also holds directive 04
+  # OMM/ADM-7 of 2004, cited for the same pregnancy rule; its text is
+  # unverified. The 2021 date follows the all-ages flag this value
+  # replaces, and backdating carries it to 2015.
+  2021-01-01: true
+NC:
+  2021-01-01: false
+ND:
+  2021-01-01: false
+OH:
+  2021-01-01: false
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: false
+PA:
+  2021-01-01: false
+RI:
+  2021-01-01: false
+SC:
+  2021-01-01: false
+SD:
+  2021-01-01: false
+TN:
+  2021-01-01: false
+TX:
+  2021-01-01: false
+UT:
+  2021-01-01: false
+VT:
+  2021-01-01: false
+VA:
+  2021-01-01: false
+WA:
+  2021-01-01: false
+WV:
+  2021-01-01: false
+WI:
+  2021-01-01: false
+WY:
+  2021-01-01: false

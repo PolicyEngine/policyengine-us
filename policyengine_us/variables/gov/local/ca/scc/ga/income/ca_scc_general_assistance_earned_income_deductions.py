@@ -15,13 +15,21 @@ class ca_scc_general_assistance_earned_income_deductions(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.local.ca.scc.general_assistance.countable_income
-        person_level = add(person, period, p.earned_deductions.person_sources)
+        person_level = np.asarray(
+            add(person, period, p.earned_deductions.person_sources)
+        )
         # Apportion tax-unit-level federal and state income tax across spouses
         # by each person's share of tax-unit earned income, so both spouses'
         # earnings are reduced proportionally by their involuntary withholding.
-        person_earned = add(person, period, p.earned_sources)
-        tax_unit_earned = person.tax_unit("tax_unit_earned_income", period)
+        # The tax-unit values are already projected to person order. Use arrays
+        # so weighted series cannot realign them by their tax-unit indexes.
+        person_earned = np.asarray(add(person, period, p.earned_sources))
+        tax_unit_earned = np.asarray(person.tax_unit("tax_unit_earned_income", period))
         share = where(tax_unit_earned > 0, person_earned / tax_unit_earned, 0)
-        federal_tax = person.tax_unit("income_tax_before_credits", period) * share
-        state_tax = person.tax_unit("state_withheld_income_tax", period) * share
+        federal_tax = (
+            np.asarray(person.tax_unit("income_tax_before_credits", period)) * share
+        )
+        state_tax = (
+            np.asarray(person.tax_unit("state_withheld_income_tax", period)) * share
+        )
         return person_level + federal_tax + state_tax
