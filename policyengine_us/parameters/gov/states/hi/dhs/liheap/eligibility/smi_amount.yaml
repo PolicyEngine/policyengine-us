@@ -8,44 +8,57 @@ brackets:
       2025-10-01: 1
     amount:
       2025-10-01: 41_941
+      2026-10-01: 43_200
   - threshold:
       2025-10-01: 2
     amount:
       2025-10-01: 54_846
+      2026-10-01: 56_492
   - threshold:
       2025-10-01: 3
     amount:
       2025-10-01: 67_751
+      2026-10-01: 69_784
   - threshold:
       2025-10-01: 4
     amount:
       2025-10-01: 80_656
+      2026-10-01: 83_077
   - threshold:
       2025-10-01: 5
     amount:
       2025-10-01: 93_560
+      2026-10-01: 96_369
   - threshold:
       2025-10-01: 6
     amount:
       2025-10-01: 106_454
+      2026-10-01: 109_661
   - threshold:
       2025-10-01: 7
     amount:
       2025-10-01: 108_885
+      2026-10-01: 112_153
   - threshold:
       2025-10-01: 8
     amount:
       2025-10-01: 111_305
+      2026-10-01: 114_646
   - threshold:
       2025-10-01: 9
     amount:
       2025-10-01: 113_724
+      2026-10-01: 117_138
   - threshold:
       2025-10-01: 10
     amount:
       2025-10-01: 116_144
-# These are operational provider amounts, including the published six-person
-# amount. No single SMI rounding rule reproduces all ten entries.
+      2026-10-01: 119_630
+# The FY2026 entries are operational provider amounts, including the published six-person
+# amount. No single SMI rounding rule reproduces all ten of them.
+# The FY2027 entries are 60% of the FY2027 four-person state median income for
+# Hawaii (138_463), truncated to 83_077, times the federal household-size
+# factor and truncated again.
 metadata:
   type: single_amount
   threshold_unit: person
@@ -57,3 +70,7 @@ metadata:
       href: https://www.hcapweb.org/wp-content/uploads/2026/04/H-HEAP-2026-Income-Eligibility.pdf
     - title: Hawaii FY2026 H-HEAP benefit matrix
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=3
+    - title: Hawaii FY2027 H-HEAP plan packet, 2027 H-HEAP income limits
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2026/09/H-HEAP-Model-Plan-for-DHS-Website.pdf#page=57
+    - title: State Median Income by Household Size for Mandatory Use in LIHEAP for FY 2027
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_Att4SMITable_States_FY2027.pdf#page=1

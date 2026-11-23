@@ -19,13 +19,7 @@ class hi_liheap(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("hi_liheap_household_size", period)
         p = parameters(period).gov.states.hi.dhs.liheap.payment
-        subsidized = spm_unit(
-            "receives_housing_assistance", period
-        ) | spm_unit.household("is_in_public_housing", period)
-        # Assume a SOLAR heating type is a net-consuming photovoltaic household,
-        # which receives the flat amount.
-        heating_type = spm_unit("heating_type", period)
-        photovoltaic = heating_type == heating_type.possible_values.SOLAR
+        flat_rate = spm_unit("hi_liheap_flat_rate", period)
         flat = p.subsidized_amount.calc(size)
         # Private dwellings receive points times a statewide value per point.
         # Hawaii sets that value each year from the funds left after the flat
@@ -35,4 +29,4 @@ class hi_liheap(Variable):
         # points read it, and an unsent county falls back to Hawaii County, a
         # neighbor island worth one more point than Oahu.
         points = spm_unit("hi_liheap_points", period)
-        return where(subsidized | photovoltaic, flat, points * p.value_per_point)
+        return where(flat_rate, flat, points * p.value_per_point)

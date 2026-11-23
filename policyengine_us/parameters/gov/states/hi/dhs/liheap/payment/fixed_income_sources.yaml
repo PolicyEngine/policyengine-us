@@ -1,0 +1,15 @@
+description: Hawaii treats these income sources as fixed income for households that own their home outright under the Low Income Home Energy Assistance Program.
+# The plan lists "Social Security, SSI, Pension, etc."; only the three named
+# sources are read.
+values:
+  2026-10-01:
+    - social_security
+    - ssi
+    - pension_income
+metadata:
+  unit: list
+  period: year
+  label: Hawaii LIHEAP fixed income sources
+  reference:
+    - title: "Hawaii FY2027 LIHEAP State Plan, sections 2.5 and 3.5 #page 10,13"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=10

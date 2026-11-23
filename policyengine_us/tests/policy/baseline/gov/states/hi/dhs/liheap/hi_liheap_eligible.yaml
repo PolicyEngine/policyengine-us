@@ -158,3 +158,19 @@
     hi_liheap_countable_income: [20_000, 20_000]
   output:
     hi_liheap_eligible: [true, false]
+
+- name: Case 7, from FY2027 benefit receipt no longer replaces the income test.
+  period: 2027
+  # The FY2027 plan ends categorical eligibility. Countable income of 100_000 is
+  # above the one-person limit of 43_200 with SNAP or SSI. Income at the limit
+  # qualifies and the next dollar does not.
+  input:
+    state_code: [HI, HI, HI, HI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [900, 900, 900, 900]
+    snap: [1_200, 0, 0, 0]
+    ssi: [0, 1_200, 0, 0]
+    tanf: [0, 0, 0, 0]
+    hi_liheap_countable_income: [100_000, 100_000, 43_200, 43_201]
+  output:
+    hi_liheap_eligible: [false, false, true, false]

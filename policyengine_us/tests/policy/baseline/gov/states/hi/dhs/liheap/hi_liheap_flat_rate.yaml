@@ -1,0 +1,142 @@
+# The matrix pays the flat benefit to public housing, rent subsidy and
+# photovoltaic households. The FY2027 plan adds households with no rent or
+# mortgage expense, apart from a paid-off home where every member is elderly or
+# disabled and all income is fixed.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf
+# https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf
+
+- name: Case 1, subsidized, public-housing and solar households are flat-rate in FY2026.
+  period: 2026
+  # In order: a rent subsidy, public housing, solar heating, a private renter and
+  # a home owned outright, which is not flat-rate before FY2027.
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+      person5:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        receives_housing_assistance: true
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+        heating_type: SOLAR
+      spm_unit4:
+        members: [person4]
+      spm_unit5:
+        members: [person5]
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+      household2:
+        members: [person2]
+        state_code: HI
+        is_in_public_housing: true
+      household3:
+        members: [person3]
+        state_code: HI
+      household4:
+        members: [person4]
+        state_code: HI
+        tenure_type: RENTED
+      household5:
+        members: [person5]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+  output:
+    hi_liheap_flat_rate: [true, true, true, false, false]
+
+- name: Case 2, from FY2027 a home owned outright is flat-rate unless all members are elderly or disabled on fixed income.
+  period: 2027
+  # Wages are a full-time job at Hawaii's $16 minimum wage, 16 x 2_080 = 33_280,
+  # or 15 hours a week, 16 x 15 x 52 = 12_480. Social Security is 1_300 a month.
+  # In order: a working-age owner; a 70-year-old owner on Social Security, who
+  # stays on points; the same owner with wages; the same owner living with a
+  # 40-year-old; a 45-year-old owner on Social Security disability, who stays on
+  # points; and a 70-year-old renter.
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person2:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+      person3:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+        employment_income_before_lsr: 12_480
+      person4:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+      person5:
+        age: 40
+        ssi: 0
+      person6:
+        age: 45
+        ssi: 0
+        social_security_disability: 15_600
+      person7:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4, person5]
+        hi_tanf: 0
+      spm_unit5:
+        members: [person6]
+        hi_tanf: 0
+      spm_unit6:
+        members: [person7]
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household2:
+        members: [person2]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household3:
+        members: [person3]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household4:
+        members: [person4, person5]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household5:
+        members: [person6]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household6:
+        members: [person7]
+        state_code: HI
+        tenure_type: RENTED
+  output:
+    hi_liheap_flat_rate: [true, false, true, true, false, false]

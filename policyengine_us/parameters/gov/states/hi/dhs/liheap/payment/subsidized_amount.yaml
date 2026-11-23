@@ -8,14 +8,20 @@ brackets:
       2025-10-01: 1
     amount:
       2025-10-01: 375
+      2026-10-01: 400
   - threshold:
       2025-10-01: 3
     amount:
       2025-10-01: 425
+      2026-10-01: 450
   - threshold:
       2025-10-01: 6
     amount:
       2025-10-01: 475
+      2026-10-01: 500
+# The FY2027 amounts are from the benefit matrix dated 09/2026 in the FY2027
+# plan packet. The accepted FY2027 plan's 400 minimum benefit matches the first;
+# 450 and 500 appear only in that matrix.
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -25,3 +31,7 @@ metadata:
   reference:
     - title: Hawaii FY2026 LIHEAP benefit matrix
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2
+    - title: Hawaii FY2027 H-HEAP plan packet, 2027 benefit matrix
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2026/09/H-HEAP-Model-Plan-for-DHS-Website.pdf#page=56
+    - title: "Hawaii FY2027 LIHEAP State Plan, sections 2.6 and 3.6 #page 11,14"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=11
