@@ -34,8 +34,14 @@ class mt_withheld_income_tax(Variable):
         # MCA 15-30-2103: rates by filing status from 2024, with net
         # long-term capital gains taxed at separate rates.
         "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html",
+        # MCA 15-30-2101(22): Montana taxable income is federal taxable
+        # income, adjusted as provided in 15-30-2120.
+        "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html",
+        # MCA 15-30-2120(2)(j): the state income tax add-back stops at the
+        # federal standard deduction, which the estimate subtracts.
+        "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html",
         # Form 2 starts from federal taxable income from 2024.
-        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8",
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5",
     )
 
     def formula(person, period, parameters):
@@ -66,9 +72,10 @@ class mt_withheld_income_tax(Variable):
         cg = p.main.capital_gains
         if cg.in_effect:
             # Form 2 line 2: net long-term capital gain, limited by any
-            # short-term capital loss.
-            ltcg = tax_unit.sum(person("long_term_capital_gains", period))
-            stcg = tax_unit.sum(person("short_term_capital_gains", period))
+            # short-term capital loss. A dependent's gains are on their own
+            # return, as their income is left out of the AGI above.
+            ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+            stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
             capital_gains = min_(max_(min_(ltcg, ltcg + stcg), 0), taxable_income)
             ordinary_income = taxable_income - capital_gains
             threshold = by_filing_status(

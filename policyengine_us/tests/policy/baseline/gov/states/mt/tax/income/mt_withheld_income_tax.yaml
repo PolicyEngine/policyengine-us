@@ -175,3 +175,97 @@
     # Taxable income 100,000 - 29,200 = 70,800:
     # 41,000 * 4.7% + 29,800 * 5.9%
     mt_withheld_income_tax: 3_685.2
+
+- name: A dependent's capital gains are left out of the parents' estimate
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        adjusted_gross_income_person: 100_000
+      spouse:
+        adjusted_gross_income_person: 50_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        adjusted_gross_income_person: 0
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # The child's gains are on the child's own return, so the estimate
+    # matches the two-earner case: 95,000 * 4.7% + 22,800 * 5.65% = 5,753.20.
+    mt_withheld_income_tax: [3_835.47, 1_917.73, 0]
+    state_withheld_income_tax: 5_753.2
+
+- name: Separate filer uses the separate brackets and capital gains threshold
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 90_000
+    long_term_capital_gains: 20_000
+    filing_status: SEPARATE
+    state_code: MT
+  output:
+    # Taxable income 90,000 - 16,100 = 73,900; ordinary income 53,900:
+    # 47,500 * 4.7% + 6,400 * 5.65% = 2,594.10.
+    # Ordinary income is above the 47,500 threshold: 20,000 * 4.1% = 820.
+    mt_withheld_income_tax: 3_414.1
+
+- name: Surviving spouse uses the surviving spouse brackets and capital gains threshold
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        adjusted_gross_income_person: 140_000
+        long_term_capital_gains: 30_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        adjusted_gross_income_person: 0
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    # Taxable income 140,000 - 32,200 = 107,800; ordinary income 77,800:
+    # 77,800 * 4.7% = 3,656.60.
+    # Gains: 17,200 * 3% = 516 below the 95,000 threshold, 12,800 * 4.1% = 524.80.
+    mt_withheld_income_tax: [4_697.4, 0]
+
+- name: Joint long-term capital gains straddling the threshold are taxed at the capital gains rates
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        adjusted_gross_income_person: 120_000
+        long_term_capital_gains: 40_000
+      spouse:
+        adjusted_gross_income_person: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Taxable income 160,000 - 32,200 = 127,800; ordinary income 87,800:
+    # 87,800 * 4.7% = 4,126.60.
+    # Gains: 7,200 * 3% = 216 below the 95,000 threshold, 32,800 * 4.1% = 1,344.80.
+    # Total 5,687.40, split 3/4 and 1/4 by AGI.
+    mt_withheld_income_tax: [4_265.55, 1_421.85]
+    state_withheld_income_tax: 5_687.4
