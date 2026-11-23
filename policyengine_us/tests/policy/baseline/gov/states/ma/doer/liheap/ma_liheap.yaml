@@ -555,7 +555,7 @@
     state_code: MA
   output:
     # Guideline for two: 15_960 + 5_680 = 21_640.
-    # 31_200 / 21_640 = 1.442, from 125% to under 150% FPL: benefit level 3.
+    # 31_200 / 21_640 = 1.442, above 125% and at or below 150% FPL: benefit level 3.
     # Homeowners and non-subsidized tenants, utility and heat in rent, level 3: 774.
     # Last year's gas cost 1_300 does not exceed the natural gas threshold 1_542: HECS 0.
     # min(774 + 0, 1_400) = 774.
@@ -579,7 +579,7 @@
     state_code: MA
   output:
     # Guideline for three: 15_960 + 2 x 5_680 = 27_320.
-    # 31_200 / 27_320 = 1.142, from 100% to under 125% FPL: benefit level 2.
+    # 31_200 / 27_320 = 1.142, above 100% and at or below 125% FPL: benefit level 2.
     # Rent of 1_100 a month, 13_200 a year, is more than 30% of income
     # (0.3 x 31_200 = 9_360), so the subsidized tenant is eligible.
     # Subsidized housing tenants, utility and heat in rent, level 2: 616.
@@ -589,3 +589,30 @@
     ma_liheap_standard_payment: 616
     ma_liheap_hecs_payment: 0
     ma_liheap: 616
+
+- name: Case 31, FY2027 family of four with income exactly at 100% of the poverty level stays in benefit level 1.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 33_000
+    rent: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_600
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # Guideline for four: 15_960 + 3 x 5_680 = 33_000, the chart's 100% column.
+    # 33_000 / 33_000 = 1: at or below 100% FPL, benefit level 1, not level 2.
+    # Homeowners and non-subsidized tenants, deliverable fuel, level 1: 1_450.
+    # Level 2 would pay 1_276.
+    # Last year's oil cost 1_800 does not exceed the heating oil and propane
+    # threshold 1_948: HECS 0.
+    # min(1_450 + 0, 2_600) = 1_450.
+    ma_liheap_fpg: 33_000
+    ma_liheap_benefit_level: 1
+    ma_liheap_standard_payment: 1_450
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 1_450
