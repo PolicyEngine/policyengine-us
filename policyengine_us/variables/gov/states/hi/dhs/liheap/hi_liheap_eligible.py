@@ -24,11 +24,15 @@ class hi_liheap_eligible(Variable):
         size = spm_unit("hi_liheap_household_size", period)
         income = spm_unit("hi_liheap_countable_income", period)
         limit = spm_unit("hi_liheap_income_limit", period)
-        # Draft manual 5.5 reads "equal to or less than"; draft 2.9 and the matrix
-        # read "less than" and "below". The calculation section is followed.
-        income_eligible = income <= limit
-        # The FY2027 plan ends categorical eligibility from October 2026.
         p = parameters(period).gov.states.hi.dhs.liheap.eligibility
+        # Draft FY2026 manual 5.5 reads "equal to or less than"; draft 2.9 and the
+        # matrix read "less than" and "below". The calculation section is
+        # followed. Every FY2027 text requires income below the limit.
+        if p.income_at_limit_eligible:
+            income_eligible = income <= limit
+        else:
+            income_eligible = income < limit
+        # The FY2027 plan ends categorical eligibility from October 2026.
         categorical = False
         if p.categorical_in_effect:
             # Any member's receipt qualifies. Plan vs manual: draft 2.8 and the

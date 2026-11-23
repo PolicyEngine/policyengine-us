@@ -1,11 +1,17 @@
 description: Hawaii treats these income sources as fixed income for households that own their home outright under the Low Income Home Energy Assistance Program.
-# The plan lists "Social Security, SSI, Pension, etc."; only the three named
-# sources are read.
+# The plan lists "Social Security, SSI, Pension, etc." These are the model's
+# retirement, pension, survivor and veterans' benefit sources; the plan does not
+# define the full list.
 values:
   2026-10-01:
     - social_security
     - ssi
     - pension_income
+    - retirement_distributions
+    - military_retirement_income
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
 metadata:
   unit: list
   period: year

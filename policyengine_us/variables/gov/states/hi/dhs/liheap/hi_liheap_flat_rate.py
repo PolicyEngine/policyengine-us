@@ -13,6 +13,8 @@ class hi_liheap_flat_rate(Variable):
         "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=69",
         # FY2027 plan 2.5 and 3.5. PDF pages 10, 13
         "https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=10",
+        # 2026 application, question 22, shelter expenses.
+        "https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -26,10 +28,14 @@ class hi_liheap_flat_rate(Variable):
         photovoltaic = heating_type == heating_type.possible_values.SOLAR
         flat_rate = subsidized | photovoltaic
         if p.payment.no_housing_cost_flat_rate_in_effect:
-            # Assume a home owned outright is a household with no rent or
-            # mortgage expense. A rent-free household has no input. Such a home
-            # stays on points when every member is elderly or disabled and all
-            # income is fixed.
+            # A household reporting no rent and no mortgage payment has no rent
+            # or mortgage expense. Callers must send one of them for a
+            # household that pays.
+            no_housing_cost = (add(spm_unit, period, ["rent"]) <= 0) & (
+                spm_unit("mortgage_payments", period) <= 0
+            )
+            # A home paid in full stays on points when every member is elderly
+            # or disabled and all income is fixed.
             tenure = spm_unit.household("tenure_type", period)
             owned_outright = tenure == tenure.possible_values.OWNED_OUTRIGHT
             person = spm_unit.members
@@ -44,6 +50,8 @@ class hi_liheap_flat_rate(Variable):
             fixed_income_only = (
                 spm_unit.sum(other_income) + spm_unit("tanf", period)
             ) == 0
-            points_exception = spm_unit.all(elderly | disabled) & fixed_income_only
-            flat_rate = flat_rate | (owned_outright & ~points_exception)
+            points_exception = (
+                owned_outright & spm_unit.all(elderly | disabled) & fixed_income_only
+            )
+            flat_rate = flat_rate | (no_housing_cost & ~points_exception)
         return flat_rate

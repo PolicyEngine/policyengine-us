@@ -582,7 +582,7 @@
     hi_liheap_points: 2
     hi_liheap: 375
 
-- name: Case 10, FY2027 pays the higher flat benefits and adds homes owned outright.
+- name: Case 10, FY2027 pays the higher flat benefits and adds households with no rent or mortgage.
   period: 2027
   absolute_error_margin: 0.01
   # The 2027 matrix pays 400 for eligible size 1-2, 450 for 3-5 and 500 for 6+.
@@ -590,9 +590,11 @@
   # electric bill is 2_016. In order: one person in public housing; a rent-subsidy
   # family of three; a rent-subsidy family of six; and a working-age Oahu owner
   # with no mortgage, flat-rate from FY2027 where two points would pay 280. The
-  # last owner is 70 with Social Security of 1_300 a month, so stays on points:
+  # next owner is 70 with Social Security of 1_300 a month, so stays on points:
   # 15_600 is between 50% and 100% of the 2026 one-person guideline of 18_360 for
   # two income points, plus one each for size, Oahu and age, and 5 x 140 = 700.
+  # The last is a working-age Oahu renter paying 12_000 a year, on points:
+  # wages are above 150% of the guideline (27_540), so 2 x 140 = 280.
   input:
     people:
       person1:
@@ -636,6 +638,11 @@
         age: 70
         ssi: 0
         social_security_retirement: 15_600
+      person13:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+        rent: 12_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -667,6 +674,12 @@
         pre_subsidy_electricity_expense: 2_016
         hi_tanf: 0
         receives_housing_assistance: false
+      spm_unit6:
+        members: [person13]
+        heating_type: NONE
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
     households:
       household1:
         members: [person1]
@@ -691,7 +704,11 @@
         state_code: HI
         county: HONOLULU_COUNTY_HI
         tenure_type: OWNED_OUTRIGHT
+      household6:
+        members: [person13]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
   output:
-    hi_liheap_eligible: [true, true, true, true, true]
-    hi_liheap_flat_rate: [true, true, true, true, false]
-    hi_liheap: [400, 450, 500, 400, 700]
+    hi_liheap_eligible: [true, true, true, true, true, true]
+    hi_liheap_flat_rate: [true, true, true, true, false, false]
+    hi_liheap: [400, 450, 500, 400, 700, 280]

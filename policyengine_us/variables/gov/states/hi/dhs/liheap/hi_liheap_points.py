@@ -53,7 +53,12 @@ class hi_liheap_points(Variable):
         person = spm_unit.members
         age = person("age", period)
         qualified = person("hi_liheap_qualified_member", period)
-        disabled = person("hi_liheap_disabled_member", period)
+        # Governmental disability retirement and railroad disability have no
+        # separate input, so is_disabled stands in for them. This affects
+        # points only.
+        disabled = person("is_disabled", period) | person(
+            "hi_liheap_disabled_member", period
+        )
         ages = p.payment.points.vulnerability
         vulnerable = spm_unit.any(
             qualified
