@@ -13,12 +13,13 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     fuel = spm_unit("heating_type", period)
     fuels = fuel.possible_values
     # Addendum A assigns points by community. A listed Census place is the
-    # closest match. A household without one takes the points of its ZIP
-    # code's largest community, and otherwise the most common points of its
-    # borough or census area. The oil and gas tables share their keys. The
-    # shared county variable supplies the state's first county when none is
-    # sent.
-    place_listed = np.isin(place, list(p.community_points.oil))
+    # closest match, unless the ZIP code names a community inside a larger
+    # place. A household without a place takes the points of its ZIP code's
+    # largest community, and otherwise the most common points of its borough
+    # or census area. The oil and gas tables share their keys. The shared
+    # county variable supplies the state's first county when none is sent.
+    zip_refines_place = np.isin(zip_code, p.place_refining_zip_codes)
+    place_listed = ~zip_refines_place & np.isin(place, list(p.community_points.oil))
     place_key = where(place_listed, place, "UNAVAILABLE")
     zip_listed = ~place_listed & np.isin(zip_code, list(p.zip_code_points.oil))
     zip_key = where(zip_listed, zip_code, "UNAVAILABLE")

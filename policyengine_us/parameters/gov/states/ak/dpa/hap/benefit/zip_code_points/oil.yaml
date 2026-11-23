@@ -12,7 +12,8 @@ description: Alaska assigns these oil heating points to the largest community in
 #   cannot rank the three communities Addendum A lists there. It takes 7, the
 #   points of Chugiak, the Postal Service's city name for the ZIP code;
 #   Eklutna and Peters Creek are listed at 8, the value community_points
-#   gives the whole municipality.
+#   gives the whole municipality. place_refining_zip_codes lets this ZIP
+#   code's value apply to a household that also sends the place.
 # - 15 Census ZIP codes are not in Addendum A (99502, 99503, 99504, 99507,
 #   99508, 99515, 99516, 99517 and 99518 in Anchorage, and 99519, 99635,
 #   99652, 99694, 99734 and 99775) and take their largest Census place's

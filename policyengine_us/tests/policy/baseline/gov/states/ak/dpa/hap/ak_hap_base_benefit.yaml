@@ -3266,14 +3266,21 @@
 
 # ZIP 99567 takes Chugiak's 7 oil points, which Addendum A and Appendix A to
 # 7 AAC 44 both list; Eklutna and Peters Creek, also under 99567, have 8, the
-# value place 03000 gives the whole municipality in Case 65.
+# value place 03000 gives the whole municipality in Case 65. The ZIP code
+# refines the place, so it applies with or without the place:
 # 7 * 1 * 1.0 = 7 points * $175 = $1,225.
-- name: Case 94, the Chugiak ZIP code takes Chugiak's seven oil points.
+- name: Case 94, the Chugiak ZIP code takes Chugiak's seven oil points with or without the Anchorage place.
   period: 2027
   absolute_error_margin: 0.01
   input:
     people:
       person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
@@ -3287,13 +3294,25 @@
         fuel_oil_expense: 1_000
         ak_atap: 0
         receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
     households:
       household1:
         members: [person1]
         state_code: AK
         zip_code: '99567'
+      household2:
+        members: [person2]
+        state_code: AK
+        place_fips: '03000'
+        zip_code: '99567'
   output:
-    ak_hap_base_benefit: 1_225
+    ak_hap_base_benefit: [1_225, 1_225]
 
 # 7 AAC 44.040(b)(3)(B) makes a household residing on a military base
 # ineligible. ZIP 99703 is Fort Wainwright, inside the city of Fairbanks
