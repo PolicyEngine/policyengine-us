@@ -12,7 +12,8 @@
     strike_benefits: 10_000
     state_code: UT
   output:
-    ut_homeowner_renter_relief_nontaxable_income: 0
+    # 0 + SSI 11,604 (967 x 12; strike benefits are not SSI income in the model).
+    ut_homeowner_renter_relief_nontaxable_income: 11_604
 
 - name: 2025, the gift part of strike benefits is Utah nontaxable income
   period: 2025
@@ -22,7 +23,8 @@
     tax_exempt_strike_benefits: 3_000
     state_code: UT
   output:
-    ut_homeowner_renter_relief_nontaxable_income: 3_000
+    # 3,000 + SSI 11,604 = 14,604.
+    ut_homeowner_renter_relief_nontaxable_income: 14_604
 
 - name: 2025, a gift part above the total counts only the total
   period: 2025
@@ -34,7 +36,8 @@
   output:
     # Nontaxable strike benefits are the part federal gross income leaves
     # out, which is never more than the benefits received.
-    ut_homeowner_renter_relief_nontaxable_income: 3_000
+    # 3,000 + SSI 11,604 = 14,604.
+    ut_homeowner_renter_relief_nontaxable_income: 14_604
 
 # Household income is "all income received by all members of a claimant's
 # household" 18 or older (59-2a-101(15)). An adult dependent's adjusted gross
@@ -332,7 +335,9 @@
         state_code: UT
   output:
     # 30,000 on the head's return plus the dependent's own 5,000.
-    ut_homeowner_renter_relief_household_income: 35_000
+    # 35,000 + the head's SSI 11,604 (967 x 12) = 46,604.
+    # SSI is the full benefit: it reads the head's own income, not the return's AGI.
+    ut_homeowner_renter_relief_household_income: 46_604
 
 - name: 2025, an adult dependent's estate loss nets against their wages
   period: 2025

@@ -1,15 +1,15 @@
 # Virginia EAP Fuel Assistance end-to-end integration tests.
 # Sources: Complete EAP Manual, Volume IX (household and income B.5-B.7,
 # medical deduction B.6.c, climate zones Appendix A, point values Appendix B);
-# 22VAC40-680-30 (points x value per point); LIHEAP FY2026 Virginia plan item
-# 2.5 (FFY2025 value per point $4.531665, used for period 2026).
+# 22VAC40-680-30 (points x value per point); LIHEAP FY2027 Virginia plan item
+# 2.5 (FFY2026 value per point $3.950584).
 # FFY2026 annual limits (monthly x 12): 23,472 (1) / 31,716 (2) /
 # 39,972 (3) / 64,716 (6) / 72,972 (7).
 # Points = household size + income + climate zone + vulnerability + 43
 # (living arrangement 20, primary fuel placeholder 10, energy burden
 # placeholder 13).
 
-- name: Case 1, retiree in Fairfax County with natural gas heat receives 466.76.
+- name: Case 1, retiree in Fairfax County with natural gas heat receives 406.91.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -41,10 +41,10 @@
     va_eap_vulnerability_points: 20
     # 9 + 15 + 16 + 20 + 43 = 103.
     va_eap_points: 103
-    # 103 x 4.531665 = 466.761495.
-    va_eap: 466.76
+    # 103 x 3.950584 = 406.910152.
+    va_eap: 406.91
 
-- name: Case 2, single parent in Norfolk with heat included in rent receives 376.13.
+- name: Case 2, single parent in Norfolk with heat included in rent receives 327.90.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -81,10 +81,10 @@
     va_eap_vulnerability_points: 12
     # 12 + 8 + 8 + 12 + 43 = 83.
     va_eap_points: 83
-    # 83 x 4.531665 = 376.128195.
-    va_eap: 376.13
+    # 83 x 3.950584 = 327.898472.
+    va_eap: 327.90
 
-- name: Case 3, family of seven in Chesterfield County receives 407.85.
+- name: Case 3, family of seven in Chesterfield County receives 355.55.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -129,10 +129,10 @@
     va_eap_vulnerability_points: 12
     # 15 + 8 + 12 + 12 + 43 = 90.
     va_eap_points: 90
-    # 90 x 4.531665 = 407.84985.
-    va_eap: 407.85
+    # 90 x 3.950584 = 355.55256.
+    va_eap: 355.55
 
-- name: Case 4, subsidized disability recipient in Richmond paying an electric bill receives 394.25.
+- name: Case 4, subsidized disability recipient in Richmond paying an electric bill receives 343.70.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -165,10 +165,10 @@
     va_eap_vulnerability_points: 15
     # 9 + 8 + 12 + 15 + 43 = 87.
     va_eap_points: 87
-    # 87 x 4.531665 = 394.254855.
-    va_eap: 394.25
+    # 87 x 3.950584 = 343.700808.
+    va_eap: 343.70
 
-- name: Case 5, working SSI recipient in Wise County above the limit receives 385.19.
+- name: Case 5, working SSI recipient in Wise County above the limit receives 335.80.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -202,10 +202,10 @@
     va_eap_vulnerability_points: 15
     # 9 + 0 + 18 + 15 + 43 = 85.
     va_eap_points: 85
-    # 85 x 4.531665 = 385.191525.
-    va_eap: 385.19
+    # 85 x 3.950584 = 335.79964.
+    va_eap: 335.80
 
-- name: Case 6, undocumented parent with two citizen children in Prince William County receives 398.79.
+- name: Case 6, undocumented parent with two citizen children in Prince William County receives 347.65.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -242,10 +242,10 @@
     va_eap_vulnerability_points: 12
     # 9 + 8 + 16 + 12 + 43 = 88.
     va_eap_points: 88
-    # 88 x 4.531665 = 398.78652.
-    va_eap: 398.79
+    # 88 x 3.950584 = 347.651392.
+    va_eap: 347.65
 
-- name: Case 7, three-generation household in Augusta County with wood heat receives 557.39.
+- name: Case 7, three-generation household in Augusta County with wood heat receives 485.92.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -288,5 +288,5 @@
     va_eap_vulnerability_points: 20
     # 15 + 25 + 20 + 20 + 43 = 123.
     va_eap_points: 123
-    # 123 x 4.531665 = 557.394795.
-    va_eap: 557.39
+    # 123 x 3.950584 = 485.921832.
+    va_eap: 485.92

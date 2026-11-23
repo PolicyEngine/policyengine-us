@@ -90,6 +90,344 @@
   output:
     is_medicaid_immigration_status_eligible: false
 
+# New York limits undocumented residents to emergency care, except during
+# pregnancy and the postpartum period and, from January 1, 2024, at age 65 or
+# older. Massachusetts gives them MassHealth Standard only during pregnancy
+# and the postpartum period. The all-ages flag in undocumented_immigrant reads
+# false for both states, so each case below turns on the pregnancy term or
+# the aged term alone.
+
+- name: Undocumented 35-year-old in New York fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: NY
+  output:
+    # Not pregnant or postpartum, and under 65: false OR false = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 35-year-old in New York fails the Medicaid immigration test in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: NY
+  output:
+    # Backdating carries the flag's false value to 2015: false OR false = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Pregnant undocumented 30-year-old in New York passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: NY
+  output:
+    # New York's pregnancy term is true and the person is pregnant: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Pregnant undocumented 30-year-old in New York passes the Medicaid immigration test in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: NY
+  output:
+    # Backdating carries the pregnancy term's true value to 2015: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New Yorker between 60 days and 12 months postpartum passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: NY
+  output:
+    # count_days_postpartum = 60, and New York's postpartum period reads 365
+    # days at 2025-01-01: 60 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New Yorker between 60 days and 12 months postpartum fails the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: NY
+  output:
+    # New York's 365-day period starts 2023-03-01, so the model reads 60 days
+    # at 2023-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in New York fails the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is false at 2023-01-01 and true from 2024-01-01.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in New York passes the Medicaid immigration test in 2024
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is true at 2024-01-01, and 70 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 70-year-old in New York passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is true at 2025-01-01, and 70 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 64-year-old in New York fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 64
+    is_pregnant: false
+    state_code: NY
+  output:
+    # 64 >= 65 is false, and the person is not pregnant: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 65-year-old in New York passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 65
+    state_code: NY
+  output:
+    # 65 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 8-year-old in New York fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    # Child Health Plus covers the child (is_chip_immigration_status_eligible).
+    # No Medicaid term applies: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 35-year-old in Massachusetts fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: MA
+  output:
+    # Massachusetts reads false in the flag, and the person is not pregnant: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in Massachusetts fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: MA
+  output:
+    # Massachusetts's aged term is false: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Pregnant undocumented 30-year-old in Massachusetts passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: MA
+  output:
+    # Massachusetts's pregnancy term is true and the person is pregnant: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident under 60 days postpartum passes the Medicaid immigration test in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_60_days_postpartum: true
+    state_code: MA
+  output:
+    # count_days_postpartum = 0, and Massachusetts's postpartum period reads 60
+    # days at 2017-01-01: 0 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
+
+# Between 60 days and 12 months after delivery, the result follows each
+# state's postpartum period, read on January 1.
+
+- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum fails the Medicaid immigration test in 2022
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: MA
+  output:
+    # Massachusetts's 365-day period starts 2022-04-01, so the model reads 60
+    # days at 2022-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented Massachusetts resident between 60 days and 12 months postpartum passes the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: MA
+  output:
+    # count_days_postpartum = 60, and Massachusetts's postpartum period reads
+    # 365 days at 2023-01-01: 60 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New Yorker between 60 days and 12 months postpartum passes the Medicaid immigration test in 2024
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: NY
+  output:
+    # count_days_postpartum = 60, and New York's postpartum period reads 365
+    # days at 2024-01-01 (from 2023-03-01): 60 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Pregnant undocumented 17-year-old in New York passes both immigration tests in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 17
+    is_pregnant: true
+    state_code: NY
+  output:
+    # New York's pregnancy term is true and the person is pregnant: true.
+    is_medicaid_immigration_status_eligible: true
+    # New York's child term is true and 17 < 19: true.
+    is_chip_immigration_status_eligible: true
+
+# The pregnancy term compares days since delivery with the state's
+# postpartum period: fewer days than the period passes.
+
+- name: Undocumented New York resident 59 days postpartum passes the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 59
+    state_code: NY
+  output:
+    # New York's period reads 60 days at 2023-01-01: 59 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New York resident 60 days postpartum fails the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 60
+    state_code: NY
+  output:
+    # New York's period reads 60 days at 2023-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented New York resident 364 days postpartum passes the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 364
+    state_code: NY
+  output:
+    # New York's period reads 365 days at 2025-01-01: 364 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New York resident 365 days postpartum fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 365
+    state_code: NY
+  output:
+    # New York's period reads 365 days at 2025-01-01: 365 < 365 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented Massachusetts resident 59 days postpartum passes the Medicaid immigration test in 2022
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 59
+    state_code: MA
+  output:
+    # Massachusetts's period reads 60 days at 2022-01-01: 59 < 60 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident 60 days postpartum fails the Medicaid immigration test in 2022
+  period: 2022
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 60
+    state_code: MA
+  output:
+    # Massachusetts's period reads 60 days at 2022-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented Massachusetts resident 364 days postpartum passes the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 364
+    state_code: MA
+  output:
+    # Massachusetts's period reads 365 days at 2023-01-01: 364 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented Massachusetts resident 365 days postpartum fails the Medicaid immigration test in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    count_days_postpartum: 365
+    state_code: MA
+  output:
+    # Massachusetts's period reads 365 days at 2023-01-01: 365 < 365 = false.
+    is_medicaid_immigration_status_eligible: false
+
 - name: Eligible for federal Medicaid CA 
   period: 2024
   input:
@@ -212,3 +550,109 @@
     state_code: NJ
   output:
     is_medicaid_immigration_status_eligible: true
+
+- name: Case 23, recent permanent resident on active duty in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(B) and 1612(b)(2)(C)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 24, recent permanent resident veteran in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_veteran: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(A)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 25, temporary protected status adult on active duty in Texas is not eligible, since the military exemption applies only to qualified noncitizens.
+  period: 2025
+  input:
+    immigration_status: TPS
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    is_federal_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 26, recent permanent resident on active duty in Texas stays exempt from the five-year bar after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5)(B)(ii) keeps permanent residents; 8 U.S.C.
+    # 1613(b)(2)(B) still lifts their five-year bar.
+    is_federal_medicaid_immigration_status_eligible: true
+
+- name: Case 27, refugee on active duty in Texas fails the federal test after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5) drops refugees; the military exemption only lifts
+    # the five-year bar and cannot restore the status.
+    is_federal_medicaid_immigration_status_eligible: false
+
+- name: Case 28, dependent child of an active duty parent in Alabama is exempt from the five-year bar until the dependent-child ages run out.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        age: 19
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # 8 U.S.C. 1613(b)(2)(C). Alabama does not elect the lawfully residing
+    # option, so the 10-year-old passes only through the military exemption.
+    # The 19-year-old is not a full-time student or disabled, so is past the
+    # dependent-child ages the model borrows from 7 CFR 273.4(a)(6)(ii)(G)(3).
+    is_snap_alien_military_connected: [true, true, false]
+    is_federal_medicaid_immigration_status_eligible: [true, true, false]

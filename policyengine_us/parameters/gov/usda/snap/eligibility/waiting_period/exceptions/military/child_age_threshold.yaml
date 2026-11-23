@@ -6,6 +6,9 @@ description: The Department of Agriculture excludes military-connected dependent
 # 65 FR 70134 (November 21, 2000), effective January 20, 2001, and now at
 # 7 CFR 273.4(a)(6)(ii)(G)(3). Children under this age are also exempt under
 # 7 CFR 273.4(a)(6)(ii)(J).
+# is_snap_alien_military_connected reads this parameter, and Medicaid, the
+# Medicare Savings Programs and Nevada LIHEAP use that variable too, so a
+# change here also changes them. Federal Medicaid law sets no ages.
 values:
   2001-01-20: 18
 

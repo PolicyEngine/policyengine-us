@@ -22,9 +22,25 @@ values:
     # as a total.
     - rental_income
     - farm_rent_income
-    # MI-1040CR line 18, pensions and annuities.
+    # MI-1040CR line 18: "all annuity, retirement, pension and individual
+    # retirement account (IRA) benefits", the taxable amount on Form 1099-R,
+    # and "amounts rolled over into a Roth IRA must be included to the extent
+    # included in AGI" (2025 MI-1040 book, page 32).
     - pension_income
     - retirement_benefits_from_ss_exempt_employment
+    # Taxable IRA, 401(k), 403(b), SEP and Keogh distributions.
+    - taxable_retirement_distributions
+    - taxable_roth_conversions
+    # Military retired pay and military survivor annuities: "Veterans
+    # receiving retirement benefits should enter the benefits on line 18"
+    # (line 26, page 32).
+    - military_retirement_income
+    # Survivor benefits other than Social Security's: survivor annuities are
+    # line 18 benefits, and "Death benefits paid by or on behalf of an
+    # employer" are line 25 nontaxable income (page 32). Federal gross income
+    # leaves survivor_benefits out, but MCL 206.510(1) adds "all income
+    # specifically excluded or exempt" from AGI.
+    - survivor_benefits
     # MI-1040CR line 19, net capital gains and losses from the filer's U.S.
     # Schedule D, a loss limited to $3,000 ($1,500 married filing separately).
     - filer_loss_limited_net_capital_gains
@@ -35,6 +51,11 @@ values:
     - alimony_income
     - gambling_winnings
     - miscellaneous_income
+    # Line 20 also counts "forgiveness of debt to the extent included in
+    # federal AGI (e.g., mortgage foreclosure)" and line 25 "Forgiveness of
+    # debt to the extent not included in federal AGI" (page 32), so forgiven
+    # debt counts in full.
+    - debt_relief
     # MI-1040CR line 21, Social Security, SSI and railroad retirement
     # benefits: the claimant's and spouse's own. A dependent's benefit is
     # the dependent's, even when the claimant is the representative payee.
@@ -53,6 +74,12 @@ values:
     # only; expenses others pay on the claimant's behalf (gifts in kind) have
     # no input.
     - financial_assistance
+    # MI-1040CR line 25, other nontaxable income, including "Reimbursement
+    # from dependent care and/or medical care spending accounts" (page 32).
+    # irs_employment_income leaves out all employer dependent care benefits
+    # (W-2 box 10), both the part IRC 129 excludes and the taxable part
+    # (Form 1040 line 1e), so the whole amount enters here once.
+    - dependent_care_employer_benefits
     # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits
     - workers_compensation
@@ -79,8 +106,10 @@ metadata:
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=31
   - title: Michigan 2024 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=31
-  - title: "Michigan 2025 Individual Income Tax Instructions, Total Household Resources #page 26-27,31-32"
+  - title: "Michigan 2025 Individual Income Tax Instructions, Total Household Resources #page 26-27,31-33"
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=26
+  - title: "Michigan 2025 Home Heating Credit Instructions, MI-1040CR-7 lines 21, 23, 28 and 29 #page 8-9"
+    href: https://web.archive.org/web/20260218211009/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8
   - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
     href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/
   - title: MCL 206.510(1), "Income" defined

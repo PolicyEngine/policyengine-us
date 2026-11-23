@@ -46,6 +46,10 @@ class nh_fap_heating_cost(Variable):
         # page 77 cost per MBTU is not used. An unsupported county or fuel
         # gives no estimate, whatever the room count.
         # The million divisor converts the heat-load quantity to MBTU.
+        # These inputs are the PY2027 manual's. The FY2026 plan (item 2.5)
+        # estimates the cost from "a heating cost table using dwelling type,
+        # number of rooms, heating degree days, and fuel type", but the PY26
+        # tables are not published, so period 2026 uses the PY2027 inputs.
         estimated_cost = (
             p.dwelling_factor[dwelling]
             * rooms

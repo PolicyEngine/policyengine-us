@@ -509,3 +509,32 @@
     ar_liheap_countable_income: [23_880, 24_120, 25_560]
   output:
     ar_liheap_matrix_amount: [102, 95, 88]
+
+# FFY 2027 matrices, row 0-69 (page 1): Electric 1&2 pays 266, Natural Gas 3&4 pays 403,
+# Propane 5&UP pays 619, Fuel Oil 5&UP pays 627 and Wood & Other 3&4 pays 378.
+- name: Case 19, FY2027 zero income cells for each fuel schedule.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, NATURAL_GAS, PROPANE, FUEL_OIL, WOOD]
+    ar_liheap_household_size: [1, 3, 5, 5, 3]
+    ar_liheap_countable_income: [0, 0, 0, 0, 0]
+  output:
+    ar_liheap_matrix_amount: [266, 403, 619, 627, 378]
+
+# FFY 2027 Electric matrix p2: the top lower bounds move to 2461, 3218, 3975, 4732 and
+# 5489. Rows 2130-2460 and 2461-3217 pay 87 and 80 for 5&UP; rows 2461-3217 and 3218-3974
+# pay 66 and 0 for 1&2 and 70 and 66 for 3&4; rows 3975-4731 and 4732-5488 pay 67 and 66
+# for 5&UP. Annual income = monthly income x 12.
+- name: Case 20, FY2027 electric cells on each side of the moved band boundaries.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY]
+    ar_liheap_household_size: [5, 5, 1, 1, 3, 3, 5, 5]
+    ar_liheap_countable_income: [29_520, 29_532, 38_604, 38_616, 38_604, 38_616, 56_772, 56_784]
+  output:
+    ar_liheap_matrix_amount: [87, 80, 66, 0, 70, 66, 67, 66]

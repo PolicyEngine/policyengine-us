@@ -140,11 +140,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person2:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person3:
         age: 40
         immigration_status: CITIZEN
@@ -152,7 +152,7 @@
         age: 40
         immigration_status: CITIZEN
         employment_income: 24_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -199,41 +199,41 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person2:
         age: 40
         immigration_status: CITIZEN
         employment_income: 36_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person3:
         age: 40
         immigration_status: CITIZEN
         employment_income: 36_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person4:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person5:
         age: 40
         immigration_status: CITIZEN
         employment_income: 24_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person6:
         age: 40
         immigration_status: CITIZEN
         employment_income: 36_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person7:
         age: 40
         immigration_status: CITIZEN
         employment_income: 36_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
       person8:
         age: 40
         immigration_status: CITIZEN
         employment_income: 36_000
-        pre_subsidy_rent: 6_000
+        rent: 6_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -379,28 +379,28 @@
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person2:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person3:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person4:
         age: 40
         immigration_status: CITIZEN
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
-        pre_subsidy_rent: 12_000
+        rent: 12_000
     spm_units:
       spm_unit1:
         members: [person1]
@@ -789,19 +789,19 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person2:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person3:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 12_000
+        rent: 12_000
       person4:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 12_000
+        rent: 12_000
     tax_units:
       tax_unit1:
         members: [person1]
@@ -1000,7 +1000,7 @@
       person2:
         age: 65
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0
@@ -1050,7 +1050,7 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        pre_subsidy_rent: 6_000
+        rent: 6_000
         ssi: 0
         ak_ssp: 0
         ak_permanent_fund_dividend: 0

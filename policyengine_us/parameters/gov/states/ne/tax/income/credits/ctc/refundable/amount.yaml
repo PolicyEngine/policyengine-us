@@ -6,15 +6,21 @@ metadata:
   amount_unit: currency-USD
   label: Nebraska refundable child tax credit amount
   reference:
-    - title: Nebraska Revised Statute | Chapter 77 | §7203 (2)
+    - title: Nebraska Revised Statute | Chapter 77 | §7203 (2) and (3)
       href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203
     - title: 2024 Nebraska Individual Income Tax Booklet
       href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=2
     - title: 2025 Nebraska Individual Income Tax Booklet, Line 48
       href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=19
+    - title: Nebraska Child Care Refundable Tax Credit Application, Form 7203, Instructions
+      href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/f_7203_instruction_only.pdf#page=1
+# ne_refundable_ctc calls calc(right=True), so each threshold is the top of the
+# band below it: $2,000 at income "no more than" $75,000 and $1,000 at "more
+# than $75,000 but no more than $150,000" (77-7203(2)); nothing above $150,000
+# (77-7203(3)).
 brackets:
   - threshold:
-      2024-01-01: 0
+      2024-01-01: -.inf
     amount:
       2024-01-01: 2_000
   - threshold:

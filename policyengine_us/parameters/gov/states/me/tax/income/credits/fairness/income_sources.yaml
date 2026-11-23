@@ -1,14 +1,26 @@
 description: Maine accounts for the following income sources for the sales and property tax credits.
 values:
   2021-01-01:
-    - irs_gross_income
+    # Federal gross income: trade or business, capital and farm losses are
+    # added back in full, and the Schedule E items only for their net loss.
+    - me_fairness_credit_federal_income
     - tax_exempt_social_security
     - tax_exempt_interest_income
+    # "Payments received under the federal Social Security Act" include
+    # supplemental security income (Schedule PTFC/STFC lines 1a and 2b): the
+    # head's and spouse's.
+    - me_fairness_credit_ssi
 metadata:
   unit: list
   label: Maine sales and property tax credit income sources
   reference:
-    - title: §5213-A. Sales tax fairness credit (1) (B) 
+    - title: §5213-A. Sales tax fairness credit (1) (B)
       href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
     - title: §5219-KK. Property tax fairness credit for tax (1) (D)
       href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: "2021 Form 1040ME Schedule PTFC/STFC, lines 1a-3 and instructions #page 1,3-4"
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=1
+    - title: "2025 Form 1040ME Schedule PTFC/STFC, lines 1a-3 and instructions #page 1,3-4"
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=1
+    - title: "Maine Revenue Services Rule 813, Property Tax Fairness Credit, .01(B)-(C) and .03 #page 1,4"
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/Rule_813_May_2023.pdf#page=1
