@@ -323,3 +323,46 @@
     # assistance the household is ineligible (501 I); without it the credit
     # pays the minimum (803 V.3).
     nv_liheap_eligible: [false, true]
+
+# The energy burden is the energy cost after the vendor service fee deduction (507):
+# 300 - 0 = 300 with no vendor reported, max(300 - 380.04, 0) = 0 with Alamo Power
+# District. The two households differ only in the vendor.
+
+- name: Case 14, a subsidized household with heat in the rent has no energy burden when its vendor's service fee deduction covers its only bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 18_720
+      person2:
+        age: 40
+        employment_income_before_lsr: 18_720
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: SOLAR
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        # The household's own electricity account, 25 a month.
+        pre_subsidy_electricity_expense: 300
+        nv_liheap_electricity_provider: UNSPECIFIED
+      spm_unit2:
+        members: [person2]
+        heating_type: SOLAR
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 300
+        nv_liheap_electricity_provider: ALAMO_POWER_DISTRICT
+    households:
+      household1:
+        members: [person1]
+        state_code: NV
+      household2:
+        members: [person2]
+        state_code: NV
+  output:
+    # Both: size 1, 18,720 <= 23,475, a known heating fuel, and heat in the rent
+    # with rental assistance, so each needs an energy burden (501 I).
+    # Energy cost 300 > 0 is a burden; energy cost 0 is none.
+    nv_liheap_eligible: [true, false]
