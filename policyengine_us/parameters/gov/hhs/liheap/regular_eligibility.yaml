@@ -1,0 +1,76 @@
+description: States determine eligibility for regular payments under the Low Income Home Energy Assistance Program with these variables.
+values:
+  2023-01-01:
+    # Alaska's award applies every eligibility condition, so the flag follows it.
+    - ak_hap_eligible  # Alaska Heating Assistance Program
+    - al_liheap_eligible  # Alabama LIHEAP
+    - al_liheap_cooling_eligible  # Alabama LIHEAP cooling
+    - ar_liheap_eligible  # Arkansas LIHEAP
+    - ar_liheap_cooling_eligible  # Arkansas LIHEAP cooling
+    - az_liheap_eligible  # Arizona LIHEAP
+    # Each of California's three components requires this common eligibility.
+    - ca_liheap_basic_eligible  # California LIHEAP
+    - co_leap_eligible  # Colorado LEAP
+    - ct_ceap_eligible  # Connecticut CEAP
+    - dc_liheap_eligible  # DC LIHEAP
+    - de_liheap_eligible  # Delaware LIHEAP
+    # Delaware's cooling benefit has no fixed amount, so no payment is listed.
+    - de_liheap_cooling_eligible  # Delaware LIHEAP cooling
+    - fl_liheap_eligible  # Florida LIHEAP
+    - ga_liheap_eligible  # Georgia LIHEAP
+    - ga_liheap_cooling_eligible  # Georgia LIHEAP cooling
+    - hi_liheap_eligible  # Hawaii LIHEAP
+    - ia_liheap_eligible  # Iowa LIHEAP
+    - id_liheap_eligible  # Idaho LIHEAP
+    - il_liheap_eligible  # Illinois LIHEAP, without crisis assistance
+    - in_eap_eligible  # Indiana EAP
+    - ks_liheap_eligible  # Kansas LIEAP
+    - ky_liheap_eligible  # Kentucky LIHEAP
+    - ky_liheap_cooling_eligible  # Kentucky LIHEAP cooling
+    - la_liheap_eligible  # Louisiana LIHEAP
+    - la_liheap_cooling_eligible  # Louisiana LIHEAP cooling
+    - ma_liheap_eligible  # Massachusetts LIHEAP
+    - md_meap_eligible  # Maryland MEAP
+    - me_heap_eligible  # Maine HEAP
+    - mn_eap_eligible  # Minnesota EAP
+    - mo_liheap_eligible  # Missouri LIHEAP
+    - ms_liheap_eligible  # Mississippi LIHEAP
+    - mt_liheap_eligible  # Montana LIHEAP
+    - nc_lieap_eligible  # North Carolina LIEAP
+    - nd_liheap_eligible  # North Dakota LIHEAP
+    - ne_liheap_eligible  # Nebraska LIHEAP
+    - ne_liheap_cooling_eligible  # Nebraska LIHEAP cooling
+    - nh_fap_eligible  # New Hampshire FAP
+    - nj_liheap_eligible  # New Jersey LIHEAP
+    - nj_liheap_cooling_eligible  # New Jersey LIHEAP cooling
+    - nm_liheap_eligible  # New Mexico LIHEAP
+    - nv_liheap_eligible  # Nevada LIHEAP
+    - ny_heap_eligible  # New York HEAP
+    - oh_liheap_eligible  # Ohio HEAP
+    - ok_liheap_eligible  # Oklahoma LIHEAP
+    - ok_liheap_cooling_eligible  # Oklahoma LIHEAP cooling
+    - or_liheap_eligible  # Oregon LIHEAP
+    - pa_liheap_eligible  # Pennsylvania LIHEAP
+    - ri_liheap_eligible  # Rhode Island LIHEAP
+    - sc_liheap_eligible  # South Carolina LIHEAP
+    - sc_liheap_cooling_eligible  # South Carolina LIHEAP cooling
+    - sd_liheap_eligible  # South Dakota LIEAP
+    - tn_liheap_eligible  # Tennessee LIHEAP
+    - tx_ceap_eligible  # Texas CEAP
+    - ut_heat_eligible  # Utah HEAT
+    - va_eap_eligible  # Virginia EAP
+    - va_eap_cooling_eligible  # Virginia EAP cooling
+    - vt_liheap_eligible  # Vermont Seasonal Fuel Assistance
+    - wa_liheap_eligible  # Washington LIHEAP
+    - wi_wheap_eligible  # Wisconsin WHEAP
+    # West Virginia's only eligibility output is its income test.
+    - wv_lieap_income_eligible  # West Virginia LIEAP
+    - wy_lieap_eligible  # Wyoming LIEAP
+
+metadata:
+  unit: list
+  period: year
+  label: LIHEAP regular state eligibility
+  reference:
+    - title: 42 U.S.C. 8624(b)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/8624#b_2
