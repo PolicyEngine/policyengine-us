@@ -1,3 +1,10 @@
+## [2.153.7] - 2026-11-23
+
+### Fixed
+
+- Vermont renter credit income now adds back business, rental, farm and capital losses and the listed above-the-line deductions under 32 V.S.A. 6061(18)(A) and (D), and counts only the claimant's and spouse's nontaxable Social Security, not a dependent's.
+
+
 ## [2.153.6] - 2026-11-23
 
 ### Fixed
