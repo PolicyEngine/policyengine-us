@@ -1,1 +1,0 @@
-Count alimony outside federal AGI, IRC 135 savings bond interest, IRC 911 excluded foreign income and tax-exempt 401(k), 403(b) and SEP distributions in Montana's elderly homeowner/renter credit gross household income.

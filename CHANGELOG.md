@@ -1,3 +1,13 @@
+## [2.153.1] - 2026-11-23
+
+### Fixed
+
+- Remove the SNAP net income test from Colorado's Expanded Categorical Eligibility from June 2018 rather than from July 2024.
+- Apply the SNAP net income limit to Idaho broad-based categorically eligible households with an elderly or disabled member before July 2024, so they no longer qualify at any income.
+- Missouri property tax credit household income now counts military retirement benefits, U.S. obligation interest, tax-exempt retirement account distributions, general assistance, Missouri state supplementary payments, and rental, farm rental and estate losses. It adds back a nonbusiness loss only to the extent it lowered federal adjusted gross income to zero, leaves out a dependent's pensions, retirement distributions and exempt interest, and leaves out all veterans benefits when the claimant or spouse is a 100 percent service-connected disabled veteran.
+- Count alimony outside federal AGI, IRC 135 savings bond interest, IRC 911 excluded foreign income and tax-exempt 401(k), 403(b) and SEP distributions in Montana's elderly homeowner/renter credit gross household income.
+
+
 ## [2.153.0] - 2026-11-23
 
 ### Added
