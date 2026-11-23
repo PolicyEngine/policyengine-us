@@ -6602,21 +6602,30 @@ candidates:
     other: Line 2d adds back only a net loss on Form 1040 line 7 or Schedule 1 lines 3, 4, 5, 6 and 8, so every loss
       first offsets income on its own line, the other spouse's included on a joint return.
   example: In 2025, $10,000 of Schedule C income and a $3,000 Schedule C loss from a specified service trade or business
-    give fairness credit income of $10,000 under the statute and $7,000 under line 2d. On a joint return, one spouse's
-    $10,000 capital gain and the other's $4,000 capital loss give $10,000 and $6,000.
+    give fairness credit income of $10,000 under the statute and $7,000 under line 2d. A $10,000 long-term capital gain
+    and a $4,000 short-term capital loss give $10,000 and $6,000, whether one filer has both or they are split between
+    spouses on a joint return.
   pe_us:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_federal_income.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_netted_capital_loss.py
     - policyengine_us/parameters/gov/states/me/tax/income/credits/fairness/federal_lines/schedule_1_line_5.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/11185
   state: ruled
   note: Statute first. irs_gross_income counts each filer's income from each source and leaves out its losses, so
-    Schedule C, Schedule F and capital losses are added back in full, and me_fairness_credit_federal_income nets only
-    the Schedule 1 line 5 sources, the head's and the spouse's together. YAML cases in
-    me_fairness_credit_federal_income.yaml and me_sales_and_property_tax_fairness_credit_income.yaml pin the statute
-    reading. The 2021, 2022, 2023 and 2025 instructions have the line 2d text; the 2024 instructions are unchecked.
+    Schedule C and Schedule F losses, and each filer's net capital loss as far as AGI deducts it, are added back in
+    full. capital_gains first nets a filer's short-term and long-term results, with capital gain distributions on
+    Schedule D line 13 and the prior-year long-term carryover on line 14, which 26 U.S.C. 1212(b)(1)(B) treats as a
+    long-term capital loss of the year; me_fairness_credit_netted_capital_loss adds back the losses that netting
+    absorbs, the head's and the spouse's, so every capital loss included in AGI is added back once. A loss carried to
+    a later year is not in AGI and is not added back. me_fairness_credit_federal_income nets only the Schedule 1 line 5
+    sources, the head's and the spouse's together. A loss inside one input, such as two sales in the same holding
+    period netted in one filer's short-term or long-term capital gains, or two businesses netted in one filer's
+    self_employment_income, cannot be separated; neither can a short-term carryover, which has no input of its own.
+    YAML cases in me_fairness_credit_federal_income.yaml and me_sales_and_property_tax_fairness_credit_income.yaml pin
+    the statute reading. The 2021, 2022, 2023, 2024 and 2025 instructions have the line 2d text.
 - id: us-me:liheap-size-ten-income-limit
   program: liheap
   years:

@@ -8,9 +8,13 @@ class me_fairness_credit_federal_income(Variable):
     label = "Maine fairness credit federal income with losses added back"
     documentation = (
         "Federal gross income with losses added back. Trade or business, "
-        "capital and farm losses are added back in full. The Schedule E items "
-        "that make up Schedule 1 line 5 are combined first, so only their net "
-        "loss is added back."
+        "capital and farm losses included in adjusted gross income are added "
+        "back in full, each filer's and each kind separately, including a "
+        "capital loss that offset the same filer's gains. A loss netted "
+        "inside one input, such as two sales in one filer's short-term "
+        "capital gains, cannot be separated. The Schedule E items that make "
+        "up Schedule 1 line 5 are combined first, so only their net loss is "
+        "added back."
     )
     definition_period = YEAR
     reference = (
@@ -30,9 +34,16 @@ class me_fairness_credit_federal_income(Variable):
         # in irs_gross_income.
         not_dependent = ~person("is_tax_unit_dependent", period)
         # irs_gross_income adds each filer's income from each source and
-        # leaves out its losses, so trade or business, capital and farm losses
-        # are added back in full.
-        income = add(tax_unit, period, ["irs_gross_income"])
+        # leaves out its losses, so trade or business and farm losses, and
+        # each filer's net capital loss as far as adjusted gross income
+        # deducts it, are added back in full. capital_gains first nets each
+        # filer's short-term and long-term results, so the losses that
+        # netting absorbs are added back separately.
+        income = add(
+            tax_unit,
+            period,
+            ["irs_gross_income", "me_fairness_credit_netted_capital_loss"],
+        )
         # Only "any net loss resulting from combining" the Schedule E items is
         # added back, so their losses first offset their income, the head's
         # and the spouse's together.
