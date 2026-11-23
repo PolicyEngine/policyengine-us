@@ -1474,7 +1474,7 @@ programs:
         variable: va_eap
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
-        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
+        notes: FFY2026 Fuel Assistance only, with placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
       - state: VA
         status: partial
         name: Virginia EAP cooling
