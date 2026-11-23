@@ -21,12 +21,10 @@ class hi_liheap(Variable):
         p = parameters(period).gov.states.hi.dhs.liheap.payment
         flat_rate = spm_unit("hi_liheap_flat_rate", period)
         flat = p.subsidized_amount.calc(size)
-        # Private dwellings receive points times a statewide value per point.
-        # Hawaii sets that value each year from the funds left after the flat
-        # payments and the statewide points, and does not publish it. The
-        # parameter is the benefit matrix's example value, an estimate, so
-        # actual awards differ by year. Callers must send county: regional
-        # points read it, and an unsent county falls back to Hawaii County, a
-        # neighbor island worth one more point than Oahu.
+        # Other eligible dwellings receive points times a statewide rate.
+        # Hawaii calculates the rate from remaining funds and total points
+        # after flat payments. The model uses the matrix's example rate to
+        # estimate the award. An omitted county defaults to Hawaii County,
+        # which receives one more regional point than Oahu.
         points = spm_unit("hi_liheap_points", period)
         return where(flat_rate, flat, points * p.value_per_point)

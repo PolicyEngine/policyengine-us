@@ -22,6 +22,8 @@ class hi_liheap_flat_rate(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
+        # The PV flat rate uses the reported billing status independently
+        # of the home's space-heating fuel.
         pv_status = spm_unit("hi_liheap_photovoltaic_status", period)
         net_consuming_pv = pv_status == pv_status.possible_values.PV_WITH_NET_USAGE
         flat_rate = subsidized | net_consuming_pv

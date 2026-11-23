@@ -555,10 +555,11 @@
 - name: Case 9, photovoltaic net usage determines eligibility and the flat benefit.
   period: 2026
   absolute_error_margin: 0.01
-  # All three adults earn 33_280 on Oahu. The benefit matrix pays 375
-  # to the electric-heated home with net PV usage. Solar thermal heating
-  # gets the ordinary two-point award, 2 x 140 = 280. Draft manual 4.2
-  # requires net billed usage for PV homes, so account fees alone pay 0.
+  # All three adults earn 33_280 on Oahu. The benefit matrix pays 375 to
+  # the electric-heated home with net PV usage. The solar-thermal home
+  # leaves PV status blank and gets 280 (two points at 140). Draft manual
+  # 4.2 requires net billed usage for PV homes, so the home with only PV
+  # account fees receives 0.
   input:
     people:
       person1:
