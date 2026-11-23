@@ -14066,6 +14066,75 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-ut:ctc-modified-agi-other-state-bond-interest
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does Utah's child tax credit count interest on another state's municipal bonds in modified adjusted gross
+    income once, as the TC-40 worksheet does, or twice, under both Utah Code 59-10-1047(1)(d)(ii) and (iii)?
+  sources:
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2024
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2023050320240101.html
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2025
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2025010120240501.html
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2026
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2026050620260506.html
+  - kind: statute
+    citation: Utah Code 59-10-114(1)(e) and (5), edition effective May 3, 2023
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S114_2023050320230503.html
+  - kind: statute
+    citation: Utah Code 59-10-114(1)(e) and (5), edition effective October 14, 2025
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S114_2025101420251206.html
+  - kind: worksheet
+    citation: 2024 TC-40 instructions, Child Tax Credit Worksheet (code AT), lines 3-7, printed p.22, PDF p.24
+    url: https://files.tax.utah.gov/tax/forms/2024/tc-40inst.pdf#page=24
+  - kind: worksheet
+    citation: 2025 TC-40 instructions, Child Tax Credit Worksheet (code AT), lines 3-7, printed p.22, PDF p.24
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=24
+  - kind: instructions
+    citation: 2025 TC-40 instructions, lines 5 (Additions to Income) and 6 (Total Income), printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2025 TC-40 instructions, TC-40A Part 1, code 57 (Municipal Bond Interest), printed p.16, PDF p.18
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=18
+  readings:
+    statute: 'Read literally, 59-10-1047(1)(d) sums (i) "adjusted gross income for the taxable year for which a tax
+      credit is claimed", (ii) "any interest income that is not included in adjusted gross income" and (iii) "any
+      addition to adjusted gross income required by Section 59-10-114". Section 59-10-114(1)(e) adds interest on
+      bonds issued by "a state other than this state" or its political subdivisions "to the extent the interest is
+      not included in adjusted gross income", so the same interest falls under both (ii) and (iii) and is counted
+      twice.'
+    other: 'The worksheet enters "the amount from TC-40, line 6 (Total Income)", which includes the code 57 addition,
+      on line 3; takes out "municipal bond interest from TC-40, Schedule A, Part 1, code 57" on line 4; subtracts
+      line 4 from line 3 on line 5; and enters "tax exempt interest from federal form 1040 or 1040-SR, line 2a" on
+      line 6. Line 7 adds lines 5 and 6, so the interest is counted once.'
+  example: A 2025 joint filer with one child aged 3, $50,000 of federal adjusted gross income and $3,000 of interest
+    on another state's municipal bonds that TC-40A code 57 adds back has $53,000 of modified adjusted gross income
+    under the worksheet, below the $54,000 threshold, and a $1,000 credit before the nonrefundable liability limit
+    (ut_ctc_potential). Counting the interest under both (ii) and (iii) gives $56,000 and $800 before the limit. After
+    the limit both readings allow the same credit. With the $50,000 as wages and no code 57 addition, PE-US leaves
+    $409.80 of Utah tax after the taxpayer credit, the Utah earned income tax credit takes $241.42 of it first, and
+    ut_ctc is $168.38.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ut/tax/income/credits/child_tax_credit/ut_ctc_potential.py
+    - policyengine_us/reforms/states/ut/ctc/ut_ctc_reform.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11182
+  state: ruled
+  note: Section 59-10-1047(1)(d) does not say how (ii) and (iii) coordinate when the same interest meets both. PE-US
+    counts the interest once, following the canon against counting a dollar twice and the Tax Commission's worksheet,
+    the agency practice in 2024 and 2025. ut_ctc_potential.py and the contributed reform (ut_ctc_reform.py) add
+    ut_total_income (federal adjusted gross income plus ut_additions) and tax_exempt_interest_income for the head and
+    spouse. The model computes no code 57 addition (ut_additions is the ut_other_additions input alone), so the
+    interest is counted once, through tax_exempt_interest_income, unless the code 57 amount is also entered in
+    ut_other_additions. The 2026 draft instructions move the worksheet to form TC-150, which this entry has not
+    reviewed.
 - id: us-ut:heat-child-unearned-income
   program: liheap
   years:

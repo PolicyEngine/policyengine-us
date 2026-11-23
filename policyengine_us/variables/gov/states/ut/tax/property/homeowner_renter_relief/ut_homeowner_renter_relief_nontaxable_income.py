@@ -7,8 +7,18 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
     label = "Utah homeowner's/renter's relief nontaxable income"
     unit = USD
     definition_period = YEAR
+    documentation = (
+        "Amounts excluded from federal adjusted gross income that Utah counts "
+        "as nontaxable income (Utah Code 59-2a-101(20)): the listed sources "
+        "(gov.states.ut.tax.property.homeowner_renter_relief.nontaxable_income"
+        ".sources), plus the Social Security other than social security "
+        "disability income, and the unemployment compensation, that federal "
+        "adjusted gross income leaves out."
+    )
     reference = (
-        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=5"
+        # PDF pages 3-4
+        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=3",
+        "https://files.tax.utah.gov/tax/forms/current/tc-90cb.pdf#page=1",
     )
     defined_for = StateCode.UT
 

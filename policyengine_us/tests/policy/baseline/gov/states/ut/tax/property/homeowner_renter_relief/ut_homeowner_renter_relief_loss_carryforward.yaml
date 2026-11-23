@@ -1,0 +1,129 @@
+# Utah Code 59-2a-101(20)(a)(ii) counts "loss carry forwards claimed during
+# the taxable year" as nontaxable income, and Form TC-90CB line 5 reports
+# "Capital gain/loss (exclude carryforwards/carrybacks)". The carryover claimed
+# is the amount by which it lowered federal adjusted gross income: the capital
+# gain or loss in AGI (the net gain, or the net loss up to the IRC 1211(b)
+# limit of 3,000, or 1,500 married filing separately) without the carryover,
+# less that amount with it. long_term_capital_gains is entered net of the
+# carryover, as Schedule D line 15 shows it.
+
+- name: Case 1, a carryover used against the year's gain is claimed in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # A 4,000 gain in the year less the 4,000 carryover.
+    long_term_capital_gains: 0
+    long_term_capital_loss_carryover: 4_000
+    state_code: UT
+  output:
+    # max(0 + 4,000, -3,000) - max(0, -3,000) = 4,000 - 0 = 4,000.
+    ut_homeowner_renter_relief_loss_carryforward: 4_000
+
+- name: Case 2, a carryover above the year's gain is claimed up to the loss limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # A 1,000 gain in the year less a 10,000 carryover.
+    long_term_capital_gains: -9_000
+    long_term_capital_loss_carryover: 10_000
+    state_code: UT
+  output:
+    # max(-9,000 + 10,000, -3,000) - max(-9,000, -3,000) = 1,000 + 3,000
+    # = 4,000: 1,000 offsets the gain and 3,000 is the deductible net loss.
+    # The other 6,000 is carried on.
+    ut_homeowner_renter_relief_loss_carryforward: 4_000
+
+- name: Case 3, no carryover is claimed when the year's own loss reaches the limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # A 3,000 loss in the year plus a 2,000 carryover.
+    long_term_capital_gains: -5_000
+    long_term_capital_loss_carryover: 2_000
+    state_code: UT
+  output:
+    # max(-5,000 + 2,000, -3,000) - max(-5,000, -3,000) = -3,000 + 3,000 = 0.
+    ut_homeowner_renter_relief_loss_carryforward: 0
+
+- name: Case 4, a carryover fills the room under the loss limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    # A 2,000 loss in the year plus a 2,000 carryover.
+    long_term_capital_gains: -4_000
+    long_term_capital_loss_carryover: 2_000
+    state_code: UT
+  output:
+    # max(-4,000 + 2,000, -3,000) - max(-4,000, -3,000) = -2,000 + 3,000
+    # = 1,000.
+    ut_homeowner_renter_relief_loss_carryforward: 1_000
+
+- name: Case 5, a joint return nets one spouse's carryover against the other's gain.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        # No gain in the year less a 4,000 carryover.
+        long_term_capital_gains: -4_000
+        long_term_capital_loss_carryover: 4_000
+      spouse:
+        age: 68
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        long_term_capital_gains: 4_000
+        long_term_capital_loss_carryover: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: UT
+  output:
+    # The return's net gain: -4,000 + 4,000 = 0. max(0 + 4,000, -3,000) -
+    # max(0, -3,000) = 4,000, recorded on the head.
+    ut_homeowner_renter_relief_loss_carryforward: [4_000, 0]
+
+- name: Case 6, a dependent's carryover is figured on their own return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+        long_term_capital_loss_carryover: 0
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        # No gain in the year less a 4,000 carryover.
+        long_term_capital_gains: -4_000
+        long_term_capital_loss_carryover: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # The dependent files as single: max(-4,000 + 4,000, -3,000) -
+    # max(-4,000, -3,000) = 0 + 3,000 = 3,000.
+    ut_homeowner_renter_relief_loss_carryforward: [0, 3_000]
+    # The dependent's own AGI holds the 3,000 deductible loss.
+    dependent_adjusted_gross_income: [0, -3_000]
+    # 30,000 + (-3,000) + 3,000: the year's own capital result is 0.
+    ut_homeowner_renter_relief_household_income: 30_000
