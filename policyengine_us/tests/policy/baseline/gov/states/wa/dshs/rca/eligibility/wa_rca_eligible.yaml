@@ -41,15 +41,28 @@
   output:
     wa_rca_eligible: false
 
-- name: Case 5, refugee using default years_since_us_entry (5) - ineligible.
+- name: Case 5, refugee 5 years after entry - ineligible (past ORR window).
   period: 2024-01
   input:
     state_code: WA
     immigration_status: REFUGEE
+    # Previously relied on the removed default of 5; now stated explicitly.
+    years_since_us_entry: 5
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: true
   output:
     wa_rca_eligible: false
+
+- name: Case 5b, refugee without years_since_us_entry - eligible (default of 0 is inside ORR window).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    # years_since_us_entry is omitted, so its default of 0 applies.
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_rca_eligible: true
 
 - name: Case 6, refugee income-ineligible - ineligible.
   period: 2024-01
