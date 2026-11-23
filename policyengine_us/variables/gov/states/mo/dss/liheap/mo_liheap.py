@@ -30,6 +30,9 @@ class mo_liheap(Variable):
             spm_unit.household("is_in_public_housing", period)
         )
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
+        # `rent` is the tenant share: derived from `pre_subsidy_rent`, it nets
+        # out modeled HUD housing_assistance even when no subsidy is reported,
+        # so report `rent` directly for a household paying its full rent.
         annual_rent = add(spm_unit, period, ["rent"])
         renter_amount = where(
             heat_in_rent & ~subsidized,

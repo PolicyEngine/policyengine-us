@@ -82,7 +82,10 @@ class mt_liheap(Variable):
         # ARM 37.70.607(3): other heat-in-rent households receive one seventh
         # of the benefit per month, each month at most half of that month's
         # rent. Steady rent and receipts for every heating-season month are
-        # assumed.
+        # assumed. `rent` is the tenant share: derived from `pre_subsidy_rent`,
+        # it nets out modeled HUD housing_assistance even when no subsidy is
+        # reported, so report `rent` directly for a household paying its full
+        # rent.
         rent_cap = (
             p.heat_in_rent.rent_share
             * p.heat_in_rent.months
