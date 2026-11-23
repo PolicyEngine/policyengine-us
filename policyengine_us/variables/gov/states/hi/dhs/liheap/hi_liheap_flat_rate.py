@@ -22,11 +22,9 @@ class hi_liheap_flat_rate(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
-        # Assume a SOLAR heating type is a net-consuming photovoltaic household,
-        # which receives the flat amount.
-        heating_type = spm_unit("heating_type", period)
-        photovoltaic = heating_type == heating_type.possible_values.SOLAR
-        flat_rate = subsidized | photovoltaic
+        pv_status = spm_unit("hi_liheap_photovoltaic_status", period)
+        net_consuming_pv = pv_status == pv_status.possible_values.PV_WITH_NET_USAGE
+        flat_rate = subsidized | net_consuming_pv
         if p.payment.no_housing_cost_flat_rate_in_effect:
             # A household reporting no rent and no mortgage payment has no rent
             # or mortgage expense. Callers must send one of them for a

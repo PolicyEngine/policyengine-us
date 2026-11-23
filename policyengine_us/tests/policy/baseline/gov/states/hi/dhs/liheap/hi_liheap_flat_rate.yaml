@@ -5,10 +5,11 @@
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf
 # https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf
 
-- name: Case 1, subsidized, public-housing and solar households are flat-rate in FY2026.
+- name: Case 1, subsidized, public-housing and net-consuming photovoltaic households are flat-rate in FY2026.
   period: 2026
-  # In order: a rent subsidy, public housing, solar heating, a private renter and
-  # a home owned outright, which is not flat-rate before FY2027.
+  # In order: a rent subsidy, public housing, a photovoltaic system with net
+  # billed usage, a private renter and a home owned outright, which is not
+  # flat-rate before FY2027.
   input:
     people:
       person1:
@@ -29,7 +30,7 @@
         members: [person2]
       spm_unit3:
         members: [person3]
-        heating_type: SOLAR
+        hi_liheap_photovoltaic_status: PV_WITH_NET_USAGE
       spm_unit4:
         members: [person4]
       spm_unit5:
