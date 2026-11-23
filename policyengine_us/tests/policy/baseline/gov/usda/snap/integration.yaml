@@ -201,3 +201,29 @@
     # Categorical Eligibility does not apply.
     is_snap_eligible: true
     snap: 23
+
+- name: Idaho parent and child with unemployment compensation above the net income limit are ineligible.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation:
+          2026: 26_400
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    # Gross income of $2,200 a month is within Idaho's 130% BBCE limit, but
+    # net income of $1,991 is above the two-person FY 2026 net standard of
+    # $1,763. Broad-based categorically eligible households stay subject to
+    # the net income standard (IDAPA 16.03.04.010.09 and 16.03.04.549), so
+    # this household does not receive the minimum allotment.
+    is_snap_eligible: false
+    snap: 0

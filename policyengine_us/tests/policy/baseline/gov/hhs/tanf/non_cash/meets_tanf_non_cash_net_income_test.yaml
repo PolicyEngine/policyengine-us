@@ -353,3 +353,63 @@
           2018: CO
   output:
     meets_tanf_non_cash_net_income_test: true
+
+- name: Idaho BBCE household without an elderly or disabled member above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $195 above the one-person FY 2026 net standard of $1,305.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Broad-based categorically eligible households stay subject to the net
+    # income standard (IDAPA 16.03.04.010.09 and 16.03.04.549).
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Idaho BBCE household without an elderly or disabled member at the FY 2026 net standard meets the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        snap_net_income: 1_305
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Idaho BBCE household without an elderly or disabled member above the FY 2016 net standard fails the net income test.
+  period: 2016-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $519 above the one-person FY 2016 net standard of $981.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2016: ID
+  output:
+    # The archived 2017 chapter of IDAPA 16.03.04 carries the same text.
+    meets_tanf_non_cash_net_income_test: false
