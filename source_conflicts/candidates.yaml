@@ -133,16 +133,16 @@ candidates:
   example: A Loring adult aged 40 with no income, a two-bedroom house and an oil bill receives 5 points, $875, under
     Appendix A and 4 points, $700, under Addendum A.
   pe_us:
-    follows: statute
+    follows: not-modelled
     code:
     - policyengine_us/parameters/gov/states/ak/dpa/hap/benefit/community_points/oil.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10341
   state: unreviewed
-  note: The code gives Loring Appendix A's 5 oil points. Tetlin also differs (Addendum A 12, Appendix A 16), and the
-    code uses Appendix A's 16; its residents are routed to their tribal program, so that value does not change
-    results. The manual is served only over http, at
-    http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
+  note: The points tables are keyed by ZIP code, and Loring has no ZIP code of its own. ZIP 99901 takes the 4 oil
+    points of Ketchikan, where most of its residents live, so the code holds no separate Loring value. Tetlin also
+    differs (Addendum A 12, Appendix A 16); ZIP 99780 takes the 12 points and state routing of Tok. The manual is
+    served only over http, at http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm.
 - id: us-ak:hap-one-person-lowest-income-limit
   program: liheap
   years:

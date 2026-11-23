@@ -1,0 +1,30 @@
+description: Alaska excludes all residents of these tribe-served boroughs and census areas, for households with no listed ZIP code, under the Heating Assistance Program.
+# Derived fallback. Boroughs and census areas where most residents live in a
+# community that Addendum A marks 0 (the tribe serves all residents), from 2020
+# Census block counts by Census place. The share is at least 99% in the
+# Bethel, Dillingham, Kusilvak and Yukon-Koyukuk Census Areas and the Bristol
+# Bay and Yakutat boroughs, 79% in Prince of Wales-Hyder, 78% in Lake and
+# Peninsula and 61% in Hoonah-Angoon.
+values:
+  2026-10-01:
+    - BETHEL_CENSUS_AREA_AK
+    - BRISTOL_BAY_BOROUGH_AK
+    - DILLINGHAM_CENSUS_AREA_AK
+    - HOONAH_ANGOON_CENSUS_AREA_AK
+    - KUSILVAK_CENSUS_AREA_AK
+    - LAKE_AND_PENINSULA_BOROUGH_AK
+    - PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK
+    - YAKUTAT_CITY_AND_BOROUGH_AK
+    - YUKON_KOYUKUK_CENSUS_AREA_AK
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP all resident tribal service boroughs and census areas
+  reference:
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing and symbol key
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Alaska HAP Manual 3002-1 A.2, Ineligible Household
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+    - title: 2020 Census Redistricting Data (P.L. 94-171), Alaska geographic header
+      href: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Alaska/ak2020.pl.zip

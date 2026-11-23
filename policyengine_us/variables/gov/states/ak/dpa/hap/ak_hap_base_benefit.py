@@ -7,13 +7,29 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # the vulnerable point (k), halved for a utility allowance (l), then the
     # 2.0-point minimum (m), half-up rounding (n) and the 35-point cap (o).
     p = parameters(period).gov.states.ak.dpa.hap.benefit
-    place = spm_unit.household("place_fips", period)
+    zip_code = spm_unit.household("zip_code", period)
+    county = spm_unit.household("county_str", period)
     fuel = spm_unit("heating_type", period)
     fuels = fuel.possible_values
-    oil_table = p.community_points.oil
-    gas_table = p.community_points.natural_gas
-    oil_place = where(np.isin(place, list(oil_table)), place, "UNAVAILABLE")
-    gas_place = where(np.isin(place, list(gas_table)), place, "UNAVAILABLE")
+    # Addendum A assigns points by community. A listed ZIP code stands for
+    # its largest community; any other household takes the most common
+    # points of its borough or census area. The oil and gas tables share
+    # their keys. The shared county variable supplies the state's first
+    # county when none is sent.
+    zip_listed = np.isin(zip_code, list(p.community_points.oil))
+    zip_key = where(zip_listed, zip_code, "UNAVAILABLE")
+    county_listed = np.isin(county, list(p.county_points.oil))
+    county_key = where(county_listed, county, "UNAVAILABLE")
+    oil_points = where(
+        zip_listed,
+        p.community_points.oil[zip_key],
+        p.county_points.oil[county_key],
+    )
+    gas_points = where(
+        zip_listed,
+        p.community_points.natural_gas[zip_key],
+        p.county_points.natural_gas[county_key],
+    )
     # 7 AAC 44.080(f) and grant step 1 put electricity, propane, steam, hot
     # water and vehicle gasoline on oil points. OTHER stands for the steam,
     # hot-water and vehicle-gasoline cases, which heating_type cannot name,
@@ -31,14 +47,14 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # heating_type cannot identify self-harvested fuel or pellets, whose
     # factors differ under (c) and (e).
     wood_or_coal = (fuel == fuels.WOOD) | (fuel == fuels.COAL)
-    # Both tables cover every Census place; a missing or unknown place code
-    # has no points.
+    # A household with no listed ZIP code and no Alaska borough has no
+    # points.
     community_points = select(
         [oil_fuel, fuel == fuels.NATURAL_GAS, wood_or_coal],
         [
-            oil_table[oil_place],
-            gas_table[gas_place],
-            oil_table[oil_place] * p.purchased_wood_coal_multiplier,
+            oil_points,
+            gas_points,
+            oil_points * p.purchased_wood_coal_multiplier,
         ],
         default=0,
     )
@@ -80,20 +96,25 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
         add(spm_unit, period, ["pre_subsidy_rent"]),
         spm_unit("heating_expense", period),
     )
-    # The table identifies all-resident tribal routing. Native-only tribal
+    # The lists identify all-resident tribal routing by ZIP code, or by
+    # borough for a household with no listed ZIP code. Native-only tribal
     # eligibility and contrary interagency arrangements are unobserved;
     # never infer tribal enrollment from race. Finer residency, temporary
     # shelter duration and vendor-credit rules are also unobserved.
-    state_served = ~np.isin(place, p.tribal_service_places)
+    tribe_served = where(
+        zip_listed,
+        np.isin(zip_code, p.tribal_service_zip_codes),
+        np.isin(county, p.tribal_service_counties),
+    )
     # 7 AAC 44.040(b)(3)(B) excludes households residing on a military base.
-    # Census draws the listed places from the installations themselves.
-    on_base = np.isin(place, p.military_base_places)
+    # Addendum A prints the listed ZIP codes beside the installations.
+    on_base = np.isin(zip_code, p.military_base_zip_codes)
     eligible = (
         (factor > 0)
         & (community_points > 0)
         & (expense > p.minimum_expense)
         & ~(heat_in_rent & subsidized)
-        & state_served
+        & ~tribe_served
         & ~on_base
         & (points >= p.minimum_points)
     )

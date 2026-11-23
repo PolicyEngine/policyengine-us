@@ -52,7 +52,7 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     heating_expense: 1_000
     ak_hap_base_benefit: 1_925
@@ -116,7 +116,7 @@
       household1:
         members: [person1, person2, person3, person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_household_size: [3, 1]
     ak_hap_countable_income: [0, 24_000]
@@ -176,7 +176,7 @@
       household1:
         members: [person1, person2, person3, person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     heating_expense: [0, 0, 0]
     ak_hap_household_size: [1, 2, 1]
@@ -279,15 +279,15 @@
       household1:
         members: [person1, person2, person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household2:
         members: [person4, person5, person6]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household3:
         members: [person7, person8]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_income_factor: [1, 0, 0, 1, 0.6, 0, 0, 0]
     ak_hap_base_benefit: [1_750, 0, 0, 1_750, 1_050, 0, 0, 0]
@@ -351,11 +351,11 @@
       household1:
         members: [person1, person2, person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household2:
         members: [person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household3:
         members: [person5, person6]
         state_code: NH
@@ -437,19 +437,19 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household2:
         members: [person2]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household3:
         members: [person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household4:
         members: [person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_base_benefit: [1_750, 1_750, 1_750, 0]
     ak_hap: [1_750, 1_750, 875, 0]
@@ -482,7 +482,7 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '36400'
+        zip_code: '99801'
   output:
     ak_hap_household_size: 1
     ak_hap_countable_income: 24_000
@@ -548,7 +548,7 @@
       household1:
         members: [person1, person2, person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_household_size: [1, 1, 1]
     ak_hap_countable_income: [0, 0, 0]
@@ -599,7 +599,7 @@
       household1:
         members: [person1, person2]
         state_code: AK
-        place_fips: '01970'
+        zip_code: '99786'
   output:
     ak_hap_household_size: [1, 1]
     ak_hap_countable_income: [0, 0]
@@ -652,7 +652,7 @@
       household1:
         members: [person1, person2, person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     pension_income: [0, 0, 0]
     veterans_benefits: [0, 0, 0]
@@ -703,11 +703,11 @@
       household1:
         members: [person1, person2]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
       household2:
         members: [person3, person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     tanf: [0, 9_852]
     ak_hap_countable_income: [0, 9_852]
@@ -760,15 +760,15 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '36400'
+        zip_code: '99801'
       household2:
         members: [person2]
         state_code: AK
-        place_fips: '36400'
+        zip_code: '99801'
       household3:
         members: [person3]
         state_code: AK
-        place_fips: '36400'
+        zip_code: '99801'
   output:
     ak_hap_countable_income: [12_000, 18_000, 25_000]
     ak_hap_income_factor: [0.8, 0.7, 0.5]
@@ -836,22 +836,22 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
         is_in_public_housing: true
       household2:
         members: [person2]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
         is_in_public_housing: true
       household3:
         members: [person3]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
         is_in_public_housing: true
       household4:
         members: [person4]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
         is_in_public_housing: true
   output:
     is_in_public_housing: [true, true, true, true]
@@ -894,7 +894,7 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     military_retirement_income: 18_000
     ak_hap_countable_income: 18_000
@@ -933,7 +933,7 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_countable_income: 18_000
     ak_hap_income_factor: 0.7
@@ -971,7 +971,7 @@
       household1:
         members: [person1]
         state_code: AK
-        place_fips: '36400'
+        zip_code: '99801'
   output:
     ak_hap_countable_income: 12_000
     ak_hap_income_factor: 0.8
@@ -1025,7 +1025,7 @@
       household1:
         members: [person1, person2]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_household_size: [1, 1]
     ak_hap_countable_income: [0, 0]
@@ -1081,7 +1081,7 @@
       household1:
         members: [person1, person2]
         state_code: AK
-        place_fips: '24230'
+        zip_code: '99701'
   output:
     ak_hap_countable_income: [0, 0]
     ak_hap_income_factor: [1, 1]

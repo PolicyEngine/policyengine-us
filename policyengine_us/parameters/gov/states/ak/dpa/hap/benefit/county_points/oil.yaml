@@ -1,0 +1,84 @@
+description: Alaska assigns these oil heating points by borough or census area, for households with no listed ZIP code, under the Heating Assistance Program.
+# Derived fallback; this is not a state-issued table. Addendum A assigns points
+# to communities. Each borough or census area takes the most common oil points
+# among its residents' communities, weighted by 2020 Census block counts by
+# Census place; the comment names the largest community with those points.
+# Seven of the 30 have one value throughout. Elsewhere the points vary by
+# community (11 to 33 in the Yukon-Koyukuk Census Area), and about 83% of
+# Alaskans in a Census place have their borough's points.
+ALEUTIANS_EAST_BOROUGH_AK: # Akutan
+  2026-10-01: 11
+ALEUTIANS_WEST_CENSUS_AREA_AK: # Unalaska
+  2026-10-01: 6
+ANCHORAGE_MUNICIPALITY_AK: # Anchorage
+  2026-10-01: 8
+BETHEL_CENSUS_AREA_AK: # Bethel
+  2026-10-01: 16
+BRISTOL_BAY_BOROUGH_AK: # Naknek
+  2026-10-01: 13
+CHUGACH_CENSUS_AREA_AK: # Valdez
+  2026-10-01: 8
+COPPER_RIVER_CENSUS_AREA_AK: # Glennallen
+  2026-10-01: 11
+DENALI_BOROUGH_AK: # Healy
+  2026-10-01: 10
+DILLINGHAM_CENSUS_AREA_AK: # Dillingham
+  2026-10-01: 11
+FAIRBANKS_NORTH_STAR_BOROUGH_AK: # Fairbanks
+  2026-10-01: 10
+HAINES_BOROUGH_AK: # Haines
+  2026-10-01: 6
+HOONAH_ANGOON_CENSUS_AREA_AK: # Hoonah
+  2026-10-01: 7
+JUNEAU_CITY_AND_BOROUGH_AK: # Juneau
+  2026-10-01: 5
+KENAI_PENINSULA_BOROUGH_AK: # Kalifornsky
+  2026-10-01: 9
+KETCHIKAN_GATEWAY_BOROUGH_AK: # Ketchikan
+  2026-10-01: 4
+KODIAK_ISLAND_BOROUGH_AK: # Kodiak
+  2026-10-01: 6
+KUSILVAK_CENSUS_AREA_AK: # Hooper Bay
+  2026-10-01: 25
+LAKE_AND_PENINSULA_BOROUGH_AK: # Port Alsworth
+  2026-10-01: 19
+MATANUSKA_SUSITNA_BOROUGH_AK: # Knik-Fairview
+  2026-10-01: 7
+NOME_CENSUS_AREA_AK: # Nome
+  2026-10-01: 17
+NORTHWEST_ARCTIC_BOROUGH_AK: # Kotzebue
+  2026-10-01: 21
+NORTH_SLOPE_BOROUGH_AK: # Utqiaġvik
+  2026-10-01: 21
+PETERSBURG_BOROUGH_AK: # Petersburg
+  2026-10-01: 5
+PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK: # Craig
+  2026-10-01: 5
+SITKA_CITY_AND_BOROUGH_AK: # Sitka
+  2026-10-01: 6
+SKAGWAY_MUNICIPALITY_AK: # Skagway
+  2026-10-01: 8
+SOUTHEAST_FAIRBANKS_CENSUS_AREA_AK: # Deltana
+  2026-10-01: 11
+WRANGELL_CITY_AND_BOROUGH_AK: # Wrangell
+  2026-10-01: 5
+YAKUTAT_CITY_AND_BOROUGH_AK: # Yakutat
+  2026-10-01: 6
+YUKON_KOYUKUK_CENSUS_AREA_AK: # Galena
+  2026-10-01: 20
+UNAVAILABLE:
+  2026-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: Alaska HAP oil heating points by borough or census area
+  reference:
+    - title: 7 AAC 44.080(a) and Appendix A to 7 AAC 44
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Census 2025 Alaska Places Gazetteer
+      href: https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_02.txt
+    - title: 2020 Census Redistricting Data (P.L. 94-171), Alaska geographic header
+      href: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Alaska/ak2020.pl.zip
