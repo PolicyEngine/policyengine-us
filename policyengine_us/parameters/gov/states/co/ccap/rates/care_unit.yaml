@@ -1,0 +1,33 @@
+description: Colorado pays this share of the full-time daily rate under the Child Care Assistance Program, by hours of care a day.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  label: Colorado CCCAP share of the full-time daily rate by hours of care
+  reference:
+    - title: 8 CCR 1403-1 3.130(C), part-time, full-time, full-time/part-time and full-time/full-time daily rates
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=119
+    - title: 8 CCR 1403-1 3.103(ZZ), equivalent full-time units
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=10
+    - title: CDEC, County CCCAP Policies and Rate Plans (County Ceiling Rates list each rate as FT, PT at 55%, FTPT at 155% and FTFT at 200%)
+      href: https://drive.google.com/drive/folders/1YSLL5Sn32NyKbp8Z0063ldFbAhQwfHW_
+# Each threshold opens a care unit above that many hours: part time through
+# 5 hours, full time through 12, full time plus part time through 17, and two
+# full-time units through 24.
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0.55
+  - threshold:
+      2024-10-01: 5
+    amount:
+      2024-10-01: 1
+  - threshold:
+      2024-10-01: 12
+    amount:
+      2024-10-01: 1.55
+  - threshold:
+      2024-10-01: 17
+    amount:
+      2024-10-01: 2
