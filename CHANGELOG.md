@@ -1,3 +1,10 @@
+## [2.153.4] - 2026-11-23
+
+### Fixed
+
+- Montana's SALT withholding estimate uses the filing-status brackets, federal standard deduction and capital gains rates Montana applies from 2024.
+
+
 ## [2.153.3] - 2026-11-23
 
 ### Fixed
