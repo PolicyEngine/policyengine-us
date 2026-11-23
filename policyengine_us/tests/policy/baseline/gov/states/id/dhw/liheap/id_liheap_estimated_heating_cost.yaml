@@ -2,8 +2,14 @@
 # https://web.archive.org/web/20170127123014id_/http://www.healthandwelfare.idaho.gov/Portals/_Rainbow/Manuals/LIHEAP/Appendices/c_htgcost_matrix_PY07.pdf#page=1
 # PY2007 estimated nine-month costs are used as a modeling assumption;
 # their current FY2026 applicability is unconfirmed. No inflation or 12/9 scaling.
-# Electricity uses Idaho Power & Southern Utilities. Natural gas uses the
-# Intermountain column as a modeling simplification, without a provider input.
+# The electricity and natural gas provider inputs select the cost column.
+# Electricity: Avista and the named northern utilities use the Northern
+# Utilities column in Areas I and II (1_450, 1_585). Rocky Mountain Power uses
+# the Utah Power & Light column in Areas II and III (1_692, 1_836). Any other
+# or unreported company, and a named company outside those areas, uses
+# Idaho Power & Southern Utilities.
+# Natural gas: Avista uses its own column in Areas I and II (875, 1_200). Any
+# other or unreported company, and Avista in Area III, uses Intermountain.
 
 - name: Case 1, six supported fuels use the historical costs in all three areas.
   period: 2026
@@ -72,3 +78,34 @@
     heating_type: [SOLAR, KEROSENE]
   output:
     id_liheap_estimated_heating_cost: [1_335, 1_625]
+
+- name: Case 6, named providers use their own cost columns and an unstored company and area pair falls back.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Avista electric: Nez Perce County (Area I) 1_450, Kootenai County (Area II) 1_585.
+  # Rocky Mountain Power: Franklin County (Area II) 1_692, Bear Lake County (Area III) 1_836.
+  # Avista gas: Nez Perce County 875, Kootenai County 1_200.
+  # Rocky Mountain Power has no stored Area I cost, so Ada County keeps the Idaho Power 1_335.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID]
+    county: [NEZ_PERCE_COUNTY_ID, KOOTENAI_COUNTY_ID,
+             FRANKLIN_COUNTY_ID, BEAR_LAKE_COUNTY_ID,
+             NEZ_PERCE_COUNTY_ID, KOOTENAI_COUNTY_ID,
+             ADA_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY,
+                   NATURAL_GAS, NATURAL_GAS,
+                   ELECTRICITY]
+    id_liheap_electricity_provider: [AVISTA, AVISTA,
+                                     ROCKY_MOUNTAIN_POWER, ROCKY_MOUNTAIN_POWER,
+                                     UNSPECIFIED, UNSPECIFIED,
+                                     ROCKY_MOUNTAIN_POWER]
+    id_liheap_natural_gas_provider: [UNSPECIFIED, UNSPECIFIED,
+                                     UNSPECIFIED, UNSPECIFIED,
+                                     AVISTA, AVISTA,
+                                     UNSPECIFIED]
+  output:
+    id_liheap_estimated_heating_cost: [1_450, 1_585,
+                                      1_692, 1_836,
+                                      875, 1_200,
+                                      1_335]

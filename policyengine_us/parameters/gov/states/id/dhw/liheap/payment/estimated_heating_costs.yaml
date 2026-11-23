@@ -4,8 +4,12 @@ description: Idaho uses these estimated heating-season costs by fuel and heating
 # This table is not confirmed as current for FY2026.
 # The FY2026 anchor records this modeling assumption, not a verified update.
 # Preserve the published amounts without inflation or a twelve-month uplift.
-# Provider groups are not distinguished. Electricity uses Idaho Power &
-# Southern Utilities; natural gas uses the complete Intermountain Gas column.
+# Unspecified/unlisted providers use Idaho Power & Southern Utilities for
+# electricity and the complete Intermountain Gas column for natural gas.
+# Named northern utilities and Rocky Mountain Power use their historical
+# provider columns. The Rocky Mountain Power costs come from the Appendix C
+# column headed "Utah Power & Light". Northern membership follows
+# northern_electric_providers.
 # The old rent-cost column and old benefit percentages are not used.
 oil_or_propane:
   1:
@@ -35,6 +39,21 @@ coal_or_wood:
     2025-10-01: 1_600
   3:
     2025-10-01: 1_800
+natural_gas_avista:
+  1:
+    2025-10-01: 875
+  2:
+    2025-10-01: 1_200
+electricity_northern:
+  1:
+    2025-10-01: 1_450
+  2:
+    2025-10-01: 1_585
+electricity_rocky_mountain:
+  2:
+    2025-10-01: 1_692
+  3:
+    2025-10-01: 1_836
 
 metadata:
   propagate_metadata_to_children: true
