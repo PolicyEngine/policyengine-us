@@ -37,11 +37,10 @@ class hi_liheap_eligible(Variable):
         categorical = receives_ssi | (
             add(spm_unit, period, ["snap", "tanf", "general_assistance"]) > 0
         )
-        # Both manuals pay gas as heating and electricity as cooling, and a household
-        # asks to have one utility credited (2.12; application Q17). So any home's
-        # gas or electric bill qualifies, whatever heats it or the rent includes,
-        # with no cooling-cost condition. Bottled gas does not show the active
-        # utility account that draft 2.1 requires. Callers must send heating_type.
+        # The Energy Credit goes to one gas or electricity account (draft 2.12
+        # and application Q17). The model uses a gas or electric bill and a
+        # known heating fuel to establish utility responsibility. Reported PV
+        # status determines whether the additional net-usage requirement applies.
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
@@ -57,4 +56,8 @@ class hi_liheap_eligible(Variable):
         responsible = (
             (gas_bill | electric_bill | utilities_in_rent) & (fuel != types.UNSPECIFIED)
         ) | (heat_in_rent & rent_fuel)
-        return (size > 0) & (income_eligible | categorical) & responsible
+        # Draft 2.12 and 4.2 require billed usage in excess of generation.
+        # Account fees can make a PV household's bill positive without net use.
+        pv_status = spm_unit("hi_liheap_photovoltaic_status", period)
+        pv_eligible = pv_status != pv_status.possible_values.PV_WITHOUT_NET_USAGE
+        return (size > 0) & (income_eligible | categorical) & responsible & pv_eligible
