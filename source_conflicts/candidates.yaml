@@ -6617,6 +6617,66 @@ candidates:
     invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
     instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
     conflict may start earlier.
+- id: us-me:fairness-credit-loss-add-backs
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does Maine's fairness credit income add back trade or business, capital and farm losses in full, or only
+    the net loss on each federal line, as Schedule PTFC/STFC line 2d does?
+  sources:
+  - kind: statute
+    citation: 36 M.R.S. 5213-A(1)(B)(1) ("Trade or business losses; capital losses; any net loss resulting from
+      combining the income or loss from rental real estate and royalties, the income or loss from partnerships and
+      S corporations, the income or loss from estates and trusts, the income or loss from real estate mortgage
+      investment conduits and the net farm rental income or loss; any loss associated with the sale of business
+      property; and farm losses included in federal adjusted gross income")
+    url: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+  - kind: statute
+    citation: 36 M.R.S. 5219-KK(1)(D)(1) (the same words, for the property tax fairness credit)
+    url: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+  - kind: instructions
+    citation: 2021 Form 1040ME Schedule PTFC/STFC instructions, line 2d ("Enter on line 2d the amount of any negative
+      amount (net loss) shown on federal Form 1040 or Form 1040-SR, line 7 and federal Schedule 1, lines 3, 4, 5, 6,
+      and 8")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+  - kind: instructions
+    citation: 2025 Form 1040ME Schedule PTFC/STFC instructions, line 2d ("Enter on line 2d the amount of any negative
+      amount (net loss) included on federal Form 1040 or Form 1040-SR, line 7 and federal Schedule 1, lines 3, 4, 5,
+      6, and 8a through 8z")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+  readings:
+    statute: Trade or business losses, capital losses, losses on the sale of business property and farm losses included
+      in federal adjusted gross income are added back in full. Only the Schedule E items (Schedule 1 line 5) are
+      combined first, so only their net loss is added back.
+    other: Line 2d adds back only a net loss on Form 1040 line 7 or Schedule 1 lines 3, 4, 5, 6 and 8, so every loss
+      first offsets income on its own line, the other spouse's included on a joint return.
+  example: In 2025, $10,000 of Schedule C income and a $3,000 Schedule C loss from a specified service trade or business
+    give fairness credit income of $10,000 under the statute and $7,000 under line 2d. A $10,000 long-term capital gain
+    and a $4,000 short-term capital loss give $10,000 and $6,000, whether one filer has both or they are split between
+    spouses on a joint return.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_federal_income.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_netted_capital_loss.py
+    - policyengine_us/parameters/gov/states/me/tax/income/credits/fairness/federal_lines/schedule_1_line_5.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11185
+  state: ruled
+  note: Statute first. irs_gross_income counts each filer's income from each source and leaves out its losses, so
+    Schedule C and Schedule F losses, and each filer's net capital loss as far as AGI deducts it, are added back in
+    full. capital_gains first nets a filer's short-term and long-term results, with capital gain distributions on
+    Schedule D line 13 and the prior-year long-term carryover on line 14, which 26 U.S.C. 1212(b)(1)(B) treats as a
+    long-term capital loss of the year; me_fairness_credit_netted_capital_loss adds back the losses that netting
+    absorbs, the head's and the spouse's, so every capital loss included in AGI is added back once. A loss carried to
+    a later year is not in AGI and is not added back. me_fairness_credit_federal_income nets only the Schedule 1 line 5
+    sources, the head's and the spouse's together. A loss inside one input, such as two sales in the same holding
+    period netted in one filer's short-term or long-term capital gains, or two businesses netted in one filer's
+    self_employment_income, cannot be separated; neither can a short-term carryover, which has no input of its own.
+    YAML cases in me_fairness_credit_federal_income.yaml and me_sales_and_property_tax_fairness_credit_income.yaml pin
+    the statute reading. The 2021, 2022, 2023, 2024 and 2025 instructions have the line 2d text.
 - id: us-me:liheap-size-ten-income-limit
   program: liheap
   years:

@@ -9,12 +9,16 @@
         qualified_dividend_income: 95.39
         rent: 7_957.51
         taxable_interest_income: 328.40
+        # A TAXSIM record holds tax inputs only, so SSI is 0, as snap and tanf
+        # are below; SSI counts in fairness credit income.
+        ssi: 0
         is_tax_unit_head: true
       person2:
         age: 77
         employment_income: 0.0
         qualified_dividend_income: 95.39
         taxable_interest_income: 328.40
+        ssi: 0
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
