@@ -1,7 +1,7 @@
 # FY2026 matrix: subsidized dwellings receive 375 for eligible size 1-2, 425 for
 # 3-5 and 475 for 6+.
 # https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2
-# Private dwellings receive points times 140, the state's planning value per point.
+# Private dwellings receive points times 140, the matrix's example value per point.
 
 - name: Case 1, the flat benefit covers every size boundary and the open final band.
   period: 2026
@@ -551,3 +551,33 @@
     hi_liheap_eligible: true
     hi_liheap_points: 10
     hi_liheap: 1_400
+
+- name: Case 9, a private dwelling with solar heating receives the flat benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # A SOLAR heating type is assumed to be a photovoltaic household, which the
+  # matrix pays the flat benefit. One adult on Oahu with a full-time job at
+  # Hawaii's $16 minimum wage has 33_280 and an electric bill of 2_016. Two
+  # points would pay 280; the flat benefit for size one is 375.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_eligible: true
+    hi_liheap_points: 2
+    hi_liheap: 375

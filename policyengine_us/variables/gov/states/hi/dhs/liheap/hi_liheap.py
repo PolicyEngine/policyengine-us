@@ -12,8 +12,8 @@ class hi_liheap(Variable):
         # PDF pages 10, 13-14
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2",
-        # Draft FY2026 manual 6.4, payment determination.
-        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=70",
+        # Draft FY2026 manual 6.2 and 6.4. PDF pages 69-70
+        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=69",
     )
 
     def formula(spm_unit, period, parameters):
@@ -22,12 +22,17 @@ class hi_liheap(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
+        # Assume a SOLAR heating type is a net-consuming photovoltaic household,
+        # which receives the flat amount.
+        heating_type = spm_unit("heating_type", period)
+        photovoltaic = heating_type == heating_type.possible_values.SOLAR
         flat = p.subsidized_amount.calc(size)
         # Private dwellings receive points times a statewide value per point.
         # Hawaii sets that value each year from the funds left after the flat
         # payments and the statewide points, and does not publish it. The
-        # parameter is the state's planning value, so actual awards differ by
-        # year. Net-consuming photovoltaic households receive the flat amount;
-        # their production has no input, so they are paid by points here.
+        # parameter is the benefit matrix's example value, an estimate, so
+        # actual awards differ by year. Callers must send county: regional
+        # points read it, and an unsent county falls back to Hawaii County, a
+        # neighbor island worth one more point than Oahu.
         points = spm_unit("hi_liheap_points", period)
-        return where(subsidized, flat, points * p.value_per_point)
+        return where(subsidized | photovoltaic, flat, points * p.value_per_point)

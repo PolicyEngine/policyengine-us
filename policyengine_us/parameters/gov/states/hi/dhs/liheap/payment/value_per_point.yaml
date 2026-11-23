@@ -1,8 +1,11 @@
-description: Hawaii uses this amount as its planning value for each private-dwelling point under the Low Income Home Energy Assistance Program.
+description: Hawaii gives this amount as an example value for each private-dwelling point under the Low Income Home Energy Assistance Program.
 # Hawaii sets the final value after the June application month: the Energy Credit
 # funds left after the flat-rate payments, divided by all private-dwelling points
 # statewide (draft manual 6.4). That value is not published. The matrix's worked
 # example uses 140, and the plan's 1,400 maximum benefit is ten points at 140.
+# At 140 a two-point household receives 280, below the 375 minimum benefit that
+# plan sections 2.6 and 3.6 estimate for FY2026. Draft manual 6.4 sets no floor,
+# so none applies.
 values:
   2025-10-01: 140
 metadata:
