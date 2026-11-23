@@ -2899,3 +2899,200 @@
   output:
     nh_fap_heating_cost: 1_200
     nh_fap: 1_095
+
+# Period 2026 uses the PY26 Fuel Assistance Program Benefits chart
+# (https://liheapch.acf.gov/docs/2026/benefits-matricies/NH_BenefitMatrix_2026.pdf)
+# with the 2025 one-person guideline of 15,650: 10,000 is band A (at or below
+# 75%, 11,737.50) and 40,000 is band F (above 175%, 27,387.50, and at or below
+# the 47,604 limit). Cost tiers start at 1,000 (CC), 1,500 (BB) and 1,750 (AA).
+# Each household repeats a period 2027 case above.
+
+# PY26 chart, deliverable heat DD/A cell. Case 1's household.
+- name: "Case 89, PY26 delivered matrix cost tier DD and income band A."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 677
+
+# PY26 chart, utility heat DD/A cell: 677 * 0.625 = 423.125, published as 424.
+# Case 2's household.
+- name: "Case 90, PY26 utility matrix cost tier DD and income band A rounds up."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 10_000
+    nh_fap: 424
+
+# PY26 chart, deliverable heat AA/F cell. Case 47's household: 4,000 is at or
+# above 1,750, tier AA, where period 2027 needs 3,500.
+- name: "Case 91, PY26 delivered matrix cost tier AA and income band F."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 40_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_countable_income: 40_000
+    nh_fap: 726
+
+# PY26 chart, utility heat CC/A cell: 1,016 * 0.625 = 635.
+- name: "Case 92, PY26 utility annual cost 1499.99 stays in cost tier CC."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_499.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 635
+
+# PY26 chart, utility heat BB/A cell: 1,355 * 0.625 = 846.875, published as 847.
+# The chart's "$1,000 UP TO $1,500" and "$1,500 UP TO $1,750" labels overlap at
+# 1,500; the model reads the lower bound as inclusive.
+- name: "Case 93, PY26 utility annual cost 1500 enters cost tier BB."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_500
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 847
+
+# PY26 chart, utility heat BB/A cell. Case 61's household.
+- name: "Case 94, PY26 utility annual cost 1749.99 stays in cost tier BB."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_749.99
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 847
+
+# PY26 chart, utility heat AA/A cell ("$1,750 & UP"): 2,177 * 0.625 = 1,360.625,
+# published as 1,361. Case 62's household.
+- name: "Case 95, PY26 utility annual cost 1750 enters cost tier AA."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "NATURAL_GAS"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        gas_expense: 1_750
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap: 1_361

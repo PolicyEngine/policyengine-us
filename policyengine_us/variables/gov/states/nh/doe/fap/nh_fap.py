@@ -18,7 +18,11 @@ class nh_fap(Variable):
         "(page 78) print none. On page 9, the FFY2027 draft state plan replaces "
         "the FY2026 plan's 'eligible for a reduced benefit' with 'eligible for a "
         "benefit', although its item 2.3 still describes reduced heat-in-rent "
-        "benefits. Verified against the PY2027 schedule; earlier results are "
+        "benefits. Period 2026 uses the PY26 chart's benefit amounts and heating "
+        "cost tiers. It keeps the PY2027 heating-cost estimate and the unreduced "
+        "heat-in-rent award, because the PY26 heating cost tables and reduced "
+        "heat-in-rent amounts are not published. Verified against the PY2027 "
+        "schedule; period 2026 beyond the PY26 chart and earlier results are "
         "unverified historical estimates. Zero can mean an unsupported heating "
         "cost or fuel classification rather than legal ineligibility."
     )
@@ -67,8 +71,10 @@ class nh_fap(Variable):
         delivered_benefit = p.payment.delivered_benefit[cost_band][income_band]
         heating_type = spm_unit("heating_type", period)
         multiplier = p.payment.benefit_multiplier[heating_type]
-        # Half-up whole dollars reproduce every utility matrix cell.
-        benefit = np.floor(delivered_benefit * multiplier + 0.5)
+        # Rounding up to whole dollars reproduces every utility matrix cell
+        # of the PY26 chart and the PY2027 schedule. Both multipliers are
+        # exact binary fractions, so the product carries no rounding error.
+        benefit = np.ceil(delivered_benefit * multiplier)
         # Unsubsidized heat in rent receives this scheduled amount, with the
         # fuel multiplier applied once, because the PY2027 schedule prints no
         # heat-in-rent reduction (see the documentation).
