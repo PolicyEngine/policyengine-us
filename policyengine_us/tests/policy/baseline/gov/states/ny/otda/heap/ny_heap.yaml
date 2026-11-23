@@ -1166,3 +1166,51 @@
     ny_heap_tier_one: [true, false, false, false]
     ny_heap_eligible: [true, true, true, false]
     ny_heap_categorically_eligible: [false, false, false, false]
+
+# OTDA HEAP program page, "Regular HEAP Benefit Amounts 2026-2027": oil, kerosene or
+# propane $990, wood, wood pellets, coal, corn or other deliverable fuel $700, and
+# electricity or natural gas $400, plus $61 for Tier I and $35 for a vulnerable member.
+# https://otda.ny.gov/programs/heap/
+- name: Case 53, FY2027 every fuel with the Tier I supplement.
+  period: 2027
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ny_heap_categorically_eligible: [false, false, false, false, false, false, false, false, false, false, false]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, WOOD, COAL, OTHER, SOLAR, UNSPECIFIED, NONE]
+    pre_subsidy_electricity_expense: [2_400, 0, 0, 0, 0, 0, 0, 0, 900, 0, 0]
+    gas_expense: [0, 1_500, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    fuel_oil_expense: [0, 0, 2_800, 2_800, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 2_600, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 1_300, 0, 0, 0]
+  output:
+    # Case 1's households in FY2027. Zero income is Tier I: utility 400 + 61 = 461;
+    # oil, kerosene and propane 990 + 61 = 1_051; wood, coal, other fuels and solar
+    # 700 + 61 = 761. No fuel bill means no heating responsibility.
+    ny_heap: [461, 461, 1_051, 1_051, 1_051, 761, 761, 761, 761, 0, 0]
+
+# FY2027 from actual wages. A 65-year-old heating with oil earns 24_000 (2_000 a month),
+# above the one-person Tier I line of 1_729 and below the 3_563 income limit: Tier II
+# base 990 plus the 35 vulnerable add-on (age 60 or older) = 1_025. Two 40-year-old
+# tenants with heat included in rent receive 50 at zero income (Tier I) and 45 at
+# 24_000 (Tier II). OTDA HEAP page and FY2027 State Plan pp. 9-10.
+- name: Case 54, FY2027 Tier II, vulnerable and heat-included amounts from actual wages.
+  period: 2027
+  input:
+    state_code: [NY, NY, NY]
+    age: [65, 40, 40]
+    employment_income: [24_000, 0, 24_000]
+    ssi: [0, 0, 0]
+    snap: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [FUEL_OIL, UNSPECIFIED, UNSPECIFIED]
+    fuel_oil_expense: [2_800, 0, 0]
+    heat_expense_included_in_rent: [false, true, true]
+    receives_housing_assistance: [false, false, false]
+  output:
+    ny_heap_tier_one: [false, true, false]
+    ny_heap_vulnerable: [true, false, false]
+    ny_heap: [1_025, 50, 45]

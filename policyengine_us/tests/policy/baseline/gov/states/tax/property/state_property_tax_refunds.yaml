@@ -238,10 +238,11 @@
           2024: UT
           2025: UT
   output:
-    ut_homeowner_renter_relief: 1_550
-    ut_renters_credit: 950
+    # 10,000 + SSI 7,114 = 17,114: 8.5% of 10,000 rent = 850, + 600 homeowner's.
+    ut_homeowner_renter_relief: 1_450
+    ut_renters_credit: 850
     ut_homeowners_credit: 600
-    state_property_tax_refunds: 950
+    state_property_tax_refunds: 850
 
 - name: North Dakota's primary residence credit lowers the bill and counts in neither total.
   period: 2026

@@ -194,3 +194,17 @@
     tanf: [0, 0]
   output:
     ny_heap_tier_one: [true, false]
+- name: Case 14, FY2027 one-person Tier I line at 130% of the 2026 guideline.
+  period: 2027
+  # FY2027 State Plan p. 10: Tier I is gross income "at or below 130% of the Federal
+  # Poverty Level". 130% of the 2026 one-person guideline, 15_960, is 1_729 a month:
+  # 20_748 a year is Tier I and 20_760 is not.
+  input:
+    state_code: [NY, NY]
+    age: [40, 40]
+    employment_income: [20748, 20760]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    ny_heap_tier_one: [true, false]

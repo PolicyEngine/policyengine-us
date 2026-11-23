@@ -119,8 +119,14 @@
   output:
     # The established filer_amounts_recorded_on_dependents convention puts
     # 500 + 700 = 1,200 on the parent's return: 20,000 - 1,200 = 18,800.
-    # Neither is the dependent's own deduction: their income stays 10,000.
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_800, 10_000]
+    # Neither is the dependent's own deduction, so neither reduces the
+    # dependent's 10,000. The 700 of savings bond interest excluded under
+    # IRC 135 is nontaxable interest that gross household income counts
+    # (§ 15-30-2337(9)(a)(vii); 2024 Schedule 2EC line 2, "all interest,
+    # both taxable and nontaxable"). It is added back on the record that
+    # holds it: 10,000 + 700 = 10,700. Household: 18,800 + 10,700 = 29,500
+    # = 20,000 + 10,000 - 500 adoption assistance.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [18_800, 10_700]
 
 - name: Dependent educator and IRA deductions retain their statutory annual caps
   period: 2023

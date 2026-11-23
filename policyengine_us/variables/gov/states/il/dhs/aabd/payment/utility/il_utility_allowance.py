@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.general import has_input_for_period
 
 # Parameter keys that differ from the <type>_expense naming of the
 # utility_types entries: the regulation's "metered gas" allowance is paid
@@ -25,9 +26,17 @@ class il_aabd_utility_allowance(Variable):
         # Households may have more than one applicable utility allowance type
         allowances = []
         for expense in p.utility.utility_types:
+            source = expense
+            # Honor a supplied bill. Otherwise use the pre-subsidy amount
+            # because the modeled discounts are California-only and CARE
+            # can read SNAP through WIC or Medicaid.
+            if expense == "electricity_expense" and not has_input_for_period(
+                spm_unit.simulation, expense, period.this_year
+            ):
+                source = "pre_subsidy_electricity_expense"
             # YEAR-defined dollar inputs read at this MONTH period are
             # divided by 12 before the monthly cap applies.
-            expense_amount = spm_unit(expense, period)
+            expense_amount = spm_unit(source, period)
             key = PARAMETER_KEY_OVERRIDES.get(expense, expense.replace("_expense", ""))
             allowances.append(
                 where(

@@ -992,6 +992,45 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
   note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
+- id: us-ar:snap-bbce-resource-increase-at-application
+  program: snap
+  years:
+    from: 2025
+    type: calendar
+  question: Does Arkansas grant the temporary $5,500 SNAP resource limit only to an enrolled household that accumulates
+    resources above the federal limit, or also to a household that applies with resources above it?
+  sources:
+  - kind: statute
+    citation: Ark. Code 20-76-115(b)(2), as amended by Act 675 of 2023, section 1
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2F&file=675.pdf&ddBienniumSession=2023%2F2023R
+  - kind: manual
+    citation: Arkansas DHS SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility (PDF page 80)
+    url: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
+  - kind: rulemaking
+    citation: Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023, effective April 4, 2025, SNAP
+      Certification Manual 1919 (PDF page 12)
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+  readings:
+    statute: 'Subdivision (b)(2)(A) sets the asset limit "equal to the federal resource limit". Subdivision (b)(2)(B)(i)
+      grants the temporary increase "If an enrolled household is determined by the Department of Human Services to
+      have accumulated countable assets greater than the federal resource limit".'
+    other: 'Section 1919 applies the increase to "all SNAP households that receive a non-cash TANF or Maintenance of
+      Effort benefit". Appendix AA starts the twelve months at application: "Client applies July 2025 with $5200 in
+      resources, the 12 months start in July 2025."'
+  example: In June 2026 an Arkansas family of three with gross income of $2,800 a month and $4,000 in resources applies
+    for SNAP. Under Appendix AA the household is within the $5,500 limit and eligible. Under the statute's wording it
+    is not an enrolled household, the $3,000 federal limit applies and it is ineligible.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/tanf/non_cash/asset_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11124
+  state: ruled
+  note: 'PE-US follows the manual: the $5,500 limit applies to every Arkansas household within the BBCE income limits,
+    at application and while enrolled. The model has no input that separates an applicant from an enrolled household
+    or that tracks the twelve months. Ruled by the project lead, 2026-11-18:
+    https://github.com/PolicyEngine/policyengine-us/pull/11124'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
@@ -2228,7 +2267,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do Colorado's LEAP contribution bands and income limits use exact percentages of the poverty guideline and
     state median income, or the whole-dollar monthly tables the plan attachment and manual print?
@@ -2242,11 +2281,19 @@ candidates:
   - kind: manual
     citation: 2025-26 LEAP Training and Operations Manual, rates handout, p.4
     url: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4
+  - kind: manual
+    citation: 2026-27 LEAP Operations Manual, eligibility chart, p.99
+    url: https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=99
+  - kind: guidance
+    citation: CDHS 2026-27 LEAP Income Limits table, linked from the LEAP page (https://cdhs.colorado.gov/leap)
+    url: https://drive.google.com/file/d/1gfDDrwl3HmZONV3za74lhyXsj8LMdVeF/view
   readings:
     statute: No statute is supplied; Step D sets the contribution by "0 – 75% FPL", "75.01 – 125% FPL", "125.01 – 175% FPL"
       and "175.01% +", and 3.752.22 D sets the limit at 60 percent of state median income.
     other: The plan attachment and manual print whole-dollar monthly amounts, $978 at 75% FPL and $3,607 at 60% of state
-      median income for one person, and the attachment says Colorado "uses the FPL chart".
+      median income for one person, and the attachment says Colorado "uses the FPL chart". For FY2027 the eligibility
+      chart and the income limits table print $3,774 for one person, where 60% of state median income is $45,295 a year
+      ($3,774.58 a month).
   example: One adult with wages of $11,737.20 ($978.10 a month, 74.998% of the guideline) and a $1,000 gas bill receives
     $900 under the printed $978 and $1,000 under Step D's 75%. One adult with $43,290 and the same bill receives $0
     under the printed $3,607 and $700 within 60% of state median income ($43,293).
@@ -2259,7 +2306,10 @@ candidates:
   note: 'Ruled 2026-11-03: keep the printed tables. The rule states no dollar conversion, and PE-US reproduces the tables
     by rounding the monthly guideline and each percentage half up and flooring 60% of state median income to the month.
     The rule''s next sentence lets the department "adjust the income limits annually based on funds available and the
-    state median income guidelines".'
+    state median income guidelines". FY2027 follows the same ruling: the 2026-27 manual''s eligibility chart (p.99),
+    both applications (pp.125, 131) and the income limits table on the LEAP page print the floored amount in every
+    row, and only the manual''s rates handout (p.5) prints $10,453 for ten members, against $10,452 elsewhere (PR
+    11138). FY2027 prints only the percentage contribution bands, so their dollar boundaries keep the FY2026 rounding.'
 - id: us-co:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2942,6 +2992,53 @@ candidates:
     checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
     from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
     (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
+- id: us-de:military-pension-survivor-annuity
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does an annuity paid to a uniformed-services member's survivor, such as a Survivor Benefit Plan annuity,
+    count as a "United States military pension" under 30 Del. C. 1106(b)(3), or only the retiree's own retired pay, as
+    the PIT-RES Line 6 instructions provide?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1106(b)(3)f.2, added as (b)(3)c.2 by 84 Del. Laws c. 437 (SB 329, approved September 26, 2024)
+    url: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2024
+    url: https://revenuefiles.delaware.gov/2024/PIT_2024_Forms/PIT_Instructions/PIT-RES_TY24_2024-01_Instructions.pdf#page=6
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2025
+    url: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=6
+  readings:
+    statute: '"United States military pension" means a pension received as a result of an individual''s service in the
+      Army, Navy, Air Force, Marine Corps, Space Force, Coast Guard, the commissioned corps of the National Oceanic and
+      Atmospheric Administration, the commissioned corps of the Public Health Service, or the National Guard. A
+      survivor''s annuity is received as a result of the deceased member''s service.'
+    other: The instructions give the military pension exclusion to a filer who "retired from the United States military
+      and received pension income", which leaves a survivor's annuity in the $2,000 or $12,500 pension exclusion.
+  example: In 2024 a 50-year-old with a $3,000 Survivor Benefit Plan annuity and no other income excludes $3,000 under
+    the statute and $2,000 under the instructions. In 2029 a 50-year-old with a $30,000 annuity excludes $25,000 under
+    the statute, and $2,000 if the instructions keep their retiree-only wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/pension/military_income_sources.yaml
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/pension_exclusion/de_pension_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10716
+  state: ruled
+  note: Definitions control, so from 2024 the military pension branch counts retired pay and survivor annuities
+    (military_retirement_pay and military_retirement_pay_survivors), each person's total under one cap. 83 Del. Laws
+    c. 352 (approved July 20, 2022) created the military pension exclusion for 2022 without defining the term, and the
+    2022 and 2023 instructions give it to a filer who retired from the military. 84 Del. Laws c. 437 (approved September
+    26, 2024) put the definition in (b)(3)c., which applies "for the purposes of this paragraph (b)(3)" and so reaches
+    b., the rule for taxable years beginning on or after January 1, 2022; the act has no effective-date or applicability
+    section. Three start years have support, 2022 (when the provision the definition attaches to begins), 2024 (the tax
+    year of approval) and 2025 (the first full tax year after approval). The code starts the definition in 2024 and reads retired
+    pay alone for 2022 and 2023, as those years' instructions did. The SB 219 fiscal note (assumption 4) counts "1,337
+    survivors receiving a military pension" in Delaware. The Axiom corpus holds none of these texts, so captures of
+    1106(b)(3) and both years' Line 6 pages are in source_conflicts/sources/us-de/.
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
@@ -4346,6 +4443,50 @@ candidates:
     per-person grant. If neither adult is actually claimed and the filing exception restores their child, the
     three-person household receives $465. The separate items record individual eligibility from 2023 and the
     earlier regulation.
+- id: us-id:liheap-fy2027-size-nine-limit
+  program: liheap
+  years:
+    from: 2027
+    to: 2027
+    type: federal-fiscal
+  question: Is Idaho's FY2027 income limit for nine people 60% of state median income, as the accepted plan lists, or
+    150% of the poverty guideline, as the income charts of the agencies that take applications print?
+  sources:
+  - kind: plan
+    citation: Idaho FY2027 LIHEAP State Plan, item 2.1, PDF page 8
+    url: https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8
+  - kind: guidance
+    citation: Community Action Partnership, Income Guidelines by Program, effective October 1, 2026 to September 30,
+      2027
+    url: https://www.cap4action.org/wp-content/uploads/2026/10/Income-guidelines-for-2027.pdf
+  - kind: guidance
+    citation: SEICAA Community Services, Income Guidelines for LIHEAP
+    url: https://seicaa.org/communityservices/
+  - kind: regulation
+    citation: IDAPA 16.03.08.200.03, effective July 1, 2026
+    url: https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5
+  readings:
+    statute: No statute is supplied; 42 U.S.C. 8624(b)(2)(B) allows the greater of 150% of the poverty guideline and 60%
+      of state median income, and 16.03.08.200.03 says only "Meet income eligibility requirements". Plan item 2.1 lists
+      "State Median Income 60.00%" for sizes 1 to 9 and "HHS Poverty Guidelines 150.00%" from size 10, which gives
+      $92,274 for nine people.
+    other: Both charts print "60% of the State Median Income" for sizes 1 to 8 and "150% of the Poverty Income
+      Guidelines" from size 9, with $7,675.00 a month ($92,100 a year) for nine people.
+  example: Nine people with wages of $92,160 ($7,680 a month) and natural gas heat in Ada County pass the plan's
+    $92,274, exceed the charts' $92,100 and receive $0.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/id/dhw/liheap/eligibility/smi_max_household_size.yaml
+    - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11233
+  state: ruled
+  note: 'Ruled 2026-11-23 by the project lead: follow the agency charts and switch at size nine. The two charts agree on
+    every figure, and the Community Action Partnership chart is dated September 30, 2026, after the plan was submitted
+    (August 21, 2026). They repeat the FY2026 pattern, where the plan and DHW''s page both switched one size before the
+    poverty guideline overtakes state median income. PE-US equals the charts'' monthly figures at every size. DHW''s
+    own page still showed the October 1, 2025 limits on 2026-11-23; revisit when it prints FY2027 limits.'
 - id: us-id:liheap-heat-in-rent-fy2026
   program: liheap
   years:
@@ -4388,7 +4529,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Can Idaho's monthly income limits in cents pay a household whose annual income exceeds HHS's 60% state median
     income amount?
@@ -4402,6 +4543,10 @@ candidates:
   - kind: guidance
     citation: Idaho DHW Apply for Heating Assistance, monthly income limits effective October 1, 2025
     url: https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance
+  - kind: guidance
+    citation: Community Action Partnership, Income Guidelines by Program, effective October 1, 2026 to September 30,
+      2027
+    url: https://www.cap4action.org/wp-content/uploads/2026/10/Income-guidelines-for-2027.pdf
   readings:
     statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline and
       60% of the state median income, which HHS publishes as $42,938 for two people and $83,351 for six.
@@ -4414,9 +4559,12 @@ candidates:
     - policyengine_us/variables/gov/states/id/dhw/liheap/eligibility/id_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10613
+    - https://github.com/PolicyEngine/policyengine-us/pull/11233
   state: unreviewed
   note: The PR caps the annualized monthly limit at HHS's amount. DHW's lower annualized figures at sizes 3 and 4 ($53,040.96
-    and $63,144.96) stay, since a lower limit is allowed.
+    and $63,144.96) stay, since a lower limit is allowed. For FY2027 the agency charts print $3,708.42, $7,198.67 and
+    $7,525.92 for two, six and eight people, which annualize to $44,501.04, $86,384.04 and $90,311.04, 4 cents above the
+    amounts PE-US computes with the same flooring ($44,501, $86,384 and $90,311); the cap applies there too.
 - id: us-id:liheap-plan-income-checklist
   program: liheap
   years:
@@ -6469,6 +6617,66 @@ candidates:
     invariant test's statutory oracle (test_me_childless_eitc_age_gate.py). Captures of the worksheet and the
     instructions page are in source_conflicts/sources/us-me/. Worksheets for 2020 to 2023 are unchecked, so the
     conflict may start earlier.
+- id: us-me:fairness-credit-loss-add-backs
+  program: income-tax
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Does Maine's fairness credit income add back trade or business, capital and farm losses in full, or only
+    the net loss on each federal line, as Schedule PTFC/STFC line 2d does?
+  sources:
+  - kind: statute
+    citation: 36 M.R.S. 5213-A(1)(B)(1) ("Trade or business losses; capital losses; any net loss resulting from
+      combining the income or loss from rental real estate and royalties, the income or loss from partnerships and
+      S corporations, the income or loss from estates and trusts, the income or loss from real estate mortgage
+      investment conduits and the net farm rental income or loss; any loss associated with the sale of business
+      property; and farm losses included in federal adjusted gross income")
+    url: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+  - kind: statute
+    citation: 36 M.R.S. 5219-KK(1)(D)(1) (the same words, for the property tax fairness credit)
+    url: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+  - kind: instructions
+    citation: 2021 Form 1040ME Schedule PTFC/STFC instructions, line 2d ("Enter on line 2d the amount of any negative
+      amount (net loss) shown on federal Form 1040 or Form 1040-SR, line 7 and federal Schedule 1, lines 3, 4, 5, 6,
+      and 8")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+  - kind: instructions
+    citation: 2025 Form 1040ME Schedule PTFC/STFC instructions, line 2d ("Enter on line 2d the amount of any negative
+      amount (net loss) included on federal Form 1040 or Form 1040-SR, line 7 and federal Schedule 1, lines 3, 4, 5,
+      6, and 8a through 8z")
+    url: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+  readings:
+    statute: Trade or business losses, capital losses, losses on the sale of business property and farm losses included
+      in federal adjusted gross income are added back in full. Only the Schedule E items (Schedule 1 line 5) are
+      combined first, so only their net loss is added back.
+    other: Line 2d adds back only a net loss on Form 1040 line 7 or Schedule 1 lines 3, 4, 5, 6 and 8, so every loss
+      first offsets income on its own line, the other spouse's included on a joint return.
+  example: In 2025, $10,000 of Schedule C income and a $3,000 Schedule C loss from a specified service trade or business
+    give fairness credit income of $10,000 under the statute and $7,000 under line 2d. A $10,000 long-term capital gain
+    and a $4,000 short-term capital loss give $10,000 and $6,000, whether one filer has both or they are split between
+    spouses on a joint return.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_federal_income.py
+    - policyengine_us/variables/gov/states/me/tax/income/credits/fairness/me_fairness_credit_netted_capital_loss.py
+    - policyengine_us/parameters/gov/states/me/tax/income/credits/fairness/federal_lines/schedule_1_line_5.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11185
+  state: ruled
+  note: Statute first. irs_gross_income counts each filer's income from each source and leaves out its losses, so
+    Schedule C and Schedule F losses, and each filer's net capital loss as far as AGI deducts it, are added back in
+    full. capital_gains first nets a filer's short-term and long-term results, with capital gain distributions on
+    Schedule D line 13 and the prior-year long-term carryover on line 14, which 26 U.S.C. 1212(b)(1)(B) treats as a
+    long-term capital loss of the year; me_fairness_credit_netted_capital_loss adds back the losses that netting
+    absorbs, the head's and the spouse's, so every capital loss included in AGI is added back once. A loss carried to
+    a later year is not in AGI and is not added back. me_fairness_credit_federal_income nets only the Schedule 1 line 5
+    sources, the head's and the spouse's together. A loss inside one input, such as two sales in the same holding
+    period netted in one filer's short-term or long-term capital gains, or two businesses netted in one filer's
+    self_employment_income, cannot be separated; neither can a short-term carryover, which has no input of its own.
+    YAML cases in me_fairness_credit_federal_income.yaml and me_sales_and_property_tax_fairness_credit_income.yaml pin
+    the statute reading. The 2021, 2022, 2023, 2024 and 2025 instructions have the line 2d text.
 - id: us-me:liheap-size-ten-income-limit
   program: liheap
   years:
@@ -7533,6 +7741,117 @@ candidates:
   state: unreviewed
   note: 'The open PR applies the regulation from 2024; main''s source choice is unspecified, and no statute is supplied.
     Code not yet on main: mo_federal_adjusted_gross_income, gov.states.mo.tax.income.federal_agi.negative_floor_applies.'
+- id: us-mo:property-tax-credit-child-support
+  program: property-tax-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does household income for the Missouri property tax credit include child support received, which Form
+    MO-PTS line 6 lists but RSMo 135.010(5) does not?
+  sources:
+  - kind: statute
+    citation: RSMo 135.010(5)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=135.010
+  - kind: form
+    citation: 2025 Form MO-PTS, line 6, PDF page 2
+    url: https://dor.mo.gov/forms/MO-PTS_2025.pdf#page=2
+  - kind: instructions
+    citation: 2025 MO-1040 instructions, Form MO-PTS line 6, PDF page 18
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=18
+  readings:
+    statute: Income is Missouri adjusted gross income "increased, where necessary, to reflect the following", items (a)
+      to (e). Item (c) is "Public relief, public assistance, and unemployment benefits received in cash, other than
+      benefits received under this chapter". Child support is not among the items and is not in Missouri adjusted
+      gross income, so it does not count.
+    other: 'Form MO-PTS line 6 asks for "the total amount received by you, your spouse, and your minor children from:
+      public assistance, Supplemental Security Income (SSI), child support, or Temporary Assistance payments (TA and
+      TANF)". The line 6 instructions say "Include the amount of public assistance, Supplemental Security Income (SSI),
+      child support, and Temporary Assistance payments received by you and your minor children."'
+  example: In 2025 a claimant with a $20,000 pension who receives $3,000 of child support for a minor child has
+    household income of $23,000 when child support counts, or $20,000 when only the statute's items count.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mo/tax/income/credits/property_tax/public_assistance_types.yaml
+    - policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11175
+  state: unreviewed
+  note: PolicyEngine follows the form, as main did before this PR, and counts child_support_received with public
+    assistance on line 6 (public_assistance_types.yaml). PolicyEngine has recorded no ruling.
+- id: us-mo:property-tax-credit-nonbusiness-loss
+  program: property-tax-credit
+  years:
+    from: 2008
+    type: tax
+  question: Does the Missouri property tax credit add back rental, farm rental, and estate or trust losses as losses
+    "not incurred in a trade or business"?
+  sources:
+  - kind: statute
+    citation: RSMo 135.010(5)(d)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=135.010
+  - kind: instructions
+    citation: 2025 MO-1040 instructions, Form MO-PTS line 7, PDF page 18
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=18
+  readings:
+    statute: Income is increased to reflect "no deduction being allowed for losses not incurred in a trade or
+      business". Section 135.010 doesn't define a trade or business, and under federal usage a rental activity can
+      be one, so some of these losses could stay deducted.
+    other: The line 7 instructions define a nonbusiness loss as "a loss of income that did not result from a trade or
+      business" and add "Losses from Federal Form 1040 or 1040-SR, Schedule F and Schedule C are considered business
+      losses and should not be included here." Form MO-PTS line 7 says to include capital losses.
+  example: In 2025 a claimant with a $20,000 pension and a $6,000 rental loss has household income of $20,000 when the
+    rental loss is a nonbusiness loss, or $14,000 when the rental activity is a trade or business.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mo/tax/income/credits/property_tax/nonbusiness_loss_sources.yaml
+    - policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11175
+  state: unreviewed
+  note: PolicyEngine adds back the deducted part of rental, farm rental, and estate or trust losses, with the net
+    capital loss deduction. It leaves Schedule C, Schedule F, and partnership or S corporation losses deducted, since a
+    partner's or shareholder's share keeps the entity's trade or business character (IRC 702(b), 1366(b)). The model
+    has no input that separates a rental's trade or business losses from its other losses.
+- id: us-mo:property-tax-credit-pension-excludable-cost
+  program: property-tax-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does household income for the Missouri property tax credit include the excludable cost of pensions,
+    annuities and retirement account distributions (the recipient's own after-tax contributions or other basis), which
+    RSMo 135.010(5)(b) counts in "the total amount" but the Form MO-PTS line 3 instructions leave out?
+  sources:
+  - kind: statute
+    citation: RSMo 135.010(5)(b)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=135.010
+  - kind: form
+    citation: 2025 Form MO-PTS, line 3, PDF page 1
+    url: https://dor.mo.gov/forms/MO-PTS_2025.pdf#page=1
+  - kind: instructions
+    citation: 2025 MO-1040 instructions, Form MO-PTS line 3, PDF page 18
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=18
+  readings:
+    statute: Income is increased to reflect "(b) The total amount of all other public and private pensions and
+      annuities". Form MO-PTS line 3 likewise asks for "the total amount of pensions, annuities, dividends, rental
+      income, unemployment compensation, or interest income not included in Line 1."
+    other: The line 3 instructions add "(Do not include amount of excludable costs of pensions or annuities.)" They also
+      point to "Form(s) 1099-R - Total amount before deduction not included on Form MO-1040, Line 6 (Missouri adjusted
+      gross income)."
+  example: In 2025 a claimant with a $20,000 taxable pension and a $4,000 qualified Roth IRA distribution, $3,000 of it a
+    return of contributions, has household income of $24,000 under the statute or $21,000 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11175
+  state: unreviewed
+  note: PolicyEngine adds tax_exempt_pension_income in full, as main did before this PR, and from this PR adds
+    tax_exempt_retirement_distributions (tax-exempt IRA, 401(k), SEP and 403(b) distributions) in full too. Under the
+    instructions' reading the contribution basis of a Roth distribution, or the nondeductible basis of a traditional
+    IRA distribution, would be left out. No input separates basis from earnings.
 - id: us-mo:property-tax-credit-rounding
   program: property-tax-credit
   years:
@@ -7564,6 +7883,51 @@ candidates:
   note: 'PE-US follows the DOR charts: the formula reproduces the published charts, which its comment says round
     the credit down and the phase-out up, although the statute says the nearest whole dollar (mo_property_tax_credit.py).
     The statute-first rule requires nearest-dollar rounding; verify other chart years before extending beyond 2025.'
+- id: us-mo:property-tax-credit-veteran-exception-scope
+  program: property-tax-credit
+  years:
+    from: 2021
+    type: tax
+  question: When the claimant or spouse is a one hundred percent service-connected disabled veteran, does the "unless"
+    clause in RSMo 135.010(5)(a) leave out only veterans payments and benefits, or Social Security and railroad
+    retirement benefits too?
+  sources:
+  - kind: statute
+    citation: RSMo 135.010(5)(a)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=135.010
+  - kind: form
+    citation: 2025 Form MO-PTS, lines 2, 4 and 5, PDF page 1
+    url: https://dor.mo.gov/forms/MO-PTS_2025.pdf#page=1
+  - kind: instructions
+    citation: 2025 MO-1040 instructions, Form MO-PTS lines 2 and 5, PDF page 18
+    url: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=18
+  readings:
+    statute: Income is increased to reflect "(a) Social Security, railroad retirement, and veterans payments and benefits
+      unless the claimant is a one hundred percent service-connected, disabled veteran or a spouse of a one hundred
+      percent service-connected, disabled veteran." One reading takes the words literally, so the "unless" clause follows
+      all three kinds of benefits. Another applies the last-antecedent rule, so the clause modifies only "veterans
+      payments and benefits". The next sentence supports that reading, saying that "The one hundred percent
+      service-connected disabled veteran shall not be required to list veterans payments and benefits".
+    other: Form MO-PTS line 2 (nontaxable Social Security benefits) and line 4 (railroad retirement benefits) carry no
+      exception, nor do the line 2 instructions. The line 5 instructions say "If a veteran is 100 percent disabled
+      entirely as a result of military service, do not include veteran payments and benefits as household income on
+      Form MO-PTS."
+  example: In 2025 a single 100 percent service-connected disabled veteran with a $10,000 pension, $14,000 of Social
+    Security and $20,000 of veterans disability compensation has household income of $24,000 when only the veterans
+    benefits are left out, or $10,000 when the clause also reaches Social Security.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11175
+  state: unreviewed
+  note: The statute's words allow either reading, and the department breaks the tie. Its form and instructions apply
+    the exception only to line 5 veterans payments and benefits, the second reading. PolicyEngine follows the department
+    pending project-lead confirmation. It counts nontaxable Social Security on line 2 for every claimant and leaves out
+    every member's veterans benefits on line 5 when the claimant or spouse is a one hundred percent service-connected
+    disabled veteran. Line 4 railroad retirement benefits are left to PolicyEngine/policyengine-us#10722. Both statutory
+    readings remain open, and PolicyEngine has recorded no ruling.
 - id: us-mo:sab-personal-standard-rounding
   program: supplemental-aid-to-the-blind
   question: Is SAB's earnings standard exactly 10% under the manual or the rounded-up value in the regulation's
@@ -7917,6 +8281,60 @@ candidates:
     "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
     The 2009 statute, the three ARM 42.4.301 expressions in force from 8/20/2004 to 11/9/2017 (whose (2) text is
     the same) and the 2016 booklet pages are captured under source_conflicts/sources/us-mt/.
+- id: us-mt:elderly-credit-ira-distribution-basis
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2024
+    type: tax
+  question: Does gross household income count a nontaxable IRA distribution, such as a qualified Roth IRA distribution,
+    less the taxpayer's basis under the statute, or in full under Schedule 2EC line 4 and, on one reading, the
+    regulation?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(b)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - kind: regulation
+    citation: ARM 42.4.301(2)(d), expression effective 9/7/2024
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7
+  - kind: instructions
+    citation: 2024 Montana Form 2 instructions, Schedule 2EC lines 4 and 5, PDF page 47
+    url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
+  - kind: instructions
+    citation: 2025 Montana Form 2 instructions, Schedule 2EC lines 4 and 5, PDF page 45
+    url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
+  readings:
+    statute: '(9)(b): "For the purposes of this subsection (9), income is reduced by the taxpayer''s basis", so a
+      nontaxable IRA distribution counts only the part above the taxpayer''s basis, such as the Roth IRA contributions
+      it returns.'
+    other: 'Schedule 2EC line 4 says "Enter all IRA distributions, both taxable and nontaxable, received during the tax
+      year" and leaves out only "nontaxable rollovers"; line 5, for pensions and annuities, also leaves out "your cost
+      or net investment". Read as displacing the basis reduction for IRAs, ARM 42.4.301(2)(d) counts "all federal
+      taxable and nontaxable pension, annuity, and IRA payments received during the year" to the same effect.'
+  example: A claimant with a $20,000 taxable pension and a $10,000 qualified Roth IRA distribution, $7,000 of it the
+    claimant's own contributions, has 2025 gross household income of $23,000 under the statute and $30,000 under
+    line 4, which is what PE-US computes.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11180
+  state: open
+  note: 'PE-US counts tax_exempt_ira_distributions in full, through tax_exempt_retirement_distributions in
+    elderly_homeowner_or_renter/gross_income_sources.yaml, because the inputs are whole distributions, basis included,
+    and no input holds basis, so the statute''s reduction cannot be modelled. tax_exempt_401k_distributions,
+    tax_exempt_403b_distributions and tax_exempt_sep_distributions count in full for the same reason; issue 11198
+    tracks their basis, and issue 10802 that of tax_exempt_pension_income. That describes what the code does; no one
+    has ruled between (9)(b) and the regulation, and how far a Montana rule binds against its statute is open for the
+    project lead. ARM 42.4.301(2)(d) can be read two ways. ARM 42.4.301(2) opens ''"Gross household income" means
+    the same as the term defined in 15-30-2337, MCA'', and the same words, "nontaxable pension, annuity, and IRA
+    payments", cover the pensions and annuities that Schedule 2EC line 5 counts without "your cost or net
+    investment". Read that way, (2)(d) works with (9)(b), and the conflict is only with line 4''s instructions. Read
+    the other way, "all ... nontaxable ... IRA payments" displaces the basis reduction for IRAs. Through 2023 the
+    instructions let a household member reduce an item of income by basis, so the conflict starts in 2024. Its
+    texts for the register are captured in source_conflicts/sources/us-mt/arm-42-4-301-2024.html (the expression
+    effective 9/7/2024, with (2)(d)), form-2-instructions-2024-p47.txt and form-2-instructions-2025-p45.txt
+    (Schedule 2EC lines 4 and 5).'
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:
@@ -8520,6 +8938,47 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-capital-losses
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does a net capital loss reduce renter's refund income, when the renter's refund application counts net
+    gains from the sale of property and the homestead credit application, under the same definition of income, takes
+    Form 1040 line 7, which allows a net loss of up to $3,000?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 7 and 8 and the instructions for lines 4 to 9, pages 1 and 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, line 4e
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=1
+  readings:
+    statute: Income is income "for the most recent complete taxable year from all sources", with no rule for losses.
+    other: The instructions for lines 4 to 9 of SFN 24777 and item 10 of the guideline list "net gains from the sale of
+      property" as income, and SFN 24777 line 7 asks for capital gains with no line for a loss. SFN 24757 line 4e asks
+      for "Capital gains and losses (From Form 1040 or 1040-SR, line 7)", where IRC 1211(b) allows a net loss of up to
+      $3,000.
+  example: A renter with $30,000 of wages and a $20,000 net long-term capital loss has income of $30,000 under SFN
+    24777 and $27,000 under SFN 24757 line 4e.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/net_gain_components.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11187
+  state: ruled
+  note: Ruled 2026-11-19 for the renter's refund application, the form the Tax Commissioner prescribes for this program
+    under N.D.C.C. 57-02-08.1(3). Before, the model let the whole loss reduce income, which no source supports. The
+    applicant's and spouse's gains and losses net together, as on line 7 and a joint Form 1040, and each dependent's net
+    loss counts as zero.
 - id: us-nd:renters-refund-federally-excluded-income
   program: renter-credit
   years:
@@ -10094,13 +10553,63 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit.py
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10090
   state: ruled
   note: 'PE-US follows the statute: the credit needs at least one filer who cannot be claimed, so a qualified taxpayer
-    keeps it when the spouse can be claimed (ny_real_property_tax_credit.py). Ruled in October 2026 to retain the
-    credit under the statute; verify the instructions'' return-level interpretation.'
+    keeps it when the spouse can be claimed (ny_real_property_tax_credit_potential.py). Ruled in October 2026 to
+    retain the credit under the statute; verify the instructions'' return-level interpretation.'
+- id: us-ny:real-property-credit-aged-dependent
+  program: income-tax
+  years:
+    from: 2024
+    to: 2024
+    type: tax
+  question: Before 2025, does a household get the real property tax credit limit for those aged 65 or older when its
+    only member aged 65 or older is claimed as a dependent and so cannot file Form IT-214?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(e)(1)(A)(i), 606(e)(3)(A)(i), 606(e)(6)(A), 606(e)(7)(E)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, page 1
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=1
+  - kind: instructions
+    citation: 2024 Form IT-214 instructions, line 7 (page 2) and line 32 chart (page 3)
+    url: https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2
+  readings:
+    statute: 606(e)(6)(A) gives the credit for those aged 65 or older "where two or more members of a household are
+      able to meet the qualifications of a qualified taxpayer and one of them is sixty-five years of age or more".
+      606(e)(1)(A)(i) defines a qualified taxpayer as "a resident individual of the state who has occupied the same
+      residence for six months or more of the taxable year, and is required or chooses to file a return under this
+      article"; 606(e)(7)(E) denies the credit to a claimed dependent but does not change that definition. Page 1 of
+      the 2024 instructions says "If at least one member of your household is age 65 or older, the credit can be as
+      much as $375."
+    other: Line 7 of the 2024 instructions asks for "any household member who is filing Form IT-214 and was 65 or
+      older on January 1, 2025", and the line 32 chart gives the column from $375 down to $86 only where "you made an
+      entry on line 7". Page 1 requires that "You could not be claimed as a dependent on another taxpayer’s federal
+      income tax return", so a household whose only member aged 65 or older is a claimed dependent gets the column
+      from $75 down to $41.
+  example: In 2024 a 40-year-old with $3,000 of wages pays $4,800 of rent and claims a 70-year-old parent with $12,000
+    of Social Security as a dependent. Household gross income is $15,000, so 25% of the rent ($1,200) less 6.5% of
+    income ($975) leaves $225, and half of it is $112.50. The statute reading caps the credit at $137 and allows
+    $112.50; the line 7 reading caps it at $47.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/credits/ny_real_property_tax_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11170
+  state: open
+  note: PE-US follows the statute. Through 2024 ny_real_property_tax_credit_potential.py gives the elderly limit when
+    any household member is 65 or older, a tax unit dependent included. The readings differ in the model only when
+    every member aged 65 or older is a claimed dependent, because a member who is not a dependent can file Form IT-214
+    and the model gives the household's credit to the tax unit with the largest claim. The cases "2024 - dependent
+    aged 66 makes the elderly maximum cap apply" and "2024 - an aged parent claimed as a dependent gives the household
+    the elderly limit on rent an adult child pays" in ny_real_property_tax_credit.yaml pin the statute reading. From
+    2025, 606(e)(3)(B)(i) counts claimed dependents aged 65 or older. Only the 2024 instructions were checked. The
+    review of PR 11170 agreed to keep the statute; PolicyEngine has recorded no ruling.
 - id: us-ny:ssp-couple-facility-entry-month
   program: ssi-state-supplement
   years:
@@ -13617,6 +14126,75 @@ candidates:
   state: open
   note: 'PE-US follows the regulation; resolve the pending conflict with the information letter. Code not yet on
     main: tx_ssi_state_supplement.'
+- id: us-ut:ctc-modified-agi-other-state-bond-interest
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does Utah's child tax credit count interest on another state's municipal bonds in modified adjusted gross
+    income once, as the TC-40 worksheet does, or twice, under both Utah Code 59-10-1047(1)(d)(ii) and (iii)?
+  sources:
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2024
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2023050320240101.html
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2025
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2025010120240501.html
+  - kind: statute
+    citation: Utah Code 59-10-1047(1)(d), edition effective January 1, 2026
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1047_2026050620260506.html
+  - kind: statute
+    citation: Utah Code 59-10-114(1)(e) and (5), edition effective May 3, 2023
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S114_2023050320230503.html
+  - kind: statute
+    citation: Utah Code 59-10-114(1)(e) and (5), edition effective October 14, 2025
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S114_2025101420251206.html
+  - kind: worksheet
+    citation: 2024 TC-40 instructions, Child Tax Credit Worksheet (code AT), lines 3-7, printed p.22, PDF p.24
+    url: https://files.tax.utah.gov/tax/forms/2024/tc-40inst.pdf#page=24
+  - kind: worksheet
+    citation: 2025 TC-40 instructions, Child Tax Credit Worksheet (code AT), lines 3-7, printed p.22, PDF p.24
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=24
+  - kind: instructions
+    citation: 2025 TC-40 instructions, lines 5 (Additions to Income) and 6 (Total Income), printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2025 TC-40 instructions, TC-40A Part 1, code 57 (Municipal Bond Interest), printed p.16, PDF p.18
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=18
+  readings:
+    statute: 'Read literally, 59-10-1047(1)(d) sums (i) "adjusted gross income for the taxable year for which a tax
+      credit is claimed", (ii) "any interest income that is not included in adjusted gross income" and (iii) "any
+      addition to adjusted gross income required by Section 59-10-114". Section 59-10-114(1)(e) adds interest on
+      bonds issued by "a state other than this state" or its political subdivisions "to the extent the interest is
+      not included in adjusted gross income", so the same interest falls under both (ii) and (iii) and is counted
+      twice.'
+    other: 'The worksheet enters "the amount from TC-40, line 6 (Total Income)", which includes the code 57 addition,
+      on line 3; takes out "municipal bond interest from TC-40, Schedule A, Part 1, code 57" on line 4; subtracts
+      line 4 from line 3 on line 5; and enters "tax exempt interest from federal form 1040 or 1040-SR, line 2a" on
+      line 6. Line 7 adds lines 5 and 6, so the interest is counted once.'
+  example: A 2025 joint filer with one child aged 3, $50,000 of federal adjusted gross income and $3,000 of interest
+    on another state's municipal bonds that TC-40A code 57 adds back has $53,000 of modified adjusted gross income
+    under the worksheet, below the $54,000 threshold, and a $1,000 credit before the nonrefundable liability limit
+    (ut_ctc_potential). Counting the interest under both (ii) and (iii) gives $56,000 and $800 before the limit. After
+    the limit both readings allow the same credit. With the $50,000 as wages and no code 57 addition, PE-US leaves
+    $409.80 of Utah tax after the taxpayer credit, the Utah earned income tax credit takes $241.42 of it first, and
+    ut_ctc is $168.38.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ut/tax/income/credits/child_tax_credit/ut_ctc_potential.py
+    - policyengine_us/reforms/states/ut/ctc/ut_ctc_reform.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11182
+  state: ruled
+  note: Section 59-10-1047(1)(d) does not say how (ii) and (iii) coordinate when the same interest meets both. PE-US
+    counts the interest once, following the canon against counting a dollar twice and the Tax Commission's worksheet,
+    the agency practice in 2024 and 2025. ut_ctc_potential.py and the contributed reform (ut_ctc_reform.py) add
+    ut_total_income (federal adjusted gross income plus ut_additions) and tax_exempt_interest_income for the head and
+    spouse. The model computes no code 57 addition (ut_additions is the ut_other_additions input alone), so the
+    interest is counted once, through tax_exempt_interest_income, unless the code 57 amount is also entered in
+    ut_other_additions. The 2026 draft instructions move the worksheet to form TC-150, which this entry has not
+    reviewed.
 - id: us-ut:heat-child-unearned-income
   program: liheap
   years:
@@ -14354,6 +14932,65 @@ candidates:
   state: open
   note: 'PE-US looks up the income limits by tax_unit_size, capped at the tables'' eight people, and the fair market
     rent by exemptions_count (vt_renter_credit.py). Axiom issue 1678 in rulespec-us pursues exemption-sized limits.'
+- id: us-vt:renter-credit-loss-add-back-netting
+  program: renter-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does Vermont renter credit income add back each kind of loss that 32 V.S.A. 6061(18)(A) lists, or only
+    a negative total on a Form 1040 or Schedule 1 line, after other income on the same line has offset the loss, as
+    Form RCC-146 line 13 does?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 6061(18)(A)
+    url: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - kind: form
+    citation: 2025 Form RCC-146, Vermont Renter Credit Claim, line 13
+    url: https://tax.vermont.gov/sites/tax/files/documents/RCC-146-2025.pdf#page=1
+  - kind: instructions
+    citation: 2025 Vermont Income Tax Return Booklet, Form RCC-146 line 13 (PDF page 39)
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=39
+  readings:
+    statute: 'For the renter credit, income is federal adjusted gross income increased by "trade or business loss from
+      a sole proprietorship, loss from a partnership, loss from a limited liability company or "subchapter S"
+      corporation, loss from a rental property, capital loss, loss from an estate or trust, loss from a real estate
+      mortgage investment conduit, farm rental loss, any loss associated with the sale of business property, and farm
+      losses included in adjusted gross income".'
+    other: 'Line 13 reads "Add back any negative amounts from federal Form 1040, Line 7 and Schedule 1, Lines 3, 4, 5,
+      6, and 8a." The booklet: "Enter the amount of any negative amount (net loss) shown on federal Form 1040 or Form
+      1040-SR, Line 7, and federal Schedule 1, Lines 3, 4, 5, 6, and 8a." Schedule 1 line 3 combines every Schedule C
+      on the return, and line 5 combines rental real estate, royalties, partnerships, S corporations, estates and
+      trusts.'
+  example: 'In 2025 a claimant with $30,000 of wages, $10,000 of rental income and a $4,000 partnership loss has
+    federal AGI of $36,000. The statute adds back the partnership loss, for income of $40,000. Schedule 1 line 5 is
+    $6,000, so line 13 adds nothing and income is $36,000. A claimant with $30,000 of wages, a $4,000 long-term capital
+    loss and $2,000 of capital gain distributions has federal AGI of $28,000: the loss offsets the $2,000 of gains and
+    the other $2,000 is deducted as a net capital loss. The statute adds back the $4,000 capital loss, for income of
+    $32,000. Form 1040 line 7 is -$2,000, so line 13 adds back $2,000 and income is $30,000.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_income.py
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit_capital_loss_add_back.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11178
+  state: unreviewed
+  note: 'PolicyEngine adds back limited_business_loss, which holds each head''s and spouse''s loss in each income input
+    (self-employment, farm, rental, farm rental, estate or trust, partnership or S corporation, and Form 4797 gains),
+    and vt_renter_credit_capital_loss_add_back, each capital loss of the head and spouse that AGI deducted. That
+    add-back has three parts: a loss that offset the same person''s gain in the other holding period or capital gain
+    distributions on Schedule D line 13; capital_losses_allowed_against_gains, the losses allowed against another
+    filer''s gains and distributions reported without Schedule D; and limited_capital_loss, the net capital loss up to
+    the 26 U.S.C. 1211(b) limit. A loss carried to a later year is not added back. The prior-year long-term carryover,
+    which 26 U.S.C. 1212(b)(1)(B) treats as a capital loss of the year, is added back to the extent AGI deducted it.
+    (18)(A) does not define "capital loss"; the model reads it as each loss from a sale or exchange (26 U.S.C. 1222(2)
+    and (4)), not the "net capital loss" of 1222(10), so every capital loss included in AGI is added back. RCC-146 line
+    13 and the 2025 booklet add back only the net figure on Form 1040 line 7. A loss inside one input, such as one
+    rental property netted against another in rental_income, or two sales in the same holding period netted in one
+    person''s short-term or long-term capital gains, cannot be separated; neither can a short-term carryover, which has
+    no input of its own. Line 13 also adds back a net operating loss deduction (Schedule 1 line 8a), which (18)(A) does
+    not list; this model has no federal net operating loss deduction. Cases 6, 7 and 11 to 16 in
+    vt_renter_credit_income.yaml pin the statute reading. PolicyEngine has recorded no ruling.'
 - id: us-vt:renter-credit-statewide-average-fmr
   program: renter-credit
   years:
@@ -17799,3 +18436,32 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-ma:undocumented-pregnancy-masshealth-standard
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does Massachusetts give a pregnant undocumented resident MassHealth Standard, as 130 CMR 504.006(D)(1) provides, when M.G.L. c. 118E, section 16D(2) bars benefits other than emergency services to undocumented residents unless federal law requires them?
+  sources:
+  - kind: statute
+    citation: M.G.L. c. 118E, section 16D(2)
+    url: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+  - kind: regulation
+    citation: 130 CMR 504.006(D)(1), PDF page 13 (Rev. 08/19/22)
+    url: https://www.mass.gov/doc/130-cmr-504000-masshealth-citizenship-and-immigration-1/download#page=13
+  - kind: regulation
+    citation: 130 CMR 505.002(D), PDF page 4 (revised February 13, 2026)
+    url: https://www.mass.gov/doc/130-cmr-505000-masshealth-coverage-types-5/download#page=4
+  readings:
+    statute: Section 16D(2) says "services or benefits other than emergency services shall not be provided to undocumented aliens unless required by federal law".
+    other: 130 CMR 504.006(D)(1) gives other noncitizens "MassHealth Standard, if they are pregnant", and 130 CMR 505.002(D) continues that coverage after the pregnancy ends.
+  example: In model year 2025 the model finds an undocumented Massachusetts resident at 150% of the poverty line who meets Medicaid's other tests eligible for Medicaid during pregnancy and through day 364 after delivery. 130 CMR 505.002(D)(4), in the text revised February 13, 2026, continues eligibility for postpartum care for 12 months after the pregnancy ends and then to the end of the month in which that period ends. If the model followed the statute's emergency-only reading, the resident would not be eligible for Medicaid. The model's CHIP unborn-child route would be open during pregnancy if its other tests pass and would end at delivery. Emergency Medicaid is a separate test.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented/pregnant.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/undocumented_immigrant.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11130
+  state: open
+  note: PolicyEngine follows the regulation. Before pull request 11130 the model passed every undocumented Massachusetts resident at every age. No source read for this candidate names a federal law that requires the coverage, or says whether Massachusetts claims federal match for it. A regulation that flatly contradicts its statute goes to the project lead (CONTRIBUTING.md, "Source conflicts").

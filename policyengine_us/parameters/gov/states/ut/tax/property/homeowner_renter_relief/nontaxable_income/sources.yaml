@@ -1,15 +1,32 @@
 description: Utah adds these modeled nontaxable income sources to adjusted gross income under the Homeowner's/Renter's Relief program.
 values:
   2024-01-01:
-    - alimony_income
+    # Support money received (59-2a-101(20)(a)(iv)), counted only where
+    # federal adjusted gross income leaves it out: alimony under a pre-2019
+    # divorce instrument is already in federal adjusted gross income, and
+    # (20)(a) counts only amounts excluded from it.
+    - ut_homeowner_renter_relief_nontaxable_alimony
     - child_support_received
+    # Loss carryforwards claimed during the year ((20)(a)(ii)); Form TC-90CB
+    # line 5 reports capital gain or loss without carryforwards.
+    - ut_homeowner_renter_relief_loss_carryforward
     - railroad_benefits
+    # Payments received under the Social Security Act ((20)(a)(vii)): SSI is
+    # title XVI of that act. (20)(b)(vi) leaves out only social security
+    # disability income, and SSI is not public assistance, which (24) limits
+    # to medical assistance, SNAP, Title 35A Chapter 3 benefits and foster
+    # care maintenance payments.
+    - ssi
     # Nontaxable strike benefits (59-2a-101(20)(a)(v)): the part federal
     # gross income leaves out, since the taxable part is in federal adjusted
     # gross income. (20)(b) leaves out gifts and contributions from
     # tax-exempt nongovernmental sources, but (a)(v) names nontaxable strike
     # benefits, which are gifts from a union, so the specific item governs.
     - strike_benefits_excluded_from_gross_income
+    # The gross amount of "loss of time" insurance ((20)(a)(xi)): disability
+    # insurance benefits federal gross income leaves out (IRC 104(a)(3));
+    # the taxable part is in federal adjusted gross income.
+    - tax_exempt_disability_benefits
     - tax_exempt_interest_income
     - tax_exempt_pension_income
     - tax_exempt_retirement_distributions
@@ -24,5 +41,7 @@ metadata:
   period: year
   label: Utah homeowner's/renter's relief modeled nontaxable income sources
   reference:
-    - title: "Utah Code Section 59-2a-101(17) and (20) #page 3-4"
+    - title: "Utah Code Section 59-2a-101(17), (20) and (24) #page 3-5"
       href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=3
+    - title: Form TC-90CB, Renter Refund Application (rent year 2025), annual household income lines 1 to 10
+      href: https://files.tax.utah.gov/tax/forms/current/tc-90cb.pdf#page=1

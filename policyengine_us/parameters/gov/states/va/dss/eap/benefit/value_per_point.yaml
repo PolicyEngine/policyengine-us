@@ -2,12 +2,13 @@ description: Virginia pays this amount per benefit point under the Energy Assist
 # The value per point is the season's heating allocation divided by the total
 # points of all approved households, computed in December and reported in the
 # following year's state plan (Section 2.5). Each value is dated to the start
-# of its federal fiscal year. The FFY2026 value is not yet published, so the
-# model carries the latest published (FFY2025) value forward for period 2026.
+# of its federal fiscal year. The FFY2027 value is not yet published, so the
+# model carries the latest published (FFY2026) value forward for period 2027.
 values:
   2022-10-01: 4.226444
   2023-10-01: 4.957075
   2024-10-01: 4.531665
+  2025-10-01: 3.950584
 
 metadata:
   unit: currency-USD
@@ -20,5 +21,7 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/state-plans/VA_Plan_2025.pdf#page=9
     - title: LIHEAP FY2026 Virginia Detailed Model Plan, Section 2.5 (FFY2025 dollar value per matrix point $4.531665)
       href: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=9
+    - title: LIHEAP FY2027 Virginia Detailed Model Plan, Section 2.5 (FFY2026 dollar value per matrix point $3.950584)
+      href: https://liheapch.acf.gov/docs/2027/state-plans/VA_Plan_2027.pdf#page=9
     - title: 22VAC40-680-30 Benefits (point dollar value and benefit amount)
       href: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section30/

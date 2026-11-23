@@ -16,6 +16,7 @@ class ny_heap_income_limit(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2",
+        "https://otda.ny.gov/programs/heap/",
     )
 
     documentation = (

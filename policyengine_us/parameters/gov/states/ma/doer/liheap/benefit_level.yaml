@@ -14,10 +14,16 @@ metadata:
       href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
     - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
       href: https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download
+    - title: Massachusetts Department of Public Utilities, Energy Burden Inquiry, six tiers matching the HEAP definitions
+      href: https://www.mass.gov/info-details/energy-burden-inquiry
 
+# Each threshold is the top of the level before it. Level 1 is income at or
+# below 100% of the poverty level, level 2 is above 100% and at or below 125%,
+# and level 6 is above 200%. The formula looks the ratio up with right=True,
+# which needs a first threshold below zero for zero income to reach level 1.
 brackets:
   - threshold:
-      2021-01-01: 0 
+      2021-01-01: -.inf
     amount:
       2021-01-01: 1
   - threshold:

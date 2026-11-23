@@ -1,0 +1,46 @@
+description: California covers Deferred Action for Childhood Arrivals recipients at these ages under the Medi-Cal program.
+metadata:
+  period: year
+  amount_unit: bool
+  threshold_unit: year
+  type: single_amount
+  label: California state-funded Medicaid DACA eligibility
+  reference:
+    - title: "California Department of Finance, 2015-16 May Revision, Health and Human Services"
+      href: https://www.ebudget.ca.gov/2015-16/pdf/Revised/BudgetSummary/HealthandHumanServices.pdf#page=1
+    - title: "Office of the Governor of California, statement on health care access for DACA recipients, April 13, 2023"
+      href: https://www.gov.ca.gov/2023/04/13/governor-newsom-on-biden-administration-announcement-expanding-health-care-access-to-daca-recipients/
+    - title: "California Department of Health Services, form MC 13 (11/99), Statement of Citizenship, Alienage, and Immigration Status"
+      href: https://smcgov.org/media/63316/download#page=2
+    - title: "Assembly Budget Subcommittee No. 1 on Health and Human Services, agenda, February 11, 2010"
+      href: https://abgt.assembly.ca.gov/sites/abgt.assembly.ca.gov/files/hearings/feb%2011%20dhcs%20-am.pdf#page=11
+    - title: "California Department of Public Health, Afghan Immigrant Eligibility for Medical Care Coverage, November 1, 2021"
+      href: https://www.cdph.ca.gov/Programs/CID/ORH/CDPH%20Document%20Library/AfghanImmigrantEligiblityforMedicalCareCoverage.pdf#page=8
+    - title: "Covered California, DACA FAQs for Enrollers, July 29, 2025"
+      href: https://hbex.coveredca.com/toolkit/downloads/DACA_FAQs.pdf#page=1
+    - title: "Los Angeles County Department of Public Social Services, Coverage For Immigrants Under Health Care Reform"
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/medi-cal/general/cov-imm.html
+    - title: "Los Angeles County Department of Public Social Services, 40-103.44 Medi-Cal for CalWORKs Ineligible Members"
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/calworks/reception-and-application/mc-for-cw-ineligible-members.html
+
+# California counts deferred action as permanent residence under color of
+# law (PRUCOL). Its general PRUCOL sources give PRUCOL residents
+# state-funded full-scope Medi-Cal and state no age ceiling. Form MC 13
+# (11/99) lists deferred action among the PRUCOL
+# categories. The 2015-16 May Revision says PRUCOL status "qualifies
+# individuals for state-funded full-scope Medi-Cal". The Governor's office
+# said in April 2023 that DACA recipients "are currently covered", and
+# Covered California said the same in July 2025. The one state source cited
+# here from 2016 to 2022, a 2021 public health memo, speaks of PRUCOL. Los
+# Angeles County's 2016 page names DACA. Its 2019 page gives state-funded
+# full scope to PRUCOL parents and siblings aged 19 or older in CalWORKs
+# families, DACA recipients among them.
+# The model applies the all-age DACA route from its first year, 2015, based
+# on the earlier statewide PRUCOL rule and later DACA-specific guidance. The
+# 2016 date matches the other California schedules, and backdating carries
+# it to 2015.
+brackets:
+  - threshold:
+      2016-01-01: 0
+    amount:
+      2016-01-01: true
