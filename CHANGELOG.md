@@ -1,3 +1,10 @@
+## [2.153.0] - 2026-11-23
+
+### Added
+
+- Hawaii LIHEAP private-dwelling Energy Credit at an estimated $140 per point and a flat credit for photovoltaic households with net electricity use, in a new `hi_liheap` total that replaces `hi_liheap_subsidized_amount`.
+
+
 ## [2.152.17] - 2026-11-23
 
 ### Fixed
