@@ -300,3 +300,22 @@
     adjusted_gross_income: 29_000
     vt_renter_credit_capital_loss_add_back: 3_000
     vt_renter_credit_income: 32_000
+
+- name: Case 17, no netted capital loss is added back under a reform that takes capital gains out of federal gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # The 2025 federal gross income sources without capital_gains.
+    gov.irs.gross_income.sources: [irs_employment_income, taxable_dependent_care_benefits, taxable_strike_benefits, self_employment_income, sstb_self_employment_income, partnership_s_corp_income, farm_operations_income, farm_rent_income, other_net_gain_gross_income, non_sch_d_capital_gains, taxable_interest_income, rental_income, dividend_income, taxable_pension_income, taxable_disability_benefits, debt_relief, estate_income, taxable_unemployment_compensation, taxable_social_security, illicit_income, taxable_retirement_distributions, taxable_roth_conversions, miscellaneous_income, gambling_winnings, ak_permanent_fund_dividend, taxable_alimony_income, salt_refund_income, military_retirement_income]
+    state_code: VT
+    employment_income: 30_000
+    short_term_capital_gains: -4_000
+    long_term_capital_gains: 2_000
+  output:
+    # Federal gross income leaves out capital gains, so AGI deducts no
+    # capital loss (both capital loss deductions are 0) and is 30,000. The
+    # add-back is only what AGI deducted outside capital_gains, 0 + 0 = 0,
+    # not the 2,000 netted inside it as in Case 11: 30,000 + 0 = 30,000.
+    adjusted_gross_income: 30_000
+    vt_renter_credit_capital_loss_add_back: 0
+    vt_renter_credit_income: 30_000
