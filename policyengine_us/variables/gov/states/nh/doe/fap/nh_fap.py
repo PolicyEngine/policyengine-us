@@ -17,10 +17,11 @@ class nh_fap(Variable):
         "renters' 'benefits are reduced', but no document for either year prints "
         "the rate. The PY2025 manual printed heat-in-rent matrices at 0.625 of "
         "its ordinary ones (page 74); the PY26 benefit matrix and the PY2027 "
-        "schedule (page 78) print none. The rate is inferred from each plan's "
-        "minimum benefit (item 2.6, page 9), which is the schedule's lowest cell "
-        "times 0.625: $100 for FY2026 (160 x 0.625) and $188 for FY2027 "
-        "(300 x 0.625, rounded up). Elsewhere on page 9, the FY2027 plan says "
+        "schedule (page 78) print none. The rate is an inference: each plan's "
+        "estimated minimum benefit (item 2.6, page 9) equals the schedule's "
+        "lowest cell times 0.625, $100 for FY2026 (160 x 0.625) and $188 for "
+        "FY2027 (300 x 0.625 = 187.5), and no plan names the minimum as a "
+        "heat-in-rent award. Elsewhere on page 9, the FY2027 plan says "
         "these renters are 'eligible for a benefit' where the FY2026 plan said "
         "'eligible for a reduced benefit'. Period 2026 uses the PY26 chart's "
         "benefit amounts and heating cost tiers and keeps the PY2027 "
@@ -80,12 +81,18 @@ class nh_fap(Variable):
         # exact binary fractions, so the product carries no rounding error.
         benefit = np.ceil(delivered_benefit * multiplier)
         # The FY2026 and FY2027 plans reduce the award when heat is included
-        # in rent (see the documentation). The reduction applies to the
-        # whole-dollar scheduled amount, as the PY2025 manual's heat-in-rent
-        # tables did, and rounds up again. Only the plans' minimum benefits
-        # confirm a heat-in-rent amount: $100 for FY2026 (160 * 0.625) and
-        # $188 for FY2027 (300 * 0.625 = 187.5). The rounding of the other
-        # heat-in-rent amounts is unverified.
+        # in rent (see the documentation). The 0.625 rate and the rounding are
+        # inferences: no PY26 or PY2027 heat-in-rent table is published. Each
+        # plan's estimated minimum benefit equals a modeled amount, $100 for
+        # FY2026 (160 * 0.625) and $188 for FY2027 (300 * 0.625 = 187.5),
+        # under either rounding.
+        # The reduction applies to the whole-dollar scheduled amount, as in
+        # the PY2025 manual's heat-in-rent tables. PY2025 rounded half up, in
+        # those tables and in its utility table alike. The PY26 chart rounds
+        # its utility table up, so the heat-in-rent step rounds up too. A
+        # deliverable-fuel renter then receives the utility amount, as the
+        # PY2025 tables paid. Rounding half up would pay $1 less in 12 of the
+        # 48 PY26 heat-in-rent cells and 15 of the 48 PY2027 cells.
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         heat_in_rent_benefit = np.ceil(benefit * p.payment.heat_in_rent_multiplier)
         benefit = where(heat_in_rent, heat_in_rent_benefit, benefit)

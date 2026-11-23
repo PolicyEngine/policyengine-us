@@ -1,11 +1,12 @@
 description: New Hampshire provides this share of the scheduled benefit to households with heat included in rent under the Fuel Assistance Program.
 # The FY2026 and FY2027 state plans say renters with heat included in rent
 # receive reduced benefits (item 2.3), but no document for either year prints
-# the rate. 0.625 is inferred from each plan's minimum benefit (item 2.6),
-# which is the schedule's lowest cell, utility heat in the lowest cost tier
-# and band F, times 0.625: $160 gives the FY2026 minimum of $100, and $300
-# gives $187.50, the FY2027 minimum of $188 after rounding up. The PY2025
-# manual printed heat-in-rent tables equal to 0.625 of its ordinary tables.
+# the rate. 0.625 is an inference from each plan's estimated minimum benefit
+# (item 2.6), which equals the schedule's lowest cell, utility heat in the
+# lowest cost tier and band F, times 0.625: $160 gives the FY2026 minimum of
+# $100, and $300 gives $187.50, the FY2027 minimum of $188 after rounding.
+# No plan names the minimum as a heat-in-rent award. The PY2025 manual
+# printed heat-in-rent tables equal to 0.625 of its ordinary tables.
 values:
   2025-10-01: 0.625
 

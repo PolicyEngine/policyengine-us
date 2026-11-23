@@ -1372,7 +1372,7 @@ programs:
         variable: nh_fap
         parameter_prefix: gov.states.nh.doe.fap
         verified_years: "2027"
-        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; renters with unsubsidized heat in rent receive 62.5% of the schedule, a rate inferred from each state plan's minimum benefit. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
+        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; renters with unsubsidized heat in rent receive 62.5% of the schedule, a rate inferred from each state plan's estimated minimum benefit. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
       - state: NJ
         status: partial
         name: New Jersey LIHEAP
