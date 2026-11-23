@@ -8,7 +8,11 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # 2.0-point minimum (m), half-up rounding (n) and the 35-point cap (o).
     p = parameters(period).gov.states.ak.dpa.hap.benefit
     place = spm_unit.household("place_fips", period)
-    zip_code = spm_unit.household("zip_code", period)
+    # A caller may send the ZIP code as text, a number or ZIP+4, so keep the
+    # first five characters as text.
+    zip_code = np.char.strip(
+        np.asarray(spm_unit.household("zip_code", period)).astype(str)
+    ).astype("<U5")
     county = spm_unit.household("county_str", period)
     fuel = spm_unit("heating_type", period)
     fuels = fuel.possible_values

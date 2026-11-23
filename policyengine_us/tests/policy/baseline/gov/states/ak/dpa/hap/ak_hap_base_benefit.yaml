@@ -3364,3 +3364,79 @@
         zip_code: '99505'
   output:
     ak_hap_base_benefit: [0, 0]
+
+# No place, ZIP code or county: the shared county variable supplies the
+# state's first borough alphabetically, Aleutians East Borough, whose most
+# common oil points are 11: 11 * $175 = $1,925.
+- name: Case 96, a household that sends no place, ZIP code or county takes the default borough's oil points.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_hap_base_benefit: 1_925
+
+# A ZIP code sent as a number, or with a +4 suffix, reads the row of its five
+# digits. ZIP 99703 is Fort Wainwright, excluded as in Case 95. ZIP 99709
+# takes College's 10 oil points as in Case 88: 10 * $175 = $1,750.
+- name: Case 97, a ZIP code sent as a number or as ZIP+4 reads its five-digit row.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+      spm_unit2:
+        members: [person2]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        zip_code: 99703
+      household2:
+        members: [person2]
+        state_code: AK
+        zip_code: '99709-1234'
+  output:
+    ak_hap_base_benefit: [0, 1_750]
