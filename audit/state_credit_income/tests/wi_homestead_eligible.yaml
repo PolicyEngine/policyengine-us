@@ -1,0 +1,30 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/wi/tax/income/wi_homestead_eligible.yaml
+# Batch A audit case. It fails on upstream/main 06c0dcbc54 (main: true) and
+# passes once S corporation income stops counting as earned income.
+
+- name: Audit case, S corporation income alone is not earned income
+  # Wis. Stat. 71.52(1g): "'Earned income' means wages, salaries, tips, and
+  # other employee compensation that may be included in federal adjusted
+  # gross income for the taxable year, plus the amount of the claimant's net
+  # earnings from self-employment for the taxable year". An S corporation
+  # shareholder's distributive share is not net earnings from
+  # self-employment. Under 71.54(1)(dm)-(gm), as Schedule H Step 1a reads
+  # them, a claimant who is under 62 and not disabled needs earned income.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        s_corp_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        wi_homestead_income: 10_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # No wages and no net earnings from self-employment: not eligible.
+    # Main: true (partnership_s_corp_income is an earnings source).
+    wi_homestead_eligible: false

@@ -1,0 +1,36 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/oh/tax/property/homestead_exemption/oh_homestead_exemption_total_income.yaml
+# Batch E audit case. Fails on upstream/main 06c0dcbc54.
+# R.C. 323.151(C): total income is the owner's and spouse's modified adjusted
+# gross income "for the year preceding the year in which application for a
+# reduction in taxes is made". On main the formula reads oh_modified_agi at
+# period.last_year, which is 0 when the inputs cover only one year (the prior
+# year has no income and no Ohio state_code), so the income limit never binds.
+# PolicyEngine assigns property tax relief to the year of eligibility (David
+# Trimmer, 2026-11-11), so the fix reads the same year's modified AGI.
+# The two existing cases in the target file give oh_modified_agi for both
+# years and must keep passing or be restated for the new input.
+# Not run (the audit was read-only).
+
+- name: Case 3, with one year of inputs the income limit still binds.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Ohio modified AGI: 100,000 of wages, no additions or deductions.
+    oh_modified_agi: 100_000
+    # Main: 0.
+    oh_homestead_exemption_total_income: 100_000
+    # 100,000 > 41,000 limit. Main: true.
+    oh_homestead_exemption_eligible: false

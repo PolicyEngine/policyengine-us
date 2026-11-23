@@ -1,0 +1,54 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.yaml
+# Each case fails on main (06c0dcbc54) and passes once the gap is fixed.
+# N.D.C.C. 57-02-08.1(5)(c): "Income" means income "from all sources ... but
+# excluding any federal rent subsidy, any amount excluded from income by
+# federal or state law with the exception of income from social security
+# benefits, and medical expenses paid during the year".
+
+- name: Gambling winnings are income from all sources.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        gambling_winnings: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # No federal or state law excludes gambling winnings from income. The
+    # homestead credit application (SFN 24757, line 4f) takes "Income from all
+    # other sources (From Form 1040 or 1040-SR, Schedule 1, line 10)".
+    # 20,000 + 5,000 = 25,000 (main: 20,000).
+    nd_renters_refund_income: 25_000
+
+- name: A net capital loss reduces income by no more than the federal limit.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        long_term_capital_gains: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # The statute doesn't mention losses. The homestead credit application
+    # (SFN 24757, line 4e) takes "Capital gains and losses (From Form 1040 or
+    # 1040-SR, line 7)", where a net loss is limited to 3,000 (IRC 1211(b)).
+    # 30,000 - 3,000 = 27,000 (main: 30,000 - 20,000 = 10,000).
+    # The guideline's item 10 lists only "Net gains from the sale of
+    # property"; on that wording alone the result would be 30,000.
+    nd_renters_refund_income: 27_000

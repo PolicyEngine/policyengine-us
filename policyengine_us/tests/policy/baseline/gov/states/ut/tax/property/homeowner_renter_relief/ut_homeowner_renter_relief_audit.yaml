@@ -1,0 +1,174 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ut/tax/property/homeowner_renter_relief/ut_homeowner_renter_relief.yaml
+# Batch D audit cases for ut_homeowner_renter_relief_household_income. Unless
+# marked as a guard, each fails on upstream/main 06c0dcbc54 (main's value is in
+# the comment).
+# Utah Code 59-2a-101(17): "Income" means the sum of "federal adjusted gross
+# income as defined in Section 62, Internal Revenue Code" and "nontaxable
+# income". (20)(a): "Nontaxable income" means "amounts excluded from adjusted
+# gross income under the Internal Revenue Code, including: ...". (15): household
+# income is "all income received by all members of a claimant's household",
+# leaving out only members under 18 and parents and grandparents of the
+# claimant or spouse.
+
+- name: Audit D1, taxable alimony is counted once, through federal adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        # A pre-2019 instrument (also the input's default), so the alimony is
+        # in federal gross income.
+        divorce_year: 2010
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    taxable_alimony_income: 10_000
+    adjusted_gross_income: 10_000
+    # Alimony in federal AGI is not an amount "excluded from adjusted gross
+    # income". Main: 10,000.
+    ut_homeowner_renter_relief_nontaxable_income: 0
+    # 10,000 of AGI + 0. Main: 20,000.
+    ut_homeowner_renter_relief_household_income: 10_000
+    # $0 to $15,033 of household income: 9.5% x 12,000 = 1,140, under the
+    # $1,412 maximum (as in Case 1). Main: 8.5% x 12,000 = 1,020.
+    ut_renters_credit: 1_140
+
+- name: Audit D2 (guard, passes on main), alimony outside federal AGI is support money received.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        alimony_income: 10_000
+        divorce_year: 2020
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    taxable_alimony_income: 0
+    # 59-2a-101(20)(a)(iv): "support money received".
+    ut_homeowner_renter_relief_nontaxable_income: 10_000
+    ut_homeowner_renter_relief_household_income: 10_000
+
+- name: Audit D3, an adult dependent's wages are household income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # The return's federal AGI holds only the claimant's pension.
+    adjusted_gross_income: 10_000
+    # 59-2a-101(15)(b) leaves out only members under 18 and parents and
+    # grandparents. The 20-year-old's own federal AGI is 8,000 of wages.
+    # 10,000 + 8,000 = 18,000. Main: 10,000.
+    ut_homeowner_renter_relief_household_income: 18_000
+
+- name: Audit D4, SSI is a payment received under the Social Security Act.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 6_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # 59-2a-101(20)(a)(vii) counts "payments received under the Social
+    # Security Act" other than disability insurance payments; SSI is title
+    # XVI of that act and is not in the definition of "public assistance"
+    # (59-2a-101(24)). Main: 0.
+    ut_homeowner_renter_relief_nontaxable_income: 6_000
+    ut_homeowner_renter_relief_household_income: 6_000
+
+- name: Audit D5, nontaxable disability insurance benefits are loss of time insurance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        # A policy the claimant paid for: all 6,000 is excluded from federal
+        # gross income (IRC 104(a)(3)).
+        disability_benefits: 6_000
+        tax_exempt_disability_benefits: 6_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    # 59-2a-101(20)(a)(xi): "the gross amount of 'loss of time' insurance".
+    # Main: 0.
+    ut_homeowner_renter_relief_nontaxable_income: 6_000
+    # 10,000 + 6,000. Main: 10,000.
+    ut_homeowner_renter_relief_household_income: 16_000
+
+- name: Audit D6, a capital loss carryover claimed in the year is added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 10_000
+        # A 4,000 gain in the year less a 4,000 long-term carryover from an
+        # earlier year: long_term_capital_gains is net of the carryover.
+        long_term_capital_gains: 0
+        long_term_capital_loss_carryover: 4_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    adjusted_gross_income: 10_000
+    # 59-2a-101(20)(a)(ii): "loss carry forwards claimed during the taxable
+    # year"; TC-90CB line 5: "Capital gain/loss (exclude
+    # carryforwards/carrybacks)". All 4,000 of the carryover was used against
+    # the year's gain. 10,000 + 4,000 = 14,000. Main: 10,000.
+    ut_homeowner_renter_relief_household_income: 14_000

@@ -1,0 +1,123 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/nj/tax/income/credits/anchor/nj_anchor.yaml
+# Each case fails on main (06c0dcbc54) and passes once ANCHOR reads New Jersey
+# gross income as NJ-1040 line 29 reports it.
+# Division of Taxation, "How ANCHOR benefits are calculated": "The benefit is
+# calculated using income on line 29 of your 2025 NJ-1040". P.L. 2026, c. 27
+# (FY2027 Appropriations Act): homeowners with "gross income not in excess of
+# $150,000 for tax year 2025" get up to $1,500, those over $150,000 but not
+# over $250,000 up to $1,000; renters over $150,000 are excluded, and renters
+# at or under it get $450.
+
+- name: Treasury interest is not New Jersey gross income, so the homeowner stays in the lower band.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 148_000
+        taxable_interest_income: 5_000
+        us_govt_interest_person: 5_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # N.J.S.A. 54A:6-14: interest on obligations free from State tax under
+    # the laws of the United States is not gross income (NJ-1040 line 16b).
+    # Line 29 = 148,000, not over 150,000: benefit 1,500.
+    # Main counts 153,000 and pays 1,000.
+    nj_anchor: 1_500
+
+- name: Treasury interest does not push a renter over the income limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 148_000
+        taxable_interest_income: 5_000
+        us_govt_interest_person: 5_000
+        rent: 24_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Line 29 = 148,000, not over 150,000: renter benefit 450.
+    # Main counts 153,000 and pays 0.
+    nj_anchor_eligible: true
+    nj_anchor: 450
+
+- name: 401(k) elective deferrals are not New Jersey gross income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 155_000
+        traditional_401k_contributions: 10_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # N.J.S.A. 54A:6-21 excludes 401(k) elective contributions, so W-2 box 16
+    # wages and line 29 are 155,000 - 10,000 = 145,000: benefit 1,500.
+    # Main counts 155,000 and pays 1,000.
+    nj_anchor: 1_500
+
+- name: A dependent's wages are not on the homeowner's line 29.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 149_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+      child:
+        age: 17
+        employment_income: 3_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [parent, child]
+        state_fips: 34
+  output:
+    # The child's wages go on the child's own return. The parent's line 29 is
+    # 149,000, not over 150,000: benefit 1,500.
+    # Main counts 152,000 and pays 1,000.
+    nj_anchor: 1_500

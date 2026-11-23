@@ -1,0 +1,32 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ne/tax/income/credits/ctc/refundable/ne_refundable_ctc_total_household_income.yaml
+# Batch D audit cases. Each fails on upstream/main 06c0dcbc54 (main's value is
+# in the comment): main returns federal adjusted gross income unchanged.
+# Neb. Rev. Stat. 77-7202(8): "Total household income means federal modified
+# adjusted gross income." Nebraska Department of Revenue, Child Care Refundable
+# Tax Credit Total Household Income Calculation: line 1 is federal adjusted
+# gross income; line 2 is "line 2d of the Federal Schedule 8812" (income from
+# Puerto Rico and the possessions and the Form 2555 exclusions); line 3, "Add
+# lines 1 and 2. This amount is your total household income".
+
+- name: Foreign earned income excluded under section 911 is added to federal AGI
+  period: 2025
+  input:
+    adjusted_gross_income: 70_000
+    # Form 2555 exclusion (Schedule 8812 line 2b). Income inputs, and so the
+    # adjusted gross income above, are net of it.
+    foreign_earned_income_exclusion: 10_000
+    state_code: NE
+  output:
+    # Line 1: 70,000. Line 2: 10,000. Line 3: 80,000. Main: 70,000.
+    ne_refundable_ctc_total_household_income: 80_000
+
+- name: Income from Puerto Rico excluded under section 933 is added to federal AGI
+  period: 2025
+  input:
+    adjusted_gross_income: 60_000
+    # Schedule 8812 line 2a.
+    puerto_rico_income: 5_000
+    state_code: NE
+  output:
+    # Line 1: 60,000. Line 2: 5,000. Line 3: 65,000. Main: 60,000.
+    ne_refundable_ctc_total_household_income: 65_000
