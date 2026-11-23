@@ -201,3 +201,98 @@
     # Categorical Eligibility does not apply.
     is_snap_eligible: true
     snap: 23
+
+- name: Minnesota person aged 70 under 200% of the poverty level with net income above the limit is eligible in January 2026.
+  period: 2026-01
+  input:
+    people:
+      person_1:
+        age: 70
+        social_security_retirement:
+          2026: 28_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code: MN
+  output:
+    # Gross income of $2,333 a month is within the 200% BBCE limit of
+    # $2,608, and units that meet BBCE are exempt from the net income test
+    # (Combined Manual 0013.06), so net income of $1,956 above the $1,305
+    # standard does not bar this household from the FY 2026 minimum
+    # allotment.
+    is_snap_eligible: true
+    snap: 24
+
+- name: Minnesota person aged 70 above 200% of the poverty level with net income above the limit is ineligible in January 2026.
+  period: 2026-01
+  input:
+    people:
+      person_1:
+        age: 70
+        social_security_retirement:
+          2026: 40_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code: MN
+  output:
+    # Gross income of $3,333 a month is above the $2,608 BBCE limit, so the
+    # unit takes the regular tests, and net income of $2,956 is above the
+    # $1,305 standard.
+    is_snap_eligible: false
+    snap: 0
+
+- name: Mississippi person aged 70 with income far above the poverty level is ineligible in January 2018.
+  period: 2018-01
+  input:
+    people:
+      person_1:
+        age: 70
+        social_security_retirement:
+          2018: 100_000
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        members: [person_1]
+        state_code:
+          2018: MS
+  output:
+    # Gross income of $8,333 a month is above the 130% BBCE limit of
+    # $1,306.50, so the household is not BBCE (MDHS SNAP Manual, Volume V,
+    # page 5000), and net income of $8,074 is above the $1,005 standard.
+    is_snap_eligible: false
+    snap: 0
+
+- name: Mississippi parent and child with unemployment compensation above the net income limit are ineligible in January 2018.
+  period: 2018-01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation:
+          2018: 20_400
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2018: MS
+  output:
+    # Gross income of $1,700 a month is within the 130% BBCE limit, but net
+    # income of $1,540 is above the two-person FY 2018 net standard of
+    # $1,353, which BBCE households still had to meet (MDHS SNAP Manual,
+    # Volume V, pages 5000 and 6101).
+    is_snap_eligible: false
+    snap: 0

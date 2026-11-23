@@ -303,3 +303,27 @@
       # = 2,151.88 from October.
       2025-05: 2_070.75
       2025-10: 2_151.88
+
+- name: MN elderly person applies the 200% standard in January 2026
+  # Elderly or disabled units above the BBCE limit are not categorically
+  # eligible (Combined Manual 0013.06). 200% x 15,650 / 12 = 2,608.33.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: MN
+  output:
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: MS elderly person applies the 130% standard in January 2018
+  # Households with an elderly or disabled member that fail the gross
+  # income test are not BBCE (MDHS SNAP Manual, Volume V, page 5000).
+  # 130% x 12,060 / 12 = 1,306.50.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code:
+      2018: MS
+  output:
+    tanf_non_cash_gross_income_limit: 1_306.5

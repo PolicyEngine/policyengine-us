@@ -64,11 +64,21 @@ MA:
 MI:
   2015-10-01: 2
 MN:
+  # Elderly or disabled units with gross income within the BBCE limit are
+  # categorically eligible; units above it are not and take the regular net
+  # income and asset tests (Combined Manual 0013.06, 12/2016 and 05/2025
+  # issues). The limit rose from 165% to 200% of the poverty guidelines on
+  # 2022-09-01 (Minn. Stat. 142F.101; Laws 2022, c. 98, art. 9, s. 1). The
+  # section's revision log records no policy change in 2024.
   2015-10-01: 1.65
   2022-09-01: 2
-  2024-07-01: .inf
 MS:
-  2015-10-01: .inf
+  # Households with an elderly or disabled member that fail the 130% gross
+  # income test are not broad-based categorically eligible and take the
+  # regular net income and resource tests (MDHS SNAP Manual, Volume V,
+  # Chapter 2 Definitions and Chapter 5 page 5000). The ERS -8 code reads as
+  # though they kept BBCE above 130%; this follows the state manual.
+  2015-10-01: 1.3
   2019-07-01: -.inf
 MO:
   2015-10-01: -.inf
@@ -140,6 +150,16 @@ metadata:
       href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
     - title: USDA BBCE States Chart, June 2026
       href: https://www.fns.usda.gov/sites/default/files/resource-files/BBCE-States-Chart-June2026.pdf#page=1
+    - title: Minnesota Statutes 142F.101, SNAP gross income limit
+      href: https://www.revisor.mn.gov/statutes/cite/142F.101
+    - title: Minnesota Session Laws 2022, chapter 98, article 9, section 1 (165% to 200%, effective September 1, 2022)
+      href: https://www.revisor.mn.gov/laws/2022/0/Session+Law/Chapter/98/
+    - title: Minnesota DHS Combined Manual 0013.06, Broad-Based Categorical Eligibility, issued 12/2016 (archived)
+      href: https://web.archive.org/web/20170703155658/https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001306
+    - title: Minnesota DHS Combined Manual 0013.06, Broad-Based Categorical Eligibility, issued 05/2025 (archived)
+      href: https://web.archive.org/web/20251204202933/https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001306
+    - title: "MDHS SNAP Manual, Volume V, Chapter 2 Definitions and Chapter 5 page 5000, Broad-Based Categorical Eligibility #page 114,253"
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2018/02/RevisedSNAPManual-16.pdf#page=114
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)
