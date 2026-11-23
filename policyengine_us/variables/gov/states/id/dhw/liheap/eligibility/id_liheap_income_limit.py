@@ -16,6 +16,8 @@ class id_liheap_income_limit(Variable):
         "https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8",
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
         "https://healthandwelfare.idaho.gov/services-programs/financial-assistance/home-heating-and-utility-assistance/apply-heating-assistance",
+        "https://www.cap4action.org/wp-content/uploads/2026/10/Income-guidelines-for-2027.pdf",
+        "https://seicaa.org/communityservices/",
     )
 
     def formula(spm_unit, period, parameters):
@@ -26,7 +28,8 @@ class id_liheap_income_limit(Variable):
         eligibility = p.gov.states.id.dhw.liheap.eligibility
         # The shared helper's flooring order matches all seven HHS FY2026 amounts.
         # DHW prints monthly limits in cents. At sizes 2 and 6 they annualize 4 cents
-        # above those amounts, the federal maximum, so the cap applies there.
+        # above those amounts, the federal maximum, so the cap applies there. The
+        # FY2027 agency charts do the same at sizes 2, 6 and 8.
         annual_smi = liheap_smi_limit(
             size, state, eligibility.smi_rate, period, parameters
         )
@@ -38,9 +41,12 @@ class id_liheap_income_limit(Variable):
             parameters,
             year_lag=eligibility.fpg_year_lag,
         )
-        # Each plan's table names the size where it switches to FPG: eight in
-        # FY2026, even though this lowers the limit, and ten in FY2027. Using
-        # max(SMI, FPG) would contradict the FY2026 table.
+        # The FY2026 plan and the FY2027 agency charts name the size where the
+        # limit switches to FPG: eight in FY2026 and nine in FY2027, even though
+        # this lowers the limit. The FY2027 plan lists size nine under SMI; the
+        # charts are followed (register candidate
+        # us-id:liheap-fy2027-size-nine-limit). Using max(SMI, FPG) would
+        # contradict both years' tables.
         annual_limit = where(
             size <= eligibility.smi_max_household_size,
             min_(monthly_smi * MONTHS_IN_YEAR, annual_smi),

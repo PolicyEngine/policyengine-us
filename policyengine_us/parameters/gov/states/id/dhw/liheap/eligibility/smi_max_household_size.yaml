@@ -1,7 +1,11 @@
 description: Idaho uses state median income limits for households up to this size under the Low Income Home Energy Assistance Program.
+# The accepted FY2027 plan lists 60% of state median income through size nine.
+# The FY2027 income charts of the agencies that take applications switch to
+# 150% of the poverty guideline at size nine, and the charts are followed
+# (register candidate us-id:liheap-fy2027-size-nine-limit).
 values:
   2025-10-01: 7
-  2026-10-01: 9
+  2026-10-01: 8
 
 metadata:
   unit: person
@@ -12,3 +16,7 @@ metadata:
       href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8
     - title: Idaho FY2027 LIHEAP State Plan
       href: https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8
+    - title: Community Action Partnership, Income Guidelines by Program, effective October 1, 2026 to September 30, 2027
+      href: https://www.cap4action.org/wp-content/uploads/2026/10/Income-guidelines-for-2027.pdf
+    - title: SEICAA Community Services, Income Guidelines for LIHEAP
+      href: https://seicaa.org/communityservices/

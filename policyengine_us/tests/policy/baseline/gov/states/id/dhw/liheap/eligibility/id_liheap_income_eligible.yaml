@@ -1797,7 +1797,7 @@
     id_liheap_income_eligible: false
 
 - name: Case 11, FY2027 household of eight qualifies through the state median income limit.
-  # The FY2027 plan keeps 60% of SMI through size nine: floor(floor(109_072 x 0.6) x 1.38) = 90_311.
+  # FY2027 keeps 60% of SMI through size eight: floor(floor(109_072 x 0.6) x 1.38) = 90_311.
   # The FY2026 switch at size eight would stop at 1.5 x (15_960 + 7 x 5_680) = 83_580.
   # No SNAP or SSI; exactly at the limit, and two cents above it.
   period: 2027

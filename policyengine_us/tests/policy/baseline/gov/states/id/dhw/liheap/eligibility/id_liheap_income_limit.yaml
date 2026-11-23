@@ -157,15 +157,18 @@
   output:
     id_liheap_income_limit: [32_835, 0]
 
-- name: Case 4, FY2027 uses state median income through size nine and the guideline from size ten.
+- name: Case 4, FY2027 uses state median income through size eight and the guideline from size nine.
   period: 2027
   absolute_error_margin: 0.01
-  # The accepted FY2027 plan lists sizes 1-9 at 60% of SMI and 10-15 at 150% of the guideline.
-  # https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8
+  # The FY2027 income charts of the agencies that take applications print 60% of SMI
+  # for sizes 1-8 and 150% of the guideline from size nine.
   # FFY2027 Idaho four-person SMI 109_072: floor(109_072 x 0.6) = 65_443.
-  # Size 8: floor(65_443 x 1.38) = 90_311. Size 9: floor(65_443 x 1.41) = 92_274.
-  # Size 10, 2026 guideline: 1.5 x (15_960 + 9 x 5_680) = 100_620.
-  # The FY2026 switch at size eight would give sizes 8 and 9 only 83_580 and 92_100.
+  # Size 8: floor(65_443 x 1.38) = 90_311 (7_525.92 a month on the charts).
+  # Size 9, 2026 guideline: 1.5 x (15_960 + 8 x 5_680) = 92_100 (7_675.00 a month).
+  # Size 10: 1.5 x (15_960 + 9 x 5_680) = 100_620 (8_385.00 a month).
+  # The accepted plan lists size nine at 60% of SMI, floor(65_443 x 1.41) = 92_274;
+  # the charts are followed.
+  # The FY2026 switch at size eight would give size 8 only 83_580.
   input:
     people:
       person1: {age: 40, is_citizen_or_legal_immigrant: true}
@@ -204,4 +207,4 @@
       household2: {members: [person9, person10, person11, person12, person13, person14, person15, person16, person17], state_code: ID}
       household3: {members: [person18, person19, person20, person21, person22, person23, person24, person25, person26, person27], state_code: ID}
   output:
-    id_liheap_income_limit: [90_311, 92_274, 100_620]
+    id_liheap_income_limit: [90_311, 92_100, 100_620]
