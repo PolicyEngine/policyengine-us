@@ -1,0 +1,142 @@
+description: Illinois provides this amount to natural gas households with a gas low-income discount under the Low Income Home Energy Assistance Program.
+# The "LID NAT.GAS/OTHER" TOTAL row. The comed key holds the matrix page
+# headed "LID for Electric" (PDF page 1) and the other key holds the page
+# headed "No LID for Electric" (PDF page 2). The FY2026 matrix names no
+# utility in the first heading. Mapping that page to ComEd follows the PY2027
+# heading "LID first for Electric (ComEd)".
+# Preserve printed TOTAL cells, even where they differ from the sum of the component cells.
+
+# "LID for Electric" page
+comed:
+  # Income bracket 1 = 0-50% FPL
+  1:
+    1:
+      2025-10-01: 458
+    2:
+      2025-10-01: 469
+    3:
+      2025-10-01: 479
+    4:
+      2025-10-01: 489
+    5:
+      2025-10-01: 510
+    6:
+      2025-10-01: 523
+
+  # Income bracket 2 = 51-100% FPL
+  2:
+    1:
+      2025-10-01: 263
+    2:
+      2025-10-01: 273
+    3:
+      2025-10-01: 283
+    4:
+      2025-10-01: 293
+    5:
+      2025-10-01: 303
+    6:
+      2025-10-01: 313
+
+  # Income bracket 3 = 101-150% FPL
+  3:
+    1:
+      2025-10-01: 253
+    2:
+      2025-10-01: 263
+    3:
+      2025-10-01: 272
+    4:
+      2025-10-01: 282
+    5:
+      2025-10-01: 292
+    6:
+      2025-10-01: 302
+
+  # Income bracket 4 = 151% FPL to 60% SMI (and 60% SMI to 300% FPL from PY2027)
+  4:
+    1:
+      2025-10-01: 212
+    2:
+      2025-10-01: 222
+    3:
+      2025-10-01: 229
+    4:
+      2025-10-01: 237
+    5:
+      2025-10-01: 246
+    6:
+      2025-10-01: 254
+
+# "No LID for Electric" page
+other:
+  # Income bracket 1 = 0-50% FPL
+  1:
+    1:
+      2025-10-01: 1_184
+    2:
+      2025-10-01: 1_206
+    3:
+      2025-10-01: 1_228
+    4:
+      2025-10-01: 1_250
+    5:
+      2025-10-01: 1_306
+    6:
+      2025-10-01: 1_336
+
+  # Income bracket 2 = 51-100% FPL
+  2:
+    1:
+      2025-10-01: 538
+    2:
+      2025-10-01: 556
+    3:
+      2025-10-01: 575
+    4:
+      2025-10-01: 594
+    5:
+      2025-10-01: 613
+    6:
+      2025-10-01: 632
+
+  # Income bracket 3 = 101-150% FPL
+  3:
+    1:
+      2025-10-01: 393
+    2:
+      2025-10-01: 408
+    3:
+      2025-10-01: 422
+    4:
+      2025-10-01: 436
+    5:
+      2025-10-01: 456
+    6:
+      2025-10-01: 475
+
+  # Income bracket 4 = 151% FPL to 60% SMI (and 60% SMI to 300% FPL from PY2027)
+  4:
+    1:
+      2025-10-01: 278
+    2:
+      2025-10-01: 302
+    3:
+      2025-10-01: 326
+    4:
+      2025-10-01: 356
+    5:
+      2025-10-01: 380
+    6:
+      2025-10-01: 405
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Illinois LIHEAP LID natural gas payment
+  reference:
+    - title: "Illinois FY2026 provider-related heating benefit matrices #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+    - title: "Illinois PY2027 final benefit matrix #page 1-2"
+      href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1

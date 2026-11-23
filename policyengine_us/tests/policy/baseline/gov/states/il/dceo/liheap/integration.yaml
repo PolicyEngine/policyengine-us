@@ -194,3 +194,61 @@
     # min(710, 1,200) = 710
     il_liheap_base_payment: 710
     il_liheap: 710
+
+# PY2027 DCEO eligibility and final matrix, size-one last income band.
+# ComEd uses the electric LID-first total $58; Ameren uses $325.
+# The third household (both companies reported as other) is over the federal
+# limit of 41,292 and the fourth is over the state-funded limit of 47,880, so
+# both get 0.
+- name: Case 8, PY2027 provider choice controls eligibility and the regular heating amount end to end.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [IL, IL, IL, IL]
+    age: [40, 40, 40, 40]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    il_liheap_electricity_provider: [COMED, AMEREN_ILLINOIS, OTHER, COMED]
+    il_liheap_natural_gas_provider: [OTHER, OTHER, OTHER, OTHER]
+    irs_gross_income: [45_000, 45_000, 45_000, 47_881]
+    pre_subsidy_electricity_expense: [5_000, 5_000, 5_000, 5_000]
+  output:
+    il_liheap_income_bracket: [4, 4, 4, 4]
+    il_liheap_regular_heating: [58, 325, 0, 0]
+
+# A household that reports no company counts as state-funded for the income
+# limit (47,880) and uses the general payment matrix, like the Ameren
+# household above.
+- name: Case 9, PY2027 household with no reported company is eligible and uses the general matrix.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    age: 40
+    heating_type: ELECTRICITY
+    irs_gross_income: 45_000
+    pre_subsidy_electricity_expense: 5_000
+  output:
+    il_liheap_income_bracket: 4
+    il_liheap_regular_heating: 325
+
+# PY2027 heat-in-rent renters with no company reported keep the federal limit
+# (one person 3,441 * 12 = 41,292), because the chart prints no cash row in
+# its "60% SMI to 300% FPL" block. Rent of 15,600 exceeds 30% of either income
+# (13,500 and 12,387.60). Both incomes are above the 150% top (1,995 a month),
+# so band 4, where the cash amount for one person is 310. The base amount has
+# no eligibility mask; the first household is over the limit and is paid 0.
+- name: Case 10, PY2027 heat-in-rent household with no reported company is paid only up to the federal income limit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [IL, IL]
+    age: [40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    irs_gross_income: [45_000, 41_292]
+    rent: [15_600, 15_600]
+  output:
+    il_liheap_income_bracket: [4, 4]
+    il_liheap_base_payment: [310, 310]
+    il_liheap_regular_heating: [0, 310]
+    il_liheap: [0, 310]

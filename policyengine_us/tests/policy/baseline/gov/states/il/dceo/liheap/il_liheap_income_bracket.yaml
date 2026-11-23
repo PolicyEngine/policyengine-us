@@ -1,0 +1,39 @@
+# PY2027 final matrix 30-day band tops are 50%, 100% and 150% of the 2026
+# guideline for a month, to the nearest dollar. One person (15,960): 665,
+# 1,330, 1,995. Eight (55,720): 2,322, 4,643, 6,965. Thirteen (84,120): 3,505,
+# 7,010, 10,515. Each pair is 12 times a top, which stays in the lower band,
+# and 12 times the next dollar.
+- name: Case 1, PY2027 income bands use the prior-year guideline and the published whole-dollar band tops.
+  period: 2027
+  input:
+    state_code: [IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL, IL]
+    spm_unit_size: [1, 1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 13, 13, 13, 13, 13, 13]
+    irs_gross_income: [0, 7_980, 7_992, 15_960, 15_972, 23_940, 23_952, 27_864, 27_876, 55_716,
+      55_728, 83_580, 83_592, 42_060, 42_072, 84_120, 84_132, 126_180, 126_192]
+  output:
+    il_liheap_income_bracket: [1, 1, 2, 2, 3, 3, 4, 1, 2, 2, 3, 3, 4, 1, 2, 2, 3, 3, 4]
+
+# FY2026 matrix, two people: the 2025 guideline is 21,150 and the "51% TO
+# 100%" top is 21,150 / 12 = 1,762.50, printed as 1,763 (half rounds up).
+# 21,156 is 1,763 a month, at the top, so band 2; 21,168 is 1,764, so band 3.
+- name: Case 2, model year 2026 rounds a half-dollar band top up.
+  period: 2026
+  input:
+    state_code: [IL, IL]
+    spm_unit_size: [2, 2]
+    irs_gross_income: [21_156, 21_168]
+  output:
+    il_liheap_income_bracket: [2, 3]
+
+# Case 2's second household one year earlier. Model year 2025 predates the
+# provider schedules and divides income by the current-year guideline:
+# 21,168 / 21,150 = 1.0009, below the 1.01 threshold, so band 2. The monthly
+# band tops that put this income in band 3 in Case 2 start in model year 2026.
+- name: Case 3, the second Case 2 household one year earlier is in band 2 under the current-year guideline.
+  period: 2025
+  input:
+    state_code: IL
+    spm_unit_size: 2
+    irs_gross_income: 21_168
+  output:
+    il_liheap_income_bracket: 2

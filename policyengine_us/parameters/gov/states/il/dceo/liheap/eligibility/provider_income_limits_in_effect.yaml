@@ -1,0 +1,11 @@
+description: Illinois distinguishes state-funded and federally funded income eligibility by utility company under the Low Income Home Energy Assistance Program when this parameter is true.
+values:
+  2023-10-01: false
+  2026-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Illinois LIHEAP provider income limits in effect
+  reference:
+    - title: Illinois DCEO PY2027 application and income eligibility
+      href: https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html

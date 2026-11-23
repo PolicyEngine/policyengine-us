@@ -1,0 +1,17 @@
+description: Illinois uses federal poverty guidelines from this many calendar years before the benefit year for income limits and payment bands under the Low Income Home Energy Assistance Program.
+# An annual model year represents the program year of the same number.
+# Model year 2026 is PY2026 and uses the 2025 guideline: the FY2026 matrix
+# prints a size 1 "0% TO 50%" top of $652, which is 15,650 x 0.5 / 12.
+# Model year 2027 is PY2027 and uses the 2026 guideline.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Illinois LIHEAP federal poverty guideline year lag
+  reference:
+    - title: "Illinois LIHEAP FY2026 Benefit Matrix #page 1-2"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+    - title: Illinois DCEO PY2027 application and income eligibility
+      href: https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html
