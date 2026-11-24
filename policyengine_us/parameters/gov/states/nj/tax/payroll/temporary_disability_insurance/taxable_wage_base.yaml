@@ -1,6 +1,15 @@
 description: Taxable wage base for New Jersey TDI and FLI employee contributions.
 values:
-  0000-01-01: 0
+  # The worker TDI and FLI wage base existed before 2018. The model does not encode
+  # earlier years, so it carries the 2018 value back to 2015, its first year.
+  # NJDOL lists one wage base for UI, TDI and FLI through 2019. From 2020 the
+  # worker TDI and FLI base is separate.
+  2018-01-01: 33_700
+  2019-01-01: 34_400
+  2020-01-01: 134_900
+  2021-01-01: 138_200
+  2022-01-01: 151_900
+  2023-01-01: 156_800
   2024-01-01: 161_400
   2025-01-01: 165_400
   2026-01-01: 171_100

@@ -11,9 +11,5 @@ class or_employee_statewide_transit_tax(Variable):
     defined_for = StateCode.OR
 
     def formula(person, period, parameters):
-        rate = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.payroll.statewide_transit.employee_rate
-        )
+        rate = person("or_employee_statewide_transit_tax_rate", period)
         return rate * person("or_statewide_transit_taxable_wages", period)

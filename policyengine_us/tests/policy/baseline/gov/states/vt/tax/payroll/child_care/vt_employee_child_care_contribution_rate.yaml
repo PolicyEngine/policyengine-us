@@ -1,0 +1,38 @@
+# Vermont Child Care Contribution: 0.44% of wages from July 1, 2024, of which an
+# employer may withhold up to 0.11% from the employee.
+
+- name: Vermont child care employee rate is zero in 2023, before collection began.
+  period: 2023
+  input:
+    employment_income: 50_000
+    state_code: VT
+  output:
+    vt_employee_child_care_contribution_rate: 0
+    vt_employee_child_care_contribution: 0
+    vt_employee_state_payroll_tax: 0
+    employee_state_payroll_tax: 0
+
+- name: Vermont child care employee rate in 2024 counts only July through December.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: VT
+  output:
+    # 0.11% * 6/12 = 0.055%.
+    vt_employee_child_care_contribution_rate: 0.00055
+    # 0.055% * 50,000 = 27.50.
+    vt_employee_child_care_contribution: 27.50
+    vt_employee_state_payroll_tax: 27.50
+    employee_state_payroll_tax: 27.50
+
+- name: Vermont child care employee rate is 0.11% in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: VT
+  output:
+    vt_employee_child_care_contribution_rate: 0.0011
+    # 0.11% * 50,000 = 55.
+    vt_employee_child_care_contribution: 55

@@ -63,3 +63,102 @@
   output:
     # 0.452% * 100,000 = 452.00, capped at 451.81.
     ny_employee_paid_family_leave_contribution: 451.81
+
+# Contributions began January 1, 2018. DFS set the rate and annual maximum for
+# each year: 0.126% and 85.56 in 2018, 0.153% and 107.97 in 2019, 0.270% and
+# 196.72 in 2020, 0.511% and 385.34 in 2021, 0.511% and 423.71 in 2022, and
+# 0.455% and 399.43 in 2023.
+
+- name: New York collects no Paid Family Leave contribution in 2017, before the program began.
+  period: 2017
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    ny_employee_paid_family_leave_contribution: 0
+    # Disability Benefits: min(0.5% * 60,000, 31.20) = 31.20.
+    ny_employee_state_payroll_tax: 31.20
+    employee_state_payroll_tax: 31.20
+
+- name: New York Paid Family Leave 2018 contribution is 0.126% of wages.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.126% * 60,000 = 75.60, below the 2018 cap of 85.56.
+    ny_employee_paid_family_leave_contribution: 75.60
+    # 75.60 + 31.20 Disability Benefits = 106.80.
+    ny_employee_state_payroll_tax: 106.80
+    employee_state_payroll_tax: 106.80
+
+- name: New York Paid Family Leave 2018 contribution stops at the 85.56 annual maximum.
+  period: 2018
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.126% * 100,000 = 126.00, capped at 85.56.
+    ny_employee_paid_family_leave_contribution: 85.56
+
+- name: New York Paid Family Leave 2019 contribution is 0.153% of wages.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.153% * 60,000 = 91.80, below the 2019 cap of 107.97.
+    ny_employee_paid_family_leave_contribution: 91.80
+
+- name: New York Paid Family Leave 2020 contribution is 0.270% of wages.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.270% * 60,000 = 162.00, below the 2020 cap of 196.72.
+    ny_employee_paid_family_leave_contribution: 162.00
+
+- name: New York Paid Family Leave 2021 contribution is 0.511% of wages.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.511% * 60,000 = 306.60, below the 2021 cap of 385.34.
+    ny_employee_paid_family_leave_contribution: 306.60
+
+- name: New York Paid Family Leave 2021 contribution stops at the 385.34 annual maximum.
+  period: 2021
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.511% * 100,000 = 511.00, capped at 385.34.
+    ny_employee_paid_family_leave_contribution: 385.34
+
+- name: New York Paid Family Leave 2022 contribution stops at the 423.71 annual maximum.
+  period: 2022
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.511% * 100,000 = 511.00, capped at 423.71.
+    ny_employee_paid_family_leave_contribution: 423.71
+
+- name: New York Paid Family Leave 2023 contribution is 0.455% of wages.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.455% * 60,000 = 273.00, below the 2023 cap of 399.43.
+    ny_employee_paid_family_leave_contribution: 273.00
+    # 273.00 + 31.20 Disability Benefits = 304.20.
+    ny_employee_state_payroll_tax: 304.20
+    employee_state_payroll_tax: 304.20
