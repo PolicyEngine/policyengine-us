@@ -13,6 +13,7 @@ from functools import lru_cache
 from inspect import ismethod, signature
 
 import numpy as np
+import pandas as pd
 from policyengine_core import periods as periods_
 from policyengine_core.errors import PeriodMismatchError
 from policyengine_core.parameters import Parameter, ParameterScale
@@ -92,11 +93,14 @@ COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 # branch and invalidation paths below handle them explicitly.
 BEHAVIORAL_RESPONSE_CACHE_ATTR = "_behavioral_response_measurements"
 
-# Where a reform simulation keeps, as given, each input whose variable baseline
-# policy stores apart from it, for its baseline arm to set again
+# Where a reform simulation keeps, as core stored it, each input whose variable
+# baseline policy stores apart from it, for its baseline arm to set again
 # (``SPMSimulationMixin._keep_input_for_baseline_policy``). Each simulation and
 # branch has its own list.
 KEPT_BASELINE_INPUTS_ATTR = "_inputs_kept_for_baseline_policy"
+# The kept inputs a subsample exports, from the start of ``subsample`` until it
+# rebuilds the simulation.
+SAMPLED_BASELINE_INPUTS_ATTR = "_inputs_kept_for_baseline_policy_to_sample"
 
 COUNTY_INPUT_FIX = (
     'send county_fips as a five-digit string (for example "06037"), or select '
@@ -875,8 +879,10 @@ class SPMSimulationMixin:
         ``ETERNITY`` variable, therefore cannot hold the baseline's
         definition. Drop it with its recorded inputs, as core 3.32.21 and
         later do in ``_bind_to_tax_benefit_system``; core 3.32.8 keeps it.
-        ``_set_inputs_kept_for_baseline_policy`` then sets again each input
-        the source gave that the baseline's definition can hold.
+        A baseline arm then sets again each input the source still holds that
+        the baseline's definition can hold
+        (``_set_inputs_kept_for_baseline_policy``); the behavioural-response
+        measurement branch sets none, and calculates such a variable.
 
         Only a baseline arm does this. ``apply_reform`` keeps a simulation's
         own inputs, as core's does.
@@ -901,19 +907,43 @@ class SPMSimulationMixin:
                 name for name in self.input_variables if name not in dropped
             ]
 
-    def _keep_input_for_baseline_policy(self, variable_name, period, value):
+    def _baseline_policy_stores_apart(self, variable_name):
+        """Whether baseline policy stores ``variable_name`` apart from this
+        simulation, which has a baseline arm.
+
+        Only a simulation built with ``reform=`` has a baseline arm. Its arm
+        drops each holder this simulation built with storage for (or not for)
+        ``ETERNITY`` that the baseline's variable lacks, and the holder's
+        inputs go with it.
+        """
+        if getattr(self, "reform", None) is None:
+            return False
+        baseline_policy = getattr(self, "default_tax_benefit_system_instance", None)
+        return baseline_policy is not None and _stored_apart(
+            self.tax_benefit_system.variables.get(variable_name),
+            baseline_policy.variables.get(variable_name),
+        )
+
+    def _input_key(self, holder, period):
+        """The key core records an input under: the period its holder stores
+        the input for, which is ``ETERNITY`` for an ``ETERNITY`` holder."""
+        if holder._memory_storage.is_eternal:
+            period = periods_.ETERNITY
+        return (holder.variable.name, self.branch_name, periods_.period(period))
+
+    def _keep_input_for_baseline_policy(self, variable_name, period, held):
         """Keep an input whose variable baseline policy stores apart from this one.
 
-        A reform's baseline arm drops each holder the reform built with storage
-        for (or not for) ``ETERNITY`` that the baseline's variable lacks, and
-        the holder's inputs go with it. An ``ETERNITY`` holder keeps no
-        period, so it cannot give back a yearly input: under a reform that
-        stores ``child_care_subsidies`` for all time, the arm calculated the
-        2026 subsidy a dataset supplied, and S0 moved by thousands of dollars
-        with no change in the subsidy paid. So keep each such input as given,
-        for the arm to set under baseline policy. A holder in another entity
-        holds values the baseline's entity cannot take, so this keeps none of
-        those.
+        An ``ETERNITY`` holder keeps no period, so it cannot give back a yearly
+        input: under a reform that stores ``child_care_subsidies`` for all
+        time, the arm calculated the 2026 subsidy a dataset supplied, and S0
+        moved by thousands of dollars with no change in the subsidy paid. So
+        keep, with the period it was set for, the value core stored, as core
+        stored it: a numeric expression evaluated, an enum encoded. ``held``
+        says whether the holder held an input under the same key before this
+        one. If it held none, what was kept for that key was deleted, so it
+        goes. An input for all time is not kept, since a yearly definition
+        cannot hold it, and neither is one core did not store.
 
         Core's builder sets a situation's inputs on their holders directly,
         not through ``set_input``, so this keeps none of them, and the arm
@@ -921,93 +951,135 @@ class SPMSimulationMixin:
         for the SPM expense reads no baseline subsidy, so what the arm pays
         never reaches a situation's SPM expense.
         """
-        if getattr(self, "reform", None) is None:
-            # Only a simulation built with ``reform=`` has a baseline arm.
-            return
-        baseline_policy = getattr(self, "default_tax_benefit_system_instance", None)
-        if baseline_policy is None or not _stored_apart(
-            self.tax_benefit_system.variables.get(variable_name),
-            baseline_policy.variables.get(variable_name),
+        holder = self.get_holder(variable_name)
+        key = self._input_key(holder, period)
+        kept = self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR, [])
+        if not held:
+            kept = [
+                entry
+                for entry in kept
+                if entry[0] != variable_name or self._input_key(holder, entry[1]) != key
+            ]
+        if periods_.period(period).unit != periods_.ETERNITY and key in getattr(
+            self, "_user_input_keys", ()
         ):
-            return
-        count = self.get_variable_population(variable_name).count
-        # A copy, broadcast as a population takes a scalar input, so a later
-        # write to the caller's array cannot change what the arm sets.
-        kept = np.array(np.broadcast_to(value, count, subok=True), subok=True)
-        self.__dict__.setdefault(KEPT_BASELINE_INPUTS_ATTR, []).append(
-            (variable_name, period, kept)
-        )
+            stored = self._get_recorded_input_array(variable_name, key[2])
+            if stored is not None:
+                kept = [*kept, (variable_name, periods_.period(period), stored.copy())]
+        self.__dict__[KEPT_BASELINE_INPUTS_ATTR] = kept
+
+    def _kept_inputs_still_held(self):
+        """The kept inputs this simulation still holds, oldest first.
+
+        An input stays while baseline policy stores its variable apart from
+        this simulation and core records the input's key. Of the inputs kept
+        for one period, the latest stays. The last input kept under a key must
+        be the value the holder stores there now: one that differs came by a
+        path this record does not see, such as a write to the holder itself,
+        so the inputs kept under that key go. A subsample rebuilds what this
+        keeps (``build_from_dataset``).
+        """
+        input_keys = getattr(self, "_user_input_keys", set())
+        latest = {}
+        for variable_name, period, value in self.__dict__.get(
+            KEPT_BASELINE_INPUTS_ATTR, ()
+        ):
+            if not self._baseline_policy_stores_apart(variable_name):
+                continue
+            population = self.get_variable_population(variable_name)
+            holder = population._holders.get(variable_name)
+            if holder is None:
+                continue
+            key = self._input_key(holder, period)
+            if key not in input_keys:
+                continue
+            # Order by the last time each period was set.
+            latest.pop((variable_name, period), None)
+            latest[(variable_name, period)] = (key, value)
+        last_under_key = {}
+        for (variable_name, period), (key, value) in latest.items():
+            last_under_key[key] = value
+        current = {
+            key: np.array_equal(
+                np.asarray(value),
+                np.asarray(self._get_recorded_input_array(key[0], key[2])),
+            )
+            for key, value in last_under_key.items()
+        }
+        return [
+            (variable_name, period, key, value)
+            for (variable_name, period), (key, value) in latest.items()
+            if current[key]
+        ]
 
     def _set_inputs_kept_for_baseline_policy(self, source):
         """Set the inputs ``source`` kept for this simulation's policy.
 
-        ``source`` is the simulation this baseline arm, or baseline measurement
-        branch, was branched from. Each input it kept belongs to a variable it
-        stores apart from this policy, so this simulation dropped the holder.
-        Setting each input again, in the order ``source`` received them, gives
-        this simulation what a simulation with no reform loads from the same
-        inputs. This policy cannot hold an ``ETERNITY`` input for a yearly
-        variable, so that input stays out and this simulation calculates the
-        variable.
+        ``source`` is the simulation this baseline arm was branched from. Each
+        input it still holds belongs to a variable it stores apart from this
+        policy, so this simulation dropped the holder. Setting each input
+        again, in the order ``source`` last set each period, gives this
+        simulation what a simulation with no reform loads from the same inputs.
         """
         variables = self.tax_benefit_system.variables
-        source_variables = source.tax_benefit_system.variables
-        for variable_name, period, value in source.__dict__.get(
-            KEPT_BASELINE_INPUTS_ATTR, ()
-        ):
-            if not _stored_apart(
-                source_variables.get(variable_name), variables.get(variable_name)
-            ):
+        for (
+            variable_name,
+            period,
+            _,
+            value,
+        ) in source._kept_inputs_still_held():
+            if variable_name not in variables:
                 continue
             try:
                 self.set_input(variable_name, period, value.copy())
             except PeriodMismatchError:
+                # An ETERNITY definition takes a yearly input for all time; a
+                # yearly one takes none for all time, and none is kept.
                 continue
 
-    def _kept_inputs_on_person_rows(self):
-        """Each kept input with its values on person rows.
+    def build_from_dataset(self):
+        # Loading replaces every input, so what was kept for the old ones goes
+        # with them; the loader's own ``set_input`` calls keep the new ones. A
+        # subsample has exported its inputs by now.
+        self.__dict__.pop(KEPT_BASELINE_INPUTS_ATTR, None)
+        self.__dict__.pop(SAMPLED_BASELINE_INPUTS_ATTR, None)
+        return super().build_from_dataset()
 
-        Core's subsampling exports a group's value on each member's row, so
-        this does the same.
-        """
+    def _to_person_dataframe(self, get_periods, include_computed_variables=False):
+        frame = super()._to_person_dataframe(get_periods, include_computed_variables)
+        sampled = self.__dict__.get(SAMPLED_BASELINE_INPUTS_ATTR)
+        if not sampled:
+            return frame
+        # Core's export holds an ETERNITY holder's input as one column for all
+        # time. Put each kept input before its variable's own columns, in the
+        # order the inputs were set, so the rebuild sets them in that order,
+        # keeps them for the new arm, and ends with the input the holder
+        # stores now.
         person_key = self.persons.entity.key
-        rows = []
-        for variable_name, period, value in self.__dict__.get(
-            KEPT_BASELINE_INPUTS_ATTR, ()
-        ):
+        kept = {}
+        for variable_name, period, _, value in sampled:
             entity_key = self.tax_benefit_system.variables[variable_name].entity.key
-            if entity_key != person_key:
-                value = self.populations[entity_key].project(value)
-            rows.append((variable_name, period, entity_key, value))
-        return rows
+            kept.setdefault(variable_name, {})[f"{variable_name}__{period}"] = (
+                self.map_result(value, entity_key, person_key)
+            )
+        columns = {}
+        for column in frame.columns:
+            columns.update(kept.pop(column.split("__")[0], {}))
+            if column not in columns:
+                columns[column] = frame[column].values
+        for added in kept.values():
+            columns.update(added)
+        return pd.DataFrame(columns, index=frame.index)
 
-    def _keep_inputs_for_sampled_rows(self, rows, person_ids):
-        """Keep the inputs on ``rows`` for the people a subsample retained.
-
-        Core retains people by their IDs, as ``_select_subsample_sources`` in
-        ``tools/social_security_inputs.py`` reads them, and its flat-file
-        loader gives a group its first member's value, so this does the same.
-        These replace what the rebuild kept for the same variables and join
-        what it kept for any other.
-        """
-        positions = {person_id: index for index, person_id in enumerate(person_ids)}
-        retained = np.array(
-            [positions[person_id] for person_id in self.persons.ids], dtype=int
-        )
-        person_key = self.persons.entity.key
-        kept = []
-        for variable_name, period, entity_key, values in rows:
-            values = values[retained]
-            if entity_key != person_key:
-                values = self.populations[entity_key].value_from_first_person(values)
-            kept.append((variable_name, period, values))
-        carried = {variable_name for variable_name, *_ in rows}
-        recorded = [
-            entry
-            for entry in self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR, ())
-            if entry[0] not in carried
-        ]
-        self.__dict__[KEPT_BASELINE_INPUTS_ATTR] = kept + recorded
+    def _get_recorded_input_array(self, variable_name, period):
+        # Core reweights each weight column of a subsample by its recorded
+        # total, so it reads a kept input's total here.
+        for name, kept_period, _, value in self.__dict__.get(
+            SAMPLED_BASELINE_INPUTS_ATTR, ()
+        ):
+            if name == variable_name and kept_period == period:
+                return value
+        return super()._get_recorded_input_array(variable_name, period)
 
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
@@ -1152,6 +1224,8 @@ class SPMSimulationMixin:
         kept = self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR)
         if kept is not None:
             cloned.__dict__[KEPT_BASELINE_INPUTS_ATTR] = list(kept)
+        # What a subsample exports belongs to the simulation it rebuilds.
+        cloned.__dict__.pop(SAMPLED_BASELINE_INPUTS_ATTR, None)
         return cloned
 
     def _invalidate_all_caches(self):
@@ -1239,23 +1313,14 @@ class SPMSimulationMixin:
         # Core rebuilds this simulation from the inputs its holders record, and
         # an ETERNITY holder records no year: a yearly input the reform stores
         # for all time comes back as one input for all time, which baseline
-        # policy cannot hold. So carry the kept inputs over to the sample as
-        # given, in place of what the rebuild keeps for their variables.
-        kept = self._kept_inputs_on_person_rows()
-        person_ids = tuple(self.persons.ids) if kept else ()
-        dataset = self.dataset
-        previous = self.__dict__.pop(KEPT_BASELINE_INPUTS_ATTR, None)
+        # policy cannot hold. So hand core's export each kept input as a
+        # column of its own (``_to_person_dataframe``). Core then samples and
+        # reweights those columns with the rest, and the rebuild keeps them.
+        self.__dict__[SAMPLED_BASELINE_INPUTS_ATTR] = self._kept_inputs_still_held()
         try:
             result = super().subsample(*args, **kwargs)
-        except BaseException:
-            # Core checks its arguments and draws the sample before it sets
-            # the sample's dataset and rebuilds. A failure before then leaves
-            # this simulation as it was, so it keeps what it kept.
-            if previous is not None and self.dataset is dataset:
-                self.__dict__[KEPT_BASELINE_INPUTS_ATTR] = previous
-            raise
-        if kept:
-            self._keep_inputs_for_sampled_rows(kept, person_ids)
+        finally:
+            self.__dict__.pop(SAMPLED_BASELINE_INPUTS_ATTR, None)
         baseline = self.branches.get("baseline")
         if baseline is not None:
             # Core rebuilds the baseline arm by branching this simulation, so
@@ -1294,8 +1359,14 @@ class SPMSimulationMixin:
                 f"Dataset supplies formula-owned SPM output {variable_name}. "
                 "Use primitive inputs and retain observed outputs under report-only names."
             )
+        keep = self._baseline_policy_stores_apart(variable_name)
+        if keep:
+            held = self._input_key(self.get_holder(variable_name), period) in getattr(
+                self, "_user_input_keys", ()
+            )
         result = super().set_input(variable_name, period, value)
-        self._keep_input_for_baseline_policy(variable_name, period, value)
+        if keep:
+            self._keep_input_for_baseline_policy(variable_name, period, held)
         # Core snapshots input_variables during construction, but later
         # explicit inputs must also survive counterfactual branches. Keep
         # only stored inputs; neutralized and expired writes are ignored.

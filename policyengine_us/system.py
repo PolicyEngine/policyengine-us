@@ -278,8 +278,8 @@ def _rebuild_baseline_branch(simulation):
     except those the reform stored for its own definition of a variable in
     another entity or with other ``ETERNITY`` storage, which core's branch
     dropped too. Of those, the baseline then sets again each input the
-    reform received that the baseline's definition can hold, such as a yearly
-    subsidy the reform stores for all time.
+    reform still holds that the baseline's definition can hold, such as a
+    yearly subsidy the reform stores for all time.
     """
     baseline = simulation.branches.pop("baseline", None)
     if baseline is None:

@@ -14,16 +14,18 @@ moves. Like core's branch, it drops each holder the reform built in another
 entity or with other ``ETERNITY`` storage than the baseline's variable has.
 A kept holder hands the arm the reform's input in place of its formula. A
 dropped holder takes its inputs with it, so the arm then sets again each input
-the reform received for a variable it stores apart from baseline policy,
+the reform still holds for a variable it stores apart from baseline policy,
 wherever the baseline's definition can hold that input. Without that step, a
 yearly subsidy the reform stores for all time left the arm calculating one.
 
 Invariants: under a reform that changes nothing, the reform and its baseline
 arm compute what a simulation with no reform computes, for every household,
 whether a situation or a dataset of raw columns supplies the inputs. Under any
-reform, each holder in either arm suits that arm's definition of its variable,
-and the arm reads each dataset input that baseline policy can hold as a
-simulation with no reform reads it, before and after subsampling.
+reform, each holder in either arm suits that arm's definition of its variable.
+Under a reform that stores a variable for all time, the arm reads each yearly
+input of it as a simulation with no reform given the same inputs, deletions
+and subsample reads it, and subsampling leaves the reform's own value as it
+was.
 """
 
 from itertools import product
@@ -37,10 +39,9 @@ from policyengine_core.reforms import Reform
 from policyengine_core.variables import Variable
 
 from policyengine_us import Microsimulation, Simulation
-from policyengine_us.entities import SPMUnit
-from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
-    BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
-    _baseline_measurement_branch,
+from policyengine_us.entities import Household, Person, SPMUnit
+from policyengine_us.variables.gov.hhs.ccdf.child_care_subsidies import (
+    child_care_subsidies as yearly_child_care_subsidies,
 )
 
 YEAR = 2026
@@ -328,49 +329,240 @@ def test_the_arm_sets_again_the_yearly_subsidies_the_reform_stores_for_all_time(
         )
 
 
-def test_the_baseline_measurement_sets_again_the_yearly_subsidies():
-    """The behavioural-response measurement branches the reform under baseline
-    policy and drops the same holder, so it too sets each yearly input
-    again."""
-    subsidies = {2025: [400], YEAR: [500]}
-    reformed = Microsimulation(
-        dataset=dataset((NEW_YORK,), FAMILIES[:1], yearly_subsidies=subsidies),
-        reform=StoreSubsidiesForAllTime,
-    )
-    try:
-        branch = _baseline_measurement_branch(reformed)
-        assert_holders_suit_their_variables(branch)
-        for year, subsidy in subsidies.items():
-            np.testing.assert_allclose(
-                value(branch, "child_care_subsidies", year), subsidy
-            )
-    finally:
-        reformed.branches.pop(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, None)
+SUBSIDY = "child_care_subsidies"
+TWO_YEARS = {2025: [400, 600], YEAR: [500, 700]}
 
 
-def test_subsampling_keeps_each_yearly_subsidy_for_the_arm():
+def delete_then_set(simulation):
+    simulation.delete_arrays(SUBSIDY)
+    simulation.set_input(SUBSIDY, YEAR, [800, 900])
+
+
+def delete_on_the_holder_then_set(simulation):
+    # PolicyEngine's input moves delete on the holder, not the simulation.
+    simulation.get_holder(SUBSIDY).delete_arrays()
+    simulation.set_input(SUBSIDY, YEAR, [800, 900])
+
+
+def set_the_first_year_again(simulation):
+    simulation.set_input(SUBSIDY, 2025, [450, 650])
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        None,
+        delete_then_set,
+        delete_on_the_holder_then_set,
+        set_the_first_year_again,
+    ],
+)
+def test_subsampling_gives_the_arm_each_yearly_subsidy_the_reform_holds(change):
     """Core subsamples by rebuilding the simulation from what its holders
-    record, and the reform's holder for all time records neither year. The
-    sample keeps only the second household, whose inputs the arm then reads
-    for each year, as before subsampling. A subsample that fails before core
-    rebuilds anything leaves the simulation's inputs, and those it kept, in
-    place."""
-    subsidies = {2025: [400, 600], YEAR: [500, 700]}
+    record, and the reform's holder for all time records neither year. Both
+    runs read the same dataset and receive the same inputs and deletions, and
+    the sample keeps only the second household. The arm then reads each
+    year's subsidy as the simulation with no reform does, and the reform keeps
+    the subsidy it held. Before, a deleted input came back. A subsample that
+    fails before core rebuilds anything keeps the inputs in place."""
+    simulations = [
+        Microsimulation(
+            dataset=dataset(
+                (NEW_YORK,), FAMILIES, yearly_subsidies=TWO_YEARS, weights=(0, 1)
+            ),
+            reform=reform,
+        )
+        for reform in (None, StoreSubsidiesForAllTime)
+    ]
+    plain, reformed = simulations
+    for simulation in simulations:
+        if change is not None:
+            change(simulation)
+    held = value(reformed, SUBSIDY)[1]
+    with pytest.raises(ValueError, match="Either n or frac"):
+        reformed.subsample()
+    for simulation in simulations:
+        simulation.subsample(n=1)
+    arm = reformed.baseline
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
+        assert simulation.calculate("household_id", YEAR).values.tolist() == [1]
+    for year in TWO_YEARS:
+        np.testing.assert_allclose(
+            value(arm, SUBSIDY, year), value(plain, SUBSIDY, year), atol=TOLERANCE
+        )
+        np.testing.assert_allclose(value(reformed, SUBSIDY, year), [held])
+    expense = "spm_unit_capped_work_childcare_expenses"
+    np.testing.assert_allclose(
+        value(arm, expense), value(plain, expense), atol=TOLERANCE
+    )
+
+
+def test_the_arm_sets_a_numeric_expression_as_core_stored_it():
+    """Core evaluates a numeric expression it is given for a numeric variable
+    and stores the result, $600. The arm sets that 2026 subsidy after a
+    subsample, beside the dataset's $400 for 2025. Before, the arm received
+    the expression as an array of text, and setting it raised a
+    ValueError."""
+    subsidies = {2025: [400], YEAR: [500]}
+    simulations = [
+        Microsimulation(
+            dataset=dataset((NEW_YORK,), FAMILIES[:1], yearly_subsidies=subsidies),
+            reform=reform,
+        )
+        for reform in (None, StoreSubsidiesForAllTime)
+    ]
+    for simulation in simulations:
+        simulation.set_input(SUBSIDY, YEAR, "400 + 200")
+        simulation.subsample(n=1)
+    plain, reformed = simulations
+    arm = reformed.baseline
+    for year, subsidy in ((2025, 400), (YEAR, 600)):
+        np.testing.assert_allclose(value(plain, SUBSIDY, year), [subsidy])
+        np.testing.assert_allclose(value(arm, SUBSIDY, year), [subsidy])
+        np.testing.assert_allclose(value(reformed, SUBSIDY, year), [600])
+
+
+class RestoreYearlySubsidies(Reform):
+    def apply(self):
+        self.update_variable(yearly_child_care_subsidies)
+
+
+def test_a_reform_that_restores_the_yearly_subsidy_leaves_none_to_set_again():
+    """Applying a reform that restores baseline policy's yearly subsidy drops
+    the holder that stored it for all time, with its input, so the reform
+    calculates the subsidy. A later subsample then gives the arm no input the
+    reform no longer holds, and the two read the same subsidy each year."""
     reformed = Microsimulation(
         dataset=dataset(
-            (NEW_YORK,), FAMILIES, yearly_subsidies=subsidies, weights=(0, 1)
+            (NEW_YORK,), FAMILIES, yearly_subsidies=TWO_YEARS, weights=(0, 1)
         ),
         reform=StoreSubsidiesForAllTime,
     )
-    with pytest.raises(ValueError, match="Either n or frac"):
-        reformed.subsample()
+    reformed.apply_reform(RestoreYearlySubsidies)
     reformed.subsample(n=1)
     arm = reformed.baseline
-    assert reformed.calculate("household_id", YEAR).values.tolist() == [1]
     for simulation in (reformed, arm):
         assert_holders_suit_their_variables(simulation)
-    for year, subsidy in subsidies.items():
+    for year in TWO_YEARS:
         np.testing.assert_allclose(
-            value(arm, "child_care_subsidies", year), subsidy[1:]
+            value(arm, SUBSIDY, year), value(reformed, SUBSIDY, year), atol=TOLERANCE
         )
-        np.testing.assert_allclose(value(reformed, "child_care_subsidies", year), 700)
+    expense = "spm_unit_capped_work_childcare_expenses"
+    np.testing.assert_allclose(
+        value(reformed, expense), value(arm, expense), atol=TOLERANCE
+    )
+
+
+class household_weight(Variable):
+    # Stored for all time, where baseline policy stores a weight each year.
+    value_type = float
+    entity = Household
+    label = "Household weight"
+    definition_period = ETERNITY
+
+
+class StoreWeightsForAllTime(Reform):
+    def apply(self):
+        self.update_variable(household_weight)
+
+
+def test_subsampling_reweights_a_weight_the_reform_stores_for_all_time():
+    """Two households weigh 1 each, and a sample of one keeps their total of
+    2. The arm reads the sampled household's yearly weight as the simulation
+    with no reform does. Before, the arm set the weight the dataset gave, 1."""
+    simulations = [
+        Microsimulation(dataset=dataset((NEW_YORK,), FAMILIES), reform=reform)
+        for reform in (None, StoreWeightsForAllTime)
+    ]
+    for simulation in simulations:
+        simulation.subsample(n=1, seed=0)
+    plain, reformed = simulations
+    arm = reformed.baseline
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
+    for simulation in (reformed, arm):
+        assert (
+            simulation.calculate("household_id", YEAR).values.tolist()
+            == plain.calculate("household_id", YEAR).values.tolist()
+        )
+    weight = np.asarray(plain.calculate("household_weight", YEAR, use_weights=False))
+    np.testing.assert_allclose(weight, [2])
+    for simulation in (reformed, arm):
+        np.testing.assert_allclose(
+            simulation.calculate("household_weight", YEAR, use_weights=False), weight
+        )
+
+
+def test_the_arm_sets_none_of_the_inputs_a_write_to_the_holder_replaced():
+    """A write to the reform's holder itself, as core's situation builder
+    makes, replaces the subsidy kept for all time without telling the record.
+    The arm then sets none of the kept yearly inputs and calculates both
+    years, as a simulation with no subsidy input does, rather than the
+    replaced $600 and $700."""
+    simulations = [
+        Microsimulation(
+            dataset=dataset(
+                (NEW_YORK,), FAMILIES, yearly_subsidies=TWO_YEARS, weights=(0, 1)
+            ),
+            reform=reform,
+        )
+        for reform in (None, StoreSubsidiesForAllTime)
+    ]
+    plain, reformed = simulations
+    plain.delete_arrays(SUBSIDY)
+    reformed.get_holder(SUBSIDY).set_input(YEAR, np.array([800.0, 900.0]))
+    for simulation in simulations:
+        simulation.subsample(n=1)
+    arm = reformed.baseline
+    for year in TWO_YEARS:
+        calculated = value(plain, SUBSIDY, year)
+        assert calculated[0] not in TWO_YEARS[year]
+        np.testing.assert_allclose(
+            value(arm, SUBSIDY, year), calculated, atol=TOLERANCE
+        )
+        np.testing.assert_allclose(value(reformed, SUBSIDY, year), [900])
+
+
+class is_household_head(Variable):
+    # Stored each year, where baseline policy stores it for all time.
+    value_type = bool
+    entity = Person
+    label = "is head of this household"
+    definition_period = "year"
+
+
+class StoreHeadsEachYear(Reform):
+    def apply(self):
+        self.update_variable(is_household_head)
+
+
+def test_subsampling_keeps_the_order_of_inputs_baseline_policy_stores_for_all_time():
+    """The dataset names each household's parent its head in 2026, and both
+    runs then name each child head in 2025. Baseline policy stores the role
+    for all time, so the input set last wins. The reform stores it each year,
+    and core exports its years in order, 2025 first; the arm sets them in the
+    order the reform received them, so it reads the child as head, as the
+    simulation with no reform does."""
+    simulations = [
+        Microsimulation(
+            dataset=dataset((NEW_YORK,), FAMILIES, weights=(0, 1)), reform=reform
+        )
+        for reform in (None, StoreHeadsEachYear)
+    ]
+    for simulation in simulations:
+        simulation.set_input("is_household_head", 2025, [False, True, False, True])
+    for simulation in simulations:
+        simulation.subsample(n=1)
+    plain, reformed = simulations
+    arm = reformed.baseline
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
+    heads = plain.calculate("is_household_head", YEAR, use_weights=False)
+    assert np.asarray(heads).tolist() == [False, True]
+    assert np.asarray(
+        arm.calculate("is_household_head", YEAR, use_weights=False)
+    ).tolist() == [False, True]
+    assert np.asarray(
+        reformed.calculate("is_household_head", YEAR, use_weights=False)
+    ).tolist() == [True, False]
