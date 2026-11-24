@@ -7,10 +7,12 @@
 # earn $30,000 and the 2024 cases earn $24,000.
 # Without weeks_worked, work expenses are zero, so the SPM expense is the
 # out-of-pocket amount.
-# The New York cases give earnings before labor supply responses, as a
-# household simulation stores them. TANF reads that variable, so a bare
-# employment_income input leaves New York's Family Assistance seeing no
-# earnings, and the grant it then pays waives the CCAP family share.
+# Each case gives earnings before labor supply responses, as a household
+# simulation stores them. TANF reads that variable, and the YAML runner leaves
+# it at zero when a case gives employment_income. TANF would then see no
+# earnings: New York's Family Assistance would pay a grant that waives the CCAP
+# family share, and Alaska, Washington, West Virginia and Tennessee would pay
+# grants that a household simulation, which sees the earnings, does not.
 
 - name: New York, Manhattan family with a subsidy just below the expense
   period: 2026
@@ -88,7 +90,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -124,7 +126,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -160,7 +162,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -196,7 +198,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -232,7 +234,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -268,7 +270,7 @@
     people:
       parent:
         age: 30
-        employment_income: 24_000
+        employment_income_before_lsr: 24_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -304,7 +306,7 @@
     people:
       parent:
         age: 30
-        employment_income: 24_000
+        employment_income_before_lsr: 24_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -340,7 +342,7 @@
     people:
       parent:
         age: 30
-        employment_income: 24_000
+        employment_income_before_lsr: 24_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
