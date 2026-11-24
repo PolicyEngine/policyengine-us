@@ -80,7 +80,9 @@ from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.emp
     FICA_PRE_TAX_ABOLISHED,
     FICA_PRE_TAX_LIST,
     TAX_EXEMPT_WAGE_RULE,
+    abolishes,
     components_match,
+    describe_ids,
     employer_cost_schedules,
     employer_payroll_tax_from_components,
     federal_employer_payroll_tax_components,
@@ -719,6 +721,22 @@ def test_abolitions_and_deduction_lists_hold_the_outlay():
         gc.collect()
 
 
+def test_a_variable_without_an_abolition_switch_is_not_abolished():
+    """Core has abolition switches only for calculated variables.
+
+    employment_income_before_lsr is an input, so gov.abolitions has no switch
+    for it: abolishes passes over it and goes on to the next variable.
+    """
+    gov = system.parameters(YEAR).gov
+    with pytest.raises(KeyError):
+        gov.abolitions["employment_income_before_lsr"]
+    assert abolishes(gov, ["employment_income_before_lsr"]) is False
+    medicare_abolished = SimpleNamespace(abolitions={"employer_medicare_tax": True})
+    assert abolishes(
+        medicare_abolished, ["employment_income_before_lsr", "employer_medicare_tax"]
+    )
+
+
 EMPLOYER_TAXES = (
     "employer_social_security_tax",
     "employer_medicare_tax",
@@ -1162,6 +1180,13 @@ def test_people_match_by_position_or_by_an_id_the_baseline_has_once():
         match(["19", "110"])
     with pytest.raises(NotImplementedError, match="no person with ID '3'"):
         match(["19", "3"])
+
+
+def test_an_error_names_five_ids_and_counts_the_rest():
+    """Up to five IDs are quoted, and more than five adds a count."""
+    ids = np.arange(1_005).astype(str)
+    assert describe_ids(ids[:5]) == "'0', '1', '2', '3', '4'"
+    assert describe_ids(ids) == "'0', '1', '2', '3', '4' and 1,000 more"
 
 
 def test_exempting_tips_from_payroll_tax_raises_tipped_pay():
