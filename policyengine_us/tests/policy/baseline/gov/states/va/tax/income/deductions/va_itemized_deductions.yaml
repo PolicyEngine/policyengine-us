@@ -1,3 +1,54 @@
+- name: Virginia keeps elected sales tax and applies its own medical floor
+  period: 2024
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    itemized_medical_expenses: 12_000
+    real_estate_taxes: 13_000
+    charitable_deduction: 10_000
+    state_sales_tax: 2_000
+    state_withheld_income_tax: 1_000
+    local_sales_tax: 0
+    local_income_tax: 0
+  output:
+    state_and_local_sales_tax_elected: true
+    medical_expense_deduction: 6_000
+    va_medical_expense_deduction: 4_000
+    va_itemized_deductions: 29_000
+
+- name: Virginia limits line 5a and rounds the income tax reduction fraction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    adjusted_gross_income: 344_800
+    real_estate_taxes: 20_000
+    state_and_local_sales_or_income_tax: 10_000
+    state_and_local_sales_tax_elected: false
+  output:
+    va_capped_state_and_local_sales_or_income_tax: 10_000
+    # Reduced by $363. The .012 worksheet fraction leaves $9,880 on line 18.
+    va_itemized_deductions: 19_757
+
+- name: Virginia omits elected sales taxes from limited line 18
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    adjusted_gross_income: 344_800
+    real_estate_taxes: 20_000
+    state_sales_tax: 10_000
+    state_withheld_income_tax: 12_000
+    local_sales_tax: 0
+    local_income_tax: 0
+    state_and_local_sales_tax_elected: true
+  output:
+    state_and_local_sales_or_income_tax: 10_000
+    va_itemized_deductions: 29_637
+
 - name: 2021 Virginia itemized deduction for a single filer
   period: 2021
   input:
