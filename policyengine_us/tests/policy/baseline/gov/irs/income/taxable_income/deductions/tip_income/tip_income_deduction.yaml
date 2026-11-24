@@ -268,6 +268,34 @@
     tip_income_deduction_occupation_requirement_met: false
     tip_income_deduction: 0
 
+- name: Notice 2025-69 option treats a listed occupation as outside an SSTB
+  period: 2025
+  input:
+    gov.irs.deductions.tip_income.sstb_transition_relief: true
+    ssn_card_type: CITIZEN
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    tip_income: 5_000
+    treasury_tipped_occupation_code: 102
+    business_is_sstb: true
+  output:
+    tip_income_deduction_occupation_requirement_met: true
+    tip_income_deduction: 5_000
+
+- name: Notice 2025-69 option still requires a listed occupation
+  period: 2025
+  input:
+    gov.irs.deductions.tip_income.sstb_transition_relief: true
+    ssn_card_type: CITIZEN
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    tip_income: 5_000
+    treasury_tipped_occupation_code: 0
+    business_is_sstb: true
+  output:
+    tip_income_deduction_occupation_requirement_met: false
+    tip_income_deduction: 0
+
 - name: Income excluded under section 911 counts toward the phase-out
   period: 2025
   input:

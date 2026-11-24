@@ -11,6 +11,32 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us:qualified-tips-sstb-transition
+  program: federal-income-tax
+  years:
+    from: 2025
+    to: 2028
+    type: tax
+  question: Does a taxpayer in a listed tipped occupation qualify for the tip deduction when the business is a specified service trade or business during the IRS transition?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 224(d)(2)(B) and the paragraph following (d)(2)(C)
+    url: https://www.law.cornell.edu/uscode/text/26/224#d_2_B
+  - kind: guidance
+    citation: IRS Notice 2025-69, Part III.A.1 and III.A.2, pp. 15–16 and 18
+    url: https://www.irs.gov/pub/irs-drop/n-25-69.pdf#page=15
+  readings:
+    statute: The trade or business in which the person receives the tips must be outside the specified service trade or business definition. For an employee the employer's business governs.
+    other: For IRS enforcement and administration, treat employees and non-employees in a listed occupation as receiving tips outside a specified service trade or business until January 1 of the first calendar year following publication of final regulations on this specific determination and associated reporting.
+  example: A single filer with a valid SSN and $5,000 of tips from a listed occupation in a specified service trade or business has a $0 deduction under the statutory exclusion, or $5,000 under the IRS transition if all other requirements are met and modified AGI is $100,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/tip_income/tip_income_deduction_occupation_requirement_met.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11145
+  state: ruled
+  note: The model applies the statutory exclusion by default. A study may explicitly enable the administrative transition for a covered period. Treasury Decision 10044 reserved the applicable paragraph and did not end the transition.
 - id: us-ca:expectant-parent-payment-residential-rate
   program: foster-care
   years:
