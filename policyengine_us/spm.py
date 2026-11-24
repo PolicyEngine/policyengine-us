@@ -15,6 +15,7 @@ from inspect import ismethod, signature
 import numpy as np
 import pandas as pd
 from policyengine_core import periods as periods_
+from policyengine_core.data_storage.store_history import next_sequence_number
 from policyengine_core.errors import PeriodMismatchError
 from policyengine_core.parameters import Parameter, ParameterScale
 from policyengine_core.simulations import Simulation as CoreSimulation
@@ -936,49 +937,65 @@ class SPMSimulationMixin:
             holder._storage_period(periods_.period(period)),
         )
 
-    def _kept_record_is_whole(self, variable_name, period):
-        """Whether what this simulation kept under the key an input for
-        ``period`` goes to still accounts for what the holder stores there.
+    def _recorded_keys(self, variable_name):
+        """The keys core records an input of ``variable_name`` under, on this
+        simulation's branch."""
+        return [
+            key
+            for key in getattr(self, "_user_input_keys", ())
+            if key[0] == variable_name and key[1] == self.branch_name
+        ]
 
-        It does when core records an input under the key and the last input
-        kept under it is the value the holder stores there now. If core
-        records none, what was kept for the key was deleted. If none was kept,
-        or the last differs, a write this record does not see stored the
-        value, such as one made on the holder itself.
+    def _keys_the_record_accounts_for(self, variable_name):
+        """The keys core records for ``variable_name`` on this branch whose
+        last kept input is the value the holder stores there now.
+
+        A key core records but this leaves out holds an input the record did
+        not keep, or a different one: a write this record does not see stored
+        it, such as one made on the holder itself. A key core no longer
+        records lost its input, and what was kept under it, to a deletion.
         """
         holder = self.get_holder(variable_name)
-        key = self._input_key(holder, period)
-        if key not in getattr(self, "_user_input_keys", ()):
-            return False
-        last = None
-        for name, kept_period, value in self.__dict__.get(
-            KEPT_BASELINE_INPUTS_ATTR, ()
-        ):
-            if name == variable_name and self._input_key(holder, kept_period) == key:
-                last = value
-        return last is not None and np.array_equal(
-            np.asarray(last),
-            np.asarray(self._get_recorded_input_array(variable_name, key[2])),
-        )
+        last = {}
+        for name, period, value in self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR, ()):
+            if name == variable_name:
+                last[self._input_key(holder, period)] = value
+        return {
+            key
+            for key in self._recorded_keys(variable_name)
+            if key in last
+            and np.array_equal(
+                np.asarray(last[key]),
+                np.asarray(self._get_recorded_input_array(variable_name, key[2])),
+            )
+        }
 
-    def _keep_input_for_baseline_policy(self, variable_name, period, whole, stored):
+    def _keep_input_for_baseline_policy(self, variable_name, period, accounted, since):
         """Keep an input whose variable baseline policy stores apart from this one.
 
         An ``ETERNITY`` holder keeps no period, so it cannot give back a yearly
         input: under a reform that stores ``child_care_subsidies`` for all
         time, the arm calculated the 2026 subsidy a dataset supplied, and S0
         moved by thousands of dollars with no change in the subsidy paid. So
-        keep, with the period it was set for, the value core stored, as core
-        stored it: a numeric expression evaluated, an enum encoded.
+        keep what core stored, as core stored it: a numeric expression
+        evaluated, an enum encoded.
 
-        ``stored`` says whether core stored the input. One it did not, for a
-        neutralized variable or a period after the variable's end, changes
-        nothing here. ``whole`` says whether, just before this input, the
-        record accounted for what the holder stored under its key
-        (``_kept_record_is_whole``). If not, what was kept for that key was
-        deleted or replaced by a write the record missed, so it goes, and the
-        key's record starts again with this input. An input for all time is
-        not kept, since a yearly definition cannot hold it.
+        Core stamps each value it stores with a sequence number, and ``since``
+        was drawn just before this input, so the keys stamped ``since`` or
+        later are the ones core stored this input under. There are none for
+        an input core skipped: a neutralized variable, a period after the
+        variable's end, or a year that a yearly holder's default handler
+        leaves as it was because it already holds an input. A yearly holder
+        can store one input under several years, and each is kept for its
+        year. An ``ETERNITY`` holder stores it under one key, and it is kept
+        with the period it was set for. An input for all time is not kept,
+        since a yearly definition cannot hold it.
+
+        ``accounted`` holds the keys the record accounted for just before this
+        input (``_keys_the_record_accounts_for``). Under any other key this
+        input reaches, what was kept was deleted or replaced by a write the
+        record missed, so it goes, and the key's record starts again with
+        this input.
 
         Core's builder sets an entity situation's inputs on their holders
         directly, not through ``set_input``, so this keeps none of them, and
@@ -987,26 +1004,30 @@ class SPMSimulationMixin:
         are kept. The household rule for the SPM expense reads no baseline
         subsidy, so what the arm pays never reaches a situation's SPM expense.
         """
+        holder = self.get_holder(variable_name)
+        stored = []
+        for key in self._recorded_keys(variable_name):
+            stamp = holder._stored_sequence_number(key[2], key[1])
+            if stamp is not None and stamp >= since:
+                stored.append((stamp, key))
         if not stored:
             return
-        holder = self.get_holder(variable_name)
-        key = self._input_key(holder, period)
-        kept = self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR, [])
-        if not whole:
-            kept = [
-                entry
-                for entry in kept
-                if entry[0] != variable_name or self._input_key(holder, entry[1]) != key
-            ]
-        if periods_.period(period).unit != periods_.ETERNITY and key in getattr(
-            self, "_user_input_keys", ()
-        ):
+        stored.sort()
+        restarted = {key for _, key in stored if key not in accounted}
+        kept = [
+            entry
+            for entry in self.__dict__.get(KEPT_BASELINE_INPUTS_ATTR, ())
+            if entry[0] != variable_name
+            or self._input_key(holder, entry[1]) not in restarted
+        ]
+        eternal = holder._memory_storage.is_eternal
+        for _, key in stored:
+            kept_period = periods_.period(period) if eternal else key[2]
+            if kept_period.unit == periods_.ETERNITY:
+                continue
             recorded = self._get_recorded_input_array(variable_name, key[2])
             if recorded is not None:
-                kept = [
-                    *kept,
-                    (variable_name, periods_.period(period), recorded.copy()),
-                ]
+                kept.append((variable_name, kept_period, recorded.copy()))
         self.__dict__[KEPT_BASELINE_INPUTS_ATTR] = kept
 
     def _kept_inputs_still_held(self):
@@ -1028,11 +1049,14 @@ class SPMSimulationMixin:
         not the value the holder stores there now. That input came by a path
         ``set_input`` does not see, such as a write to the holder itself or an
         entity situation. The arm could not tell where it falls among the
-        variable's other inputs, so it calculates the variable. Under a reform
-        that stores the variable for all time, an input set later restarts
-        the key's record (``_kept_record_is_whole``), and the arm then sets
-        the inputs given since. ``subsample`` drops a missed variable's inputs
-        from the rebuilt record, so a subsample keeps calculating it.
+        variable's other inputs, so it calculates the variable. An input set
+        later through ``set_input`` restarts the record of each key it reaches
+        (``_keep_input_for_baseline_policy``), and under a reform that stores
+        the variable for all time the arm then sets the inputs given since. A
+        write that stores the very array the record kept last under its key
+        goes unnoticed, and the arm then sets what was kept, in the order
+        kept. ``subsample`` drops a missed variable's inputs from the rebuilt
+        record, so a subsample keeps calculating it.
         """
         apart = {}
 
@@ -1446,14 +1470,13 @@ class SPMSimulationMixin:
             )
         keep = self._baseline_policy_stores_apart(variable_name)
         if keep:
-            whole = self._kept_record_is_whole(variable_name, period)
-            # Core counts each input its holders store, and skips one for a
-            # neutralized variable or a period after the variable's end.
-            inputs_set = self._inputs_set
+            accounted = self._keys_the_record_accounts_for(variable_name)
+            # Each value core stores from here on gets this number or a later one.
+            since = next_sequence_number()
         result = super().set_input(variable_name, period, value)
         if keep:
             self._keep_input_for_baseline_policy(
-                variable_name, period, whole, stored=self._inputs_set != inputs_set
+                variable_name, period, accounted, since
             )
         # Core snapshots input_variables during construction, but later
         # explicit inputs must also survive counterfactual branches. Keep

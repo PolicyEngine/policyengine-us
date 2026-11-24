@@ -30,6 +30,13 @@ deletes every year's input, so the reform then holds none. Where the reform's
 holder took an input its ``set_input`` never saw, such as a write to the
 holder itself, the arm calculates what it can't place: under a reform for all
 time, each year given no input since; under a yearly reform, the variable.
+
+Two cases fall outside these invariants, and no test pins them. A write the
+record never saw that stores the very array it kept last under that key goes
+unnoticed, so the arm sets what was kept, in the order kept. And under a yearly
+reform of a variable baseline policy stores for all time, deleting one year's
+input leaves the reform its other years, which the arm sets again, while a
+simulation with no reform loses every year's input.
 """
 
 from itertools import product
@@ -498,12 +505,27 @@ def test_subsampling_reweights_a_weight_the_reform_stores_for_all_time():
         )
 
 
-def test_the_arm_sets_none_of_the_inputs_a_write_to_the_holder_replaced():
+def write_on_the_holder(simulation):
+    simulation.get_holder(SUBSIDY).set_input(YEAR, np.array([800.0, 900.0]))
+
+
+def edit_the_stored_array(simulation):
+    simulation.get_holder(SUBSIDY).get_array(YEAR)[:] = [800.0, 900.0]
+
+
+@pytest.mark.parametrize(
+    "write, held",
+    [
+        (write_on_the_holder, 900),
+        (edit_the_stored_array, 900),
+    ],
+)
+def test_the_arm_sets_none_of_the_inputs_a_write_to_the_holder_replaced(write, held):
     """A write to the reform's holder itself, as core's situation builder
-    makes, replaces the subsidy kept for all time without telling the record.
-    The arm then sets none of the kept yearly inputs and calculates both
-    years, as a simulation with no subsidy input does, rather than the
-    replaced $600 and $700."""
+    makes, or an edit in place to the array it stores, replaces the subsidy
+    kept for all time without telling the record. The arm then sets none of
+    the kept yearly inputs and calculates both years, as a simulation with no
+    subsidy input does, rather than the replaced $600 and $700."""
     simulations = [
         Microsimulation(
             dataset=dataset(
@@ -515,7 +537,7 @@ def test_the_arm_sets_none_of_the_inputs_a_write_to_the_holder_replaced():
     ]
     plain, reformed = simulations
     plain.delete_arrays(SUBSIDY)
-    reformed.get_holder(SUBSIDY).set_input(YEAR, np.array([800.0, 900.0]))
+    write(reformed)
     for simulation in simulations:
         simulation.subsample(n=1)
     arm = reformed.baseline
@@ -525,7 +547,7 @@ def test_the_arm_sets_none_of_the_inputs_a_write_to_the_holder_replaced():
         np.testing.assert_allclose(
             value(arm, SUBSIDY, year), calculated, atol=TOLERANCE
         )
-        np.testing.assert_allclose(value(reformed, SUBSIDY, year), [900])
+        np.testing.assert_allclose(value(reformed, SUBSIDY, year), [held])
 
 
 class is_household_head(Variable):
@@ -541,13 +563,19 @@ class StoreHeadsEachYear(Reform):
         self.update_variable(is_household_head)
 
 
-def test_subsampling_keeps_the_order_of_inputs_baseline_policy_stores_for_all_time():
+@pytest.mark.parametrize("period", [2025, "month:2025-01:12", "month:2025-01:24"])
+def test_subsampling_keeps_the_order_of_inputs_baseline_policy_stores_for_all_time(
+    period,
+):
     """The dataset names each household's parent its head in 2026, and both
     runs then name each child head in 2025. Baseline policy stores the role
     for all time, so the input set last wins. The reform stores it each year,
     and core exports its years in order, 2025 first; the arm sets them in the
     order the reform received them, so it reads the child as head, as the
-    simulation with no reform does."""
+    simulation with no reform does. Core stores twelve months from January
+    as the year, and so does the record. Over 24 months, the reform's holder
+    stores the input for 2025 alone, since 2026 already holds one, and the
+    record keeps what it stored."""
     simulations = [
         Microsimulation(
             dataset=dataset((NEW_YORK,), FAMILIES, weights=(0, 1)), reform=reform
@@ -555,7 +583,7 @@ def test_subsampling_keeps_the_order_of_inputs_baseline_policy_stores_for_all_ti
         for reform in (None, StoreHeadsEachYear)
     ]
     for simulation in simulations:
-        simulation.set_input("is_household_head", 2025, [False, True, False, True])
+        simulation.set_input("is_household_head", period, [False, True, False, True])
     for simulation in simulations:
         simulation.subsample(n=1)
     plain, reformed = simulations
