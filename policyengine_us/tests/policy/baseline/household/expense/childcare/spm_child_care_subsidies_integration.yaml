@@ -7,6 +7,10 @@
 # earn $30,000 and the 2024 cases earn $24,000.
 # Without weeks_worked, work expenses are zero, so the SPM expense is the
 # out-of-pocket amount.
+# The New York cases give earnings before labor supply responses, as a
+# household simulation stores them. TANF reads that variable, so a bare
+# employment_income input leaves New York's Family Assistance seeing no
+# earnings, and the grant it then pays waives the CCAP family share.
 
 - name: New York, Manhattan family with a subsidy just below the expense
   period: 2026
@@ -15,7 +19,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -51,7 +55,7 @@
     people:
       parent:
         age: 30
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_household_head: true
@@ -253,9 +257,9 @@
         members: [parent, child]
         state_code: CO
   output:
-    child_care_subsidies: 12_613.16
-    # 14,000 - 12,613.16.
-    spm_unit_capped_work_childcare_expenses: 1_386.84
+    child_care_subsidies: 12_482
+    # 14,000 - 12,482.
+    spm_unit_capped_work_childcare_expenses: 1_518
 
 - name: District of Columbia, a program the 2024 list left out
   period: 2024
