@@ -122,3 +122,53 @@
     # Standard Deduction Worksheet: 20% x 40,000 = 8,000, between the $4,520
     # minimum and the $10,180 maximum for a joint return.
     mt_standard_deduction_joint: [8_000, 0]
+
+- name: A dependent's U.S. government interest does not lower the parents' Montana AGI
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 40
+      child:
+        age: 10
+        taxable_interest_income: 10_000
+        us_govt_interest_person: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # The child's interest is on the child's own return, so it is neither in
+    # the parents' federal AGI nor subtracted on their Montana return.
+    mt_agi_joint: 50_000
+    # 20% x 50,000 = 10,000, below the $10,180 maximum for a joint return.
+    mt_standard_deduction_joint: [10_000, 0, 0]
+
+- name: Joint return at the 2021 maximum
+  period: 2021
+  input:
+    state_code: MT
+    mt_agi_joint: 80_000
+    filing_status: JOINT
+  output:
+    # 2021 Form 2 Standard Deduction Worksheet: 20% x 80,000 = 16,000, above
+    # the $9,660 maximum for a joint return.
+    mt_standard_deduction_joint: 9_660
+
+- name: Single return at the 2023 maximum
+  period: 2023
+  input:
+    state_code: MT
+    mt_agi_joint: 40_000
+    filing_status: SINGLE
+  output:
+    # 2023 Form 2 Standard Deduction Worksheet: 20% x 40,000 = 8,000, above
+    # the $5,540 maximum for a single return.
+    mt_standard_deduction_joint: 5_540

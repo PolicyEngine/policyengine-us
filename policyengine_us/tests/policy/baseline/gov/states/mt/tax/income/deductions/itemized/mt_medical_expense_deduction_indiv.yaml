@@ -320,3 +320,15 @@
     mt_dependent_medical_expense_head_share: 1
     mt_medical_and_dental_expenses_indiv: [4_000, 0, 0]
     mt_medical_expense_deduction_indiv: [3_000, 0, 0]
+
+- name: Each spouse filing separately on the same form uses their own column's Montana AGI
+  period: 2022
+  input:
+     other_medical_expenses: 10_000
+     mt_agi_indiv: 60_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     # Itemized Deductions Schedule line 1 in that spouse's column:
+     # 10,000 - 7.5% x 60,000 = 5,500.
+     mt_medical_expense_deduction_indiv: 5_500
