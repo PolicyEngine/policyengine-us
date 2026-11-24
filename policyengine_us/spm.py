@@ -884,8 +884,9 @@ class SPMSimulationMixin:
         (``_set_inputs_kept_for_baseline_policy``); the behavioural-response
         measurement branch sets none, and calculates such a variable.
 
-        Only a baseline arm does this. ``apply_reform`` keeps a simulation's
-        own inputs, as core's does.
+        Only a baseline arm calls this. Under ``apply_reform``, core's own
+        ``_bind_to_tax_benefit_system`` drops a holder the new definition
+        cannot use, with its recorded inputs, and keeps every other input.
         """
         variables = self.tax_benefit_system.variables
         dropped = set()
