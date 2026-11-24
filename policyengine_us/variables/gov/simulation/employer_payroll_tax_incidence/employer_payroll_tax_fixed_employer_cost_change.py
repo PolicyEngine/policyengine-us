@@ -265,7 +265,10 @@ def fica_pre_tax_list(system, period):
 
     FICA_PRE_TAX_ABOLISHED when it abolishes the total, and None when it
     calculates the total another way: neutralized, or with a formula a
-    structural reform gave it.
+    structural reform gave it. Two systems with the same list can still
+    calculate different totals (a defined_for on the total, or a formula for
+    a listed contribution), so the response reads each side's total from its
+    own simulation whatever this returns.
     """
     variable = system.get_variable("fica_pre_tax_contributions")
     if (
@@ -281,46 +284,82 @@ def fica_pre_tax_list(system, period):
     return tuple(gov.irs.gross_income.fica_pre_tax_contributions)
 
 
+def describe_ids(ids, limit=5):
+    """Up to ``limit`` person IDs, quoted, for an error message."""
+    shown = ", ".join(f"'{value}'" for value in ids[:limit].tolist())
+    if len(ids) > limit:
+        shown += f" and {len(ids) - limit:,} more"
+    return shown
+
+
 def for_each_person(person, baseline_person, values):
     """``values`` of the baseline's people, for each of ``person``'s people.
 
-    People are matched by ID. A branch shares its ancestor's baseline, which
-    keeps the ancestor's people when the branch is subsampled.
+    When both simulations list the same person IDs in the same order, they
+    hold the same people, so values align by position, even where axes have
+    given two people one ID. Otherwise ``person`` belongs to a branch that
+    was subsampled: a branch shares its ancestor's baseline, and subsampling
+    the branch leaves that baseline's people in place. Core's ``subsample``
+    keeps the rows of the chosen households (it selects them with ``isin``),
+    so each kept person appears once, with their ID, in their original
+    order, and a kept person's ID is unique in the baseline whenever the
+    ancestor's person IDs are. Axes can repeat a person ID, since they append
+    each cell's index to it (people "1" and "11" both get "110", in cells 10
+    and 0), so people are looked up only among the IDs the baseline has
+    once. A person whose ID the baseline lacks or repeats raises
+    NotImplementedError, naming the ID.
     """
     ids = np.asarray(person.ids)
     baseline_ids = np.asarray(baseline_person.ids)
     if np.array_equal(ids, baseline_ids):
         return values
-    index = pd.Index(baseline_ids).get_indexer(ids)
-    if np.any(index < 0):
+    repeated = pd.Index(baseline_ids).duplicated(keep=False)
+    once = np.flatnonzero(~repeated)
+    index = pd.Index(baseline_ids[once]).get_indexer(ids)
+    unmatched = index < 0
+    if np.any(unmatched):
+        unmatched_ids = ids[unmatched]
+        is_repeated = pd.Index(unmatched_ids).isin(baseline_ids[repeated])
+        problems = []
+        if np.any(~is_repeated):
+            problems.append(
+                "has no person with ID " + describe_ids(unmatched_ids[~is_repeated])
+            )
+        if np.any(is_repeated):
+            problems.append(
+                "has more than one person with ID "
+                + describe_ids(unmatched_ids[is_repeated])
+                + ", so it can't tell which one this simulation kept"
+            )
         raise NotImplementedError(
             "employer_payroll_tax_fixed_employer_cost_change needs the "
-            "baseline's FICA pre-tax contributions, but the baseline "
-            "simulation lacks some of this simulation's people."
+            "baseline's FICA pre-tax contributions for each of this "
+            "simulation's people, but the baseline simulation "
+            + " and ".join(problems)
+            + "."
         )
-    return np.asarray(values)[index]
+    return np.asarray(values)[once[index]]
 
 
 def fica_pre_tax_totals(person, period, baseline):
     """Each side's fica_pre_tax_contributions, as (baseline, reform).
 
-    The reform's is this simulation's own total, so a supplied total and the
-    reform's definition of the total apply. When both systems add the same
-    list, or both abolish the total, the baseline's is the same calculation
-    on the same inputs, so it is the reform's too. Otherwise the baseline
-    simulation calculates it under its own definition, which a list change,
-    neutralizing the total or a formula for it leaves alone. That simulation
-    holds the inputs this one was built with (or rebuilt with, by
-    ``subsample``). A formula for the total that reads employment_income is
+    Each simulation calculates its own total, the one its
+    payroll_tax_gross_wages reads, under its own definition. So a supplied
+    total, a change to the list, abolishing or neutralizing the total, a
+    defined_for or a formula for it, and a formula for a listed contribution
+    each apply to the side they belong to. Equal lists don't make equal
+    totals, so the baseline's total always comes from the baseline
+    simulation, matched to this simulation's people (``for_each_person``).
+    The baseline simulation holds the inputs this one was built with, or
+    rebuilt with by its own ``subsample``, and a branch keeps its ancestor's
+    baseline. So an input to the total or to a listed contribution, set on
+    this simulation after its baseline was built, counts as a change to
+    payroll wages. A formula for the total that reads employment_income is
     not supported: this variable is part of employment_income, so core
     raises a CycleError.
     """
     reform_total = person("fica_pre_tax_contributions", period)
-    reform_list = fica_pre_tax_list(person.simulation.tax_benefit_system, period)
-    if reform_list is not None and reform_list == fica_pre_tax_list(
-        baseline.tax_benefit_system, period
-    ):
-        return reform_total, reform_total
     baseline_person = baseline.populations["person"]
     baseline_total = baseline_person("fica_pre_tax_contributions", period)
     return for_each_person(person, baseline_person, baseline_total), reform_total
@@ -400,17 +439,21 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "policy reforms leave it alone, while scenario reforms such as the "
         "Trustees' economic assumptions extend it with the live cap, so a "
         "scenario is not read as a tax change. Each side's payroll wages "
-        "leave out its fica_pre_tax_contributions and, under the tax-exempt "
-        "reform, exempt tips and overtime. The reform side's total is this "
-        "simulation's, so a supplied total applies. When the reform defines "
-        "the total as the baseline does (the same list, or both abolished), "
-        "the baseline side uses the same total; when it changes the "
-        "definition (another list, abolition, neutralizing the total, or a "
-        "formula for it), the baseline side reads the baseline simulation, "
-        "matched by person ID, which holds the inputs the simulation was "
-        "built with, or rebuilt with by subsample. A formula for the total "
-        "that reads employment_income is not supported: core raises a "
-        "CycleError. A simulation that supplies "
+        "leave out the fica_pre_tax_contributions its own simulation "
+        "calculates and, under the tax-exempt reform, exempt tips and "
+        "overtime. The reform side's total is this simulation's, so a "
+        "supplied total applies; the baseline side's is the baseline "
+        "simulation's, matched by person ID, so a reform to the total or to "
+        "a listed contribution applies to the reform side alone, even when "
+        "it keeps the list. The baseline simulation holds the inputs the "
+        "simulation was built with, or rebuilt with by its own subsample, "
+        "and a branch keeps its ancestor's baseline: an input to the total "
+        "or to a listed contribution, set on a reform simulation after its "
+        "baseline was built, counts as a change to payroll wages. A "
+        "subsampled branch raises for a person whose ID the baseline lacks "
+        "or repeats, as axes can. A formula for the total that reads "
+        "employment_income is not supported: core raises a CycleError. A "
+        "simulation that supplies "
         "payroll_tax_gross_wages itself fixes payroll wages, so employer "
         "taxes do not follow the new wage. The cost leaves out state and local "
         "employer payroll taxes, which change with the new wage where they "

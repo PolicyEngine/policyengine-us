@@ -27,10 +27,12 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    stay equal under employee-side reforms and before a reform starts. The
    payroll wage exclusions it compares are each simulation's own
    fica_pre_tax_contributions, so a supplied total counts in both, and
-   neutralizing or abolishing it moves pay with the components unchanged.
-   A branch that was subsampled matches its ancestor's baseline by person
-   ID, and a formula for the total that reads employment income is refused
-   with core's CycleError.
+   neutralizing or abolishing it moves pay with the components unchanged,
+   as do reforms that keep the list but limit the total to children or give
+   a listed contribution a formula. A branch that was subsampled matches its
+   ancestor's baseline by person ID, among the IDs the baseline has once, so
+   a person whose ID axes repeated raises by name, and a formula for the
+   total that reads employment income is refused with core's CycleError.
 6. Marginal wedge: in a branch that raises earnings, wages rise by
    (1 + m_b) / (1 + m_r) per dollar, where m is the federal employer rate at
    the margin, so marginal tax rates measured in a reform carry the employer
@@ -76,6 +78,7 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.employer_payroll_tax_fixed_employer_cost_change import (
     DEFAULT_WAGE_RULE,
     FICA_PRE_TAX_ABOLISHED,
+    FICA_PRE_TAX_LIST,
     TAX_EXEMPT_WAGE_RULE,
     components_match,
     employer_cost_schedules,
@@ -83,6 +86,7 @@ from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.emp
     federal_employer_payroll_tax_components,
     fica_pre_tax_list,
     fixed_employer_cost_wage_change,
+    for_each_person,
     payroll_wage_rule,
     wages_at_employer_cost,
 )
@@ -833,6 +837,101 @@ def test_removing_the_fica_total_lowers_pay(removal):
         gc.collect()
 
 
+# Core names a variable after its class, and this module already has a class
+# named fica_pre_tax_contributions (ProportionalFicaTotal's, below), so these
+# reforms define theirs inside apply.
+class ChildOnlyFicaTotal(Reform):
+    """Keeps the FICA pre-tax list, but counts the total for children only."""
+
+    def apply(self):
+        class fica_pre_tax_contributions(Variable):
+            value_type = float
+            entity = Person
+            definition_period = YEAR_PERIOD
+            adds = FICA_PRE_TAX_LIST
+            defined_for = "is_child"
+
+        self.update_variable(fica_pre_tax_contributions)
+
+
+class PremiumFormula(Reform):
+    """Keeps the FICA pre-tax list, but gives a listed contribution a formula."""
+
+    def apply(self):
+        class pre_tax_health_insurance_premiums(Variable):
+            value_type = float
+            entity = Person
+            definition_period = YEAR_PERIOD
+
+            def formula(person, period, parameters):
+                return 0.1 * person("employment_income_before_lsr", period)
+
+        self.update_variable(pre_tax_health_insurance_premiums)
+
+
+# A Texas adult with $60,000 of pay. Limiting the total to children drops
+# their $6,000 of premiums from it, so pay falls to keep the $64,173 outlay:
+# (64,173 - 42) / 1.0765 = $59,573.62. The formula gives them $6,000 of
+# premiums where the baseline has none, so pay rises to keep $64,632:
+# (64,632 - 42 + 0.0765 * 6,000) / 1.0765 = $60,426.38.
+SAME_LIST_CASES = {
+    "child_only_total": (
+        ChildOnlyFicaTotal,
+        {
+            "employment_income_before_lsr": 60_000,
+            "pre_tax_health_insurance_premiums": 6_000,
+        },
+        (6_000, 0),
+        64_173,
+        59_573.62,
+    ),
+    "premium_formula": (
+        PremiumFormula,
+        {"employment_income_before_lsr": 60_000},
+        (0, 6_000),
+        64_632,
+        60_426.38,
+    ),
+}
+
+
+@pytest.mark.parametrize("case", SAME_LIST_CASES)
+def test_same_list_reforms_that_change_the_total_hold_the_outlay(case):
+    """Equal FICA pre-tax lists don't make equal totals.
+
+    Each reform adds the list the baseline adds, yet calculates another total
+    for this worker, so the baseline side reads the baseline simulation's
+    own total and pay moves to keep the outlay.
+    """
+    reform, person, (baseline_total, reform_total), outlay, pay = SAME_LIST_CASES[case]
+    simulation = Simulation(
+        situation=small_situation(YEAR, [person], ["TX"]), reform=reform
+    )
+    try:
+        assert fica_pre_tax_list(simulation.tax_benefit_system, YEAR) == (
+            fica_pre_tax_list(simulation.baseline.tax_benefit_system, YEAR)
+        )
+        np.testing.assert_array_equal(
+            simulation.baseline.calculate("fica_pre_tax_contributions", YEAR),
+            [baseline_total],
+        )
+        np.testing.assert_array_equal(
+            simulation.calculate("fica_pre_tax_contributions", YEAR), [reform_total]
+        )
+        np.testing.assert_allclose(
+            simulated_outlay(simulation.baseline, YEAR), [outlay]
+        )
+        np.testing.assert_allclose(
+            simulation.calculate("employment_income", YEAR), [pay], atol=0.02
+        )
+        np.testing.assert_allclose(
+            simulated_outlay(simulation, YEAR), [outlay], rtol=1e-6, atol=0.05
+        )
+    finally:
+        del simulation
+        gc.collect()
+
+
 class fica_pre_tax_contributions(Variable):
     """A total that reads employment income, which the response can't solve."""
 
@@ -850,7 +949,7 @@ class ProportionalFicaTotal(Reform):
 
 
 def test_fica_pre_tax_list_says_how_a_system_defines_the_total():
-    """Equal lists let the baseline reuse the reform's total; others don't."""
+    """The list, a marker for abolition, or None for another definition."""
     current_list = tuple(
         system.parameters(YEAR).gov.irs.gross_income.fica_pre_tax_contributions
     )
@@ -910,10 +1009,10 @@ def test_a_subsampled_branch_matches_its_baseline_by_person(removal):
     """A branch keeps its ancestor's baseline, with all of its people.
 
     Subsampling the branch to one of two households leaves that baseline at
-    two people. An employee-only reform defines the FICA pre-tax total as
-    the baseline does, so the change is zero without reading the baseline.
-    Neutralizing the total does not, so the baseline's total is read, for
-    the person the sample kept.
+    two people, so the baseline's FICA pre-tax total is read for the person
+    the sample kept, matched by ID. Under an employee-only reform the two
+    totals are equal and the change is zero; with the total neutralized,
+    pay falls by the employer tax on the kept worker's premiums.
     """
     if removal == "employee_rate":
         reform = Reform.from_dict(
@@ -949,6 +1048,120 @@ def test_a_subsampled_branch_matches_its_baseline_by_person(removal):
     finally:
         del simulation
         gc.collect()
+
+
+# Core's axes append each cell's index to every person ID, so over 11 cells
+# person "1" in cell 10 and person "11" in cell 0 share the ID "110".
+AXIS_PERSON_IDS = [pid + str(cell) for cell in range(11) for pid in ("1", "11")]
+
+
+def axes_situation(person_ids):
+    """One worker per household, the first with pay from $60,000 to $80,000."""
+    people = {
+        pid: {
+            "age": {YEAR: 40},
+            "employment_income": {YEAR: 60_000},
+            "pre_tax_health_insurance_premiums": {YEAR: 6_000 * (i + 1)},
+        }
+        for i, pid in enumerate(person_ids)
+    }
+    units = {
+        entity: {str(i + 2): {"members": [pid]} for i, pid in enumerate(person_ids)}
+        for entity in ("tax_units", "spm_units", "families", "marital_units")
+    }
+    households = {
+        str(i + 2): {"members": [pid], "state_code": {YEAR: "TX"}}
+        for i, pid in enumerate(person_ids)
+    }
+    return {
+        "people": people,
+        **units,
+        "households": households,
+        "axes": [
+            [
+                {
+                    "name": "employment_income",
+                    "period": YEAR,
+                    "index": 0,
+                    "count": 11,
+                    "min": 60_000,
+                    "max": 80_000,
+                }
+            ]
+        ],
+    }
+
+
+def test_a_subsampled_branch_finds_its_person_among_repeated_axis_ids():
+    """Axes can give two people one ID; a subsampled branch matches by ID.
+
+    With the FICA pre-tax total neutralized, each worker's pay falls by the
+    employer tax on their premiums: (pay * 1.0765 - 0.0765 * premiums) /
+    1.0765. Before the subsample both simulations list the same IDs, so the
+    repeated "110" aligns by position. A branch subsampled to one household
+    reads the baseline's total for the person it kept, by an ID the baseline
+    has once, or raises naming an ID the baseline repeats.
+    """
+    simulation = Simulation(
+        situation=axes_situation(["1", "11"]), reform=NeutralizeFicaTotal
+    )
+    try:
+        ids = [str(pid) for pid in simulation.persons.ids]
+        assert ids == AXIS_PERSON_IDS
+        pay = simulation.calculate("employment_income", YEAR)
+        before = simulation.calculate("employment_income_before_lsr", YEAR)
+        premiums = simulation.calculate("pre_tax_health_insurance_premiums", YEAR)
+        np.testing.assert_allclose(pay, before - 0.0765 * premiums / 1.0765, atol=0.02)
+        # What a household simulation lacks for subsample, as in
+        # test_a_subsampled_branch_matches_its_baseline_by_person.
+        for current in (simulation, simulation.baseline):
+            for population in current.populations.values():
+                population.ids = np.asarray(population.ids)
+        simulation.dataset = SimpleNamespace(time_period=YEAR, name="axes-collision")
+        simulation.set_input(
+            "household_weight", YEAR, np.ones(simulation.household.count)
+        )
+        branch = simulation.get_branch("sampled")
+        branch.subsample(n=1, seed="axes-collision", time_period=YEAR)
+        assert branch.baseline.persons.count == len(ids)
+        kept = [str(pid) for pid in branch.persons.ids]
+        repeated = [pid for pid in kept if ids.count(pid) > 1]
+        if repeated:
+            with pytest.raises(
+                NotImplementedError,
+                match=f"more than one person with ID '{repeated[0]}'",
+            ):
+                branch.calculate("employment_income", YEAR)
+        else:
+            np.testing.assert_allclose(
+                branch.calculate("employment_income", YEAR),
+                [pay[ids.index(pid)] for pid in kept],
+                atol=0.02,
+            )
+    finally:
+        del simulation
+        gc.collect()
+
+
+def test_people_match_by_position_or_by_an_id_the_baseline_has_once():
+    """for_each_person, with the IDs axes give people "1" and "11".
+
+    Identical ID lists align by position, the repeated "110" included.
+    Otherwise each person is found by an ID the baseline has once, and an ID
+    the baseline repeats or lacks raises, naming it.
+    """
+    baseline = SimpleNamespace(ids=np.array(AXIS_PERSON_IDS))
+    values = np.arange(len(AXIS_PERSON_IDS))
+
+    def match(ids):
+        return for_each_person(SimpleNamespace(ids=ids), baseline, values)
+
+    np.testing.assert_array_equal(match(np.array(AXIS_PERSON_IDS)), values)
+    np.testing.assert_array_equal(match(["19", "1110", "10"]), [18, 21, 0])
+    with pytest.raises(NotImplementedError, match="more than one person with ID '110'"):
+        match(["19", "110"])
+    with pytest.raises(NotImplementedError, match="no person with ID '3'"):
+        match(["19", "3"])
 
 
 def test_exempting_tips_from_payroll_tax_raises_tipped_pay():
