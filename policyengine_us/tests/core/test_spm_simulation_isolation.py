@@ -14,8 +14,8 @@ from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_core.variables import Variable
 
 from policyengine_us import Simulation
-from policyengine_us.entities import Person
-from policyengine_us.spm import clone_spm_system, share_spm_policy
+from policyengine_us.entities import Person, SPMUnit
+from policyengine_us.spm import clone_spm_system, share_spm_policy, tree_is_shared
 from policyengine_us.system import system
 from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
 
@@ -66,6 +66,34 @@ def parameter_accesses(tracer):
     return recorded
 
 
+def parameter_accesses_without_own_abolition_checks(tracer):
+    """The parameter names this tracer recorded, without core's own checks.
+
+    Before each calculation, core checks the variable's own abolition switch,
+    ``gov.abolitions.<variable>``. Core releases before
+    PolicyEngine/policyengine-core#664 record that check, in the variable's
+    own trace node, when the parameter root is traced; from that pull request
+    on, core reads the switch from the untraced tree. Leaving out each trace
+    node's read of its own variable's switch lets one expected set hold for
+    both, while a formula's read of another variable's switch still counts.
+    """
+    recorded = set()
+
+    def visit(node):
+        own_switch = f"gov.abolitions.{node.name}"
+        recorded.update(
+            parameter.name
+            for parameter in node.parameters
+            if parameter.name != own_switch
+        )
+        for child in node.children:
+            visit(child)
+
+    for tree in tracer.trees:
+        visit(tree)
+    return recorded
+
+
 class NeutralizeIncomeTax(Reform):
     def apply(self):
         self.neutralize_variable("income_tax")
@@ -81,6 +109,27 @@ class clone_only_income(Variable):
 class AddedInputReform(Reform):
     def apply(self):
         self.update_variable(clone_only_income)
+
+
+class root_read_probe(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Reads a parameter through the simulation's own parameter root"
+
+    def formula(spm_unit, period, parameters):
+        # Read through the simulation's own root, as the SSI annual-input
+        # helper does, rather than through the ``parameters`` argument.
+        root = spm_unit.simulation.tax_benefit_system.parameters
+        first_person = root(period).gov.hhs.fpg.first_person.CONTIGUOUS_US
+        # spm_unit_size is already calculated: it only gives the result one
+        # value per SPM unit.
+        return first_person + 0 * spm_unit("spm_unit_size", period)
+
+
+class AddRootReadProbe(Reform):
+    def apply(self):
+        self.update_variable(root_read_probe)
 
 
 def test_parameter_reform_leaves_every_other_simulation_unreformed():
@@ -218,22 +267,38 @@ def test_reform_added_variable_accepts_input_on_an_ordinary_simulation():
 
 @pytest.mark.parametrize("period", [2033, 2034])
 def test_traced_simulations_record_their_own_parameter_accesses(period):
-    """Core marks the parameter tree with the requesting simulation's tracer.
+    """Each traced simulation records its own dated parameter reads.
 
-    On a shared tree the second traced request reused the first request's
-    cached tracing node, so its parameter accesses were recorded against the
-    first request's tracer - or, with that request's trace frame closed,
+    A formula's dated reads through its ``parameters`` argument go through a
+    view core builds for each call with the calculating simulation's tracer.
+    Dated reads through the simulation's own root,
+    ``tax_benefit_system.parameters(period)`` as the SSI annual-input helper
+    makes them, use the tracer stored on that root. Reads through the root
+    that name no instant, ``tax_benefit_system.parameters.gov.<path>(period)``,
+    are not recorded on either core: ``isolate_parameter_tracing`` sets only
+    the root's trace fields, and the root's children keep ``trace`` off.
+
+    On the shared tree, ``isolate_parameter_tracing`` gives each traced
+    request its own copy of the root, marked as shared, with an empty
+    at-instant cache and that request's tracer and branch name, and gives the
+    request's system its own system-level at-instant cache; this test
+    covers that case, not a request that owns its tree, whose root is marked
+    in place. ``root_read_probe`` makes one dated read through the root in
+    each simulation; without it this test would not notice a private root that
+    records nothing.
+
+    On a shared root the second traced request reused the first request's
+    cached tracing node, so its reads through the root were recorded against
+    the first request's tracer - or, with that request's trace frame closed,
     recorded nowhere - and the shared tree kept a finished request's tracer for
     every simulation that read it afterwards.
 
     The isolation is keyed on ``trace``: setting it re-primes this request's
     root with an empty at-instant cache. Replacing a tracer in place afterwards
-    is not covered - neither a bare ``simulation.tracer = ...`` write nor a
-    ``parameters.tracer`` write on a system - because core memoises the
-    ``TracingParameterNodeAtInstant`` in the root's ``_at_instant_cache`` bound
-    to whichever tracer built it, and core's per-formula soft recast in
-    ``Simulation._run_formula`` refreshes the root's own ``trace``/``tracer``
-    fields without rebuilding that memo. #9448's
+    is not covered for reads through the root - neither a bare
+    ``simulation.tracer = ...`` write nor a ``parameters.tracer`` write on a
+    system - because the root memoises the ``TracingParameterNodeAtInstant`` in
+    its ``_at_instant_cache`` bound to whichever tracer built it. #9448's
     ``test_cached_formula_trace_binds_replacement_tracer`` and
     ``test_system_parameter_lookup_does_not_cache_tracer`` assert that case;
     both fail against this mechanism and are not carried, because passing them
@@ -241,33 +306,68 @@ def test_traced_simulations_record_their_own_parameter_accesses(period):
     this one. The only bare tracer write left in this package is
     ``tools/branched_simulation.py``, which nothing constructs.
     """
+    # Untraced requests normally fill the shared root's at-instant cache before
+    # a traced one arrives, so a private root must not reuse those entries.
+    system.parameters(period)
+    # A variable-only reform keeps sharing the imported parameter tree, so
+    # both simulations still start from the one shared root.
     first = Simulation(situation=earner_situation())
+    first.apply_reform(AddRootReadProbe)
     first.trace = True
     first.calculate("spm_unit_fpg", period)
+    first.calculate("root_read_probe", period)
     first_accesses = parameter_accesses(first.tracer)
 
     second = Simulation(situation=earner_situation())
+    second.apply_reform(AddRootReadProbe)
     second.trace = True
     second.calculate("spm_unit_fpg", period)
+    second.calculate("root_read_probe", period)
 
     expected = {
-        "gov.abolitions.spm_unit_fpg",
-        "gov.abolitions.spm_unit_size",
+        # spm_unit_fpg's reads through its formula's ``parameters`` argument.
         "gov.hhs.fpg.additional_person",
         "gov.hhs.fpg.first_person",
         "gov.hhs.fpg_table.in_effect",
+        # root_read_probe's read through the simulation's own root.
+        "gov.hhs.fpg.first_person.CONTIGUOUS_US",
     }
-    assert set(first_accesses) == expected
-    assert set(parameter_accesses(second.tracer)) == expected
+    assert parameter_accesses_without_own_abolition_checks(first.tracer) == expected
+    assert parameter_accesses_without_own_abolition_checks(second.tracer) == expected
     # The first simulation's trace did not grow when the second one calculated.
     assert parameter_accesses(first.tracer) == first_accesses
-    # Each traced request owns the root node core writes its tracer onto.
+    # Each traced request owns the root that holds its tracer.
     first_root = first.tax_benefit_system.parameters
     second_root = second.tax_benefit_system.parameters
     assert first_root is not second_root
     assert first_root._at_instant_cache is not second_root._at_instant_cache
     assert first_root.tracer is first.tracer
     assert second_root.tracer is second.tracer
+    # Read into names first, so a failure does not print the whole tree.
+    first_root_branch_name = first_root.branch_name
+    second_root_branch_name = second_root.branch_name
+    assert first_root_branch_name == first.branch_name
+    assert second_root_branch_name == second.branch_name
+    # A copy that shares the imported children must stay marked as shared, so
+    # a later parameter reform detaches it instead of editing the imported
+    # tree.
+    first_root_is_shared = tree_is_shared(first_root)
+    second_root_is_shared = tree_is_shared(second_root)
+    assert first_root_is_shared
+    assert second_root_is_shared
+    # The imported system shares its system-level at-instant cache with
+    # untraced simulations, so a traced system must not cache its tracing
+    # views there.
+    imported_system_cache = system._parameters_at_instant_cache
+    assert first.tax_benefit_system._parameters_at_instant_cache is not (
+        imported_system_cache
+    )
+    assert second.tax_benefit_system._parameters_at_instant_cache is not (
+        imported_system_cache
+    )
+    # Below their own roots, both still read the imported tree.
+    assert first_root.children is system.parameters.children
+    assert second_root.children is system.parameters.children
 
 
 def test_tracing_leaves_the_shared_parameter_tree_untraced():
