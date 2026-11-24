@@ -277,9 +277,10 @@ def _rebuild_baseline_branch(simulation):
     ``subsample`` does, gives the baseline the same inputs as the reform,
     except those the reform stored for its own definition of a variable in
     another entity or with other ``ETERNITY`` storage, which core's branch
-    dropped too. Of those, the baseline then sets again each input the
-    reform still holds that the baseline's definition can hold, such as a
-    yearly subsidy the reform stores for all time.
+    dropped too. Of those, other than entity IDs, membership IDs and roles,
+    the baseline then sets again each input the reform still holds that the
+    baseline's definition can hold, such as a yearly subsidy the reform
+    stores for all time.
     """
     baseline = simulation.branches.pop("baseline", None)
     if baseline is None:

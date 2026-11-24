@@ -22,21 +22,28 @@ Invariants: under a reform that changes nothing, the reform and its baseline
 arm compute what a simulation with no reform computes, for every household,
 whether a situation or a dataset of raw columns supplies the inputs. Under any
 reform, each holder in either arm suits that arm's definition of its variable.
-Under a reform that stores a variable apart from baseline policy, the arm reads
-each input of it that the reform still holds as a simulation with no reform
-given the same inputs, deletions and subsample reads it, and subsampling
-leaves the reform's own value as it was. A deletion on a holder for all time
+Under a reform that stores a variable apart from baseline policy, other than an
+entity ID, membership ID or role, the arm sets again the last array the reform
+stored for each period it still holds, in the order those periods were last
+set, through deletions and subsamples, and reads them as a simulation with no
+reform given them in that order reads them. Subsampling leaves the reform's
+own value, and the households it samples, as they were. A deletion on a holder for all time
 deletes every year's input, so the reform then holds none. Where the reform's
 holder took an input its ``set_input`` never saw, such as a write to the
 holder itself, the arm calculates what it can't place: under a reform for all
 time, each year given no input since; under a yearly reform, the variable.
 
-Two cases fall outside these invariants, and no test pins them. A write the
+Three cases fall outside these invariants, and no test pins them. A write the
 record never saw that stores the very array it kept last under that key goes
-unnoticed, so the arm sets what was kept, in the order kept. And under a yearly
+unnoticed, so the arm sets what was kept, in the order kept. Under a yearly
 reform of a variable baseline policy stores for all time, deleting one year's
 input leaves the reform its other years, which the arm sets again, while a
-simulation with no reform loses every year's input.
+simulation with no reform loses every year's input. And core's handlers divide
+or dispatch an input over several periods around the inputs a holder already
+has, so the arrays the reform stored, and the last of them for each period,
+can tell another story than the inputs first given: where such inputs overlap,
+or the reform's handler stored one around an earlier input, the arm can read
+other values than a simulation with no reform given those inputs.
 """
 
 from itertools import product
@@ -478,15 +485,24 @@ class StoreWeightsForAllTime(Reform):
         self.update_variable(household_weight)
 
 
-def test_subsampling_reweights_a_weight_the_reform_stores_for_all_time():
+@pytest.mark.parametrize("period", [None, "month:2025-01:12", "month:2026-02:12"])
+def test_subsampling_reweights_a_weight_the_reform_stores_for_all_time(period):
     """Two households weigh 1 each, and a sample of one keeps their total of
     2. The arm reads the sampled household's yearly weight as the simulation
-    with no reform does. Before, the arm set the weight the dataset gave, 1."""
+    with no reform does. Before, the arm set the weight the dataset gave, 1.
+
+    A weight given for twelve months reaches the arm as a column named for
+    its period, which core parses back to reweight it. Twelve months from
+    January parse back as the year, and from February as a year from
+    February, so neither equals the period kept; matching on the period
+    raised ``TypeError`` from the subsample."""
     simulations = [
         Microsimulation(dataset=dataset((NEW_YORK,), FAMILIES), reform=reform)
         for reform in (None, StoreWeightsForAllTime)
     ]
     for simulation in simulations:
+        if period is not None:
+            simulation.set_input("household_weight", period, [1.0, 1.0])
         simulation.subsample(n=1, seed=0)
     plain, reformed = simulations
     arm = reformed.baseline
@@ -502,6 +518,55 @@ def test_subsampling_reweights_a_weight_the_reform_stores_for_all_time():
     for simulation in (reformed, arm):
         np.testing.assert_allclose(
             simulation.calculate("household_weight", YEAR, use_weights=False), weight
+        )
+
+
+class household_id(Variable):
+    # Stored for all time, where baseline policy stores an ID each year.
+    value_type = int
+    entity = Household
+    label = "Unique reference for this household"
+    definition_period = ETERNITY
+
+
+class person_household_id(Variable):
+    value_type = int
+    entity = Person
+    label = "Unique reference for the household of this person"
+    definition_period = ETERNITY
+
+
+class StoreHouseholdIdsForAllTime(Reform):
+    def apply(self):
+        self.update_variable(household_id)
+        self.update_variable(person_household_id)
+
+
+def test_subsampling_selects_households_by_the_reforms_own_ids():
+    """The reform gives the two households each other's ID for the year
+    before, which it holds for all time, and a sample of one picks the family
+    that a simulation with no reform, given those IDs for this year, picks.
+    Core selects households by the first household ID column of its export,
+    so the arm sets again no entity ID, membership ID or role. Before, the
+    arm kept the dataset's IDs, their column came first, and the reform
+    sampled the other family."""
+    simulations = [
+        Microsimulation(dataset=dataset((NEW_YORK,), FAMILIES), reform=reform)
+        for reform in (None, StoreHouseholdIdsForAllTime)
+    ]
+    plain, reformed = simulations
+    plain.set_input("household_id", YEAR, [1, 0])
+    reformed.set_input("household_id", YEAR - 1, [1, 0])
+    for simulation in simulations:
+        simulation.subsample(n=1, seed=0)
+    arm = reformed.baseline
+    for simulation in (reformed, arm):
+        assert_holders_suit_their_variables(simulation)
+    income = value(plain, "employment_income_before_lsr")
+    assert income.tolist() in ([30_000, 0], [15_000, 0])
+    for simulation in (reformed, arm):
+        np.testing.assert_allclose(
+            value(simulation, "employment_income_before_lsr"), income
         )
 
 

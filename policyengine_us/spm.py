@@ -790,6 +790,22 @@ def _stored_apart(variable, other):
     )
 
 
+def _structural_variables(policy):
+    """The variables core reads to build or rebuild populations: each entity's
+    ID, and each person's membership ID and role in each group entity."""
+    person = policy.person_entity.key
+    names = {f"{person}_id"}
+    for entity in policy.group_entities:
+        names.update(
+            (
+                f"{entity.key}_id",
+                f"{person}_{entity.key}_id",
+                f"{person}_{entity.key}_role",
+            )
+        )
+    return names
+
+
 class SPMSimulationMixin:
     """Keep forecast selection and receipts private to each simulation."""
 
@@ -918,8 +934,16 @@ class SPMSimulationMixin:
         drops each holder this simulation built with storage for (or not for)
         ``ETERNITY`` that the baseline's variable lacks, and the holder's
         inputs go with it.
+
+        Entity IDs, membership IDs and roles never count. The arm shares this
+        simulation's populations, and ``subsample`` selects households and
+        rebuilds both from this simulation's own columns for them: core reads
+        the first household ID column it finds, so a kept column for one would
+        pick the sample.
         """
         if getattr(self, "reform", None) is None:
+            return False
+        if variable_name in _structural_variables(self.tax_benefit_system):
             return False
         baseline_policy = getattr(self, "default_tax_benefit_system_instance", None)
         return baseline_policy is not None and _stored_apart(
@@ -1115,7 +1139,11 @@ class SPMSimulationMixin:
         input it still holds belongs to a variable it stores apart from this
         policy, so this simulation dropped the holder. Setting each input
         again, in the order ``source`` last set each period, gives this
-        simulation what a simulation with no reform loads from the same inputs.
+        simulation what a simulation with no reform loads from those inputs in
+        that order. Core's handlers divide or dispatch an input over several
+        periods around the inputs a holder already has, so where such inputs
+        overlap, or the reform's handler stored one around an earlier input,
+        that can differ from what it loads from the inputs first given.
         """
         variables = self.tax_benefit_system.variables
         for (
@@ -1169,11 +1197,13 @@ class SPMSimulationMixin:
 
     def _get_recorded_input_array(self, variable_name, period):
         # Core reweights each weight column of a subsample by its recorded
-        # total, so it reads a kept input's total here.
+        # total, so it reads a kept input's total here. Core parses the period
+        # back from the column name, and the parsed period need not equal the
+        # kept one: twelve months from January name the year, so match names.
         for name, kept_period, _, value in self.__dict__.get(
             SAMPLED_BASELINE_INPUTS_ATTR, ()
         ):
-            if name == variable_name and kept_period == period:
+            if name == variable_name and str(kept_period) == str(period):
                 return value
         return super()._get_recorded_input_array(variable_name, period)
 
