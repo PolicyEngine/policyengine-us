@@ -33,6 +33,10 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    ancestor's baseline by person ID, among the IDs the baseline has once, so
    a person whose ID axes repeated raises by name, and a formula for the
    total that reads employment income is refused with core's CycleError.
+   Abolishing a variable a federal employer tax is calculated from zeroes
+   the rate of exactly the taxes calculated from it. Neutralizing one
+   changes no rate, so it moves no wages, and an employer tax formula the
+   components don't model raises.
 6. Marginal wedge: in a branch that raises earnings, wages rise by
    (1 + m_b) / (1 + m_r) per dollar, where m is the federal employer rate at
    the margin, so marginal tax rates measured in a reform carry the employer
@@ -77,16 +81,18 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 )
 from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.employer_payroll_tax_fixed_employer_cost_change import (
     DEFAULT_WAGE_RULE,
-    FICA_PRE_TAX_ABOLISHED,
-    FICA_PRE_TAX_LIST,
+    EMPLOYER_TAX_FORMULAS,
+    FEDERAL_UNEMPLOYMENT_VARIABLES,
+    MEDICARE_VARIABLES,
+    SOCIAL_SECURITY_VARIABLES,
     TAX_EXEMPT_WAGE_RULE,
     abolishes,
+    check_employer_tax_formulas,
     components_match,
     describe_ids,
     employer_cost_schedules,
     employer_payroll_tax_from_components,
     federal_employer_payroll_tax_components,
-    fica_pre_tax_list,
     fixed_employer_cost_wage_change,
     for_each_person,
     payroll_wage_rule,
@@ -171,11 +177,13 @@ def model_schedules(draw):
 # have a negative rate under CBO's option.
 SCHEDULES = st.one_of(COMPONENTS, model_schedules())
 
+# 7,577.50 is the cost of wages at the federal unemployment base, a kink.
+FUTA_KINK = ([(0.062, 184_500.0), (0.0145, np.inf), (0.006, 7_000.0)], [0.0, 7_577.5])
+
 
 @PURE_SETTINGS
 @given(SCHEDULES, COSTS)
-# 7,577.50 is the cost of wages at the federal unemployment base, a kink.
-@example([(0.062, 184_500.0), (0.0145, np.inf), (0.006, 7_000.0)], [0.0, 7_577.5])
+@example(*FUTA_KINK)
 @example(DONUT, DONUT_COSTS)
 def test_inverse_recovers_the_cost(components, costs):
     wages = wages_at_employer_cost(costs, components)
@@ -197,6 +205,7 @@ def test_same_schedule_returns_the_same_wages(components, wages):
 
 @PURE_SETTINGS
 @given(SCHEDULES, COSTS)
+@example(*FUTA_KINK)
 @example(DONUT, DONUT_COSTS)
 def test_inverse_matches_bisection(components, costs):
     wages = wages_at_employer_cost(costs, components)
@@ -346,6 +355,41 @@ def test_unknown_payroll_wage_definition_raises():
 
     with pytest.raises(NotImplementedError):
         payroll_wage_rule(System(), YEAR)
+
+
+def test_an_employer_tax_formula_the_components_do_not_model_raises():
+    """A structural reform to an employer tax variable is refused, by name.
+
+    The check covers every variable the federal employer taxes are
+    calculated from but payroll_tax_gross_wages, which payroll_wage_rule
+    identifies. The known formulas pass, CBO's among them; another formula,
+    or none, raises. employer_cost_schedules checks each system before it
+    reads its parameters, so it raises for either side.
+    """
+    names = {
+        *SOCIAL_SECURITY_VARIABLES,
+        *MEDICARE_VARIABLES,
+        *FEDERAL_UNEMPLOYMENT_VARIABLES,
+    }
+    assert set(EMPLOYER_TAX_FORMULAS) == names - {"payroll_tax_gross_wages"}
+
+    def stub_system(formulas):
+        variables = {
+            name: SimpleNamespace(get_formula=lambda period, formula=formula: formula)
+            for name, formula in formulas.items()
+        }
+        return SimpleNamespace(get_variable=variables.get)
+
+    # The last known formula for taxable_earnings_for_social_security is CBO's.
+    known = {name: formulas[-1] for name, formulas in EMPLOYER_TAX_FORMULAS.items()}
+    check_employer_tax_formulas(stub_system(known), YEAR)
+    for formula in (lambda person, period, parameters: 0, None):
+        unknown = stub_system({**known, "employer_medicare_tax": formula})
+        with pytest.raises(NotImplementedError, match="employer_medicare_tax formula"):
+            check_employer_tax_formulas(unknown, YEAR)
+        for systems in ((unknown, system), (system, unknown)):
+            with pytest.raises(NotImplementedError, match="employer_medicare_tax"):
+                employer_cost_schedules(*systems, YEAR, np.array(["TX"]))
 
 
 @pytest.mark.parametrize("year", [2026, 2035, 2060])
@@ -737,6 +781,95 @@ def test_a_variable_without_an_abolition_switch_is_not_abolished():
     )
 
 
+# The federal employer taxes each variable's abolition removes, written out
+# from each tax's formula chain, in the order the components list the taxes.
+COMPONENT_TAXES = ("social_security", "medicare", "federal_unemployment")
+TAXES_CALCULATED_FROM = {
+    "employer_social_security_tax": {"social_security"},
+    "taxable_earnings_for_social_security": {"social_security"},
+    "employer_medicare_tax": {"medicare"},
+    "employer_federal_unemployment_tax": {"federal_unemployment"},
+    "employer_federal_unemployment_tax_rate": {"federal_unemployment"},
+    "taxable_earnings_for_federal_unemployment_tax": {"federal_unemployment"},
+    "payroll_tax_gross_wages": set(COMPONENT_TAXES),
+}
+
+
+def abolishing(name):
+    """A stand-in for gov that abolishes only ``name``, with the real irs and
+    contrib nodes."""
+    gov = system.parameters(YEAR).gov
+    return SimpleNamespace(irs=gov.irs, contrib=gov.contrib, abolitions={name: True})
+
+
+@pytest.mark.parametrize("name", TAXES_CALCULATED_FROM)
+def test_abolishing_a_variable_zeroes_exactly_the_taxes_calculated_from_it(name):
+    """Every name the components check, against the taxes written out above.
+
+    Dropping a name from a tax's list, or adding one to the wrong list,
+    changes which rates fall to zero here.
+    """
+    assert set(TAXES_CALCULATED_FROM) == {
+        *SOCIAL_SECURITY_VARIABLES,
+        *MEDICARE_VARIABLES,
+        *FEDERAL_UNEMPLOYMENT_VARIABLES,
+    }
+    states = np.array(["TX", "CA"])
+    current = federal_employer_payroll_tax_components(
+        system.parameters(YEAR).gov, states
+    )
+    abolished = federal_employer_payroll_tax_components(abolishing(name), states)
+    assert len(current) == len(abolished) == len(COMPONENT_TAXES)
+    for tax, (rate, base), (abolished_rate, abolished_base) in zip(
+        COMPONENT_TAXES, current, abolished
+    ):
+        assert np.all(np.asarray(rate) > 0) and abolished_base == base
+        expected = 0 if tax in TAXES_CALCULATED_FROM[name] else rate
+        np.testing.assert_array_equal(abolished_rate, expected)
+
+
+class NeutralizeEmployerTaxVariables(Reform):
+    """Neutralizes every variable a federal employer tax is calculated from."""
+
+    def apply(self):
+        for name in TAXES_CALCULATED_FROM:
+            self.neutralize_variable(name)
+
+
+def test_neutralizing_employer_tax_variables_moves_no_wages():
+    """Neutralizing takes a tax out of a measurement, not out of the schedule.
+
+    employer_medicare_tax_income_tax_revenue and
+    employer_ss_tax_income_tax_revenue neutralize employer_medicare_tax or
+    employer_social_security_tax in a branch, to measure the income tax that
+    counting the tax in income brings in, so the branch must keep its
+    parent's pay. A neutralized variable keeps its formula, so the formula
+    check passes, the components match, both payroll wage rules stay the
+    default and a $60,000 Texas worker's change is zero. Abolishing
+    employer_medicare_tax instead raises their pay to
+    (64,632 - 42) / 1.062 = $60,819.21.
+    """
+    neutralized = NeutralizeEmployerTaxVariables(system)
+    assert all(
+        neutralized.get_variable(name).is_neutralized for name in TAXES_CALCULATED_FROM
+    )
+    states = np.array(["TX"])
+    baseline, policy = employer_cost_schedules(system, neutralized, YEAR, states)
+    assert components_match(baseline.components, policy.components)
+    assert baseline.wage_rule == policy.wage_rule == DEFAULT_WAGE_RULE
+
+    def change(components):
+        return fixed_employer_cost_wage_change(
+            [60_000.0], 0, 0, baseline.components, components, 1
+        )[0]
+
+    assert change(policy.components) == pytest.approx(0, abs=1e-6)
+    abolished = federal_employer_payroll_tax_components(
+        abolishing("employer_medicare_tax"), states
+    )
+    assert change(abolished) == pytest.approx(819.21, abs=0.01)
+
+
 EMPLOYER_TAXES = (
     "employer_social_security_tax",
     "employer_medicare_tax",
@@ -855,6 +988,9 @@ def test_removing_the_fica_total_lowers_pay(removal):
         gc.collect()
 
 
+FICA_PRE_TAX_LIST = "gov.irs.gross_income.fica_pre_tax_contributions"
+
+
 # Core names a variable after its class, and this module already has a class
 # named fica_pre_tax_contributions (ProportionalFicaTotal's, below), so these
 # reforms define theirs inside apply.
@@ -926,9 +1062,16 @@ def test_same_list_reforms_that_change_the_total_hold_the_outlay(case):
         situation=small_situation(YEAR, [person], ["TX"]), reform=reform
     )
     try:
-        assert fica_pre_tax_list(simulation.tax_benefit_system, YEAR) == (
-            fica_pre_tax_list(simulation.baseline.tax_benefit_system, YEAR)
+        reform_list, baseline_list = (
+            list(
+                current.parameters(YEAR).gov.irs.gross_income.fica_pre_tax_contributions
+            )
+            for current in (
+                simulation.tax_benefit_system,
+                simulation.baseline.tax_benefit_system,
+            )
         )
+        assert reform_list == baseline_list
         np.testing.assert_array_equal(
             simulation.baseline.calculate("fica_pre_tax_contributions", YEAR),
             [baseline_total],
@@ -964,22 +1107,6 @@ class fica_pre_tax_contributions(Variable):
 class ProportionalFicaTotal(Reform):
     def apply(self):
         self.update_variable(fica_pre_tax_contributions)
-
-
-def test_fica_pre_tax_list_says_how_a_system_defines_the_total():
-    """The list, a marker for abolition, or None for another definition."""
-    current_list = tuple(
-        system.parameters(YEAR).gov.irs.gross_income.fica_pre_tax_contributions
-    )
-    assert "pre_tax_health_insurance_premiums" in current_list
-    assert fica_pre_tax_list(system, YEAR) == current_list
-    abolished = Reform.from_dict(
-        {"gov.abolitions.fica_pre_tax_contributions": {DATES: True}},
-        country_id="us",
-    )(system)
-    assert fica_pre_tax_list(abolished, YEAR) == FICA_PRE_TAX_ABOLISHED
-    assert fica_pre_tax_list(NeutralizeFicaTotal(system), YEAR) is None
-    assert fica_pre_tax_list(ProportionalFicaTotal(system), YEAR) is None
 
 
 def test_a_total_that_reads_employment_income_is_refused():
@@ -1118,7 +1245,10 @@ def test_a_subsampled_branch_finds_its_person_among_repeated_axis_ids():
     1.0765. Before the subsample both simulations list the same IDs, so the
     repeated "110" aligns by position. A branch subsampled to one household
     reads the baseline's total for the person it kept, by an ID the baseline
-    has once, or raises naming an ID the baseline repeats.
+    has once, or raises naming an ID the baseline repeats. The test accepts
+    either outcome, whichever household the seed keeps;
+    test_people_match_by_position_or_by_an_id_the_baseline_has_once covers
+    each path directly.
     """
     simulation = Simulation(
         situation=axes_situation(["1", "11"]), reform=NeutralizeFicaTotal
@@ -1225,9 +1355,9 @@ def test_exempting_tips_from_payroll_tax_raises_tipped_pay():
 # A 2035 reform that combines a rate rise, CBO's secondary threshold at
 # $250,000 (below that year's $252,000 taxable maximum, so the threshold is the
 # cap), a federal unemployment base above the cap, and payroll-tax-exempt tips.
-# Some workers have a labor supply response, given as an input: calculating it
-# from elasticities would add about 3 GB of measurement branches to this file,
-# and the change reads the response the same way either way.
+# Some workers have a labor supply response, given as an input because
+# calculating it from elasticities builds measurement branches, which are
+# costly, and the change reads the response the same way either way.
 MIXED_YEAR = 2035
 MIXED = {
     **TAX_EXEMPT_TIPS,

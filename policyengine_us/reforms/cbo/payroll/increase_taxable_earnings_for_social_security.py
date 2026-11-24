@@ -1,6 +1,23 @@
 from policyengine_us.model_api import *
 
 
+def cbo_taxable_earnings_for_social_security(person, period, parameters):
+    """Formula of taxable_earnings_for_social_security under the reform.
+
+    It is defined here, rather than in the reform's class, so that
+    employer_payroll_tax_fixed_employer_cost_change can tell this formula
+    from one it does not know.
+    """
+    earnings = person("payroll_tax_gross_wages", period)
+    p = parameters(period).gov
+    cap = p.irs.payroll.social_security.cap
+    secondary_threshold = max_(p.contrib.cbo.payroll.secondary_earnings_threshold, cap)
+    base_taxable = min_(earnings, cap)
+    # The bases meet without overlapping once the cap closes the donut.
+    secondary_taxable = max_(0, earnings - secondary_threshold)
+    return base_taxable + secondary_taxable
+
+
 def create_increase_taxable_earnings_for_social_security() -> Reform:
     class taxable_earnings_for_social_security(Variable):
         value_type = float
@@ -13,17 +30,7 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
             "https://www.ssa.gov/OACT/solvency/provisions_tr2025/charts/chart_run418.html",
         )
 
-        def formula(person, period, parameters):
-            earnings = person("payroll_tax_gross_wages", period)
-            p = parameters(period).gov
-            cap = p.irs.payroll.social_security.cap
-            secondary_threshold = max_(
-                p.contrib.cbo.payroll.secondary_earnings_threshold, cap
-            )
-            base_taxable = min_(earnings, cap)
-            # The bases meet without overlapping once the cap closes the donut.
-            secondary_taxable = max_(0, earnings - secondary_threshold)
-            return base_taxable + secondary_taxable
+        formula = cbo_taxable_earnings_for_social_security
 
     class social_security_taxable_self_employment_income(Variable):
         value_type = float

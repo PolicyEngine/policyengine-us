@@ -6,6 +6,27 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.irs.tax.payroll.payroll_tax_gross_wages import (
     payroll_tax_gross_wages as default_payroll_tax_gross_wages,
 )
+from policyengine_us.variables.gov.irs.tax.payroll.medicare.employer_medicare_tax import (
+    employer_medicare_tax as default_employer_medicare_tax,
+)
+from policyengine_us.variables.gov.irs.tax.payroll.social_security.employer_social_security_tax import (
+    employer_social_security_tax as default_employer_social_security_tax,
+)
+from policyengine_us.variables.gov.irs.tax.payroll.social_security.taxable_earnings_for_social_security import (
+    taxable_earnings_for_social_security as default_taxable_earnings_for_social_security,
+)
+from policyengine_us.variables.gov.irs.tax.payroll.unemployment.employer_federal_unemployment_tax import (
+    employer_federal_unemployment_tax as default_employer_federal_unemployment_tax,
+)
+from policyengine_us.variables.gov.irs.tax.payroll.unemployment.employer_federal_unemployment_tax_rate import (
+    employer_federal_unemployment_tax_rate as default_employer_federal_unemployment_tax_rate,
+)
+from policyengine_us.variables.gov.irs.tax.payroll.unemployment.taxable_earnings_for_federal_unemployment_tax import (
+    taxable_earnings_for_federal_unemployment_tax as default_taxable_earnings_for_federal_unemployment_tax,
+)
+from policyengine_us.reforms.cbo.payroll.increase_taxable_earnings_for_social_security import (
+    cbo_taxable_earnings_for_social_security,
+)
 from policyengine_us.reforms.tax_exempt.tax_exempt_reform import (
     payroll_tax_exempt_income,
     tax_exempt_payroll_tax_gross_wages,
@@ -14,7 +35,7 @@ from policyengine_us.reforms.tax_exempt.tax_exempt_reform import (
 
 # The variables each federal employer tax is calculated from. Abolishing any
 # of them (core's gov.abolitions switches, which zero a variable) removes the
-# tax.
+# tax. Neutralizing one does not (federal_employer_payroll_tax_components).
 SOCIAL_SECURITY_VARIABLES = (
     "employer_social_security_tax",
     "taxable_earnings_for_social_security",
@@ -50,6 +71,12 @@ def federal_employer_payroll_tax_components(gov, state_code, cap=None):
     uncapped Medicare tax. The federal unemployment rate varies by state
     through its credit reduction, so it is an array. A tax whose variable, or
     a variable it is calculated from, is abolished has a rate of zero.
+
+    Neutralizing one of those variables changes no rate, so it moves no
+    wages, by design. A neutralized variable keeps its formula and returns
+    zero. Measurement branches such as employer_medicare_tax_income_tax_revenue's
+    neutralize a tax to take it out of income without changing pay. A reform
+    that removes a tax uses its gov.abolitions switch.
 
     A finite ``gov.contrib.cbo.payroll.secondary_earnings_threshold`` turns on
     CBO's option to tax earnings above a second threshold as well as below the
@@ -254,34 +281,50 @@ def payroll_wage_rule(system, period):
     )
 
 
-FICA_PRE_TAX_LIST = "gov.irs.gross_income.fica_pre_tax_contributions"
-# Abolishing the total zeroes it even where it is supplied, which an empty
-# list does not, so the two are told apart.
-FICA_PRE_TAX_ABOLISHED = "abolished"
+# The formulas federal_employer_payroll_tax_components models, for each
+# variable a federal employer tax is calculated from other than
+# payroll_tax_gross_wages, which payroll_wage_rule identifies.
+EMPLOYER_TAX_FORMULAS = {
+    "employer_social_security_tax": (default_employer_social_security_tax.formula,),
+    "taxable_earnings_for_social_security": (
+        default_taxable_earnings_for_social_security.formula,
+        # CBO's secondary earnings threshold option, whose tax the components
+        # take from the threshold parameter.
+        cbo_taxable_earnings_for_social_security,
+    ),
+    "employer_medicare_tax": (default_employer_medicare_tax.formula,),
+    "employer_federal_unemployment_tax": (
+        default_employer_federal_unemployment_tax.formula,
+    ),
+    "employer_federal_unemployment_tax_rate": (
+        default_employer_federal_unemployment_tax_rate.formula,
+    ),
+    "taxable_earnings_for_federal_unemployment_tax": (
+        default_taxable_earnings_for_federal_unemployment_tax.formula,
+    ),
+}
 
 
-def fica_pre_tax_list(system, period):
-    """The contributions ``system`` adds into fica_pre_tax_contributions.
+def check_employer_tax_formulas(system, period):
+    """Refuse a federal employer tax formula the components don't model.
 
-    FICA_PRE_TAX_ABOLISHED when it abolishes the total, and None when it
-    calculates the total another way: neutralized, or with a formula a
-    structural reform gave it. Two systems with the same list can still
-    calculate different totals (a defined_for on the total, or a formula for
-    a listed contribution), so the response reads each side's total from its
-    own simulation whatever this returns.
+    federal_employer_payroll_tax_components builds each tax from its
+    parameters, so it holds employer cost right only under the formulas in
+    EMPLOYER_TAX_FORMULAS. Another formula raises, as payroll_wage_rule does
+    for payroll wages, so that a new structural reform to an employer tax
+    adds its tax to the components rather than having employer cost held
+    under a tax the system doesn't levy. The check reads formulas only, not
+    defined_for. A neutralized variable keeps its formula, so it passes.
     """
-    variable = system.get_variable("fica_pre_tax_contributions")
-    if (
-        variable.is_neutralized
-        or variable.formulas
-        or variable.subtracts
-        or variable.adds != FICA_PRE_TAX_LIST
-    ):
-        return None
-    gov = system.parameters(period).gov
-    if abolishes(gov, ["fica_pre_tax_contributions"]):
-        return FICA_PRE_TAX_ABOLISHED
-    return tuple(gov.irs.gross_income.fica_pre_tax_contributions)
+    for name, known in EMPLOYER_TAX_FORMULAS.items():
+        formula = system.get_variable(name).get_formula(period)
+        # Code objects compare by content, as in payroll_wage_rule.
+        if getattr(formula, "__code__", None) not in [f.__code__ for f in known]:
+            raise NotImplementedError(
+                "employer_payroll_tax_fixed_employer_cost_change does not know "
+                f"this system's {name} formula ({formula!r}). Add the tax it "
+                "levies to federal_employer_payroll_tax_components."
+            )
 
 
 def describe_ids(ids, limit=5):
@@ -399,8 +442,11 @@ def employer_cost_schedules(baseline_system, reform_system, period, state_code):
     cap, ``gov.simulation.employer_payroll_tax_incidence.current_law_cap``:
     policy reforms leave it alone, while scenario reforms extend it with the
     live cap. It is this variable's own copy, so a policy that edits the
-    owners' draw copy moves no wages.
+    owners' draw copy moves no wages. Each system's employer tax formulas
+    must be ones the components model (``check_employer_tax_formulas``).
     """
+    for system in (baseline_system, reform_system):
+        check_employer_tax_formulas(system, period)
     reform_gov = reform_system.parameters(period).gov
     baseline = EmployerCostSchedule(
         federal_employer_payroll_tax_components(
@@ -429,7 +475,19 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "unemployment tax rate or wage base, or which pay counts as payroll "
         "wages (the tax-exempt reform's tips and overtime, and FICA pre-tax "
         "contributions), including abolishing these taxes or the "
-        "variables they are calculated from. The baseline cost "
+        "variables they are calculated from. Neutralizing a federal employer "
+        "tax variable, taxable_earnings_for_social_security, "
+        "employer_federal_unemployment_tax_rate, "
+        "taxable_earnings_for_federal_unemployment_tax or "
+        "payroll_tax_gross_wages moves no wages, by design: measurement "
+        "branches such as employer_medicare_tax_income_tax_revenue's "
+        "neutralize a tax to take it out of income without changing pay, and "
+        "a reform that removes a tax uses its gov.abolitions switch. A "
+        "structural reform that gives one of those variables a formula this "
+        "variable does not model, other than CBO's secondary threshold "
+        "option and the tax-exempt reform's payroll wages, raises "
+        "NotImplementedError. Neutralizing fica_pre_tax_contributions "
+        "changes payroll wages, so it does move pay. The baseline cost "
         "is the worker's pay plus current-law federal employer taxes on it. "
         "The reformed pay is the one whose reformed federal employer taxes "
         "bring it to that cost, and "
@@ -473,9 +531,9 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "tax rates measured in a reform count each added dollar of pay at "
         "its baseline cost to the employer. Programs that read "
         "employment_income_before_lsr, as some TANF and SNAP rules do, see "
-        "neither this change nor the labor supply response, and a dataset "
-        "that stores employment_income itself, rather than "
-        "employment_income_before_lsr, overrides both."
+        "neither this change nor the labor supply response, and an "
+        "employment_income input set after the simulation is built, as "
+        "policyengine.py sets dataset columns, overrides both."
     )
     unit = USD
     definition_period = YEAR
