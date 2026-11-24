@@ -298,27 +298,32 @@ def test_derived_system_from_an_early_start_instant_matches_a_full_rebuild():
     assert derived_variables != variable_state(system)
 
 
-@pytest.mark.parametrize(
-    "reform, error",
-    [
-        # A full rebuild re-points the updated variable from the national
-        # total it inherits to the per-capita series, which declares
-        # ``uprating`` next to the formula.
-        (RentalIncomeFormulaReform, "mixes computation modes"),
-        # A full rebuild has no per-capita series yet when it applies the
-        # reform; the system builds them afterwards.
-        (
-            {RENTAL_INCOME_PER_CAPITA: {"2026-01-01": 123.0}},
-            f"Could not find the parameter {RENTAL_INCOME_PER_CAPITA}",
-        ),
-    ],
-    ids=["formula-on-a-total-uprated-input", "reform-to-a-per-capita-series"],
-)
-def test_a_reform_a_full_rebuild_rejects_is_rejected_when_derived(reform, error):
+def test_a_reform_a_full_rebuild_rejects_is_rejected_when_derived():
+    # A full rebuild has no per-capita series yet when it applies the reform;
+    # the system builds them afterwards.
+    reform = {RENTAL_INCOME_PER_CAPITA: {"2026-01-01": 123.0}}
+    error = f"Could not find the parameter {RENTAL_INCOME_PER_CAPITA}"
     with pytest.raises(ValueError, match=re.escape(error)):
         CountryTaxBenefitSystem(reform=reform)
     with pytest.raises(ValueError, match=re.escape(error)):
         system.derive_reform_system(reform)
+    assert system.can_derive_reform_systems()
+
+
+def test_a_formula_on_a_total_uprated_input_derives_like_a_full_rebuild():
+    # The default build re-points rental_income from the national total to
+    # its per-capita series. A full rebuild applies the formula reform before
+    # that step, which re-points only input variables, so the variable keeps
+    # the national total it inherits. A derived system must start the reform
+    # from that total too, not from the default system's per-capita series.
+    assert system.variables["rental_income"].uprating == RENTAL_INCOME_PER_CAPITA
+    rebuilt = CountryTaxBenefitSystem(reform=RentalIncomeFormulaReform)
+    derived = system.derive_reform_system(RentalIncomeFormulaReform)
+    assert variable_state(derived) == variable_state(rebuilt)
+    assert parameter_state(derived) == parameter_state(rebuilt)
+    rental_income = derived.variables["rental_income"]
+    assert rental_income.formulas
+    assert rental_income.uprating == RENTAL_INCOME_TOTAL
     assert system.can_derive_reform_systems()
 
 
