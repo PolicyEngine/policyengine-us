@@ -138,3 +138,121 @@
         state_code: RI
   output:
     ri_ccap_income_eligible: true
+
+- name: Case 7, a new applicant qualifies at the 180 percent limit.
+  period: 2019
+  input:
+    people:
+      person1: {age: 30}
+      person2: {age: 5}
+      person3: {age: 3}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ri_ccap_countable_income:
+          2019-07: 3_199.50
+          2019-08: 3_199.51
+    households:
+      household: {members: [person1, person2, person3], state_code: RI}
+  output:
+    # A three-person guideline of $21,330 gives $3,199.50 per month at 180%.
+    ri_ccap_income_eligible:
+      2019-07: true
+      2019-08: false
+
+- name: Case 8, an enrolled family qualifies at the 225 percent limit.
+  period: 2017
+  input:
+    people:
+      person1: {age: 30}
+      person2: {age: 5}
+      person3: {age: 3}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ri_ccap_enrolled: true
+        ri_ccap_countable_income:
+          2017-07: 3_828.75
+          2017-08: 3_828.76
+    households:
+      household: {members: [person1, person2, person3], state_code: RI}
+  output:
+    # The statute includes equality. $20,420 × 225% ÷ 12 gives $3,828.75.
+    ri_ccap_income_eligible:
+      2017-07: true
+      2017-08: false
+
+- name: Case 9, July 2022 raises the entry and continuation limits.
+  period: 2022
+  input:
+    people:
+      person1: {age: 30}
+      person2: {age: 5}
+      person3: {age: 3}
+      person4: {age: 30}
+      person5: {age: 5}
+      person6: {age: 3}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        ri_ccap_countable_income: {2022-06: 3_600, 2022-07: 3_600}
+      spm_unit2:
+        members: [person4, person5, person6]
+        ri_ccap_enrolled: true
+        ri_ccap_countable_income: {2022-06: 5_000, 2022-07: 5_000}
+    households:
+      household1: {members: [person1, person2, person3], state_code: RI}
+      household2: {members: [person4, person5, person6], state_code: RI}
+  output:
+    # The statute raises entry from 180% to 200% and continuation from 225% to 300%.
+    ri_ccap_income_eligible:
+      2022-06: [false, false]
+      2022-07: [true, true]
+
+- name: Case 10, January 2025 raises the entry limit.
+  period: 2025
+  input:
+    people:
+      person1: {age: 30}
+      person2: {age: 5}
+      person3: {age: 3}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ri_ccap_countable_income: {2024-12: 5_000, 2025-01: 5_000}
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2024: RI, 2025: RI}
+  output:
+    state_code: {2024: RI, 2025: RI}
+    # The statute raises the ordinary limit from 200% to 261%.
+    ri_ccap_income_eligible:
+      2024-12: false
+      2025-01: true
+
+- name: Case 11, December 2026 still applies the 261 and 300 percent limits.
+  period: 2026-12
+  input:
+    people:
+      person1: {age: 30}
+      person2: {age: 5}
+      person3: {age: 3}
+      person4: {age: 30}
+      person5: {age: 5}
+      person6: {age: 3}
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        ri_ccap_countable_income: 6_100
+      spm_unit2:
+        members: [person4, person5, person6]
+        ri_ccap_enrolled: true
+        ri_ccap_countable_income: 7_000
+    households:
+      household1: {members: [person1, person2, person3], state_code: {2026: RI}}
+      household2: {members: [person4, person5, person6], state_code: {2026: RI}}
+  output:
+    state_code: {2026: [RI, RI]}
+    # The statute puts the 285% and 325% limits into effect in January 2027.
+    ri_ccap_income_eligible: [false, false]

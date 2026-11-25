@@ -12233,6 +12233,44 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether statutory silence permits the filing-status restriction; no individual policy ruling is supplied.
+- id: us-ri:ccap-continuation-income-equality
+  program: child-care-assistance
+  years:
+    from: 2015
+    to: 2026
+    type: calendar
+  question: Does a family already eligible for transitional child care retain eligibility at exactly the income ceiling?
+  sources:
+  - kind: statute
+    citation: 2014 R.I. Public Laws ch. 145, art. 15 § 2, R.I. Gen. Laws § 40-5.2-20(f)(2)
+    url: https://webserver.rilegislature.gov/PublicLaws/law14/law14145-15.htm
+  - kind: statute
+    citation: 2022 R.I. Public Laws ch. 231, art. 13 § 1, R.I. Gen. Laws § 40-5.2-20(f)(2)
+    url: https://webserver.rilegislature.gov/PublicLaws/law22/law22231-13.htm
+  - kind: regulation
+    citation: 2015 CCAP rule § 0850.02.04(A)(1)(b), (c), and (f)
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/8081.pdf#page=21
+  - kind: regulation
+    citation: 2019 CCAP rule § 4.6.1(A)(1)(a)(1), (2), and (5)
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_10838_20190822120618.pdf#page=31
+  - kind: regulation
+    citation: 2022 emergency CCAP rule § 4.6.1(A)(1)(a)(1), (2), and (5)
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_12801_20220705102934421.pdf#page=34
+  - kind: regulation
+    citation: 2026 CCAP rule § 4.6.1(A)(1)(a)(1), (2), and (5)
+    url: https://risos-apa-production-public.s3.amazonaws.com/DHS/REG_13468_20260522112045640.pdf#page=33
+  readings:
+    statute: Continue eligibility through 225% of the federal poverty guideline and through 300% from July 1, 2022.
+    other: Deny continuation at equality under the rule's below and reach clauses, even though its above clause
+      describes losing eligibility only after income exceeds the ceiling.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ri/dhs/ccap/income/fpl_rate/transitional.yaml
+    - policyengine_us/variables/gov/states/ri/dhs/ccap/eligibility/ri_ccap_income_eligible.py
+    prs: []
+  state: unreviewed
+  note: The income screen uses the inclusive statutory ceiling when the model receives the enrollment input.
 - id: us-ri:liheap-income-floor-vs-smi-limit
   program: liheap
   years:

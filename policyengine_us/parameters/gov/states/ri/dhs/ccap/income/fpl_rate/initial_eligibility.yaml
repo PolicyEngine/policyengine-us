@@ -1,11 +1,19 @@
 description: Rhode Island limits the Child Care Assistance Program to new applicants with income at or below this share of the federal poverty level.
 values:
-  2020-01-01: 2.61
+  2015-01-01: 1.8
+  2022-07-01: 2
+  2025-01-01: 2.61
 
 metadata:
   unit: /1
   period: year
   label: Rhode Island CCAP initial eligibility FPL rate
   reference:
+    - title: 2014 R.I. Public Laws ch. 145, art. 15 § 2
+      href: https://webserver.rilegislature.gov/PublicLaws/law14/law14145-15.htm
+    - title: 2022 R.I. Public Laws ch. 231, art. 13 §§ 1 and 4
+      href: https://webserver.rilegislature.gov/PublicLaws/law22/law22231-13.htm
+    - title: 2024 R.I. Public Laws ch. 117, art. 11 §§ 3 and 6
+      href: https://webserver.rilegislature.gov/PublicLaws/law24/law24117-11.htm
     - title: 218-RICR-20-00-4, Section 4.6.1.A
       href: https://rules.sos.ri.gov/regulations/part/218-20-00-4#4.6.1
