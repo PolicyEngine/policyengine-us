@@ -59,3 +59,3435 @@
         state_code: TX
   output:
     tx_tanf_payment_standard: 182
+
+- name: Case 4, September 2026 maximum grants and additional-person amounts.
+  period: 2026-09
+  absolute_error_margin: 0.01
+  # Published grants: 44 numeric cells plus one size-16 extension per type.
+  # Certified size and caretaker type are explicit component inputs;
+  # this case does not derive certification or full TANF eligibility.
+  # The size-1 two-parent chart cell is --- and supplies no expectation.
+  # September retains the prior grants; October uses the new benefit-month rates.
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-25-15.pdf#page=2
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-26-16.pdf#page=2
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-26-16.pdf#page=3
+  input:
+    people:
+      person1: {age: {2026: 60}}
+      person2: {age: {2026: 10}}
+      person3: {age: {2026: 30}}
+      person4: {age: {2026: 10}}
+      person5: {age: {2026: 60}}
+      person6: {age: {2026: 10}}
+      person7: {age: {2026: 10}}
+      person8: {age: {2026: 30}}
+      person9: {age: {2026: 10}}
+      person10: {age: {2026: 30}}
+      person11: {age: {2026: 29}}
+      person12: {age: {2026: 10}}
+      person13: {age: {2026: 60}}
+      person14: {age: {2026: 10}}
+      person15: {age: {2026: 10}}
+      person16: {age: {2026: 10}}
+      person17: {age: {2026: 30}}
+      person18: {age: {2026: 10}}
+      person19: {age: {2026: 10}}
+      person20: {age: {2026: 30}}
+      person21: {age: {2026: 29}}
+      person22: {age: {2026: 10}}
+      person23: {age: {2026: 60}}
+      person24: {age: {2026: 10}}
+      person25: {age: {2026: 10}}
+      person26: {age: {2026: 10}}
+      person27: {age: {2026: 10}}
+      person28: {age: {2026: 30}}
+      person29: {age: {2026: 10}}
+      person30: {age: {2026: 10}}
+      person31: {age: {2026: 10}}
+      person32: {age: {2026: 30}}
+      person33: {age: {2026: 29}}
+      person34: {age: {2026: 10}}
+      person35: {age: {2026: 10}}
+      person36: {age: {2026: 60}}
+      person37: {age: {2026: 10}}
+      person38: {age: {2026: 10}}
+      person39: {age: {2026: 10}}
+      person40: {age: {2026: 10}}
+      person41: {age: {2026: 10}}
+      person42: {age: {2026: 30}}
+      person43: {age: {2026: 10}}
+      person44: {age: {2026: 10}}
+      person45: {age: {2026: 10}}
+      person46: {age: {2026: 10}}
+      person47: {age: {2026: 30}}
+      person48: {age: {2026: 29}}
+      person49: {age: {2026: 10}}
+      person50: {age: {2026: 10}}
+      person51: {age: {2026: 10}}
+      person52: {age: {2026: 60}}
+      person53: {age: {2026: 10}}
+      person54: {age: {2026: 10}}
+      person55: {age: {2026: 10}}
+      person56: {age: {2026: 10}}
+      person57: {age: {2026: 10}}
+      person58: {age: {2026: 10}}
+      person59: {age: {2026: 30}}
+      person60: {age: {2026: 10}}
+      person61: {age: {2026: 10}}
+      person62: {age: {2026: 10}}
+      person63: {age: {2026: 10}}
+      person64: {age: {2026: 10}}
+      person65: {age: {2026: 30}}
+      person66: {age: {2026: 29}}
+      person67: {age: {2026: 10}}
+      person68: {age: {2026: 10}}
+      person69: {age: {2026: 10}}
+      person70: {age: {2026: 10}}
+      person71: {age: {2026: 60}}
+      person72: {age: {2026: 10}}
+      person73: {age: {2026: 10}}
+      person74: {age: {2026: 10}}
+      person75: {age: {2026: 10}}
+      person76: {age: {2026: 10}}
+      person77: {age: {2026: 10}}
+      person78: {age: {2026: 10}}
+      person79: {age: {2026: 30}}
+      person80: {age: {2026: 10}}
+      person81: {age: {2026: 10}}
+      person82: {age: {2026: 10}}
+      person83: {age: {2026: 10}}
+      person84: {age: {2026: 10}}
+      person85: {age: {2026: 10}}
+      person86: {age: {2026: 30}}
+      person87: {age: {2026: 29}}
+      person88: {age: {2026: 10}}
+      person89: {age: {2026: 10}}
+      person90: {age: {2026: 10}}
+      person91: {age: {2026: 10}}
+      person92: {age: {2026: 10}}
+      person93: {age: {2026: 60}}
+      person94: {age: {2026: 10}}
+      person95: {age: {2026: 10}}
+      person96: {age: {2026: 10}}
+      person97: {age: {2026: 10}}
+      person98: {age: {2026: 10}}
+      person99: {age: {2026: 10}}
+      person100: {age: {2026: 10}}
+      person101: {age: {2026: 10}}
+      person102: {age: {2026: 30}}
+      person103: {age: {2026: 10}}
+      person104: {age: {2026: 10}}
+      person105: {age: {2026: 10}}
+      person106: {age: {2026: 10}}
+      person107: {age: {2026: 10}}
+      person108: {age: {2026: 10}}
+      person109: {age: {2026: 10}}
+      person110: {age: {2026: 30}}
+      person111: {age: {2026: 29}}
+      person112: {age: {2026: 10}}
+      person113: {age: {2026: 10}}
+      person114: {age: {2026: 10}}
+      person115: {age: {2026: 10}}
+      person116: {age: {2026: 10}}
+      person117: {age: {2026: 10}}
+      person118: {age: {2026: 60}}
+      person119: {age: {2026: 10}}
+      person120: {age: {2026: 10}}
+      person121: {age: {2026: 10}}
+      person122: {age: {2026: 10}}
+      person123: {age: {2026: 10}}
+      person124: {age: {2026: 10}}
+      person125: {age: {2026: 10}}
+      person126: {age: {2026: 10}}
+      person127: {age: {2026: 10}}
+      person128: {age: {2026: 30}}
+      person129: {age: {2026: 10}}
+      person130: {age: {2026: 10}}
+      person131: {age: {2026: 10}}
+      person132: {age: {2026: 10}}
+      person133: {age: {2026: 10}}
+      person134: {age: {2026: 10}}
+      person135: {age: {2026: 10}}
+      person136: {age: {2026: 10}}
+      person137: {age: {2026: 30}}
+      person138: {age: {2026: 29}}
+      person139: {age: {2026: 10}}
+      person140: {age: {2026: 10}}
+      person141: {age: {2026: 10}}
+      person142: {age: {2026: 10}}
+      person143: {age: {2026: 10}}
+      person144: {age: {2026: 10}}
+      person145: {age: {2026: 10}}
+      person146: {age: {2026: 60}}
+      person147: {age: {2026: 10}}
+      person148: {age: {2026: 10}}
+      person149: {age: {2026: 10}}
+      person150: {age: {2026: 10}}
+      person151: {age: {2026: 10}}
+      person152: {age: {2026: 10}}
+      person153: {age: {2026: 10}}
+      person154: {age: {2026: 10}}
+      person155: {age: {2026: 10}}
+      person156: {age: {2026: 10}}
+      person157: {age: {2026: 30}}
+      person158: {age: {2026: 10}}
+      person159: {age: {2026: 10}}
+      person160: {age: {2026: 10}}
+      person161: {age: {2026: 10}}
+      person162: {age: {2026: 10}}
+      person163: {age: {2026: 10}}
+      person164: {age: {2026: 10}}
+      person165: {age: {2026: 10}}
+      person166: {age: {2026: 10}}
+      person167: {age: {2026: 30}}
+      person168: {age: {2026: 29}}
+      person169: {age: {2026: 10}}
+      person170: {age: {2026: 10}}
+      person171: {age: {2026: 10}}
+      person172: {age: {2026: 10}}
+      person173: {age: {2026: 10}}
+      person174: {age: {2026: 10}}
+      person175: {age: {2026: 10}}
+      person176: {age: {2026: 10}}
+      person177: {age: {2026: 60}}
+      person178: {age: {2026: 10}}
+      person179: {age: {2026: 10}}
+      person180: {age: {2026: 10}}
+      person181: {age: {2026: 10}}
+      person182: {age: {2026: 10}}
+      person183: {age: {2026: 10}}
+      person184: {age: {2026: 10}}
+      person185: {age: {2026: 10}}
+      person186: {age: {2026: 10}}
+      person187: {age: {2026: 10}}
+      person188: {age: {2026: 10}}
+      person189: {age: {2026: 30}}
+      person190: {age: {2026: 10}}
+      person191: {age: {2026: 10}}
+      person192: {age: {2026: 10}}
+      person193: {age: {2026: 10}}
+      person194: {age: {2026: 10}}
+      person195: {age: {2026: 10}}
+      person196: {age: {2026: 10}}
+      person197: {age: {2026: 10}}
+      person198: {age: {2026: 10}}
+      person199: {age: {2026: 10}}
+      person200: {age: {2026: 30}}
+      person201: {age: {2026: 29}}
+      person202: {age: {2026: 10}}
+      person203: {age: {2026: 10}}
+      person204: {age: {2026: 10}}
+      person205: {age: {2026: 10}}
+      person206: {age: {2026: 10}}
+      person207: {age: {2026: 10}}
+      person208: {age: {2026: 10}}
+      person209: {age: {2026: 10}}
+      person210: {age: {2026: 10}}
+      person211: {age: {2026: 60}}
+      person212: {age: {2026: 10}}
+      person213: {age: {2026: 10}}
+      person214: {age: {2026: 10}}
+      person215: {age: {2026: 10}}
+      person216: {age: {2026: 10}}
+      person217: {age: {2026: 10}}
+      person218: {age: {2026: 10}}
+      person219: {age: {2026: 10}}
+      person220: {age: {2026: 10}}
+      person221: {age: {2026: 10}}
+      person222: {age: {2026: 10}}
+      person223: {age: {2026: 10}}
+      person224: {age: {2026: 30}}
+      person225: {age: {2026: 10}}
+      person226: {age: {2026: 10}}
+      person227: {age: {2026: 10}}
+      person228: {age: {2026: 10}}
+      person229: {age: {2026: 10}}
+      person230: {age: {2026: 10}}
+      person231: {age: {2026: 10}}
+      person232: {age: {2026: 10}}
+      person233: {age: {2026: 10}}
+      person234: {age: {2026: 10}}
+      person235: {age: {2026: 10}}
+      person236: {age: {2026: 30}}
+      person237: {age: {2026: 29}}
+      person238: {age: {2026: 10}}
+      person239: {age: {2026: 10}}
+      person240: {age: {2026: 10}}
+      person241: {age: {2026: 10}}
+      person242: {age: {2026: 10}}
+      person243: {age: {2026: 10}}
+      person244: {age: {2026: 10}}
+      person245: {age: {2026: 10}}
+      person246: {age: {2026: 10}}
+      person247: {age: {2026: 10}}
+      person248: {age: {2026: 60}}
+      person249: {age: {2026: 10}}
+      person250: {age: {2026: 10}}
+      person251: {age: {2026: 10}}
+      person252: {age: {2026: 10}}
+      person253: {age: {2026: 10}}
+      person254: {age: {2026: 10}}
+      person255: {age: {2026: 10}}
+      person256: {age: {2026: 10}}
+      person257: {age: {2026: 10}}
+      person258: {age: {2026: 10}}
+      person259: {age: {2026: 10}}
+      person260: {age: {2026: 10}}
+      person261: {age: {2026: 10}}
+      person262: {age: {2026: 30}}
+      person263: {age: {2026: 10}}
+      person264: {age: {2026: 10}}
+      person265: {age: {2026: 10}}
+      person266: {age: {2026: 10}}
+      person267: {age: {2026: 10}}
+      person268: {age: {2026: 10}}
+      person269: {age: {2026: 10}}
+      person270: {age: {2026: 10}}
+      person271: {age: {2026: 10}}
+      person272: {age: {2026: 10}}
+      person273: {age: {2026: 10}}
+      person274: {age: {2026: 10}}
+      person275: {age: {2026: 30}}
+      person276: {age: {2026: 29}}
+      person277: {age: {2026: 10}}
+      person278: {age: {2026: 10}}
+      person279: {age: {2026: 10}}
+      person280: {age: {2026: 10}}
+      person281: {age: {2026: 10}}
+      person282: {age: {2026: 10}}
+      person283: {age: {2026: 10}}
+      person284: {age: {2026: 10}}
+      person285: {age: {2026: 10}}
+      person286: {age: {2026: 10}}
+      person287: {age: {2026: 10}}
+      person288: {age: {2026: 60}}
+      person289: {age: {2026: 10}}
+      person290: {age: {2026: 10}}
+      person291: {age: {2026: 10}}
+      person292: {age: {2026: 10}}
+      person293: {age: {2026: 10}}
+      person294: {age: {2026: 10}}
+      person295: {age: {2026: 10}}
+      person296: {age: {2026: 10}}
+      person297: {age: {2026: 10}}
+      person298: {age: {2026: 10}}
+      person299: {age: {2026: 10}}
+      person300: {age: {2026: 10}}
+      person301: {age: {2026: 10}}
+      person302: {age: {2026: 10}}
+      person303: {age: {2026: 30}}
+      person304: {age: {2026: 10}}
+      person305: {age: {2026: 10}}
+      person306: {age: {2026: 10}}
+      person307: {age: {2026: 10}}
+      person308: {age: {2026: 10}}
+      person309: {age: {2026: 10}}
+      person310: {age: {2026: 10}}
+      person311: {age: {2026: 10}}
+      person312: {age: {2026: 10}}
+      person313: {age: {2026: 10}}
+      person314: {age: {2026: 10}}
+      person315: {age: {2026: 10}}
+      person316: {age: {2026: 10}}
+      person317: {age: {2026: 30}}
+      person318: {age: {2026: 29}}
+      person319: {age: {2026: 10}}
+      person320: {age: {2026: 10}}
+      person321: {age: {2026: 10}}
+      person322: {age: {2026: 10}}
+      person323: {age: {2026: 10}}
+      person324: {age: {2026: 10}}
+      person325: {age: {2026: 10}}
+      person326: {age: {2026: 10}}
+      person327: {age: {2026: 10}}
+      person328: {age: {2026: 10}}
+      person329: {age: {2026: 10}}
+      person330: {age: {2026: 10}}
+      person331: {age: {2026: 60}}
+      person332: {age: {2026: 10}}
+      person333: {age: {2026: 10}}
+      person334: {age: {2026: 10}}
+      person335: {age: {2026: 10}}
+      person336: {age: {2026: 10}}
+      person337: {age: {2026: 10}}
+      person338: {age: {2026: 10}}
+      person339: {age: {2026: 10}}
+      person340: {age: {2026: 10}}
+      person341: {age: {2026: 10}}
+      person342: {age: {2026: 10}}
+      person343: {age: {2026: 10}}
+      person344: {age: {2026: 10}}
+      person345: {age: {2026: 10}}
+      person346: {age: {2026: 10}}
+      person347: {age: {2026: 30}}
+      person348: {age: {2026: 10}}
+      person349: {age: {2026: 10}}
+      person350: {age: {2026: 10}}
+      person351: {age: {2026: 10}}
+      person352: {age: {2026: 10}}
+      person353: {age: {2026: 10}}
+      person354: {age: {2026: 10}}
+      person355: {age: {2026: 10}}
+      person356: {age: {2026: 10}}
+      person357: {age: {2026: 10}}
+      person358: {age: {2026: 10}}
+      person359: {age: {2026: 10}}
+      person360: {age: {2026: 10}}
+      person361: {age: {2026: 10}}
+      person362: {age: {2026: 30}}
+      person363: {age: {2026: 29}}
+      person364: {age: {2026: 10}}
+      person365: {age: {2026: 10}}
+      person366: {age: {2026: 10}}
+      person367: {age: {2026: 10}}
+      person368: {age: {2026: 10}}
+      person369: {age: {2026: 10}}
+      person370: {age: {2026: 10}}
+      person371: {age: {2026: 10}}
+      person372: {age: {2026: 10}}
+      person373: {age: {2026: 10}}
+      person374: {age: {2026: 10}}
+      person375: {age: {2026: 10}}
+      person376: {age: {2026: 10}}
+      person377: {age: {2026: 60}}
+      person378: {age: {2026: 10}}
+      person379: {age: {2026: 10}}
+      person380: {age: {2026: 10}}
+      person381: {age: {2026: 10}}
+      person382: {age: {2026: 10}}
+      person383: {age: {2026: 10}}
+      person384: {age: {2026: 10}}
+      person385: {age: {2026: 10}}
+      person386: {age: {2026: 10}}
+      person387: {age: {2026: 10}}
+      person388: {age: {2026: 10}}
+      person389: {age: {2026: 10}}
+      person390: {age: {2026: 10}}
+      person391: {age: {2026: 10}}
+      person392: {age: {2026: 10}}
+      person393: {age: {2026: 10}}
+      person394: {age: {2026: 30}}
+      person395: {age: {2026: 10}}
+      person396: {age: {2026: 10}}
+      person397: {age: {2026: 10}}
+      person398: {age: {2026: 10}}
+      person399: {age: {2026: 10}}
+      person400: {age: {2026: 10}}
+      person401: {age: {2026: 10}}
+      person402: {age: {2026: 10}}
+      person403: {age: {2026: 10}}
+      person404: {age: {2026: 10}}
+      person405: {age: {2026: 10}}
+      person406: {age: {2026: 10}}
+      person407: {age: {2026: 10}}
+      person408: {age: {2026: 10}}
+      person409: {age: {2026: 10}}
+      person410: {age: {2026: 30}}
+      person411: {age: {2026: 29}}
+      person412: {age: {2026: 10}}
+      person413: {age: {2026: 10}}
+      person414: {age: {2026: 10}}
+      person415: {age: {2026: 10}}
+      person416: {age: {2026: 10}}
+      person417: {age: {2026: 10}}
+      person418: {age: {2026: 10}}
+      person419: {age: {2026: 10}}
+      person420: {age: {2026: 10}}
+      person421: {age: {2026: 10}}
+      person422: {age: {2026: 10}}
+      person423: {age: {2026: 10}}
+      person424: {age: {2026: 10}}
+      person425: {age: {2026: 10}}
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        tx_tanf_assistance_unit_size: 1
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit2:
+        members:
+          - person3
+          - person4
+        tx_tanf_assistance_unit_size: 1
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit3:
+        members:
+          - person5
+          - person6
+          - person7
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit4:
+        members:
+          - person8
+          - person9
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit5:
+        members:
+          - person10
+          - person11
+          - person12
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit6:
+        members:
+          - person13
+          - person14
+          - person15
+          - person16
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit7:
+        members:
+          - person17
+          - person18
+          - person19
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit8:
+        members:
+          - person20
+          - person21
+          - person22
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit9:
+        members:
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit10:
+        members:
+          - person28
+          - person29
+          - person30
+          - person31
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit11:
+        members:
+          - person32
+          - person33
+          - person34
+          - person35
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit12:
+        members:
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit13:
+        members:
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit14:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit15:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit16:
+        members:
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit17:
+        members:
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit18:
+        members:
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit19:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit20:
+        members:
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+          - person92
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit21:
+        members:
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit22:
+        members:
+          - person102
+          - person103
+          - person104
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit23:
+        members:
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit24:
+        members:
+          - person118
+          - person119
+          - person120
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit25:
+        members:
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit26:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit27:
+        members:
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit28:
+        members:
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit29:
+        members:
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit30:
+        members:
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit31:
+        members:
+          - person189
+          - person190
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit32:
+        members:
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit33:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit34:
+        members:
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+          - person232
+          - person233
+          - person234
+          - person235
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit35:
+        members:
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit36:
+        members:
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit37:
+        members:
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit38:
+        members:
+          - person275
+          - person276
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit39:
+        members:
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+          - person301
+          - person302
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit40:
+        members:
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit41:
+        members:
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+          - person326
+          - person327
+          - person328
+          - person329
+          - person330
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit42:
+        members:
+          - person331
+          - person332
+          - person333
+          - person334
+          - person335
+          - person336
+          - person337
+          - person338
+          - person339
+          - person340
+          - person341
+          - person342
+          - person343
+          - person344
+          - person345
+          - person346
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit43:
+        members:
+          - person347
+          - person348
+          - person349
+          - person350
+          - person351
+          - person352
+          - person353
+          - person354
+          - person355
+          - person356
+          - person357
+          - person358
+          - person359
+          - person360
+          - person361
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit44:
+        members:
+          - person362
+          - person363
+          - person364
+          - person365
+          - person366
+          - person367
+          - person368
+          - person369
+          - person370
+          - person371
+          - person372
+          - person373
+          - person374
+          - person375
+          - person376
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit45:
+        members:
+          - person377
+          - person378
+          - person379
+          - person380
+          - person381
+          - person382
+          - person383
+          - person384
+          - person385
+          - person386
+          - person387
+          - person388
+          - person389
+          - person390
+          - person391
+          - person392
+          - person393
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit46:
+        members:
+          - person394
+          - person395
+          - person396
+          - person397
+          - person398
+          - person399
+          - person400
+          - person401
+          - person402
+          - person403
+          - person404
+          - person405
+          - person406
+          - person407
+          - person408
+          - person409
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit47:
+        members:
+          - person410
+          - person411
+          - person412
+          - person413
+          - person414
+          - person415
+          - person416
+          - person417
+          - person418
+          - person419
+          - person420
+          - person421
+          - person422
+          - person423
+          - person424
+          - person425
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code:
+          2026: TX
+      household2:
+        members:
+          - person3
+          - person4
+        state_code:
+          2026: TX
+      household3:
+        members:
+          - person5
+          - person6
+          - person7
+        state_code:
+          2026: TX
+      household4:
+        members:
+          - person8
+          - person9
+        state_code:
+          2026: TX
+      household5:
+        members:
+          - person10
+          - person11
+          - person12
+        state_code:
+          2026: TX
+      household6:
+        members:
+          - person13
+          - person14
+          - person15
+          - person16
+        state_code:
+          2026: TX
+      household7:
+        members:
+          - person17
+          - person18
+          - person19
+        state_code:
+          2026: TX
+      household8:
+        members:
+          - person20
+          - person21
+          - person22
+        state_code:
+          2026: TX
+      household9:
+        members:
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+        state_code:
+          2026: TX
+      household10:
+        members:
+          - person28
+          - person29
+          - person30
+          - person31
+        state_code:
+          2026: TX
+      household11:
+        members:
+          - person32
+          - person33
+          - person34
+          - person35
+        state_code:
+          2026: TX
+      household12:
+        members:
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+        state_code:
+          2026: TX
+      household13:
+        members:
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        state_code:
+          2026: TX
+      household14:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        state_code:
+          2026: TX
+      household15:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+        state_code:
+          2026: TX
+      household16:
+        members:
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+        state_code:
+          2026: TX
+      household17:
+        members:
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+        state_code:
+          2026: TX
+      household18:
+        members:
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        state_code:
+          2026: TX
+      household19:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+        state_code:
+          2026: TX
+      household20:
+        members:
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+          - person92
+        state_code:
+          2026: TX
+      household21:
+        members:
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+        state_code:
+          2026: TX
+      household22:
+        members:
+          - person102
+          - person103
+          - person104
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+        state_code:
+          2026: TX
+      household23:
+        members:
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+        state_code:
+          2026: TX
+      household24:
+        members:
+          - person118
+          - person119
+          - person120
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+        state_code:
+          2026: TX
+      household25:
+        members:
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        state_code:
+          2026: TX
+      household26:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+        state_code:
+          2026: TX
+      household27:
+        members:
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+        state_code:
+          2026: TX
+      household28:
+        members:
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+        state_code:
+          2026: TX
+      household29:
+        members:
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+        state_code:
+          2026: TX
+      household30:
+        members:
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+        state_code:
+          2026: TX
+      household31:
+        members:
+          - person189
+          - person190
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+        state_code:
+          2026: TX
+      household32:
+        members:
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        state_code:
+          2026: TX
+      household33:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+        state_code:
+          2026: TX
+      household34:
+        members:
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+          - person232
+          - person233
+          - person234
+          - person235
+        state_code:
+          2026: TX
+      household35:
+        members:
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+        state_code:
+          2026: TX
+      household36:
+        members:
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+        state_code:
+          2026: TX
+      household37:
+        members:
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+        state_code:
+          2026: TX
+      household38:
+        members:
+          - person275
+          - person276
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+        state_code:
+          2026: TX
+      household39:
+        members:
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+          - person301
+          - person302
+        state_code:
+          2026: TX
+      household40:
+        members:
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+        state_code:
+          2026: TX
+      household41:
+        members:
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+          - person326
+          - person327
+          - person328
+          - person329
+          - person330
+        state_code:
+          2026: TX
+      household42:
+        members:
+          - person331
+          - person332
+          - person333
+          - person334
+          - person335
+          - person336
+          - person337
+          - person338
+          - person339
+          - person340
+          - person341
+          - person342
+          - person343
+          - person344
+          - person345
+          - person346
+        state_code:
+          2026: TX
+      household43:
+        members:
+          - person347
+          - person348
+          - person349
+          - person350
+          - person351
+          - person352
+          - person353
+          - person354
+          - person355
+          - person356
+          - person357
+          - person358
+          - person359
+          - person360
+          - person361
+        state_code:
+          2026: TX
+      household44:
+        members:
+          - person362
+          - person363
+          - person364
+          - person365
+          - person366
+          - person367
+          - person368
+          - person369
+          - person370
+          - person371
+          - person372
+          - person373
+          - person374
+          - person375
+          - person376
+        state_code:
+          2026: TX
+      household45:
+        members:
+          - person377
+          - person378
+          - person379
+          - person380
+          - person381
+          - person382
+          - person383
+          - person384
+          - person385
+          - person386
+          - person387
+          - person388
+          - person389
+          - person390
+          - person391
+          - person392
+          - person393
+        state_code:
+          2026: TX
+      household46:
+        members:
+          - person394
+          - person395
+          - person396
+          - person397
+          - person398
+          - person399
+          - person400
+          - person401
+          - person402
+          - person403
+          - person404
+          - person405
+          - person406
+          - person407
+          - person408
+          - person409
+        state_code:
+          2026: TX
+      household47:
+        members:
+          - person410
+          - person411
+          - person412
+          - person413
+          - person414
+          - person415
+          - person416
+          - person417
+          - person418
+          - person419
+          - person420
+          - person421
+          - person422
+          - person423
+          - person424
+          - person425
+        state_code:
+          2026: TX
+  output:
+    tx_tanf_payment_standard:
+      - 130  # spm_unit1: non_caretaker, size 1
+      - 159  # spm_unit2: caretaker_without_second_parent, size 1
+      - 188  # spm_unit3: non_caretaker, size 2
+      - 331  # spm_unit4: caretaker_without_second_parent, size 2
+      - 253  # spm_unit5: caretaker_with_second_parent, size 2
+      - 263  # spm_unit6: non_caretaker, size 3
+      - 382  # spm_unit7: caretaker_without_second_parent, size 3
+      - 418  # spm_unit8: caretaker_with_second_parent, size 3
+      - 314  # spm_unit9: non_caretaker, size 4
+      - 459  # spm_unit10: caretaker_without_second_parent, size 4
+      - 470  # spm_unit11: caretaker_with_second_parent, size 4
+      - 403  # spm_unit12: non_caretaker, size 5
+      - 510  # spm_unit13: caretaker_without_second_parent, size 5
+      - 545  # spm_unit14: caretaker_with_second_parent, size 5
+      - 435  # spm_unit15: non_caretaker, size 6
+      - 586  # spm_unit16: caretaker_without_second_parent, size 6
+      - 597  # spm_unit17: caretaker_with_second_parent, size 6
+      - 543  # spm_unit18: non_caretaker, size 7
+      - 636  # spm_unit19: caretaker_without_second_parent, size 7
+      - 670  # spm_unit20: caretaker_with_second_parent, size 7
+      - 596  # spm_unit21: non_caretaker, size 8
+      - 724  # spm_unit22: caretaker_without_second_parent, size 8
+      - 722  # spm_unit23: caretaker_with_second_parent, size 8
+      - 684  # spm_unit24: non_caretaker, size 9
+      - 776  # spm_unit25: caretaker_without_second_parent, size 9
+      - 810  # spm_unit26: caretaker_with_second_parent, size 9
+      - 737  # spm_unit27: non_caretaker, size 10
+      - 864  # spm_unit28: caretaker_without_second_parent, size 10
+      - 862  # spm_unit29: caretaker_with_second_parent, size 10
+      - 824  # spm_unit30: non_caretaker, size 11
+      - 916  # spm_unit31: caretaker_without_second_parent, size 11
+      - 950  # spm_unit32: caretaker_with_second_parent, size 11
+      - 877  # spm_unit33: non_caretaker, size 12
+      - 1_004  # spm_unit34: caretaker_without_second_parent, size 12
+      - 1_003  # spm_unit35: caretaker_with_second_parent, size 12
+      - 965  # spm_unit36: non_caretaker, size 13
+      - 1_057  # spm_unit37: caretaker_without_second_parent, size 13
+      - 1_090  # spm_unit38: caretaker_with_second_parent, size 13
+      - 1_017  # spm_unit39: non_caretaker, size 14
+      - 1_144  # spm_unit40: caretaker_without_second_parent, size 14
+      - 1_143  # spm_unit41: caretaker_with_second_parent, size 14
+      - 1_104  # spm_unit42: non_caretaker, size 15
+      - 1_197  # spm_unit43: caretaker_without_second_parent, size 15
+      - 1_230  # spm_unit44: caretaker_with_second_parent, size 15
+      - 1_192  # spm_unit45: non_caretaker, size 16
+      - 1_285  # spm_unit46: caretaker_without_second_parent, size 16
+      - 1_318  # spm_unit47: caretaker_with_second_parent, size 16
+
+- name: Case 5, October 2026 maximum grants and additional-person amounts.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  # Published grants: 44 numeric cells plus one size-16 extension per type.
+  # Certified size and caretaker type are explicit component inputs;
+  # this case does not derive certification or full TANF eligibility.
+  # The size-1 two-parent chart cell is --- and supplies no expectation.
+  # September retains the prior grants; October uses the new benefit-month rates.
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-25-15.pdf#page=2
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-26-16.pdf#page=2
+  # https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-and-twh-bulletin-26-16.pdf#page=3
+  input:
+    people:
+      person1: {age: {2026: 60}}
+      person2: {age: {2026: 10}}
+      person3: {age: {2026: 30}}
+      person4: {age: {2026: 10}}
+      person5: {age: {2026: 60}}
+      person6: {age: {2026: 10}}
+      person7: {age: {2026: 10}}
+      person8: {age: {2026: 30}}
+      person9: {age: {2026: 10}}
+      person10: {age: {2026: 30}}
+      person11: {age: {2026: 29}}
+      person12: {age: {2026: 10}}
+      person13: {age: {2026: 60}}
+      person14: {age: {2026: 10}}
+      person15: {age: {2026: 10}}
+      person16: {age: {2026: 10}}
+      person17: {age: {2026: 30}}
+      person18: {age: {2026: 10}}
+      person19: {age: {2026: 10}}
+      person20: {age: {2026: 30}}
+      person21: {age: {2026: 29}}
+      person22: {age: {2026: 10}}
+      person23: {age: {2026: 60}}
+      person24: {age: {2026: 10}}
+      person25: {age: {2026: 10}}
+      person26: {age: {2026: 10}}
+      person27: {age: {2026: 10}}
+      person28: {age: {2026: 30}}
+      person29: {age: {2026: 10}}
+      person30: {age: {2026: 10}}
+      person31: {age: {2026: 10}}
+      person32: {age: {2026: 30}}
+      person33: {age: {2026: 29}}
+      person34: {age: {2026: 10}}
+      person35: {age: {2026: 10}}
+      person36: {age: {2026: 60}}
+      person37: {age: {2026: 10}}
+      person38: {age: {2026: 10}}
+      person39: {age: {2026: 10}}
+      person40: {age: {2026: 10}}
+      person41: {age: {2026: 10}}
+      person42: {age: {2026: 30}}
+      person43: {age: {2026: 10}}
+      person44: {age: {2026: 10}}
+      person45: {age: {2026: 10}}
+      person46: {age: {2026: 10}}
+      person47: {age: {2026: 30}}
+      person48: {age: {2026: 29}}
+      person49: {age: {2026: 10}}
+      person50: {age: {2026: 10}}
+      person51: {age: {2026: 10}}
+      person52: {age: {2026: 60}}
+      person53: {age: {2026: 10}}
+      person54: {age: {2026: 10}}
+      person55: {age: {2026: 10}}
+      person56: {age: {2026: 10}}
+      person57: {age: {2026: 10}}
+      person58: {age: {2026: 10}}
+      person59: {age: {2026: 30}}
+      person60: {age: {2026: 10}}
+      person61: {age: {2026: 10}}
+      person62: {age: {2026: 10}}
+      person63: {age: {2026: 10}}
+      person64: {age: {2026: 10}}
+      person65: {age: {2026: 30}}
+      person66: {age: {2026: 29}}
+      person67: {age: {2026: 10}}
+      person68: {age: {2026: 10}}
+      person69: {age: {2026: 10}}
+      person70: {age: {2026: 10}}
+      person71: {age: {2026: 60}}
+      person72: {age: {2026: 10}}
+      person73: {age: {2026: 10}}
+      person74: {age: {2026: 10}}
+      person75: {age: {2026: 10}}
+      person76: {age: {2026: 10}}
+      person77: {age: {2026: 10}}
+      person78: {age: {2026: 10}}
+      person79: {age: {2026: 30}}
+      person80: {age: {2026: 10}}
+      person81: {age: {2026: 10}}
+      person82: {age: {2026: 10}}
+      person83: {age: {2026: 10}}
+      person84: {age: {2026: 10}}
+      person85: {age: {2026: 10}}
+      person86: {age: {2026: 30}}
+      person87: {age: {2026: 29}}
+      person88: {age: {2026: 10}}
+      person89: {age: {2026: 10}}
+      person90: {age: {2026: 10}}
+      person91: {age: {2026: 10}}
+      person92: {age: {2026: 10}}
+      person93: {age: {2026: 60}}
+      person94: {age: {2026: 10}}
+      person95: {age: {2026: 10}}
+      person96: {age: {2026: 10}}
+      person97: {age: {2026: 10}}
+      person98: {age: {2026: 10}}
+      person99: {age: {2026: 10}}
+      person100: {age: {2026: 10}}
+      person101: {age: {2026: 10}}
+      person102: {age: {2026: 30}}
+      person103: {age: {2026: 10}}
+      person104: {age: {2026: 10}}
+      person105: {age: {2026: 10}}
+      person106: {age: {2026: 10}}
+      person107: {age: {2026: 10}}
+      person108: {age: {2026: 10}}
+      person109: {age: {2026: 10}}
+      person110: {age: {2026: 30}}
+      person111: {age: {2026: 29}}
+      person112: {age: {2026: 10}}
+      person113: {age: {2026: 10}}
+      person114: {age: {2026: 10}}
+      person115: {age: {2026: 10}}
+      person116: {age: {2026: 10}}
+      person117: {age: {2026: 10}}
+      person118: {age: {2026: 60}}
+      person119: {age: {2026: 10}}
+      person120: {age: {2026: 10}}
+      person121: {age: {2026: 10}}
+      person122: {age: {2026: 10}}
+      person123: {age: {2026: 10}}
+      person124: {age: {2026: 10}}
+      person125: {age: {2026: 10}}
+      person126: {age: {2026: 10}}
+      person127: {age: {2026: 10}}
+      person128: {age: {2026: 30}}
+      person129: {age: {2026: 10}}
+      person130: {age: {2026: 10}}
+      person131: {age: {2026: 10}}
+      person132: {age: {2026: 10}}
+      person133: {age: {2026: 10}}
+      person134: {age: {2026: 10}}
+      person135: {age: {2026: 10}}
+      person136: {age: {2026: 10}}
+      person137: {age: {2026: 30}}
+      person138: {age: {2026: 29}}
+      person139: {age: {2026: 10}}
+      person140: {age: {2026: 10}}
+      person141: {age: {2026: 10}}
+      person142: {age: {2026: 10}}
+      person143: {age: {2026: 10}}
+      person144: {age: {2026: 10}}
+      person145: {age: {2026: 10}}
+      person146: {age: {2026: 60}}
+      person147: {age: {2026: 10}}
+      person148: {age: {2026: 10}}
+      person149: {age: {2026: 10}}
+      person150: {age: {2026: 10}}
+      person151: {age: {2026: 10}}
+      person152: {age: {2026: 10}}
+      person153: {age: {2026: 10}}
+      person154: {age: {2026: 10}}
+      person155: {age: {2026: 10}}
+      person156: {age: {2026: 10}}
+      person157: {age: {2026: 30}}
+      person158: {age: {2026: 10}}
+      person159: {age: {2026: 10}}
+      person160: {age: {2026: 10}}
+      person161: {age: {2026: 10}}
+      person162: {age: {2026: 10}}
+      person163: {age: {2026: 10}}
+      person164: {age: {2026: 10}}
+      person165: {age: {2026: 10}}
+      person166: {age: {2026: 10}}
+      person167: {age: {2026: 30}}
+      person168: {age: {2026: 29}}
+      person169: {age: {2026: 10}}
+      person170: {age: {2026: 10}}
+      person171: {age: {2026: 10}}
+      person172: {age: {2026: 10}}
+      person173: {age: {2026: 10}}
+      person174: {age: {2026: 10}}
+      person175: {age: {2026: 10}}
+      person176: {age: {2026: 10}}
+      person177: {age: {2026: 60}}
+      person178: {age: {2026: 10}}
+      person179: {age: {2026: 10}}
+      person180: {age: {2026: 10}}
+      person181: {age: {2026: 10}}
+      person182: {age: {2026: 10}}
+      person183: {age: {2026: 10}}
+      person184: {age: {2026: 10}}
+      person185: {age: {2026: 10}}
+      person186: {age: {2026: 10}}
+      person187: {age: {2026: 10}}
+      person188: {age: {2026: 10}}
+      person189: {age: {2026: 30}}
+      person190: {age: {2026: 10}}
+      person191: {age: {2026: 10}}
+      person192: {age: {2026: 10}}
+      person193: {age: {2026: 10}}
+      person194: {age: {2026: 10}}
+      person195: {age: {2026: 10}}
+      person196: {age: {2026: 10}}
+      person197: {age: {2026: 10}}
+      person198: {age: {2026: 10}}
+      person199: {age: {2026: 10}}
+      person200: {age: {2026: 30}}
+      person201: {age: {2026: 29}}
+      person202: {age: {2026: 10}}
+      person203: {age: {2026: 10}}
+      person204: {age: {2026: 10}}
+      person205: {age: {2026: 10}}
+      person206: {age: {2026: 10}}
+      person207: {age: {2026: 10}}
+      person208: {age: {2026: 10}}
+      person209: {age: {2026: 10}}
+      person210: {age: {2026: 10}}
+      person211: {age: {2026: 60}}
+      person212: {age: {2026: 10}}
+      person213: {age: {2026: 10}}
+      person214: {age: {2026: 10}}
+      person215: {age: {2026: 10}}
+      person216: {age: {2026: 10}}
+      person217: {age: {2026: 10}}
+      person218: {age: {2026: 10}}
+      person219: {age: {2026: 10}}
+      person220: {age: {2026: 10}}
+      person221: {age: {2026: 10}}
+      person222: {age: {2026: 10}}
+      person223: {age: {2026: 10}}
+      person224: {age: {2026: 30}}
+      person225: {age: {2026: 10}}
+      person226: {age: {2026: 10}}
+      person227: {age: {2026: 10}}
+      person228: {age: {2026: 10}}
+      person229: {age: {2026: 10}}
+      person230: {age: {2026: 10}}
+      person231: {age: {2026: 10}}
+      person232: {age: {2026: 10}}
+      person233: {age: {2026: 10}}
+      person234: {age: {2026: 10}}
+      person235: {age: {2026: 10}}
+      person236: {age: {2026: 30}}
+      person237: {age: {2026: 29}}
+      person238: {age: {2026: 10}}
+      person239: {age: {2026: 10}}
+      person240: {age: {2026: 10}}
+      person241: {age: {2026: 10}}
+      person242: {age: {2026: 10}}
+      person243: {age: {2026: 10}}
+      person244: {age: {2026: 10}}
+      person245: {age: {2026: 10}}
+      person246: {age: {2026: 10}}
+      person247: {age: {2026: 10}}
+      person248: {age: {2026: 60}}
+      person249: {age: {2026: 10}}
+      person250: {age: {2026: 10}}
+      person251: {age: {2026: 10}}
+      person252: {age: {2026: 10}}
+      person253: {age: {2026: 10}}
+      person254: {age: {2026: 10}}
+      person255: {age: {2026: 10}}
+      person256: {age: {2026: 10}}
+      person257: {age: {2026: 10}}
+      person258: {age: {2026: 10}}
+      person259: {age: {2026: 10}}
+      person260: {age: {2026: 10}}
+      person261: {age: {2026: 10}}
+      person262: {age: {2026: 30}}
+      person263: {age: {2026: 10}}
+      person264: {age: {2026: 10}}
+      person265: {age: {2026: 10}}
+      person266: {age: {2026: 10}}
+      person267: {age: {2026: 10}}
+      person268: {age: {2026: 10}}
+      person269: {age: {2026: 10}}
+      person270: {age: {2026: 10}}
+      person271: {age: {2026: 10}}
+      person272: {age: {2026: 10}}
+      person273: {age: {2026: 10}}
+      person274: {age: {2026: 10}}
+      person275: {age: {2026: 30}}
+      person276: {age: {2026: 29}}
+      person277: {age: {2026: 10}}
+      person278: {age: {2026: 10}}
+      person279: {age: {2026: 10}}
+      person280: {age: {2026: 10}}
+      person281: {age: {2026: 10}}
+      person282: {age: {2026: 10}}
+      person283: {age: {2026: 10}}
+      person284: {age: {2026: 10}}
+      person285: {age: {2026: 10}}
+      person286: {age: {2026: 10}}
+      person287: {age: {2026: 10}}
+      person288: {age: {2026: 60}}
+      person289: {age: {2026: 10}}
+      person290: {age: {2026: 10}}
+      person291: {age: {2026: 10}}
+      person292: {age: {2026: 10}}
+      person293: {age: {2026: 10}}
+      person294: {age: {2026: 10}}
+      person295: {age: {2026: 10}}
+      person296: {age: {2026: 10}}
+      person297: {age: {2026: 10}}
+      person298: {age: {2026: 10}}
+      person299: {age: {2026: 10}}
+      person300: {age: {2026: 10}}
+      person301: {age: {2026: 10}}
+      person302: {age: {2026: 10}}
+      person303: {age: {2026: 30}}
+      person304: {age: {2026: 10}}
+      person305: {age: {2026: 10}}
+      person306: {age: {2026: 10}}
+      person307: {age: {2026: 10}}
+      person308: {age: {2026: 10}}
+      person309: {age: {2026: 10}}
+      person310: {age: {2026: 10}}
+      person311: {age: {2026: 10}}
+      person312: {age: {2026: 10}}
+      person313: {age: {2026: 10}}
+      person314: {age: {2026: 10}}
+      person315: {age: {2026: 10}}
+      person316: {age: {2026: 10}}
+      person317: {age: {2026: 30}}
+      person318: {age: {2026: 29}}
+      person319: {age: {2026: 10}}
+      person320: {age: {2026: 10}}
+      person321: {age: {2026: 10}}
+      person322: {age: {2026: 10}}
+      person323: {age: {2026: 10}}
+      person324: {age: {2026: 10}}
+      person325: {age: {2026: 10}}
+      person326: {age: {2026: 10}}
+      person327: {age: {2026: 10}}
+      person328: {age: {2026: 10}}
+      person329: {age: {2026: 10}}
+      person330: {age: {2026: 10}}
+      person331: {age: {2026: 60}}
+      person332: {age: {2026: 10}}
+      person333: {age: {2026: 10}}
+      person334: {age: {2026: 10}}
+      person335: {age: {2026: 10}}
+      person336: {age: {2026: 10}}
+      person337: {age: {2026: 10}}
+      person338: {age: {2026: 10}}
+      person339: {age: {2026: 10}}
+      person340: {age: {2026: 10}}
+      person341: {age: {2026: 10}}
+      person342: {age: {2026: 10}}
+      person343: {age: {2026: 10}}
+      person344: {age: {2026: 10}}
+      person345: {age: {2026: 10}}
+      person346: {age: {2026: 10}}
+      person347: {age: {2026: 30}}
+      person348: {age: {2026: 10}}
+      person349: {age: {2026: 10}}
+      person350: {age: {2026: 10}}
+      person351: {age: {2026: 10}}
+      person352: {age: {2026: 10}}
+      person353: {age: {2026: 10}}
+      person354: {age: {2026: 10}}
+      person355: {age: {2026: 10}}
+      person356: {age: {2026: 10}}
+      person357: {age: {2026: 10}}
+      person358: {age: {2026: 10}}
+      person359: {age: {2026: 10}}
+      person360: {age: {2026: 10}}
+      person361: {age: {2026: 10}}
+      person362: {age: {2026: 30}}
+      person363: {age: {2026: 29}}
+      person364: {age: {2026: 10}}
+      person365: {age: {2026: 10}}
+      person366: {age: {2026: 10}}
+      person367: {age: {2026: 10}}
+      person368: {age: {2026: 10}}
+      person369: {age: {2026: 10}}
+      person370: {age: {2026: 10}}
+      person371: {age: {2026: 10}}
+      person372: {age: {2026: 10}}
+      person373: {age: {2026: 10}}
+      person374: {age: {2026: 10}}
+      person375: {age: {2026: 10}}
+      person376: {age: {2026: 10}}
+      person377: {age: {2026: 60}}
+      person378: {age: {2026: 10}}
+      person379: {age: {2026: 10}}
+      person380: {age: {2026: 10}}
+      person381: {age: {2026: 10}}
+      person382: {age: {2026: 10}}
+      person383: {age: {2026: 10}}
+      person384: {age: {2026: 10}}
+      person385: {age: {2026: 10}}
+      person386: {age: {2026: 10}}
+      person387: {age: {2026: 10}}
+      person388: {age: {2026: 10}}
+      person389: {age: {2026: 10}}
+      person390: {age: {2026: 10}}
+      person391: {age: {2026: 10}}
+      person392: {age: {2026: 10}}
+      person393: {age: {2026: 10}}
+      person394: {age: {2026: 30}}
+      person395: {age: {2026: 10}}
+      person396: {age: {2026: 10}}
+      person397: {age: {2026: 10}}
+      person398: {age: {2026: 10}}
+      person399: {age: {2026: 10}}
+      person400: {age: {2026: 10}}
+      person401: {age: {2026: 10}}
+      person402: {age: {2026: 10}}
+      person403: {age: {2026: 10}}
+      person404: {age: {2026: 10}}
+      person405: {age: {2026: 10}}
+      person406: {age: {2026: 10}}
+      person407: {age: {2026: 10}}
+      person408: {age: {2026: 10}}
+      person409: {age: {2026: 10}}
+      person410: {age: {2026: 30}}
+      person411: {age: {2026: 29}}
+      person412: {age: {2026: 10}}
+      person413: {age: {2026: 10}}
+      person414: {age: {2026: 10}}
+      person415: {age: {2026: 10}}
+      person416: {age: {2026: 10}}
+      person417: {age: {2026: 10}}
+      person418: {age: {2026: 10}}
+      person419: {age: {2026: 10}}
+      person420: {age: {2026: 10}}
+      person421: {age: {2026: 10}}
+      person422: {age: {2026: 10}}
+      person423: {age: {2026: 10}}
+      person424: {age: {2026: 10}}
+      person425: {age: {2026: 10}}
+    spm_units:
+      spm_unit1:
+        members:
+          - person1
+          - person2
+        tx_tanf_assistance_unit_size: 1
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit2:
+        members:
+          - person3
+          - person4
+        tx_tanf_assistance_unit_size: 1
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit3:
+        members:
+          - person5
+          - person6
+          - person7
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit4:
+        members:
+          - person8
+          - person9
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit5:
+        members:
+          - person10
+          - person11
+          - person12
+        tx_tanf_assistance_unit_size: 2
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit6:
+        members:
+          - person13
+          - person14
+          - person15
+          - person16
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit7:
+        members:
+          - person17
+          - person18
+          - person19
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit8:
+        members:
+          - person20
+          - person21
+          - person22
+        tx_tanf_assistance_unit_size: 3
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit9:
+        members:
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit10:
+        members:
+          - person28
+          - person29
+          - person30
+          - person31
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit11:
+        members:
+          - person32
+          - person33
+          - person34
+          - person35
+        tx_tanf_assistance_unit_size: 4
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit12:
+        members:
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit13:
+        members:
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit14:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        tx_tanf_assistance_unit_size: 5
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit15:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit16:
+        members:
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit17:
+        members:
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+        tx_tanf_assistance_unit_size: 6
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit18:
+        members:
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit19:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit20:
+        members:
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+          - person92
+        tx_tanf_assistance_unit_size: 7
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit21:
+        members:
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit22:
+        members:
+          - person102
+          - person103
+          - person104
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit23:
+        members:
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+        tx_tanf_assistance_unit_size: 8
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit24:
+        members:
+          - person118
+          - person119
+          - person120
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit25:
+        members:
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit26:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+        tx_tanf_assistance_unit_size: 9
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit27:
+        members:
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit28:
+        members:
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit29:
+        members:
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+        tx_tanf_assistance_unit_size: 10
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit30:
+        members:
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit31:
+        members:
+          - person189
+          - person190
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit32:
+        members:
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        tx_tanf_assistance_unit_size: 11
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit33:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit34:
+        members:
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+          - person232
+          - person233
+          - person234
+          - person235
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit35:
+        members:
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+        tx_tanf_assistance_unit_size: 12
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit36:
+        members:
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit37:
+        members:
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit38:
+        members:
+          - person275
+          - person276
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+        tx_tanf_assistance_unit_size: 13
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit39:
+        members:
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+          - person301
+          - person302
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit40:
+        members:
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit41:
+        members:
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+          - person326
+          - person327
+          - person328
+          - person329
+          - person330
+        tx_tanf_assistance_unit_size: 14
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit42:
+        members:
+          - person331
+          - person332
+          - person333
+          - person334
+          - person335
+          - person336
+          - person337
+          - person338
+          - person339
+          - person340
+          - person341
+          - person342
+          - person343
+          - person344
+          - person345
+          - person346
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit43:
+        members:
+          - person347
+          - person348
+          - person349
+          - person350
+          - person351
+          - person352
+          - person353
+          - person354
+          - person355
+          - person356
+          - person357
+          - person358
+          - person359
+          - person360
+          - person361
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit44:
+        members:
+          - person362
+          - person363
+          - person364
+          - person365
+          - person366
+          - person367
+          - person368
+          - person369
+          - person370
+          - person371
+          - person372
+          - person373
+          - person374
+          - person375
+          - person376
+        tx_tanf_assistance_unit_size: 15
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+      spm_unit45:
+        members:
+          - person377
+          - person378
+          - person379
+          - person380
+          - person381
+          - person382
+          - person383
+          - person384
+          - person385
+          - person386
+          - person387
+          - person388
+          - person389
+          - person390
+          - person391
+          - person392
+          - person393
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: NON_CARETAKER
+      spm_unit46:
+        members:
+          - person394
+          - person395
+          - person396
+          - person397
+          - person398
+          - person399
+          - person400
+          - person401
+          - person402
+          - person403
+          - person404
+          - person405
+          - person406
+          - person407
+          - person408
+          - person409
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: CARETAKER_WITHOUT_SECOND_PARENT
+      spm_unit47:
+        members:
+          - person410
+          - person411
+          - person412
+          - person413
+          - person414
+          - person415
+          - person416
+          - person417
+          - person418
+          - person419
+          - person420
+          - person421
+          - person422
+          - person423
+          - person424
+          - person425
+        tx_tanf_assistance_unit_size: 16
+        tx_tanf_caretaker_type: CARETAKER_WITH_SECOND_PARENT
+    households:
+      household1:
+        members:
+          - person1
+          - person2
+        state_code:
+          2026: TX
+      household2:
+        members:
+          - person3
+          - person4
+        state_code:
+          2026: TX
+      household3:
+        members:
+          - person5
+          - person6
+          - person7
+        state_code:
+          2026: TX
+      household4:
+        members:
+          - person8
+          - person9
+        state_code:
+          2026: TX
+      household5:
+        members:
+          - person10
+          - person11
+          - person12
+        state_code:
+          2026: TX
+      household6:
+        members:
+          - person13
+          - person14
+          - person15
+          - person16
+        state_code:
+          2026: TX
+      household7:
+        members:
+          - person17
+          - person18
+          - person19
+        state_code:
+          2026: TX
+      household8:
+        members:
+          - person20
+          - person21
+          - person22
+        state_code:
+          2026: TX
+      household9:
+        members:
+          - person23
+          - person24
+          - person25
+          - person26
+          - person27
+        state_code:
+          2026: TX
+      household10:
+        members:
+          - person28
+          - person29
+          - person30
+          - person31
+        state_code:
+          2026: TX
+      household11:
+        members:
+          - person32
+          - person33
+          - person34
+          - person35
+        state_code:
+          2026: TX
+      household12:
+        members:
+          - person36
+          - person37
+          - person38
+          - person39
+          - person40
+          - person41
+        state_code:
+          2026: TX
+      household13:
+        members:
+          - person42
+          - person43
+          - person44
+          - person45
+          - person46
+        state_code:
+          2026: TX
+      household14:
+        members:
+          - person47
+          - person48
+          - person49
+          - person50
+          - person51
+        state_code:
+          2026: TX
+      household15:
+        members:
+          - person52
+          - person53
+          - person54
+          - person55
+          - person56
+          - person57
+          - person58
+        state_code:
+          2026: TX
+      household16:
+        members:
+          - person59
+          - person60
+          - person61
+          - person62
+          - person63
+          - person64
+        state_code:
+          2026: TX
+      household17:
+        members:
+          - person65
+          - person66
+          - person67
+          - person68
+          - person69
+          - person70
+        state_code:
+          2026: TX
+      household18:
+        members:
+          - person71
+          - person72
+          - person73
+          - person74
+          - person75
+          - person76
+          - person77
+          - person78
+        state_code:
+          2026: TX
+      household19:
+        members:
+          - person79
+          - person80
+          - person81
+          - person82
+          - person83
+          - person84
+          - person85
+        state_code:
+          2026: TX
+      household20:
+        members:
+          - person86
+          - person87
+          - person88
+          - person89
+          - person90
+          - person91
+          - person92
+        state_code:
+          2026: TX
+      household21:
+        members:
+          - person93
+          - person94
+          - person95
+          - person96
+          - person97
+          - person98
+          - person99
+          - person100
+          - person101
+        state_code:
+          2026: TX
+      household22:
+        members:
+          - person102
+          - person103
+          - person104
+          - person105
+          - person106
+          - person107
+          - person108
+          - person109
+        state_code:
+          2026: TX
+      household23:
+        members:
+          - person110
+          - person111
+          - person112
+          - person113
+          - person114
+          - person115
+          - person116
+          - person117
+        state_code:
+          2026: TX
+      household24:
+        members:
+          - person118
+          - person119
+          - person120
+          - person121
+          - person122
+          - person123
+          - person124
+          - person125
+          - person126
+          - person127
+        state_code:
+          2026: TX
+      household25:
+        members:
+          - person128
+          - person129
+          - person130
+          - person131
+          - person132
+          - person133
+          - person134
+          - person135
+          - person136
+        state_code:
+          2026: TX
+      household26:
+        members:
+          - person137
+          - person138
+          - person139
+          - person140
+          - person141
+          - person142
+          - person143
+          - person144
+          - person145
+        state_code:
+          2026: TX
+      household27:
+        members:
+          - person146
+          - person147
+          - person148
+          - person149
+          - person150
+          - person151
+          - person152
+          - person153
+          - person154
+          - person155
+          - person156
+        state_code:
+          2026: TX
+      household28:
+        members:
+          - person157
+          - person158
+          - person159
+          - person160
+          - person161
+          - person162
+          - person163
+          - person164
+          - person165
+          - person166
+        state_code:
+          2026: TX
+      household29:
+        members:
+          - person167
+          - person168
+          - person169
+          - person170
+          - person171
+          - person172
+          - person173
+          - person174
+          - person175
+          - person176
+        state_code:
+          2026: TX
+      household30:
+        members:
+          - person177
+          - person178
+          - person179
+          - person180
+          - person181
+          - person182
+          - person183
+          - person184
+          - person185
+          - person186
+          - person187
+          - person188
+        state_code:
+          2026: TX
+      household31:
+        members:
+          - person189
+          - person190
+          - person191
+          - person192
+          - person193
+          - person194
+          - person195
+          - person196
+          - person197
+          - person198
+          - person199
+        state_code:
+          2026: TX
+      household32:
+        members:
+          - person200
+          - person201
+          - person202
+          - person203
+          - person204
+          - person205
+          - person206
+          - person207
+          - person208
+          - person209
+          - person210
+        state_code:
+          2026: TX
+      household33:
+        members:
+          - person211
+          - person212
+          - person213
+          - person214
+          - person215
+          - person216
+          - person217
+          - person218
+          - person219
+          - person220
+          - person221
+          - person222
+          - person223
+        state_code:
+          2026: TX
+      household34:
+        members:
+          - person224
+          - person225
+          - person226
+          - person227
+          - person228
+          - person229
+          - person230
+          - person231
+          - person232
+          - person233
+          - person234
+          - person235
+        state_code:
+          2026: TX
+      household35:
+        members:
+          - person236
+          - person237
+          - person238
+          - person239
+          - person240
+          - person241
+          - person242
+          - person243
+          - person244
+          - person245
+          - person246
+          - person247
+        state_code:
+          2026: TX
+      household36:
+        members:
+          - person248
+          - person249
+          - person250
+          - person251
+          - person252
+          - person253
+          - person254
+          - person255
+          - person256
+          - person257
+          - person258
+          - person259
+          - person260
+          - person261
+        state_code:
+          2026: TX
+      household37:
+        members:
+          - person262
+          - person263
+          - person264
+          - person265
+          - person266
+          - person267
+          - person268
+          - person269
+          - person270
+          - person271
+          - person272
+          - person273
+          - person274
+        state_code:
+          2026: TX
+      household38:
+        members:
+          - person275
+          - person276
+          - person277
+          - person278
+          - person279
+          - person280
+          - person281
+          - person282
+          - person283
+          - person284
+          - person285
+          - person286
+          - person287
+        state_code:
+          2026: TX
+      household39:
+        members:
+          - person288
+          - person289
+          - person290
+          - person291
+          - person292
+          - person293
+          - person294
+          - person295
+          - person296
+          - person297
+          - person298
+          - person299
+          - person300
+          - person301
+          - person302
+        state_code:
+          2026: TX
+      household40:
+        members:
+          - person303
+          - person304
+          - person305
+          - person306
+          - person307
+          - person308
+          - person309
+          - person310
+          - person311
+          - person312
+          - person313
+          - person314
+          - person315
+          - person316
+        state_code:
+          2026: TX
+      household41:
+        members:
+          - person317
+          - person318
+          - person319
+          - person320
+          - person321
+          - person322
+          - person323
+          - person324
+          - person325
+          - person326
+          - person327
+          - person328
+          - person329
+          - person330
+        state_code:
+          2026: TX
+      household42:
+        members:
+          - person331
+          - person332
+          - person333
+          - person334
+          - person335
+          - person336
+          - person337
+          - person338
+          - person339
+          - person340
+          - person341
+          - person342
+          - person343
+          - person344
+          - person345
+          - person346
+        state_code:
+          2026: TX
+      household43:
+        members:
+          - person347
+          - person348
+          - person349
+          - person350
+          - person351
+          - person352
+          - person353
+          - person354
+          - person355
+          - person356
+          - person357
+          - person358
+          - person359
+          - person360
+          - person361
+        state_code:
+          2026: TX
+      household44:
+        members:
+          - person362
+          - person363
+          - person364
+          - person365
+          - person366
+          - person367
+          - person368
+          - person369
+          - person370
+          - person371
+          - person372
+          - person373
+          - person374
+          - person375
+          - person376
+        state_code:
+          2026: TX
+      household45:
+        members:
+          - person377
+          - person378
+          - person379
+          - person380
+          - person381
+          - person382
+          - person383
+          - person384
+          - person385
+          - person386
+          - person387
+          - person388
+          - person389
+          - person390
+          - person391
+          - person392
+          - person393
+        state_code:
+          2026: TX
+      household46:
+        members:
+          - person394
+          - person395
+          - person396
+          - person397
+          - person398
+          - person399
+          - person400
+          - person401
+          - person402
+          - person403
+          - person404
+          - person405
+          - person406
+          - person407
+          - person408
+          - person409
+        state_code:
+          2026: TX
+      household47:
+        members:
+          - person410
+          - person411
+          - person412
+          - person413
+          - person414
+          - person415
+          - person416
+          - person417
+          - person418
+          - person419
+          - person420
+          - person421
+          - person422
+          - person423
+          - person424
+          - person425
+        state_code:
+          2026: TX
+  output:
+    tx_tanf_payment_standard:
+      - 132  # spm_unit1: non_caretaker, size 1
+      - 162  # spm_unit2: caretaker_without_second_parent, size 1
+      - 191  # spm_unit3: non_caretaker, size 2
+      - 336  # spm_unit4: caretaker_without_second_parent, size 2
+      - 257  # spm_unit5: caretaker_with_second_parent, size 2
+      - 267  # spm_unit6: non_caretaker, size 3
+      - 388  # spm_unit7: caretaker_without_second_parent, size 3
+      - 425  # spm_unit8: caretaker_with_second_parent, size 3
+      - 319  # spm_unit9: non_caretaker, size 4
+      - 466  # spm_unit10: caretaker_without_second_parent, size 4
+      - 477  # spm_unit11: caretaker_with_second_parent, size 4
+      - 409  # spm_unit12: non_caretaker, size 5
+      - 517  # spm_unit13: caretaker_without_second_parent, size 5
+      - 553  # spm_unit14: caretaker_with_second_parent, size 5
+      - 442  # spm_unit15: non_caretaker, size 6
+      - 595  # spm_unit16: caretaker_without_second_parent, size 6
+      - 606  # spm_unit17: caretaker_with_second_parent, size 6
+      - 551  # spm_unit18: non_caretaker, size 7
+      - 646  # spm_unit19: caretaker_without_second_parent, size 7
+      - 680  # spm_unit20: caretaker_with_second_parent, size 7
+      - 605  # spm_unit21: non_caretaker, size 8
+      - 735  # spm_unit22: caretaker_without_second_parent, size 8
+      - 733  # spm_unit23: caretaker_with_second_parent, size 8
+      - 694  # spm_unit24: non_caretaker, size 9
+      - 788  # spm_unit25: caretaker_without_second_parent, size 9
+      - 822  # spm_unit26: caretaker_with_second_parent, size 9
+      - 748  # spm_unit27: non_caretaker, size 10
+      - 877  # spm_unit28: caretaker_without_second_parent, size 10
+      - 875  # spm_unit29: caretaker_with_second_parent, size 10
+      - 837  # spm_unit30: non_caretaker, size 11
+      - 930  # spm_unit31: caretaker_without_second_parent, size 11
+      - 964  # spm_unit32: caretaker_with_second_parent, size 11
+      - 890  # spm_unit33: non_caretaker, size 12
+      - 1_019  # spm_unit34: caretaker_without_second_parent, size 12
+      - 1_018  # spm_unit35: caretaker_with_second_parent, size 12
+      - 979  # spm_unit36: non_caretaker, size 13
+      - 1_073  # spm_unit37: caretaker_without_second_parent, size 13
+      - 1_107  # spm_unit38: caretaker_with_second_parent, size 13
+      - 1_033  # spm_unit39: non_caretaker, size 14
+      - 1_162  # spm_unit40: caretaker_without_second_parent, size 14
+      - 1_160  # spm_unit41: caretaker_with_second_parent, size 14
+      - 1_121  # spm_unit42: non_caretaker, size 15
+      - 1_215  # spm_unit43: caretaker_without_second_parent, size 15
+      - 1_249  # spm_unit44: caretaker_with_second_parent, size 15
+      - 1_210  # spm_unit45: non_caretaker, size 16
+      - 1_304  # spm_unit46: caretaker_without_second_parent, size 16
+      - 1_338  # spm_unit47: caretaker_with_second_parent, size 16
