@@ -199,6 +199,30 @@
   output:
     spm_unit_capped_work_childcare_expenses: 2_500
 
+- name: A subsidy above the expense of a unit with no child leaves only work expenses
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 46
+        employment_income: 9_000
+        is_household_head: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+        spm_unit_work_expenses: 500
+        spm_unit_pre_subsidy_childcare_expenses: 1_000
+        child_care_subsidies: 1_500
+  output:
+    # The floor keeps the 500 of subsidy above the expense from offsetting
+    # work expenses.
+    spm_unit_capped_work_childcare_expenses: 500
+
 - name: A direct out-of-pocket amount replaces the amount net of subsidies
   period: 2026
   absolute_error_margin: 0.001
