@@ -25,11 +25,16 @@ from policyengine_core.parameters.operations.get_parameter import get_parameter
 from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
+)
 from policyengine_us.reforms.ssa import apply_trustees_2025_economic_assumptions
 from policyengine_us.system import system
 
 CAP = "gov.irs.payroll.social_security.cap"
 OWNERS_DRAW_CAP = "gov.contrib.ssa.owners_draw.current_law_cap"
+INCIDENCE_CAP = "gov.simulation.employer_payroll_tax_incidence.current_law_cap"
+COPIES = tuple(CURRENT_LAW_PAYROLL_CAP_COPIES)
 WAGE_BASE = "gov.ssa.social_security.wage_base"
 END_YEAR = 2100
 HOUSEHOLD_YEAR = 2027
@@ -178,19 +183,20 @@ def _replay(reform_set):
     with _on_default_values():
         for apply in reform_set * 2:
             apply(tree)
-        return {
-            path: _entries(tree, path) for path in (CAP, OWNERS_DRAW_CAP, WAGE_BASE)
-        }
+        return {path: _entries(tree, path) for path in (CAP, *COPIES, WAGE_BASE)}
 
 
 def test_wage_base_and_copy_equal_the_cap_under_the_assumption_alone():
     values, _ = _run(False)
     for year in range(2027, END_YEAR + 1):
         assert _value_of(values, WAGE_BASE, year) == _value_of(values, CAP, year)
-    for year in range(1994, END_YEAR + 1):
-        assert _value_of(values, OWNERS_DRAW_CAP, year) == _value_of(
-            values, CAP, year
-        ), year
+    assert set(COPIES) == {OWNERS_DRAW_CAP, INCIDENCE_CAP}
+    for copy in COPIES:
+        for year in range(1994, END_YEAR + 1):
+            assert _value_of(values, copy, year) == _value_of(values, CAP, year), (
+                copy,
+                year,
+            )
 
 
 def test_the_copy_moves_to_the_trustees_path_and_the_wage_base_stays():
@@ -200,8 +206,9 @@ def test_the_copy_moves_to_the_trustees_path_and_the_wage_base_stays():
     for year, pin in TRUSTEES_2025_CAP.items():
         assert _value_of(values, CAP, year) == pin
         assert _value_of(values, WAGE_BASE, year) == pin
-        assert _value_of(values, OWNERS_DRAW_CAP, year) == pin
-        assert _value(system.parameters, OWNERS_DRAW_CAP, year) == DEFAULT_CAP[year]
+        for copy in COPIES:
+            assert _value_of(values, copy, year) == pin
+            assert _value(system.parameters, copy, year) == DEFAULT_CAP[year]
 
 
 def test_a_cap_only_policy_moves_no_other_parameter():
@@ -238,8 +245,8 @@ def test_wage_base_survives_both_passes_of_a_2027_cap_policy(policy_cap, order):
         reform_set = reform_set[::-1]
     replayed = _replay(reform_set)
     baseline, _ = _run(False)
-    assert replayed[WAGE_BASE] == baseline[WAGE_BASE]
-    assert replayed[OWNERS_DRAW_CAP] == baseline[OWNERS_DRAW_CAP]
+    for path in (WAGE_BASE, *COPIES):
+        assert replayed[path] == baseline[path], path
     for year in range(2027, END_YEAR + 1):
         assert _value_of(replayed, CAP, year) == policy_cap, year
 
@@ -250,8 +257,9 @@ COPY_POLICY_CAP = 10_000_000
 @pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
 def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order):
     """A policy that sets only the owners' draw copy from 2027 leaves the
-    benefit wage base equal to the assumption baseline's, entry for entry,
-    after both passes, in either order."""
+    benefit wage base and the employer payroll tax response's copy equal to
+    the assumption baseline's, entry for entry, after both passes, in either
+    order."""
 
     def policy(parameters):
         get_parameter(parameters, OWNERS_DRAW_CAP).update(
@@ -263,7 +271,8 @@ def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order)
         reform_set = reform_set[::-1]
     replayed = _replay(reform_set)
     baseline, _ = _run(False)
-    assert replayed[WAGE_BASE] == baseline[WAGE_BASE]
+    for path in (WAGE_BASE, INCIDENCE_CAP):
+        assert replayed[path] == baseline[path], path
     for year in range(2027, END_YEAR + 1):
         assert _value_of(replayed, OWNERS_DRAW_CAP, year) == COPY_POLICY_CAP, year
 
@@ -323,5 +332,5 @@ def test_any_cap_only_policy_leaves_the_wage_base_and_the_copy(data, policy_firs
         reform_set = reform_set[::-1]
     replayed = _replay(reform_set)
     baseline, _ = _run(False)
-    assert replayed[WAGE_BASE] == baseline[WAGE_BASE]
-    assert replayed[OWNERS_DRAW_CAP] == baseline[OWNERS_DRAW_CAP]
+    for path in (WAGE_BASE, *COPIES):
+        assert replayed[path] == baseline[path], path

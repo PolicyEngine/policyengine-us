@@ -15,5 +15,6 @@ class employment_income(Variable):
     adds = [
         "employment_income_before_lsr",
         "employment_income_behavioral_response",
+        "employer_payroll_tax_fixed_employer_cost_change",
     ]
     reference = "https://www.law.cornell.edu/uscode/text/26/3401#a"

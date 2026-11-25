@@ -685,6 +685,10 @@ def clone_spm_system(system, *, copy_receipts=True, parameters=None):
     cloned.spm_forecast_provider = system.spm_forecast_provider.snapshot(
         copy_receipts=copy_receipts
     )
+    # The record a default system keeps to derive reform systems holds its
+    # own variable objects, which the clone has replaced: keeping it would
+    # keep those objects alive for as long as the clone.
+    cloned.__dict__.pop("_unreformed_build", None)
     # A clone owns its tree outright, but it does not keep it to itself: a
     # branch copies the system, and another simulation can be built on it, at
     # which point a reform must clone before it writes. ``plain_policy_copy``
@@ -1002,9 +1006,7 @@ class SPMSimulationMixin:
         if supplied is None:
             if reform is not None:
                 chosen = with_parameter_barrier(
-                    self.default_tax_benefit_system(
-                        reform=reform, spm=config, start_instant=start_instant
-                    )
+                    self._reform_system(reform, config, start_instant)
                 )
             else:
                 # No reform and no supplied system: nothing distinguishes this
@@ -1040,6 +1042,28 @@ class SPMSimulationMixin:
         return (), {
             key: value for key, value in arguments.arguments.items() if key != "self"
         }
+
+    def _reform_system(self, reform, config, start_instant):
+        """The system ``default_tax_benefit_system(reform=...)`` would build.
+
+        Derive it from the shared default system when that system can give
+        the same result (``CountryTaxBenefitSystem.can_derive_reform_systems``),
+        which skips loading and processing every parameter and variable file.
+        Otherwise build it.
+        """
+        default = self.default_tax_benefit_system_instance
+        can_derive = getattr(default, "can_derive_reform_systems", None)
+        if (
+            type(default) is self.default_tax_benefit_system
+            and can_derive is not None
+            and can_derive()
+        ):
+            return default.derive_reform_system(
+                reform, start_instant=start_instant, spm=config
+            )
+        return self.default_tax_benefit_system(
+            reform=reform, spm=config, start_instant=start_instant
+        )
 
     def clone(self, debug=False, trace=False, clone_tax_benefit_system=True):
         """Retain cached-result receipts while isolating future calculations."""

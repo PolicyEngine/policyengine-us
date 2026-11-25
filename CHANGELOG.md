@@ -1,3 +1,24 @@
+## [2.154.0] - 2026-11-25
+
+### Added
+
+- Wages now hold each worker's federal employer cost fixed when a reform changes federal employer payroll taxes or which pay counts as payroll wages, so income and employee payroll taxes fall with the wages an employer tax increase lowers. The new gov.simulation.employer_payroll_tax_incidence.employee_share parameter, 1 by default, sets the share passed to wages.
+
+
+## [2.153.10] - 2026-11-25
+
+### Fixed
+
+- The traced-simulation isolation test no longer depends on core recording its own abolition check, which PolicyEngine/policyengine-core#664 stops, and now checks that when traced simulations share the imported parameter tree, a dated read through a simulation's own parameter root is recorded in that simulation's tracer.
+
+
+## [2.153.9] - 2026-11-25
+
+### Changed
+
+- Build a reform's tax-benefit system from the already-built default system instead of reloading every parameter and variable file.
+
+
 ## [2.153.8] - 2026-11-23
 
 ### Changed
