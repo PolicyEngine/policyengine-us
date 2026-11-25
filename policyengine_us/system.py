@@ -298,7 +298,7 @@ def _rebuild_baseline_branch(simulation):
     # baseline read that input in place of its own formula. A dropped holder
     # takes its inputs with it, and the baseline would calculate one the
     # caller gave, so it refuses such an input first.
-    rebuilt._refuse_inputs_baseline_policy_drops(simulation)
+    rebuilt._refuse_inputs_baseline_policy_drops()
     rebuilt._drop_holders_built_for_another_policy()
     rebuilt._rebind_holders()
     rebuilt._isolate_parameter_tracing()

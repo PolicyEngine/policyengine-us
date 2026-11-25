@@ -784,7 +784,7 @@ class SPMSimulationMixin:
         # Core switches the baseline system after cloning its populations.
         baseline = self.branches.get("baseline")
         if baseline is not None:
-            baseline._refuse_inputs_baseline_policy_drops(self)
+            baseline._refuse_inputs_baseline_policy_drops()
             baseline._drop_holders_built_for_another_policy()
         self._rebind_holders()
         # Core sets ``trace`` before this simulation owns its policy state.
@@ -865,10 +865,10 @@ class SPMSimulationMixin:
         ``ETERNITY`` variable, therefore cannot hold the baseline's
         definition. Drop it with its recorded inputs, as core 3.32.21 and
         later do in ``_bind_to_tax_benefit_system``; core 3.32.8 keeps it.
-        The arm then calculates such a variable. Where it would drop an input,
-        a baseline arm first refuses it
+        The arm then calculates such a variable. Where it would drop an input
+        it holds a key for, a baseline arm first refuses it
         (``_refuse_inputs_baseline_policy_drops``); the behavioural-response
-        measurement branch drops it and calculates the variable.
+        measurement branch drops it and calculates the variable, as on main.
 
         A simulation given a reform by ``apply_reform`` does not call this:
         core's own ``_bind_to_tax_benefit_system`` drops a holder the new
@@ -890,20 +890,26 @@ class SPMSimulationMixin:
                 name for name in self.input_variables if name not in dropped
             ]
 
-    def _refuse_inputs_baseline_policy_drops(self, source):
+    def _refuse_inputs_baseline_policy_drops(self):
         """Raise, naming each variable, if this baseline arm drops an input.
 
-        ``source`` is the reform simulation this arm was branched from. The
-        arm drops each holder ``source`` built for the reform's definition of
-        a variable that baseline policy's definition cannot use, with its
+        The arm drops each holder built for the reform's definition of a
+        variable that baseline policy's definition cannot use, with its
         inputs, and calculates the variable
-        (``_drop_holders_built_for_another_policy``).
-        Where the caller gave that variable an input, the arm, and the S0 the
-        dataset rule reads from it, would rest on a value the caller never
-        gave, so refuse it. Core's ``_bind_to_tax_benefit_system`` drops such
-        holders, with their keys, before construction or ``subsample`` reaches
-        this, so read ``source``'s holders and core's record of its inputs,
-        ``_user_input_keys``.
+        (``_drop_holders_built_for_another_policy``). Where the caller gave
+        that variable an input, the arm, and the S0 the dataset rule reads
+        from it, would rest on a value the caller never gave, so refuse it.
+
+        This reads the arm's own holders and core's record of the arm's
+        inputs, ``_user_input_keys``, and matches a recorded input by
+        variable name alone: the keys the arm copied from the reform keep the
+        reform's branch name. Only the country simulations' rebuild of the arm
+        at the end of construction (``system._rebuild_baseline_branch``)
+        hands this an arm that still holds such a holder with its keys. Where
+        core builds the arm, in construction and in ``subsample``, its
+        ``_bind_to_tax_benefit_system`` has already dropped both, so an input
+        set after construction and then subsampled is dropped and calculated,
+        as on main.
         """
         variables = self.tax_benefit_system.variables
         recorded = {key[0] for key in getattr(self, "_user_input_keys", ())}
@@ -1167,7 +1173,7 @@ class SPMSimulationMixin:
             # behavioural responses, holders bound to its own policy, and that
             # policy's tracing primed for this arm.
             baseline.baseline = None
-            baseline._refuse_inputs_baseline_policy_drops(self)
+            baseline._refuse_inputs_baseline_policy_drops()
             baseline._drop_holders_built_for_another_policy()
             baseline._rebind_holders()
             baseline._isolate_parameter_tracing()
