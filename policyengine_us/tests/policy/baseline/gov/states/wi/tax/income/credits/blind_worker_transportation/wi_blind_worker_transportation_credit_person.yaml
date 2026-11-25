@@ -1,0 +1,377 @@
+# Independent source-derived cases; approved shared contract 2ead16da46986b3aa3230b4c274d1ed1ac213b282bbf98291111a7045503e51b.
+# Wis. Stat. 71.07(11), chapter 71 PDF pages 56 and 58; 2025 Form 1 instructions pages 17-18.
+# Supplied expenses are already source-qualified net payments; this file does not classify receipts.
+
+- name: "Case 1, no credit before the statutory 2024 onset."
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 2, the credit starts in 2024."
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 1500
+
+- name: "Case 3, known zero net qualifying payments."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 4, negative supplied expenses do not produce a negative credit."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: -100
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 5, just below the claimant expense cap."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 2998
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 1499
+
+- name: "Case 6, at the claimant expense cap."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 1500
+
+- name: "Case 7, above the claimant expense cap."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3002
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 1500
+
+- name: "Case 8, a nonblind filer does not qualify."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: false
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 9, no positive wage or dependent elsewhere gate is added."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        head_is_dependent_elsewhere: true
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 500
+
+- name: "Case 10, joint spouse qualifies and nonclaimant member does not."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: false
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person3:
+        age: 19
+        tax_unit_role_input: "DEPENDENT"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2", "person3"]
+        filing_status: "JOINT"
+    marital_units:
+      couple:
+        members: ["person1", "person2"]
+      dependent:
+        members: ["person3"]
+    households:
+      household:
+        members: ["person1", "person2", "person3"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [0, 500, 0]
+
+- name: "Case 11, a spouse role alone is not a joint return claimant."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: false
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person3:
+        age: 19
+        tax_unit_role_input: "DEPENDENT"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2", "person3"]
+        filing_status: "SEPARATE"
+    marital_units:
+      couple:
+        members: ["person1", "person2"]
+      dependent:
+        members: ["person3"]
+    households:
+      household:
+        members: ["person1", "person2", "person3"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [0, 0, 0]
+
+- name: "Case 12, source qualified net input after disjoint reimbursement and deducted ABLE exclusions."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 2000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 1000
+
+
+# Cases 13-16 cover input/default and jurisdiction boundaries and supplied
+# filing statuses. They do not validate upstream filing-status eligibility.
+- name: "Case 13, omitted qualified expense input assumes the default zero."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        # Expenses are deliberately omitted: default zero is an assumption,
+        # not verification that this claimant paid no qualifying expenses.
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        filing_status: "SINGLE"
+    marital_units:
+      marital_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 14, equivalent supplied expenses outside Wisconsin do not produce a Wisconsin component."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        filing_status: "SINGLE"
+    marital_units:
+      marital_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "NY"
+  output:
+    wi_blind_worker_transportation_credit_person: 0
+
+- name: "Case 15, supplied head of household status permits only the head component."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person2:
+        age: 17
+        is_blind: true
+        tax_unit_role_input: "DEPENDENT"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        # The filing status is supplied; this is not a qualification test.
+        filing_status: "HEAD_OF_HOUSEHOLD"
+    marital_units:
+      parent:
+        members: ["person1"]
+      dependent:
+        members: ["person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [500, 0]
+
+- name: "Case 16, supplied surviving spouse status permits only the head component."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+      person2:
+        age: 17
+        is_blind: true
+        tax_unit_role_input: "DEPENDENT"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        # The filing status is supplied; this is not a qualification test.
+        filing_status: "SURVIVING_SPOUSE"
+    marital_units:
+      parent:
+        members: ["person1"]
+      dependent:
+        members: ["person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [500, 0]
