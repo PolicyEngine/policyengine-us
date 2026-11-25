@@ -192,3 +192,92 @@
     # Senior cap band 2024 (age >= 65) = 2000 binds: credit = min(4000, 2000) = 2000.
     me_property_tax_fairness_credit: 2_000
   absolute_error_margin: 0.01
+
+- name: Case 10, an ordinary veteran gets the natural 2025 credit without the additional match.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 1_200
+        rent: 0
+        is_veteran: true
+        veterans_benefits: 1_000
+        is_va_100_percent_permanent_service_connected_disabled_veteran: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # 2025 Schedule PTFC lines 6/9: property taxes 1200; rent 0.
+    # Line 10: 4% * income 10000 = 400. Lines 11/13: 1200 - 400 = 800,
+    # below the non-senior limit 1000. Line 14a: no exact qualification,
+    # so no match. Line 16: min(800, actual property taxes 1200) = 800.
+    me_sales_and_property_tax_fairness_credit_income: 10_000
+    me_property_tax_fairness_credit_veterans_cap: 0
+    me_property_tax_fairness_credit: 800
+  absolute_error_margin: 0.01
+
+- name: Case 11, exact qualification with zero VA cash reaches the actual-expense ceiling.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 1_200
+        rent: 0
+        veterans_benefits: 0
+        is_va_100_percent_permanent_service_connected_disabled_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Lines 11/13: min(1200 - 4% * 10000, 1000) = 800 ordinary credit.
+    # Lines 14a/15: exact qualification adds 800, giving 1600.
+    # Line 16 and 36 MRSA 5219-KK(2-E): min(1600, actual taxes 1200) = 1200.
+    # Neither positive VA cash nor a separate generic-veteran flag is needed.
+    me_sales_and_property_tax_fairness_credit_income: 10_000
+    me_property_tax_fairness_credit_veterans_cap: 800
+    me_property_tax_fairness_credit: 1_200
+  absolute_error_margin: 0.01
+
+- name: Case 12, coarse disability flags do not infer the exact fact in a natural 2025 claim.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 1_200
+        rent: 0
+        is_veteran: true
+        veterans_benefits: 1_000
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
+        # The exact input is omitted: its explicit false default applies.
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    # Same form arithmetic as Case 10: ordinary credit 800, no exact match.
+    # The broad flags' conjunction does not prove Maine's actual VA rating.
+    me_sales_and_property_tax_fairness_credit_income: 10_000
+    me_property_tax_fairness_credit_veterans_cap: 0
+    me_property_tax_fairness_credit: 800
+  absolute_error_margin: 0.01
