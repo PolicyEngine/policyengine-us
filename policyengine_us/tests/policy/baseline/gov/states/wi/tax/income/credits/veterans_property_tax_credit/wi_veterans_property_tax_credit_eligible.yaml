@@ -1,0 +1,40 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Statute(a)1/1m/2/3 recognizes the three routes, including spouse separate returns.
+# Permission covers an actual known deadline/claim bar. Actual incompatible claim includes own farmland or spouse School/Homestead/farmland.
+# Retirement subtraction bars71.07credits; known eligible elections survive zero or unknown own tax.
+- name: Case 1, each claimant route and independent legal gate is respected.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI, WI, WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 3_000, 3_000, -1, 0]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, UNREMARRIED_SURVIVOR, ELIGIBLE_SPOUSE_SEPARATE_RETURN, NOT_ELIGIBLE, UNKNOWN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, false, true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true, false, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true, true, false, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true, true, true, true, true, true, false, true, true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false, false, false, false, true, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, true, true, true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false, false, false, false, false, true, false, false]
+    age: [35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 70, 35, 35]
+    taxable_pension_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24_000, 0, 0]
+    filing_status: [SINGLE, SINGLE, SEPARATE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+  output:
+    wi_veterans_property_tax_credit_eligible: [true, true, true, false, false, false, false, false, false, false, false, true, true]
+    wi_veterans_property_tax_credit: [3_000, 3_000, 3_000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+# Generic tax, age and residence facts do not supply WDVA, property, election or spouse facts.
+- name: Case 2, default program facts do not establish an eligible claim.
+  period: 2025
+  input:
+    state_code: WI
+    real_estate_taxes: 5_000
+    age: 70
+    filing_status: SINGLE
+  output:
+    wi_veterans_property_tax_credit_eligible: false
+    wi_veterans_property_tax_credit_eligibility_available: false
+    wi_veterans_property_tax_credit_inputs_available: false
+    wi_veterans_property_tax_credit_coordination_available: false

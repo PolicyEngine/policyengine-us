@@ -1,0 +1,161 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Statute71.07(9)(b): SINGLE potential12%of2500=300; MFS ceiling150before exclusion.
+# Statute(6e)(c)2/Form1 p18: own active election or counterpart valid claim blocks it, including zero/unknown own dollars.
+- name: Case 1, actual family elections gate the School potential without depending on own dollars.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 0, -1, 3_000, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true, false, false, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, VALID_CLAIM, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, true, false]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false]
+    real_estate_taxes: [2_500, 2_500, 2_500, 2_500, 2_500, 2_500]
+    age: [35, 35, 35, 35, 35, 35]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SEPARATE, SEPARATE]
+  output:
+    wi_property_tax_credit_potential: [0, 0, 0, 300, 0, 0]
+
+# Hypothetical rate0does not cancel an actual active veterans claim.
+- name: Case 2, a zero-rate veterans reform retains the School election restriction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: false
+    real_estate_taxes: 2_500
+    gov.states.wi.tax.income.credits.veterans_property_tax_credit.rate: 0
+    age: 35
+    filing_status: SINGLE
+  output:
+    wi_property_tax_credit_potential: 0
+
+# Compatibility fixture with no veterans claim:12%of2500=300; no historical veterans award is asserted.
+- name: Case 3, prior supported School behavior is preserved without a veterans claim.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    real_estate_taxes: 2_500
+    rent: 0
+    age: 35
+    filing_status: SINGLE
+  output:
+    wi_property_tax_credit_potential: 300
+
+# Statute71.07(9)(b)/2025Form1 p18:12%of first1250for SEPARATE; ordinary base2500.
+# Statutory unrounded potential:1249x12%=149.88;2500is capped150for SEPARATE and300for SINGLE.
+- name: Case 4, the separate-return ceiling applies at and above its exact base boundary.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI]
+    age: [35, 35, 35, 35, 35, 35]
+    filing_status: [SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SINGLE]
+    real_estate_taxes: [0, 1_249, 1_250, 1_251, 2_500, 2_500]
+    rent: [0, 0, 0, 0, 0, 0]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, 0, 0, 0, 0, 0]
+    wi_veterans_property_tax_credit_claimant_type: [NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE]
+    wi_veterans_property_tax_credit_wdva_verified: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_property_qualified: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false]
+  output:
+    wi_property_tax_credit_potential: [0, 149.88, 150, 150, 150, 300]
+
+# Hypothetical reform only: separate_max500does not change ordinarymax300.
+# Uncapped tax6000x12%=720must be capped once at the selected limit, yielding500/300.
+- name: Case 5, a hypothetical separate ceiling above the ordinary ceiling retains the full base.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI]
+    age: [35, 35]
+    filing_status: [SEPARATE, SINGLE]
+    real_estate_taxes: [6_000, 6_000]
+    rent: [0, 0]
+    gov.states.wi.tax.income.credits.property_tax.separate_max: 500
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, 0]
+    wi_veterans_property_tax_credit_claimant_type: [NOT_ELIGIBLE, NOT_ELIGIBLE]
+    wi_veterans_property_tax_credit_wdva_verified: [false, false]
+    wi_veterans_property_tax_credit_property_qualified: [false, false]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true]
+    wi_veterans_property_tax_credit_elected: [false, false]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false]
+  output:
+    wi_property_tax_credit_potential: [500, 300]
+
+# Currentlaw2025Form1p18: marriedHOHmax150, unmarriedHOHmax300; full6000x12%=720.
+# UNKNOWNretainscompatibility300butisnotverifiedunmarried; separateavailabilitytestrecordsthatlimitation.
+- name: Case 6, head-of-household ceilings follow explicit legal marital facts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI, WI]
+    age: [35, 35, 35]
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    wi_school_property_tax_credit_marital_status: [MARRIED, UNMARRIED, UNKNOWN]
+    real_estate_taxes: [6_000, 6_000, 6_000]
+    rent: [0, 0, 0]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, 0, 0]
+    wi_veterans_property_tax_credit_claimant_type: [NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE]
+    wi_veterans_property_tax_credit_wdva_verified: [false, false, false]
+    wi_veterans_property_tax_credit_property_qualified: [false, false, false]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true]
+    wi_veterans_property_tax_credit_elected: [false, false, false]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false]
+  output:
+    wi_property_tax_credit_potential: [150, 300, 300]
+
+# Hypotheticalseparate_max500isnotcurrentlaw. Fulluncappedbase720usesselectedcaponce.
+# ItappliestoSEPARATEandknownmarriedHOH;unmarried/unknownHOHordinarycompatcapremains300.
+- name: Case 7, a hypothetical separate-ceiling reform covers both statutory married return routes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI, WI, WI]
+    age: [35, 35, 35, 35]
+    filing_status: [SEPARATE, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    wi_school_property_tax_credit_marital_status: [UNKNOWN, MARRIED, UNMARRIED, UNKNOWN]
+    real_estate_taxes: [6_000, 6_000, 6_000, 6_000]
+    rent: [0, 0, 0, 0]
+    gov.states.wi.tax.income.credits.property_tax.separate_max: 500
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, 0, 0, 0]
+    wi_veterans_property_tax_credit_claimant_type: [NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE, NOT_ELIGIBLE]
+    wi_veterans_property_tax_credit_wdva_verified: [false, false, false, false]
+    wi_veterans_property_tax_credit_property_qualified: [false, false, false, false]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [false, false, false, false]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false]
+  output:
+    wi_property_tax_credit_potential: [500, 500, 300, 300]

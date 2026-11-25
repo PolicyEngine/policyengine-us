@@ -1,0 +1,19 @@
+# Actual2025Form1 instructions p18 distinguishes married/unmarried head-of-household filers.
+# SHAREDv4 uses explicit legal/source-return marital status, never a family/partner heuristic.
+- name: Case 1, the ceiling is known for other filing statuses and for explicitly classified head-of-household filers.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI]
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, SEPARATE, SINGLE, JOINT]
+    wi_school_property_tax_credit_marital_status: [MARRIED, UNMARRIED, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN]
+  output:
+    wi_property_tax_credit_limit_available: [true, true, false, true, true, true]
+
+# DefaultUNKNOWNmustnotbeinterpretedasUNMARRIED; availabilitycertifiesonlytheceiling.
+- name: Case 2, an omitted head-of-household marital fact does not establish the ordinary ceiling.
+  period: 2026
+  input:
+    state_code: WI
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    wi_property_tax_credit_limit_available: false
