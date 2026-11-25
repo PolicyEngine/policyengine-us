@@ -906,10 +906,10 @@ class SPMSimulationMixin:
         ``_user_input_keys``.
         """
         variables = self.tax_benefit_system.variables
-        recorded = {key[0] for key in getattr(source, "_user_input_keys", ())}
+        recorded = {key[0] for key in getattr(self, "_user_input_keys", ())}
         names = sorted(
             name
-            for population in source.populations.values()
+            for population in self.populations.values()
             for name, holder in population._holders.items()
             if name in recorded
             and _built_for_another_policy(variables.get(name), population, holder)
