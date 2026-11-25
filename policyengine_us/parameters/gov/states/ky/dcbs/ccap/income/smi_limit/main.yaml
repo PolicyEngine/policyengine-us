@@ -1,23 +1,39 @@
 description: Kentucky limits gross monthly income to this amount, by family size, under the Child Care Assistance Program.
+# The 2015 entries retain the model's existing fallback to the October 2023
+# amounts for months before the July 2022 schedule.
 2:
+  2015-01-01: 4_217
+  2022-07-01: 3_743
   2023-10-01: 4_217
   2025-10-01: 4_862
 3:
+  2015-01-01: 5_210
+  2022-07-01: 4_623
   2023-10-01: 5_210
   2025-10-01: 6_005
 4:
+  2015-01-01: 6_202
+  2022-07-01: 5_504
   2023-10-01: 6_202
   2025-10-01: 7_149
 5:
+  2015-01-01: 7_194
+  2022-07-01: 6_384
   2023-10-01: 7_194
   2025-10-01: 8_293
 6:
+  2015-01-01: 8_186
+  2022-07-01: 7_265
   2023-10-01: 8_186
   2025-10-01: 9_437
 7:
+  2015-01-01: 8_372
+  2022-07-01: 7_430
   2023-10-01: 8_372
   2025-10-01: 9_651
 8:
+  2015-01-01: 8_559
+  2022-07-01: 7_595
   2023-10-01: 8_559
   2025-10-01: 9_866
 metadata:
@@ -30,8 +46,10 @@ metadata:
   breakdown_label:
     - Family size
   reference:
+    - title: DCC-113 Facts About the CCAP — 85% SMI income table (R.10/22, effective July 1, 2022)
+      href: https://web.archive.org/web/20230829141446id_/https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc11319.pdf#page=2
     - title: DCC-113 Facts About the CCAP — 85% SMI income table (R.11/23, effective Oct 1, 2023)
-      href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc11319.pdf#page=2
+      href: https://web.archive.org/web/20240229000654id_/https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc11319.pdf#page=2
     - title: DCC-113 Facts About the CCAP — 85% SMI income table (R.12/24, effective Oct 1, 2025)
       href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc11319.pdf#page=2
     - title: 922 KAR 2:160 Section 9(5) — 85% of Kentucky SMI (42 U.S.C. 9858c(c)(2)(N))
