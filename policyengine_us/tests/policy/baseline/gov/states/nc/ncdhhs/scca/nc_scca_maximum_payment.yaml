@@ -20,6 +20,7 @@
       spm_unit:
         nc_scca_countable_income: 51_99
         members: [person1, person2, child1, child2]
+        nc_scca_need_eligible: true
     households:
       household:
         members: [person1, person2, child1, child2]
@@ -96,6 +97,7 @@
         # 2026 FPG for 3 = 2_276.67/mo; 133% = 3_027.97, 200% = 4_553.33.
         nc_scca_countable_income: 4_500
         members: [person1, child1, child2]
+        nc_scca_need_eligible: true
     households:
       household:
         members: [person1, child1, child2]
@@ -132,6 +134,7 @@
         # 2026 FPG for 4 = 2_750/mo; 133% = 3_657.50, 200% = 5_500.
         nc_scca_countable_income: 4_125
         members: [person1, child1, child2, child3]
+        nc_scca_need_eligible: true
     households:
       household:
         members: [person1, child1, child2, child3]
