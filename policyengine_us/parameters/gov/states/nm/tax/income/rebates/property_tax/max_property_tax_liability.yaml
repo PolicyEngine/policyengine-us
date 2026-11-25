@@ -1,7 +1,8 @@
 description: New Mexico provides the following maximum property tax liability for elderly homeowners.
 brackets:
   - threshold:
-      2021-01-01: 0
+      # Use the lower sentinel so the upper-inclusive lookup admits $0 MGI.
+      2021-01-01: -.inf
     amount:
       2021-01-01: 20
   - threshold:
