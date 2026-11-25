@@ -1,21 +1,224 @@
-- name: In 2023, the total expenses is 2_400, and parent fee is 800, the subsidy would be 1_400.
+- name: Case 1, in 2023, a child's $2,200 of charges less an $800 parent fee leaves $1,400.
   period: 2023
   input:
-    pre_subsidy_childcare_expenses: 1_000
-    after_school_expenses: 1_200
-    co_ccap_parent_fee: 800
-    co_ccap_eligible: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 1_000
+        after_school_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee: 800
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
   output:
     co_ccap_subsidy: 1_400
 
-- name: In 2022, the total annual expenses is 28_800, and parent fee for December is 800, the subsidy for December would be 1_400.
+- name: Case 2, in December 2022, a child's $2,200 of monthly charges less an $800 parent fee leaves $1,400.
   period: 2022
   input:
-    pre_subsidy_childcare_expenses: 12 * 1_000
-    after_school_expenses: 12 * 1_200 
-    co_ccap_parent_fee:
-      2022-12: 800
-    co_ccap_eligible: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12 * 1_000
+        after_school_expenses: 12 * 1_200
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee:
+          2022-12: 800
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
   output:
     co_ccap_subsidy:
       2022-12: 1_400
+
+- name: Case 3, a teenager without additional care needs adds nothing to the payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: CO
+  output:
+    co_ccap_child_eligible: [false, true, false]
+    # 8 CCR 1403-1 3.132(D) pays for children under 13: the 3-year-old's
+    # $1,000 a month less the $200 fee, and nothing toward the 15-year-old's
+    # $1,000.
+    co_ccap_subsidy: 800
+
+- name: Case 4, a teenager who can't care for themselves is an eligible child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: CO
+  output:
+    co_ccap_child_eligible: [false, true, true]
+    # 3.132(E) covers a child under 19 who can't care for themselves:
+    # $1,000 + $1,000 - $200.
+    co_ccap_subsidy: 1_800
+
+- name: Case 5, a teenager under court supervision is an eligible child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+        is_under_court_supervision: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: CO
+  output:
+    co_ccap_child_eligible: [false, true, true]
+    co_ccap_subsidy: 1_800
+
+- name: Case 6, a 13-year-old's after-school care adds nothing to the payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+      older_child:
+        age: 13
+        is_tax_unit_dependent: true
+        after_school_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, older_child]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, older_child]
+        state_code: CO
+  output:
+    co_ccap_child_eligible: [false, true, false]
+    # $1,000 - $200; the 13-year-old's $500 a month doesn't count.
+    co_ccap_subsidy: 800
+
+- name: Case 7, a 12-year-old's after-school care counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+      older_child:
+        age: 12
+        is_tax_unit_dependent: true
+        after_school_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, older_child]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, older_child]
+        state_code: CO
+  output:
+    co_ccap_child_eligible: [false, true, true]
+    # $1,000 + $500 - $200.
+    co_ccap_subsidy: 1_300
+
+- name: Case 8, a teenager's charge doesn't absorb a fee above the eligible child's charge.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 1_200
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        co_ccap_parent_fee: 200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: CO
+  output:
+    # The 3-year-old's $100 a month falls short of the $200 fee.
+    co_ccap_subsidy: 0
