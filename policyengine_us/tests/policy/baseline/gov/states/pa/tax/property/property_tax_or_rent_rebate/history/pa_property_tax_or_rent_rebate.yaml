@@ -1,0 +1,237 @@
+# Claim year 2026 covers 2026 income and property taxes or rent, not 2026 filing.
+# The Bulletin publishes whole-dollar bands; these cases do not choose a
+# fractional-income rounding rule.
+# https://www.pacodeandbulletin.gov/secure/pabulletin/data/vol56/56-30/1061.html
+# Stipulate one age-65 claimant per full-year PA primary residence, sole tenure,
+# no subsidy, cash public-assistance months, partial occupancy, or mixed claim.
+# Owner homes lie outside Philadelphia, Pittsburgh, and Scranton.
+# https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=3
+# https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=13
+
+- name: Case 1, sole homeowners receive the 2026 base amounts at each income boundary.
+  period: 2026
+  # Taxes of $1,000 cover the largest base rebate and remain below 15% of
+  # every income here, so the owner scenarios do not trigger a supplement.
+  input:
+    people:
+      person1:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person2:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person3:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person4:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person5:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person6:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person7:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+      person8:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 1_000
+        rent: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        pa_property_tax_or_rent_rebate_income: 8_900
+      tax_unit2:
+        members: [person2]
+        pa_property_tax_or_rent_rebate_income: 8_901
+      tax_unit3:
+        members: [person3]
+        pa_property_tax_or_rent_rebate_income: 16_700
+      tax_unit4:
+        members: [person4]
+        pa_property_tax_or_rent_rebate_income: 16_701
+      tax_unit5:
+        members: [person5]
+        pa_property_tax_or_rent_rebate_income: 20_030
+      tax_unit6:
+        members: [person6]
+        pa_property_tax_or_rent_rebate_income: 20_031
+      tax_unit7:
+        members: [person7]
+        pa_property_tax_or_rent_rebate_income: 50_080
+      tax_unit8:
+        members: [person8]
+        pa_property_tax_or_rent_rebate_income: 50_081
+    households:
+      household1:
+        members: [person1]
+        state_code: PA
+      household2:
+        members: [person2]
+        state_code: PA
+      household3:
+        members: [person3]
+        state_code: PA
+      household4:
+        members: [person4]
+        state_code: PA
+      household5:
+        members: [person5]
+        state_code: PA
+      household6:
+        members: [person6]
+        state_code: PA
+      household7:
+        members: [person7]
+        state_code: PA
+      household8:
+        members: [person8]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate: [1_000, 770, 770, 460, 460, 380, 380, 0]
+    pa_property_tax_or_rent_rebate_eligible: [true, true, true, true, true, true, true, false]
+
+- name: Case 2, sole renters receive the 2026 base amounts at each income boundary.
+  period: 2026
+  # Qualified annual rent of $10,000 supplies a $2,000 expense ceiling
+  # at the statutory 20% rate, above every ordinary base amount.
+  input:
+    people:
+      person1:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person2:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person3:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person4:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person5:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person6:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person7:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+      person8:
+        age: 65
+        tax_unit_role_input: HEAD
+        real_estate_taxes: 0
+        rent: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        pa_property_tax_or_rent_rebate_income: 8_900
+      tax_unit2:
+        members: [person2]
+        pa_property_tax_or_rent_rebate_income: 8_901
+      tax_unit3:
+        members: [person3]
+        pa_property_tax_or_rent_rebate_income: 16_700
+      tax_unit4:
+        members: [person4]
+        pa_property_tax_or_rent_rebate_income: 16_701
+      tax_unit5:
+        members: [person5]
+        pa_property_tax_or_rent_rebate_income: 20_030
+      tax_unit6:
+        members: [person6]
+        pa_property_tax_or_rent_rebate_income: 20_031
+      tax_unit7:
+        members: [person7]
+        pa_property_tax_or_rent_rebate_income: 50_080
+      tax_unit8:
+        members: [person8]
+        pa_property_tax_or_rent_rebate_income: 50_081
+    households:
+      household1:
+        members: [person1]
+        state_code: PA
+      household2:
+        members: [person2]
+        state_code: PA
+      household3:
+        members: [person3]
+        state_code: PA
+      household4:
+        members: [person4]
+        state_code: PA
+      household5:
+        members: [person5]
+        state_code: PA
+      household6:
+        members: [person6]
+        state_code: PA
+      household7:
+        members: [person7]
+        state_code: PA
+      household8:
+        members: [person8]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate: [1_000, 770, 770, 460, 460, 380, 380, 0]
+    pa_property_tax_or_rent_rebate_eligible: [true, true, true, true, true, true, true, false]
+
+- name: Case 3, a sole wage earner receives the 2026 base rebate from raw financial facts.
+  period: 2026
+  # Stipulate $50,000 of gross wages as the only income, no payroll deductions,
+  # and $2,000 of qualifying taxes on the sole full-year primary residence.
+  # Wages count in full (PA-1000 line 11a); income exceeds the separate
+  # $33,390 supplement ceiling. No programme-income or eligibility input
+  # supplies the result, and the case does not establish actual receipt.
+  # https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=8
+  input:
+    people:
+      person1:
+        age: 65
+        tax_unit_role_input: HEAD
+        employment_income_before_lsr: 50_000
+        real_estate_taxes: 2_000
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate: 380
+    pa_property_tax_or_rent_rebate_income: 50_000
+    pa_property_tax_or_rent_rebate_eligible: true
