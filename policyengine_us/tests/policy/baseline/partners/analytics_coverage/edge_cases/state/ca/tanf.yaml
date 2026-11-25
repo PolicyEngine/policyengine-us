@@ -1,9 +1,16 @@
 # CalWORKs (CA TANF) partner edge cases.
-# Parameter basis (2026): Region 1 non-exempt MAP (ACL 24-55, 2024-10-01):
+# Retained January-budget model premises, not actual twelve-month 2026 receipt:
+# Region 1 non-exempt MAP (ACL 24-55, 2024-10-01):
 #   size 2 = $930/mo, size 3 = $1,175/mo. Region 2 non-exempt size 3 = $1,115/mo.
-# MBSAC (income limit, 2025-07-01): Region 1 size 3 = $1,892/mo.
-# Applicant earned income disregard: $450/mo per earner; recipient disregard:
-#   $600/mo flat + 50% of remainder.
+# MBSAC, July 2025-June 2026: Region 1 size 3 = $1,892/mo (ACL 25-36, page 4).
+# Ordinary new applicants only; no special reapplication or adding-persons history.
+# The $450 applicant and $600 + 50% recipient deductions below are retained
+# illustration premises, not a ruling on January 2026 operative amounts:
+# https://github.com/TheAxiomFoundation/rulespec-us/issues/1760
+# Strict applicant rule and linked changes: WIC 11450.12(a)(1)-(2).
+# https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11450.12.
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-36.pdf#page=4
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-130.pdf#page=3
 - name: tanf_max_benefit_region1_size3_no_income (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -184,9 +191,9 @@
   output:
     spm_units:
       spm_unit:
-        # $2,000/mo earned; applicant test: (2,000 - 450) = 1,550 <= 1,892 MBSAC -> eligible.
-        # Recipient countable: (2,000 - 600) x 50% = $700/mo.
-        # Grant: (1,175 - 700) x 12 = $5,700.
+        # At the retained $450 applicant premise: 2,000 - 450 = 1,550 < 1,892 MBSAC.
+        # At the retained $600 recipient premise: (2,000 - 600) x 50% = $700/mo.
+        # Grant illustration: (1,175 - 700) x 12 = $5,700.
         ca_tanf: 5_700.0
         tanf: 5_700.0
 - name: tanf_earnings_at_applicant_income_limit_28104 (ca)
@@ -247,11 +254,11 @@
   output:
     spm_units:
       spm_unit:
-        # $2,342/mo earned; applicant countable (2,342 - 450) = 1,892 = MBSAC exactly
-        # -> still eligible (<=). Recipient countable: (2,342 - 600) x 50% = $871/mo.
-        # Grant: (1,175 - 871) x 12 = $3,648.
-        ca_tanf: 3_648.0
-        tanf: 3_648.0
+        # $2,342/mo less an exemption at most $450 leaves at least $1,892 MBSAC.
+        # Strict < fails before grant calculation, regardless of recipient cash.
+        # $450 is the model-equality premise, not a certified January deduction.
+        ca_tanf: 0.0
+        tanf: 0.0
 - name: tanf_earnings_above_applicant_income_limit_28224 (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -310,7 +317,7 @@
   output:
     spm_units:
       spm_unit:
-        # $2,352/mo earned; applicant countable (2,352 - 450) = 1,902 > 1,892 MBSAC
+        # Even at the largest linked exemption: 2,352 - 450 = 1,902 > 1,892 MBSAC
         # -> fails applicant financial test (income route).
         ca_tanf: 0.0
         tanf: 0.0
