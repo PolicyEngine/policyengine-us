@@ -1,0 +1,216 @@
+# Regular service subsidy capacity for otherwise qualified households.
+# These component premises hold annual qualification and Tribal status fixed.
+# Assume uniform nonnegative annual post-Lifeline cost / 12 and funded
+# billing-month caps; YEAR outputs do not establish actual receipt.
+# Legacy controls assume statutory qualification plus pre-cutoff provider/NLAD
+# enrollment and continuing eligibility/use. May 2024 assumes provider election
+# and a continuing enrolled household. Enhanced benefits in high-cost areas
+# and device benefits fall outside these regular service controls.
+# Sources:
+# https://docs.fcc.gov/public/attachments/FCC-22-2A1.pdf#page=3
+# https://docs.fcc.gov/public/attachments/DA-21-1524A1.pdf#page=4
+# https://docs.fcc.gov/public/attachments/DA-21-1654A1.pdf#page=3
+# https://docs.fcc.gov/public/attachments/DA-24-195A1.pdf#page=1
+# https://docs.fcc.gov/public/attachments/DA-24-342A1.pdf#page=1
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title47/html/USCODE-2021-title47-chap16.htm
+
+# No funded EBB or ACP month before the 2021 launches.
+- name: "Case 1, The FCC funds no 2017 service months for either program."
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# Both regular funding calendars are inactive.
+- name: "Case 2, The FCC funds no 2018 Tribal service months for either program."
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# Both regular funding calendars are inactive.
+- name: "Case 3, The FCC funds no 2019 service months for either program."
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# Both regular funding calendars are inactive.
+- name: "Case 4, The FCC funds no 2020 Tribal service months for either program."
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# B/12 = 100; May–December 8 × 50 = 400; ACP has no separate 2021 slot.
+- name: "Case 5, EBB covers eight 2021 months at the regular non-Tribal maximum."
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 400
+    acp: 0
+
+# B/12 = 100; May–December 8 × 75 = 600; ACP 0.
+- name: "Case 6, EBB covers eight 2021 months at the Tribal maximum."
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 600
+    acp: 0
+
+# B/12 = 20; eight funded months × 20 = 160, not the full annual 240.
+- name: "Case 7, EBB covers only eight months of a lower uniform 2021 service cost."
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 240
+  output:
+    ebb: 160
+    acp: 0
+
+# B/12 = 100; legacy Jan–Feb 2 × 50 = 100; ACP Mar–Dec 10 × 30 = 300.
+- name: "Case 8, A qualified legacy household receives two EBB and ten ACP funding months."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 100
+    acp: 300
+
+# B/12 = 100; two legacy months × 75 = 150; ten ACP months × 75 = 750.
+- name: "Case 9, A qualified Tribal legacy household receives both transition components."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 150
+    acp: 750
+
+# B/12 = 40; EBB 2 × 40 = 80; ACP 10 × 30 = 300; combined 380 ≤ 480.
+- name: "Case 10, A legacy household pays less than the EBB cap but more than the ACP cap."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 480
+  output:
+    ebb: 80
+    acp: 300
+
+# B/12 = 50; EBB 2 × 50 = 100; ACP 10 × 50 = 500; combined 600 = B.
+- name: "Case 11, A Tribal legacy household uses its uniform monthly cost only once."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 600
+  output:
+    ebb: 100
+    acp: 500
+
+# Stipulated Lifeline 120 deducted from broadband 360 gives B 240; B/12 = 20; EBB 40 +
+# ACP 200 = 240.
+# Lifeline 120 is a stipulated intermediate benefit; its derivation/actual receipt is
+# not tested.
+- name: "Case 12, Lifeline reduces the annual cost before both transition components."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost: 360
+    lifeline: 120
+  output:
+    broadband_cost_after_lifeline: 240
+    ebb: 40
+    acp: 200
+
+# The selected nonnegative domain floors B at 0; both computed payments 0.
+- name: "Case 13, A negative intermediate annual cost cannot create a negative subsidy."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: -120
+  output:
+    ebb: 0
+    acp: 0
+
+# B/12 = 0; each computed payment 0.
+- name: "Case 14, A zero annual service cost leaves both payments at zero."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 0
+  output:
+    ebb: 0
+    acp: 0
+
+# B/12 = 1/12; eight funded months give 8/12 = 2/3. A monthly cent floor would wrongly
+# give 0.64.
+- name: "Case 15, Uniform allocation retains fractional monthly costs without a cent floor."
+  period: 2021
+  absolute_error_margin: 0.000001
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1
+  output:
+    ebb: 0.6666666666666666
+    acp: 0
