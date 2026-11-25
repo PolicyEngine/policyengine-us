@@ -12,9 +12,18 @@ entity or all-time storage fails it, and so does one that passes
 than a class defined in its own file.
 
 A reform's class that leaves out ``entity`` or ``definition_period`` keeps
-the baseline variable's, so a missing attribute counts as unchanged. The
-second test checks that the scan flags the reforms this package's tests build
-to store a variable apart.
+the baseline variable's, so a missing attribute counts as unchanged. The scan
+reads two forms at the top level of a class body: a plain assignment
+(``definition_period = ETERNITY``) and an annotated one with a value
+(``definition_period: str = ETERNITY``). It doesn't read a tuple target
+(``entity, definition_period = ...``), an augmented assignment, an assignment
+inside an ``if`` or a loop in the class body, an attribute set on the class
+after its ``class`` statement or through ``setattr``, or an attribute the
+class inherits from a base other than ``Variable`` or a baseline variable.
+
+The second test checks that the scan flags the reforms this package's tests
+build to store a variable apart, and the third that it reads the annotated
+form.
 """
 
 import ast
@@ -69,7 +78,21 @@ def variable_classes(path):
                 for target in statement.targets:
                     if isinstance(target, ast.Name) and target.id in ATTRIBUTES:
                         attributes[target.id] = statement.value
+            elif (
+                isinstance(statement, ast.AnnAssign)
+                and statement.value is not None
+                and isinstance(statement.target, ast.Name)
+                and statement.target.id in ATTRIBUTES
+            ):
+                attributes[statement.target.id] = statement.value
         yield node.name, attributes, node.lineno
+
+
+def label(path):
+    """``path`` from the repository root, or in full outside it."""
+    if path.is_relative_to(PACKAGE.parent):
+        return path.relative_to(PACKAGE.parent)
+    return path
 
 
 @cache
@@ -91,7 +114,7 @@ def stored_apart(files):
         for name, attributes, line in variable_classes(path):
             if name not in baseline:
                 continue
-            where = f"{name} ({path.relative_to(PACKAGE.parent)}:{line})"
+            where = f"{name} ({label(path)}:{line})"
             for key, value in attributes.items():
                 mine, theirs = named(value), baseline[name].get(key)
                 if mine is None or theirs is None:
@@ -125,10 +148,7 @@ def changes_the_scan_cannot_see(files):
                 defined.add(node.target.id)
         for match in CHANGES.finditer(text):
             if match.group(2) not in defined:
-                found.append(
-                    f"{match.group(1)}({match.group(2)}) in "
-                    f"{path.relative_to(PACKAGE.parent)}"
-                )
+                found.append(f"{match.group(1)}({match.group(2)}) in {label(path)}")
     return found
 
 
@@ -147,3 +167,21 @@ def test_the_scan_flags_reforms_built_to_store_a_variable_apart():
         [tests / "test_reform_baseline_arm_inputs.py", tests / "test_spm_system.py"]
     )
     assert {"child_care_subsidies", "is_household_head"} <= {name for name, _ in apart}
+
+
+def test_the_scan_reads_an_annotated_assignment(tmp_path):
+    """``definition_period: str = ETERNITY`` sets the class attribute as the
+    plain assignment does, so the scan flags a reform that stores
+    ``child_care_subsidies`` for all time that way."""
+    reform = tmp_path / "annotated_reform.py"
+    reform.write_text(
+        "from policyengine_core.periods import ETERNITY\n"
+        "from policyengine_core.variables import Variable\n"
+        "\n"
+        "\n"
+        "class child_care_subsidies(Variable):\n"
+        "    definition_period: str = ETERNITY\n"
+    )
+    apart, unresolved = stored_apart([reform])
+    assert [name for name, _ in apart] == ["child_care_subsidies"]
+    assert unresolved == []
