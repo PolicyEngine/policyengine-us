@@ -1,0 +1,53 @@
+description: Idaho counts these income sources as income from employment in the employment test of the military retirement benefits deduction.
+values:
+  # The list applies from 2021 so the formula can read it in every year;
+  # in_effect.yaml turns the employment test on from 2025. Each source is
+  # gross income as the section 6012 test that 63-3022A(1)(b)(iii) borrows
+  # measures it.
+  2021-01-01:
+    # Wages (Form 1040 line 1a). irs_employment_income leaves out all
+    # employer dependent care benefits.
+    - irs_employment_income
+    # The taxable part of those benefits: Form 2441 line 26 (Form 1040 line
+    # 1e) as taxable_dependent_care_benefits computes it, the W-2 box 10
+    # benefits less the excluded amount (line 25). Section 129(a)(1)
+    # excludes only dependent care assistance, which (e)(1) ties to
+    # qualified expenses (line 16,
+    # dependent_care_assistance_qualified_expenses); section 129(b) limits
+    # the exclusion to earned income; and section 129(a)(2)(B) includes the
+    # excess over the dollar limit of (a)(2)(A).
+    - taxable_dependent_care_benefits
+    # Idaho Code 63-3022A(1)(b)(iii) ("Was employed during the tax year and
+    # received sufficient income from such employment") doesn't define
+    # employment, and the Form 39R line 8e instructions repeat its words.
+    # PolicyEngine counts income from a business or farm as income from
+    # employment: the section 6012 gross income test that the statute
+    # borrows counts it, and a self-employed recipient works for the income
+    # as an employee does. Chart A of the Form 1040 instructions measures it
+    # as gross income, Schedule C line 7 and Schedule F line 9, before
+    # business expenses. Each person's own business_gross_income_reported
+    # and farm_gross_income_reported supply them; without those inputs that
+    # person's net profits, each floored at zero, stand in.
+    - business_gross_income
+    - farm_gross_income
+    # Foreign earned income and housing amounts the person excludes under
+    # section 911 (own Form 2555 line 43, lines 36 and 42): section 6012(c)
+    # computes gross income for the filing requirement without the
+    # exclusion. The line 50 housing deduction is a deduction under section
+    # 911(c)(4), not an exclusion, and doesn't count.
+    - foreign_earned_income_exclusion_gross_person
+metadata:
+  unit: list
+  period: year
+  label: Idaho military retirement benefits deduction employment income sources
+  reference:
+    - title: Idaho Code 63-3022A(1)(b)(iii)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: Idaho Individual Income Tax Instructions Packet 2025, Form 39R line 8e
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+    - title: 26 U.S. Code § 6012(c) - gross income without the section 911 exclusion
+      href: https://www.law.cornell.edu/uscode/text/26/6012#c
+    - title: 26 U.S. Code § 129 - exclusion for dependent care assistance and its limits
+      href: https://www.law.cornell.edu/uscode/text/26/129
+    - title: 2025 Form 1040 instructions, Chart A (gross income from a business)
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=9

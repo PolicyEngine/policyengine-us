@@ -103,6 +103,155 @@
   output:
     id_retirement_benefits_deduction: 30_000
 
+# Military retirement benefits under the deduction's cap from 2025 (Idaho
+# Code 63-3022A(1)(b), (2) and (3); Form 39R lines 8a to 8f). The cap is
+# $48,216 single and $72,324 joint for 2025, and $0 on a separate return. The
+# model reduces it by the head's and spouse's Social Security retirement
+# benefits. 63-3022A(3) and line 8b also subtract Railroad Retirement Act
+# benefits, which the model does not subtract yet.
+
+- name: 2025 military retired pay and a public pension share the $48,216 single cap.
+  period: 2025
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 40_000
+    public_pension_income: 20_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 60_000
+    id_retirement_benefits_deduction: 48_216
+
+- name: 2025 Social Security benefits reduce the cap on military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 66
+    military_retirement_pay: 40_000
+    social_security_retirement: 20_000
+  output:
+    # 48,216 - 20,000
+    id_retirement_benefits_deduction: 28_216
+
+- name: 2025 retired couple's Social Security reduces the $72,324 joint cap.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 67
+        military_retirement_pay: 45_000
+        social_security_retirement: 30_000
+      spouse:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_relevant_income: [45_000, 0]
+    # 72,324 - 30,000
+    id_retirement_benefits_deduction: 42_324
+
+- name: 2025 a married retiree filing separately cannot deduct military retired pay.
+  period: 2025
+  input:
+    people:
+      retiree:
+        # Aged 63, so the pay counts under 63-3022A(1)(b)(ii), and too young
+        # for the Medicare premiums that id_subtractions would otherwise
+        # include.
+        age: 63
+        military_retirement_pay: 30_000
+      spouse:
+        age: 63
+    marital_units:
+      couple:
+        members: [retiree, spouse]
+    tax_units:
+      retiree_return:
+        members: [retiree]
+        filing_status: SEPARATE
+      spouse_return:
+        members: [spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_relevant_income: [30_000, 0]
+    id_retirement_benefits_deduction: [0, 0]
+    # Idaho Code 63-3022A(2)(e): nothing comes off either return.
+    id_subtractions: [0, 0]
+
+- name: 2025 an unremarried widow under 62 without a job or disability cannot deduct survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_retirement_benefits_deduction: 0
+    id_subtractions: 0
+
+- name: 2025 a working unremarried widow under 62 deducts survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 50
+    is_surviving_spouse: true
+    employment_income: 20_000
+    military_retirement_pay_survivors: 25_000
+  output:
+    # Idaho Code 63-3022A(1)(b)(iii) applies to the unremarried widow or
+    # widower as to the member, and $20,000 of wages exceeds the $15,750
+    # single threshold. IDAPA 35.01.01.130.02 names age 65, or 62 and
+    # disabled, for survivors whose deceased spouse wasn't eligible, without
+    # making those the only routes.
+    id_retirement_benefits_deduction_military_eligible_person: true
+    id_retirement_benefits_deduction: 25_000
+    id_subtractions: 25_000
+
+- name: 2025 a 45-year-old receiving Social Security disability benefits deducts military retired pay.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    social_security_disability: 10_000
+    military_retirement_pay: 20_000
+  output:
+    # The SSDI award is recognition as disabled by the Social Security
+    # Administration (Idaho Code 63-701(1)(d)), which 63-3022A(4) adopts.
+    # The model reduces the cap by Social Security retirement benefits only.
+    id_retirement_benefits_deduction_disabled: true
+    id_retirement_benefits_deduction: 20_000
+    id_subtractions: 20_000
+
+- name: 2025 an unremarried widow aged 62 deducts survivor benefits.
+  period: 2025
+  input:
+    state_code: ID
+    age: 62
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_retirement_benefits_deduction: 25_000
+
+- name: 2025 the deduction reduces Idaho AGI.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    employment_income: 50_000
+    military_retirement_pay: 30_000
+  output:
+    id_retirement_benefits_deduction: 30_000
+    id_subtractions: 30_000
+
 - name: Idaho general retirement deduction excludes non-spouse military survivor benefits before 2025.
   period: 2024
   input:
@@ -135,3 +284,58 @@
   output:
     id_retirement_benefits_deduction_relevant_income: 10_000
     id_retirement_benefits_deduction: 10_000
+
+- name: 2024 a 63-year-old with permanent and total disability, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_permanently_and_totally_disabled: true
+  output:
+    # 26 U.S.C. 22(e)(3) is a federal tax test, not a recognition Idaho Code
+    # 63-701 or 49-117 lists.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old with the SSI disability test, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    meets_ssi_disability_criteria: true
+  output:
+    # The SSI disability test is the model's test, not a finding by the
+    # Social Security Administration.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old with a fully disabled service-connected veteran flag, no SSDI and no is_disabled deducts nothing.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    # 63-701(1)(e) also needs service in a war engaged in by the United
+    # States, which the model doesn't record.
+    id_retirement_benefits_deduction_disabled: false
+    id_retirement_benefits_deduction_eligible_person: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2024 a 63-year-old veteran with the supplied Idaho classification deducts a public pension.
+  period: 2024
+  input:
+    state_code: ID
+    age: 63
+    public_pension_income: 20_000
+    is_fully_disabled_service_connected_veteran: true
+    id_retirement_benefits_disability_classification: DISABLED
+  output:
+    id_retirement_benefits_deduction_disabled: true
+    id_retirement_benefits_deduction_eligible_person: true
+    id_retirement_benefits_deduction: 20_000

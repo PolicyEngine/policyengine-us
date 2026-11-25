@@ -1,0 +1,109 @@
+# Gross income from businesses: Schedule C line 7, before business expenses.
+# A supplied business_gross_income_reported of zero or more is used as
+# entered; a negative amount means not supplied. An entry applies only to the
+# year entered. Without it, the person's net profits stand in, each floored at
+# zero.
+
+- name: Without an input, net self-employment profits stand in.
+  period: 2025
+  input:
+    self_employment_income: 12_000
+    sstb_self_employment_income: 3_000
+  output:
+    business_gross_income: 15_000
+
+- name: A net loss in one business does not reduce the other's income.
+  period: 2025
+  input:
+    self_employment_income: -5_000
+    sstb_self_employment_income: 3_000
+  output:
+    business_gross_income: 3_000
+
+- name: A supplied amount gives Schedule C line 7 directly.
+  period: 2025
+  input:
+    self_employment_income: 5_000
+    business_gross_income_reported: 20_000
+  output:
+    business_gross_income: 20_000
+
+- name: A supplied zero is used, not the net profit.
+  period: 2025
+  input:
+    self_employment_income: 12_000
+    business_gross_income_reported: 0
+  output:
+    business_gross_income: 0
+
+- name: A supplied negative amount means not supplied, so the net profit stands in.
+  period: 2025
+  input:
+    self_employment_income: 12_000
+    business_gross_income_reported: -500
+  output:
+    business_gross_income: 12_000
+
+- name: One person's supplied amount leaves another person's net profit in place.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        self_employment_income: 35_000
+      spouse:
+        age: 43
+        self_employment_income: 5_000
+        business_gross_income_reported: 5_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+    households:
+      household:
+        members: [retiree, spouse]
+  output:
+    business_gross_income: [35_000, 5_000]
+
+- name: An amount supplied only for 2025 does not apply in 2026, so the net profit stands in.
+  period: 2026
+  input:
+    self_employment_income: 12_000
+    business_gross_income_reported:
+      2025: 20_000
+  output:
+    business_gross_income_reported: -1
+    business_gross_income: 12_000
+
+- name: A zero supplied for 2026 is used in 2026, not the 2025 amount or the net profit.
+  period: 2026
+  input:
+    self_employment_income: 12_000
+    business_gross_income_reported:
+      2025: 20_000
+      2026: 0
+  output:
+    business_gross_income: 0
+
+- name: One person's amount supplied only for 2025 does not apply in 2026 beside another person's 2026 amount.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        self_employment_income: 5_000
+        business_gross_income_reported:
+          2025: 40_000
+      spouse:
+        age: 43
+        self_employment_income: 1_000
+        business_gross_income_reported:
+          2026: 3_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+    households:
+      household:
+        members: [retiree, spouse]
+  output:
+    business_gross_income_reported: [-1, 3_000]
+    business_gross_income: [5_000, 3_000]

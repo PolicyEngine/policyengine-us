@@ -1,0 +1,743 @@
+# Idaho Code 63-3022A(1)(b)(iii): employed, with enough income from that
+# employment to have to file a federal return "under section 6012(a)(1)".
+# For 2025 the model applies section 6012(f), which replaces (a)(1) for 2018
+# to 2025: gross income over the standard deduction ($15,750 single and
+# $31,500 joint, plus $2,000 unmarried or $1,600 married for each of age 65
+# and blindness), and any gross income on a separate return. 2026 applies
+# section 6012(a)(1): gross income of at least the basic standard deduction
+# ($16,100 single and $32,200 joint, Rev. Proc. 2025-32), plus $2,050
+# unmarried or $1,650 married for each spouse aged 65 or older. A separate
+# return has no exception in 2026, so its threshold is the exemption amount,
+# $0, and the test turns on having income from employment at all.
+
+- name: 2025 single filer with wages equal to the standard deduction does not meet the test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 15_750
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2025 single filer with wages a dollar over the standard deduction meets the test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 15_751
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 blindness raises the single threshold to $17,750.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    is_blind: true
+    employment_income: 17_750
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2026 single filer with wages a dollar under the basic standard deduction does not meet the test.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 16_099
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2026 single filer with wages equal to the basic standard deduction meets the test.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 16_100
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2026 blindness does not raise the threshold.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    is_blind: true
+    employment_income: 16_100
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 a married person filing separately meets the test with any wages.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    filing_status: SEPARATE
+    employment_income: 5_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2026 a married person filing separately with no income from employment does not meet the test.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    filing_status: SEPARATE
+  output:
+    # The separate return's 2026 threshold is $0, which no income from
+    # employment would otherwise meet.
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2026 joint return uses the joint threshold, and a dollar under it fails.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 32_199
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: 2026 joint return compares the retiree's own wages with the joint threshold, whatever the spouse earns.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 20_000
+      spouse:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    # The couple must file ($60,000 of wages), but the retiree's $20,000 is
+    # under the $32,200 joint threshold. The spouse's $40,000 meets it.
+    id_retirement_benefits_deduction_military_employment_eligible: [false, true]
+
+- name: 2026 joint return with wages equal to the joint threshold meets the test for the employed spouse only.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 32_200
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+
+- name: 2026 a spouse aged 65 raises the joint threshold to $33,850.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_849
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: 2026 joint return with wages at the $33,850 threshold meets the test.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_850
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+
+- name: 2025 a spouse aged 65 raises the joint standard deduction to $33,100.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 33_100
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: Self-employment profit counts as income from employment, standing in for gross business income.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    self_employment_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: Profit from a specified service trade or business counts as income from employment.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    sstb_self_employment_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: Farm profit counts as income from employment.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    farm_operations_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 a business with $5,000 of gross income, under the section 6012 threshold, does not meet the test.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    # Schedule C line 7, with no business expenses.
+    business_gross_income_reported: 5_000
+    self_employment_income: 5_000
+  output:
+    # Section 6017 requires a self-employment tax return at $400 of net
+    # earnings. Idaho Code 63-3022A(1)(b)(iii) names section 6012(a)(1), so
+    # the test is the gross income threshold ($15,750).
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: 2025 gross business income over the threshold meets the test although the net profit is under it.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    # Schedule C line 7 of $20,000, less $15,000 of expenses.
+    business_gross_income_reported: 20_000
+    self_employment_income: 5_000
+  output:
+    # Chart A counts Schedule C line 7, and $20,000 exceeds $15,750.
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 gross farm income over the threshold meets the test although the net farm profit is under it.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    # Schedule F line 9 of $16,000, less $14,000 of expenses.
+    farm_gross_income_reported: 16_000
+    farm_operations_income: 2_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 taxable employer dependent care benefits count with wages.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 29_000
+        # W-2 box 10 (Form 2441 line 12).
+        dependent_care_employer_benefits: 6_000
+        military_retirement_pay: 30_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [retiree, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Form 2441 line 16: $6,000 of qualified expenses for the child.
+        dependent_care_assistance_qualified_expenses: 6_000
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [retiree, child]
+        state_code: ID
+  output:
+    # Wages less the benefits are $29,000 - $6,000 = $23,000, under the
+    # $23,625 head of household threshold. Form 2441 line 25 excludes the
+    # smallest of the $6,000 of benefits, the $6,000 of qualified expenses
+    # (line 16), earned income and the $5,000 cap: $5,000. Line 26 leaves
+    # $1,000 taxable, and $24,000 exceeds $23,625.
+    irs_employment_income: [23_000, 0]
+    dependent_care_assistance_exclusion: 5_000
+    taxable_dependent_care_benefits: [1_000, 0]
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 employer dependent care benefits without reported qualified expenses count in full.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 24_000
+        dependent_care_employer_benefits: 1_000
+        military_retirement_pay: 30_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [retiree, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [retiree, child]
+        state_code: ID
+  output:
+    # Without dependent_care_assistance_qualified_expenses (Form 2441 line
+    # 16), the federal model takes qualified expenses as zero: nothing is
+    # excluded and all $1,000 is taxable (line 26). Idaho counts that amount:
+    # $23,000 of wages plus $1,000 exceeds $23,625.
+    irs_employment_income: [23_000, 0]
+    dependent_care_assistance_exclusion: 0
+    taxable_dependent_care_benefits: [1_000, 0]
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 foreign wages excluded under section 911 count for a single filer.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 10_000
+    # Form 2555 line 42.
+    foreign_earned_income_exclusion_amount: 10_000
+  output:
+    # Section 6012(c) counts the excluded $10,000; $20,000 exceeds $15,750.
+    foreign_earned_income_exclusion_gross_person: 10_000
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: 2025 joint return counts the retiree's own excluded foreign wages.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 20_000
+        foreign_earned_income_exclusion_gross_person_reported: 20_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 20_000
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    # $20,000 of wages and $20,000 excluded exceed the $31,500 joint
+    # threshold.
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+
+- name: 2025 joint return does not count the spouse's excluded foreign wages for the retiree.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 20_000
+      spouse:
+        age: 43
+        foreign_earned_income_exclusion_gross_person_reported: 20_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 20_000
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    # The retiree's $20,000 and the spouse's $20,000 are each under $31,500.
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+
+- name: 2025 a spouse's supplied gross business income leaves the retiree's net profit in place.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        self_employment_income: 35_000
+        military_retirement_pay: 30_000
+      spouse:
+        age: 43
+        self_employment_income: 5_000
+        business_gross_income_reported: 5_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    # The retiree has no supplied gross amount, so the $35,000 net profit
+    # stands in and exceeds the $31,500 joint threshold.
+    business_gross_income: [35_000, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a spouse's supplied gross farm income leaves the retiree's net farm profit in place.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        farm_operations_income: 35_000
+        military_retirement_pay: 30_000
+      spouse:
+        age: 43
+        farm_operations_income: 5_000
+        farm_gross_income_reported: 5_000
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    farm_gross_income: [35_000, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false]
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2026 a retiree's gross business income supplied only for 2025 does not apply in 2026, so the retiree's net profit stands in.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 43
+      retiree:
+        age: 45
+        self_employment_income: 5_000
+        military_retirement_pay: 30_000
+        business_gross_income_reported:
+          2025: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, retiree]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, retiree]
+        state_code: ID
+  output:
+    # An entry applies only to the year entered. The retiree's $5,000 net
+    # profit falls short of the $32,200 joint threshold; the 2025 amount
+    # would meet it if it applied in 2026.
+    business_gross_income_reported: [-1, -1]
+    business_gross_income: [0, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2026 the head's own 2026 gross business income leaves the retiree's net profit in place.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 43
+        self_employment_income: 5_000
+        business_gross_income_reported:
+          2026: 5_000
+      retiree:
+        age: 45
+        self_employment_income: 5_000
+        military_retirement_pay: 30_000
+        business_gross_income_reported:
+          2025: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, retiree]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, retiree]
+        state_code: ID
+  output:
+    # The retiree's 2026 value is the retiree's own net profit whether or
+    # not the head enters an amount for 2026.
+    business_gross_income_reported: [5_000, -1]
+    business_gross_income: [5_000, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2026 a retiree's gross farm income supplied only for 2025 does not apply in 2026, so the retiree's net farm profit stands in.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 43
+      retiree:
+        age: 45
+        farm_operations_income: 5_000
+        military_retirement_pay: 30_000
+        farm_gross_income_reported:
+          2025: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, retiree]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, retiree]
+        state_code: ID
+  output:
+    # As with gross business income, the 2025 amount doesn't apply in 2026,
+    # and the retiree's $5,000 net farm profit falls short of the $32,200
+    # joint threshold.
+    farm_gross_income_reported: [-1, -1]
+    farm_gross_income: [0, 5_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 a supplied zero of gross business income is used, not the net profit.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        self_employment_income: 35_000
+        business_gross_income_reported: 0
+        military_retirement_pay: 30_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [retiree, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [retiree, spouse]
+        state_code: ID
+  output:
+    business_gross_income: [0, 0]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false]
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 one return's supplied section 911 amount leaves a sole filer's excluded wages in place.
+  period: 2025
+  input:
+    people:
+      a_retiree:
+        age: 45
+        employment_income: 20_000
+        foreign_earned_income_exclusion_gross_person_reported: 20_000
+      a_spouse:
+        age: 43
+      b_retiree:
+        age: 45
+        employment_income: 10_000
+        military_retirement_pay: 30_000
+    tax_units:
+      a:
+        members: [a_retiree, a_spouse]
+        filing_status: JOINT
+        foreign_earned_income_exclusion_amount: 20_000
+      b:
+        members: [b_retiree]
+        # Form 2555 line 42.
+        foreign_earned_income_exclusion_amount: 10_000
+    households:
+      a_household:
+        members: [a_retiree, a_spouse]
+        state_code: ID
+      b_household:
+        members: [b_retiree]
+        state_code: ID
+  output:
+    # B's $10,000 of wages and $10,000 excluded exceed the $15,750 single
+    # threshold.
+    foreign_earned_income_exclusion_gross_person: [20_000, 0, 10_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [true, false, true]
+    id_retirement_benefits_deduction: [0, 30_000]
+
+- name: 2026 section 911 amounts supplied only for 2025 do not apply in 2026, so each return's own line 43 stands in.
+  period: 2026
+  input:
+    people:
+      a_retiree:
+        age: 45
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
+      a_spouse:
+        age: 43
+      b_retiree:
+        age: 45
+        employment_income: 10_000
+        military_retirement_pay: 30_000
+        foreign_earned_income_exclusion_gross_person_reported:
+          2025: 20_000
+    tax_units:
+      a:
+        members: [a_retiree, a_spouse]
+        filing_status: JOINT
+      b:
+        members: [b_retiree]
+        # Form 2555 line 42.
+        foreign_earned_income_exclusion_amount: 1_000
+    households:
+      a_household:
+        members: [a_retiree, a_spouse]
+        state_code: ID
+      b_household:
+        members: [b_retiree]
+        state_code: ID
+  output:
+    # A's joint return credits neither spouse, and B, a sole filer, gets B's
+    # own $1,000 line 43. B's $10,000 of wages and $1,000 excluded fall short
+    # of the $16,100 single threshold; B's 2025 amount would meet it if it
+    # applied in 2026.
+    foreign_earned_income_exclusion_gross_person_reported: [-1, -1, -1]
+    foreign_earned_income_exclusion_gross_person: [0, 0, 1_000]
+    id_retirement_benefits_deduction_military_employment_eligible: [false, false, false]
+    id_retirement_benefits_deduction: [0, 0]
+
+- name: 2025 a single filer's entered gross section 911 exclusion counts without Form 2555 leaves.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 10_000
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        # Form 2555 line 43.
+        foreign_earned_income_exclusion_gross: 10_000
+    households:
+      household:
+        members: [retiree]
+        state_code: ID
+  output:
+    foreign_earned_income_exclusion_gross_person: 10_000
+    id_retirement_benefits_deduction_military_employment_eligible: true
+    id_retirement_benefits_deduction: 30_000
+
+- name: 2025 a legacy section 911 amount made of a line 50 housing deduction does not count.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        self_employment_income: 12_000
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        # Worksheet line 2c, here only the line 50 housing deduction, which
+        # section 911(c)(4) makes a deduction, not an exclusion.
+        foreign_earned_income_exclusion: 8_000
+    households:
+      household:
+        members: [retiree]
+        state_code: ID
+  output:
+    # Section 6012(c) adds back only the exclusion. $12,000 is under
+    # $15,750; counting the $8,000 would give $20,000.
+    foreign_earned_income_exclusion_gross_person: 0
+    id_retirement_benefits_deduction_military_employment_eligible: false
+    id_retirement_benefits_deduction: 0
+
+- name: 2025 the line 50 housing deduction does not count with Form 2555 leaves.
+  period: 2025
+  input:
+    people:
+      retiree:
+        age: 45
+        employment_income: 5_000
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [retiree]
+        foreign_earned_income_exclusion_amount: 10_000
+        foreign_housing_deduction: 8_000
+    households:
+      household:
+        members: [retiree]
+        state_code: ID
+  output:
+    # $5,000 of wages and the $10,000 line 42 exclusion are under $15,750;
+    # adding line 50 would give $23,000.
+    foreign_earned_income_exclusion_gross_person: 10_000
+    id_retirement_benefits_deduction_military_employment_eligible: false
+    id_retirement_benefits_deduction: 0
+
+- name: A business loss does not reduce wages.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 20_000
+    self_employment_income: -10_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: true
+
+- name: Pension and investment income are not income from employment.
+  period: 2026
+  input:
+    state_code: ID
+    age: 45
+    military_retirement_pay: 30_000
+    taxable_interest_income: 20_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
+
+- name: The employment test does not apply before 2025.
+  period: 2024
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 100_000
+  output:
+    id_retirement_benefits_deduction_military_employment_eligible: false
