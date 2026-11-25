@@ -1,0 +1,92 @@
+# Independent 2025 expectations from M.G.L. c. 62, s. 3(B)(a)(9),
+# 2025 Form 1 instructions printed page 12, and DOR rent-deduction guidance.
+# https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+# https://www.mass.gov/doc/2025-form-1-instructions/download
+# Missing/invalid facts preserve a compatibility amount, not a verified claim.
+# The pre-existing max(0, Part B AGI minus deductions) remains unchanged.
+
+# 40,000 minus source rent deduction 3,000 = 37,000.
+- name: 'Case 1, the verified allocation reduces Part B taxable income.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 6_000
+    ma_part_b_agi: 40_000
+  output:
+    ma_part_b_taxable_income_before_exemption: 37_000
+
+# 2,000 minus deduction 3,000 is negative; the existing floor returns zero.
+- name: 'Case 2, the existing taxable income floor remains zero.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 6_000
+    ma_part_b_agi: 2_000
+  output:
+    ma_part_b_taxable_income_before_exemption: 0
+
+# Rent 3,000 plus other components 3,550 stays 6,550; only taxable income is floored.
+- name: 'Case 3, the floor does not cap the aggregate deductions prematurely.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 4_000
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 500
+    ma_claim_of_right_deduction: 250
+    ma_529_deduction: 800
+    rent: 6_000
+    ma_part_b_agi: 1_000
+  output:
+    ma_rent_deduction: 3_000
+    ma_part_b_taxable_income_deductions: 6_550
+    ma_part_b_taxable_income_before_exemption: 0
