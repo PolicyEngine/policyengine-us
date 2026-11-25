@@ -797,9 +797,11 @@ def test_the_ny_credit_records_its_pinned_read_without_a_tracer_on_the_pin(
     monkeypatch,
 ):
     # A pin copies the root's fields, including the tracer a traced request
-    # wrote there, and only that copied tracer records the formula's read of
-    # the pinned tree. The reform systems in ``system.py`` clear those fields on
-    # their copy; a pin that did the same must not lose the read.
+    # wrote there, and without the fix only that copied tracer records the
+    # formula's read of the pinned tree. No current route builds a pin without
+    # it, so this test clears the fields itself. It guards against a later
+    # change that clears them, as the reform systems in ``system.py`` do on
+    # their copy: the read must still be recorded.
     def pin_without_copied_tracer(base_tbs):
         pinned = pin_spm_policy(base_tbs)
         pinned.parameters.trace = False
