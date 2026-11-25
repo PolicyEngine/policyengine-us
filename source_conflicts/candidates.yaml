@@ -18183,6 +18183,38 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us-sd:cca-hourly-special-needs-2018
+  program: ccdf
+  years:
+    from: 2018
+    to: 2020
+    type: calendar
+    note: The conflict concerns the chart effective June 16, 2018 through June 30, 2020.
+  question: Does the South Dakota hourly rate schedule effective June 16, 2018 set the standard approved special-needs ceiling at $4.75 or $5.00?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:47:01:10 as shown in the 2018 adopted repeal redline, physical pages 43–44
+    url: https://rules.sd.gov/Uploads/478_AdoptedRules.pdf#page=43
+  - kind: rulemaking
+    citation: South Dakota Register 45 SDR 82, repeal effective December 10, 2018
+    url: https://mylrc.sdlegislature.gov/api/Documents/Register/126370.pdf?Year=2018#page=1
+  - kind: guidance
+    citation: South Dakota group family and center care maximum hourly rates, effective June 16, 2018, page 1
+    url: https://web.archive.org/web/20180716151353id_/http://dss.sd.gov/docs/childcare/assistance/childcare_center_rate_chart.pdf#page=1
+  - kind: plan
+    citation: FFY 2019–2021 CCDF State Plan section 4.3.2, page 132, and section 4.6.2(c), pages 149–150
+    url: https://web.archive.org/web/20191103203951id_/http://dss.sd.gov/docs/childcare/ccs_state_plan.pdf#page=132
+  readings:
+    published-schedule: DSS published a statewide $5.00 standard hourly ceiling in its June 2018 rate charts. The State Plan section 4.6.2(c) also gives $5.00.
+    plan-narrative: The State Plan section 4.3.2 gives $4.75 statewide, matching the preceding 2016 chart.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/sd/dss/cca/rates/hourly/special_needs_maximum.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11098
+  state: ruled
+  note: The regulation in force when DSS issued the June 2018 chart called for DSS to set and publish the rates. The posted schedule controls the nominal ceiling. The monthly lookup moves from $4.75 in June to $5.00 in July, using the schedule in force on the first day. The YAML case "The June 16, 2018 center and special-needs ceilings first apply in the July monthly lookup." pins the result. The official text captures are under source_conflicts/sources/us-sd/.
 - id: us:medicaid-parental-child-allocation-ssi-floor
   program: medicaid
   years:
