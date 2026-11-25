@@ -3,15 +3,22 @@ values:
   2021-01-01:
     # 89 Ill. Adm. Code 113.100 counts all unearned income that is not
     # specified as exempt. The exemptions in 113.113 don't include pensions,
-    # annuities, veterans benefits or Railroad Retirement benefits, and IDHS
-    # PM 08-02-06-c budgets Social Security, Railroad Retirement, veterans
-    # benefits, private pensions and union benefits as nonexempt income.
+    # annuities, military retirement pay, survivor annuities, veterans
+    # benefits or Railroad Retirement benefits, and IDHS PM 08-02-06-c
+    # budgets Social Security, Railroad Retirement, veterans benefits,
+    # private pensions and union benefits as nonexempt income.
+    # Of veterans payments, 113.113 exempts only (a)(20) Agent Orange
+    # settlement payments, (a)(30) the 2009 Economic Recovery Payment and
+    # (a)(31) Far East veterans compensation payments; these are not
+    # modeled, so veterans_benefits counts in full.
     - pension_income
     - social_security
     - railroad_benefits
     - ssi
     - disability_benefits
     - veterans_benefits
+    - military_retirement_income
+    - survivor_benefits
     - workers_compensation
     - total_unemployment_compensation
     - retirement_distributions

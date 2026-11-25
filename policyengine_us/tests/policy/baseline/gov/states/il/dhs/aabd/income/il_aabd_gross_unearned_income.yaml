@@ -59,3 +59,36 @@
     il_aabd_gross_unearned_income: 900
     # One $25 exemption per client, whatever the number of sources: 875.
     il_aabd_countable_unearned_income: 875
+
+- name: Military retirement pay counts as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    military_retirement_pay: 40_000
+    state_code: IL
+    county_str: COOK_COUNTY_IL
+  output:
+    # 40,000 / 12 = 3,333.33 a month.
+    il_aabd_gross_unearned_income: 3_333.33
+    # 3,333.33 - 25 = 3,308.33, above the 851.33 need standard
+    # (788.90 grant + 62.43 personal allowance), so no AABD.
+    il_aabd_countable_unearned_income: 3_308.33
+    il_aabd: 0
+
+- name: Survivor annuities count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+    survivor_benefits: 40_000
+    state_code: IL
+    county_str: COOK_COUNTY_IL
+  output:
+    # 40,000 / 12 = 3,333.33 a month.
+    il_aabd_gross_unearned_income: 3_333.33
+    # 3,333.33 - 25 = 3,308.33 > 851.33 need standard, so no AABD.
+    il_aabd_countable_unearned_income: 3_308.33
+    il_aabd: 0
