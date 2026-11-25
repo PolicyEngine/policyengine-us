@@ -621,3 +621,29 @@
     is_older_child_for_medicaid: [false, true, true]
     is_medicaid_eligible: [false, false, true]
     is_chip_eligible_child: [false, false, false]
+
+- name: Ohio child with employer coverage at 180% of the 2017 poverty guideline
+  period: 2017
+  input:
+    age: 10
+    state_code: OH
+    immigration_status: CITIZEN
+    medicaid_household_size: 3
+    medicaid_household_income: 36_756
+    has_esi: true
+  output:
+    is_medicaid_eligible: false
+    is_chip_eligible_child: false
+
+- name: Ohio child without other coverage at 180% of the 2017 poverty guideline
+  period: 2017
+  input:
+    age: 10
+    state_code: OH
+    immigration_status: CITIZEN
+    medicaid_household_size: 3
+    medicaid_household_income: 36_756
+    has_esi: false
+  output:
+    is_medicaid_eligible: true
+    is_chip_eligible_child: false
