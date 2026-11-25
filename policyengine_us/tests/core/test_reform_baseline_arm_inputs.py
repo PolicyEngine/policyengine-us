@@ -42,7 +42,7 @@ from policyengine_core.reforms import Reform
 from policyengine_core.variables import Variable
 
 from policyengine_us import Microsimulation, Simulation
-from policyengine_us.entities import SPMUnit
+from policyengine_us.entities import Person, SPMUnit
 
 YEAR = 2026
 TOLERANCE = 0.01
@@ -324,9 +324,7 @@ def test_an_input_set_after_construction_is_calculated_after_a_subsample():
     construction the reform gets a $500 subsidy, which it stores for all
     time. Its arm never sees an input set after construction, and the
     subsample raises nothing: core drops the reform's holder from the arm it
-    builds, so that arm calculates the subsidy, as on main. Construction's
-    rebuild first drops the reform's empty holder for all time from the
-    arm."""
+    builds, so that arm calculates the subsidy, as on main."""
     families = (FAMILIES[1], FAMILIES[0])
     simulations = [
         Microsimulation(
@@ -348,6 +346,41 @@ def test_an_input_set_after_construction_is_calculated_after_a_subsample():
     assert calculated[0] > 500
     np.testing.assert_allclose(value(arm, SUBSIDY), calculated, atol=TOLERANCE)
     np.testing.assert_allclose(value(reformed, SUBSIDY), [500])
+
+
+SSTB_INCOME = "sstb_self_employment_income"
+
+
+class sstb_self_employment_income(Variable):
+    # Stored for all time, where baseline policy stores it each year.
+    value_type = float
+    entity = Person
+    label = "SSTB self-employment income"
+    definition_period = ETERNITY
+
+
+class StoreSSTBIncomeForAllTime(Reform):
+    def apply(self):
+        self.update_variable(sstb_self_employment_income)
+
+
+def test_the_rebuild_drops_a_holder_the_reform_built_with_no_input():
+    """Construction moves ``sstb_self_employment_income`` to its pre-response
+    variable, so it asks the reform for that variable's holder even where the
+    caller gave no input. Under a reform that stores the variable for all
+    time, the reform then holds an empty holder for all time, and the arm
+    branched after the moves copies it. With no input recorded, the guard has
+    nothing to refuse, so the rebuild's own drop keeps that holder out of the
+    arm."""
+    reformed = Microsimulation(
+        dataset=dataset((NEW_YORK,), FAMILIES[:1]), reform=StoreSSTBIncomeForAllTime
+    )
+    holder = reformed.populations["person"]._holders.get(SSTB_INCOME)
+    assert holder is not None and holder._memory_storage.is_eternal
+    assert SSTB_INCOME not in {key[0] for key in reformed._user_input_keys}
+    arm = reformed.baseline
+    assert SSTB_INCOME not in arm.populations["person"]._holders
+    assert_holders_suit_their_variables(arm)
 
 
 STANDARD_DEDUCTION = Reform.from_dict(
