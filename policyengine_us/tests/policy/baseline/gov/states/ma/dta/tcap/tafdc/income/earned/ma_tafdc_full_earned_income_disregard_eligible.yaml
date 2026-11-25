@@ -15,3 +15,102 @@
     state_code: MA
   output:
     ma_tafdc_full_earned_income_disregard_eligible: false
+
+# Conditional annual-component checks, not full TAFDC eligibility.
+# Acts2016ch133 sections124/125 provide the predecessor50% disregard;
+# Acts2018ch154 sections55/113 introduce six100% months from July1,2018.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+# The2018 annual case preserves the existing approximation. It does not
+# establish Jan-June2018 legality or any employment/receipt/usage history.
+# Financial income and FPG below are independent annual upstream premises;
+# this file does not derive official year-specific FPG amounts.
+
+- name: Case 3, 2017 new full-EID component absent.
+  period: 2017
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: false
+
+- name: Case 4, 2018 retained annual full-EID component.
+  period: 2018
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 5, 2019 retained annual full-EID component.
+  period: 2019
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 6, 2020 retained annual full-EID component.
+  period: 2020
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 7, 2021 retained annual full-EID component.
+  period: 2021
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 8, 2022 retained annual full-EID component.
+  period: 2022
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 9, 2023 retained annual full-EID component.
+  period: 2023
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 10, 2024 retained annual full-EID component.
+  period: 2024
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 11, 2025 retained annual full-EID component.
+  period: 2025
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
+
+- name: Case 12, 2026 retained annual full-EID component.
+  period: 2026
+  input:
+    state_code: MA
+    ma_tafdc_applicable_income_for_financial_eligibility: 9_600
+    spm_unit_fpg: 20_000
+  output:
+    ma_tafdc_full_earned_income_disregard_eligible: true
