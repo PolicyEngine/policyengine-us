@@ -23,6 +23,8 @@ class wv_low_income_family_tax_credit_potential(Variable):
         # condition: wv_agi < = fpg_amount
         reduced_agi = wv_agi - fpg_amount
 
+        # Table brackets are "greater than ... equal to or less than", so
+        # each upper endpoint belongs to the higher credit percentage.
         credit_percentage = select(
             [
                 filing_status == filing_statuses.SINGLE,
@@ -32,11 +34,11 @@ class wv_low_income_family_tax_credit_potential(Variable):
                 filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
-                p.amount.single.calc(reduced_agi),
-                p.amount.separate.calc(reduced_agi),
-                p.amount.joint.calc(reduced_agi),
-                p.amount.head_of_household.calc(reduced_agi),
-                p.amount.surviving_spouse.calc(reduced_agi),
+                p.amount.single.calc(reduced_agi, right=True),
+                p.amount.separate.calc(reduced_agi, right=True),
+                p.amount.joint.calc(reduced_agi, right=True),
+                p.amount.head_of_household.calc(reduced_agi, right=True),
+                p.amount.surviving_spouse.calc(reduced_agi, right=True),
             ],
         )
 
