@@ -1,6 +1,6 @@
 description: States provide breakfast and lunch at no cost to students eligible for reduced-price meals under the National School Lunch Program and School Breakfast Program if this is true.
 # Every jurisdiction with a true entry below is verified against the cited law.
-# Georgia and Virginia are intentionally false (see their entries). North Dakota students in the
+# Virginia stays false as a modeling choice (see its entry). North Dakota students in the
 # reduced-price band are covered through state_free_income_limit from July 1,
 # 2023 to June 30, 2027, and Oregon students in that band are also covered
 # through it from July 1, 2021. Coverage of only one meal is in
@@ -208,13 +208,50 @@ DE:
 FL:
   0000-01-01: false
 GA:
-  # Georgia stays false for now, by reviewer decision. It has no statute and
-  # funds reduced-price breakfast and lunch at no charge only through annual
-  # budget items: FY2025 (HB 916, Act 709, program 24.13, line 1871,
-  # https://opb.georgia.gov/document/appropriations-bills/hb-916-fy-2025-appropriations-bill/download#page=66),
-  # FY2026 (HB 68, item 155.4) and FY2027 (HB 974, program 24.13). Encoding
-  # them would cover 2024-07-01 to 2027-06-30.
   0000-01-01: false
+  # GaDOE used federal ESSER funds for both copays in SY2023-24, then
+  # state appropriations from FY2025 through FY2027. Date the first year
+  # from July 1 under 7 CFR 210.2; the annual formula first applies it in
+  # 2024. The last enacted allocation ends June 30, 2027.
+  2023-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia Department of Audits and Accounts, FY2024 Audit Updates, May 2, 2024, School Nutrition Supplement, slide 86
+          href: https://gagains.org/wp-content/uploads/2024/05/GAINS-2024-Final-DOAA.pdf#page=86
+        - title: Houston County School District, Elementary School Handbook 2023-2024, Lunch and Breakfast Program
+          href: https://content.myconnectsuite.com/api/documents/5c99a830aac74fd7aaac6bfedd1b0ca0#page=27
+        - title: 7 CFR 210.2, school year definition
+          href: https://www.ecfr.gov/current/title-7/section-210.2
+  2024-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia HB 916, FY2025 Appropriations Act, program 24.13, line 1871
+          href: https://opb.georgia.gov/document/appropriations-bills/hb-916-fy-2025-appropriations-bill/download#page=66
+  2025-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia HB 68, FY2026 Appropriations Act, item 155.4
+          href: https://opb.georgia.gov/document/appropriations-bills-prior-years/hb-68-fy-2026-appropriations-bill/download#page=106
+        - title: Georgia State Auditor fiscal note for LC 49 2461, January 9, 2026
+          href: https://opb.georgia.gov/document/fiscal-notes-2026/lc-49-2461/download#page=1
+  2026-07-01:
+    value: true
+    metadata:
+      reference:
+        - title: Georgia HB 974, FY2027 Appropriations Act, program 24.13
+          href: https://opb.georgia.gov/document/appropriations-bills-current-year/hb-974-fy-2027-appropriations-bill/download#page=75
+        - title: Atlanta Public Schools, school year 2026-2027 meal prices
+          href: https://www.atlantapublicschools.us/about/departments/operations/nutrition
+  # The FY2027 appropriation ends June 30, 2027.
+  2027-07-01:
+    value: false
+    metadata:
+      reference:
+        - title: Georgia HB 974, FY2027 Appropriations Act, program 24.13
+          href: https://opb.georgia.gov/document/appropriations-bills-current-year/hb-974-fy-2027-appropriations-bill/download#page=75
 GU:
   0000-01-01: false
 HI:
