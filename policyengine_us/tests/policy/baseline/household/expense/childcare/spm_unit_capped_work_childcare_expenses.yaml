@@ -225,6 +225,56 @@
   output:
     spm_unit_capped_work_childcare_expenses: 6_000
 
+- name: A unit with a child that gives only an out-of-pocket amount counts it
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        is_household_head: true
+        is_tax_unit_head: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        spm_unit_work_expenses: 0
+        childcare_expenses: 6_000
+  output:
+    # The pre-subsidy amount is left at 0. Main's formula read only that
+    # amount, so it gave 0 here.
+    spm_unit_capped_work_childcare_expenses: 6_000
+
+- name: A unit with no child ignores an out-of-pocket amount
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 46
+        employment_income: 9_000
+        is_household_head: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+        spm_unit_work_expenses: 0
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        child_care_subsidies: 1_500
+        childcare_expenses: 6_000
+  output:
+    # 4,000 - 1,500; the 6,000 is ignored.
+    spm_unit_capped_work_childcare_expenses: 2_500
+
 - name: A subsidy lowers the expense in 2024, the formula's first year
   period: 2024
   absolute_error_margin: 0.001
