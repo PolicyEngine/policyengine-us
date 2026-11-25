@@ -1,0 +1,1 @@
+Count pensions, military retirement pay, survivor benefits, veterans benefits, Railroad Retirement, union strike benefits and contributions from relatives as unearned income for Illinois TANF, which had treated pensions and veterans benefits as exempt and left the others out.
