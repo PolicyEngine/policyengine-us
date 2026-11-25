@@ -1,0 +1,122 @@
+# For taxes collected in 2025, 2023 chapter 147 §1 applies the regular
+# valuation exclusion to the assessor-approved eligible assessed value.
+# https://lawfilesext.leg.wa.gov/biennium/2023-24/Htm/Bills/Session%20Laws/House/1355-S.SL.htm
+# DOR's 2024-2026 county thresholds are inclusive.
+# https://dor.wa.gov/sites/default/files/2023-08/Income_ThreshTY24-26.pdf
+- name: Case 1, Washington county income thresholds and additional regular assessed value.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WA, WA, WA, WA, WA, WA, WA, WA, WA, WA]
+    county_fips: ["53033", "53033", "53033", "53033", "53033", "53033", "53033", "53033", "53001", "53001"]
+    wa_pte_assessment_year_age: [61, 61, 61, 61, 61, 61, 61, 61, 61, 61]
+    wa_pte_owner_occupant: [true, true, true, true, true, true, true, true, true, true]
+    wa_pte_reported_combined_disposable_income:
+      - 60_000  # King Tier 1 ceiling
+      - 60_000  # King Tier 1, residence below $60k floor
+      - 60_001  # King first dollar in Tier 2, percentage branch
+      - 72_000  # King Tier 2 ceiling, $50k floor
+      - 60_001  # King Tier 2, $70k cap
+      - 72_001  # King first dollar in Tier 3
+      - 84_000  # King Tier 3 ceiling
+      - 84_001  # King first dollar above Tier 3
+      - 41_000  # Adams Tier 3 ceiling
+      - 41_001  # Adams first dollar above Tier 3
+    wa_pte_assessor_approved_value: [200_000, 50_000, 160_000, 100_000, 300_000, 200_000, 200_000, 200_000, 200_000, 200_000]
+  output:
+    wa_pte_reported_tier: [1, 1, 2, 2, 2, 3, 3, 0, 3, 0]
+    wa_pte_additional_regular_tax_exempt_assessed_value:
+      - 120_000  # $200k × 60%
+      - 50_000  # Limited to the whole assessed residence value
+      - 56_000  # $160k × 35%
+      - 50_000  # The greater of $100k × 35% or $50k
+      - 70_000  # $300k × 35% reaches the $70k cap
+      - 0  # Tier 3 has no additional regular valuation exclusion
+      - 0
+      - 0
+      - 0
+      - 0
+
+- name: Case 2, Washington source facts determine senior owner and parcel eligibility.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # Six qualifying-home candidates in WA plus an unrelated OR record
+    # exercise the exact path's county resolution without legacy tax inputs.
+    state_code: [WA, WA, WA, WA, WA, WA, OR]
+    county_fips: ["53033", "53033", "", "06037", "53033", "53033", "41051"]
+    wa_pte_assessment_year_age: [60, 61, 61, 61, 61, 61, 61]
+    wa_pte_owner_occupant: [true, false, true, true, true, true, true]
+    wa_pte_reported_combined_disposable_income: [25_000, 25_000, 25_000, 25_000, -1, 0, 25_000]
+    wa_pte_assessor_approved_value: [200_000, 200_000, 200_000, 200_000, 200_000, 200_000, 200_000]
+  output:
+    # Rows respectively fail the prior-year age requirement, lack qualifying
+    # owner-occupancy, lack a county, supply an out-of-state county, qualify
+    # with negative CDI, qualify with zero CDI, and are outside Washington.
+    wa_pte_reported_tier: [0, 0, 0, 0, 1, 1, 0]
+    wa_pte_additional_regular_tax_exempt_assessed_value: [0, 0, 0, 0, 120_000, 120_000, 0]
+
+- name: Case 3, a verified zero assessed value is distinct from missing assessed value.
+  period: 2025
+  input:
+    state_code: [WA, WA]
+    county_fips: ["53033", "53033"]
+    wa_pte_assessment_year_age: [61, 61]
+    wa_pte_owner_occupant: [true, true]
+    wa_pte_reported_combined_disposable_income: [25_000, 25_000]
+    wa_pte_assessor_approved_value: [0, -1]
+  output:
+    wa_pte_reported_tier: [1, 0]
+    wa_pte_additional_regular_tax_exempt_assessed_value: [0, 0]
+
+- name: Case 4, the exact assessment requires reported prior-year income.
+  period: 2025
+  input:
+    state_code: WA
+    county_fips: "53033"
+    wa_pte_assessment_year_age: 61
+    wa_pte_owner_occupant: true
+    wa_pte_assessor_approved_value: 200_000
+  output:
+    wa_pte_reported_tier: 0
+    wa_pte_additional_regular_tax_exempt_assessed_value: 0
+
+- name: Case 5, the exact reported scenario requires a one-person household.
+  period: 2025
+  input:
+    people:
+      person1:
+        wa_pte_assessment_year_age: 61
+      person2:
+        wa_pte_assessment_year_age: 61
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        wa_pte_owner_occupant: true
+        wa_pte_assessor_approved_value: 200_000
+        wa_pte_reported_combined_disposable_income: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_fips: "53033"
+  output:
+    # A jointly occupied household is outside this reported scenario's scope.
+    wa_pte_reported_tier: 0
+    wa_pte_additional_regular_tax_exempt_assessed_value: 0
+
+- name: Case 6, the reported assessment calculation only covers 2025 collections.
+  period: 2026
+  input:
+    state_code: WA
+    county_fips: "53033"
+    wa_pte_assessment_year_age: 61
+    wa_pte_owner_occupant: true
+    wa_pte_reported_combined_disposable_income: 25_000
+    wa_pte_assessor_approved_value: 200_000
+  output:
+    # The reported model covers only 2025 even though this household supplies
+    # qualifying facts. The zero outputs denote the boundary of this model.
+    wa_pte_reported_tier: 0
+    wa_pte_additional_regular_tax_exempt_assessed_value: 0
