@@ -1,1 +1,0 @@
-Wages now hold each worker's federal employer cost fixed when a reform changes federal employer payroll taxes or which pay counts as payroll wages, so income and employee payroll taxes fall with the wages an employer tax increase lowers. The new gov.simulation.employer_payroll_tax_incidence.employee_share parameter, 1 by default, sets the share passed to wages.
