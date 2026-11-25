@@ -1,1 +1,0 @@
-The traced-simulation isolation test no longer depends on core recording its own abolition check, which PolicyEngine/policyengine-core#664 stops, and now checks that when traced simulations share the imported parameter tree, a dated read through a simulation's own parameter root is recorded in that simulation's tracer.
