@@ -99,6 +99,10 @@ def create_end_child_poverty_act() -> Reform:
                 "educational_assistance",
                 "financial_assistance",
                 "survivor_benefits",
+                # Census money income counts veterans' payments, and railroad
+                # retirement as a government transfer (P60-200 Appendix A).
+                "veterans_benefits",
+                "railroad_benefits",
                 # Broadband subsidies.
                 "acp",
                 "ebb",
@@ -150,6 +154,10 @@ def create_end_child_poverty_act() -> Reform:
                 "educational_assistance",
                 "financial_assistance",
                 "survivor_benefits",
+                # Census money income counts veterans' payments, and railroad
+                # retirement as a government transfer (P60-200 Appendix A).
+                "veterans_benefits",
+                "railroad_benefits",
                 # Broadband subsidies.
                 "acp",
                 "ebb",

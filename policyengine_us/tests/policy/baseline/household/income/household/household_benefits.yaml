@@ -173,3 +173,33 @@
   output:
     household_benefits: 2_000
     spm_unit_benefits: 2_000
+
+- name: Veterans' benefits and railroad retirement reach household benefits.
+  period: 2026
+  input:
+    people:
+      veteran:
+        age: 40
+        employment_income: 500_000
+        veterans_benefits: 12_000
+      railroad_annuitant:
+        age: 40
+        employment_income: 500_000
+        railroad_benefits: 30_000
+    tax_units:
+      veteran_unit:
+        members: [veteran]
+      railroad_unit:
+        members: [railroad_annuitant]
+    spm_units:
+      spm_unit:
+        members: [veteran, railroad_annuitant]
+    households:
+      household:
+        members: [veteran, railroad_annuitant]
+        state_code: TX
+  output:
+    # Census P60-200 Appendix A: veterans' payments are money income, and
+    # railroad retirement is a government transfer. 12,000 + 30,000 = 42,000.
+    household_benefits: 42_000
+    spm_unit_benefits: 42_000

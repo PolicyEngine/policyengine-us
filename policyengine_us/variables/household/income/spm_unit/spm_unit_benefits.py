@@ -80,6 +80,10 @@ class spm_unit_benefits(Variable):
             "educational_assistance",
             "financial_assistance",
             "survivor_benefits",
+            # Census money income counts veterans' payments, and railroad
+            # retirement as a government transfer (P60-200 Appendix A).
+            "veterans_benefits",
+            "railroad_benefits",
             "spm_unit_energy_subsidy",
             "tanf",
             # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
