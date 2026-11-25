@@ -874,9 +874,11 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
         reform=SUBSAMPLED_REFORMS[reform],
         spm={"geography_kind": "national"},
     )
-    # Core lists input variables by asking for every variable's holder, so the
-    # redefining reform gets an empty yearly holder for is_household_head. The
-    # arm branched after the moves copies it and must drop it.
+    # The dataset gives no is_household_head, and after construction neither
+    # the reform nor its arm holds a holder for it, with or without the
+    # rebuild's drop. So this checks that both arms start bound to their own
+    # policy; test_the_rebuild_drops_a_holder_the_reform_built_with_no_input,
+    # in tests/core/test_reform_baseline_arm_inputs.py, pins that drop.
     for simulation in (changed, changed.baseline):
         assert_bound_to_own_policy(simulation)
     policies = {
