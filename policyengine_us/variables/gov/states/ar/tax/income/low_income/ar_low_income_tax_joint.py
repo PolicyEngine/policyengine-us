@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.state_deduction_method import (
+    StateDeductionMethod,
+)
 
 
 class ar_low_income_tax_joint(Variable):
@@ -36,8 +39,11 @@ class ar_low_income_tax_joint(Variable):
         dependents = where(
             filer_is_dependent, 0, person.tax_unit("tax_unit_dependents", period)
         )
+        method = person.tax_unit("state_deduction_method", period)
         return select(
             [
+                # The low-income table already includes the standard deduction.
+                method == StateDeductionMethod.ITEMIZED,
                 filing_status_separate == status.SINGLE,
                 (filing_status_separate == status.HEAD_OF_HOUSEHOLD)
                 & (dependents <= 1),
@@ -49,6 +55,7 @@ class ar_low_income_tax_joint(Variable):
                 (filing_status_separate == status.JOINT) & (dependents > 1),
             ],
             [
+                np.inf,
                 p.single.calc(agi_attributed_to_head, right=True),
                 p.head_of_household.no_or_one_dependent.calc(
                     agi_attributed_to_head, right=True

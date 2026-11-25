@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class al_deductions(Variable):
@@ -13,7 +14,9 @@ class al_deductions(Variable):
     def formula(tax_unit, period, parameters):
         itm_ded = tax_unit("al_itemized_deductions", period)
         std_ded = tax_unit("al_standard_deduction", period)
-        al_ded = max_(itm_ded, std_ded)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = state_itemization_uses_itemized(method, itm_ded > std_ded)
+        al_ded = where(itemizes, itm_ded, std_ded)
         federal_ded = tax_unit("al_federal_income_tax_deduction", period)
         exemptions = add(
             tax_unit,

@@ -1,0 +1,29 @@
+- name: A federal itemizer can elect the smaller Maryland standard deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MD
+    county_str: ALLEGANY_COUNTY_MD
+    tax_unit_itemizes: true
+    state_deduction_method: STANDARD
+    md_standard_deduction: 2_000
+    md_itemized_deductions: 5_000
+    md_agi: 10_000
+    md_exemptions: 0
+  output:
+    md_deductions: 2_000
+    md_taxable_income: 8_000
+    # 20 + 30 + 40 + 4.75% of 5,000; county tax is 3.03% of 8,000.
+    md_income_tax_before_credits: 327.5
+    md_local_income_tax_before_credits: 242.4
+
+- name: Federal standard bars Maryland itemization
+  period: 2025
+  input:
+    state_code: MD
+    tax_unit_itemizes: false
+    state_deduction_method: ITEMIZED
+    md_standard_deduction: 2_000
+    md_itemized_deductions: 5_000
+  output:
+    md_deductions: 2_000

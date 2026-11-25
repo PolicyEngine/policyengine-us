@@ -217,3 +217,26 @@
     capped_property_taxes: 0
   output:
     md_itemized_deductions: 0
+
+- name: Maryland retains capped general sales taxes under the federal Schedule A election.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MD, MD, MD, MD]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE]
+    adjusted_gross_income: [205_000, 205_000, 550_000, 550_000]
+    itemized_deductions_less_salt: [20_000, 20_000, 20_000, 20_000]
+    real_estate_taxes: [35_000, 35_000, 35_000, 35_000]
+    state_and_local_sales_or_income_tax: [7_800, 8_000, 1_000, 30_000]
+    state_and_local_sales_tax_elected: [true, false, true, false]
+  output:
+    # Form 502 line 17a starts with capped federal deductions. Line 17b
+    # removes income tax and permits applying the SALT cap to property first.
+    # The $40,000 cap falls to $25,000 at $550,000 AGI (IRS Schedule A 5e).
+    # Maryland worksheet 14A then reduces deductions by $375 or $26,250.
+    # https://www.irs.gov/instructions/i1040sca
+    # https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=21
+    # https://services.marylandcomptroller.gov/taxes/en/what-s-new-for-the-2026-tax-filing-season-2025-tax-year?id=kb_article_view&sysparm_article=KB0010023
+    salt_cap: [40_000, 40_000, 25_000, 25_000]
+    salt_deduction: [40_000, 40_000, 25_000, 25_000]
+    md_itemized_deductions: [59_625, 54_625, 18_750, 18_750]

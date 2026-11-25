@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class mo_taxable_income(Variable):
@@ -36,7 +37,11 @@ class mo_taxable_income(Variable):
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
         itmded = tax_unit("mo_itemized_deductions", period)
         stdded = tax_unit("standard_deduction", period)  # same as federal
-        mo_deduction = where(federal_itemizer, max_(itmded, stdded), stdded)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = federal_itemizer & state_itemization_uses_itemized(
+            method, itmded > stdded
+        )
+        mo_deduction = where(itemizes, itmded, stdded)
         unit_mo_deductions = (
             mo_deduction
             + tax_unit("mo_federal_income_tax_deduction", period)

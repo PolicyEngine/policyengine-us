@@ -1,4 +1,9 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import has_input
+from policyengine_us.tools.state_itemization import (
+    JOINT_FILING_CHOICE_COUNT,
+    joint_itemization_is_enabled,
+)
 
 
 class claim_of_right_credit_applies(Variable):
@@ -31,6 +36,15 @@ class claim_of_right_credit_applies(Variable):
             # Comparing the two methods takes two more tax computations;
             # skip them when no tax unit repays more than the threshold.
             return np.zeros(tax_unit.count, dtype=bool)
+        if joint_itemization_is_enabled(period, parameters) and not has_input(
+            tax_unit.simulation, "tax_unit_joint_itemization", period
+        ):
+            # The joint comparison fixes the federal method on each branch,
+            # computes section 1341 there, and keeps the winning branch's result.
+            return eligible & (
+                tax_unit("tax_unit_joint_itemization", period)
+                >= JOINT_FILING_CHOICE_COUNT
+            )
         tax_if_credit = tax_unit("income_tax_if_claiming_claim_of_right_credit", period)
         tax_if_deduction = tax_unit(
             "income_tax_if_claiming_claim_of_right_deduction", period

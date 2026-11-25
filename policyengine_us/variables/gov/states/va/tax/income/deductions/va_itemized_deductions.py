@@ -31,6 +31,20 @@ class va_itemized_deductions(Variable):
         itemized_ded_reduced_by_uncapped_state_and_local = max_(
             va_itm_deds - uncapped_state_and_local_tax, 0
         )
+        if p_va.worksheet_allows_sales_tax:
+            medical = tax_unit("va_medical_expense_deduction", period)
+            federal_medical = tax_unit("medical_expense_deduction", period)
+            elects_sales_tax = tax_unit("state_and_local_sales_tax_elected", period)
+            capped_line_5a = tax_unit(
+                "va_capped_state_and_local_sales_or_income_tax", period
+            )
+            itemized_ded_reduced_by_uncapped_state_and_local = max_(
+                itm_deds_less_salt
+                + (medical - federal_medical)
+                + uncapped_property_taxes
+                + where(elects_sales_tax, capped_line_5a, 0),
+                0,
+            )
         # Output if deductions are limited
         selected_ded_reduced_by_reduced_state_and_local = tax_unit(
             "va_reduced_itemized_deductions", period

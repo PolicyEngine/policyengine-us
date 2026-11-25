@@ -1,0 +1,10 @@
+description: Virginia uses the full-year resident's federal standard or itemized deduction method on the state return.
+metadata:
+  unit: bool
+  period: year
+  label: Virginia follows the federal deduction method
+  reference:
+    - title: 2025 Virginia Schedule A instructions
+      href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2025-sch-a-instructions.pdf
+values:
+  2025-01-01: true

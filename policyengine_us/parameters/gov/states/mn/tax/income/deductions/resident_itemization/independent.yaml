@@ -1,0 +1,10 @@
+description: Minnesota allows full-year residents to use a different deduction method on the state return, subject to state eligibility rules.
+metadata:
+  unit: bool
+  period: year
+  label: Minnesota allows independent resident deduction methods
+  reference:
+    - title: 2025 Minnesota Schedule M1SA
+      href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf
+values:
+  2025-01-01: true

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class de_tax_unit_itemizes(Variable):
@@ -11,4 +12,5 @@ class de_tax_unit_itemizes(Variable):
     def formula(tax_unit, period, parameters):
         itemized_ded = tax_unit("de_itemized_deductions_unit", period)
         standard_ded = add(tax_unit, period, ["de_standard_deduction_indv"])
-        return itemized_ded > standard_ded
+        method = tax_unit("state_deduction_method", period)
+        return state_itemization_uses_itemized(method, itemized_ded > standard_ded)

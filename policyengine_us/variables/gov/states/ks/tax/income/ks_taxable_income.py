@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.state_itemization import state_itemization_uses_itemized
 
 
 class ks_taxable_income(Variable):
@@ -23,6 +24,8 @@ class ks_taxable_income(Variable):
         may_itemize = True
         if p.federal_itemization_required:
             may_itemize = tax_unit("tax_unit_itemizes", period)
-        deductions = where(may_itemize & (itm_ded > std_ded), itm_ded, std_ded)
+        method = tax_unit("state_deduction_method", period)
+        itemizes = state_itemization_uses_itemized(method, itm_ded > std_ded)
+        deductions = where(may_itemize & itemizes, itm_ded, std_ded)
         exemptions = tax_unit("ks_exemptions", period)
         return max_(0, tax_unit("ks_agi", period) - deductions - exemptions)
