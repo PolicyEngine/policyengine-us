@@ -1055,3 +1055,523 @@
     # gives the elderly limit at 14,001-15,000 (137): 112.50. Under line 7 the
     # non-elderly limit at 14,001-15,000 (47) would bind instead.
     ny_real_property_tax_credit: 112.5
+
+# IT-214-I 2025 page 1 applies the $85,000 ceiling to current full market
+# value of all owned real property, rather than its assessed value or equity.
+- name: Case 38, full property market value exactly at the limit qualifies.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # $500 exceeds $2,000 x 3.5%; Table A's $0-$3,000 band pays $375.
+    ny_real_property_tax_credit: 375
+
+- name: Case 39, low assessed value does not rescue market value above the limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        assessed_property_value: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 40, other owned property counts in addition to the primary residence.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # $60,000 home plus a distinct $30,000 parcel of land.
+        ny_real_property_tax_credit_property_market_value: 90_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 41, a co-owner uses the full property value before ownership proration.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        # A $50,000 share of a property whose full market value is $100,000.
+        primary_residence_value: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 42, a renter remains subject to the value of other owned property.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 43, an assetless renter can explicitly supply zero owned property value.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # $4,000/12 is below $450 and its 25% tax equivalent exceeds $70.
+    ny_real_property_tax_credit: 375
+
+# IT-214-I (2025), physical page 1: current market value of all owned real
+# property must be $85,000 or less. Known primary-home ownership shares are a
+# lower bound, not a substitute for the required full-property total. The
+# Person input contract is documented in assessed_property_value.py.
+# Positive controls use IT-214 (2025), physical page 3: income $2,000 gives
+# a 3.5% threshold ($70), exceeded by $500 taxes, and elderly Table A pays $375.
+- name: Case 44, supplied over-limit primary home blocks an omitted property total.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 400_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 45, supplied primary-home value one dollar below the limit preserves the credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 84_999
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 375
+
+- name: Case 46, supplied primary-home value exactly at the limit preserves the credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 85_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 375
+
+- name: Case 47, supplied primary-home value one dollar above the limit blocks the credit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 85_001
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 48, joint claimants aggregate distinct ownership shares at the limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 42_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 70
+        primary_residence_value: 42_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Two shares of the same $85,000 home sum to its full value, not twice it.
+    ny_real_property_tax_credit: 375
+
+- name: Case 49, joint ownership shares together above the limit block the credit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 40_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 70
+        primary_residence_value: 45_001
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Neither share exceeds $85,000 alone; their $85,001 sum proves failure.
+    ny_real_property_tax_credit: 0
+
+- name: Case 50, a nonclaimant dependent's property does not disqualify the claimant.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 60_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        primary_residence_value: 400_000
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # The value ceiling concerns the claimant's property, not a dependent's.
+    ny_real_property_tax_credit: 375
+
+- name: Case 51, an explicit total and its included home value are not added twice.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 85_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 375
+
+- name: Case 52, a joint claim preserves an explicit total that includes other property.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 42_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 70
+        primary_residence_value: 42_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # The $85,000 shared home and a distinct $5,000 parcel.
+        ny_real_property_tax_credit_property_market_value: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 53, a lower explicit total cannot erase a known over-limit home value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 90_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 54, an explicit zero cannot erase a known over-limit home value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 400_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+# These historical controls condition on known IT-214 household gross income.
+# They isolate property compatibility rather than testing income derivation.
+- name: Case 55, historical numeric credit keeps an explicit total without double counting.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 85_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_household_gross_income: 2_000
+        ny_real_property_tax_credit_property_market_value: 85_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Compatibility: 50% x ($500 - $2,000 x 3.5%) = $215, below the old cap.
+    ny_real_property_tax_credit: 215
+
+- name: Case 56, historical numeric fallback is preserved for unspecified property facts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_household_gross_income: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Numeric compatibility only; omitted property facts are not verified zero.
+    ny_real_property_tax_credit: 215
+
+
+# IT-214-I (2025), p. 1: a joint claim counts the full value of each distinct
+# property. Repeating the same $50,000 full value for two owners does not
+# increase the reported parcel total. Table 1 and Table A then give $375.
+- name: Case 57, a reported joint total resolves duplicate primary home values.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 70
+        primary_residence_value: 50_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ny_real_property_tax_credit_property_market_value: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 375
+
+- name: Case 58, a separate occupant's property does not block the 2024 household credit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        rent: 2_400
+      person2:
+        age: 38
+        employment_income: 8_000
+        rent: 2_400
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+      tax_unit2:
+        members: [person2]
+        ny_real_property_tax_credit_property_market_value: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # The 2024 household still combines both members' rent and income. The
+    # $160 excess yields $80 before the $45 non-elderly limit. The co-occupant
+    # who owns the over-limit parcel cannot claim the household's sole credit.
+    ny_household_gross_income: [16_000, 16_000]
+    ny_real_property_tax_credit_potential: [0, 45]
+    ny_real_property_tax_credit_claimant: [false, true]
+    ny_real_property_tax_credit: [0, 45]
+
+- name: Case 59, a separate occupant's property does not block the other taxpayer's 2025 credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+        rent: 2_400
+      person2:
+        age: 38
+        employment_income: 8_000
+        rent: 2_400
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+      tax_unit2:
+        members: [person2]
+        ny_real_property_tax_credit_property_market_value: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # IT-214 Tables 1 and B: $2,400 x 25% exceeds $8,000 x 5%, and the
+    # under-65 qualifying renter gets $70. The other taxpayer owns too much.
+    ny_real_property_tax_credit_potential: [0, 70]
+    ny_real_property_tax_credit_claimant: [true, true]
+    ny_real_property_tax_credit: [0, 70]

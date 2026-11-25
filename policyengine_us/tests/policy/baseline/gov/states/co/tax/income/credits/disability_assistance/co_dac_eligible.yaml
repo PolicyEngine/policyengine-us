@@ -1,0 +1,141 @@
+# Source: CRS 39-31-104.5(2)-(6), enacted HB24-1268, PDF pages 6-8.
+# Official 2025 DR0104EZ, physical PDF page 4, confirms the amount table.
+# Fractional AGI boundaries follow the statute, without rounding income.
+- name: DAC requires Colorado residence facts and excludes an actual PTC election
+  period: 2025
+  input:
+    state_code:
+    - CO
+    - CO
+    - CO
+    - CO
+    - UT
+    adjusted_gross_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    co_dac_disability_qualified:
+    - true
+    - false
+    - true
+    - true
+    - true
+    co_dac_resident_qualified:
+    - true
+    - true
+    - false
+    - true
+    - true
+    co_ptc_elected:
+    - false
+    - false
+    - false
+    - true
+    - false
+  output:
+    co_dac_eligible:
+    - true
+    - false
+    - false
+    - false
+    - false
+    co_dac:
+    - 1200
+    - 0
+    - 0
+    - 0
+    - 0
+- name: Generic disability does not certify the statutory DAC conditions
+  period: 2025
+  input:
+    state_code: CO
+    adjusted_gross_income: 0
+    is_permanently_and_totally_disabled: true
+    co_dac_resident_qualified: true
+  output:
+    co_dac_eligible: false
+    co_dac: 0
+- name: Two qualifying spouses receive one joint DAC award
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        co_dac_disability_qualified: true
+        co_dac_resident_qualified: true
+      spouse:
+        age: 46
+        co_dac_disability_qualified: true
+        co_dac_resident_qualified: true
+    tax_units:
+      joint:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        adjusted_gross_income: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: CO
+  output:
+    co_dac_eligible: true
+    co_dac: 1200
+- name: Disability and residency must qualify the same joint filer
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        co_dac_disability_qualified: true
+        co_dac_resident_qualified: false
+      spouse:
+        age: 46
+        co_dac_disability_qualified: false
+        co_dac_resident_qualified: true
+    tax_units:
+      joint:
+        members:
+        - head
+        - spouse
+        filing_status: JOINT
+        adjusted_gross_income: 0
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: CO
+  output:
+    co_dac_eligible: false
+    co_dac: 0
+- name: A qualifying dependent does not qualify the parents for DAC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        co_dac_disability_qualified: true
+        co_dac_resident_qualified: true
+    tax_units:
+      family:
+        members:
+        - head
+        - child
+        adjusted_gross_income: 0
+    households:
+      household:
+        members:
+        - head
+        - child
+        state_code: CO
+  output:
+    co_dac_eligible: false
+    co_dac: 0

@@ -10,6 +10,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        mn_homestead_credit_refund_qualified_property_taxes: 3_150
         adjusted_gross_income: 50_000
     households:
       household:
@@ -18,7 +19,9 @@
   output:
     mn_homestead_credit_refund_eligible: true
     mn_homestead_credit_refund_household_income: 50_000
-    mn_homestead_credit_refund: 1_462
+    # Official 2025 table p22: income [48,340, 50,530), taxes [3,150, 3,175)
+    # gives $1,478; line 17a adds round($1,478 x 0.1488) = $220.
+    mn_homestead_credit_refund: 1_698
 
 - name: Case 2, nontaxable Social Security is included in household income.
   period: 2025
@@ -34,6 +37,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        mn_homestead_credit_refund_qualified_property_taxes: 3_150
         adjusted_gross_income: 65_636.60
     households:
       household:
@@ -41,7 +45,9 @@
         state_code: MN
   output:
     mn_homestead_credit_refund_household_income: 68_432.60
-    mn_homestead_credit_refund: 1_211
+    # Official 2025 table p22: income [68,090, 70,280), taxes [3,150, 3,175)
+    # gives $1,210; line 17a adds round($1,210 x 0.1488) = $180.
+    mn_homestead_credit_refund: 1_390
 
 - name: Case 3, age, dependent, and retirement contribution subtractions reduce household income.
   period: 2025
@@ -103,6 +109,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        mn_homestead_credit_refund_qualified_property_taxes: 3_150
         adjusted_gross_income: 10_000
     households:
       household:
@@ -123,6 +130,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        mn_homestead_credit_refund_qualified_property_taxes: 10_000
         adjusted_gross_income: 142_490
     households:
       household:
@@ -192,7 +200,147 @@
     # are not in AGI.
     mn_homestead_credit_refund_household_income: 45_720
 
-- name: Case 9, a retired homeowner's Supplemental Security Income counts in household income.
+- name: Case 9, zero income receives the capped regular refund plus the one-time increase.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 4_000
+    mn_homestead_credit_refund_qualified_property_taxes: 4_000
+    mn_homestead_credit_refund_household_income: 0
+  output:
+    # P23 worksheet: min(4,000 x 88%, 3,480) = 3,480.
+    # Separate line 17a: round(3,480 x 0.1488) = 518.
+    mn_homestead_credit_refund: 3_998
+
+- name: Case 10, negative household income uses zero without exceeding the increased cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 4_000
+    mn_homestead_credit_refund_qualified_property_taxes: 4_000
+    mn_homestead_credit_refund_household_income: -1_000
+  output:
+    # P9 line17 directs negative household income to use zero in the table.
+    mn_homestead_credit_refund: 3_998
+
+- name: Case 11, the regular refund rounds before computing its separate increase.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 3_502
+    mn_homestead_credit_refund_qualified_property_taxes: 3_502
+    mn_homestead_credit_refund_household_income: 50_000
+  output:
+    # P23 worksheet: (3,502 - 50,000 x .02) x .68 = 1,701.36 -> 1,701.
+    # Line17a: 1,701 x .1488 = 253.1088 -> 253; total = 1,954.
+    # Multiplying the unrounded regular amount by 1.1488 would give 1,955.
+    mn_homestead_credit_refund: 1_954
+
+- name: Case 12, the last dollar below a property-tax column boundary stays in that column.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 3_149
+    mn_homestead_credit_refund_qualified_property_taxes: 3_149
+    mn_homestead_credit_refund_household_income: 50_000
+  output:
+    # P22: income [48,340,50,530), taxes [3,125,3,150) -> 1,461.
+    # 1,461 + round(1,461 x .1488) = 1,461 + 217.
+    mn_homestead_credit_refund: 1_678
+
+- name: Case 13, an exact income row boundary selects the next published table row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 3_150
+    mn_homestead_credit_refund_qualified_property_taxes: 3_150
+    mn_homestead_credit_refund_household_income: 50_530
+  output:
+    # P22: income [50,530,52,720), taxes [3,150,3,175) -> 1,448.
+    # 1,448 + round(1,448 x .1488) = 1,448 + 215.
+    mn_homestead_credit_refund: 1_663
+
+- name: Case 14, property tax just below the worksheet cutoff uses the last table column.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 3_499
+    mn_homestead_credit_refund_qualified_property_taxes: 3_499
+    mn_homestead_credit_refund_household_income: 50_000
+  output:
+    # P23: income [48,340,50,530), taxes [3,475,3,500) -> 1,699.
+    mn_homestead_credit_refund: 1_952
+
+- name: Case 15, property tax exactly at the worksheet cutoff uses the worksheet.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 3_500
+    mn_homestead_credit_refund_qualified_property_taxes: 3_500
+    mn_homestead_credit_refund_household_income: 50_000
+  output:
+    # P23: (3,500 - 50,000 x .02) x .68 = 1,700; bonus rounds to 253.
+    mn_homestead_credit_refund: 1_953
+
+- name: Case 16, the 2024 regular refund does not receive the 2025-only increase.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 4_000
+    mn_homestead_credit_refund_household_income: 0
+  output:
+    # 2024 official M1PR instructions p23: min(4,000 x .88, 3,410).
+    # Laws2026ch128art4sec11 applies only to taxes payable2026 (claim2025).
+    mn_homestead_credit_refund: 3_410
+
+- name: Case 17, zero qualified property tax cannot produce a positive table refund.
+  period: 2025
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 0
+    mn_homestead_credit_refund_qualified_property_taxes: 0
+    mn_homestead_credit_refund_household_income: 0
+  output:
+    # M1PR line16 zero or less is blank, and a blank line17 gives no refund.
+    mn_homestead_credit_refund: 0
+
+- name: Case 18, next-year qualified claim tax is independent of current-year taxes paid for SALT.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MN, MN]
+    age: [40, 40]
+    adjusted_gross_income: [50_000, 50_000]
+    mn_homestead_credit_refund_household_income: [50_000, 50_000]
+    # Federal ScheduleA2025 deducts taxes paid2025; M1PR2025 uses the
+    # separate Statement of Property Taxes Payable2026 (M1PRline14).
+    real_estate_taxes: [1_000, 9_000]
+    state_and_local_sales_or_income_tax: [0, 0]
+    mn_homestead_credit_refund_qualified_property_taxes: [4_000, 4_000]
+  output:
+    # Worksheet (4000 - 50000 x .02) x .68 =2040; bonus304 ->2344.
+    mn_homestead_credit_refund: [2_344, 2_344]
+    salt: [1_000, 9_000]
+    real_estate_taxes: [1_000, 9_000]
+
+- name: Case 19, a retired homeowner's Supplemental Security Income counts in household income.
   # Minn. Stat. 290A.03, subd. 3(a)(2)(v) counts Supplemental Security
   # Income; 2025 M1PR instructions, line 4 (PDF page 7).
   period: 2025
@@ -208,6 +356,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        mn_homestead_credit_refund_qualified_property_taxes: 2_000
     households:
       household:
         members: [person1]
@@ -215,7 +364,61 @@
   output:
     # 12,000 + 3,000 - 5,200 (age 65 or older) = 9,800.
     mn_homestead_credit_refund_household_income: 9_800
-    # $8,810 - $10,989 band: 1.4% of income, refund rate 83%, maximum $3,480.
-    # 2,000 - 0.014 x 9,800 = 2,000 - 137.20 = 1,862.80;
-    # round(1,862.80 x 0.83) = round(1,546.12) = 1,546.
-    mn_homestead_credit_refund: 1_546
+    # The 2025 M1PR table (printed p18) assigns 1,555.
+    # Round the separate 14.88% increase to 231.
+    mn_homestead_credit_refund: 1_786
+
+- name: Case 20, the 2026 regular refund has the published cap, tier edge and cutoff.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Schedule for 2026 (filing in 2027), PDF pages 1 and 2:
+  # https://www.revenue.state.mn.us/sites/default/files/2026-10/ho-schedule-26.pdf
+  # 2026 final draft instructions, printed page 23, give the $3,500 switch:
+  # https://www.revenue.state.mn.us/sites/default/files/2026-11/m1pr-inst-26_0.pdf#page=23
+  # Minn. Stat. section 290A.04, subd. 2 gives the remaining property-tax
+  # percentage after the contribution and copay:
+  # https://www.revisor.mn.gov/statutes/cite/290A.04#stat.290A.04.2
+  # The 14.88% increase applies only to taxes payable in 2026:
+  # https://www.revisor.mn.gov/laws/2026/0/128/#laws.4.11
+  input:
+    state_code: [MN, MN, MN, MN, MN]
+    mn_homestead_credit_refund_household_income: [0, 2_259, 2_260, 147_109, 147_110]
+    mn_homestead_credit_refund_qualified_property_taxes: [5_000, 4_000, 4_000, 6_000, 6_000]
+    mn_special_refund: [0, 0, 0, 0, 0]
+  output:
+    mn_homestead_credit_refund_eligible: [true, true, true, true, false]
+    # 0 income: 5,000 x 88% = 4,400, capped at 3,600, with no increase.
+    # 2,259: (4,000 - 23) x 88% rounds to 3,500.
+    # 2,260: (4,000 - 25) x 88% rounds to 3,498.
+    # 147,109: (6,000 - 3,678) x 53% rounds to 1,231, capped at 710.
+    # 147,110: income meets the first ineligible income.
+    mn_homestead_credit_refund: [3_600, 3_500, 3_498, 710, 0]
+
+- name: Case 21, 2026 special refund reduces line 16 and adds back once to the total.
+  period: 2026
+  # 2026 final draft M1PR-SR, lines 4–13:
+  # https://www.revenue.state.mn.us/sites/default/files/2026-10/m1prsr-26.pdf#page=1
+  # 2026 final draft M1PR, lines 14–18:
+  # https://www.revenue.state.mn.us/sites/default/files/2026-10/m1pr-26.pdf#page=2
+  # 2026 final draft M1PR instructions, printed page 15:
+  # https://www.revenue.state.mn.us/sites/default/files/2026-11/m1pr-inst-26_0.pdf#page=15
+  input:
+    state_code: MN
+    mn_homestead_credit_refund_household_income: 0
+    mn_homestead_credit_refund_qualified_property_taxes: 1_300
+    mn_special_refund_current_property_taxes: 1_300
+    mn_special_refund_prior_property_taxes: 1_000
+    mn_special_refund_prior_refund: 0
+    mn_special_refund_improvement_value: 0
+    mn_special_refund_current_home_use_fraction: 1
+    mn_special_refund_prior_home_use_fraction: 1
+    mn_special_refund_same_homestead: true
+    mn_special_refund_qualifying_claimant: true
+  output:
+    # Line 15: (1,300 - 1,000 - 120) x 60% = 108.
+    mn_special_refund: 108
+    # Line 16 is 1,192, in the $1,175–1,199 column, and line 17 is 1,035.
+    mn_homestead_credit_refund: 1_035
+    # Draft line 18 is 108 + 1,035 with no prior-year bonus.
+    state_property_tax_refunds: 1_143
+    taxsim_state_property_tax_credit: 1_143

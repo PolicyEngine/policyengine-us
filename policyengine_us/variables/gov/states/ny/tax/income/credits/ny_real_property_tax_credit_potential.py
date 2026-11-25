@@ -103,8 +103,26 @@ class ny_real_property_tax_credit_potential(Variable):
         # only gross rent, so the cap is applied to gross rent. 606(e)(7)(D)
         # tests "the adjusted rent for the residence", so through 2024 it is
         # the household's rent.
-        assessed_value = add(tax_unit, period, ["assessed_property_value"])
-        meets_value_conditions = (assessed_value <= rptc.max_property_value) & (
+        property_claimant = person("is_tax_unit_head", period) | (
+            person("is_tax_unit_spouse", period)
+            & person.tax_unit("tax_unit_is_joint", period)
+        )
+        primary_residence_values = where(
+            property_claimant, person("primary_residence_value", period), 0
+        )
+        reported_market_value = tax_unit(
+            "ny_real_property_tax_credit_property_market_value", period
+        )
+        # The legacy inputs describe individual ownership shares. A reported
+        # parcel total can overlap the members' home values. Check whether any
+        # individual value is already over the limit without summing duplicates.
+        has_reported_value = reported_market_value >= 0
+        property_market_value = where(
+            has_reported_value,
+            max_(reported_market_value, tax_unit.max(primary_residence_values)),
+            tax_unit.sum(primary_residence_values),
+        )
+        meets_value_conditions = (property_market_value <= rptc.max_property_value) & (
             rent_paid <= rptc.max_rent
         )
 
