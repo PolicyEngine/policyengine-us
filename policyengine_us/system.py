@@ -277,10 +277,8 @@ def _rebuild_baseline_branch(simulation):
     ``subsample`` does, gives the baseline the same inputs as the reform,
     except those the reform stored for its own definition of a variable in
     another entity or with other ``ETERNITY`` storage, which core's branch
-    dropped too. Of those, other than entity IDs, membership IDs and roles,
-    the baseline then sets again each input the reform still holds that the
-    baseline's definition can hold, such as a yearly subsidy the reform
-    stores for all time.
+    dropped too. Where it would drop such an input, it raises instead,
+    naming the variable (``_refuse_inputs_baseline_policy_drops``).
     """
     baseline = simulation.branches.pop("baseline", None)
     if baseline is None:
@@ -298,11 +296,11 @@ def _rebuild_baseline_branch(simulation):
     # the reform. A kept holder would hand the baseline the reform's input:
     # under a reform that stores ``child_care_subsidies`` for all time, the
     # baseline read that input in place of its own formula. A dropped holder
-    # takes its inputs with it, so the baseline sets again each one it can
-    # hold: dropping a yearly 2026 subsidy left the baseline calculating one.
+    # takes its inputs with it, and the baseline would calculate one the
+    # caller gave, so it refuses such an input first.
+    rebuilt._refuse_inputs_baseline_policy_drops(simulation)
     rebuilt._drop_holders_built_for_another_policy()
     rebuilt._rebind_holders()
-    rebuilt._set_inputs_kept_for_baseline_policy(simulation)
     rebuilt._isolate_parameter_tracing()
     simulation.baseline = rebuilt
 
