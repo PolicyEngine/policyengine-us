@@ -1,0 +1,181 @@
+# IRC 135 / Form 8815 savings bond interest exclusion (2026 phase-out).
+- name: 'Single in the phase-out: 4,000 x 0.9 x (1 - 6,200/15,000)'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 104000
+        taxable_interest_income: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        savings_bond_education_qualified_expenses: 9000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    savings_bond_education_exclusion_magi: 108000
+    savings_bond_education_exclusion: 2112
+    us_bonds_for_higher_ed: 2112
+    adjusted_gross_income: 105888
+- name: 'Single below the phase-out: full 3,600'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60000
+        taxable_interest_income: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        savings_bond_education_qualified_expenses: 9000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    savings_bond_education_exclusion: 3600
+- name: 'Single above $116,800: none'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 120000
+        taxable_interest_income: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        savings_bond_education_qualified_expenses: 9000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    savings_bond_education_exclusion: 0
+- name: 'Joint at $150,000: full'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 146000
+        taxable_interest_income: 4000
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: JOINT
+        savings_bond_education_qualified_expenses: 9000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    savings_bond_education_exclusion: 3600
+- name: 'Married filing separately: none'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60000
+        taxable_interest_income: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SEPARATE
+        savings_bond_education_qualified_expenses: 9000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    savings_bond_education_exclusion: 0
+- name: 'Expenses exceed proceeds: all interest'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60000
+        taxable_interest_income: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        savings_bond_education_qualified_expenses: 12000
+        savings_bond_redemption_proceeds: 10000
+        savings_bond_redemption_interest: 4000
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    savings_bond_education_exclusion: 4000
+- name: Existing us_bonds_for_higher_ed input still used as given
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60000
+        us_bonds_for_higher_ed: 1000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 59000

@@ -1,0 +1,228 @@
+# Form 5329 Part I: IRC 72(t) and 72(q) additional tax.
+- name: '$20,000 early IRA distribution, no exception: 10%'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        taxable_ira_distributions: 20000
+        early_distributions_from_retirement_plans: 20000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_additional_tax: 2000
+    form_5329_additional_taxes: 2000
+- name: Emergency expense capped at $1,000, uncapped exception, and SIMPLE two-year 25%
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 20000
+        early_distribution_emergency_personal_expense: 3000
+        early_distribution_exceptions_uncapped: 2000
+        early_distributions_from_simple_ira_first_two_years: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_allowed_exceptions: 3000
+    early_distribution_additional_tax: 2700
+- name: First-time homebuyer lifetime cap less prior use
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 15000
+        early_distribution_first_time_homebuyer: 15000
+        early_distribution_first_time_homebuyer_prior_use: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_allowed_exceptions: 6000
+    early_distribution_additional_tax: 900
+- name: Birth or adoption, $5,000 per child, two children
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 12000
+        early_distribution_birth_or_adoption: 12000
+        early_distribution_birth_or_adoption_children: 2
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_additional_tax: 200
+- name: Domestic abuse victim cap $10,500 in 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 12000
+        early_distribution_domestic_abuse_victim: 12000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_allowed_exceptions: 10500
+    early_distribution_additional_tax: 150
+- name: Qualified disaster, $22,000 per disaster
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 30000
+        early_distribution_qualified_disaster: 30000
+        early_distribution_qualified_disasters: 1
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_additional_tax: 800
+- name: Annuity contract premature distribution under 72(q) with exception
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_annuity_contracts: 8000
+        early_distribution_exceptions_annuity: 3000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    early_distribution_additional_tax: 500
+- name: Dependent's early distribution stays off the filer's return
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50000
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        early_distributions_from_retirement_plans: 10000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    early_distribution_additional_tax:
+    - 0
+    - 1000
+    form_5329_additional_taxes: 0
+- name: Existing qualified_retirement_penalty input unchanged when detailed inputs are omitted
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        qualified_retirement_penalty: 500
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    form_5329_additional_taxes: 0
+    income_tax_before_refundable_credits: 500
+- name: Additional tax adds to federal tax before refundable credits
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 20000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    income_tax_before_refundable_credits: 2000

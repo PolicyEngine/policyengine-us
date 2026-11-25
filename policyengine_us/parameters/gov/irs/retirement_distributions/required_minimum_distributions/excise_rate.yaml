@@ -1,0 +1,13 @@
+description: The IRS imposes this excise tax rate on the amount by which required minimum distributions exceed distributions received.
+values:
+  1987-01-01: 0.5
+  2023-01-01: 0.25
+metadata:
+  unit: /1
+  period: year
+  label: Missed required minimum distribution excise tax rate
+  reference:
+    - title: 26 U.S. Code § 4974(a)
+      href: https://www.law.cornell.edu/uscode/text/26/4974
+    - title: 2025 Instructions for Form 5329, Part IX
+      href: https://www.irs.gov/instructions/i5329

@@ -1,0 +1,19 @@
+description: The IRS excludes per diem payments under qualified long-term care insurance contracts and accelerated death benefits up to this amount per day, or actual long-term care costs if greater.
+# Years before 2022 are not entered; earlier years use the 2022 amount.
+values:
+  1997-01-01: 390
+  2023-01-01: 420
+  2024-01-01: 410
+  2025-01-01: 420
+  2026-01-01: 430
+metadata:
+  unit: currency-USD
+  period: year
+  label: Long-term care per diem exclusion limit
+  reference:
+    - title: 26 U.S. Code § 7702B(d)
+      href: https://www.law.cornell.edu/uscode/text/26/7702B#d
+    - title: Rev. Proc. 2025-32 section 4.62
+      href: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=35"
+    - title: Instructions for Form 8853, Section C
+      href: https://www.irs.gov/instructions/i8853

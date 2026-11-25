@@ -1,0 +1,16 @@
+description: The IRS excludes a qualifying longevity annuity contract from the required minimum distribution balance only if premiums do not exceed this amount.
+values:
+  1987-01-01: 0
+  2023-01-01: 200_000
+  2024-01-01: 200_000
+  2025-01-01: 210_000
+  2026-01-01: 210_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Qualifying longevity annuity contract premium limit
+  reference:
+    - title: 26 CFR 1.401(a)(9)-6, A-17(b)(2)(i); SECURE 2.0 Act § 202
+      href: https://www.law.cornell.edu/cfr/text/26/1.401(a)(9)-6
+    - title: IRS Notice 2025-67
+      href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf

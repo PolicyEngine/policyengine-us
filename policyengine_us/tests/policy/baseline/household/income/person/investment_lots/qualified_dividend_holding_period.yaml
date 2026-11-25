@@ -1,0 +1,69 @@
+# IRC 1(h)(11)(B)(iii) and Treas. Reg. 1.199A-3(c)(2)(ii) holding periods.
+- name: 60 days fails, 61 days passes
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        dividend_lot_1_qualified_dividends_reported: 1000
+        dividend_lot_1_days_held_in_window: 60
+        dividend_lot_2_qualified_dividends_reported: 2000
+        dividend_lot_2_days_held_in_window: 61
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    dividends_failing_qualified_holding_period: 1000
+- name: Long-period preferred needs more than 90 days
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        dividend_lot_1_qualified_dividends_reported: 1000
+        dividend_lot_1_days_held_in_window: 75
+        dividend_lot_1_preferred_long_period: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    dividends_failing_qualified_holding_period: 1000
+- name: Section 199A dividends need more than 45 days
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        dividend_lot_1_section_199a_dividends_reported: 500
+        dividend_lot_1_days_held_in_199a_window: 45
+        dividend_lot_2_section_199a_dividends_reported: 300
+        dividend_lot_2_days_held_in_199a_window: 46
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    section_199a_dividends_failing_holding_period: 500

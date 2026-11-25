@@ -18,4 +18,6 @@ class ca_income_tax_before_refundable_credits(Variable):
         # Form 540 lines 61-62: AMT and mental health services tax
         amt = tax_unit("ca_amt", period)
         mhst = tax_unit("ca_mental_health_services_tax", period)
-        return tax_after_credits + amt + mhst
+        # FTB 3805P additional taxes on early distributions (Form 540 line 63).
+        early = tax_unit("ca_early_distribution_additional_tax", period)
+        return tax_after_credits + amt + mhst + early

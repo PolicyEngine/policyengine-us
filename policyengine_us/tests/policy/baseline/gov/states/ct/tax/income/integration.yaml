@@ -179,3 +179,66 @@
     # ct_amt 0; non-refundable credits 0 (no property tax) -> before-refundable 2,070.
     # ct_income_tax = 2,070 - ct_refundable_credits 250 = 1,820.
     ct_income_tax: 1_820
+
+- name: CT 2026 single, $100,000 wages, passing U.S. government fund
+  # Line 40 subtracts $350. Tax: 2% x 10,000 + 4.5% x 40,000 + 5.5% x 50,000 + 6% x 650 = 4,789,
+  # plus the 2% phase-out add-back of 9 x $25 = $225: $5,014.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    adjusted_gross_income: 101_000
+    ct_us_govt_fund_dividend_subtraction: 350
+    ct_agi: 100_650
+    ct_taxable_income: 100_650
+    ct_income_tax: 5_014
+
+- name: CT 2026 single, $100,000 wages, fund fails one quarter
+  # $350 more taxed at 6% adds $21.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.4999
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    adjusted_gross_income: 101_000
+    ct_us_govt_fund_dividend_subtraction: 0
+    ct_agi: 101_000
+    ct_taxable_income: 101_000
+    ct_income_tax: 5_035

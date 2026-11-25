@@ -1,0 +1,129 @@
+# IRC 1091 wash sales.
+- name: 'Repurchase 30 days after: 60 of 100 shares disallowed'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        wash_sale_1_loss: 1000
+        wash_sale_1_shares_sold: 100
+        wash_sale_1_sale_day: 9000
+        wash_sale_1_purchase_1_day: 9030
+        wash_sale_1_purchase_1_shares: 60
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    wash_sale_disallowed_loss_deferred: 600
+    investment_lot_short_term_gain: -400
+- name: Repurchase 31 days before is outside the window
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        wash_sale_1_loss: 1000
+        wash_sale_1_shares_sold: 100
+        wash_sale_1_sale_day: 9000
+        wash_sale_1_purchase_1_day: 8969
+        wash_sale_1_purchase_1_shares: 100
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    wash_sale_disallowed_loss_deferred: 0
+    investment_lot_short_term_gain: -1000
+- name: 'Replacement in an IRA: disallowed permanently'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        wash_sale_1_loss: 1000
+        wash_sale_1_shares_sold: 100
+        wash_sale_1_sale_day: 9000
+        wash_sale_1_purchase_1_day: 8970
+        wash_sale_1_purchase_1_shares: 40
+        wash_sale_1_purchase_1_in_ira: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    wash_sale_disallowed_loss_permanent: 400
+    wash_sale_disallowed_loss_deferred: 0
+    investment_lot_short_term_gain: -600
+- name: Replacement shares beyond the shares sold are not counted twice
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        wash_sale_1_loss: 1000
+        wash_sale_1_shares_sold: 100
+        wash_sale_1_sale_day: 9000
+        wash_sale_1_purchase_1_day: 9010
+        wash_sale_1_purchase_1_shares: 80
+        wash_sale_1_purchase_2_day: 9020
+        wash_sale_1_purchase_2_shares: 80
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    wash_sale_disallowed_loss_deferred: 1000
+    investment_lot_short_term_gain: 0
+- name: Allowed long-term loss flows to long-term gains
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        wash_sale_1_loss: 1000
+        wash_sale_1_shares_sold: 100
+        wash_sale_1_sale_day: 9000
+        wash_sale_1_long_term: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_long_term_gain: -1000
+    long_term_capital_gains: -1000

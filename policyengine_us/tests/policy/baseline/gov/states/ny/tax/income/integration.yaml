@@ -404,3 +404,66 @@
     ny_main_income_tax: 0
     ny_supplemental_tax: 0
     ny_income_tax_before_credits: 0
+
+- name: NY 2026 single, $100,000 wages, passing U.S. government fund
+  # Line 28 subtracts $350; taxable income 100,650 - 8,000 standard deduction = 92,650.
+  # Tax Law 601(c)(1)(vii) rates 3.9/4.4/5.15/5.4/5.9%; the 5.9% bracket cuts tax by $20.65.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    adjusted_gross_income: 101_000
+    ny_us_govt_fund_dividend_subtraction: 350
+    ny_agi: 100_650
+    ny_taxable_income: 92_650
+    ny_income_tax: 4_898.10
+
+- name: NY 2026 single, $100,000 wages, fund fails one quarter
+  # Quarter 3 at 49.99% fails the test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.4999
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    adjusted_gross_income: 101_000
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi: 101_000
+    ny_taxable_income: 93_000
+    ny_income_tax: 4_918.75

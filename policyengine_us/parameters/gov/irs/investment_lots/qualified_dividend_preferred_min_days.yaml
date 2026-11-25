@@ -1,0 +1,10 @@
+description: A preferred stock dividend attributable to periods over 366 days is qualified only if the stock was held more than this many days in the 181-day period beginning 90 days before the ex-dividend date.
+values:
+  2003-01-01: 90
+metadata:
+  unit: day
+  period: year
+  label: Qualified dividend holding period, preferred stock
+  reference:
+    - title: 26 U.S. Code § 1(h)(11)(B)(iii)(II), § 246(c)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/246#c

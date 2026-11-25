@@ -1,0 +1,13 @@
+description: The Treasury limits electronic purchases of each series of savings bonds (EE and I) to this amount per person per calendar year. Not a tax rule; for portfolio simulators.
+values:
+  2008-01-01: 5_000
+  2012-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Savings bond annual electronic purchase limit per series
+  reference:
+    - title: 31 CFR 363.52 (Series EE) and 31 CFR 359 (Series I)
+      href: https://www.ecfr.gov/current/title-31/subtitle-B/chapter-II/subchapter-A/part-363
+    - title: TreasuryDirect, Buying I bonds and EE bonds
+      href: https://www.treasurydirect.gov/savings-bonds/buy-a-bond/

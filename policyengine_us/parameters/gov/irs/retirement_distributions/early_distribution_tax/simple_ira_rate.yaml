@@ -1,0 +1,13 @@
+description: The IRS imposes this additional tax rate, in place of the general rate, on early SIMPLE IRA distributions received in the first two years of participation.
+values:
+  1987-01-01: 0.1
+  1997-01-01: 0.25
+metadata:
+  unit: /1
+  period: year
+  label: SIMPLE IRA two-year early distribution additional tax rate
+  reference:
+    - title: 26 U.S. Code § 72(t)(6)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_6
+    - title: 2025 Instructions for Form 5329, line 4
+      href: https://www.irs.gov/instructions/i5329

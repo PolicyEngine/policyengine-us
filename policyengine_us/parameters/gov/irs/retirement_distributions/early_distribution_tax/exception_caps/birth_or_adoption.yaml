@@ -1,0 +1,11 @@
+description: The IRS excepts qualified birth or adoption distributions from the additional tax up to this amount per child.
+values:
+  1987-01-01: 0
+  2020-01-01: 5_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Early distribution birth or adoption exception cap per child
+  reference:
+    - title: 26 U.S. Code § 72(t)(2)(H)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_2_H

@@ -1,0 +1,72 @@
+# IRC 72(d) Simplified Method.
+- name: 'Single life at 65: 260 payments'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        qualified_annuity_gross_payments: 24000
+        qualified_annuity_cost: 31000
+        qualified_annuity_monthly_payments_this_year: 12
+        qualified_annuity_starting_age: 65
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    simplified_method_taxable_annuity: 22569.23
+- name: 'Joint, combined ages 130: 310 payments'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        qualified_annuity_gross_payments: 24000
+        qualified_annuity_cost: 31000
+        qualified_annuity_monthly_payments_this_year: 12
+        qualified_annuity_starting_age: 65
+        qualified_annuity_combined_starting_age: 130
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    simplified_method_taxable_annuity: 22800
+- name: Cost nearly recovered
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        qualified_annuity_gross_payments: 24000
+        qualified_annuity_cost: 31000
+        qualified_annuity_monthly_payments_this_year: 12
+        qualified_annuity_starting_age: 65
+        qualified_annuity_cost_recovered: 30500
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    simplified_method_taxable_annuity: 23500

@@ -15,4 +15,5 @@ class long_term_capital_gains(Variable):
     adds = [
         "long_term_capital_gains_before_response",
         "capital_gains_behavioral_response",
+        "long_term_capital_gain_adjustments",
     ]

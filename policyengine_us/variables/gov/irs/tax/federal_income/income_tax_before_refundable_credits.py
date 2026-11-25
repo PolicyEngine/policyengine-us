@@ -24,6 +24,7 @@ class income_tax_before_refundable_credits(Variable):
                     "recapture_of_investment_credit",
                     "unreported_payroll_tax",
                     "qualified_retirement_penalty",
+                    "form_5329_additional_taxes",
                 ],
             )
             subtracted_components = add(

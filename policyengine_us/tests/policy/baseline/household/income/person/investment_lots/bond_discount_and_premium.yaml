@@ -1,0 +1,160 @@
+# IRC 1272 OID, 1276 market discount, 171 premium.
+- name: 'OID: 900 x (1.03^2 - 1) - 20 = 34.81'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_adjusted_issue_price_start: 900
+        bond_lot_1_yield_per_accrual_period: 0.03
+        bond_lot_1_accrual_periods_held: 2
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_issue_price: 880
+        bond_lot_1_complete_years_to_maturity_at_issue: 5
+        bond_lot_1_qualified_stated_interest: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 34.81
+- name: De minimis OID is zero
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_adjusted_issue_price_start: 900
+        bond_lot_1_yield_per_accrual_period: 0.03
+        bond_lot_1_accrual_periods_held: 2
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_issue_price: 995
+        bond_lot_1_complete_years_to_maturity_at_issue: 5
+        bond_lot_1_qualified_stated_interest: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 0
+- name: Acquisition premium fraction reduces OID
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_adjusted_issue_price_start: 900
+        bond_lot_1_yield_per_accrual_period: 0.03
+        bond_lot_1_accrual_periods_held: 2
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_issue_price: 880
+        bond_lot_1_complete_years_to_maturity_at_issue: 5
+        bond_lot_1_qualified_stated_interest: 20
+        bond_lot_1_acquisition_premium_fraction: 0.5
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 17.4
+- name: 'Market discount at sale: accrued part of gain is interest'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_market_discount: 50
+        bond_lot_1_complete_years_to_maturity_at_purchase: 2
+        bond_lot_1_days_held: 365
+        bond_lot_1_days_purchase_to_maturity: 730
+        bond_lot_1_disposition_gain: 40
+        bond_lot_1_disposition_long_term: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 25
+    investment_lot_short_term_gain: 15
+- name: Market discount below de minimis stays capital
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_market_discount: 4
+        bond_lot_1_complete_years_to_maturity_at_purchase: 2
+        bond_lot_1_days_held: 365
+        bond_lot_1_days_purchase_to_maturity: 730
+        bond_lot_1_disposition_gain: 40
+        bond_lot_1_disposition_long_term: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 0
+    investment_lot_long_term_gain: 40
+- name: Current inclusion election and premium amortization
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        bond_lot_1_stated_redemption_price: 1000
+        bond_lot_1_market_discount: 50
+        bond_lot_1_complete_years_to_maturity_at_purchase: 2
+        bond_lot_1_days_held: 365
+        bond_lot_1_days_purchase_to_maturity: 730
+        bond_lot_1_market_discount_included_currently: true
+        bond_lot_2_premium_amortization: 10
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    investment_lot_interest_adjustment: 15

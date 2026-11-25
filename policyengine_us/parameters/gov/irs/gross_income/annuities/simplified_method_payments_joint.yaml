@@ -1,0 +1,33 @@
+description: Under the Simplified Method the IRS divides the cost in a qualified plan annuity paid over more than one life by this expected number of monthly payments, by the annuitants' combined ages at the starting date.
+brackets:
+  - threshold:
+      1998-01-01: 0
+    amount:
+      1998-01-01: 410
+  - threshold:
+      1998-01-01: 111
+    amount:
+      1998-01-01: 360
+  - threshold:
+      1998-01-01: 121
+    amount:
+      1998-01-01: 310
+  - threshold:
+      1998-01-01: 131
+    amount:
+      1998-01-01: 260
+  - threshold:
+      1998-01-01: 141
+    amount:
+      1998-01-01: 210
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: month
+  period: year
+  label: Simplified Method expected payments, more than one life
+  reference:
+    - title: 26 U.S. Code § 72(d)(1)(B)(iv)
+      href: https://www.law.cornell.edu/uscode/text/26/72#d_1_B
+    - title: IRS Publication 575, Simplified Method Worksheet, Table 2
+      href: https://www.irs.gov/publications/p575

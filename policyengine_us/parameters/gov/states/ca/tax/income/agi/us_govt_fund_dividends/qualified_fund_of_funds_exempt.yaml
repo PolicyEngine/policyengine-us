@@ -1,0 +1,13 @@
+description: California lets a qualified fund of funds pay exempt-interest dividends without meeting the quarterly asset test, if this is true.
+values:
+  1987-01-01: false
+  # Applies to taxable years beginning on or after December 23, 2010.
+  2011-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: California qualified fund of funds exempt from U.S. government obligation asset test
+  reference:
+    - title: Cal. Rev. & Tax. Code § 17145(d), (e)
+      href: https://law.justia.com/codes/california/code-rtc/division-2/part-10/chapter-3/article-3/section-17145/

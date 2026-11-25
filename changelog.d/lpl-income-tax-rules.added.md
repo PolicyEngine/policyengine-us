@@ -1,0 +1,1 @@
+Add federal early-distribution tax, missed-RMD excise, California 2.5% early-distribution tax, section 1256 60/40, home sale exclusion, savings bond education exclusion, long-term care per diem limit, annuity exclusion ratio and Simplified Method, and lot-level holding-period, wash-sale, RIC loss and bond discount rules.

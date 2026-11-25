@@ -38,6 +38,7 @@ class ia_fedtax_deduction(Variable):
             [
                 "unreported_payroll_tax",
                 "qualified_retirement_penalty",
+                "form_5329_additional_taxes",
                 "recapture_of_investment_credit",
             ],
         )

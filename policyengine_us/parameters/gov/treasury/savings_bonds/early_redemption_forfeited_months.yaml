@@ -1,0 +1,12 @@
+description: Savings bonds redeemed before five years forfeit this many months of interest. Not a tax rule; the reduced interest is what is reported as income.
+values:
+  2003-02-01: 3
+metadata:
+  unit: month
+  period: year
+  label: Savings bond early redemption interest forfeiture
+  reference:
+    - title: 31 CFR 359.6 and 351.2
+      href: https://www.ecfr.gov/current/title-31/subtitle-B/chapter-II/subchapter-A/part-359
+    - title: TreasuryDirect, Cashing EE or I savings bonds
+      href: https://www.treasurydirect.gov/savings-bonds/cash-a-bond/

@@ -1,0 +1,11 @@
+description: The IRS excepts IRA distributions for a first-time home purchase from the additional tax up to this lifetime amount.
+values:
+  1987-01-01: 0
+  1998-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Early distribution first-time homebuyer exception lifetime cap
+  reference:
+    - title: 26 U.S. Code § 72(t)(2)(F), (t)(8)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_8

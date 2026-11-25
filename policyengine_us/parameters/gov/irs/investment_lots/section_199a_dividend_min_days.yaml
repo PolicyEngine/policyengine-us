@@ -1,0 +1,10 @@
+description: A qualified REIT dividend counts for the section 199A deduction only if the shares were held more than this many days in the 91-day period beginning 45 days before the ex-dividend date.
+values:
+  2018-01-01: 45
+metadata:
+  unit: day
+  period: year
+  label: Section 199A REIT dividend holding period
+  reference:
+    - title: 26 CFR 1.199A-3(c)(2)(ii)
+      href: https://www.law.cornell.edu/cfr/text/26/1.199A-3

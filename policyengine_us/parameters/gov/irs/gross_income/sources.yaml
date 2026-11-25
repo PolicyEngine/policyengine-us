@@ -54,6 +54,12 @@ values:
     - salt_refund_income
     # Military retirement pay and survivor benefit plan payments (IRC § 61, Form 1040 line 5b).
     - military_retirement_income
+    # Per diem long-term care benefits above the IRC 7702B(d) limit (Form 8853 Section C).
+    - taxable_long_term_care_per_diem_benefits
+    # Annuity contracts outside qualified plans (IRC 72(b), (e)) and qualified
+    # plan annuities under the Simplified Method (IRC 72(d)), from detailed inputs.
+    - taxable_annuity_contract_income
+    - simplified_method_taxable_annuity
 
 
 metadata:

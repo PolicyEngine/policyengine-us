@@ -35,6 +35,7 @@ class income_tax_chapter_1(Variable):
                 "income_tax_before_credits",
                 "recapture_of_investment_credit",
                 "qualified_retirement_penalty",
+                "form_5329_additional_taxes",
             ],
         )
         nonrefundable_credits = tax_unit(

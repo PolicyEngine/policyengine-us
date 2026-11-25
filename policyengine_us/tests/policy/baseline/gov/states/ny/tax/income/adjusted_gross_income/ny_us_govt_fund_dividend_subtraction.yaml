@@ -1,0 +1,485 @@
+# NY subtraction for regulated investment company dividends attributable to
+# U.S. government obligations, applied fund by fund with the quarterly 50% asset test.
+
+- name: NY fund at exactly 50% at every quarter-end passes; $1,000 x 35% = $350
+  # The test is at least 50% at the close of each quarter, so 50% passes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 350
+    ny_agi_subtractions: 350
+    adjusted_gross_income: 1_000
+    ny_agi: 650
+
+- name: NY one quarter at 49.99% fails even though the annual average is above 50%
+  # Quarter-end shares 90%, 49.99%, 90%, 90% average 77.5%; every quarter must pass.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.9
+        us_govt_fund_1_govt_asset_share_q2: 0.4999
+        us_govt_fund_1_govt_asset_share_q3: 0.9
+        us_govt_fund_1_govt_asset_share_q4: 0.9
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 0
+    ny_agi: 1_000
+
+- name: NY same $1,000 x 35% fund fails when one quarter is below 50%
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.49
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi: 1_000
+
+- name: NY an annual income share alone does not establish the asset test
+  # A 98% income share with no quarter-end asset data is missing data, which fails.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.98
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 0
+    ny_agi: 1_000
+
+- name: NY three of four quarter-end shares supplied fails
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.8
+        us_govt_fund_1_govt_asset_share_q2: 0.8
+        us_govt_fund_1_govt_asset_share_q3: 0.8
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+
+- name: NY issuer statement that the fund met the quarterly test qualifies it
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_asset_test_evidence: ISSUER_CONFIRMED_MET
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 350
+    ny_agi: 650
+
+- name: NY issuer statement that the fund did not meet the test overrides quarterly shares
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 1
+        us_govt_fund_1_govt_asset_share_q2: 1
+        us_govt_fund_1_govt_asset_share_q3: 1
+        us_govt_fund_1_govt_asset_share_q4: 1
+        us_govt_fund_1_asset_test_evidence: ISSUER_CONFIRMED_NOT_MET
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi: 1_000
+
+- name: NY two funds tested separately; only the passing fund is subtracted
+  # Fund 1: $1,000 x 35% = $350, passes. Fund 2: $2,000 x 80% fails in quarter 2.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 3_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+        us_govt_fund_2_ordinary_dividends: 2_000
+        us_govt_fund_2_govt_income_share: 0.8
+        us_govt_fund_2_govt_asset_share_q1: 0.7
+        us_govt_fund_2_govt_asset_share_q2: 0.45
+        us_govt_fund_2_govt_asset_share_q3: 0.7
+        us_govt_fund_2_govt_asset_share_q4: 0.7
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 350
+    ny_agi_subtractions: 350
+    adjusted_gross_income: 3_000
+    ny_agi: 2_650
+
+- name: NY qualified fund of funds without asset data
+  # Cal. Rev. & Tax. Code 17145(d) exempts a qualified fund of funds from the asset test; CT and NY do not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_qualified_fund_of_funds: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+
+- name: NY direct Treasury interest alone is unchanged by the fund rule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        taxable_interest_income: 500
+        us_govt_interest_person: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 500
+    ny_agi: 0
+
+- name: NY direct Treasury interest and a passing fund are each subtracted once
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        taxable_interest_income: 500
+        us_govt_interest_person: 500
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 350
+    ny_agi_subtractions: 850
+    adjusted_gross_income: 1_500
+    ny_agi: 650
+
+- name: NY retirement account distribution gets no fund subtraction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        taxable_ira_distributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 0
+    ny_agi: 1_000
+
+- name: NY fund slot filled for an IRA-held fund is capped at zero ordinary dividends
+  # Dividends earned inside an IRA are not ordinary dividend income, so the cap is $0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        taxable_ira_distributions: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 1
+        us_govt_fund_1_govt_asset_share_q1: 1
+        us_govt_fund_1_govt_asset_share_q2: 1
+        us_govt_fund_1_govt_asset_share_q3: 1
+        us_govt_fund_1_govt_asset_share_q4: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 0
+    ny_agi: 1_000
+
+- name: NY subtraction capped at ordinary dividends in federal AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 400
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 1
+        us_govt_fund_1_govt_asset_share_q1: 1
+        us_govt_fund_1_govt_asset_share_q2: 1
+        us_govt_fund_1_govt_asset_share_q3: 1
+        us_govt_fund_1_govt_asset_share_q4: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 400
+    ny_agi: 0
+
+- name: NY existing caller without fund inputs keeps prior results
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        taxable_interest_income: 200
+        us_govt_interest_person: 200
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0
+    ny_agi_subtractions: 200
+    ny_agi: 1_000
+
+- name: NY joint filers each with a passing fund
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        non_qualified_dividend_income: 2_000
+        us_govt_fund_1_ordinary_dividends: 2_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.6
+        us_govt_fund_1_govt_asset_share_q2: 0.6
+        us_govt_fund_1_govt_asset_share_q3: 0.6
+        us_govt_fund_1_govt_asset_share_q4: 0.6
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: [350, 700]
+    ny_agi_subtractions: 1_050
+    ny_agi: 1_950
+
+- name: NY dependent's fund dividends are not on the filer's return
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_us_govt_fund_dividend_subtraction: [0, 350]
+    ny_agi_subtractions: 0
+
+- name: NY fund rule does not apply to a household in another state
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ny_us_govt_fund_dividend_subtraction: 0

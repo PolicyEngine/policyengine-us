@@ -1,0 +1,31 @@
+description: The IRS requires minimum distributions to begin in the year a person attains this age, by birth year.
+brackets:
+  - threshold:
+      1987-01-01: 0
+    amount:
+      # Age 70 1/2 before 2020 and 72 from 2020; whole years approximate 70 1/2.
+      1987-01-01: 70
+      2020-01-01: 72
+  - threshold:
+      1987-01-01: 1951
+    amount:
+      1987-01-01: 70
+      2020-01-01: 72
+      2023-01-01: 73
+  - threshold:
+      1987-01-01: 1960
+    amount:
+      1987-01-01: 70
+      2020-01-01: 72
+      2023-01-01: 75
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: year
+  period: year
+  label: Required minimum distribution applicable age by birth year
+  reference:
+    - title: 26 U.S. Code § 401(a)(9)(C)(v)
+      href: https://www.law.cornell.edu/uscode/text/26/401#a_9_C_v
+    - title: Proposed Treas. Reg. § 1.401(a)(9)-2(b)(2)(v) (2024), birth year 1959 uses age 73
+      href: https://www.federalregister.gov/documents/2024/07/19/2024-14542/required-minimum-distributions

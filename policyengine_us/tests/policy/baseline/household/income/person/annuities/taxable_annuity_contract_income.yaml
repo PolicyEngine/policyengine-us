@@ -1,0 +1,166 @@
+# IRC 72(b), (e): exclusion ratio and withdrawals from annuity contracts.
+- name: Exclusion ratio 100,000 / 200,000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_1_annuity_payments: 12000
+        annuity_contract_1_investment_in_contract: 100000
+        annuity_contract_1_expected_return: 200000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 6000
+- name: Exclusion stops at the unrecovered investment
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_1_annuity_payments: 12000
+        annuity_contract_1_investment_in_contract: 100000
+        annuity_contract_1_expected_return: 200000
+        annuity_contract_1_investment_recovered: 97000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 9000
+- name: 'Starting date before 1987: exclusion continues'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_1_annuity_payments: 12000
+        annuity_contract_1_investment_in_contract: 100000
+        annuity_contract_1_expected_return: 200000
+        annuity_contract_1_investment_recovered: 120000
+        annuity_contract_1_starting_date_before_1987: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 6000
+- name: Withdrawal taxed income first up to the gain
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_2_withdrawals: 30000
+        annuity_contract_2_cash_value: 150000
+        annuity_contract_2_investment_in_contract: 130000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 20000
+- name: Pre-August 14, 1982 investment comes out first
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_2_withdrawals: 30000
+        annuity_contract_2_cash_value: 150000
+        annuity_contract_2_investment_in_contract: 130000
+        annuity_contract_2_pre_august_1982_investment: 25000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 5000
+- name: Partial annuitization splits the investment
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_1_annuity_payments: 10000
+        annuity_contract_1_investment_in_contract: 100000
+        annuity_contract_1_expected_return: 100000
+        annuity_contract_1_annuitized_share: 0.4
+        annuity_contract_1_withdrawals: 20000
+        annuity_contract_1_cash_value: 150000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 26000
+- name: Two contracts add; included in gross income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        annuity_contract_1_annuity_payments: 12000
+        annuity_contract_1_investment_in_contract: 100000
+        annuity_contract_1_expected_return: 200000
+        annuity_contract_2_withdrawals: 30000
+        annuity_contract_2_cash_value: 150000
+        annuity_contract_2_investment_in_contract: 130000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    taxable_annuity_contract_income: 26000
+    adjusted_gross_income: 26000

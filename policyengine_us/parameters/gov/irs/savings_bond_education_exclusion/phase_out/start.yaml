@@ -1,0 +1,37 @@
+description: The IRS begins to phase out the savings bond education interest exclusion when modified adjusted gross income exceeds this amount, by filing status.
+# Values before 2023 are not entered; earlier years use the 2023 amounts.
+JOINT:
+  1990-01-01: 137_800
+  2024-01-01: 145_200
+  2025-01-01: 149_250
+  2026-01-01: 152_650
+SINGLE:
+  1990-01-01: 91_850
+  2024-01-01: 96_800
+  2025-01-01: 99_500
+  2026-01-01: 101_800
+HEAD_OF_HOUSEHOLD:
+  1990-01-01: 91_850
+  2024-01-01: 96_800
+  2025-01-01: 99_500
+  2026-01-01: 101_800
+SURVIVING_SPOUSE:
+  1990-01-01: 91_850
+  2024-01-01: 96_800
+  2025-01-01: 99_500
+  2026-01-01: 101_800
+SEPARATE:
+  1990-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Savings bond education exclusion phase-out start
+  reference:
+    - title: 26 U.S. Code § 135(b)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/135
+    - title: Rev. Proc. 2025-32 section 4.17
+      href: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=20"
+    - title: 2025 Form 8815, lines 10 and 12
+      href: https://www.irs.gov/pub/irs-pdf/f8815.pdf

@@ -1,0 +1,10 @@
+description: A dividend is qualified only if the stock was held more than this many days in the 121-day period beginning 60 days before the ex-dividend date.
+values:
+  2003-01-01: 60
+metadata:
+  unit: day
+  period: year
+  label: Qualified dividend holding period
+  reference:
+    - title: 26 U.S. Code § 1(h)(11)(B)(iii)
+      href: https://www.law.cornell.edu/uscode/text/26/1#h_11_B_iii

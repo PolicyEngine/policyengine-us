@@ -405,3 +405,53 @@
     ma_senior_circuit_breaker: 966.00
     ma_refundable_credits: 180 + 966
     ma_income_tax: 376.50 - 12.50 - 180 - 966
+
+- name: MA 2026 single without U.S. government fund inputs
+  # Fund inputs drive only the CA, CT and NY subtractions, so MA results do not move.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        non_qualified_dividend_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_agi: 61_000
+    ma_income_tax: 2_730
+
+- name: MA 2026 single with U.S. government fund inputs is unchanged
+  # Fund inputs drive only the CA, CT and NY subtractions, so MA results do not move.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        non_qualified_dividend_income: 1_000
+        us_govt_fund_1_ordinary_dividends: 1_000
+        us_govt_fund_1_govt_income_share: 0.35
+        us_govt_fund_1_govt_asset_share_q1: 0.5
+        us_govt_fund_1_govt_asset_share_q2: 0.5
+        us_govt_fund_1_govt_asset_share_q3: 0.5
+        us_govt_fund_1_govt_asset_share_q4: 0.5
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_agi: 61_000
+    ma_income_tax: 2_730

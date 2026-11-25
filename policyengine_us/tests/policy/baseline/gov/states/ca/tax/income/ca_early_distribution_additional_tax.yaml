@@ -1,0 +1,66 @@
+# FTB 3805P: 2.5% (6% SIMPLE two-year) additional tax.
+- name: CA 2.5% and 6% on the federal subject amounts
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 20000
+        early_distribution_emergency_personal_expense: 3000
+        early_distribution_exceptions_uncapped: 2000
+        early_distributions_from_simple_ira_first_two_years: 4000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: CA
+  output:
+    ca_early_distribution_additional_tax: 665
+- name: CA adds 2.5% on amounts California does not except
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        ca_early_distributions_not_excepted_in_california: 1000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: CA
+  output:
+    ca_early_distribution_additional_tax: 25
+    early_distribution_additional_tax: 0
+- name: Federal-only tax outside CA
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        early_distributions_from_retirement_plans: 20000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+    households:
+      household:
+        members:
+        - person1
+        state_code: NV
+  output:
+    ca_early_distribution_additional_tax: 0
+    early_distribution_additional_tax: 2000

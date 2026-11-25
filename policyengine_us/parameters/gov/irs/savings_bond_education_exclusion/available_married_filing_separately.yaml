@@ -1,0 +1,10 @@
+description: The IRS allows the savings bond education interest exclusion on a married filing separately return, if this is true.
+values:
+  1990-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Savings bond education exclusion available when filing separately
+  reference:
+    - title: 26 U.S. Code § 135(d)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/135#d_2

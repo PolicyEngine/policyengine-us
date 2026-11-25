@@ -1,0 +1,15 @@
+description: The IRS excepts distributions to domestic abuse victims from the additional tax up to this amount, indexed for inflation.
+values:
+  1987-01-01: 0
+  2024-01-01: 10_000
+  2025-01-01: 10_300
+  2026-01-01: 10_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: Early distribution domestic abuse victim exception cap
+  reference:
+    - title: 26 U.S. Code § 72(t)(2)(K)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_2_K
+    - title: IRS Notice 2025-67
+      href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf

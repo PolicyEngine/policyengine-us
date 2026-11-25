@@ -1,0 +1,11 @@
+description: The IRS excepts qualified disaster recovery distributions from the additional tax up to this amount per disaster.
+values:
+  1987-01-01: 0
+  2021-01-01: 22_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Early distribution qualified disaster exception cap per disaster
+  reference:
+    - title: 26 U.S. Code § 72(t)(2)(M), (t)(11)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_11

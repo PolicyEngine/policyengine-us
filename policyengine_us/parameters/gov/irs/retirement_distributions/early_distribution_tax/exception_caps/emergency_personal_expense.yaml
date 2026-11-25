@@ -1,0 +1,11 @@
+description: The IRS excepts emergency personal expense distributions from the additional tax up to this amount per year.
+values:
+  1987-01-01: 0
+  2024-01-01: 1_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Early distribution emergency personal expense exception annual cap
+  reference:
+    - title: 26 U.S. Code § 72(t)(2)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/72#t_2_I
