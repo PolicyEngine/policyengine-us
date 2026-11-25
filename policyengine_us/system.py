@@ -25,6 +25,9 @@ from policyengine_us.tools.parameters import (
     backdate_parameters,
 )
 from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
+)
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     PRE_RESPONSE_INPUTS,
 )
@@ -198,16 +201,15 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         # Preserve the processed current-law path before user reforms can
         # remove/change the payroll cap. Owners' draw can keep this ceiling
-        # independently or explicitly select no ceiling.
-        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
-        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
-        draw_cap.metadata.update(
-            label="Current-law OASDI cap preserved for owners' draw", economy=False
-        )
-        draw_cap.metadata.pop("uprating", None)
-        self.parameters.gov.contrib.ssa.owners_draw.add_child(
-            "current_law_cap", draw_cap
-        )
+        # independently or explicitly select no ceiling; the employer payroll
+        # tax response holds employer cost at current-law taxes on it.
+        for path, label in CURRENT_LAW_PAYROLL_CAP_COPIES.items():
+            copy = self.parameters.gov.irs.payroll.social_security.cap.clone()
+            copy.name = path
+            copy.metadata.update(label=label, economy=False)
+            copy.metadata.pop("uprating", None)
+            parent, _, child = path.rpartition(".")
+            self.parameters.get_child(parent).add_child(child, copy)
 
         # Nothing above depends on the reform. A system built without one
         # records its policy as it stands here, before the structural reforms,
