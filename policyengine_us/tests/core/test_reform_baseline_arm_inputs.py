@@ -26,7 +26,9 @@ given for it at construction, through a dataset or a situation, raises by
 name. A branch that subsamples reads an arm built on its own sample, under
 baseline policy, even where the caller named one of its calculation branches
 "baseline". A subsample that raises before core rebuilds the arm leaves what
-the branch held under that name as it was.
+the branch held under that name as it was. A simulation that is itself named
+"baseline" and has an arm raises when asked to subsample, before it changes
+anything.
 
 One limit is pinned here too. Where core builds the arm, in ``subsample``, it
 has already dropped such a holder and its recorded inputs, so an input set
@@ -525,6 +527,55 @@ def test_a_failed_branch_subsample_leaves_the_branch_as_it_found_it():
         assert households(branch) == households(branch.baseline) == [1]
         np.testing.assert_allclose(value(branch.baseline, SUBSIDY), SAMPLED_S0)
         np.testing.assert_allclose(value(branch, EXPENSE), SAMPLED_EXPENSE)
+    assert parent.baseline is arm
+    assert households(arm) == [0, 1]
+
+
+NAMED_REFUSAL = 'A simulation named "baseline" with a baseline arm cannot subsample'
+
+
+def test_a_simulation_named_baseline_with_an_arm_refuses_to_subsample():
+    """Core rebuilds the arm with ``get_branch("baseline")``, which returns a
+    simulation itself when that is its own name. A branch named "baseline"
+    under another branch shares the parent's arm, so its subsample put
+    baseline policy on the branch and dropped its arm: the repeal read False
+    and the expense $14,000 in place of $27,916.40. Now ``subsample`` raises
+    before it changes anything, on that branch, a clone of it, a deeper
+    branch of that name and a reform simulation renamed "baseline", and each
+    keeps its policy, arm, branches and name."""
+    parent = Microsimulation(dataset=new_york_families(), reform=REPEAL)
+    arm = parent.baseline
+    trial = parent.get_branch("trial")
+    named = trial.get_branch("baseline")
+    renamed = parent.clone()
+    renamed.branch_name = "baseline"
+    cases = (
+        named,
+        named.clone(),
+        trial.get_branch("deeper").get_branch("baseline"),
+        renamed,
+    )
+    before = [
+        (case.baseline, dict(case.branches), case.tax_benefit_system) for case in cases
+    ]
+    for case, (own_arm, branches, system) in zip(cases, before):
+        assert case.branch_name == "baseline" and own_arm is not None
+        with pytest.raises(ValueError, match=NAMED_REFUSAL):
+            case.subsample(n=1, seed=0)
+        assert case.branch_name == "baseline"
+        assert case.baseline is own_arm
+        assert case.tax_benefit_system is system
+        assert case.branches.keys() == branches.keys()
+        assert all(case.branches[key] is branches[key] for key in branches)
+        assert repeals_the_subsidy(case)
+        assert households(case) == [0, 1]
+    assert named.baseline is arm
+    np.testing.assert_allclose(value(named, SUBSIDY), [0, 0])
+    np.testing.assert_allclose(
+        value(named, EXPENSE), [27_916.40, 12_000], atol=TOLERANCE
+    )
+    np.testing.assert_allclose(value(arm, SUBSIDY), [13_916.40, 6_000], atol=TOLERANCE)
+    assert trial.branches["baseline"] is named
     assert parent.baseline is arm
     assert households(arm) == [0, 1]
 

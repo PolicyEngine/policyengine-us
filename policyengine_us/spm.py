@@ -1174,6 +1174,21 @@ class SPMSimulationMixin:
             yield from branch._simulation_family()
 
     def subsample(self, *args, **kwargs):
+        if (
+            self.branch_name == "baseline"
+            and getattr(self, "baseline", None) is not None
+        ):
+            # Core rebuilds the arm with get_branch("baseline"), which returns
+            # the simulation itself when that is its own name. A branch named
+            # "baseline" with an arm would then take baseline policy and lose
+            # its arm, so refuse before anything changes.
+            raise ValueError(
+                'A simulation named "baseline" with a baseline arm cannot '
+                'subsample. Core rebuilds the arm as the branch named "baseline", '
+                "and that name returns this simulation, so it would take "
+                "baseline policy and lose its arm. Name the branch something "
+                'else, such as get_branch("trial"), and subsample that.'
+            )
         inherited = getattr(self, "baseline", None)
         had_entry = "baseline" in self.branches
         previous = self.branches.get("baseline")
