@@ -329,6 +329,43 @@
     # unit's amount and gave 1,000 + 10,000 = 11,000.
     spm_unit_capped_work_childcare_expenses: 7_000
 
+- name: A pre-subsidy amount given for one of two children replaces the unit's amount
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        is_household_head: true
+        is_tax_unit_head: true
+      first_child:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 6_000
+      second_child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, first_child, second_child]
+    spm_units:
+      spm_unit:
+        members: [head, first_child, second_child]
+        spm_unit_work_expenses: 1_000
+        spm_unit_head_spouse_earned_cap: 20_000
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        child_care_subsidies: 0
+  output:
+    # Given for one member, pre_subsidy_childcare_expenses is an input for
+    # every member, so the second child counts 0 rather than a share of the
+    # unit's 10,000. So childcare_expenses is 6,000, and the expense is
+    # 1,000 + 6,000 = 7,000, under the 20,000 cap. Main's formula read the
+    # unit's amount and gave 1,000 + 10,000 = 11,000.
+    pre_subsidy_childcare_expenses: [0, 6_000, 0]
+    childcare_expenses: 6_000
+    spm_unit_capped_work_childcare_expenses: 7_000
+
 - name: A subsidy lowers the expense in 2024, the formula's first year
   period: 2024
   absolute_error_margin: 0.001
