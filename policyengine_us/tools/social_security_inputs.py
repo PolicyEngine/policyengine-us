@@ -20,6 +20,7 @@ from functools import wraps
 from pathlib import Path
 from weakref import WeakKeyDictionary, ref
 
+import numpy as np
 from policyengine_core.data_storage.store_history import (
     advance_sequence_past,
     next_sequence_number,
@@ -46,6 +47,14 @@ _PROVENANCE = "_social_security_input_provenance"
 # so the simulation built from it still reads its inputs as a dataset's.
 _DATASET_INPUTS = "_dataset_inputs"
 _DATASET_INPUTS_ATTRIBUTE = "_inputs_from_dataset"
+# A marked snapshot of a reform simulation lists here each override its
+# baseline arm doesn't share, with what the arm holds there (null for nothing),
+# and a reload gives its arm that in place of the override.
+_BASELINE_ARM_OVERRIDES = "_baseline_arm_overrides"
+# A dump of a simulation whose inputs came from a dataset holds this file, with
+# JSON true, in core's __entities__ directory, which core's restore reads only
+# by the names it knows.
+_DUMP_MARK_FILE = "dataset_inputs.json"
 
 _initial_social_security_ingress = ContextVar("initial_ss_ingress", default=False)
 _initial_social_security_writes = ContextVar("initial_ss_writes", default=None)
@@ -75,13 +84,36 @@ class _Value:
 def holds_dataset_inputs(simulation):
     """Whether a simulation's inputs came from a dataset: it runs over one, or
     it was built from a snapshot (``export_source_inputs``) or an extracted
-    situation (``extract_person``) of a simulation that did. Core's ``clone``
+    situation (``extract_person``) of a simulation that did, or core's
+    ``restore_simulation`` restored it from a dump of one. Core's ``clone``
     copies the attribute, so a branch, a clone and a reform's baseline arm
     give the same answer as the simulation they copy."""
     return bool(
         getattr(simulation, "is_over_dataset", False)
         or getattr(simulation, _DATASET_INPUTS_ATTRIBUTE, False)
     )
+
+
+def _dataset_mark(container, source):
+    """The dataset mark ``container`` carries: true or false, or false when it
+    has none. Any other value raises."""
+    if _DATASET_INPUTS not in container:
+        return False
+    mark = container[_DATASET_INPUTS]
+    if not isinstance(mark, bool):
+        raise ValueError(
+            f"{source} holds {_DATASET_INPUTS} = {mark!r}: the mark must be true or "
+            "false."
+        )
+    return mark
+
+
+def _same_recorded_values(held, values):
+    try:
+        return np.array_equal(np.asarray(held), np.asarray(values), equal_nan=True)
+    except TypeError:
+        # Text has no NaN.
+        return np.array_equal(np.asarray(held), np.asarray(values))
 
 
 def _enabled(simulation):
@@ -1088,7 +1120,7 @@ def install_social_security_input_compatibility():
             if not dataset:
                 input_dict = args[1] if len(args) > 1 else kwargs["input_dict"]
                 metadata = input_dict.get(_PROVENANCE)
-                from_dataset = input_dict.get(_DATASET_INPUTS) is True
+                from_dataset = _dataset_mark(input_dict, "The situation")
                 if _PROVENANCE in input_dict or _DATASET_INPUTS in input_dict:
                     input_dict = {
                         k: v
@@ -1229,6 +1261,10 @@ def install_social_security_input_compatibility():
         result = original_dump(holder, directory)
         if not _enabled(holder.simulation):
             return result
+        mark_path = Path(directory) / "__entities__" / _DUMP_MARK_FILE
+        if holds_dataset_inputs(holder.simulation) and not mark_path.exists():
+            # Core makes __entities__ before it dumps any holder.
+            mark_path.write_text(json.dumps(True))
         if holder.variable.name in (*SOCIAL_SECURITY_COMPONENTS, *_REPORTED_COMPONENTS):
             # A virtual source need not have a physically visible array.
             # Core creates the directory before discovering that; leave no
@@ -1258,6 +1294,11 @@ def install_social_security_input_compatibility():
             return original_restore(
                 simulation, variable, directory, inputs, calculated_number
             )
+        mark_path = Path(directory) / "__entities__" / _DUMP_MARK_FILE
+        if mark_path.exists() and _dataset_mark(
+            {_DATASET_INPUTS: json.loads(mark_path.read_text())}, str(mark_path)
+        ):
+            setattr(simulation, _DATASET_INPUTS_ATTRIBUTE, True)
         if not inputs and not getattr(
             simulation, "_social_security_source_data_restored", False
         ):
@@ -1304,7 +1345,12 @@ def install_social_security_input_compatibility():
 
 def export_source_inputs(simulation):
     """Export all registered source periods and final overrides, and mark a
-    snapshot of a simulation whose inputs came from a dataset."""
+    snapshot of a simulation whose inputs came from a dataset. For such a
+    simulation with a baseline arm, also list each override the arm doesn't
+    hold, with what it holds there, so a reload's arm can match it."""
+    marked = holds_dataset_inputs(simulation)
+    arm = simulation.baseline if marked else None
+    arm_overrides = {}
     names = {
         key: [str(name) for name in population.ids]
         for key, population in simulation.populations.items()
@@ -1323,6 +1369,7 @@ def export_source_inputs(simulation):
             values = simulation._get_recorded_input_array(name, period)
             if values is None:
                 continue
+            recorded = values
             if hasattr(values, "decode_to_str"):
                 values = values.decode_to_str()
             if variable.is_input_variable():
@@ -1331,6 +1378,18 @@ def export_source_inputs(simulation):
                     source.setdefault(name, {})[str(period)] = values[index]
             else:
                 overrides.setdefault(name, {})[str(period)] = values
+                if arm is None or name not in arm.tax_benefit_system.variables:
+                    continue
+                # Core gives the arm each value the dataset gave, so the arm
+                # lacks or differs from only what a caller set on this
+                # simulation after construction.
+                held = arm._get_recorded_input_array(name, period)
+                if held is None:
+                    arm_overrides.setdefault(name, {})[str(period)] = None
+                elif not _same_recorded_values(held, recorded):
+                    if hasattr(held, "decode_to_str"):
+                        held = held.decode_to_str()
+                    arm_overrides.setdefault(name, {})[str(period)] = held
     payload = {
         "version": 1,
         "sources": sources,
@@ -1339,24 +1398,30 @@ def export_source_inputs(simulation):
         "default_input_period": str(simulation.default_input_period),
         "default_calculation_period": str(simulation.default_calculation_period),
     }
-    if holds_dataset_inputs(simulation):
+    if marked:
         payload[_DATASET_INPUTS] = True
+    if arm_overrides:
+        payload[_BASELINE_ARM_OVERRIDES] = arm_overrides
     return json.loads(json.dumps(payload, cls=NpEncoder))
 
 
 def reload_source_inputs(payload, **simulation_kwargs):
-    """Reload complete snapshots, including legacy automatic projections."""
+    """Reload complete snapshots, including legacy automatic projections.
+
+    The overrides of a snapshot marked as a dataset's reach a reform's
+    baseline arm too, as core gives a dataset's values to both."""
     from policyengine_us import Simulation
 
     if payload.get("version") != 1:
         raise ValueError("Unsupported source-input snapshot version")
+    marked = _dataset_mark(payload, "The snapshot")
     for period_name in ("default_input_period", "default_calculation_period"):
         simulation_kwargs.setdefault(period_name, payload[period_name])
     metadata = payload.get(_PROVENANCE)
     sources = payload["sources"]
     if metadata is not None:
         sources = {**sources, _PROVENANCE: metadata}
-    if payload.get(_DATASET_INPUTS) is True:
+    if marked:
         # The builder marks the simulation before core builds a reform's
         # baseline arm, so the arm reads the snapshot as a dataset too.
         sources = {**sources, _DATASET_INPUTS: True}
@@ -1364,5 +1429,54 @@ def reload_source_inputs(payload, **simulation_kwargs):
     for name, periods in payload["overrides"].items():
         for period, values in periods.items():
             simulation.set_input(name, period, values)
+    if marked and simulation.baseline is not None:
+        _set_overrides_on_the_arm(
+            simulation,
+            payload["overrides"],
+            payload.get(_BASELINE_ARM_OVERRIDES) or {},
+        )
     _refresh_input_variables(simulation)
     return simulation
+
+
+def _set_overrides_on_the_arm(simulation, overrides, arm_overrides):
+    """Set each override on ``simulation``'s baseline arm, or, where the
+    source's arm held something else, that. Skip a variable baseline policy
+    doesn't define. Raise, naming each variable, before setting anything, if
+    the reform holds one in another entity or with other ``ETERNITY`` storage
+    than baseline policy: a dataset giving it raises the same way."""
+    from policyengine_us.spm import _built_for_another_policy
+
+    arm = simulation.baseline
+    variables = arm.tax_benefit_system.variables
+    mirrored = {}
+    for name, periods in overrides.items():
+        if name not in variables:
+            continue
+        held = arm_overrides.get(name, {})
+        for period, values in periods.items():
+            if period in held:
+                values = held[period]
+                if values is None:
+                    continue
+            mirrored.setdefault(name, {})[period] = values
+    refused = sorted(
+        name
+        for name in mirrored
+        if _built_for_another_policy(
+            variables[name],
+            (holder := simulation.get_holder(name)).population,
+            holder,
+        )
+    )
+    if refused:
+        raise ValueError(
+            f"Baseline policy cannot hold the input given for {', '.join(refused)}: "
+            "the reform defines it in another entity or with other ETERNITY "
+            "storage than baseline policy, so the reform's baseline arm would "
+            "calculate it in place of the input."
+        )
+    for name, periods in mirrored.items():
+        for period, values in periods.items():
+            arm.set_input(name, period, values)
+    _refresh_input_variables(arm)

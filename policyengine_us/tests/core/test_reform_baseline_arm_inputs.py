@@ -30,8 +30,11 @@ the branch held under that name as it was. A simulation that is itself named
 "baseline" and has an arm raises when asked to subsample, before it changes
 anything. A snapshot of a dataset simulation, from ``export_source_inputs`` or
 ``extract_person``, reloads with the dataset's rule for the SPM child care
-expense, in the reform and in its arm; a snapshot without the dataset mark
-reloads as a household.
+expense, in the reform and in its arm, and a dump of one restores with it; a
+snapshot or dump without the dataset mark reloads as a household, and a mark
+other than true or false raises. A marked reload's arm holds what the
+source's arm held for each override: the dataset's value, or, where a caller
+set a value on the reform after construction, what the arm kept.
 
 One limit is pinned here too. Where core builds the arm, in ``subsample``, it
 has already dropped such a holder and its recorded inputs, so an input set
@@ -48,6 +51,7 @@ import pytest
 from policyengine_core.data import Dataset
 from policyengine_core.periods import ETERNITY
 from policyengine_core.reforms import Reform
+from policyengine_core.tools import simulation_dumper
 from policyengine_core.variables import Variable
 
 from policyengine_us import Microsimulation, Simulation
@@ -114,10 +118,12 @@ def dataset(
     eternal_subsidy=None,
     yearly_subsidies=None,
     weights=None,
+    given=None,
 ):
     """A flat file with one household per state and family. ``yearly_subsidies``
-    maps a year to each household's child care subsidy, and ``weights`` gives
-    each household's weight."""
+    maps a year to each household's child care subsidy, ``weights`` gives
+    each household's weight, and ``given`` maps a variable to each household's
+    value of it in 2026."""
     columns = {}
 
     def add(name, parent, child):
@@ -149,6 +155,8 @@ def dataset(
             add("child_care_subsidies__eternity", eternal_subsidy, eternal_subsidy)
         for year, subsidies in (yearly_subsidies or {}).items():
             add(f"child_care_subsidies__{year}", subsidies[unit], subsidies[unit])
+        for name, given_values in (given or {}).items():
+            add(f"{name}__{YEAR}", given_values[unit], given_values[unit])
     return Dataset.from_dataframe(pd.DataFrame(columns), time_period=YEAR)
 
 
@@ -611,6 +619,9 @@ REPEALED_EXPENSE = [27_916.40, 12_000]
 NEW_YORK_S0 = [13_916.40, 6_000]
 DATASET_INPUTS = "_dataset_inputs"
 PROVENANCE = "_social_security_input_provenance"
+BASELINE_ARM_OVERRIDES = "_baseline_arm_overrides"
+DUMP_MARK_FILE = "dataset_inputs.json"
+NOT_TRUE_OR_FALSE = "the mark must be true or false"
 
 
 @pytest.fixture(scope="module")
@@ -647,16 +658,19 @@ def test_a_dataset_snapshot_reloads_with_the_dataset_reading(new_york_source):
     any subsidy; in a household, as the amount before it. A snapshot used to
     reload as a household, so the first family's expense fell from $14,000
     to $83.60. Now the snapshot carries a mark, and the reload, a branch of
-    it and a second snapshot of it keep the dataset reading."""
+    it and a second snapshot of it keep the dataset reading. The branch is
+    taken before the reload calculates anything, so it reads the expense
+    itself rather than copying the reload's."""
     payload = export_source_inputs(new_york_source)
     assert_dataset_reading(new_york_source)
     reloaded = reload_source_inputs(payload)
+    branch = reloaded.get_branch("trial")
     assert not reloaded.is_over_dataset
+    assert_dataset_reading(branch)
     np.testing.assert_allclose(
         value(reloaded, EXPENSE), value(new_york_source, EXPENSE), atol=TOLERANCE
     )
     assert_dataset_reading(reloaded)
-    assert_dataset_reading(reloaded.get_branch("trial"))
     again = export_source_inputs(reloaded)
     assert_dataset_reading(reload_source_inputs(again))
     for snapshot in (payload, again):
@@ -712,3 +726,227 @@ def test_an_unmarked_snapshot_reloads_as_a_household(new_york_source):
     reloaded = reload_source_inputs(payload)
     np.testing.assert_allclose(value(reloaded, EXPENSE), [83.60, 0], atol=TOLERANCE)
     assert DATASET_INPUTS not in export_source_inputs(reloaded)
+
+
+def test_a_mark_other_than_true_or_false_raises(new_york_source):
+    """The builder and the reload take the mark as true or false. JSON false
+    reads as no mark, so the first family's expense nets its subsidy, and
+    any other value raises before anything is built."""
+    extracted = json.loads(json.dumps(new_york_source.extract_person(0)))
+    payload = export_source_inputs(new_york_source)
+    for mark in ("true", 1):
+        with pytest.raises(ValueError, match=NOT_TRUE_OR_FALSE):
+            Simulation(situation={**extracted, DATASET_INPUTS: mark})
+        with pytest.raises(ValueError, match=NOT_TRUE_OR_FALSE):
+            reload_source_inputs({**payload, DATASET_INPUTS: mark})
+    unmarked = (
+        Simulation(
+            situation=json.loads(json.dumps({**extracted, DATASET_INPUTS: False}))
+        ),
+        reload_source_inputs(
+            json.loads(json.dumps({**payload, DATASET_INPUTS: False}))
+        ),
+    )
+    for simulation in unmarked:
+        np.testing.assert_allclose(value(simulation, EXPENSE)[0], 83.60, atol=TOLERANCE)
+
+
+# The dataset counts $40,000 of the first New York family's income for its
+# child care program, where the program's formula counts $30,000, so baseline
+# policy pays that family $100 less, and gives it $2,000 of other work
+# expenses, W, where the formula gives none.
+GIVEN = {"ny_ccap_countable_income": (40_000, 0), "spm_unit_work_expenses": (2_000, 0)}
+GIVEN_S0 = [13_816.40, 6_000]
+GIVEN_ARM_EXPENSE = [16_000, 6_000]
+GIVEN_EXPENSE = [29_816.40, 12_000]
+
+
+def given_source():
+    return Simulation(
+        dataset=dataset((NEW_YORK,), FAMILIES, given=GIVEN), reform=REPEAL
+    )
+
+
+@pytest.fixture(scope="module")
+def given_snapshot():
+    """``given_source`` and its snapshot, which the tests below only read."""
+    source = given_source()
+    return source, export_source_inputs(source)
+
+
+def test_a_marked_reload_sets_the_snapshots_overrides_on_its_arm(given_snapshot):
+    """Over a dataset, core gives the reform and its arm each value the
+    dataset gives. Export lists a value given for a variable with a formula,
+    such as New York's countable income, among the overrides, and the reload
+    set those on the reform side only. Its arm then calculated S0 at
+    $13,916.40 where the source's arm reads $13,816.40, and the reform's
+    expense read $100 more than the source's. Now a marked reload sets each
+    override on its arm too."""
+    source, payload = given_snapshot
+    assert GIVEN.keys() <= payload["overrides"].keys()
+    assert BASELINE_ARM_OVERRIDES not in payload
+    reloaded = reload_source_inputs(payload, reform=REPEAL)
+    np.testing.assert_allclose(
+        value(reloaded, EXPENSE), value(source, EXPENSE), atol=TOLERANCE
+    )
+    np.testing.assert_allclose(value(source, EXPENSE), GIVEN_EXPENSE, atol=TOLERANCE)
+    arm = reloaded.baseline
+    for name in (SUBSIDY, EXPENSE, "ny_ccap_countable_income"):
+        np.testing.assert_allclose(
+            value(arm, name), value(source.baseline, name), atol=TOLERANCE
+        )
+    np.testing.assert_allclose(value(arm, SUBSIDY), GIVEN_S0, atol=TOLERANCE)
+
+
+def test_a_marked_reload_arm_keeps_the_datasets_work_expense(given_snapshot):
+    """The source's arm holds the $2,000 of work expenses the dataset gives,
+    so it reads $16,000 for the first family's expense. The reload's arm
+    calculated W at $0 and read $14,000."""
+    source, payload = given_snapshot
+    arm = reload_source_inputs(payload, reform=REPEAL).baseline
+    np.testing.assert_allclose(value(arm, "spm_unit_work_expenses"), [2_000, 0])
+    for simulation in (arm, source.baseline):
+        np.testing.assert_allclose(
+            value(simulation, EXPENSE), GIVEN_ARM_EXPENSE, atol=TOLERANCE
+        )
+
+
+def test_an_unmarked_reload_sets_overrides_on_the_reform_side_only(given_snapshot):
+    """Without the mark, the reload sets the overrides on the reform side
+    alone, as on main, and its arm calculates both variables."""
+    _, payload = given_snapshot
+    unmarked = {key: item for key, item in payload.items() if key != DATASET_INPUTS}
+    reloaded = reload_source_inputs(unmarked, reform=REPEAL)
+    np.testing.assert_allclose(value(reloaded, "ny_ccap_countable_income"), [40_000, 0])
+    np.testing.assert_allclose(value(reloaded, "spm_unit_work_expenses"), [2_000, 0])
+    arm = reloaded.baseline
+    np.testing.assert_allclose(value(arm, "ny_ccap_countable_income"), [30_000, 19_200])
+    np.testing.assert_allclose(value(arm, "spm_unit_work_expenses"), [0, 0])
+
+
+def test_a_marked_reload_keeps_values_set_on_the_reform_side_off_its_arm():
+    """A caller who sets a value on the reform after construction sets it
+    there alone. The source's arm keeps the $2,000 of work expenses the
+    dataset gave under the $3,000 set, and calculates the earned cap set to
+    $20,000. Export lists what the arm holds for each override it doesn't
+    share, null where it holds nothing, and the reload's arm takes that, so
+    both sides match the source's, through a second snapshot too."""
+    source = given_source()
+    source.set_input("spm_unit_work_expenses", YEAR, [3_000, 0])
+    source.set_input("spm_unit_head_spouse_earned_cap", YEAR, [20_000, 20_000])
+    payload = export_source_inputs(source)
+    reloaded = reload_source_inputs(payload, reform=REPEAL)
+    names = ("spm_unit_work_expenses", "spm_unit_head_spouse_earned_cap", EXPENSE)
+    for name in names:
+        for side, source_side in (
+            (reloaded, source),
+            (reloaded.baseline, source.baseline),
+        ):
+            np.testing.assert_allclose(
+                value(side, name), value(source_side, name), atol=TOLERANCE
+            )
+    np.testing.assert_allclose(
+        value(reloaded.baseline, "spm_unit_head_spouse_earned_cap"), [30_000, 18_000]
+    )
+    assert payload[BASELINE_ARM_OVERRIDES] == {
+        "spm_unit_work_expenses": {str(YEAR): [2_000, 0]},
+        "spm_unit_head_spouse_earned_cap": {str(YEAR): None},
+    }
+    again = export_source_inputs(reloaded)
+    assert again[BASELINE_ARM_OVERRIDES] == payload[BASELINE_ARM_OVERRIDES]
+
+
+def test_a_marked_reload_refuses_an_override_the_reform_stores_for_all_time():
+    """A dataset with no reform gives New York's first family a $500 subsidy
+    for 2026, and export lists it among the overrides. Under a reform that
+    stores the subsidy for all time, baseline policy's yearly variable can't
+    use the reform's holder, so a reform built over that dataset refuses the
+    input. A marked reload refuses it the same way, by name, before it sets
+    anything on its arm. An unmarked reload builds, as on main, and its arm
+    calculates the subsidy."""
+    source = Simulation(
+        dataset=dataset((NEW_YORK,), FAMILIES[:1], yearly_subsidies={YEAR: [500]})
+    )
+    payload = export_source_inputs(source)
+    assert SUBSIDY in payload["overrides"]
+    with pytest.raises(ValueError, match=REFUSAL) as refused:
+        reload_source_inputs(payload, reform=StoreSubsidiesForAllTime)
+    names = [entry.name for entry in refused.traceback]
+    assert "_set_overrides_on_the_arm" in names
+    assert "_rebuild_baseline_branch" not in names
+    unmarked = {key: item for key, item in payload.items() if key != DATASET_INPUTS}
+    reloaded = reload_source_inputs(unmarked, reform=StoreSubsidiesForAllTime)
+    np.testing.assert_allclose(value(reloaded, SUBSIDY), [500])
+    np.testing.assert_allclose(
+        value(reloaded.baseline, SUBSIDY), NEW_YORK_S0[:1], atol=TOLERANCE
+    )
+
+
+class spm_unit_reform_only_amount(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "An amount only the reform defines"
+    definition_period = "year"
+
+    def formula(spm_unit, period, parameters):
+        return spm_unit("spm_unit_pre_subsidy_childcare_expenses", period) * 0
+
+
+class AddAVariable(Reform):
+    def apply(self):
+        self.update_variable(spm_unit_reform_only_amount)
+
+
+def test_a_marked_reload_skips_an_override_baseline_policy_does_not_define():
+    """A dataset under a reform that adds a variable gives it a value, which
+    export lists among the overrides. Baseline policy has no such variable,
+    so the source's arm has none, and a marked reload sets it on the reform
+    side alone and raises nothing."""
+    name = "spm_unit_reform_only_amount"
+    source = Simulation(
+        dataset=dataset((NEW_YORK,), FAMILIES, given={name: (250, 0)}),
+        reform=AddAVariable,
+    )
+    payload = export_source_inputs(source)
+    assert name in payload["overrides"] and BASELINE_ARM_OVERRIDES not in payload
+    reloaded = reload_source_inputs(payload, reform=AddAVariable)
+    np.testing.assert_allclose(value(reloaded, name), [250, 0])
+    assert name not in reloaded.baseline.tax_benefit_system.variables
+    assert name not in reloaded.baseline.populations["spm_unit"]._holders
+    np.testing.assert_allclose(
+        value(reloaded.baseline, EXPENSE), REPORTED_EXPENSE, atol=TOLERANCE
+    )
+
+
+def test_a_dump_of_a_dataset_simulation_restores_with_the_dataset_reading(tmp_path):
+    """Core's ``restore_simulation`` builds a plain core simulation, which read
+    the pre-subsidy input as a household's: the first family's expense fell
+    from $14,000 to $83.60. Now the dump holds the mark in ``__entities__``,
+    and the restore sets it, so the restored simulation reads the expense,
+    and the second family's Social Security benefit, as its source does. A
+    dump without the mark file, as earlier dumps are, restores as a
+    household, a mark other than true or false raises, and a household
+    simulation's dump holds no mark."""
+    source = Simulation(dataset=dataset((NEW_YORK,), FAMILIES))
+    directory = tmp_path / "dataset"
+    simulation_dumper.dump_simulation(source, str(directory))
+    system = source.tax_benefit_system
+    restored = simulation_dumper.restore_simulation(str(directory), system)
+    np.testing.assert_allclose(
+        value(restored, EXPENSE), REPORTED_EXPENSE, atol=TOLERANCE
+    )
+    np.testing.assert_allclose(value(restored, "social_security"), [0, 0, 1_200, 0])
+    np.testing.assert_allclose(
+        value(source, "social_security"), value(restored, "social_security")
+    )
+    mark = directory / "__entities__" / DUMP_MARK_FILE
+    assert json.loads(mark.read_text()) is True
+    mark.unlink()
+    unmarked = simulation_dumper.restore_simulation(str(directory), system)
+    np.testing.assert_allclose(value(unmarked, EXPENSE), [83.60, 0], atol=TOLERANCE)
+    mark.write_text("1")
+    with pytest.raises(ValueError, match=NOT_TRUE_OR_FALSE):
+        simulation_dumper.restore_simulation(str(directory), system)
+    household = tmp_path / "household"
+    simulation_dumper.dump_simulation(Simulation(situation=situation()), str(household))
+    assert not (household / "__entities__" / DUMP_MARK_FILE).exists()
