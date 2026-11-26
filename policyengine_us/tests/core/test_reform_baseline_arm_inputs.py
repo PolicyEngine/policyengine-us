@@ -527,3 +527,18 @@ def test_a_failed_branch_subsample_leaves_the_branch_as_it_found_it():
         np.testing.assert_allclose(value(branch, EXPENSE), SAMPLED_EXPENSE)
     assert parent.baseline is arm
     assert households(arm) == [0, 1]
+
+
+def test_a_failed_subsample_with_no_arm_raises_core_error():
+    """A simulation with no reform has no arm and no "baseline" entry, so
+    ``subsample`` hands core no copy and has nothing to put back when core
+    raises. Core's own ``ValueError`` reaches the caller, rather than a
+    ``KeyError`` from removing an entry that was never there, and the
+    simulation still has no arm."""
+    simulation = Microsimulation(dataset=new_york_families())
+    assert simulation.baseline is None
+    assert "baseline" not in simulation.branches
+    with pytest.raises(ValueError, match="Either n or frac must be provided"):
+        simulation.subsample()
+    assert "baseline" not in simulation.branches
+    assert simulation.baseline is None
