@@ -1175,13 +1175,30 @@ class SPMSimulationMixin:
 
     def subsample(self, *args, **kwargs):
         inherited = getattr(self, "baseline", None)
-        if inherited is not None and "baseline" not in self.branches:
-            # A branch shares its parent's baseline arm, on the parent's
-            # population, and core rebuilds an arm only from
-            # ``branches["baseline"]``. Hand core a copy of the arm, whose
-            # policy it gives the arm it builds on this branch's sample.
-            self.branches["baseline"] = inherited.clone(clone_tax_benefit_system=False)
-        result = super().subsample(*args, **kwargs)
+        had_entry = "baseline" in self.branches
+        previous = self.branches.get("baseline")
+        arm_copy = None
+        if inherited is not None and previous is not inherited:
+            # Core rebuilds an arm only from ``branches["baseline"]``. A branch
+            # shares its parent's arm, on the parent's population, and holds
+            # nothing there or something other than its arm, such as a
+            # calculation branch the caller named "baseline". Hand core a copy
+            # of the arm, whose policy it gives the arm it builds on this
+            # branch's sample. Core's subsample drops every other calculation
+            # branch, and this drops whatever the copy replaces.
+            arm_copy = inherited.clone(clone_tax_benefit_system=False)
+            self.branches["baseline"] = arm_copy
+        try:
+            result = super().subsample(*args, **kwargs)
+        except BaseException:
+            # Where core raises with the copy still in place, put back what
+            # the branch held before, and leave the rest as core left it.
+            if arm_copy is not None and self.branches.get("baseline") is arm_copy:
+                if had_entry:
+                    self.branches["baseline"] = previous
+                else:
+                    del self.branches["baseline"]
+            raise
         baseline = self.branches.get("baseline")
         if baseline is not None:
             # Core rebuilds the baseline arm by branching this simulation, so

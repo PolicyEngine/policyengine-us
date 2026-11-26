@@ -23,7 +23,10 @@ whether a situation or a dataset of raw columns supplies the inputs. Under any
 reform, each holder in either arm suits that arm's definition of its variable.
 Under a reform that stores a variable apart from baseline policy, an input
 given for it at construction, through a dataset or a situation, raises by
-name. A branch that subsamples reads an arm built on its own sample.
+name. A branch that subsamples reads an arm built on its own sample, under
+baseline policy, even where the caller named one of its calculation branches
+"baseline". A subsample that raises before core rebuilds the arm leaves what
+the branch held under that name as it was.
 
 One limit is pinned here too. Where core builds the arm, in ``subsample``, it
 has already dropped such a holder and its recorded inputs, so an input set
@@ -438,3 +441,89 @@ def test_a_subsampled_branch_reads_an_arm_on_its_own_sample():
     assert arm.tax_benefit_system.simulation is arm
     np.testing.assert_allclose(value(arm, SUBSIDY), [100, 200])
     np.testing.assert_allclose(value(parent, EXPENSE), [500, 500])
+
+
+REPEAL = Reform.from_dict(
+    {"gov.abolitions.child_care_subsidies": {"2026-01-01.2026-12-31": True}},
+    country_id="us",
+)
+# What a subsample of the reform itself reads under REPEAL, keeping the second
+# New York family: S0, and the expense, $6,000 reported plus the $6,000 lost.
+SAMPLED_S0 = [6_000]
+SAMPLED_EXPENSE = [12_000]
+
+
+def new_york_families():
+    """Both New York families. Only the second weighs anything."""
+    return dataset((NEW_YORK,), FAMILIES, weights=(0, 1))
+
+
+def repeals_the_subsidy(simulation):
+    parameters = simulation.tax_benefit_system.parameters(f"{YEAR}-01-01")
+    return bool(parameters.gov.abolitions.child_care_subsidies)
+
+
+def households(simulation):
+    return simulation.calculate("household_id", YEAR).values.tolist()
+
+
+def test_a_branch_named_baseline_gives_way_to_the_arm_in_a_subsample():
+    """Core rebuilds the arm from ``branches["baseline"]``. So where the
+    caller had named one of a branch's calculation branches "baseline", the
+    branch's subsample built its new arm from that one, under the reform:
+    with the subsidy repealed, S0 read $0 and the expense $6,000. Now the
+    subsample hands core a copy of the arm in its place, and the branch
+    reads what a subsample of the reform itself reads. The parent keeps its
+    arm, on both households."""
+    top = Microsimulation(dataset=new_york_families(), reform=REPEAL)
+    top.subsample(n=1, seed=0)
+    assert households(top) == [1]
+    np.testing.assert_allclose(value(top, SUBSIDY), [0])
+    np.testing.assert_allclose(value(top.baseline, SUBSIDY), SAMPLED_S0)
+    np.testing.assert_allclose(value(top, EXPENSE), SAMPLED_EXPENSE)
+
+    parent = Microsimulation(dataset=new_york_families(), reform=REPEAL)
+    arm = parent.baseline
+    trial = parent.get_branch("trial")
+    named = trial.get_branch("baseline")
+    assert trial.baseline is arm and named is not arm
+    trial.subsample(n=1, seed=0)
+    own_arm = trial.baseline
+    assert own_arm is trial.branches["baseline"]
+    assert own_arm is not arm and own_arm is not named
+    assert repeals_the_subsidy(trial) and not repeals_the_subsidy(own_arm)
+    assert households(trial) == households(own_arm) == [1]
+    np.testing.assert_allclose(value(own_arm, SUBSIDY), SAMPLED_S0)
+    np.testing.assert_allclose(value(trial, EXPENSE), SAMPLED_EXPENSE)
+
+    assert parent.baseline is arm
+    assert households(arm) == [0, 1]
+
+
+def test_a_failed_branch_subsample_leaves_the_branch_as_it_found_it():
+    """Core's subsample raises before it samples anything when given neither
+    ``n`` nor ``frac``. The branch then keeps what it held under "baseline":
+    nothing, for a branch that shares its parent's arm, or the calculation
+    branch the caller named "baseline", the same object. Each branch still
+    shares the parent's arm, and a retry reads what a subsample of the
+    reform itself reads."""
+    parent = Microsimulation(dataset=new_york_families(), reform=REPEAL)
+    arm = parent.baseline
+    plain = parent.get_branch("plain")
+    trial = parent.get_branch("trial")
+    named = trial.get_branch("baseline")
+    for branch in (plain, trial):
+        with pytest.raises(ValueError, match="Either n or frac must be provided"):
+            branch.subsample()
+        assert branch.baseline is arm
+    assert "baseline" not in plain.branches
+    assert trial.branches["baseline"] is named
+
+    for branch in (plain, trial):
+        branch.subsample(n=1, seed=0)
+        assert branch.baseline is not arm
+        assert households(branch) == households(branch.baseline) == [1]
+        np.testing.assert_allclose(value(branch.baseline, SUBSIDY), SAMPLED_S0)
+        np.testing.assert_allclose(value(branch, EXPENSE), SAMPLED_EXPENSE)
+    assert parent.baseline is arm
+    assert households(arm) == [0, 1]
