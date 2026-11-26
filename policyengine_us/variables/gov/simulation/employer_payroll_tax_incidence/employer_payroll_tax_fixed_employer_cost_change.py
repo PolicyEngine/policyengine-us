@@ -397,11 +397,14 @@ def fica_pre_tax_totals(person, period, baseline):
     each apply to the side they belong to. Equal lists don't make equal
     totals, so the baseline's total always comes from the baseline
     simulation, matched to this simulation's people (``for_each_person``).
-    The baseline simulation holds the inputs this one was built with, or
-    rebuilt with by its own ``subsample``, and a branch keeps its ancestor's
-    baseline. So an input to the total or to a listed contribution, set on
-    this simulation after its baseline was built, counts as a change to
-    payroll wages. A formula for the total that reads employment_income is
+    The baseline simulation holds the inputs this one was built with, and a
+    branch shares its ancestor's baseline until its own ``subsample`` gives
+    it one. A ``subsample``, of a branch or of a reform simulation, rebuilds
+    the baseline on the same people from the inputs the simulation then
+    holds. So an input to the total or to a listed contribution, set on this
+    simulation after its baseline was built, counts as a change to payroll
+    wages until this simulation's own ``subsample`` rebuilds the baseline
+    with it. A formula for the total that reads employment_income is
     not supported: this variable is part of employment_income, so core
     raises a CycleError.
     """
@@ -507,12 +510,18 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "simulation's, matched by person ID, so a reform to the total or to "
         "a listed contribution applies to the reform side alone, even when "
         "it keeps the list. The baseline simulation holds the inputs the "
-        "simulation was built with, or rebuilt with by its own subsample, "
-        "and a branch keeps its ancestor's baseline: an input to the total "
-        "or to a listed contribution, set on a reform simulation after its "
-        "baseline was built, counts as a change to payroll wages. A "
-        "subsampled branch raises for a person whose ID the baseline lacks "
-        "or repeats, as axes can. A formula for the total that reads "
+        "simulation was built with, and a branch shares its ancestor's "
+        "baseline until its own subsample gives it one. A subsample, of a "
+        "branch or of a reform simulation, rebuilds the baseline on the same "
+        "people from the inputs the simulation then holds. So an input to "
+        "the total or to a listed contribution, set on a reform simulation "
+        "after its baseline was built, counts as a change to payroll wages "
+        "until that simulation's own subsample rebuilds the baseline with "
+        "it. Where the baseline lists other people than the simulation, as "
+        "after a subsample that raised once core had resampled the "
+        "simulation, the variable matches each person by ID. It raises "
+        "NotImplementedError for a person whose ID the baseline lacks or "
+        "repeats, as axes can. A formula for the total that reads "
         "employment_income is not supported: core raises a CycleError. A "
         "simulation that supplies "
         "payroll_tax_gross_wages itself fixes payroll wages, so employer "
