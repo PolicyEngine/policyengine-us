@@ -57,12 +57,19 @@ factors once, and perform their earnings test on the resulting payable amount.
 exports all recorded pure-input periods and entity memberships as `sources`,
 with supplied formula-variable values in a separate `overrides` payload. Cached
 calculations are excluded. `reload_source_inputs(payload, ...)` restores sources
-before final overrides. Core's legacy `extract_person` retains every recorded
+before final overrides. A snapshot of a simulation over a dataset also carries
+`"_dataset_inputs": true`, so the reloaded simulation, its baseline arm and its
+later branches read `spm_unit_capped_work_childcare_expenses` as a dataset
+simulation does; other dataset-only rules, such as county, read it as a
+household. The payload stays at version 1, and a snapshot without the key
+reloads as a household. Core's legacy `extract_person` retains every recorded
 input period for the four benefit components and their reported twins, excluding
 formula caches. This keeps later overrides final on reload and preserves their
 source histories and future uprating. Other variables keep Core's usual first
-known period. Neither interface settles the separate API/application metadata
-and field-exposure contract.
+known period. A situation extracted from a dataset simulation carries the same
+key, and like the provenance envelope it loads only through this package's
+builders. Neither interface settles the separate API/application metadata and
+field-exposure contract.
 
 Annual benefit inputs retain Core's period normalization. For example, supplying
 `social_security_retirement: {"2024-07": 500}` through a PE-US constructor stores

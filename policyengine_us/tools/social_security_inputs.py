@@ -41,6 +41,11 @@ _LEGACY_DUMP_FILE = "social_security_input_provenance.json"
 # Keep the established envelope key so existing complete-snapshot callers
 # need not change; version two contains actual source values, never stamps.
 _PROVENANCE = "_social_security_input_provenance"
+# A snapshot or extracted situation of a simulation over a dataset carries this
+# key as true, and this package's builders turn it into the attribute below,
+# so the simulation built from it still reads its inputs as a dataset's.
+_DATASET_INPUTS = "_dataset_inputs"
+_DATASET_INPUTS_ATTRIBUTE = "_inputs_from_dataset"
 
 _initial_social_security_ingress = ContextVar("initial_ss_ingress", default=False)
 _initial_social_security_writes = ContextVar("initial_ss_writes", default=None)
@@ -65,6 +70,18 @@ class _Value:
     branch: str
     tier: str
     registered: bool
+
+
+def holds_dataset_inputs(simulation):
+    """Whether a simulation's inputs came from a dataset: it runs over one, or
+    it was built from a snapshot (``export_source_inputs``) or an extracted
+    situation (``extract_person``) of a simulation that did. Core's ``clone``
+    copies the attribute, so a branch, a clone and a reform's baseline arm
+    give the same answer as the simulation they copy."""
+    return bool(
+        getattr(simulation, "is_over_dataset", False)
+        or getattr(simulation, _DATASET_INPUTS_ATTRIBUTE, False)
+    )
 
 
 def _enabled(simulation):
@@ -1067,12 +1084,16 @@ def install_social_security_input_compatibility():
             if not getattr(system, "_social_security_input_compatibility", False):
                 return original(first, *args, **kwargs)
             metadata = None
+            from_dataset = False
             if not dataset:
                 input_dict = args[1] if len(args) > 1 else kwargs["input_dict"]
                 metadata = input_dict.get(_PROVENANCE)
-                if _PROVENANCE in input_dict:
+                from_dataset = input_dict.get(_DATASET_INPUTS) is True
+                if _PROVENANCE in input_dict or _DATASET_INPUTS in input_dict:
                     input_dict = {
-                        k: v for k, v in input_dict.items() if k != _PROVENANCE
+                        k: v
+                        for k, v in input_dict.items()
+                        if k not in (_PROVENANCE, _DATASET_INPUTS)
                     }
                     if len(args) > 1:
                         args = (args[0], input_dict, *args[2:])
@@ -1095,6 +1116,11 @@ def install_social_security_input_compatibility():
             result = None
             try:
                 result = original(first, *args, **kwargs)
+                if from_dataset:
+                    # Inside core's __init__ the builder runs before core
+                    # builds a reform's baseline arm, which clones this
+                    # simulation and so keeps the mark too.
+                    setattr(result, _DATASET_INPUTS_ATTRIBUTE, True)
                 return result
             finally:
                 _initial_social_security_writes.reset(writes_token)
@@ -1190,6 +1216,8 @@ def install_social_security_input_compatibility():
         )
         if metadata is not None:
             payload[_PROVENANCE] = metadata
+        if holds_dataset_inputs(simulation):
+            payload[_DATASET_INPUTS] = True
         return payload
 
     CoreSimulation.extract_person = extract_person
@@ -1275,7 +1303,8 @@ def install_social_security_input_compatibility():
 
 
 def export_source_inputs(simulation):
-    """Export all registered source periods and final overrides."""
+    """Export all registered source periods and final overrides, and mark a
+    snapshot of a simulation whose inputs came from a dataset."""
     names = {
         key: [str(name) for name in population.ids]
         for key, population in simulation.populations.items()
@@ -1302,21 +1331,17 @@ def export_source_inputs(simulation):
                     source.setdefault(name, {})[str(period)] = values[index]
             else:
                 overrides.setdefault(name, {})[str(period)] = values
-    return json.loads(
-        json.dumps(
-            {
-                "version": 1,
-                "sources": sources,
-                "overrides": overrides,
-                _PROVENANCE: _automatic_reported_metadata(simulation),
-                "default_input_period": str(simulation.default_input_period),
-                "default_calculation_period": str(
-                    simulation.default_calculation_period
-                ),
-            },
-            cls=NpEncoder,
-        )
-    )
+    payload = {
+        "version": 1,
+        "sources": sources,
+        "overrides": overrides,
+        _PROVENANCE: _automatic_reported_metadata(simulation),
+        "default_input_period": str(simulation.default_input_period),
+        "default_calculation_period": str(simulation.default_calculation_period),
+    }
+    if holds_dataset_inputs(simulation):
+        payload[_DATASET_INPUTS] = True
+    return json.loads(json.dumps(payload, cls=NpEncoder))
 
 
 def reload_source_inputs(payload, **simulation_kwargs):
@@ -1331,6 +1356,10 @@ def reload_source_inputs(payload, **simulation_kwargs):
     sources = payload["sources"]
     if metadata is not None:
         sources = {**sources, _PROVENANCE: metadata}
+    if payload.get(_DATASET_INPUTS) is True:
+        # The builder marks the simulation before core builds a reform's
+        # baseline arm, so the arm reads the snapshot as a dataset too.
+        sources = {**sources, _DATASET_INPUTS: True}
     simulation = Simulation(situation=sources, **simulation_kwargs)
     for name, periods in payload["overrides"].items():
         for period, values in periods.items():

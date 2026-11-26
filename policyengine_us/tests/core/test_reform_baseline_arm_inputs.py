@@ -28,7 +28,10 @@ baseline policy, even where the caller named one of its calculation branches
 "baseline". A subsample that raises before core rebuilds the arm leaves what
 the branch held under that name as it was. A simulation that is itself named
 "baseline" and has an arm raises when asked to subsample, before it changes
-anything.
+anything. A snapshot of a dataset simulation, from ``export_source_inputs`` or
+``extract_person``, reloads with the dataset's rule for the SPM child care
+expense, in the reform and in its arm; a snapshot without the dataset mark
+reloads as a household.
 
 One limit is pinned here too. Where core builds the arm, in ``subsample``, it
 has already dropped such a holder and its recorded inputs, so an input set
@@ -36,6 +39,7 @@ after construction and then subsampled raises nothing: the new arm calculates
 the variable, as on main.
 """
 
+import json
 from itertools import product
 
 import numpy as np
@@ -48,6 +52,10 @@ from policyengine_core.variables import Variable
 
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.entities import Person, SPMUnit
+from policyengine_us.tools.social_security_inputs import (
+    export_source_inputs,
+    reload_source_inputs,
+)
 
 YEAR = 2026
 TOLERANCE = 0.01
@@ -593,3 +601,114 @@ def test_a_failed_subsample_with_no_arm_raises_core_error():
         simulation.subsample()
     assert "baseline" not in simulation.branches
     assert simulation.baseline is None
+
+
+# What both New York families reported paying for care, which baseline policy
+# keeps over a dataset; under REPEAL, that plus the subsidy lost, S0, which the
+# reform reads from its arm.
+REPORTED_EXPENSE = [14_000, 6_000]
+REPEALED_EXPENSE = [27_916.40, 12_000]
+NEW_YORK_S0 = [13_916.40, 6_000]
+DATASET_INPUTS = "_dataset_inputs"
+PROVENANCE = "_social_security_input_provenance"
+
+
+@pytest.fixture(scope="module")
+def new_york_source():
+    """Both New York families over a dataset, with no reform. The second
+    receives a Social Security benefit, so a snapshot carries the provenance
+    envelope beside the dataset mark."""
+    return Simulation(dataset=dataset((NEW_YORK,), FAMILIES))
+
+
+def assert_dataset_reading(simulation, households=slice(None)):
+    """The expense a dataset simulation computes: the reported amount with no
+    reform, and under REPEAL that plus the subsidy lost, read from an arm
+    that keeps the reported amount."""
+    reported = REPORTED_EXPENSE[households]
+    if simulation.baseline is None:
+        np.testing.assert_allclose(value(simulation, EXPENSE), reported, atol=TOLERANCE)
+        return
+    assert repeals_the_subsidy(simulation)
+    np.testing.assert_allclose(value(simulation, SUBSIDY), [0] * len(reported))
+    np.testing.assert_allclose(
+        value(simulation, EXPENSE), REPEALED_EXPENSE[households], atol=TOLERANCE
+    )
+    arm = simulation.baseline
+    assert not repeals_the_subsidy(arm)
+    np.testing.assert_allclose(
+        value(arm, SUBSIDY), NEW_YORK_S0[households], atol=TOLERANCE
+    )
+    np.testing.assert_allclose(value(arm, EXPENSE), reported, atol=TOLERANCE)
+
+
+def test_a_dataset_snapshot_reloads_with_the_dataset_reading(new_york_source):
+    """Over a dataset, the pre-subsidy input reads as what parents paid after
+    any subsidy; in a household, as the amount before it. A snapshot used to
+    reload as a household, so the first family's expense fell from $14,000
+    to $83.60. Now the snapshot carries a mark, and the reload, a branch of
+    it and a second snapshot of it keep the dataset reading."""
+    payload = export_source_inputs(new_york_source)
+    assert_dataset_reading(new_york_source)
+    reloaded = reload_source_inputs(payload)
+    assert not reloaded.is_over_dataset
+    np.testing.assert_allclose(
+        value(reloaded, EXPENSE), value(new_york_source, EXPENSE), atol=TOLERANCE
+    )
+    assert_dataset_reading(reloaded)
+    assert_dataset_reading(reloaded.get_branch("trial"))
+    again = export_source_inputs(reloaded)
+    assert_dataset_reading(reload_source_inputs(again))
+    for snapshot in (payload, again):
+        assert snapshot["version"] == 1 and snapshot[DATASET_INPUTS] is True
+        assert snapshot[PROVENANCE] is not None
+
+
+def test_a_dataset_snapshot_reloaded_under_a_reform_keeps_the_reading_in_its_arm(
+    new_york_source,
+):
+    """Core builds a reform's arm inside ``__init__``, by cloning the
+    simulation, so the mark must be on the simulation before then. The
+    reform reads S0 from the arm, and the arm keeps the reported amount."""
+    payload = export_source_inputs(new_york_source)
+    assert_dataset_reading(reload_source_inputs(payload, reform=REPEAL))
+
+
+def test_a_reform_over_a_dataset_keeps_the_reading_through_a_snapshot():
+    """A source built with the reform exports the mark too, from the reform
+    and from its arm, and each reloads with the dataset reading."""
+    source = Simulation(dataset=dataset((NEW_YORK,), FAMILIES), reform=REPEAL)
+    assert_dataset_reading(source)
+    payload = export_source_inputs(source)
+    assert payload[DATASET_INPUTS] is True
+    assert_dataset_reading(reload_source_inputs(payload, reform=REPEAL))
+    arm_payload = export_source_inputs(source.baseline)
+    assert arm_payload[DATASET_INPUTS] is True
+    assert_dataset_reading(reload_source_inputs(arm_payload))
+
+
+def test_a_person_extracted_from_a_dataset_keeps_the_reading(new_york_source):
+    """``extract_person`` marks the situation it extracts from a dataset
+    simulation, and a simulation built from it, with or without a reform,
+    reads the expense as the dataset does."""
+    for person, households in ((0, slice(0, 1)), (2, slice(1, 2))):
+        extracted = json.loads(json.dumps(new_york_source.extract_person(person)))
+        built = Simulation(situation=extracted)
+        assert not built.is_over_dataset
+        assert_dataset_reading(built, households)
+        assert_dataset_reading(
+            Simulation(situation=extracted, reform=REPEAL), households
+        )
+        assert extracted[DATASET_INPUTS] is True
+
+
+def test_an_unmarked_snapshot_reloads_as_a_household(new_york_source):
+    """A version 1 snapshot without the mark, as export wrote before it
+    recorded one, reloads as a household: each family's expense nets its
+    subsidy, $14,000 less $13,916.40 and $6,000 less $6,000. A snapshot of
+    that reload carries no mark either."""
+    payload = export_source_inputs(new_york_source)
+    del payload[DATASET_INPUTS]
+    reloaded = reload_source_inputs(payload)
+    np.testing.assert_allclose(value(reloaded, EXPENSE), [83.60, 0], atol=TOLERANCE)
+    assert DATASET_INPUTS not in export_source_inputs(reloaded)
