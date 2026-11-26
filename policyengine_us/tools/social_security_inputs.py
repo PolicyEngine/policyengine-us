@@ -47,9 +47,10 @@ _PROVENANCE = "_social_security_input_provenance"
 # so the simulation built from it still reads its inputs as a dataset's.
 _DATASET_INPUTS = "_dataset_inputs"
 _DATASET_INPUTS_ATTRIBUTE = "_inputs_from_dataset"
-# A marked snapshot of a reform simulation lists here each override its
-# baseline arm doesn't share, with what the arm holds there (null for nothing),
-# and a reload gives its arm that in place of the override.
+# A marked snapshot of a reform simulation lists here each formula override
+# whose recorded input its baseline arm lacks or records differently, with the
+# arm's recorded input (null for none). A reload gives its arm each listed
+# input in place of the override and skips a null one.
 _BASELINE_ARM_OVERRIDES = "_baseline_arm_overrides"
 # A dump of a simulation whose inputs came from a dataset holds this file, with
 # JSON true, in core's __entities__ directory, which core's restore reads only
@@ -1346,8 +1347,11 @@ def install_social_security_input_compatibility():
 def export_source_inputs(simulation):
     """Export all registered source periods and final overrides, and mark a
     snapshot of a simulation whose inputs came from a dataset. For such a
-    simulation with a baseline arm, also list each override the arm doesn't
-    hold, with what it holds there, so a reload's arm can match it."""
+    simulation with a baseline arm, also list each formula override whose
+    recorded input the arm lacks or records differently, with the arm's
+    recorded input (null for none). A pure input or Social Security component
+    set on the reform after construction travels in ``sources`` or the
+    provenance envelope, so it reaches both sides of a reload."""
     marked = holds_dataset_inputs(simulation)
     arm = simulation.baseline if marked else None
     arm_overrides = {}
@@ -1441,10 +1445,11 @@ def reload_source_inputs(payload, **simulation_kwargs):
 
 def _set_overrides_on_the_arm(simulation, overrides, arm_overrides):
     """Set each override on ``simulation``'s baseline arm, or, where the
-    source's arm held something else, that. Skip a variable baseline policy
-    doesn't define. Raise, naming each variable, before setting anything, if
-    the reform holds one in another entity or with other ``ETERNITY`` storage
-    than baseline policy: a dataset giving it raises the same way."""
+    snapshot lists the source arm's recorded input, that input, and skip a
+    listed null. Skip a variable baseline policy doesn't define. Raise, naming
+    each variable, before setting anything, if the reform holds one in another
+    entity or with other ``ETERNITY`` storage than baseline policy: a dataset
+    giving it raises the same way."""
     from policyengine_us.spm import _built_for_another_policy
 
     arm = simulation.baseline
