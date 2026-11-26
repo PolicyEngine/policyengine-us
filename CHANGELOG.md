@@ -1,3 +1,10 @@
+## [2.154.1] - 2026-11-26
+
+### Changed
+
+- Added the current Kansas statute citation for the child care credit rate
+
+
 ## [2.154.0] - 2026-11-25
 
 ### Added
