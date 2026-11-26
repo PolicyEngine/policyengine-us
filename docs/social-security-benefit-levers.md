@@ -61,15 +61,27 @@ before final overrides. A snapshot of a simulation over a dataset also carries
 `"_dataset_inputs": true`, so the reloaded simulation, its baseline arm and its
 later branches read `spm_unit_capped_work_childcare_expenses` as a dataset
 simulation does; other dataset-only rules, such as county, read it as a
-household. The payload stays at version 1, and a snapshot without the key
-reloads as a household. Core's legacy `extract_person` retains every recorded
-input period for the four benefit components and their reported twins, excluding
-formula caches. This keeps later overrides final on reload and preserves their
-source histories and future uprating. Other variables keep Core's usual first
-known period. A situation extracted from a dataset simulation carries the same
-key, and like the provenance envelope it loads only through this package's
-builders. Neither interface settles the separate API/application metadata and
-field-exposure contract.
+household. Core gives a dataset's values to a reform's baseline arm too, so a
+marked reload sets each override on its arm as well. Where the source's arm
+held something else for an override, as it does for a value a caller set on
+the reform after construction, the snapshot lists what the arm held under
+`"_baseline_arm_overrides"`, null for nothing, and the reload's arm gets that.
+A marked reload skips a variable baseline policy doesn't define. For one the
+reform stores in another entity or with other ETERNITY storage, it raises,
+naming the variable, as a reform built over the dataset does. The key must be
+true or false, and any other value raises. The payload stays at version 1, and
+a snapshot without the key reloads as a household. Core's legacy
+`extract_person` retains every recorded input period for the four benefit
+components and their reported twins, excluding formula caches. This keeps later
+overrides final on reload and preserves their source histories and future
+uprating. Other variables keep Core's usual first known period. A situation
+extracted from a dataset simulation carries the same key, and like the
+provenance envelope it loads only through this package's builders. Neither
+interface settles the separate API/application metadata and field-exposure
+contract. A dump of a dataset simulation through Core's `dump_simulation` holds
+the mark, as JSON true, in `__entities__/dataset_inputs.json`. Core's
+`restore_simulation` builds no baseline arm, so a simulation it restores from
+that dump reads the expense as a dataset simulation with no arm does.
 
 Annual benefit inputs retain Core's period normalization. For example, supplying
 `social_security_retirement: {"2024-07": 500}` through a PE-US constructor stores

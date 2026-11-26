@@ -11,16 +11,19 @@ class spm_unit_capped_work_childcare_expenses(Variable):
     documentation = (
         "Over a dataset, the child care part keeps the reported amount under "
         "baseline policy and moves by the change in subsidy under a reform, "
-        "which it reads from the reform's baseline arm. export_source_inputs "
-        "and extract_person mark a snapshot of a dataset simulation, and a "
-        "simulation built from a marked snapshot follows the same rule, as "
-        "does its arm. An unmarked snapshot reloads as a household. "
-        "Core builds that arm "
+        "which it reads from the reform's baseline arm. Core builds that arm "
         "only for a reform passed as reform=, and apply_reform builds none. A "
         "simulation built with reform= keeps its arm, under baseline policy, "
         "through any reform applied later. A reformed system passed as "
         "tax_benefit_system=, or apply_reform on a simulation built without "
-        "reform=, leaves no arm, so the expense keeps the reported amount."
+        "reform=, leaves no arm, so the expense keeps the reported amount. "
+        "export_source_inputs marks a snapshot of a dataset simulation, "
+        "extract_person a situation extracted from one, and dump_simulation "
+        "a dump of one. A simulation built from a marked snapshot or "
+        "situation follows the same rule, as does its arm. One restored from "
+        "a marked dump follows it too, but core's restore_simulation builds "
+        "no arm, so where it calculates the expense it keeps the reported "
+        "amount. An unmarked snapshot, situation or dump reads as a household."
     )
     reference = "https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_techdoc.pdf#page=17"
 
@@ -36,11 +39,12 @@ class spm_unit_capped_work_childcare_expenses(Variable):
         if holds_dataset_inputs(simulation):
             # Datasets fill the pre-subsidy input from the ASEC, which asks
             # parents how much they spent on child care, and this rule reads
-            # that as what they paid after any subsidy. A snapshot of a
-            # dataset simulation carries the same amounts, so a simulation
-            # rebuilt from one reads them the same way. Baseline policy keeps
-            # that amount, and a reform moves it by the change in subsidy. A
-            # baseline arm has no baseline of its own, so it keeps the amount.
+            # that as what they paid after any subsidy. A snapshot, extracted
+            # situation or dump of a dataset simulation carries the same
+            # amounts, so a simulation rebuilt from one reads them the same
+            # way. Baseline policy keeps that amount, and a reform moves it by
+            # the change in subsidy. A baseline arm has no baseline of its
+            # own, so it keeps the amount.
             out_of_pocket_expenses = pre_subsidy_expenses
             if simulation.baseline is not None:
                 baseline_spm_unit = simulation.baseline.populations["spm_unit"]
