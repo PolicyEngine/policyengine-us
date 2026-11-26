@@ -29,10 +29,10 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    fica_pre_tax_contributions, so a supplied total counts in both, and
    neutralizing or abolishing it moves pay with the components unchanged,
    as do reforms that keep the list but limit the total to children or give
-   a listed contribution a formula. A branch that was subsampled matches its
-   ancestor's baseline by person ID, among the IDs the baseline has once, so
-   a person whose ID axes repeated raises by name, and a formula for the
-   total that reads employment income is refused with core's CycleError.
+   a listed contribution a formula. A branch that was subsampled gets a
+   baseline of its own on the same sample, so its people align by position,
+   and a formula for the total that reads employment income is refused with
+   core's CycleError.
    Abolishing a variable a federal employer tax is calculated from zeroes
    the rate of exactly the taxes calculated from it. Neutralizing one
    changes no rate, so it moves no wages, and an employer tax formula the
@@ -1151,13 +1151,14 @@ NEUTRALIZED_PAY = {"0": 59_573.62, "1": 79_147.24}
 
 @pytest.mark.parametrize("removal", ["employee_rate", "neutralized"])
 def test_a_subsampled_branch_matches_its_baseline_by_person(removal):
-    """A branch keeps its ancestor's baseline, with all of its people.
+    """A subsampled branch gets a baseline of its own, with the same people.
 
-    Subsampling the branch to one of two households leaves that baseline at
-    two people, so the baseline's FICA pre-tax total is read for the person
-    the sample kept, matched by ID. Under an employee-only reform the two
-    totals are equal and the change is zero; with the total neutralized,
-    pay falls by the employer tax on the kept worker's premiums.
+    Subsampling the branch to one of two households builds its baseline on
+    the same sample, so the baseline holds the one person the sample kept,
+    under the same ID, and its FICA pre-tax total lines up with that person.
+    Under an employee-only reform the two totals are equal and the change is
+    zero; with the total neutralized, pay falls by the employer tax on the
+    kept worker's premiums.
     """
     if removal == "employee_rate":
         reform = Reform.from_dict(
@@ -1180,7 +1181,8 @@ def test_a_subsampled_branch_matches_its_baseline_by_person(removal):
         branch = simulation.get_branch("sampled")
         branch.subsample(n=1, seed="sampled", time_period=YEAR)
         assert branch.persons.count == 1
-        assert branch.baseline.persons.count == 2
+        assert branch.baseline.persons.count == 1
+        np.testing.assert_array_equal(branch.baseline.persons.ids, branch.persons.ids)
         kept = str(branch.persons.ids[0])
         pay = branch.calculate("employment_income", YEAR)
         if removal == "employee_rate":
@@ -1238,17 +1240,19 @@ def axes_situation(person_ids):
 
 
 def test_a_subsampled_branch_finds_its_person_among_repeated_axis_ids():
-    """Axes can give two people one ID; a subsampled branch matches by ID.
+    """Axes can give two people one ID; a subsampled branch lines up by position.
 
     With the FICA pre-tax total neutralized, each worker's pay falls by the
     employer tax on their premiums: (pay * 1.0765 - 0.0765 * premiums) /
     1.0765. Before the subsample both simulations list the same IDs, so the
     repeated "110" aligns by position. A branch subsampled to one household
-    reads the baseline's total for the person it kept, by an ID the baseline
-    has once, or raises naming an ID the baseline repeats. The test accepts
-    either outcome, whichever household the seed keeps;
+    gets a baseline of its own on the same sample, with the same IDs, so its
+    people align by position too. Where the kept person's ID is one the
+    parent has once, their pay is checked against the parent's; an ID the
+    parent repeats can't say which person was kept, so the test then checks
+    only the baseline's people.
     test_people_match_by_position_or_by_an_id_the_baseline_has_once covers
-    each path directly.
+    the lookup by ID directly.
     """
     simulation = Simulation(
         situation=axes_situation(["1", "11"]), reform=NeutralizeFicaTotal
@@ -1271,16 +1275,11 @@ def test_a_subsampled_branch_finds_its_person_among_repeated_axis_ids():
         )
         branch = simulation.get_branch("sampled")
         branch.subsample(n=1, seed="axes-collision", time_period=YEAR)
-        assert branch.baseline.persons.count == len(ids)
         kept = [str(pid) for pid in branch.persons.ids]
+        assert branch.baseline.persons.count == len(kept)
+        assert [str(pid) for pid in branch.baseline.persons.ids] == kept
         repeated = [pid for pid in kept if ids.count(pid) > 1]
-        if repeated:
-            with pytest.raises(
-                NotImplementedError,
-                match=f"more than one person with ID '{repeated[0]}'",
-            ):
-                branch.calculate("employment_income", YEAR)
-        else:
+        if not repeated:
             np.testing.assert_allclose(
                 branch.calculate("employment_income", YEAR),
                 [pay[ids.index(pid)] for pid in kept],

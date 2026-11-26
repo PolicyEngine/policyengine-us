@@ -340,13 +340,16 @@ def for_each_person(person, baseline_person, values):
 
     When both simulations list the same person IDs in the same order, they
     hold the same people, so values align by position, even where axes have
-    given two people one ID. Otherwise ``person`` belongs to a branch that
-    was subsampled: a branch shares its ancestor's baseline, and subsampling
-    the branch leaves that baseline's people in place. Core's ``subsample``
-    keeps the rows of the chosen households (it selects them with ``isin``),
-    so each kept person appears once, with their ID, in their original
-    order, and a kept person's ID is unique in the baseline whenever the
-    ancestor's person IDs are. Axes can repeat a person ID, since they append
+    given two people one ID. A subsampled branch gets a baseline of its own
+    on the same sample, so it aligns by position too. Otherwise the baseline
+    lists other people than ``person``'s simulation, as where a branch's
+    subsample raised after core had resampled the branch but before it
+    rebuilt the baseline, and each person is looked up by ID. Where the
+    baseline stayed unsampled, core's ``subsample`` kept the rows of the
+    chosen households (it selects them with ``isin``), so each kept person
+    appears once, with their ID, in their original order, and a kept
+    person's ID is unique in the baseline whenever the ancestor's person IDs
+    are. Axes can repeat a person ID, since they append
     each cell's index to it (people "1" and "11" both get "110", in cells 10
     and 0), so people are looked up only among the IDs the baseline has
     once. A person whose ID the baseline lacks or repeats raises
