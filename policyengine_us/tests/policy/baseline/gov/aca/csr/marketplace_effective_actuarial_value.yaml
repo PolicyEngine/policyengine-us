@@ -4,7 +4,9 @@
   input:
     pays_aca_premium: true
     is_aca_ptc_eligible: true
-    aca_magi_fraction: 1.25
+    aca_magi: 12_500
+    tax_unit_fpg:
+      2025: 10_000
     selected_marketplace_plan_category: SILVER
     selected_marketplace_plan_premium_proxy: 5_000
     used_aca_ptc: 3_000
