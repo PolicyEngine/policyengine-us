@@ -62,21 +62,25 @@ before final overrides. A snapshot of a simulation over a dataset also carries
 later branches read `spm_unit_capped_work_childcare_expenses` as a dataset
 simulation does; other dataset-only rules, such as county, read it as a
 household. Core gives a dataset's values to a reform's baseline arm too, so a
-marked reload sets each override on its arm as well. Where the source's arm
-records another input for a formula override, as it does for a value a caller
-set on the reform after construction, the snapshot lists what the arm records
-under `"_baseline_arm_overrides"`, null for none, and the reload's arm gets
-that. A pure input that a caller sets on a reform simulation after
-construction travels in `sources`, and a Social Security component travels in
-the provenance envelope, so each reaches both sides of the reload, though the
-source's arm lacks it. A marked snapshot of a simulation with no arm lists no
-arm values, so a reload with `reform=` gives its arm every override. A marked
-reload skips a variable baseline policy doesn't define. It raises, naming the
-variable, when the arm would get a value that the reform stores in another
-entity or with other ETERNITY storage, as a reform built over the dataset
-does. The `_dataset_inputs` key must be true or false, and any other value
-raises. The payload stays at version 1, and a snapshot without the key reloads
-as a household. Core's legacy
+marked reload sets each override on its arm as well. For a reform simulation
+whose inputs came from a dataset, `export_source_inputs` compares each
+override with the input its arm records. Where they differ, as they do for a
+value a caller set on the reform after construction, the snapshot lists the
+arm's input under `"_baseline_arm_overrides"`, or null where the arm records
+none. A marked reload gives its arm each listed input in place of the
+override and skips a null one. A pure input or a Social Security component
+that a caller sets on a reform simulation after construction reaches both
+sides of the reload, though the source's arm lacks it. The pure input travels
+in `sources`, and the component travels in the provenance envelope even where
+the snapshot lists it as null. A marked snapshot of a simulation with no arm
+carries no `"_baseline_arm_overrides"`, so a reload with `reform=` gives its
+arm every override. A marked reload skips a variable that baseline policy
+doesn't define. It raises, naming the variable, when the arm would get a value
+that the reform stores in another entity or with other ETERNITY storage, as a
+reform built over the dataset does. A reload raises `ValueError` when the
+snapshot's `_dataset_inputs` key holds anything but true or false. The payload
+stays at version 1, and a snapshot without the key reloads as a household.
+Core's legacy
 `extract_person` retains every recorded input period for the four benefit
 components and their reported twins, excluding formula caches. This keeps later
 overrides final on reload and preserves their source histories and future
