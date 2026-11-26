@@ -16,7 +16,7 @@
   output:
     substitution_elasticity: 0.25
 
-- name: Primary earner in decile 1 with default parameters
+- name: Single primary earner below $14,000 gets the decile 1 elasticity
   period: 2023
   input:
     employment_income_before_lsr: 10_000
@@ -25,7 +25,107 @@
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.1
     gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.2
   output:
-    substitution_elasticity: 0  # TODO: Debug why single person isn't getting primary earner elasticity
+    substitution_elasticity: 0.1
+
+- name: Each primary earner gets the elasticity of their own earnings decile
+  # Decile k starts at the k-th earnings marker in substitution_elasticity.py
+  # (0, 14k, 28k, 39k, 50k, 61k, 76k, 97k, 138k, 1.726m) and runs up to the
+  # next; decile 10 has no upper limit. Decile k's parameter is k / 100, so a
+  # lookup shifted by one decile shows. Each person is their own tax unit's
+  # only earner, so each is a primary earner.
+  period: 2023
+  input:
+    gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.1: 0.01
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.2: 0.02
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.3: 0.03
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.4: 0.04
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.05
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.06
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.7: 0.07
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.8: 0.08
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.9: 0.09
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.10: 0.10
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.secondary: 0.5
+    people:
+      zero:
+        employment_income_before_lsr: 0
+      one_dollar:
+        employment_income_before_lsr: 1
+      just_below_14k:
+        employment_income_before_lsr: 13_999
+      at_14k:
+        employment_income_before_lsr: 14_000
+      decile_2:
+        employment_income_before_lsr: 20_000
+      decile_3:
+        employment_income_before_lsr: 33_000
+      decile_4:
+        employment_income_before_lsr: 45_000
+      decile_5:
+        employment_income_before_lsr: 55_000
+      decile_6:
+        employment_income_before_lsr: 70_000
+      decile_7:
+        employment_income_before_lsr: 85_000
+      decile_8:
+        employment_income_before_lsr: 120_000
+      decile_9:
+        employment_income_before_lsr: 500_000
+      just_below_1_726m:
+        employment_income_before_lsr: 1_725_999
+      at_1_726m:
+        employment_income_before_lsr: 1_726_000
+      above_1_726m:
+        employment_income_before_lsr: 5_000_000
+    tax_units:
+      tu_zero:
+        members: [zero]
+      tu_one_dollar:
+        members: [one_dollar]
+      tu_just_below_14k:
+        members: [just_below_14k]
+      tu_at_14k:
+        members: [at_14k]
+      tu_decile_2:
+        members: [decile_2]
+      tu_decile_3:
+        members: [decile_3]
+      tu_decile_4:
+        members: [decile_4]
+      tu_decile_5:
+        members: [decile_5]
+      tu_decile_6:
+        members: [decile_6]
+      tu_decile_7:
+        members: [decile_7]
+      tu_decile_8:
+        members: [decile_8]
+      tu_decile_9:
+        members: [decile_9]
+      tu_just_below_1_726m:
+        members: [just_below_1_726m]
+      tu_at_1_726m:
+        members: [at_1_726m]
+      tu_above_1_726m:
+        members: [above_1_726m]
+  output:
+    substitution_elasticity:
+      - 0  # No earnings, no substitution response.
+      - 0.01
+      - 0.01
+      - 0.02
+      - 0.02
+      - 0.03
+      - 0.04
+      - 0.05
+      - 0.06
+      - 0.07
+      - 0.08
+      - 0.09
+      - 0.09
+      - 0.10
+      - 0.10
 
 - name: Primary earner at or above threshold gets substitution multiplier
   period: 2023
@@ -46,7 +146,8 @@
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: -60_000  # Net negative earnings
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.9: 0.2
+    # Earnings magnitude 50k + 60k = 110k falls in decile 8 (97k to 138k).
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.8: 0.2
   output:
     substitution_elasticity: 0.2
 
@@ -56,7 +157,7 @@
     employment_income_before_lsr: 50_000
     self_employment_income_before_lsr: -5_000  # Net positive earnings = 45_000
     gov.simulation.labor_supply_responses.elasticities.substitution.all: 0
-    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.6: 0.15  # 55k falls in decile 6
+    gov.simulation.labor_supply_responses.elasticities.substitution.by_position_and_decile.primary.5: 0.15  # Magnitude 55k falls in decile 5 (50k to 61k)
   output:
     substitution_elasticity: 0.15
 
