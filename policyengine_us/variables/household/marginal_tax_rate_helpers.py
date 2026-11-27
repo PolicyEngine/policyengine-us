@@ -90,6 +90,11 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
 
     Returns:
         The branch simulation.
+
+    Raises:
+        ValueError: ``branch_name`` is the simulation's own branch name, so
+            ``get_branch`` would return the simulation itself (see
+            ``get_branch_to_change``).
     """
     # US wrappers also register explicit set_input calls after construction,
     # including identification and other inputs set on the measuring branch.
