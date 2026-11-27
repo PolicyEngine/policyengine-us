@@ -52,7 +52,7 @@ class employer_medicare_tax_income_tax_revenue(Variable):
                     pass
 
         tax_without_medicare = branch.tax_unit("income_tax", period)
-        del sim.branches["without_employer_medicare"]
+        sim.branches.pop("without_employer_medicare", None)
 
         # Medicare revenue = tax with full reform - tax without Medicare
         return max_(tax_full - tax_without_medicare, 0)

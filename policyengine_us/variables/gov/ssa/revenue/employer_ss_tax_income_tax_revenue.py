@@ -52,7 +52,7 @@ class employer_ss_tax_income_tax_revenue(Variable):
                     pass
 
         tax_without_ss = branch.tax_unit("income_tax", period)
-        del sim.branches["without_employer_ss"]
+        sim.branches.pop("without_employer_ss", None)
 
         # SS revenue = tax with full reform - tax without SS
         return max_(tax_full - tax_without_ss, 0)

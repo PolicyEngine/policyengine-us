@@ -83,7 +83,8 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     Args:
         simulation: The simulation to branch from.
         period: The period whose inputs rise.
-        branch_name: Name of the branch; the caller deletes it when done.
+        branch_name: Name of the branch; when done, the caller removes it
+            from ``simulation.branches`` if the simulation kept it.
         increments: Person-level increase for each raised variable.
 
     Returns:
@@ -183,7 +184,7 @@ def marginal_earnings_change(person, period, parameters, measure, branch_prefix)
         alt = measure(branch.person)
         change += where(mask, (alt - base) / delta, 0)
         measured |= mask
-        del simulation.branches[branch_name]
+        simulation.branches.pop(branch_name, None)
     return change, measured
 
 
