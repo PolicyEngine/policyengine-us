@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as make_period
+from policyengine_us.tools.branched_simulation import get_branch_to_change
 from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
@@ -83,11 +84,17 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
     Args:
         simulation: The simulation to branch from.
         period: The period whose inputs rise.
-        branch_name: Name of the branch; the caller deletes it when done.
+        branch_name: Name of the branch; when done, the caller removes it
+            from ``simulation.branches`` if the simulation kept it.
         increments: Person-level increase for each raised variable.
 
     Returns:
         The branch simulation.
+
+    Raises:
+        ValueError: ``branch_name`` is the simulation's own branch name, so
+            ``get_branch`` would return the simulation itself (see
+            ``get_branch_to_change``).
     """
     # US wrappers also register explicit set_input calls after construction,
     # including identification and other inputs set on the measuring branch.
@@ -99,7 +106,7 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
         for variable in HELD_BEHAVIORAL_RESPONSE_VARIABLES
         if not variables[variable].is_neutralized
     }
-    branch = simulation.get_branch(branch_name)
+    branch = get_branch_to_change(simulation, branch_name)
     for variable in variables:
         if variable not in input_variables:
             branch.delete_arrays(variable)
@@ -183,7 +190,7 @@ def marginal_earnings_change(person, period, parameters, measure, branch_prefix)
         alt = measure(branch.person)
         change += where(mask, (alt - base) / delta, 0)
         measured |= mask
-        del simulation.branches[branch_name]
+        simulation.branches.pop(branch_name, None)
     return change, measured
 
 

@@ -216,5 +216,5 @@ class marginal_tax_rate_on_capital_gains(Variable):
             increase = household_net_income_higher_gains - household_net_income
             mtr_values += where(mask, 1 - increase / where(mask, stored_rise, 1), 0)
 
-            del simulation.branches[branch_name]
+            simulation.branches.pop(branch_name, None)
         return mtr_values

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.branched_simulation import get_branch_to_change
 
 
 class employer_ss_tax_income_tax_revenue(Variable):
@@ -37,7 +38,7 @@ class employer_ss_tax_income_tax_revenue(Variable):
         tax_full = tax_unit("income_tax", period)
 
         # === Branch: Tax WITHOUT employer SS (neutralize source) ===
-        branch = sim.get_branch("without_employer_ss", clone_system=True)
+        branch = get_branch_to_change(sim, "without_employer_ss", clone_system=True)
 
         # Neutralize the source variable - reform formula will pick up 0 for SS
         branch.tax_benefit_system.neutralize_variable("employer_social_security_tax")
@@ -52,7 +53,7 @@ class employer_ss_tax_income_tax_revenue(Variable):
                     pass
 
         tax_without_ss = branch.tax_unit("income_tax", period)
-        del sim.branches["without_employer_ss"]
+        sim.branches.pop("without_employer_ss", None)
 
         # SS revenue = tax with full reform - tax without SS
         return max_(tax_full - tax_without_ss, 0)
