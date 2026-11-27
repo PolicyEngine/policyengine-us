@@ -1,0 +1,1 @@
+Count pensions, military retirement pay, survivor annuities, veterans benefits and Railroad Retirement benefits as unearned income for Illinois Aid to the Aged, Blind or Disabled (AABD), which had paid about $850 a month to pensioners whose pension alone exceeds the need standard.

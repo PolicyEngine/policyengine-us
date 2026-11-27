@@ -35,3 +35,32 @@
     il_aabd_expense_exemption_person: [211.55, 211.55]
     # 2,000 - 211.55 - 25 (flat) - 50 (20 + 0.5 x 60) = 1,713.45
     il_hbi_senior_countable_income: [1_713.45, 1_713.45]
+
+- name: Case 2, a senior's pension counts as AABD unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        pension_income: 6_000  # $500/month
+        takes_up_ssi_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 6,000 / 12 = 500 of gross unearned income (89 Ill. Adm. Code 113.100).
+    il_aabd_gross_unearned_income: 500
+    # 500 - 25 flat exemption (113.120(a)) = 475.
+    il_aabd_countable_unearned_income: 475
+    # No earnings, so earned income after exemptions is 0.
+    il_aabd_earned_income_after_exemption_person: 0
+    # 0 earned + 475 countable unearned = 475.
+    il_hbi_senior_countable_income: 475
