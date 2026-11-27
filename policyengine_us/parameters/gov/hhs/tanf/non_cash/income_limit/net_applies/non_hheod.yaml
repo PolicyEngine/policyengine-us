@@ -68,7 +68,11 @@ MI:
 MN:
   2015-10-01: false
 MS:
-  2015-10-01: false
+  # BBCE removed only the resource test: "BBCE households are subject to
+  # meeting all other eligibility criteria" (MDHS SNAP Manual, Volume V,
+  # Chapter 5 page 5000), and all households except "regular" categorically
+  # eligible ones must meet the net income standard (Chapter 6 page 6101).
+  2015-10-01: true
 MT:
   2015-10-01: false
 NC:
@@ -139,6 +143,8 @@ metadata:
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
     - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf#page=1
+    - title: "MDHS SNAP Manual, Volume V, Chapter 5 page 5000 and Chapter 6 page 6101, BBCE and net income standard #page 253,288"
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2018/02/RevisedSNAPManual-16.pdf#page=253
     - title: "Code of Colorado Regulations 10 CCR 2506-1, sections 4.206(C)(2), 4.401(A)(1) and 4.401(A)(3), and Editor's Notes #page 34-35,81,226"
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1#page=34
     - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions

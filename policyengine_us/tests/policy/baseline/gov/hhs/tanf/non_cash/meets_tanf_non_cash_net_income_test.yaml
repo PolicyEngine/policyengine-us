@@ -353,3 +353,85 @@
           2018: CO
   output:
     meets_tanf_non_cash_net_income_test: true
+
+- name: Minnesota BBCE elderly or disabled household above the FY 2026 net standard meets the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $195 above the one-person FY 2026 net standard of $1,305.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Units that meet BBCE are exempt from the net income test (Combined
+    # Manual 0013.06, 05/2025 issue).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Mississippi BBCE household above the FY 2018 net standard fails the net income test.
+  period: 2018-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $495 above the one-person FY 2018 net standard of $1,005.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: MS
+  output:
+    # BBCE removed only the resource test, and all households except
+    # "regular" categorically eligible ones must meet the net income
+    # standard (MDHS SNAP Manual, Volume V, pages 5000 and 6101).
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Mississippi BBCE household at the FY 2018 net standard meets the net income test.
+  period: 2018-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        snap_net_income: 1_005
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: MS
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Mississippi BBCE elderly or disabled household above the FY 2018 net standard fails the net income test.
+  period: 2018-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: MS
+  output:
+    meets_tanf_non_cash_net_income_test: false

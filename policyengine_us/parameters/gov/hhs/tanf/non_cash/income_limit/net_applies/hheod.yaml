@@ -70,10 +70,19 @@ ME:
 MI:
   2015-10-01: false
 MN:
+  # Units that meet BBCE are exempt from the net income test (Combined
+  # Manual 0013.06, 12/2016 and 05/2025 issues). Elderly or disabled units
+  # above the BBCE gross limit are not BBCE and take the regular net income
+  # and asset tests, which gross_hheod.yaml routes them to. The section's
+  # revision log records no policy change in 2024.
   2015-10-01: false
-  2024-07-01: true
 MS:
-  2015-10-01: false
+  # BBCE removed only the resource test: "BBCE households are subject to
+  # meeting all other eligibility criteria" (MDHS SNAP Manual, Volume V,
+  # Chapter 5 page 5000), and all households except "regular" categorically
+  # eligible ones, where every member receives public assistance or SSI,
+  # must meet the net income standard (Chapter 6 page 6101).
+  2015-10-01: true
 MT:
   2015-10-01: false
 NC:
@@ -144,6 +153,12 @@ metadata:
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
     - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf#page=1
+    - title: Minnesota DHS Combined Manual 0013.06, Broad-Based Categorical Eligibility, issued 12/2016 (archived)
+      href: https://web.archive.org/web/20170703155658/https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001306
+    - title: Minnesota DHS Combined Manual 0013.06, Broad-Based Categorical Eligibility, issued 05/2025 (archived)
+      href: https://web.archive.org/web/20251204202933/https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001306
+    - title: "MDHS SNAP Manual, Volume V, Chapter 5 page 5000 and Chapter 6 page 6101, BBCE and net income standard #page 253,288"
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2018/02/RevisedSNAPManual-16.pdf#page=253
     - title: "IDAPA 16.03.04.010.09, .532 and .549, Idaho Food Stamp Program income eligibility standards #page 10,48-49,51"
       href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=10
     - title: "Code of Colorado Regulations 10 CCR 2506-1, sections 4.206(C)(2), 4.401(A)(1) and 4.401(A)(3), and Editor's Notes #page 34-35,81,226"
