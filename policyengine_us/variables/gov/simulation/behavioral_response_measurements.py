@@ -69,10 +69,8 @@ def _baseline_measurement_branch(simulation):
 
     - A branch shares its parent's baseline, and on policyengine-core before
       #587 so does a clone, so their baseline holds the parent's inputs.
-    - A reform simulation's baseline is a branch taken while it was built,
-      before this package moved ``employment_income`` and the other
-      pre-response inputs to their ``_before_lsr`` variables, so a household
-      baseline keeps them as overrides; later inputs never reach it.
+    - A reform simulation branches its baseline at the end of construction,
+      so inputs set on the simulation afterwards never reach it.
 
     ``simulation.get_branch("baseline")``, used before, was worse: for a branch
     or an early clone it made a new branch under the *reform* policy, so the

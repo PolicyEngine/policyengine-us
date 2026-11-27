@@ -57,12 +57,46 @@ factors once, and perform their earnings test on the resulting payable amount.
 exports all recorded pure-input periods and entity memberships as `sources`,
 with supplied formula-variable values in a separate `overrides` payload. Cached
 calculations are excluded. `reload_source_inputs(payload, ...)` restores sources
-before final overrides. Core's legacy `extract_person` retains every recorded
-input period for the four benefit components and their reported twins, excluding
-formula caches. This keeps later overrides final on reload and preserves their
-source histories and future uprating. Other variables keep Core's usual first
-known period. Neither interface settles the separate API/application metadata
-and field-exposure contract.
+before final overrides. A snapshot of a simulation over a dataset also carries
+`"_dataset_inputs": true`, so the reloaded simulation, its baseline arm and its
+later branches read `spm_unit_capped_work_childcare_expenses` as a dataset
+simulation does; other dataset-only rules, such as county, read the reload as
+a household. Core gives a dataset's values to a reform's baseline arm too, so a
+marked reload sets each override on its arm as well. For a reform simulation
+whose inputs came from a dataset, `export_source_inputs` compares each
+override with the input its arm records. Where they differ, as they do for a
+value a caller set on the reform after construction, the snapshot lists the
+arm's input under `"_baseline_arm_overrides"`, or null where the arm records
+none. A marked reload gives its arm each listed input in place of the
+override and skips a null one. A pure input or a Social Security component
+that a caller sets on a reform simulation after construction reaches both
+sides of the reload, though the source's arm lacks it. The pure input travels
+in `sources`, and the component travels in the provenance envelope even where
+the snapshot lists it as null. A marked snapshot of a simulation with no arm
+carries no `"_baseline_arm_overrides"`, so a reload with `reform=` gives its
+arm every override. A marked reload skips a variable that baseline policy
+doesn't define. It raises, naming the variable, when the arm would get a value
+that the reform stores in another entity or with other ETERNITY storage, as a
+reform built over the dataset does. A reload raises `ValueError` when the
+snapshot's `_dataset_inputs` key holds anything but true or false. The payload
+stays at version 1, and a snapshot without the key reloads as a household.
+Core's legacy
+`extract_person` retains every recorded input period for the four benefit
+components and their reported twins, excluding formula caches. This keeps later
+overrides final on reload and preserves their source histories and future
+uprating. Other variables keep Core's usual first known period. A situation
+extracted from a dataset simulation carries the same key, and like the
+provenance envelope it loads only through this package's builders. A reform
+rebuilt from a situation that `extract_person` or `sample_person` took from a
+reform simulation gives its arm the reform side's values. So its arm also takes
+a formula value a caller set on the reform after construction, where a marked
+snapshot's arm keeps the source arm's value. Neither interface settles the
+separate API/application metadata and field-exposure contract. A dump of a
+dataset simulation through Core's `dump_simulation` holds the mark, as JSON
+true, in `__entities__/dataset_inputs.json`. Core's
+`restore_simulation` builds no baseline arm, so where a simulation it restores
+from that dump calculates the expense, it reads it as a dataset simulation with
+no arm does. An expense the dump already holds comes back as dumped.
 
 Annual benefit inputs retain Core's period normalization. For example, supplying
 `social_security_retirement: {"2024-07": 500}` through a PE-US constructor stores

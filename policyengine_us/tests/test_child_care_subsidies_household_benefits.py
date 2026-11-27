@@ -56,9 +56,16 @@ def test_latest_blocks_list_every_state_program():
         )
     }
     assert len(defined) == 51
-    for start, programs in blocks(PROGRAMS).items():
-        if start >= "2025":
-            assert set(programs) == defined, start
+    # Every block from 2024 on lists all 51 programs. With no such block the
+    # loop would check nothing and pass.
+    latest = {
+        start: programs
+        for start, programs in blocks(PROGRAMS).items()
+        if start >= "2024"
+    }
+    assert latest
+    for start, programs in latest.items():
+        assert set(programs) == defined, start
 
 
 def net_income_and_benefits(state, year, program, amount):
