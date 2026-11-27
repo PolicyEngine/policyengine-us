@@ -48,7 +48,19 @@ HI:
 IA:
   2015-10-01: false
 ID:
-  2015-10-01: false
+  # Broad-based categorically eligible households stay subject to the
+  # resource, gross and net income standards (IDAPA 16.03.04.010.09); BBCE
+  # only raises the resource limit to $5,000 (16.03.04.305). The net income
+  # limit applies to every household except those categorically eligible
+  # because all members receive TAFI, AABD or SSI (16.03.04.010.10 and
+  # .549). The 2016, 2017 and 2022 archived chapters number these two
+  # definitions 010.11 and 010.12; the BBCE definition first appears there,
+  # dated 7-1-16. The 2015 archived chapter covers October 2015 to
+  # June 2016: it has no BBCE definition, makes a household categorically
+  # eligible only when all members receive TAFI, AABD or SSI (.178), sets a
+  # $5,000 resource limit for all households (.305), and holds every other
+  # household to the net income limit (.549).
+  2015-10-01: true
 IL:
   2015-10-01: false
 IN:
@@ -139,6 +151,10 @@ metadata:
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
     - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf#page=1
+    - title: "IDAPA 16.03.04.010.09, .010.10, .305 and .549, Idaho Food Stamp Program BBCE, resource limit and net income test #page 10,37,51"
+      href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=10
+    - title: "IDAPA 16.03.04.178, .305 and .549 (2015 archive), Idaho Food Stamp Program categorical eligibility, resource limit and net income test #page 31,55,82"
+      href: https://adminrules.idaho.gov/rules/2015%20Archive/16/0304.pdf#page=31
     - title: "Code of Colorado Regulations 10 CCR 2506-1, sections 4.206(C)(2), 4.401(A)(1) and 4.401(A)(3), and Editor's Notes #page 34-35,81,226"
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1#page=34
     - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions
