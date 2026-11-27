@@ -39,6 +39,14 @@ class foreign_earned_income_exclusion(Variable):
             )
             before = _uprating_index_value(index, latest.start)
             after = _uprating_index_value(index, period.start)
+            if simulation.trace:
+                # The index is read from the system's tree, not through the
+                # formula's ``parameters`` argument, so no tracer sees these
+                # reads. Record them as core records its own uprating's.
+                for instant, value in ((latest.start, before), (period.start, after)):
+                    simulation.tracer.record_parameter_access(
+                        index.name, str(instant), simulation.branch_name, value
+                    )
             factor = (
                 1 if before is None or after is None or before == 0 else after / before
             )

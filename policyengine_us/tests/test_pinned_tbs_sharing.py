@@ -738,3 +738,81 @@ def test_a_traced_simulation_leaves_an_ordinary_one_untraced():
 
     assert pin.parameters.trace is False
     assert pinned_tbs.get_pre_tcja_ctc_tbs(traced.tax_benefit_system).parameters.trace
+
+
+# New York's pre-2024 credit reads this threshold from its branch's pinned
+# tree, not through the formula's ``parameters`` argument. The 2017 value for a
+# head of household is $75,000; current law has $200,000.
+PINNED_PHASE_OUT_THRESHOLD = "gov.irs.credits.ctc.phase_out.threshold"
+PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD = 75_000
+
+
+def ny_credit_threshold_reads(simulation):
+    """The threshold reads on each ``ny_ctc_pre_2024`` trace node.
+
+    Keys are (period, branch name) of the node; values list each read's
+    (instant, branch name, value).
+    """
+    reads_by_node = {}
+    nodes = list(simulation.tracer.trees)
+    while nodes:
+        node = nodes.pop()
+        nodes.extend(node.children)
+        if node.name != "ny_ctc_pre_2024":
+            continue
+        reads_by_node.setdefault((str(node.period), node.branch_name), []).extend(
+            (read.period, read.branch_name, read.value.tolist())
+            for read in node.parameters
+            if read.name == PINNED_PHASE_OUT_THRESHOLD
+        )
+    return reads_by_node
+
+
+def traced_and_untraced_ny_credit(situation, year):
+    traced = Simulation(situation=situation, trace=True)
+    traced_credit = traced.calculate("ny_ctc_pre_2024", year)
+    untraced_credit = Simulation(situation=situation).calculate("ny_ctc_pre_2024", year)
+    assert traced_credit.tolist() == untraced_credit.tolist()
+    return traced
+
+
+def test_the_ny_credit_records_its_pinned_read_under_its_own_branch():
+    # In 2020 a non-itemizer's charitable deduction makes New York's
+    # recomputed federal AGI differ from federal AGI, so the formula pins the
+    # system of the branch that holds the recomputed AGI. The read must still
+    # carry the name of the branch whose formula made it, as core's view of a
+    # formula's own parameters does, not the name stored on the tree it read.
+    year = 2020
+    situation = household(year=year)
+    situation["people"]["head"]["charitable_cash_donations"] = {year: 300}
+    traced = traced_and_untraced_ny_credit(situation, year)
+    assert ny_credit_threshold_reads(traced) == {
+        (str(year), "default"): [
+            (f"{year}-01-01", "default", [PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD])
+        ]
+    }
+
+
+def test_the_ny_credit_records_its_pinned_read_without_a_tracer_on_the_pin(
+    monkeypatch,
+):
+    # A pin copies the root's fields, including the tracer a traced request
+    # wrote there, and without the fix only that copied tracer records the
+    # formula's read of the pinned tree. No current route builds a pin without
+    # it, so this test clears the fields itself. It guards against a later
+    # change that clears them, as the reform systems in ``system.py`` do on
+    # their copy: the read must still be recorded.
+    def pin_without_copied_tracer(base_tbs):
+        pinned = pin_spm_policy(base_tbs)
+        pinned.parameters.trace = False
+        pinned.parameters.tracer = None
+        pinned.parameters.branch_name = None
+        return pinned
+
+    monkeypatch.setattr(pinned_tbs, "pin_spm_policy", pin_without_copied_tracer)
+    traced = traced_and_untraced_ny_credit(household(), YEAR)
+    assert ny_credit_threshold_reads(traced) == {
+        (str(YEAR), "default"): [
+            (f"{YEAR}-01-01", "default", [PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD])
+        ]
+    }
