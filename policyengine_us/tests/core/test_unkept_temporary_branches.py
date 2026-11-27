@@ -108,50 +108,48 @@ def test_the_test_simulation_keeps_no_branch_it_creates(stop_keeping_new_branche
     assert first.branches == {"nested": nested}
 
 
-@pytest.mark.parametrize(
-    "situation, parameter_changes, branch_name_of_variable",
-    [
-        pytest.param(
-            one_person_household(
-                employment_income=50_000, long_term_capital_gains=20_000
-            ),
-            None,
-            {
-                "marginal_tax_rate": "mtr_for_adult_1",
-                "state_marginal_tax_rate": "state_mtr_for_adult_1",
-                "marginal_tax_rate_on_capital_gains": "adult_1_cg_rise",
-            },
-            id="current law",
-        ),
-        pytest.param(
-            one_person_household(employment_income=50_000),
-            EMPLOYER_PAYROLL_TAX_IN_INCOME,
-            {
-                "employer_ss_tax_income_tax_revenue": "without_employer_ss",
-                "employer_medicare_tax_income_tax_revenue": (
-                    "without_employer_medicare"
-                ),
-            },
-            id="employer payroll tax in income",
-        ),
-    ],
-)
+# Each case: the household, the parameter changes it is simulated under, and
+# for each formula the name it gives the branch it creates.
+CASES = [
+    pytest.param(
+        one_person_household(employment_income=50_000, long_term_capital_gains=20_000),
+        None,
+        {
+            "marginal_tax_rate": "mtr_for_adult_1",
+            "marginal_tax_rate_on_capital_gains": "adult_1_cg_rise",
+        },
+        id="current law",
+    ),
+    pytest.param(
+        one_person_household(employment_income=50_000),
+        EMPLOYER_PAYROLL_TAX_IN_INCOME,
+        {
+            "employer_ss_tax_income_tax_revenue": "without_employer_ss",
+            "employer_medicare_tax_income_tax_revenue": "without_employer_medicare",
+        },
+        id="employer payroll tax in income",
+    ),
+]
+
+
+def build_simulation(situation, parameter_changes):
+    if parameter_changes is None:
+        return Simulation(situation=situation)
+    reform = Reform.from_dict(parameter_changes, country_id="us")
+    return Simulation(situation=situation, reform=reform)
+
+
+@pytest.mark.parametrize("situation, parameter_changes, branch_name_of_variable", CASES)
 def test_formulas_give_their_plain_values_when_their_branches_are_not_kept(
     stop_keeping_new_branches, situation, parameter_changes, branch_name_of_variable
 ):
-    def build_simulation():
-        if parameter_changes is None:
-            return Simulation(situation=situation)
-        reform = Reform.from_dict(parameter_changes, country_id="us")
-        return Simulation(situation=situation, reform=reform)
-
-    plain = build_simulation()
+    plain = build_simulation(situation, parameter_changes)
     plain_values = {
         variable: plain.calculate(variable, YEAR)
         for variable in branch_name_of_variable
     }
 
-    simulation = build_simulation()
+    simulation = build_simulation(situation, parameter_changes)
     registered_before = dict(simulation.branches)
     unkept_branch_names = stop_keeping_new_branches(simulation)
     for variable, branch_name in branch_name_of_variable.items():
@@ -161,3 +159,40 @@ def test_formulas_give_their_plain_values_when_their_branches_are_not_kept(
         np.testing.assert_array_equal(value, plain_values[variable], err_msg=variable)
         assert branch_name in unkept_branch_names, variable
     assert simulation.branches == registered_before
+
+
+@pytest.mark.parametrize("situation, parameter_changes, branch_name_of_variable", CASES)
+def test_formulas_refuse_to_calculate_in_a_branch_with_their_branch_name(
+    situation, parameter_changes, branch_name_of_variable
+):
+    """In a branch with the name a formula gives its branch, it changes nothing.
+
+    There ``get_branch`` returns the simulation being calculated, so raising
+    its inputs or neutralizing variables in its system would change that
+    simulation, and its result would be wrong.
+    """
+    simulation = build_simulation(situation, parameter_changes)
+    for variable, branch_name in branch_name_of_variable.items():
+        branch = simulation.get_branch(branch_name)
+        system = branch.tax_benefit_system
+        neutralized_before = {
+            name
+            for name, definition in system.variables.items()
+            if definition.is_neutralized
+        }
+        inputs_before = {
+            name: branch.calculate(name, YEAR).copy()
+            for name in ("employment_income_before_lsr", "long_term_capital_gains")
+        }
+        with pytest.raises(ValueError, match=branch_name):
+            branch.calculate(variable, YEAR)
+        neutralized_after = {
+            name
+            for name, definition in system.variables.items()
+            if definition.is_neutralized
+        }
+        assert neutralized_after == neutralized_before, variable
+        for name, value in inputs_before.items():
+            np.testing.assert_array_equal(
+                branch.calculate(name, YEAR), value, err_msg=f"{variable}: {name}"
+            )
