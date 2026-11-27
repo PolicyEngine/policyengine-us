@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as make_period
+from policyengine_us.tools.branched_simulation import get_branch_to_change
 from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES,
@@ -100,7 +101,7 @@ def create_perturbed_branch(simulation, period, branch_name, increments):
         for variable in HELD_BEHAVIORAL_RESPONSE_VARIABLES
         if not variables[variable].is_neutralized
     }
-    branch = simulation.get_branch(branch_name)
+    branch = get_branch_to_change(simulation, branch_name)
     for variable in variables:
         if variable not in input_variables:
             branch.delete_arrays(variable)

@@ -11,6 +11,27 @@ def get_stored_variables(simulation: Simulation) -> list:
     return stored_variables
 
 
+def get_branch_to_change(
+    simulation: Simulation, branch_name: str, clone_system: bool = False
+) -> Simulation:
+    """Return ``simulation.get_branch(branch_name)``, never ``simulation``.
+
+    For a formula that changes its branch's inputs or tax-benefit system.
+    ``get_branch`` returns the simulation itself when asked for the
+    simulation's own branch name, so the formula would change the simulation
+    it is calculating and give a wrong result. Raise ``ValueError`` instead,
+    before anything changes.
+    """
+    branch = simulation.get_branch(branch_name, clone_system=clone_system)
+    if branch is simulation:
+        raise ValueError(
+            f"This simulation is the branch {branch_name!r}, the name the"
+            " formula gives the branch it changes. Calculate it in a"
+            " simulation with another branch name."
+        )
+    return branch
+
+
 class BranchedSimulation:
     def __init__(self, population: Population):
         self.simulation = population.simulation
