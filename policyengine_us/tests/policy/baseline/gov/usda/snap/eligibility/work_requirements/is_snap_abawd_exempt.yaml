@@ -305,11 +305,12 @@
   output:
     is_snap_abawd_exempt: true
 
-# P.L.118-5 section311 (physical PDF pages28-29) adds these categories
-# for initial certification/recertification applications from September1,2023.
-# Array cases isolate the exemption categories with area waivers absent.
-# The final2017allotment case uses actual Dallas County geography and assumes
-# the adult exhausted three countable months, with no other exemption.
+# Congress added these categories in section 311 of P.L. 118-5.
+# State agencies apply them to initial certification and recertification
+# applications they receive from September 1, 2023.
+# Array cases set area waivers to false.
+# The January 2017 allotment case uses Dallas County geography and assumes
+# the adult used all three countable months and has no other exemption.
 - name: Case 18, 2017-01 applies only the FRA exceptions then in force.
   period: 2017-01
   input:
@@ -540,7 +541,7 @@
   output:
     is_snap_abawd_exempt: true
 
-- name: Case 32, 2017 historical exemption reaches the final SNAP allotment for age 30.
+- name: Case 32, the January 2017 veteran has no exemption, does not qualify, and receives $0.
   period: 2017-01
   input:
     people:
@@ -637,8 +638,8 @@
   output:
     is_snap_abawd_exempt: [false, false, false, false, false, false, false, false]
 
-# Common-source pre-FRA band: 2017USC2015(o)(3)(A) and2017CFR273.24(c)(1).
-# No case treats unresolved age50/fractionalagesbelow51 as a legal expectation.
+# Cases 36–42 use ages where the 2017 editions of 7 U.S.C. 2015(o)(3)(A)
+# and 7 CFR 273.24(c)(1) agree.
 - name: Case 36, pre-FRA common age exemptions reach final SNAP independently of FRA status flags.
   period: 2017-01
   input:
@@ -835,8 +836,8 @@
   output:
     is_snap_abawd_exempt: [true, false, false, true, true, true, true]
 
-# Pre-FRA completed-age reading: 2017 USC2015(o)(3)(A), read consistently
-# with subsection(d)(1)(A)(i); the candidate records the statutory reading.
+# Case 43 checks the adopted completed-years reading of 7 U.S.C. 2015(o)(3)(A).
+# We read age the same way in subsection (d)(1)(A)(i).
 - name: Case 43, pre-FRA completed age controls veterans and homeless people at the upper age boundary.
   period: 2017-01
   input:
