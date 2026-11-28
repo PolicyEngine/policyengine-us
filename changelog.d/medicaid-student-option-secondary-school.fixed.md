@@ -1,0 +1,1 @@
+Excluded 18-year-old college students from the Medicaid parent and caretaker relative category's student option, which 42 CFR 435.4 limits to full-time students in secondary school or equivalent vocational or technical training.
