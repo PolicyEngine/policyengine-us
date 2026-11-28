@@ -7,17 +7,6 @@ class ri_liheap_base_payment(Variable):
     definition_period = YEAR
     unit = USD
     label = "Rhode Island LIHEAP primary heating payment with utility enhancement"
-    documentation = (
-        "Ordinary primary heating payment, including the federal matrix grant "
-        "and the state enhancement when the grant reaches a qualifying gas "
-        "or electric utility account. For heat in rent, a reported separate "
-        "electric bill selects the secondary-electric route; otherwise the "
-        "row G grant for the household's fuel column is paid directly. Row G's "
-        "Electric cell is blank, so electric heat gets none, and coal, solar "
-        "and unspecified fuels read the Other cell. Utility-provider and "
-        "account ownership requirements are assumed satisfied. Final "
-        "eligibility is separate."
-    )
     defined_for = StateCode.RI
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf",
@@ -92,18 +81,31 @@ class ri_liheap_base_payment(Variable):
             separate_electric_bill, secondary_electric_payment, direct_payment
         )
         amount = where(heat_in_rent, heat_in_rent_payment, amount)
+        # The state enhancement is added when the federal grant reaches a gas or
+        # electric utility account.
         utility_fuel = (fuel == fuels.NATURAL_GAS) | (fuel == fuels.ELECTRICITY)
         utility_grant = where(heat_in_rent, separate_electric_bill, utility_fuel)
-        # Existing inputs do not identify the utility provider or the account
-        # receiving the federal grant. For this ordinary primary component,
-        # assume a qualifying distribution-company account and grant receipt,
-        # including the first regular grant to a secondary electric account.
-        # Block Island Utility District and Clear River Electric and Water
-        # District (formerly Pascoag) are excluded by law, but state/county
-        # alone cannot identify every account. No enhancement goes to
-        # deliverable fuels, unpriced fuels, or a direct $400 HIR payment.
-        enhancement = where(utility_grant & (amount > 0), p.utility_enhancement, 0)
+        electric_provider = spm_unit("ri_liheap_electricity_provider", period)
+        providers = electric_provider.possible_values
+        excluded_electric_provider = (
+            electric_provider == providers.BLOCK_ISLAND_UTILITY_DISTRICT
+        ) | (electric_provider == providers.CLEAR_RIVER_ELECTRIC_AND_WATER_DISTRICT)
+        # Block Island and Clear River electric accounts receive no enhancement
+        # (R.I. Gen. Laws 39-1-27.12(f)); an unspecified provider is treated as
+        # a qualifying account. Heat-in-rent grants with a separate electric
+        # bill reach that account, even when the building uses gas. Account
+        # ownership and actual federal-grant routing are assumed satisfied.
+        electric_grant = where(
+            heat_in_rent, separate_electric_bill, fuel == fuels.ELECTRICITY
+        )
+        qualifying_provider = ~(electric_grant & excluded_electric_provider)
+        enhancement = where(
+            utility_grant & qualifying_provider & (amount > 0),
+            p.utility_enhancement,
+            0,
+        )
         # The regular grant has no actual-expense cap. Earlier backfilled
         # results are unverified estimates, not a policy start date.
         size = spm_unit("ri_liheap_household_size", period)
+        # Final eligibility is applied in ri_liheap, not here.
         return where((size > 0) & (fuel != fuels.NONE), amount + enhancement, 0)
