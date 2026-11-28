@@ -30,8 +30,8 @@ Invariants:
 - R5: a state or county program that reads a federal total, list or test takes
   its sources. R5 starts from each federal list that holds Social Security
   without railroad benefits, each federal variable that adds such a list or
-  reads it in a formula, and each federal variable whose own code names a
-  Social Security amount and no railroad amount, as R3 checks state code. It
+  reads it in a formula, and each federal variable whose code references a
+  name in SOCIAL_SECURITY without a railroad name. It
   then takes up to two more steps. Each step adds the federal variables that
   name no railroad amount and either name a variable already found or add or
   read a federal list that holds one and no railroad amount, as irs_gross_income
@@ -41,15 +41,14 @@ Invariants:
   such code reads it. A new reader of a source already in FEDERAL_GAPS passes.
   A third step would reach further eligibility tests and amounts, such as
   is_snap_eligible, is_aca_ptc_eligible and medicaid_enrolled, and R5 doesn't
-  take it. R5 reads a parameter path written out in code, built through names
-  that a plain assignment to one name binds in the same module or function, or
-  named in a string. R5 follows those assignments once, in source order, and a
-  name bound to two paths reads as both. A path passed as a function argument,
-  read with getattr or a subscript, bound in a tuple, annotated, chained or
-  walrus assignment, bound to a call or conditional expression, built in a loop
-  from a name the loop assigns further down, or used in a nested function under
-  the enclosing function's name passes unseen. R5 reads a path that continues
-  past a call, such as parameters.gov.x(period).y, only up to the call.
+  take it. R5 checks each dated parameter list, so a gap persists while any
+  list block leaves railroad income out. R5 reads literal parameter paths and
+  follows plain assignments to one name in module, class and function bodies.
+  Each read uses the aliases in scope at that line. Straight-line assignments
+  replace the old binding, and if statements merge both branches.
+  The scan covers static attributes through the first call in a chain and
+  literal path strings. Function arguments, dynamic lookups, other assignment
+  forms and loop-carried bindings fall outside alias resolution.
 """
 
 import ast
@@ -485,15 +484,13 @@ def lacks_railroad(names, social_security=SOCIAL_SECURITY):
     return bool(social_security & set(names)) and not RAILROAD & set(names)
 
 
-def reads_without_railroad(
-    path, text, *, exempt_method=None, social_security=R3_SOCIAL_SECURITY
-):
+def reads_without_railroad(path, text, *, exempt_method=None):
     """Find a list or scope that names Social Security without railroad benefits."""
     if path.suffix == ".yaml":
         scopes = parameter_lists(text)
     else:
         scopes = code_scopes(text, exempt_method)
-    return any(lacks_railroad(names, social_security) for names in scopes)
+    return any(lacks_railroad(names, R3_SOCIAL_SECURITY) for names in scopes)
 
 
 def r1_formula(variable_name):
@@ -684,22 +681,6 @@ def is_state_or_local(relative):
     return len(parts) > 2 and parts[2] in ("states", "local")
 
 
-def federal_lists_without_railroad():
-    """Dotted paths of federal parameter lists that count Social Security alone."""
-    found = set()
-    for path in (PACKAGE / "parameters" / "gov").rglob("*.yaml"):
-        relative = path.relative_to(PACKAGE).as_posix()
-        if is_state_or_local(relative):
-            continue
-        text = path.read_text(encoding="utf8")
-        if "social_security" in text and reads_without_railroad(
-            path, text, social_security=SOCIAL_SECURITY
-        ):
-            parts = path.relative_to(PACKAGE / "parameters").with_suffix("").parts
-            found.add(".".join(parts))
-    return found
-
-
 def parameter_paths(node, aliases):
     """The dotted paths from gov onward that an expression can name."""
     parts = []
@@ -714,42 +695,54 @@ def parameter_paths(node, aliases):
     return set()
 
 
-def scope_nodes(scope):
-    """The nodes of a module or function, without the bodies of functions inside."""
-    pending = list(ast.iter_child_nodes(scope))
-    while pending:
-        node = pending.pop()
-        yield node
-        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            pending.extend(ast.iter_child_nodes(node))
+class ParameterReads(ast.NodeVisitor):
+    def __init__(self, outer):
+        self.aliases = dict(outer)
+        self.paths = set()
+
+    def visit_Attribute(self, node):
+        if isinstance(node.ctx, ast.Load):
+            self.paths.update(parameter_paths(node, self.aliases))
+        self.generic_visit(node)
+
+    def visit_Assign(self, node):
+        self.visit(node.value)
+        if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            name = node.targets[0].id
+            self.aliases[name] = parameter_paths(node.value, self.aliases)
+        else:
+            for target in node.targets:
+                self.visit(target)
+
+    def visit_If(self, node):
+        self.visit(node.test)
+        incoming = self.aliases.copy()
+        for statement in node.body:
+            self.visit(statement)
+        body_aliases = self.aliases
+        self.aliases = incoming
+        for statement in node.orelse:
+            self.visit(statement)
+        for name, paths in body_aliases.items():
+            self.aliases[name] = self.aliases.get(name, set()) | paths
+
+    def visit_FunctionDef(self, node):
+        # read_paths handles each function's scope separately.
+        pass
+
+    visit_AsyncFunctionDef = visit_FunctionDef
+
+    def visit_ClassDef(self, node):
+        reads, _ = scope_paths(node, self.aliases)
+        self.paths.update(reads)
 
 
 def scope_paths(scope, outer):
-    """The parameter paths a scope reads, through the names it assigns paths to."""
-    aliases = {name: set(paths) for name, paths in outer.items()}
-    nodes = list(scope_nodes(scope))
-    assignments = sorted(
-        (
-            node
-            for node in nodes
-            if isinstance(node, ast.Assign)
-            and len(node.targets) == 1
-            and isinstance(node.targets[0], ast.Name)
-        ),
-        key=lambda node: (node.lineno, node.col_offset),
-    )
-    # One pass in source order gives each name every path assigned to it up to
-    # that line. A name assigned from its own attribute, such as
-    # `p = p.income`, gains its new paths once, so the pass always ends.
-    for node in assignments:
-        aliases.setdefault(node.targets[0].id, set()).update(
-            parameter_paths(node.value, aliases)
-        )
-    paths = set()
-    for node in nodes:
-        if isinstance(node, ast.Attribute):
-            paths |= parameter_paths(node, aliases)
-    return paths, aliases
+    """Read a scope's parameter paths and keep its final bindings."""
+    visitor = ParameterReads(outer)
+    for statement in scope.body:
+        visitor.visit(statement)
+    return visitor.paths, visitor.aliases
 
 
 def read_paths(tree):
@@ -767,17 +760,15 @@ def reads_a_list(tree, lists):
 
 
 def federal_parameter_lists():
-    """Each federal parameter file's dotted path and the names its lists hold."""
+    """Keep each federal parameter file's lists separate by block."""
     found = {}
     for path in (PACKAGE / "parameters" / "gov").rglob("*.yaml"):
         relative = path.relative_to(PACKAGE).as_posix()
         if is_state_or_local(relative):
             continue
-        held = {
-            name
-            for names in parameter_lists(path.read_text(encoding="utf8"))
-            for name in names
-        }
+        held = [
+            set(names) for names in parameter_lists(path.read_text(encoding="utf8"))
+        ]
         if held:
             parts = path.relative_to(PACKAGE / "parameters").with_suffix("").parts
             found[".".join(parts)] = held
@@ -818,16 +809,22 @@ def counts_social_security_alone(adds, names, paths, scopes, lists):
 
 
 def carrying_lists(held, found):
-    """Federal lists that hold a found variable and no railroad amount."""
+    """Find paths with a list block that names a gap and leaves railroad out."""
     return {
-        path for path, names in held.items() if names & found and not names & RAILROAD
+        path
+        for path, blocks in held.items()
+        if any(names & found and not names & RAILROAD for names in blocks)
     }
 
 
 def federal_sources_without_railroad():
     """Federal lists and variables that count Social Security without railroad."""
-    lists = federal_lists_without_railroad()
     held = federal_parameter_lists()
+    lists = {
+        path
+        for path, blocks in held.items()
+        if any(lacks_railroad(block) for block in blocks)
+    }
     variables = federal_variables()
     found = {
         name
@@ -883,3 +880,63 @@ def test_state_programs_that_read_a_federal_list_without_railroad_are_known():
         "No state or county code reads these as sources without railroad "
         f"benefits; remove them: {stale}"
     )
+
+
+@pytest.mark.parametrize(
+    "body, expected",
+    [
+        (
+            "p = parameters(period).gov.x\n"
+            "    income = p.sources\n"
+            "    p = parameters(period).gov.y\n"
+            "    return income\n",
+            {"gov.x.sources"},
+        ),
+        (
+            "p = parameters(period).gov.x\n"
+            "    p = p.income\n"
+            "    p = p.details\n"
+            "    return p.sources\n",
+            {"gov.x.income.details.sources"},
+        ),
+        (
+            "p = parameters(period).gov.x\n"
+            "    p = person(member, period)\n"
+            "    return p.sources\n",
+            set(),
+        ),
+        (
+            "p = parameters(period).gov.x\n"
+            "    if flag:\n"
+            "        p = parameters(period).gov.y\n"
+            "    return p.sources\n",
+            {"gov.x.sources", "gov.y.sources"},
+        ),
+    ],
+    ids=["later-reassignment", "self-reassignment", "binding-cleared", "if-branch"],
+)
+def test_r5_resolves_parameter_aliases_at_the_read(body, expected):
+    tree = ast.parse("def formula(person, period, parameters):\n    " + body)
+    candidates = {
+        "gov.x.sources",
+        "gov.y.sources",
+        "gov.x.income.sources",
+        "gov.x.details.sources",
+        "gov.x.income.details.sources",
+    }
+    assert reads_a_list(tree, candidates) == expected
+
+
+def test_r5_retains_a_gap_in_an_earlier_parameter_list(monkeypatch, tmp_path):
+    path = tmp_path / "parameters/gov/example/sources.yaml"
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        "values:\n"
+        "  2025-01-01: [taxable_social_security]\n"
+        "  2026-01-01: [taxable_social_security, railroad_benefits]\n",
+        encoding="utf8",
+    )
+    monkeypatch.setitem(globals(), "PACKAGE", tmp_path)
+    assert carrying_lists(federal_parameter_lists(), {"taxable_social_security"}) == {
+        "gov.example.sources"
+    }
