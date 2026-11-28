@@ -1,0 +1,1 @@
+The additional tax bracket contrib reform now applies half the joint 33% threshold to separate filers from 2026 and a $539,900 single-filer 35% threshold for 2022. Tests reject repeated or inverted mapped thresholds and NaN parameter values, including values inside lists, dictionaries and sets.
