@@ -82,6 +82,7 @@ PROGRAMS = [
     ("CA", "ca_child_care_countable_income", "5 CCR 18078"),
     ("CA", "ca_tanf_other_unearned_income", "CalWORKs EAS 44-113.3"),
     ("CA", "ca_cpuc_countable_income", "CARE and FERA application"),
+    ("CA", "ca_cvrp_countable_income", "CVRP Implementation Manual"),
     ("CO", "co_ccap_countable_income", "8 CCR 1403-1"),
     ("CO", "co_tanf_countable_gross_unearned_income", "9 CCR 2503-6 3.605"),
     ("CT", "ct_c4k_countable_income", "RCSA 17b-749 definitions"),
@@ -129,6 +130,7 @@ PROGRAMS = [
     ("SD", "sd_cca_gross_income", "CCA subsidy manual, section 4"),
     ("TX", "tx_fpp_countable_unearned_income", "FPP manual 9000"),
     ("TX", "tx_ceap_countable_income_person", "10 TAC 6.4"),
+    ("TX", "tx_dta_csfp_countable_income", "Texas CSFP Handbook, section 3"),
     ("TX", "tx_ccs_countable_income", "40 TAC 809.44(c)"),
     ("UT", "ut_ccap_gross_income", "Utah Admin. Code R986-200-235(2)(a)"),
     ("VA", "va_ccsp_countable_income", "8 VAC 20-790-40(H)"),
@@ -181,6 +183,7 @@ WAGES_ABOVE_AID_LIMITS = {"employment_income": 60_000}
 BASE_INPUTS = {
     "ca_child_care_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_cpuc_countable_income": WAGES_ABOVE_AID_LIMITS,
+    "ca_cvrp_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_la_ez_save_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_riv_liheap_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_riv_share_countable_income": WAGES_ABOVE_AID_LIMITS,
@@ -188,6 +191,7 @@ BASE_INPUTS = {
     "ks_liheap_countable_unearned_income": WAGES_ABOVE_AID_LIMITS,
     "la_general_relief_gross_income": WAGES_ABOVE_AID_LIMITS,
     "pa_liheap_income": WAGES_ABOVE_AID_LIMITS,
+    "tx_dta_csfp_countable_income": WAGES_ABOVE_AID_LIMITS,
     "wa_eceap_family_income": WAGES_ABOVE_AID_LIMITS,
 }
 
@@ -535,19 +539,19 @@ def test_no_list_holds_railroad_benefits_twice():
 # a total or test, and leaves railroad benefits out, so the programs that read it
 # leave them out too.
 FEDERAL_GAPS = {
-    # Issue PolicyEngine/policyengine-us#10551 covers the TANF, SNAP and school
-    # meals lists. Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
+    # Issue PolicyEngine/policyengine-us#10551 covers the TANF and SNAP lists.
+    # Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
     # "Annuities; pensions; retirement, veteran's, or disability benefits".
     # Under BEM 503, Michigan's MDHHS counts for FIP, its TANF program, the
     # "gross benefit amount" that the Railroad Retirement Board pays.
     "tanf_gross_unearned_income": "TANF baseline list: 64 TANF variables in 37 states",
     "gov.usda.snap.income.sources.unearned": "SNAP unearned list: Nebraska LIHEAP",
-    "school_meal_fpg_ratio": "School meals list: Texas CSFP, California CVRP",
     # Under IRC 86(d)(1)(B), a tier 1 benefit is a Social Security benefit, so
     # its taxable part belongs in gross income. On main, the gross income list
     # counts taxable_social_security and no railroad amount.
     # PolicyEngine/policyengine-us#10696 adds the taxable railroad amounts.
     "irs_gross_income": "Gross income: DC, IL, MA energy aid; IL IHWAP, I-PASS, SCRETD",
+    "filer_tax_exempt_social_security": "Filer tax-exempt Social Security: IL SCRETD",
     "adjusted_gross_income": "AGI: CA CVRP normal rebate, WA exemption income",
     "adjusted_gross_income_person": "Person AGI: IL FPP, IL BAP",
     "charitable_contributions_ald": "Charitable deduction: CA CVRP normal rebate",
@@ -566,8 +570,9 @@ FEDERAL_GAPS = {
     "aca_magi_fraction": "ACA MAGI ratio: premium help in nine states",
     # These take ACA MAGI, or Medicare eligibility through ACA's list of
     # coverage that rules out the credit.
-    "aca_ptc": "ACA PTC: premium help in nine states",
-    "aca_ptc_slcsp": "ACA benchmark premium: premium help in eight states",
+    "gov.aca.ineligible_coverage": "ACA coverage list: NM Puente Health",
+    "aca_ptc": "ACA PTC: premium help in ten states",
+    "aca_ptc_slcsp": "ACA benchmark premium: premium help in nine states",
     "aca_required_contribution_percentage": "ACA contribution share: VT",
     "files_return_for_aca_ptc": "ACA filing test: CA, MD and NM premium help",
     "is_aca_coverage_family_member": "ACA coverage family: NM premium help",
