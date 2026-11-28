@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.tracers import TracingParameterNode
 from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
@@ -54,6 +55,16 @@ class ny_ctc_pre_2024(Variable):
                 simulation.tax_benefit_system
             )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
+            if tax_unit.simulation.trace:
+                # This formula reads the pinned tree itself, not through its
+                # ``parameters`` argument. Record those reads as core records
+                # the argument's: in this simulation's tracer, under its
+                # branch name.
+                branch_parameters = TracingParameterNode(
+                    branch_parameters,
+                    tax_unit.simulation.tracer,
+                    tax_unit.simulation.branch_name,
+                )
             # Recalculate every CTC formula variable under the pinned rules, a
             # supplied current-law value included.
             drop_recomputed_values(pre_tcja_ctc, ["ctc", *CREDIT_DEPENDENT_VARIABLES])

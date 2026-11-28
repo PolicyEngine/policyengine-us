@@ -1,0 +1,67 @@
+description: The model leaves DACA recipients at these ages out of New York's Medicaid immigration route, because the Essential Plan was due to take those with income up to 250% of the poverty line on August 1, 2024.
+metadata:
+  period: year
+  amount_unit: bool
+  threshold_unit: year
+  type: single_amount
+  label: New York DACA ages left out of the Medicaid immigration route
+  reference:
+    - title: "New York section 1332 waiver application (December 18, 2023), coverage of DACA recipients aged 19 to 64"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=24
+    - title: "New York section 1332 waiver application (December 18, 2023), August 1, 2024 start"
+      href: https://www.cms.gov/files/document/ny-1332-waiver_updated-application12182023.pdf#page=27
+    - title: "89 FR 39392, Clarifying the Eligibility of Deferred Action for Childhood Arrivals (DACA) Recipients and Certain Other Noncitizens for a Qualified Health Plan through an Exchange, Advance Payments of the Premium Tax Credit, Cost-Sharing Reductions, and a Basic Health Program"
+      href: https://www.govinfo.gov/content/pkg/FR-2024-05-08/pdf/2024-09661.pdf#page=1
+    - title: "NY State of Health, Changes for 2026 (webinar, June 17, 2026)"
+      href: https://info.nystateofhealth.ny.gov/sites/default/files/June%20Webinar%20-%20NY%20State%20of%20Health%20Changes%20for%202026.pdf#page=15
+
+# New York planned to move DACA recipients aged 19 to 64 with income up to
+# 250% of the poverty level to the Essential Plan on August 1, 2024.
+# Recipients outside those ages stayed in Medicaid or Child Health Plus if
+# they qualified, so those under 19 or aged 65 or older keep the Medicaid
+# route. The ages match the Basic Health Program's minimum and maximum
+# ages (19 and 65).
+# is_ny_medicaid_immigration_status_eligible reads age alone. A recipient
+# aged 19 to 64 above 250% of the poverty level fails this test, though the
+# Essential Plan could not take them. One who is blind or disabled can
+# hold a medically needy category, which subtracts medical expenses from
+# income, and fails Medicaid on this test alone. This is a known limit of
+# the age test.
+# The formula cannot ask whether the person qualifies for the Essential
+# Plan, because Essential Plan eligibility itself reads Medicaid. An
+# income test would need medicaid_income_level, the measure that
+# Medicaid's MAGI groups and the Basic Health Program use. That variable
+# reaches the Medicaid immigration test through tax filing status, state
+# income tax and other programs, so reading it here raises a cycle. The
+# tax unit's income level (tax_unit_medicaid_income_level) raises none,
+# but it is not Medicaid's measure. A tax dependent of a relative who is
+# not their parent can be above 250% on the tax unit's measure and inside
+# the adult group on Medicaid's own.
+# YEAR-defined formulas read January 1, so the 2024-08-01 value first
+# applies in 2025.
+# Model year 2026: the Essential Plan covered these recipients to June 30,
+# 2026. On July 1, 2026 enrollees in Essential Plan 3 or 4, and enrollees at
+# any level who were pregnant or in their 12-month postpartum period, moved
+# to Medicaid. This parameter models neither: from 2025 recipients aged 19
+# to 64 fail the Medicaid immigration test, as they did before this route
+# existed. A child's coverage can still change such an adult's Medicaid
+# category and emergency Medicaid result, through the adult group's
+# child-coverage rule. In the model one who is not pregnant and meets the
+# Essential Plan's other tests reaches it in 2025, within its income
+# limit. From 2026 an adult who is not pregnant has neither program,
+# because the Basic Health Program's list excludes DACA again from August
+# 25, 2025.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 19
+    amount:
+      2015-01-01: false
+      2024-08-01: true
+  - threshold:
+      2015-01-01: 65
+    amount:
+      2015-01-01: false

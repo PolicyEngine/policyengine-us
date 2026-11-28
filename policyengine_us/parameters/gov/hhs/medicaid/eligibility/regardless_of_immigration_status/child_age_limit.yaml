@@ -1,0 +1,148 @@
+description: States cover children younger than this age under the Medicaid program and the Children's Health Insurance Program regardless of immigration status.
+# A value of 0 means the model records no such coverage. States other than New
+# Jersey read 0 until researched (issue 3654). The District of Columbia, and
+# Oregon from July 1, 2023, read true for undocumented residents of every age
+# in undocumented_immigrant.yaml. The Children's Health Insurance Program is
+# New York's separate route for undocumented children
+# (gov.hhs.chip.undocumented.child), and its Medicaid pregnancy and postpartum
+# route also applies to them. California, Illinois and Washington cover
+# children through their own state program variables.
+metadata:
+  unit: year
+  period: year
+  label: Medicaid and CHIP child age limit regardless of immigration status
+  breakdown:
+    - state_code
+  reference:
+    - title: N.J.S.A. 30:4J-11, as amended by P.L.2008, c.38, section 3
+      href: https://pub.njleg.gov/bills/2008/PL08/38_.HTM
+    - title: N.J.A.C. 10:78-3.2(a)
+      href: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=33
+    - title: N.J.A.C. 10:79-3.2(a)
+      href: https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_79%20NJ%20FAMILYCARE-CHILDRENS%20PROGRAM.pdf#page=30
+    - title: P.L.2022, c.49 (New Jersey FY2023 Appropriations Act), Division of Medical Assistance and Health Services
+      href: https://pub.njleg.state.nj.us/bills/2022/AL22/49_.PDF#page=106
+    - title: P.L.2023, c.74 (New Jersey FY2024 Appropriations Act), Division of Medical Assistance and Health Services
+      href: https://pub.njleg.gov/Bills/2022/AL23/74_.PDF#page=120
+    - title: P.L.2024, c.22 (New Jersey FY2025 Appropriations Act), Division of Medical Assistance and Health Services
+      href: https://pub.njleg.gov/Bills/2024/AL24/22_.PDF#page=142
+    - title: P.L.2025, c.74 (New Jersey FY2026 Appropriations Act), Division of Medical Assistance and Health Services
+      href: https://pub.njleg.gov/Bills/2024/AL25/74_.PDF#page=144
+    - title: P.L.2026, c.27 (New Jersey FY2027 Appropriations Act), Division of Medical Assistance and Health Services
+      href: https://pub.njleg.state.nj.us/bills/2026/AL26/27_.PDF#page=134
+    - title: "New Jersey Department of Human Services, FY 2022-2023 Discussion Points, Cover All Kids #page 12-13"
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2023/DHS_response_2023.pdf#page=12
+
+AK:
+  2021-01-01: 0
+AL:
+  2021-01-01: 0
+AR:
+  2021-01-01: 0
+AZ:
+  2021-01-01: 0
+CA:
+  2021-01-01: 0
+CO:
+  2021-01-01: 0
+CT:
+  2021-01-01: 0
+DC:
+  2021-01-01: 0
+DE:
+  2021-01-01: 0
+FL:
+  2021-01-01: 0
+GA:
+  2021-01-01: 0
+HI:
+  2021-01-01: 0
+IA:
+  2021-01-01: 0
+ID:
+  2021-01-01: 0
+IL:
+  2021-01-01: 0
+IN:
+  2021-01-01: 0
+KS:
+  2021-01-01: 0
+KY:
+  2021-01-01: 0
+LA:
+  2021-01-01: 0
+MA:
+  2021-01-01: 0
+MD:
+  2021-01-01: 0
+ME:
+  2021-01-01: 0
+MI:
+  2021-01-01: 0
+MN:
+  2021-01-01: 0
+MO:
+  2021-01-01: 0
+MS:
+  2021-01-01: 0
+MT:
+  2021-01-01: 0
+NC:
+  2021-01-01: 0
+ND:
+  2021-01-01: 0
+NE:
+  2021-01-01: 0
+NH:
+  2021-01-01: 0
+NJ:
+  # N.J.S.A. 30:4J-11 limits NJ FamilyCare to children under 19 who are
+  # citizens or lawful permanent residents, and N.J.A.C. 10:78-3.2(a) and
+  # 10:79-3.2(a) still require citizenship or an eligible alien status. Each
+  # appropriations act from FY2023 through FY2027 authorizes enrolling "any
+  # child who, except for immigration status, meets financial and other
+  # eligibility provisions of the program", notwithstanding any law or
+  # regulation to the contrary. The Department of Human Services began
+  # enrollment on January 1, 2023, with state funds only.
+  # Not modeled: the DHS FAQ (https://nj.gov/coverallkids/faqs/) covers a child who turns 19 while pregnant until a year after the pregnancy.
+  # Candidate: us-nj:medicaid-cover-all-kids-immigration-status until registered.
+  2021-01-01: 0
+  2023-01-01: 19
+NM:
+  2021-01-01: 0
+NV:
+  2021-01-01: 0
+NY:
+  2021-01-01: 0
+OH:
+  2021-01-01: 0
+OK:
+  2021-01-01: 0
+OR:
+  2021-01-01: 0
+PA:
+  2021-01-01: 0
+RI:
+  2021-01-01: 0
+SC:
+  2021-01-01: 0
+SD:
+  2021-01-01: 0
+TN:
+  2021-01-01: 0
+TX:
+  2021-01-01: 0
+UT:
+  2021-01-01: 0
+VA:
+  2021-01-01: 0
+VT:
+  2021-01-01: 0
+WA:
+  2021-01-01: 0
+WI:
+  2021-01-01: 0
+WV:
+  2021-01-01: 0
+WY:
+  2021-01-01: 0

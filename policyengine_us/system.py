@@ -1,4 +1,6 @@
 import hashlib
+from copy import deepcopy
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
@@ -18,10 +20,14 @@ from policyengine_us.variables.household.demographic.geographic.state_code impor
     StateCode,
 )
 from policyengine_us.tools.parameters import (
+    EARLIEST_STRUCTURAL_REFORM_YEAR,
     FIRST_MODELED_YEAR,
     backdate_parameters,
 )
 from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
+)
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     PRE_RESPONSE_INPUTS,
 )
@@ -38,6 +44,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.marital_units import infer_missing_marital_units
 from .tools.tob import TobCalculationMixin
 from .tools.period_branch import delete_input_values
 from .tools.social_security_inputs import (
@@ -48,8 +55,16 @@ from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
+    derived_per_capita_series,
+    detached_copy,
+    is_national_total_path,
+    per_capita_nodes_unchanged,
+    remove_per_capita_series,
+    restore_child_order,
+    restore_per_capita_series,
 )
 from policyengine_us.data.dataset_schema import (
+    _DEFAULT_TIME_PERIOD,
     US_ENTITIES,
     USSingleYearDataset,
     USMultiYearDataset,
@@ -58,17 +73,22 @@ from policyengine_us.data.dataset_schema import (
 from typing import Annotated
 from spm_calculator.policyengine_adapter import build_policyengine_variables
 from policyengine_us.spm import (
+    SHARED_TREE_MARK,
     SPMSimulationMixin,
+    bind_private_entities,
     clone_spm_system,
     create_spm_provider,
+    plain_policy_copy,
 )
 
 install_social_security_input_compatibility()
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2024
-DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
+CURRENT_YEAR = 2026
+# Structural-reform checks start here rather than at CURRENT_YEAR, so moving the
+# default calculation year does not stop reforms from earlier years applying.
+DEFAULT_START_DATE = f"{EARLIEST_STRUCTURAL_REFORM_YEAR}-01-01"
 
 # Certified Microcosm build (primary-source US microdata), pinned by build id.
 # Microcosm ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
@@ -86,6 +106,34 @@ DEFAULT_DATASET_SHA256 = (
 )
 
 
+@dataclass(frozen=True, eq=False)
+class UnreformedBuild:
+    """What a system built without a reform records to derive reform systems.
+
+    It holds no reference to the system, so a copy or clone that carries it
+    does not keep the original's parameter tree alive.
+    """
+
+    # The registry before the structural reforms and per-state variables.
+    variables_before_reforms: dict
+    # Copies, taken at the same point, of the variables in that registry that
+    # uprate by a national total. ``add_per_capita_uprating`` later points the
+    # registry's own objects at the per-capita series in place.
+    total_uprated_variables: dict
+    # The per-capita series ``add_per_capita_uprating`` added to the tree
+    # after that point, and copies, as they stood at that point, of those it
+    # replaced when it refreshed them.
+    per_capita_series_added: frozenset
+    per_capita_series_replaced: dict
+    # The order of the children of each node holding a replaced series, at
+    # that point: a refresh moves the series to the end of its parent.
+    per_capita_parent_child_order: dict
+    # The children of those nodes when construction finished.
+    per_capita_parent_children: dict
+    # The registry when construction finished.
+    variables: dict
+
+
 class CountryTaxBenefitSystem(TaxBenefitSystem):
     """
     The tax-benefit system for the United States.
@@ -97,11 +145,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         If no reform is applied, the system will be initialized with the
         default tax/benefit parameters.
 
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     variables_dir = COUNTRY_DIR / "variables"
@@ -113,6 +161,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         "age",
     ]
     modelled_policies = COUNTRY_DIR / "programs.yaml"
+
+    def preprocess_situation(self, situation, default_period=None):
+        return infer_missing_marital_units(situation, default_period, self)
 
     def __init__(
         self,
@@ -150,17 +201,71 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         # Preserve the processed current-law path before user reforms can
         # remove/change the payroll cap. Owners' draw can keep this ceiling
-        # independently or explicitly select no ceiling.
-        draw_cap = self.parameters.gov.irs.payroll.social_security.cap.clone()
-        draw_cap.name = "gov.contrib.ssa.owners_draw.current_law_cap"
-        draw_cap.metadata.update(
-            label="Current-law OASDI cap preserved for owners' draw", economy=False
-        )
-        draw_cap.metadata.pop("uprating", None)
-        self.parameters.gov.contrib.ssa.owners_draw.add_child(
-            "current_law_cap", draw_cap
+        # independently or explicitly select no ceiling; the employer payroll
+        # tax response holds employer cost at current-law taxes on it.
+        for path, label in CURRENT_LAW_PAYROLL_CAP_COPIES.items():
+            copy = self.parameters.gov.irs.payroll.social_security.cap.clone()
+            copy.name = path
+            copy.metadata.update(label=label, economy=False)
+            copy.metadata.pop("uprating", None)
+            parent, _, child = path.rpartition(".")
+            self.parameters.get_child(parent).add_child(child, copy)
+
+        # Nothing above depends on the reform. A system built without one
+        # records its policy as it stands here, before the structural reforms,
+        # the per-state variables and the per-capita series, so that a reform
+        # system can be derived from it by running only the steps below. An
+        # empty reform counts as a reform here, as it does for a simulation,
+        # which derives its system whenever its reform is not None.
+        if reform is not None:
+            self._apply_reforms(reform, start_instant)
+            self._unreformed_build = None
+            return
+        variables_before_reforms = dict(self.variables)
+        total_uprated_variables = {
+            name: variable.clone()
+            for name, variable in variables_before_reforms.items()
+            if is_national_total_path(variable.uprating)
+        }
+        series_before = derived_per_capita_series(self.parameters)
+        series_copies = {
+            path: detached_copy(series) for path, series in series_before.items()
+        }
+        child_order_before = {
+            parent_path: tuple(self.parameters.get_child(parent_path).children)
+            for parent_path in {path.rpartition(".")[0] for path in series_before}
+        }
+        self._apply_reforms(reform, start_instant)
+        series_after = derived_per_capita_series(self.parameters)
+        series_replaced = {
+            path: series_copies[path]
+            for path, series in series_before.items()
+            if series_after.get(path) is not series
+        }
+        self._unreformed_build = UnreformedBuild(
+            variables_before_reforms=variables_before_reforms,
+            total_uprated_variables=total_uprated_variables,
+            per_capita_series_added=frozenset(
+                series_after.keys() - series_before.keys()
+            ),
+            per_capita_series_replaced=series_replaced,
+            per_capita_parent_child_order={
+                parent_path: child_order_before[parent_path]
+                for parent_path in {path.rpartition(".")[0] for path in series_replaced}
+            },
+            per_capita_parent_children={
+                parent_path: frozenset(self.parameters.get_child(parent_path).children)
+                for parent_path in {path.rpartition(".")[0] for path in series_replaced}
+            },
+            variables=dict(self.variables),
         )
 
+    def _apply_reforms(self, reform, start_instant):
+        """Apply ``reform`` and the structural reforms to processed policy.
+
+        These are the steps of construction that depend on the reform, so
+        ``derive_reform_system`` runs them on a copy of an unreformed system.
+        """
         if reform:
             # Applied after the parameter processing pipeline so that values
             # a reform inserts at future dates cannot act as defined values
@@ -197,6 +302,151 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # reach the per-capita series the variables uprate by.
         add_per_capita_uprating(self)
         self._per_capita_uprating_built = True
+
+    def can_derive_reform_systems(self) -> bool:
+        """Whether ``derive_reform_system`` gives what a full rebuild would.
+
+        Only a system built without a reform, and changed in neither its
+        variable registry nor its parameters since, holds the policy that
+        construction reaches before it applies a reform. A clone drops the
+        record of the build (``clone_spm_system``); a shallow copy that still
+        reads the same registry objects and tree keeps it, and derives the
+        same system. A subclass with its own constructor may build more than
+        ``_apply_reforms`` gives a derived system, so it is rebuilt.
+
+        The check sees every change to the variable registry, and every
+        parameter change made through ``Parameter.update``, which marks the
+        parameter and its ancestors modified; reform dictionaries and most
+        ``modify_parameters`` modifiers change parameters that way. It does
+        not see changes that mark nothing: nodes added or replaced with
+        ``add_child``, ``_replace_child`` or ``merge`` (by a modifier, or by
+        ``load_extension`` for an extension's parameters), assignments to
+        ``values_list[i].value``, and edits to metadata or to a variable's
+        attributes. A reform system derived afterwards includes
+        such changes, as every simulation that shares this system's policy
+        already does; a full rebuild would not. Detecting them would need a
+        comparison of the whole tree on every derivation (measured at 0.7 to
+        1.6 s, against about 2.75 s for the derivation). The exception is the
+        few nodes derivation itself undoes the per-capita step on: if a series
+        the build added or refreshed, or the set of children of a node holding
+        a refreshed one, has changed, the system is rebuilt.
+        """
+        build = self.__dict__.get("_unreformed_build")
+        if build is None:
+            return False
+        if type(self).__init__ is not CountryTaxBenefitSystem.__init__:
+            return False
+        if self.variables.keys() != build.variables.keys() or any(
+            self.variables[name] is not variable
+            for name, variable in build.variables.items()
+        ):
+            return False
+        # Derivation removes the per-capita series the build added and
+        # restores those it refreshed, so those nodes must be as it left them.
+        if not per_capita_nodes_unchanged(
+            self.parameters,
+            build.per_capita_series_added | build.per_capita_series_replaced.keys(),
+            build.per_capita_parent_children,
+        ):
+            return False
+        # Construction leaves every parameter unmodified, and
+        # ``Parameter.update`` marks what it changes. A node added after
+        # construction has no flag at all: an unmarked change, like those
+        # the docstring lists.
+        return not any(
+            getattr(parameter, "modified", False)
+            for parameter in self.parameters.get_descendants()
+        )
+
+    def derive_reform_system(
+        self,
+        reform,
+        start_instant: Annotated[
+            str, "ISO date format YYYY-MM-DD"
+        ] = DEFAULT_START_DATE,
+        spm: dict | None = None,
+    ) -> "CountryTaxBenefitSystem":
+        """The system ``CountryTaxBenefitSystem(reform, start_instant, spm)``
+        builds, without loading or processing any parameter or variable file.
+
+        Construction loads about 12,000 parameter files and 12,300 variable
+        files and then homogenizes, interpolates, uprates and backdates the
+        tree, none of which depends on the reform. So copy this system's
+        processed parameters and its variable registry from before the
+        structural reforms, and run only the steps that follow
+        (``_apply_reforms``): apply the reform, detect the structural reforms
+        from the reformed parameters at ``start_instant``, add the per-state
+        variables and rebuild the per-capita uprating series.
+
+        Like core's ``Reform(baseline)``, this clones the parameter tree and
+        copies the variable dictionary, but the result is a
+        ``CountryTaxBenefitSystem``. A core ``Reform`` takes its class
+        attributes and methods from ``TaxBenefitSystem`` instead, which drops
+        ``auto_carry_over_input_variables`` and this class's ``clone`` and
+        ``modify_parameters``.
+
+        Variable objects are shared with this system, as ``share_spm_policy``
+        shares them with every ordinary simulation: each core operation a
+        reform performs on a variable binds a new object to the name. The
+        exceptions are the variables that uprate by a national total, which
+        the per-capita step changes in place: those are fresh copies of the
+        recorded ones.
+
+        Edits written directly into this system's objects, bypassing the
+        methods that mark parameters modified, carry over into the derived
+        system (see ``can_derive_reform_systems``).
+        """
+        if not self.can_derive_reform_systems():
+            raise ValueError(
+                "Only a system built without a reform, and unchanged since, "
+                "can derive reform systems; build CountryTaxBenefitSystem("
+                "reform=...) instead."
+            )
+        derived = plain_policy_copy(self)
+        derived._unreformed_build = None
+        # A simulation may have bound this system as its own; the derived
+        # system is not bound to any simulation yet.
+        derived.__dict__.pop("simulation", None)
+        # Core's clone copies the root node's attributes, including the mark
+        # that another system reads this tree and any tracer a traced request
+        # wrote there. A tree loaded from files has no mark (which reads as
+        # unshared) and no tracer.
+        build = self._unreformed_build
+        parameters = self.parameters.clone()
+        parameters.__dict__.pop(SHARED_TREE_MARK, None)
+        parameters.trace = False
+        parameters.tracer = None
+        parameters.branch_name = None
+        # In the default build, the per-capita step that ends construction is
+        # the only step after the recorded point that changes the tree: it
+        # adds series and refreshes some that parameter uprating built. Undo
+        # both, so a reform sees the series a full rebuild has when it
+        # applies the reform.
+        for path in build.per_capita_series_added:
+            remove_per_capita_series(parameters, path)
+        for path, earlier in build.per_capita_series_replaced.items():
+            restore_per_capita_series(parameters, path, detached_copy(earlier))
+        for parent_path, order in build.per_capita_parent_child_order.items():
+            restore_child_order(parameters, parent_path, order)
+        derived.parameters = parameters
+        derived._parameters_at_instant_cache = {}
+        derived.variables = dict(build.variables_before_reforms)
+        # Fresh copies each time: the per-capita step points them at the
+        # per-capita series in place, and a reform's ``update_variable``
+        # inherits the national total from them as it does in a full rebuild.
+        derived.variables.update(
+            (name, variable.clone())
+            for name, variable in build.total_uprated_variables.items()
+        )
+        bind_private_entities(derived)
+        derived.spm_forecast_provider = create_spm_provider(spm)
+        derived.modelled_policies = deepcopy(self.modelled_policies)
+        derived.variable_module_metadata = dict(self.variable_module_metadata)
+        # Construction applies the reform before it builds the per-capita
+        # series, so ``modify_parameters`` must not rebuild them midway.
+        derived._per_capita_uprating_built = False
+        derived._apply_reforms(reform, start_instant)
+        return derived
 
     def modify_parameters(self, modifier_function):
         result = super().modify_parameters(modifier_function)
@@ -323,11 +573,11 @@ class Simulation(TobCalculationMixin, SPMSimulationMixin, CoreSimulation):
     does not include society-wide microdata.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -490,11 +740,11 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     thus suitable for society-level impacts.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date
-        at which the simulation begins; defaults to 2024-01-01; this is a
-        temporary patch for structural reforms, and must be set to the start
-        date of a structural reform parameter if it begins on a date other
-        than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The first
+        date checked when deciding which structural reforms apply; defaults
+        to 2024-01-01. Most structural reforms are checked on January 1 of
+        ten consecutive years from this date, and some only on this date, so
+        set it when a reform's parameter turns on outside those dates.
         dataset_end_year(int | None): Optional; The final year to create when
         automatically extending an entity-level single-year dataset. Defaults
         to the latest supported economic-assumption year. This option applies
@@ -505,10 +755,12 @@ class Microsimulation(TobCalculationMixin, SPMSimulationMixin, CoreMicrosimulati
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_dataset = DEFAULT_DATASET
-    default_dataset_year = CURRENT_YEAR
+    # Microdata stays in its base year: core labels a dataset without its own
+    # year with the default input period, and values are not uprated for it.
+    default_dataset_year = _DEFAULT_TIME_PERIOD
     default_role = "member"
-    default_calculation_period = CURRENT_YEAR
-    default_input_period = CURRENT_YEAR
+    default_calculation_period = _DEFAULT_TIME_PERIOD
+    default_input_period = _DEFAULT_TIME_PERIOD
 
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(

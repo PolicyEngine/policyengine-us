@@ -35,10 +35,10 @@ class or_ctc(Variable):
         capped_count_eligible = min_(count_eligible, p.child_limit)
         # Get maximum credit amount.
         max_credit = p.amount * capped_count_eligible
-        # Get Oregon adjusted gross income.
-        or_agi = tax_unit("or_agi", period)
-        # Reduce credit amount over the phaseout range.
-        excess_agi = max_(or_agi - p.reduction.start, 0)
-        percent_reduction = min_(excess_agi / p.reduction.width, 1)
+        # ORS 315.273(3)-(4): reduce the credit over the phase-out range of
+        # the qualifying income limit.
+        qualifying_income = tax_unit("or_ctc_qualifying_income", period)
+        excess_income = max_(qualifying_income - p.reduction.start, 0)
+        percent_reduction = min_(excess_income / p.reduction.width, 1)
         # Return reduced amount.
         return max_credit * (1 - percent_reduction)

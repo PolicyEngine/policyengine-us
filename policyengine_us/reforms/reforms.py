@@ -77,6 +77,7 @@ from .ctc import (
     create_ctc_linear_phase_out_reform,
 )
 from .snap import (
+    create_abolish_snap_bbce_reform,
     create_abolish_snap_deductions_reform,
     create_abolish_snap_net_income_test_reform,
 )
@@ -440,6 +441,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
         parameters, period
     )
+    abolish_snap_bbce = create_abolish_snap_bbce_reform(parameters, period)
     abolish_snap_deductions = create_abolish_snap_deductions_reform(parameters, period)
     abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
         parameters, period
@@ -640,6 +642,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         tip_income_tax_exempt,
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
+        abolish_snap_bbce,
         abolish_snap_deductions,
         abolish_snap_net_income_test,
         dc_property_tax_credit,

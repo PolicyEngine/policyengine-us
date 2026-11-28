@@ -257,3 +257,23 @@
         state_code: OR
   output:
     or_standard_deduction: 1_450
+
+# Oregon Withholding Tax Formulas, 2026, page 6: $2,910 [S] and $5,820 [M].
+- name: 2026 single filer who is not blind and not at the age threshold
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 35
+  output:
+    or_standard_deduction: 2_910
+
+- name: 2026 joint filers who are not blind and not at the age threshold
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 35
+  output:
+    or_standard_deduction: 5_820

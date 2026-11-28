@@ -237,3 +237,199 @@
   output:
     # $305 x 2 for a child under 6.
     me_dependent_exemption_credit: 610
+
+- name: Case 15, 2017 Maine dependent exemption credit before enactment.
+  period: 2017
+  absolute_error_margin: 0.01
+  # P.L. 2017, c. 474, Part B, sections 17 and 26 create the credit for 2018+.
+  # https://www.mainelegislature.org/legis/bills/bills_128th/chapters/PUBLIC474.asp
+  # Known person-level federal maximum and Maine AGI isolate the credit onset.
+  # This case does not derive federal eligibility or the 2017 exemption deduction.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0
+
+- name: Case 16, 2015 Maine dependent exemption credit before enactment.
+  period: 2015
+  absolute_error_margin: 0.01
+  # P.L. 2017, c. 474, Part B, sections 17 and 26 first allow this credit in 2018.
+  # Positive federal maximum and dependency are known component premises only.
+  # This control tests zero Maine credit, not historical federal eligibility
+  # or the separate personal-exemption deduction.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0
+
+- name: Case 17, 2016 Maine dependent exemption credit before enactment.
+  period: 2016
+  absolute_error_margin: 0.01
+  # P.L. 2017, c. 474, Part B, sections 17 and 26 first allow this credit in 2018.
+  # Positive federal maximum and dependency are known component premises only.
+  # This control tests zero Maine credit, not historical federal eligibility
+  # or the separate personal-exemption deduction.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: 0
+
+- name: Case 18, 2018 Maine dependent credit onset and nonrefundable liability limit.
+  period: 2018
+  absolute_error_margin: 0.01
+  # P.L. 2017, c. 474, Part B, section 17 creates a $300 credit per qualifying
+  # child/dependent for whom the federal section 24 credit was claimed. Section
+  # 26 first applies the credit in 2018; section 5219-SS(4) forbids reducing tax
+  # below zero. Maine AGI $50,000 is below the $200,000 HOH phaseout threshold.
+  # Each of the first three children has independently known federal maximum
+  # $2,000 and satisfies the qualifying/claim conditions, including a lawful
+  # federal section 24 claim. The fourth has known maximum zero and no such
+  # qualifying claim. These facts do not derive any federal award or eligibility.
+  # Known pre-credit Maine liabilities isolate the unchanged nonrefundable cap;
+  # other nonrefundable child-care credit is known zero. No tested raw credit,
+  # aggregate credit or resulting tax is supplied as an input.
+  # Raw [300,300,300,0]; applied min(raw, liability) [300,100,0,0];
+  # remaining tax [700,0,0,1000]. This is not a full Maine-return calculation.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 2_000
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 2_000
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person6:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 2_000
+      person7:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        ctc_individual_maximum: 0
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ctc_individual_maximum: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+        me_income_tax_before_credits: 1_000
+        me_non_refundable_child_care_credit: 0
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+        me_income_tax_before_credits: 100
+        me_non_refundable_child_care_credit: 0
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+        me_income_tax_before_credits: 0
+        me_non_refundable_child_care_credit: 0
+      tax_unit4:
+        members: [person7, person8]
+        filing_status: HEAD_OF_HOUSEHOLD
+        me_agi: 50_000
+        me_income_tax_before_credits: 1_000
+        me_non_refundable_child_care_credit: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: ME
+      household2:
+        members: [person3, person4]
+        state_code: ME
+      household3:
+        members: [person5, person6]
+        state_code: ME
+      household4:
+        members: [person7, person8]
+        state_code: ME
+  output:
+    me_dependent_exemption_credit: [300, 300, 300, 0]
+    me_non_refundable_credits: [300, 100, 0, 0]
+    me_income_tax_before_refundable_credits: [700, 0, 0, 1_000]

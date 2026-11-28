@@ -6,8 +6,10 @@ values:
   # bands spanning 100-400% FPL. Pre-2026 years (affordability-coupled
   # percent-of-income contributions, Plan Types 1 and 3D) are left unmodeled and
   # carried as a backdating backlog item, so the flag is false before 2026-01-01.
-  # No end date: the program is permanent law, so PY2027+ carries the PY2026 design
-  # forward as a current-law assumption (the Board sets amounts annually).
+  # No end date: the program is permanent law. The Board sets the enrollee
+  # premiums each year (enrollee_premium.yaml holds PY2026 and PY2027, and later
+  # years carry PY2027 forward), and the 300% to 400% FPL pilot tier ends after
+  # PY2027 (fpl_limit.yaml).
   0000-01-01: false
   2026-01-01: true
 

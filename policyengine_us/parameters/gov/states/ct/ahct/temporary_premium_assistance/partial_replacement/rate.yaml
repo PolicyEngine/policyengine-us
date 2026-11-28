@@ -1,0 +1,18 @@
+description: Connecticut replaces this share of the lost enhanced premium tax credit under Temporary Premium Assistance for households in the partial replacement income band.
+values:
+  # "Half of what you would have received from the expired federal tax
+  # credits" (Access Health CT); "50% of the expired tax credit amounts"
+  # (Insurance Department).
+  2026-01-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Connecticut Temporary Premium Assistance partial replacement rate
+  reference:
+    - title: Access Health CT, Extra financial help can lower health insurance costs in Connecticut
+      href: https://www.accesshealthct.com/article/active/new-financial-help-could-lower-your-health-coverage-costs-in-2026/
+    - title: Connecticut Insurance Department, Consumer Notice (February 13, 2026)
+      href: https://portal.ct.gov/cid/consumer-information-center/consumer-alerts/2026-consumer-alerts/notice-2026-02-13
+    - title: Governor Lamont, plan to tap into the emergency state response reserve (December 18, 2025)
+      href: https://portal.ct.gov/governor/news/press-releases/2025/12-2025/governor-lamont-submits-plan-to-tap-into-emergency-state-response-reserve

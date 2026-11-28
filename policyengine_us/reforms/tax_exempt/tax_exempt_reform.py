@@ -1,6 +1,35 @@
 from policyengine_us.model_api import *
 
 
+def payroll_tax_exempt_income(person, period, parameters):
+    """Tips and overtime premiums the reform exempts from payroll taxes.
+
+    employer_payroll_tax_fixed_employer_cost_change reads this too, so the
+    wages it holds employer cost on are the ones this reform taxes.
+    """
+    p = parameters(period).gov.contrib.tax_exempt
+    exempt_income = 0
+    if p.tip_income.payroll_tax_exempt:
+        exempt_income += person("tip_income", period)
+    if p.overtime.payroll_tax_exempt:
+        exempt_income += person("fsla_overtime_premium", period)
+    return exempt_income
+
+
+def tax_exempt_payroll_tax_gross_wages(person, period, parameters):
+    """Formula of payroll_tax_gross_wages under the reform.
+
+    It is defined here, rather than in the reform's class, so that
+    employer_payroll_tax_fixed_employer_cost_change can tell a system that
+    has the reform from one that does not.
+    """
+    employment_income = person("employment_income", period)
+    fica_deductions = person("fica_pre_tax_contributions", period)
+    exempt_income = payroll_tax_exempt_income(person, period, parameters)
+    income = max_(0, employment_income - fica_deductions)
+    return max_(income - exempt_income, 0)
+
+
 def create_tax_exempt() -> Reform:
     class irs_gross_income(Variable):
         value_type = float
@@ -34,17 +63,7 @@ def create_tax_exempt() -> Reform:
         definition_period = YEAR
         unit = USD
 
-        def formula(person, period, parameters):
-            employment_income = person("employment_income", period)
-            fica_deductions = person("fica_pre_tax_contributions", period)
-            p = parameters(period).gov.contrib.tax_exempt
-            exempt_income = 0
-            if p.tip_income.payroll_tax_exempt:
-                exempt_income += person("tip_income", period)
-            if p.overtime.payroll_tax_exempt:
-                exempt_income += person("fsla_overtime_premium", period)
-            income = max_(0, employment_income - fica_deductions)
-            return max_(income - exempt_income, 0)
+        formula = tax_exempt_payroll_tax_gross_wages
 
     class reform(Reform):
         def apply(self):

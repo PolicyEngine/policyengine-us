@@ -491,3 +491,251 @@
   output:
     ctc_qualifying_children: 1
     ut_ctc: 1_000
+# Utah Code 59-10-1047(1)(d): "Modified adjusted gross income" is the sum, for
+# the claimant and a joint filer's spouse, of "(i) adjusted gross income ...;
+# (ii) any interest income that is not included in adjusted gross income ...;
+# and (iii) any addition to adjusted gross income required by Section
+# 59-10-114". Nothing is subtracted. 2025 TC-40 instructions, Child Tax Credit
+# Worksheet (PDF page 24): line 3 is "the amount from TC-40, line 6 (Total
+# Income)", before Utah subtractions (line 8) and the state tax refund (line 7).
+- name: Utah subtractions do not reduce modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child_ignoring_filer_identification: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child_ignoring_filer_identification: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 50_000
+        ut_subtractions: 5_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # MAGI = total income 50,000 + tax-exempt interest 0 = 50,000.
+    # Excess over the head of household threshold: 50,000 - 43,000 = 7,000.
+    # Reduction: 7,000 x 0.10 = 700. Credit: 1,000 - 700 = 300.
+    ut_ctc_potential: 300
+
+- name: Interest on U.S. government obligations stays in modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssn_card_type: CITIZEN
+        employment_income: 40_000
+        taxable_interest_income: 5_000
+        us_govt_interest_person: 5_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # Federal AGI: 40,000 of wages + 5,000 of interest = 45,000.
+    adjusted_gross_income: 45_000
+    ut_total_income: 45_000
+    # Utah subtracts the U.S. government interest from taxable income only.
+    ut_subtractions: 5_000
+    # MAGI 45,000; excess over 43,000 = 2,000; 2,000 x 0.10 = 200.
+    # Credit: 1,000 - 200 = 800.
+    ut_ctc_potential: 800
+
+- name: A state tax refund in federal AGI stays in modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssn_card_type: CITIZEN
+        employment_income: 44_000
+        salt_refund_income: 1_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # Federal AGI: 44,000 of wages + the 1,000 taxable refund = 45,000.
+    adjusted_gross_income: 45_000
+    # TC-40 line 7 subtracts the refund from taxable income only.
+    ut_state_tax_refund: 1_000
+    # MAGI 45,000; (45,000 - 43,000) x 0.10 = 200; 1,000 - 200 = 800.
+    ut_ctc_potential: 800
+
+- name: Modified adjusted gross income exactly at the threshold, with Utah subtractions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child_ignoring_filer_identification: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child_ignoring_filer_identification: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 43_000
+        ut_subtractions: 3_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # MAGI 43,000 equals the 43,000 threshold: no reduction.
+    ut_ctc_potential: 1_000
+
+- name: Modified adjusted gross income 10 dollars above the threshold, with Utah subtractions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child_ignoring_filer_identification: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child_ignoring_filer_identification: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 43_010
+        ut_subtractions: 3_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # MAGI 43,010; (43,010 - 43,000) x 0.10 = 1; 1,000 - 1 = 999. The 3,000 of
+    # subtractions would put taxable income 2,990 below the threshold.
+    ut_ctc_potential: 999
+
+- name: A dependent's own tax-exempt interest is not the claimant's modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child_ignoring_filer_identification: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        ctc_qualifying_child_ignoring_filer_identification: true
+        tax_exempt_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 43_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # 59-10-1047(1)(d) sums the claimant's (and a joint spouse's) amounts;
+    # the child's interest belongs on the child's own return. MAGI = 43,000,
+    # at the threshold: no reduction.
+    ut_ctc_potential: 1_000
+
+# Register candidate us-ut:ctc-modified-agi-other-state-bond-interest: the
+# Child Tax Credit Worksheet counts interest on another state's municipal
+# bonds once (TC-40 line 6, less the TC-40A code 57 addition, plus federal
+# tax-exempt interest). The model computes no code 57 addition, so the
+# interest enters only through tax_exempt_interest_income.
+- name: Interest on another state's municipal bonds counts once in modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssn_card_type: CITIZEN
+        employment_income: 50_000
+        tax_exempt_interest_income: 3_000
+      person2:
+        age: 38
+        ssn_card_type: CITIZEN
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        filing_status: JOINT
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: UT
+  output:
+    # Federal AGI of 50,000 in wages + ut_additions of 0 (no ut_other_additions).
+    ut_total_income: 50_000
+    # MAGI: 50,000 + 3,000 of tax-exempt interest = 53,000, below the 54,000
+    # joint threshold, so no reduction. Counting the interest twice would give
+    # 56,000 and 1,000 - (56,000 - 54,000) x 0.10 = 800. Both amounts are
+    # before the nonrefundable liability limit.
+    ut_ctc_potential: 1_000

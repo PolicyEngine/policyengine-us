@@ -14,6 +14,9 @@ class eitc_earned_income(Variable):
         "https://www.law.cornell.edu/uscode/text/26/106#d",
         "https://www.irs.gov/publications/p596",
         "https://www.irs.gov/instructions/i1040gi",
+        # Strike and lockout benefits as earned income.
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=8",
+        "https://www.irs.gov/pub/irs-prior/p596--2010.pdf#page=12",
     )
 
     def formula(tax_unit, period, parameters):
@@ -35,6 +38,11 @@ class eitc_earned_income(Variable):
             # Taxable disability pensions before minimum retirement age
             # (Form 1040 line 1h; Pub. 596).
             "earned_disability_benefits",
+            # Taxable strike and lockout benefits, also Form 1040 line 1h:
+            # "If strike and lockout benefits are taxable, the benefits are
+            # generally earned income" (Pub. 596 (2025)). Pub. 596 (2010)
+            # called strike benefits a union pays its members earned income.
+            "taxable_strike_benefits",
         ]
         gross_earned_income = sum(
             tax_unit_non_dep_sum(source, tax_unit, period)

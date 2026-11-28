@@ -1,3 +1,14 @@
+# N.Y. Tax Law 606(e)(1)(C), taxable years before 2025: household gross income
+# is "the aggregate adjusted gross income of all members of the household"
+# plus, among others, "support money not included in adjusted gross income",
+# "the gross amount of any pension or annuity benefits to the extent not
+# included in such adjusted gross income (including ... veterans' disability
+# pensions)", "workers' compensation", "the gross amount of 'loss-of-time'
+# insurance" and "the amount of cash public assistance and relief".
+# Line numbers are those of the 2024 Form IT-214 (page 2) and its instructions
+# (IT-214-I page 2). The 2024 cases use the last year the credit reads this
+# measure.
+
 - name: Household gross income adds nontaxable Social Security to AGI (IT-214 line 16)
   period: 2022
   absolute_error_margin: 1
@@ -13,3 +24,218 @@
   output:
     # AGI 5,000 (Social Security not taxable at this income) + nontaxable SS 12,000
     ny_household_gross_income: 17_000
+
+- name: Workers' compensation counts in household gross income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    workers_compensation: 4_000
+  output:
+    # IT-214 line 9 (federal AGI) 5,000 + line 15 (workers' compensation)
+    # 4,000 = 9,000.
+    ny_household_gross_income: 9_000
+
+- name: Child support received counts as support money.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    child_support_received: 3_000
+  output:
+    # 5,000 + line 15 (support money) 3,000 = 8,000.
+    ny_household_gross_income: 8_000
+
+- name: Veterans' disability benefits count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    veterans_benefits: 6_000
+  output:
+    # 5,000 + line 11 (veterans' disability pensions) 6,000 = 11,000.
+    ny_household_gross_income: 11_000
+
+- name: A pension left out of federal AGI counts at its gross amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    tax_exempt_private_pension_income: 2_000
+  output:
+    # 5,000 + line 13 (pensions and annuities not on lines 9 to 12) 2,000
+    # = 7,000.
+    ny_household_gross_income: 7_000
+
+- name: Cash public assistance counts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    general_assistance: 2_400
+  output:
+    # 5,000 + line 14 (cash public assistance and relief) 2,400 = 7,400.
+    ny_household_gross_income: 7_400
+
+- name: TANF counts as cash public assistance.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 5_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 2_400
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # tanf_person gives each SPM unit member 2,400 / 2 = 1,200, and the
+    # household sums both shares. Line 9 (federal AGI) 5,000 + line 14 (cash
+    # public assistance and relief) 2,400 = 7,400.
+    ny_household_gross_income: 7_400
+
+- name: The New York State Supplement Program payment counts with SSI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # A 70-year-old living alone with no other income gets 2024 SSI of
+    # 943 x 12 = 11,316 (line 12) and the State Supplement Program
+    # living-alone payment of 87 x 12 = 1,044 (line 14, state cash relief).
+    # 11,316 + 1,044 = 12,360.
+    ssi: 11_316
+    ny_ssp: 1_044
+    ny_household_gross_income: 12_360
+
+- name: Tax-exempt disability insurance benefits count at their gross amount.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    disability_benefits: 3_000
+    tax_exempt_disability_benefits: 3_000
+  output:
+    # The benefits are outside federal AGI (IRC 104(a)(3)), so AGI is 5,000.
+    # Line 15 (gross amount of loss-of-time insurance) adds 3,000: 8,000.
+    ny_household_gross_income: 8_000
+
+- name: Foreign earned income excluded under section 911 counts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    employment_income: 5_000
+    foreign_earned_income_exclusion: 4_000
+  output:
+    # PolicyEngine income inputs are net of the exclusion, so AGI is 5,000.
+    # Line 15 (income earned abroad exempted by section 911) adds 4,000:
+    # 9,000.
+    ny_household_gross_income: 9_000
+
+- name: Another household member's income counts, though they file their own return.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 64
+        employment_income: 5_000
+      child:
+        age: 40
+        employment_income: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # 606(e)(1)(B): the household is the qualified taxpayer "and all other
+    # persons, not necessarily related, who have the same residence". A child
+    # is a relative under IRC 152(d)(2)(A), so the roomer exception does not
+    # apply. Household gross income is 5,000 + 6,000 = 11,000 for each
+    # claimant. The parent is 64, so neither member gets SSI.
+    ny_household_gross_income: [11_000, 11_000]
+
+- name: Another household member's SSI and State Supplement Program payment count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        employment_income: 5_000
+      child:
+        age: 40
+        employment_income: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The parent's 2024 SSI: countable earned income (5,000 / 12 - 20 - 65)
+    # / 2 = 165.83 a month, so SSI is (943 - 165.83) x 12 = 9,326 (line 12).
+    # The parent lives with others, so the State Supplement Program pays
+    # 23 x 12 = 276 (line 14). Household gross income for each claimant is
+    # 5,000 + 9,326 + 276 + 6,000 = 20,602.
+    ssi: [9_326, 0]
+    ny_ssp: [276, 0]
+    ny_household_gross_income: [20_602, 20_602]
+
+- name: A tax unit dependent's own income counts, and their Social Security counts once.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 5_000
+      child:
+        age: 17
+        employment_income: 30_000
+        social_security: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # The return's AGI leaves out the dependent's income: 5,000.
+    adjusted_gross_income: 5_000
+    # The dependent's own return (IRC 86, unmarried amounts): combined income
+    # 30,000 + 10,000 / 2 = 35,000. Taxable Social Security is the lesser of
+    # 0.85 x (35,000 - 34,000) + min(0.5 x (35,000 - 25,000), 0.5 x 9,000)
+    # = 850 + 4,500 = 5,350 and 0.85 x 10,000 = 8,500, so 5,350. AGI is
+    # 30,000 + 5,350 = 35,350.
+    dependent_adjusted_gross_income: [0, 35_350]
+    # Line 9: 5,000 + 35,350 = 40,350. Line 11: the dependent's untaxed
+    # Social Security 10,000 - 5,350 = 4,650. Total 45,000; the dependent's
+    # taxable Social Security is counted once.
+    ny_household_gross_income: 45_000

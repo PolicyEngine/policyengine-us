@@ -1,0 +1,20 @@
+description: Oregon adds these amounts excluded from adjusted gross income to qualifying income for its Kids Credit.
+values:
+  2023-01-01: []
+  # Oregon Laws 2025, chapter 321, section 16 adds ORS 315.273(1)(c)(A)(ii):
+  # "Foreign earned income, as defined in section 911 of the Internal Revenue
+  # Code, that is excluded from adjusted gross income." Section 17(2) applies
+  # it to tax years beginning on or after January 1, 2025.
+  2025-01-01:
+    - section_911_excluded_income
+metadata:
+  unit: list
+  period: year
+  label: Oregon Kids Credit qualifying income additions
+  reference:
+    - title: Oregon Laws 2025, chapter 321, section 16 (ORS 315.273(1)(c)(A)(ii))
+      href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2025orlaw0321.pdf#page=7
+    - title: Oregon Laws 2025, chapter 321, section 17(2) (tax years beginning on or after January 1, 2025)
+      href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2025orlaw0321.pdf#page=8
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions, Oregon Kids Credit worksheet line 12
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=24

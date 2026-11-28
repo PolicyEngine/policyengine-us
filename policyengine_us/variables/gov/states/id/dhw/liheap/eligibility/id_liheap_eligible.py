@@ -10,6 +10,8 @@ class id_liheap_eligible(Variable):
     reference = (
         # PDF pages 8-9
         "https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=8",
+        # PDF pages 8-9
+        "https://liheapch.acf.gov/docs/2027/state-plans/ID_Plan_2027.pdf#page=8",
         "https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=5",
         # IDAPA 16.04.14.001.02 and 152.02, in force for all of FY2026 heating.
         # PDF pages 3, 6
@@ -28,6 +30,8 @@ class id_liheap_eligible(Variable):
         # Heat in rent stands for no specific heating-cost obligation; a
         # designated heat charge within the rent has no input. That base is
         # zero from FY2026, when plan 2.5 makes these households ineligible.
+        # The FY2027 plan omits that sentence; IDAPA 16.03.08.200.07 still
+        # requires a designated portion of rent, so the base stays zero.
         # Other subsidized tenants paying for heat follow the general chart.
         return income_eligible & where(
             heat_in_rent, p.rent > 0, (cost > 0) & pays_for_heat

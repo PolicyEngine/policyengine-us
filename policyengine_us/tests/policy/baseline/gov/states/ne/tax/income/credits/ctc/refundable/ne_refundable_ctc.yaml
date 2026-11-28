@@ -137,3 +137,175 @@
     # Age-2 child qualifies via § 77-7203(1)(a) child care pathway;
     # age-11 fails the § 77-7202 age ceiling regardless.
     ne_refundable_ctc: 2_000
+
+# Neb. Rev. Stat. 77-7203(2)(a): $2,000 per child if total household income is "no more
+# than seventy-five thousand dollars". 2 x 2,000 = 4,000.
+- name: 2 qualifying children and income of exactly $75,000 get $2,000 each
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 75_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 4_000
+
+# 77-7203(2)(b): $1,000 per child if income is "more than seventy-five thousand dollars
+# but no more than one hundred fifty thousand dollars". 2 x 1,000 = 2,000.
+- name: 2 qualifying children and income of $75,001 get $1,000 each
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 75_001
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 2_000
+
+# 77-7203(2)(b): $150,000 is "no more than one hundred fifty thousand dollars", and the
+# 2025 booklet (line 48) bars the credit only if federal AGI "exceeds $150,000".
+# 2 x 1,000 = 2,000.
+- name: 2 qualifying children and income of exactly $150,000 get $1,000 each
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 150_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 2_000
+
+# 77-7203(3): no credit if total household income is "more than one hundred fifty
+# thousand dollars".
+- name: 2 qualifying children and income of $150,001 get no credit
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 150_001
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
+
+# 77-7203(2)(a): zero income is no more than $75,000. 2 x 2,000 = 4,000.
+- name: 2 qualifying children and zero income get $2,000 each
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 0
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 4_000
+
+# 77-7203(2)(a) sets no floor: a net loss is no more than $75,000. 2 x 2,000 = 4,000.
+- name: 2 qualifying children and negative income get $2,000 each
+  period: 2025
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: -10_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 4_000
+
+# A head of household earning $75,000 in wages has federal AGI and total household
+# income of exactly $75,000. The 3-year-old is age eligible (77-7202(1), five or less),
+# and the $3,000 of child care stands in for 77-7203(1)(a) (income is above the
+# poverty level, so (1)(c) fails). 77-7203(2)(a): $2,000 at income no more than
+# $75,000. The 9-year-old is over the age limit.
+- name: Head of household with $75,000 of wages and a 3-year-old in child care gets $2,000
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 75_000
+        is_tax_unit_head: true
+      toddler:
+        age: 3
+        is_tax_unit_dependent: true
+      older_child:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, toddler, older_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 3_000
+    spm_units:
+      spm_unit:
+        members: [head, toddler, older_child]
+    households:
+      household:
+        members: [head, toddler, older_child]
+        state_code: NE
+  output:
+    ne_refundable_ctc_total_household_income: 75_000
+    ne_refundable_ctc: 2_000

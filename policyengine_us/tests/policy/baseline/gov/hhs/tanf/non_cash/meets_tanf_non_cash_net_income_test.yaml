@@ -149,3 +149,207 @@
     # The same household fails where the state's BBCE keeps the net test:
     # $2,966 exceeds the four-person FY 2026 standard of $2,680.
     meets_tanf_non_cash_net_income_test: false
+
+# Arkansas BBCE raises only the resource limit: households "still need to
+# meet all other financial and non-financial eligibility rules" (SNAP
+# Certification Manual Appendix AA), so the net test stays for both
+# household types.
+- name: Arkansas BBCE household of three above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 3
+        is_tanf_non_cash_hheod: false
+        snap_net_income: 2_300
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $2,300 exceeds the three-person FY 2026 standard of $2,221.
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Arkansas BBCE aged or disabled household above the FY 2026 net standard fails the net income test.
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_400
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $1,400 exceeds the one-person FY 2026 standard of $1,305.
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Idaho elderly or disabled household above the FY 2024 net standard fails the net income test.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $285 above the one-person FY 2024 net standard of $1,215.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Idaho exempts these households from the gross income limit but not
+    # from the net income limit (IDAPA 16.03.04.532 and 16.03.04.549).
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Idaho elderly or disabled household at the FY 2024 net standard meets the net income test.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_215
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado ECE household above the FY 2024 net standard meets the net income test in January 2024.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $285 above the one-person FY 2024 net standard of $1,215.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Expanded Categorical Eligibility households need only gross income
+    # within 200% of the poverty level (10 CCR 2506-1 4.401(A)(1)).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado ECE elderly or disabled household above the FY 2024 net standard meets the net income test in January 2024.
+  period: 2024-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado household above the FY 2018 net standard fails the net income test in May 2018.
+  period: 2018-05
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $495 above the one-person FY 2018 net standard of $1,005.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: CO
+  output:
+    # Before the emergency rules effective 2018-06-01 (10 CCR 2506-1,
+    # Editor's Notes), the net income standard still applied.
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Colorado ECE household above the FY 2018 net standard meets the net income test from June 2018.
+  period: 2018-06
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: false
+        # $495 above the one-person FY 2018 net standard of $1,005.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: CO
+  output:
+    # From 2018-06-01, Expanded Categorical Eligibility households need only
+    # gross income within 200% of the poverty level (4.401(A)(1)).
+    meets_tanf_non_cash_net_income_test: true
+
+- name: Colorado elderly or disabled household above the FY 2018 net standard fails the net income test in May 2018.
+  period: 2018-05
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $495 above the one-person FY 2018 net standard of $1,005.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: CO
+  output:
+    meets_tanf_non_cash_net_income_test: false
+
+- name: Colorado ECE elderly or disabled household above the FY 2018 net standard meets the net income test from June 2018.
+  period: 2018-06
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 1
+        is_tanf_non_cash_hheod: true
+        # $495 above the one-person FY 2018 net standard of $1,005.
+        snap_net_income: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2018: CO
+  output:
+    meets_tanf_non_cash_net_income_test: true

@@ -36,11 +36,12 @@ Reach. From those two paths the module re-derives:
   2036;
 - the contribution and benefit base from 2028, since SSA last determined it
   for 2027 and the 2028 to 2036 values in its YAML derive from CBO;
-- the base's owners' draw copy, ``gov.contrib.ssa.owners_draw.current_law_cap``,
-  on the same rule from the copy's own values through 2027, so a policy reform
-  that changes the live base doesn't reach it;
+- each current-law copy of the base in ``CURRENT_LAW_PAYROLL_CAP_COPIES`` (the
+  owners' draw's and the employer payroll tax response's), on the same rule
+  from the copy's own values through 2027, so a policy reform that changes the
+  live base or another copy doesn't reach it;
 - the wage base on the same rule from its own values through 2027, so a
-  policy reform that changes the live base or the copy doesn't reach it;
+  policy reform that changes the live base or a copy doesn't reach it;
 - the quarter-of-coverage threshold, earnings-test exempt amounts, PIA bend
   points and SGA amounts, from 2027;
 - every parameter whose ``uprating`` metadata names either path. Core's
@@ -99,6 +100,7 @@ from policyengine_core.periods import instant
 
 from policyengine_us.model_api import Reform
 from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
     extend_social_security_payroll_cap,
     extend_social_security_wage_indexed_parameters,
 )
@@ -478,18 +480,19 @@ def apply_trustees_2026_economic_assumptions(
         last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
         end_year=end_year,
     )
-    # Extend the owners' draw copy on the same rule from its own values
+    # Extend each current-law copy on the same rule from its own values
     # through 2027, not from the live cap, so a policy reform's cap from 2027
-    # can't become the copy's no-decrease floor when the reform set runs again.
-    extend_social_security_payroll_cap(
-        parameters,
-        last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
-        end_year=end_year,
-        cap=parameters.gov.contrib.ssa.owners_draw.current_law_cap,
-    )
+    # can't become a copy's no-decrease floor when the reform set runs again.
+    for path in CURRENT_LAW_PAYROLL_CAP_COPIES:
+        extend_social_security_payroll_cap(
+            parameters,
+            last_projected_year=TRUSTEES_2026_LAST_DETERMINED_CAP_YEAR,
+            end_year=end_year,
+            cap=parameters.get_child(path),
+        )
     # Extend the benefit wage base on the same rule from its own values
     # through 2027. The rule reads the wage base's 1994 base, its value for
-    # the year before and the NAWI, but neither the live cap nor the copy, so
+    # the year before and the NAWI, but neither the live cap nor a copy, so
     # a reform that changes only one of those doesn't move the wage base when
     # the reform set runs again. A reform that means to move it sets the wage
     # base itself.

@@ -1,7 +1,8 @@
 # Virginia EAP Fuel Assistance benefit: household points x the statewide value
 # per point (22VAC40-680-30; Complete EAP Manual D.5). Period 2026 uses the
-# latest published value, FFY2025 $4.531665 (FY2026 LIHEAP plan item 2.5). No
-# minimum, maximum or bill cap. Points add 43 for every eligible household:
+# FFY2026 value, $3.950584 (FY2027 LIHEAP plan item 2.5), and period 2025 the
+# FFY2025 value, $4.531665 (FY2026 LIHEAP plan item 2.5). No minimum, maximum
+# or bill cap. Points add 43 for every eligible household:
 # living arrangement 20, primary fuel 10 (placeholder) and energy burden 13
 # (placeholder). End-to-end eligible households are in integration.yaml.
 # Annual limits: FFY2026 size 1 23,472 and size 3 39,972; FFY2025 size 1
@@ -183,10 +184,10 @@
     va_eap_income_points: 10
     # 9 + 10 + 12 + 0 + 43 = 74.
     va_eap_points: 74
-    # 74 x 4.531665 = 335.34321.
-    va_eap: 335.34
+    # 74 x 3.950584 = 292.343216.
+    va_eap: 292.34
 
-- name: Case 8, military retiree in Fairfax County with natural gas heat receives 344.41.
+- name: Case 8, military retiree in Fairfax County with natural gas heat receives 300.24.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -212,8 +213,8 @@
     va_eap_income_points: 8
     # 9 + 8 + 16 + 0 + 43 = 76.
     va_eap_points: 76
-    # 76 x 4.531665 = 344.40654.
-    va_eap: 344.41
+    # 76 x 3.950584 = 300.244384.
+    va_eap: 300.24
 
 - name: Case 9, a retiree's out-of-pocket Medicare Part B premium is deducted from Social Security.
   period: 2026
@@ -247,8 +248,8 @@
     va_eap_income_points: 3
     # 9 + 3 + 16 + 20 + 43 = 91.
     va_eap_points: 91
-    # 91 x 4.531665 = 412.381515.
-    va_eap: 412.38
+    # 91 x 3.950584 = 359.503144.
+    va_eap: 359.50
 
 - name: Case 10, a rental loss does not offset wages.
   period: 2026
@@ -271,7 +272,7 @@
         county: HENRICO_COUNTY_VA
   output:
     # 30,000 + max(-8,000, 0) = 30,000 > 23,472. Netting the loss would give
-    # 22,000 (93%, 3 income points, 67 points, 303.62).
+    # 22,000 (93%, 3 income points, 67 points, 264.69).
     va_eap_countable_income: 30_000
     va_eap_income_eligible: false
     va_eap: 0

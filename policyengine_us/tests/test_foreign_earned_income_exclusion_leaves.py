@@ -228,6 +228,66 @@ def test_legacy_aggregate_keeps_its_existing_carry_over(legacy):
     )
 
 
+PER_CAPITA_AGI_INDEX = (
+    "calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita"
+)
+
+
+def recorded_reads_by_node(simulation, parameter_name):
+    """Each trace node's recorded reads of ``parameter_name``.
+
+    Keys are (variable, period, branch name) of the node; values list each
+    read's (instant, branch name, value).
+    """
+    reads_by_node = {}
+    pending_nodes = list(simulation.tracer.trees)
+    while pending_nodes:
+        node = pending_nodes.pop()
+        pending_nodes.extend(node.children)
+        reads = [
+            (read.period, read.branch_name, read.value)
+            for read in node.parameters
+            if read.name == parameter_name
+        ]
+        if reads:
+            node_key = (node.name, str(node.period), node.branch_name)
+            reads_by_node.setdefault(node_key, []).extend(reads)
+    return reads_by_node
+
+
+@pytest.mark.parametrize("branch_name", [None, "uprating_probe"])
+def test_traced_legacy_carry_records_both_index_reads(branch_name):
+    # The legacy carry reads the per-capita AGI index from the system's own
+    # tree, not through the formula's ``parameters`` argument, the only tree
+    # core traces for a formula. Both reads, at the latest known period and at
+    # the requested one, must be recorded on the formula's trace node, in the
+    # calculating simulation's tracer and under its branch name, as core
+    # records the index reads of its own uprating.
+    simulation = simulation_for_tax_units(
+        [{"foreign_earned_income_exclusion": {YEAR: 10_000}}]
+    )
+    expected = expected_legacy_carry(simulation, 10_000)
+    parameters = simulation.tax_benefit_system.parameters
+    index_before = parameters.get_child(PER_CAPITA_AGI_INDEX)(f"{YEAR}-01-01")
+    index_after = parameters.get_child(PER_CAPITA_AGI_INDEX)(f"{YEAR + 1}-01-01")
+    simulation.trace = True
+    calculating = (
+        simulation if branch_name is None else simulation.get_branch(branch_name)
+    )
+    carried = calculating.calculate("foreign_earned_income_exclusion", YEAR + 1)
+    np.testing.assert_array_equal(carried, expected)
+    assert recorded_reads_by_node(calculating, PER_CAPITA_AGI_INDEX) == {
+        (
+            "foreign_earned_income_exclusion",
+            str(YEAR + 1),
+            calculating.branch_name,
+        ): [
+            (f"{YEAR}-01-01", calculating.branch_name, index_before),
+            (f"{YEAR + 1}-01-01", calculating.branch_name, index_after),
+        ]
+    }
+
+
 def test_carried_leaf_inputs_keep_gross_and_federal_net_distinct():
     simulation = leaf_simulation([(8_000, 2_000, 1_000, 0, 0)])
     federal = simulation.calculate("foreign_earned_income_exclusion", YEAR + 1)

@@ -7,6 +7,13 @@ class slcsp_age_curve_multiplier(Variable):
     label = "ACA SLCSP age curve multiplier"
     unit = "/1"
     definition_period = MONTH
+    reference = (
+        "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/2017-state-specific-age-curve-variations-8-9-2013.pdf#page=1",
+        "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf#page=1",
+    )
+    documentation = (
+        "Historical federal child factors retain the 2018 premium normalization."
+    )
 
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)

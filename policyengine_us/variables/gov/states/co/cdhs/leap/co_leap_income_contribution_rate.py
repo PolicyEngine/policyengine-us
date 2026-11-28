@@ -9,9 +9,11 @@ class co_leap_income_contribution_rate(Variable):
     unit = "/1"
     label = "Colorado LEAP household income contribution rate"
     defined_for = StateCode.CO
-    # PDF pages 4-5,93
     reference = (
-        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4"
+        # PDF pages 5,79
+        "https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=5",
+        # PDF pages 4-5,93
+        "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -32,6 +34,7 @@ class co_leap_income_contribution_rate(Variable):
         )
         # Inferred rounding order reproduces every published FY2026 boundary:
         # half-up monthly FPG first, then half-up each percentage of that value.
+        # FY2027 prints only the percentage bands, not dollar boundaries.
         rounded_fpg = np.floor(monthly_fpg + 0.5)
         monthly_income = spm_unit("co_leap_countable_income", period) / MONTHS_IN_YEAR
         contribution = p.payment.contribution

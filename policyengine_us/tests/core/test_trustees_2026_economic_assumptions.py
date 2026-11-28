@@ -30,6 +30,9 @@ from policyengine_core.parameters.operations.get_parameter import get_parameter
 from policyengine_core.reforms import Reform
 
 from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
+)
 from policyengine_us.reforms.ssa import (
     TRUSTEES_2026_ADJUSTED_CPI as ACPI,
     TRUSTEES_2026_AVERAGE_WAGE_INDEX as AWI,
@@ -60,6 +63,8 @@ NAWI = "gov.ssa.nawi"
 UPRATING = "gov.ssa.uprating"
 CAP = "gov.irs.payroll.social_security.cap"
 OWNERS_DRAW_CAP = "gov.contrib.ssa.owners_draw.current_law_cap"
+INCIDENCE_CAP = "gov.simulation.employer_payroll_tax_incidence.current_law_cap"
+COPIES = (OWNERS_DRAW_CAP, INCIDENCE_CAP)
 SOCIAL_SECURITY = "gov.ssa.social_security"
 WAGE_BASE = f"{SOCIAL_SECURITY}.wage_base"
 QC_THRESHOLD = f"{SOCIAL_SECURITY}.quarters_of_coverage_threshold"
@@ -108,7 +113,7 @@ TOUCHED = (
     NAWI,
     UPRATING,
     CAP,
-    OWNERS_DRAW_CAP,
+    *COPIES,
     *WAGE_INDEXED,
     *SOI_TOTALS,
     *UPRATING_READERS,
@@ -307,38 +312,43 @@ def test_wage_base_equals_the_cap():
         )
 
 
-def test_owners_draw_current_law_cap_follows_the_assumption():
+def test_the_copies_are_the_ones_system_builds():
+    assert COPIES == tuple(CURRENT_LAW_PAYROLL_CAP_COPIES)
+
+
+@pytest.mark.parametrize("copy", COPIES)
+def test_current_law_cap_copy_follows_the_assumption(copy):
     tree = _reformed()
     for year in range(2028, LAST_TABLE_YEAR + 1):
-        assert _value(tree, OWNERS_DRAW_CAP, year) == _value(tree, CAP, year), year
-    assert _entries(tree, OWNERS_DRAW_CAP, "2027-12-31") == _entries(
+        assert _value(tree, copy, year) == _value(tree, CAP, year), year
+    assert _entries(tree, copy, "2027-12-31") == _entries(
         system.parameters, CAP, "2027-12-31"
     )
 
 
-def test_owners_draw_current_law_cap_pins():
-    assert _value(system.parameters, OWNERS_DRAW_CAP, 2060) == 558_600
-    assert _value(_reformed(), OWNERS_DRAW_CAP, 2060) == 654_900
+@pytest.mark.parametrize("copy", COPIES)
+def test_current_law_cap_copy_pins(copy):
+    assert _value(system.parameters, copy, 2060) == 558_600
+    assert _value(_reformed(), copy, 2060) == 654_900
 
 
-def test_owners_draw_current_law_cap_holds_after_one_cap_policy_from_2028():
+@pytest.mark.parametrize("copy", COPIES)
+def test_current_law_cap_copy_holds_after_one_cap_policy_from_2028(copy):
     """One pass: after the assumption, a policy sets the payroll cap from
     2028, and the assumption's copy holds.
 
     Reuse the cached default-tree copy and restore its cap after the check.
     """
     tree = _applied_once()
-    expected_copy = _entries(tree, OWNERS_DRAW_CAP)
+    expected_copy = _entries(tree, copy)
     cap = get_parameter(tree, CAP)
     original_values = cap.values_list
     try:
         cap.update(start="2028-01-01", value=10_000_000)
         for year in range(2028, LAST_TABLE_YEAR + 1):
             assert _value(tree, CAP, year) == 10_000_000, year
-            assert _value(tree, OWNERS_DRAW_CAP, year) == _statutory_path(CAP)[year], (
-                year
-            )
-        assert _entries(tree, OWNERS_DRAW_CAP) == expected_copy
+            assert _value(tree, copy, year) == _statutory_path(CAP)[year], year
+        assert _entries(tree, copy) == expected_copy
     finally:
         cap.values_list = original_values
         cap.parent.clear_parent_cache()
@@ -373,10 +383,11 @@ def _on_default_values(tree):
 CAP_POLICIES = {"cap_removed": math.inf, "cap_of_10_million": 10_000_000}
 
 
+@pytest.mark.parametrize("copy", COPIES)
 @pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
 @pytest.mark.parametrize("policy_cap", CAP_POLICIES.values(), ids=CAP_POLICIES)
-def test_owners_draw_current_law_cap_survives_both_passes_of_a_2027_cap_policy(
-    policy_cap, order
+def test_current_law_cap_copy_survives_both_passes_of_a_2027_cap_policy(
+    policy_cap, order, copy
 ):
     """A built system applies its reform set twice. Replay both passes with a
     policy that sets the payroll cap from 2027, in either tuple order: the
@@ -392,12 +403,10 @@ def test_owners_draw_current_law_cap_survives_both_passes_of_a_2027_cap_policy(
     with _on_default_values(tree):
         for apply in reform_set * 2:
             apply(tree)
-        assert _value(tree, OWNERS_DRAW_CAP, 2060) == 654_900
+        assert _value(tree, copy, 2060) == 654_900
         for year in range(2028, LAST_TABLE_YEAR + 1):
-            assert _value(tree, OWNERS_DRAW_CAP, year) == _statutory_path(CAP)[year], (
-                year
-            )
-        assert _entries(tree, OWNERS_DRAW_CAP, "2027-12-31") == _entries(
+            assert _value(tree, copy, year) == _statutory_path(CAP)[year], year
+        assert _entries(tree, copy, "2027-12-31") == _entries(
             system.parameters, CAP, "2027-12-31"
         )
         for year in range(2027, LAST_TABLE_YEAR + 1):
@@ -431,8 +440,9 @@ COPY_POLICY_CAP = 10_000_000
 @pytest.mark.parametrize("order", ["assumption_first", "policy_first"])
 def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order):
     """A policy that sets only the owners' draw copy from 2027 leaves the
-    benefit wage base equal to the assumption baseline's, entry for entry,
-    after both passes, in either order."""
+    benefit wage base and the employer payroll tax response's copy equal to
+    the assumption baseline's, entry for entry, after both passes, in either
+    order."""
 
     def policy(parameters):
         get_parameter(parameters, OWNERS_DRAW_CAP).update(
@@ -442,12 +452,15 @@ def test_wage_base_survives_both_passes_of_a_2027_owners_draw_copy_policy(order)
     reform_set = (apply_trustees_2026_economic_assumptions, policy)
     if order == "policy_first":
         reform_set = reform_set[::-1]
-    baseline = _entries(_reformed(), WAGE_BASE)
+    baseline = {
+        path: _entries(_reformed(), path) for path in (WAGE_BASE, INCIDENCE_CAP)
+    }
     tree = _applied_once()
     with _on_default_values(tree):
         for apply in reform_set * 2:
             apply(tree)
-        assert _entries(tree, WAGE_BASE) == baseline
+        for path, entries in baseline.items():
+            assert _entries(tree, path) == entries, path
         for year in range(2027, LAST_TABLE_YEAR + 1):
             assert _value(tree, OWNERS_DRAW_CAP, year) == COPY_POLICY_CAP, year
 
@@ -670,7 +683,7 @@ PUBLISHED_CASES = [
     (NAWI, 2025),
     (UPRATING, 2027),
     (CAP, 2027),
-    (OWNERS_DRAW_CAP, 2027),
+    *[(path, 2027) for path in COPIES],
     *[(path, 2027) for path in WAGE_INDEXED],
     *[(path, 2036) for path in SOI_TOTALS],
     *[(path, 2027) for path in UPRATING_READERS],
@@ -993,7 +1006,7 @@ def _cap_policies():
 @example(policy=(2027, math.inf), first=True)
 def test_any_cap_only_policy_leaves_the_wage_base_and_the_copy(policy, first):
     """Replay both passes of the assumption and any cap-only policy, in
-    either order: the wage base and the owners' draw copy keep the values
+    either order: the wage base and the current-law copies keep the values
     the assumption alone gives them."""
     start_year, policy_cap = policy
 
@@ -1006,7 +1019,7 @@ def test_any_cap_only_policy_leaves_the_wage_base_and_the_copy(policy, first):
     if first:
         reform_set = reform_set[::-1]
     tree = _applied_once()
-    expected = {path: _entries(tree, path) for path in (WAGE_BASE, OWNERS_DRAW_CAP)}
+    expected = {path: _entries(tree, path) for path in (WAGE_BASE, *COPIES)}
     with _on_default_values(tree):
         for apply in reform_set * 2:
             apply(tree)

@@ -1,0 +1,196 @@
+# Sources for the expected values in this file:
+# - FY2026 LIHEAP Handbook, section 2.2.5 (PDF page 6) and section 3.4 (PDF
+#   pages 13 and 14):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=13
+# - FY2027 LIHEAP Handbook, section 3.4 (PDF pages 14 and 15):
+#   https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=14
+# - FFY 2026 and FFY 2027 fact sheets, monthly income limits on page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+#   https://nj.gov/dca/dhcr/offices/docs/FY2027%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# Handbook 3.4.A: "Income-eligible households for which there is medical
+# evidence that the health of at least one household member will be seriously
+# endangered unless the household's living quarters are cooled shall receive a
+# one-time benefit in the amount of $300.00". Model incomes and limits are
+# annual: the monthly amount times 12.
+
+# Two one-person Essex County households that pay their own electric (cooling)
+# bill, each with $1,000 a month of countable income (12_000 / 12).
+# - A member with a physician's certification: 1,000 does not exceed the
+#   one-person limit of 4,167, so the household receives $300.
+# - No member with a medical need for cooling: not eligible, $0.
+- name: Case 1, a certified medical need for cooling pays $300 and no need pays nothing.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [12_000, 12_000]
+    has_cooling_expense: [true, true]
+    has_medical_need_for_cooling: [true, false]
+  output:
+    nj_liheap_cooling_eligible: [true, false]
+    nj_liheap_cooling: [300, 0]
+
+# Cooling uses the heating income test (60% of state median income). The FY2026
+# one-person limit is $4,167 a month (fact sheet, page 2); 4,167 * 12 = 50_004.
+# - 50_004 / 12 = 4,167 does not exceed 4,167: eligible, $300.
+# - 50_016 / 12 = 4,168 exceeds 4,167: not eligible, $0.
+- name: Case 2, income above the heating limit is not eligible for cooling.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [50_004, 50_016]
+    has_cooling_expense: [true, true]
+    has_medical_need_for_cooling: [true, true]
+  output:
+    nj_liheap_income_eligible: [true, false]
+    nj_liheap_cooling_eligible: [true, false]
+    nj_liheap_cooling: [300, 0]
+
+# A household with no heating fuel reported (heating_type left UNSPECIFIED)
+# and no heating bill, but a cooling bill and a member whose doctor prescribes
+# cooling. Section 3.4 names no heating condition, so the household receives
+# the $300 cooling benefit but no heating benefit: it does not pay its own
+# heating costs (section 2.2, page 6).
+- name: Case 3, cooling does not need a heating fuel or a heating cost.
+  period: 2026
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    nj_liheap_countable_income: 12_000
+    has_cooling_expense: true
+    has_medical_need_for_cooling: true
+  output:
+    has_heating_expense: false
+    nj_liheap_eligible: false
+    nj_liheap: 0
+    nj_liheap_cooling_eligible: true
+    nj_liheap_cooling: 300
+
+# Five one-person renters, each with no income, a member with a medical need
+# for cooling and rent of 1,000 a month. Section 3.4.A.2 accepts "payment for
+# cooling costs which are included in a single monthly rental charge", and
+# section 3.4.A.3.I denies "Households residing in publicly operated housing
+# or receiving a rent subsidy, which includes all cooling costs. Energy costs
+# included in the rent, which are subsidized, do not apply as out-of-pocket for
+# cooling costs."
+# - Utilities in an unsubsidized rent: eligible, $300.
+# - Utilities in a Section 8 rent: not eligible, $0.
+# - Utilities in a public housing rent: not eligible, $0.
+# - Section 8 tenant who pays its own electric (cooling) bill: the subsidy does
+#   not include the cooling cost, so eligible, $300.
+# - Heat, but not the other utilities, in an unsubsidized rent, and no cooling
+#   bill: heat in the rent does not show a cooling cost, so not eligible, $0.
+- name: Case 4, utilities in a subsidized or public housing rent are not an out-of-pocket cooling cost.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0, 0, 0, 0]
+    has_medical_need_for_cooling: [true, true, true, true, true]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000]
+    tenant_pays_utilities: [false, false, false, true, true]
+    has_cooling_expense: [false, false, false, true, false]
+    heat_expense_included_in_rent: [false, false, false, false, true]
+    receives_housing_assistance: [false, true, false, true, false]
+    is_in_public_housing: [false, false, true, false, false]
+  output:
+    nj_liheap_cooling_eligible: [true, false, false, true, false]
+    nj_liheap_cooling: [300, 0, 0, 300, 0]
+
+# Section 3.4.A.3.IV denies "Households consisting entirely of students who
+# are tax dependents of another household." Each household has one member
+# with no income, a cooling bill and a medical need for cooling.
+# - A full-time student who is a tax dependent: not eligible, $0.
+# - A full-time student who is nobody's tax dependent: eligible, $300.
+- name: Case 5, a household of only tax-dependent students is not eligible.
+  period: 2026
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [0, 0]
+    has_cooling_expense: [true, true]
+    has_medical_need_for_cooling: [true, true]
+    is_full_time_student: [true, true]
+    is_tax_unit_dependent: [true, false]
+  output:
+    nj_liheap_cooling_eligible: [false, true]
+    nj_liheap_cooling: [0, 300]
+
+# The FY2027 handbook keeps the $300.00 benefit and the section 3.4 rules. The
+# FY2027 one-person limit is $4,273 a month (fact sheet, page 2);
+# 4,273 * 12 = 51_276.
+# - 51_276 / 12 = 4,273 does not exceed 4,273: eligible, $300. The same income
+#   exceeds the FY2026 limit of 4,167.
+# - 51_288 / 12 = 4,274 exceeds 4,273: not eligible, $0.
+- name: Case 6, FY2027 pays $300 under the FY2027 income limit.
+  period: 2027
+  input:
+    state_code: [NJ, NJ]
+    county: [ESSEX_COUNTY_NJ, ESSEX_COUNTY_NJ]
+    nj_liheap_countable_income: [51_276, 51_288]
+    has_cooling_expense: [true, true]
+    has_medical_need_for_cooling: [true, true]
+  output:
+    nj_liheap_cooling_eligible: [true, false]
+    nj_liheap_cooling: [300, 0]
+
+# A citizen parent with no medical need and an undocumented adult child whose
+# doctor prescribes cooling, with no income and a cooling bill. A
+# non-qualified noncitizen "must be excluded from the HEA household size"
+# (section 2.2.5, page 6), so no member of the HEA household has the medical
+# need: not eligible, $0.
+- name: Case 7, the member with the medical need must be in the HEA household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        immigration_status: CITIZEN
+        has_medical_need_for_cooling: false
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        has_medical_need_for_cooling: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_liheap_countable_income: 0
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+        county: ESSEX_COUNTY_NJ
+  output:
+    nj_liheap_household_size: 1
+    nj_liheap_cooling_eligible: false
+    nj_liheap_cooling: 0
+
+# The modeled program begins with FY2022 (eligibility/in_effect), so period
+# 2021 is not modeled: $0.
+- name: Case 8, periods before FY2022 pay no cooling benefit.
+  period: 2021
+  input:
+    state_code: NJ
+    county: ESSEX_COUNTY_NJ
+    nj_liheap_countable_income: 0
+    has_cooling_expense: true
+    has_medical_need_for_cooling: true
+  output:
+    nj_liheap_cooling_eligible: false
+    nj_liheap_cooling: 0
+
+# "The household members shall be residents of New Jersey" (section 2.2,
+# page 5), so a New York household receives $0.
+- name: Case 9, a New York household receives no New Jersey cooling benefit.
+  period: 2026
+  input:
+    state_code: NY
+    county: KINGS_COUNTY_NY
+    nj_liheap_countable_income: 0
+    has_cooling_expense: true
+    has_medical_need_for_cooling: true
+  output:
+    nj_liheap_cooling_eligible: false
+    nj_liheap_cooling: 0

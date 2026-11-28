@@ -1290,3 +1290,49 @@
   output:
     # The parent's own 100,000 is above the 6,068.80 limit.
     is_optional_senior_or_disabled_asset_eligible: [false, true]
+
+# N.J.A.C. 10:72-4.5(b): eligibility does not exist in a month in which countable
+# resources exceed the limits of 4,000 for an individual and 6,000 for a couple, so
+# resources equal to a limit qualify.
+- name: Threshold case, New Jersey individual with resources exactly at the 4,000 limit is eligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 4_000
+    state_code: NJ
+  output:
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: Threshold case, New Jersey couple with combined resources exactly at the 6,000 limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 3_500
+      person2:
+        age: 68
+        ssi_countable_resources: 2_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 3,500 + 2,500 = 6,000, equal to the couple limit.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Threshold case, New Jersey individual one cent over the 4,000 limit is ineligible.
+  period: 2026
+  input:
+    age: 70
+    ssi_countable_resources: 4_000.01
+    state_code: NJ
+  output:
+    is_optional_senior_or_disabled_asset_eligible: false

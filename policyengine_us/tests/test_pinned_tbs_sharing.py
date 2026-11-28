@@ -161,8 +161,8 @@ def small_tree():
 def change_small_tree(tree, change, index, value):
     """Change ``tree`` in one of the ways it can change.
 
-    Only ``update`` clears a cache, and on a loaded tree it stops at a scale's
-    bracket, which has no parent.
+    Only ``update`` clears a cache. From a scale's bracket on a loaded tree, it
+    goes further up only if this version of core links the bracket to its scale.
     """
     credit = tree.credit
     named_parent = tree.categories.group.children["parent"]
@@ -543,14 +543,18 @@ def test_an_edit_to_the_source_tree_reaches_the_next_simulation(monkeypatch):
 
 
 def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
-    """A loaded tree's scale brackets have no parent, unlike a clone's.
+    """An edit to a scale bracket on a loaded tree reaches a pin.
 
-    So this edit clears no cache above the bracket, and a pin has to read the
-    parameter itself. The EITC's 2021 pin keeps this amount, so its result
-    moves with the edit.
+    The test detaches the bracket from its scale before the edit, so the edit
+    clears no cache above the bracket on any version of core, and the source
+    tree's cached views stay stale. A pin has to read the parameter itself. The
+    EITC's 2021 pin keeps this amount, so its result moves with the edit.
     """
     loaded = CountryTaxBenefitSystem()
-    assert loaded.parameters.gov.irs.credits.eitc.max.brackets[1].parent is None
+    edited_bracket = loaded.parameters.gov.irs.credits.eitc.max.brackets[1]
+    # Older versions of core load a bracket without a parent, and newer ones
+    # link it to its scale. Detaching it gives the same case on both.
+    edited_bracket.parent = None
 
     def result():
         situation = household(2021, earnings=15_000, interest=0)
@@ -558,8 +562,7 @@ def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
         return simulation.calculate("ny_eitc", 2021)[0]
 
     before = result()
-    amount = loaded.parameters.gov.irs.credits.eitc.max.brackets[1].amount
-    amount.update(period="year:2021:1", value=5_000)
+    edited_bracket.amount.update(period="year:2021:1", value=5_000)
     edited = result()
 
     assert edited != before
@@ -735,3 +738,81 @@ def test_a_traced_simulation_leaves_an_ordinary_one_untraced():
 
     assert pin.parameters.trace is False
     assert pinned_tbs.get_pre_tcja_ctc_tbs(traced.tax_benefit_system).parameters.trace
+
+
+# New York's pre-2024 credit reads this threshold from its branch's pinned
+# tree, not through the formula's ``parameters`` argument. The 2017 value for a
+# head of household is $75,000; current law has $200,000.
+PINNED_PHASE_OUT_THRESHOLD = "gov.irs.credits.ctc.phase_out.threshold"
+PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD = 75_000
+
+
+def ny_credit_threshold_reads(simulation):
+    """The threshold reads on each ``ny_ctc_pre_2024`` trace node.
+
+    Keys are (period, branch name) of the node; values list each read's
+    (instant, branch name, value).
+    """
+    reads_by_node = {}
+    nodes = list(simulation.tracer.trees)
+    while nodes:
+        node = nodes.pop()
+        nodes.extend(node.children)
+        if node.name != "ny_ctc_pre_2024":
+            continue
+        reads_by_node.setdefault((str(node.period), node.branch_name), []).extend(
+            (read.period, read.branch_name, read.value.tolist())
+            for read in node.parameters
+            if read.name == PINNED_PHASE_OUT_THRESHOLD
+        )
+    return reads_by_node
+
+
+def traced_and_untraced_ny_credit(situation, year):
+    traced = Simulation(situation=situation, trace=True)
+    traced_credit = traced.calculate("ny_ctc_pre_2024", year)
+    untraced_credit = Simulation(situation=situation).calculate("ny_ctc_pre_2024", year)
+    assert traced_credit.tolist() == untraced_credit.tolist()
+    return traced
+
+
+def test_the_ny_credit_records_its_pinned_read_under_its_own_branch():
+    # In 2020 a non-itemizer's charitable deduction makes New York's
+    # recomputed federal AGI differ from federal AGI, so the formula pins the
+    # system of the branch that holds the recomputed AGI. The read must still
+    # carry the name of the branch whose formula made it, as core's view of a
+    # formula's own parameters does, not the name stored on the tree it read.
+    year = 2020
+    situation = household(year=year)
+    situation["people"]["head"]["charitable_cash_donations"] = {year: 300}
+    traced = traced_and_untraced_ny_credit(situation, year)
+    assert ny_credit_threshold_reads(traced) == {
+        (str(year), "default"): [
+            (f"{year}-01-01", "default", [PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD])
+        ]
+    }
+
+
+def test_the_ny_credit_records_its_pinned_read_without_a_tracer_on_the_pin(
+    monkeypatch,
+):
+    # A pin copies the root's fields, including the tracer a traced request
+    # wrote there, and without the fix only that copied tracer records the
+    # formula's read of the pinned tree. No current route builds a pin without
+    # it, so this test clears the fields itself. It guards against a later
+    # change that clears them, as the reform systems in ``system.py`` do on
+    # their copy: the read must still be recorded.
+    def pin_without_copied_tracer(base_tbs):
+        pinned = pin_spm_policy(base_tbs)
+        pinned.parameters.trace = False
+        pinned.parameters.tracer = None
+        pinned.parameters.branch_name = None
+        return pinned
+
+    monkeypatch.setattr(pinned_tbs, "pin_spm_policy", pin_without_copied_tracer)
+    traced = traced_and_untraced_ny_credit(household(), YEAR)
+    assert ny_credit_threshold_reads(traced) == {
+        (str(YEAR), "default"): [
+            (f"{YEAR}-01-01", "default", [PRE_TCJA_HEAD_OF_HOUSEHOLD_THRESHOLD])
+        ]
+    }

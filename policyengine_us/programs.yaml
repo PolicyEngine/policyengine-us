@@ -14,8 +14,12 @@ programs:
     coverage: US
     variable: income_tax
     parameter_prefix: gov.irs
-    verified_start_year: 2018
-    notes: Validated against NBER TAXSIM for 2022
+    verified_start_year: 2017
+    notes: >-
+      Validated against NBER TAXSIM for 2022. Selected wage-only household cases
+      match Tax-Calculator 6.9.1 for every year from 2017 through 2026, with
+      source-based historical provision tests. See docs/gov/irs/historical-validation.md
+      for the validation scope and limitations.
 
   - id: state_income_tax
     name: State income taxes
@@ -430,6 +434,7 @@ programs:
     variable: aca_ptc
     parameter_prefix: gov.aca
     verified_start_year: 2024
+    notes: 2014 PTC calculations use supplied MAGI and coverage eligibility; 2014-2017 benchmark premiums use estimates from 2018 rating-area premiums.
 
   - id: tanf
     name: TANF
@@ -875,7 +880,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: PolicyEngine models New York income eligibility, market rates, payment differentials, the special-needs rate, New York City enhanced informal and group rates, and the family share. It includes the categorical routes for foster care, protective services and preventive care with district approval under Title XX. It applies public assistance activity conditions and the 18 NYCRR 415.1(b) age extensions for special needs and court supervision. It also applies the statutory family share exceptions for public assistance, preventive care and child-only units. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Outside its New York City and Monroe County rates, the model uses state defaults for district choices, with the minimum for mandatory differentials (5%, then 10% from April 1, 2025, under Social Services Law 410-x(10)) and zero for optional ones. The combined limit rises from 25% to 35% on December 24, 2025. Not modeled - the optional differentials for QUALITYstarsNY and the auto-injector initiative that OCFS added on December 24, 2025, Monroe County's 75% enhanced informal rate, and public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction)
+        notes: PolicyEngine models New York income eligibility, market rates, payment differentials, the special-needs rate, New York City enhanced informal and group rates, and the family share. It counts Family Assistance, Safety Net Assistance payments and SSI state supplements in income, and children's SSI and supplements only before October 1, 2023. It includes the categorical routes for foster care, protective services and preventive care with district approval under Title XX. It applies public assistance activity conditions and the 18 NYCRR 415.1(b) age extensions for special needs and court supervision. It also applies the statutory family share exceptions for public assistance, preventive care and child-only units. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Outside its New York City and Monroe County rates, the model uses state defaults for district choices, with the minimum for mandatory differentials (5%, then 10% from April 1, 2025, under Social Services Law 410-x(10)) and zero for optional ones. The combined limit rises from 25% to 35% on December 24, 2025. Not modeled - the optional differentials for QUALITYstarsNY and the auto-injector initiative that OCFS added on December 24, 2025, and Monroe County's 75% enhanced informal rate
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -1069,15 +1074,16 @@ programs:
         full_name: Arkansas Low Income Home Energy Assistance Program
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no later manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
       - state: AR
         status: partial
         name: Arkansas LIHEAP cooling
         full_name: Arkansas Low Income Home Energy Assistance Program summer regular cooling assistance
         variable: ar_liheap_cooling
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        verified_years: "2025-2026"
-        notes: FY2025-FY2026 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent; the planned FY2027 increase has no posted matrix. Summer crisis and equipment are out of scope.
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent. Summer crisis and equipment are out of scope.
       - state: AZ
         status: partial
         name: Arizona LIHEAP
@@ -1092,16 +1098,16 @@ programs:
         full_name: California Home Energy Assistance Program utility heating component
         variable: ca_liheap_utility_heating
         parameter_prefix: gov.states.ca.csd.liheap
-        verified_years: "2026"
-        notes: FY2026 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating (FY2026 local plan) and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
       - state: CO
         status: partial
         name: Colorado LEAP
         full_name: Colorado Low-income Energy Assistance Program
         variable: co_leap
         parameter_prefix: gov.states.co.cdhs.leap
-        verified_years: "2026"
-        notes: FY2026 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating assistance, including heat-in-rent costs, income contribution rates and the subsidized-housing deduction. Colorado offers no cooling assistance; crisis, weatherization and equipment assistance are out of scope.
       - state: CT
         status: partial
         name: Connecticut CEAP
@@ -1128,11 +1134,11 @@ programs:
         notes: FY2025-FY2026 regular cooling benefit of $500 (Level I) or $400 (Level II), with the heating income test. Crisis cooling and air-conditioner purchase are out of scope.
       - state: HI
         status: partial
-        name: Hawaii LIHEAP subsidized dwelling benefit
-        full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
-        variable: hi_liheap_subsidized_amount
+        name: Hawaii LIHEAP
+        full_name: Hawaii Low Income Home Energy Assistance Program
+        variable: hi_liheap
         parameter_prefix: gov.states.hi.dhs.liheap
-        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points for the Energy Credit on a gas (heating) or electric (cooling) account for any eligible household with that bill or with utilities in its rent; no private-dwelling dollar award because its statewide value per point was not located. Crisis, weatherization and equipment assistance are out of scope.
+        notes: FY2026 Energy Credit on a gas (heating) or electric (cooling) account, with a flat benefit for subsidized dwellings and photovoltaic households with net billed electricity usage. Private-dwelling points use an estimated $140 per point, the benefit matrix's example value. Crisis, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1171,7 +1177,7 @@ programs:
         variable: ri_liheap
         parameter_prefix: gov.states.ri.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating, including heat-in-rent grants and the $350 utility enhancement, assuming a qualifying utility account. Earlier years and FY2027 payments reuse FY2026 amounts as unverified estimates; Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
+        notes: FY2026 regular heating, including heat-in-rent grants and the utility enhancement ($350; $400 in FY2027), assuming a qualifying utility account. Earlier years and FY2027 grants reuse FY2026 amounts as unverified estimates; Rhode Island plans no regular cooling payment in FY2026 or FY2027, and crisis and weatherization are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP
@@ -1193,7 +1199,8 @@ programs:
         full_name: Delaware Summer Cooling Assistance Program electric benefit
         variable: de_liheap_cooling_eligible
         parameter_prefix: gov.states.de.dhss.liheap.cooling
-        notes: Eligibility only for the flat summer electric benefit, for LIHEAP households that buy their heating or pass the income test with a cooling cost, with a member 60 or older, under 6 or disabled; no amount is modeled because the state divides available funds equally. The State may extend it to every applicant (as HHS data show for FY2023-FY2024; FY2025 served 88 households) and no 2026 decision was found; the breathing-condition route, air conditioners, crisis and weatherization are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 eligibility for the flat summer electric benefit, for LIHEAP households that buy their heating or pass the income test with a cooling cost, with a member 60 or older, under 6, disabled or with a chronic breathing condition; no award is computed because the State divides available funds equally, and de_liheap_cooling_max returns only the plan's published maximum for the whole cooling component. The State may extend the benefit to every applicant when funds allow, and no FY2026 or FY2027 decision was found; air conditioners, crisis and weatherization are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -1301,7 +1308,7 @@ programs:
         variable: mn_eap
         parameter_prefix: gov.states.mn.commerce.eap
         verified_years: "2026-2027"
-        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity, so it also covers cooling bills. Crisis, Energy Related Repair and weatherization are out of scope.
+        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, sized from total household energy costs including electricity, with applications taken from October 1 to May 31. Minnesota has no regular cooling payment, since the FY2026 and FY2027 plans give cooling no income threshold and no funds; crisis, Energy Related Repair and weatherization are out of scope.
       - state: MO
         status: partial
         name: Missouri LIHEAP
@@ -1309,7 +1316,7 @@ programs:
         variable: mo_liheap
         parameter_prefix: gov.states.mo.dss.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular Energy Assistance, including the heat-in-rent payment; paid to an electric account, it also covers cooling bills from October to May. Crisis (ECIP), including Summer ECIP, and weatherization assistance are out of scope.
+        notes: FY2026-FY2027 regular Energy Assistance, including the heat-in-rent payment. Missouri has no regular cooling payment, since the FY2026 and FY2027 plans give cooling no income threshold and no funds, but plan section 2.5 lets a payment made to an electric account be used for cooling costs from October to May; summer help comes only through Summer ECIP crisis assistance, which, like winter ECIP and weatherization, is out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -1365,7 +1372,7 @@ programs:
         variable: nh_fap
         parameter_prefix: gov.states.nh.doe.fap
         verified_years: "2027"
-        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; unsubsidized heat in rent receives the ordinary schedule, which prints no heat-in-rent reduction. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
+        notes: PY2027 regular heating, estimating heating cost with bedrooms (at least one room) as the room count; renters with unsubsidized heat in rent receive 62.5% of the schedule, a rate inferred from each state plan's estimated minimum benefit. New Hampshire has no regular cooling payment, and cooling help comes only through weatherization repairs; crisis, weatherization and equipment assistance are out of scope.
       - state: NJ
         status: partial
         name: New Jersey LIHEAP
@@ -1373,7 +1380,15 @@ programs:
         variable: nj_liheap
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. The medically necessary cooling benefit is not modeled because it needs a medical certification that no input carries; crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. The medically necessary cooling benefit is the separate New Jersey LIHEAP cooling entry; crisis and equipment assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP cooling
+        full_name: New Jersey Low Income Home Energy Assistance Program medically necessary cooling assistance
+        variable: nj_liheap_cooling
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 one-time $300 cooling benefit, paid in addition to heating, for households that pass the heating income test, have a member whose medical practitioner certifies that the home must be cooled, and pay for cooling directly or through unsubsidized rent; the model assumes cooling funds are available. Emergency and supplemental cooling, crisis and equipment assistance are out of scope.
       - state: NM
         status: partial
         name: New Mexico LIHEAP
@@ -1396,8 +1411,8 @@ programs:
         full_name: New York Home Energy Assistance Program
         variable: ny_heap
         parameter_prefix: gov.states.ny.otda.heap
-        verified_years: "2024-2026"
-        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
+        verified_years: "2024-2027"
+        notes: FY2024-FY2027 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. New York has no regular cooling payment, and its Cooling Assistance Component only installs an air conditioner or fan; crisis, cooling equipment, HERR and clean-and-tune assistance are out of scope.
       - state: OR
         status: partial
         name: Oregon LIHEAP
@@ -1412,8 +1427,8 @@ programs:
         full_name: South Carolina Low Income Home Energy Assistance Program
         variable: sc_liheap
         parameter_prefix: gov.states.sc.oeo.liheap
-        verified_years: "2026"
-        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements; the cooling-season award is the separate South Carolina LIHEAP cooling entry. Crisis, weatherization and equipment assistance are out of scope.
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating base amount with demographic, fuel, low-income and high-burden supplements, up to the heating maximum, for households with an energy bill and a reported heating fuel, or with heat in the rent; the cooling-season award is the separate South Carolina LIHEAP cooling entry. Crisis, weatherization and equipment assistance are out of scope.
       - state: SC
         status: partial
         name: South Carolina LIHEAP cooling
@@ -1421,7 +1436,7 @@ programs:
         variable: sc_liheap_cooling
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, paid alongside the heating award in FY2026. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, with no heating fuel required; it is paid alongside the heating award in FY2026 and only as its excess over the heating award in FY2027, which allows one service a year. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
@@ -1443,7 +1458,7 @@ programs:
         full_name: Texas Comprehensive Energy Assistance Program
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
-        notes: Models the Utility Assistance benefit, which also covers cooling bills under one yearly cap, with the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+        notes: Models the Utility Assistance benefit, which also covers cooling bills under one yearly cap, with the 150% FPG income limit and the benefit maximums by poverty band confirmed in the FY2026 and FY2027 state plans, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
       - state: UT
         status: partial
         name: Utah HEAT
@@ -1459,7 +1474,7 @@ programs:
         variable: va_eap
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
-        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
+        notes: FFY2026 Fuel Assistance only, with placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
       - state: VA
         status: partial
         name: Virginia EAP cooling
@@ -2171,7 +2186,7 @@ programs:
     variable: co_premium_assistance
     parameter_prefix: gov.states.co.doi.premium_assistance
     verified_years: "2026-2027"
-    notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
+    notes: PY2026 verified against Amended Regulation 4-2-78 (3 CCR 702-4, effective 2025-11-30) and enrolled HB25B-1006, and PY2027 onward against Amended Regulation 4-2-78 (effective 2026-09-30, $70 first member and $25 each additional member for the 2027 benefit year and annually thereafter) and SB26-178.
 
   - id: ct_covered_connecticut
     name: Covered Connecticut
@@ -2185,14 +2200,27 @@ programs:
     verified_start_year: 2026
     notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
 
+  - id: ct_temporary_premium_assistance
+    name: Connecticut Temporary Premium Assistance
+    full_name: Connecticut Temporary Premium Assistance (Access Health CT)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CT
+    variable: ct_temporary_premium_assistance
+    parameter_prefix: gov.states.ct.ahct.temporary_premium_assistance
+    verified_years: "2026-2027"
+    notes: Plan years 2026 and 2027 only (Public Act 26-68, Section 453(e)). Replaces the lost enhanced federal premium tax credit in full at 100-200% FPL outside Covered Connecticut and by half above 400% up to 500% FPL. Both credits are computed on the benchmark silver plan; the plan metal requirement is not modeled.
+
   - id: nm_premium_assistance
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program
     category: Healthcare
-    # Base Premium Assistance and the Middle Income Household component are
-    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
-    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
-    # Native American Table 2 rates plus the Premium Buy-down.
+    # Base Premium Assistance, the Middle Income Household component and
+    # Puente Health (nm_puente_health_premium_assistance, for lawfully present
+    # non-citizens who lost the federal credit under Public Law 119-21) are
+    # modeled. Not yet modeled: the Native American Table 2 rates and the
+    # Premium Buy-down.
     agency: State
     status: partial
     coverage: NM
@@ -2262,6 +2290,26 @@ programs:
     coverage: CA
     variable: ca_capi
     parameter_prefix: gov.states.ca.cdss.capi
+
+  - id: la_infant_supplement
+    name: California infant supplement
+    full_name: California Infant Supplement
+    category: Benefits
+    agency: State
+    status: partial
+    coverage: CA
+    variable: ca_la_infant_supplement
+    parameter_prefix: gov.states.ca.cdss.infant_supplement
+
+  - id: la_expectant_parent
+    name: California expectant parent payment
+    full_name: California Expectant Parent Payment
+    category: Benefits
+    agency: State
+    status: partial
+    coverage: CA
+    variable: ca_la_expectant_parent_payment
+    parameter_prefix: gov.states.ca.cdss.expectant_parent_payment
 
   - id: care
     name: California CARE
@@ -2543,6 +2591,18 @@ programs:
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
 
+  - id: ri_rimap
+    name: Rhode Island Marketplace Affordability Program
+    full_name: Rhode Island Marketplace Affordability Program (RIMAP)
+    category: Healthcare
+    agency: HealthSource RI
+    status: complete
+    coverage: RI
+    variable: ri_rimap
+    parameter_prefix: gov.states.ri.hsri.rimap
+    verified_years: "2027"
+    notes: Plan Year 2027 parameters adopted by HealthSource RI under R.I. Gen. Laws 42-157.2; later years need newly adopted percentages. The amount assumes a benchmark-priced plan, and the parent and caretaker premium assistance the parameters subtract is not modeled.
+
   - id: vt_premium_assistance
     name: Vermont Premium Assistance
     full_name: Vermont Premium Assistance
@@ -2575,26 +2635,6 @@ programs:
     coverage: Los Angeles County
     variable: ca_la_ez_save
     parameter_prefix: gov.local.ca.la.dwp.ez_save
-
-  - id: la_infant_supplement
-    name: Los Angeles County infant supplement
-    full_name: Los Angeles County Infant Supplement
-    category: Benefits
-    agency: Local
-    status: complete
-    coverage: Los Angeles County
-    variable: ca_la_infant_supplement
-    parameter_prefix: gov.local.ca.la.dss.infant_supplement
-
-  - id: la_expectant_parent
-    name: Los Angeles County expectant parent payment
-    full_name: Los Angeles County Expectant Parent Payment
-    category: Benefits
-    agency: Local
-    status: complete
-    coverage: Los Angeles County
-    variable: ca_la_expectant_parent_payment
-    parameter_prefix: gov.local.ca.la.dss.expectant_parent
 
   - id: la_general_relief
     name: Los Angeles County General Relief

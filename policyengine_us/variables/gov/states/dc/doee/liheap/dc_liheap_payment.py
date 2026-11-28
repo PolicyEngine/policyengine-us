@@ -12,6 +12,7 @@ class dc_liheap_payment(Variable):
         "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf",
         "https://doee.dc.gov/liheap",
         "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DC%20DOEE%20-%20FY26%20LIHEAP%20Benefit%20Matrix.docx",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/documents/DC%20DOEE%20-%20FY27%20LIHEAP%20Benefit%20Matrix_9.29.26.docx",
         "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/LIHEAP%20FAQ_1_0.pdf#page=1",
         # PDF pages 4, 11
         "https://liheapch.acf.gov/docs/2026/state-plans/DC_Plan_2026.pdf#page=4",
@@ -22,7 +23,7 @@ class dc_liheap_payment(Variable):
         housing_type = spm_unit("dc_liheap_housing_type", period)
         heating_type = spm_unit("dc_liheap_heating_type", period)
         # The floor keeps units outside DC (income level 0) on a valid matrix key.
-        income_level = max_(spm_unit("dc_liheap_income_level", period), 1)
+        income_level = clip(spm_unit("dc_liheap_income_level", period), 1, 10)
         capped_size = clip(spm_unit("spm_unit_size", period), 1, 4)
         types = heating_type.possible_values
 

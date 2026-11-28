@@ -173,3 +173,13 @@
     # (1 dependent + 1 additional dependent) x $2,111 = $4,222.
     ut_personal_exemption_additional_dependents: 1
     ut_personal_exemption: 4222
+
+- name: 2026 - 3 total dependents, no additional dependents
+  # 2026 Utah TC-40 Instructions (draft dated 10/20/26), line 9: $2,167.
+  period: 2026
+  input:
+    ut_total_dependents: 3
+    ut_personal_exemption_additional_dependents: 0
+    state_code: UT
+  output:
+    ut_personal_exemption: 6_501 # 2,167 * 3

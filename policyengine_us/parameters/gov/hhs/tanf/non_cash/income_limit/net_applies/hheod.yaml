@@ -4,6 +4,11 @@ AL:
   2015-10-01: true
 AZ:
   2015-10-01: false
+AR:
+  # SNAP Certification Manual Appendix AA: "While households may meet the
+  # BBCE resource limit, they will still need to meet all other financial
+  # and non-financial eligibility rules to receive SNAP benefits."
+  2025-04-04: true
 CA:
   # Elderly or disabled households with gross income at or below 200% of the
   # poverty line are conferred MCE like any other household, and MCE has no
@@ -16,8 +21,13 @@ CA:
   # this flag alone does not establish modeled eligibility in 2011.
   2015-10-01: false
 CO:
+  # Expanded Categorical Eligibility households need only gross income
+  # within 200% of the poverty level (10 CCR 2506-1 4.401(A)(1)); the net
+  # income standard applies under Standard Eligibility (4.401(A)(3)). That
+  # is the text of the version effective 11/30/2022. Dated from the start
+  # of the 200% limit in gross.yaml, when 4.206 and 4.401 took this form.
   2015-10-01: true
-  2024-07-01: false
+  2018-06-01: false
 CT:
   2015-10-01: false
 DC:
@@ -36,8 +46,13 @@ HI:
 IA:
   2015-10-01: false
 ID:
-  2015-10-01: false
-  2024-07-01: true
+  # Idaho exempts a household with an elderly or disabled member from the
+  # gross income limit (IDAPA 16.03.04.532) and holds it to the net income
+  # limit (16.03.04.549); broad-based categorically eligible households
+  # stay subject to the net income standard (16.03.04.010). The archived
+  # 2017 and 2022 chapters carry the same text, so the test applies from
+  # the start of the series.
+  2015-10-01: true
 IL:
   2015-10-01: false
 IN:
@@ -109,6 +124,8 @@ metadata:
   period: year
   label: SNAP net income limit for elderly/disabled BBCE households
   reference:
+    - title: Arkansas SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)
@@ -127,6 +144,10 @@ metadata:
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
     - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
       href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf#page=1
+    - title: "IDAPA 16.03.04.010.09, .532 and .549, Idaho Food Stamp Program income eligibility standards #page 10,48-49,51"
+      href: https://adminrules.idaho.gov/rules/current/16/160304.pdf#page=10
+    - title: "Code of Colorado Regulations 10 CCR 2506-1, sections 4.206(C)(2), 4.401(A)(1) and 4.401(A)(3), and Editor's Notes #page 34-35,81,226"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1#page=34
     - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions
       href: https://www.law.cornell.edu/cfr/text/7/273.2#j_2_xi
     - title: 7 CFR 273.9(a), income eligibility standards

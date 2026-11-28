@@ -1,0 +1,45 @@
+# The wage change needs a reform: a simulation without one has no baseline
+# to hold the employer's cost at. Python tests in
+# policyengine_us/tests/core/test_employer_payroll_tax_incidence.py cover
+# reforms.
+- name: A worker in a simulation without a reform keeps their wages
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    employment_income: 60_000
+    state_code: TX
+  output:
+    employer_payroll_tax_fixed_employer_cost_change: 0
+    employment_income: 60_000
+
+- name: Without a reform, a worker above the Social Security cap in a FUTA credit reduction state keeps their wages
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    employment_income: 300_000
+    state_code: CA
+  output:
+    employer_payroll_tax_fixed_employer_cost_change: 0
+    employment_income: 300_000
+
+# Earnings histories and tests of earlier law calculate employment income in
+# early years, so the employee share needs a value in every year.
+- name: Without a reform, a worker in 1999 keeps their wages before labor supply responses
+  period: 1999
+  absolute_error_margin: 0
+  input:
+    employment_income_before_lsr: 20_000
+    state_code: TX
+  output:
+    employer_payroll_tax_fixed_employer_cost_change: 0
+    employment_income: 20_000
+
+- name: Without a reform, a worker in 1986 keeps their wages before labor supply responses
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    employment_income_before_lsr: 12_000
+    state_code: TX
+  output:
+    employer_payroll_tax_fixed_employer_cost_change: 0
+    employment_income: 12_000

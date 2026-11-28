@@ -510,3 +510,109 @@
     # (gas bill 900): min(1_399, 900) = 900
     ma_liheap_heating_type: KEROSENE
     ma_liheap: 900
+
+# FY2027 chart (period 2027), dated 10/20/2026. The income columns use the 2026
+# poverty guidelines (15_960 for one person plus 5_680 for each additional
+# person). Each household below has one full-time worker at Massachusetts's
+# $15.00 minimum wage (M.G.L. c. 151, s. 1): 2_080 hours x 15 = 31_200.
+- name: Case 28, FY2027 family of four heating with fuel oil, homeowner, with the High Energy Cost Supplement.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 31_200
+    rent: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_600
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_400
+    state_code: MA
+  output:
+    # Guideline for four: 15_960 + 3 x 5_680 = 33_000.
+    # 31_200 / 33_000 = 0.945, below 100% FPL: benefit level 1.
+    # Homeowners and non-subsidized tenants, deliverable fuel, level 1: 1_450.
+    # Last year's oil cost 2_400 > heating oil and propane threshold 1_948: HECS 200.
+    # min(1_450 + 200, 2_600) = 1_650.
+    ma_liheap_fpg: 33_000
+    ma_liheap_benefit_level: 1
+    ma_liheap_standard_payment: 1_450
+    ma_liheap_hecs_payment: 200
+    ma_liheap: 1_650
+
+- name: Case 29, FY2027 household of two heating with natural gas, non-subsidized, without the High Energy Cost Supplement.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    irs_gross_income: 31_200
+    rent: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_400
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_300
+    state_code: MA
+  output:
+    # Guideline for two: 15_960 + 5_680 = 21_640.
+    # 31_200 / 21_640 = 1.442, above 125% and at or below 150% FPL: benefit level 3.
+    # Homeowners and non-subsidized tenants, utility and heat in rent, level 3: 774.
+    # Last year's gas cost 1_300 does not exceed the natural gas threshold 1_542: HECS 0.
+    # min(774 + 0, 1_400) = 774.
+    ma_liheap_fpg: 21_640
+    ma_liheap_benefit_level: 3
+    ma_liheap_standard_payment: 774
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 774
+
+- name: Case 30, FY2027 subsidized housing family of three with heat included in rent.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    irs_gross_income: 31_200
+    rent: 13_200
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+    receives_housing_assistance: true
+    heating_expense_last_year: 0
+    state_code: MA
+  output:
+    # Guideline for three: 15_960 + 2 x 5_680 = 27_320.
+    # 31_200 / 27_320 = 1.142, above 100% and at or below 125% FPL: benefit level 2.
+    # Rent of 1_100 a month, 13_200 a year, is more than 30% of income
+    # (0.3 x 31_200 = 9_360), so the subsidized tenant is eligible.
+    # Subsidized housing tenants, utility and heat in rent, level 2: 616.
+    # No heating bill last year: HECS 0. Heat in rent has no expense cap.
+    ma_liheap_fpg: 27_320
+    ma_liheap_benefit_level: 2
+    ma_liheap_standard_payment: 616
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 616
+
+- name: Case 31, FY2027 family of four with income exactly at 100% of the poverty level stays in benefit level 1.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 33_000
+    rent: 0
+    heating_type: FUEL_OIL
+    fuel_oil_expense: 2_600
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # Guideline for four: 15_960 + 3 x 5_680 = 33_000, the chart's 100% column.
+    # 33_000 / 33_000 = 1: at or below 100% FPL, benefit level 1, not level 2.
+    # Homeowners and non-subsidized tenants, deliverable fuel, level 1: 1_450.
+    # Level 2 would pay 1_276.
+    # Last year's oil cost 1_800 does not exceed the heating oil and propane
+    # threshold 1_948: HECS 0.
+    # min(1_450 + 0, 2_600) = 1_450.
+    ma_liheap_fpg: 33_000
+    ma_liheap_benefit_level: 1
+    ma_liheap_standard_payment: 1_450
+    ma_liheap_hecs_payment: 0
+    ma_liheap: 1_450

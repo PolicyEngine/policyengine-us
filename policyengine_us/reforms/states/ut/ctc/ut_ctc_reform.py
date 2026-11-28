@@ -41,10 +41,13 @@ def create_ut_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.ut.ctc
             eligible_children = tax_unit("ut_ctc_eligible_children", period)
             base_amount = p.amount * eligible_children
-            relevant_income = add(
+            # The baseline's modified adjusted gross income (Utah Code
+            # 59-10-1047(1)(d)): total income plus the claimant's and
+            # spouse's tax-exempt interest, with nothing subtracted.
+            relevant_income = tax_unit_non_dep_add(
                 tax_unit,
                 period,
-                ["tax_exempt_interest_income", "ut_taxable_income"],
+                ["ut_total_income", "tax_exempt_interest_income"],
             )
             filing_status = tax_unit("filing_status", period)
             reduction_start = p.reduction.start[filing_status]
@@ -111,7 +114,7 @@ def create_ut_ctc_reform(parameters, period, bypass: bool = False):
     reform_active = False
     current_period = period_(period)
 
-    for _ in range(5):
+    for _ in range(STRUCTURAL_REFORM_CHECK_YEARS):
         if p(current_period).in_effect:
             reform_active = True
             break

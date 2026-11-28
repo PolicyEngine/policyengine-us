@@ -17,10 +17,17 @@ class sc_liheap_cooling_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # Cooling-season Direct Assistance uses the regular income and
-        # energy-bill tests, which pay an unspecified heating fuel only with
-        # heat in the rent; the cooling gate adds no heating-fuel condition.
+        p = parameters(period).gov.states.sc.oeo.liheap.payment
+        income_eligible = spm_unit("sc_liheap_income_eligible", period)
+        # Plan items 3.1-3.6 set the cooling income threshold and supplements
+        # with no heating-fuel condition, so a household that reports no
+        # heating fuel can still receive cooling. The obligation to pay a home
+        # energy bill (OEO's 2024 guide) is shown as for heating: any counted
+        # energy bill, or heat in the rent, since item 3.3 sets no differing
+        # policy for renters with utilities in the rent.
+        has_energy_cost = add(spm_unit, period, p.energy_cost_sources) > 0
+        heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         # OEO's texts set no separate cooling-cost test; requiring
         # has_cooling_expense is a PolicyEngine convention.
-        eligible = spm_unit("sc_liheap_eligible", period)
-        return eligible & spm_unit("has_cooling_expense", period)
+        has_cooling_expense = spm_unit("has_cooling_expense", period)
+        return income_eligible & has_cooling_expense & (has_energy_cost | heat_in_rent)

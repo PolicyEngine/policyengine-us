@@ -1,0 +1,20 @@
+description: Hawaii gives this amount as an example value for each private-dwelling point under the Low Income Home Energy Assistance Program.
+# Hawaii sets the final value after the June application month: the Energy Credit
+# funds left after the flat-rate payments, divided by all private-dwelling points
+# statewide (draft manual 6.4). The matrix's example uses 140, which gives 1,400
+# for ten points and 280 for two. The accepted plan estimates a FY2026 range
+# of 375 to 1,400. The model follows the draft calculation and multiplies
+# points by the example rate without clipping to that estimated range.
+values:
+  2025-10-01: 140
+metadata:
+  unit: currency-USD
+  period: year
+  label: Hawaii LIHEAP private dwelling value per point
+  reference:
+    - title: Hawaii FY2026 LIHEAP benefit matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2
+    - title: "Hawaii FY2026 LIHEAP State Plan, sections 2.6 and 3.6 #page 10,14"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10
+    - title: Hawaii draft FY2026 Policies and Procedures, section 6.4
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=70

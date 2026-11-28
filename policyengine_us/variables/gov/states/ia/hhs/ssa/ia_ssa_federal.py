@@ -44,7 +44,7 @@ class ia_ssa_federal(Variable):
             max_(dependent, ia_ssa_spouse_value(person, period, dependent)),
             dependent,
         )
-        recipient_income = person("ssi_countable_income", period) + person(
+        recipient_income = person("ssi_countable_income_monthly", period) + person(
             "ssi", period
         )
         group_income = (

@@ -33,12 +33,21 @@ class ut_ctc_potential(Variable):
         eligible_child = ctc_eligible_child & ut_child_age_eligible
         eligible_children = tax_unit.sum(eligible_child)
         base_amount = p.amount * eligible_children
-        # Utah reduces the CTC based on the state income in addition to
-        # tax exempt interest income
-        relevant_income = add(
+        # Utah Code 59-10-1047(1)(d): modified adjusted gross income is the
+        # claimant's and spouse's adjusted gross income, plus interest income
+        # left out of it, plus the additions of Section 59-10-114. Nothing is
+        # subtracted: the TC-40 worksheet starts from line 6 (total income),
+        # before Utah subtractions and the state tax refund. Its line 4 takes
+        # out the TC-40A code 57 addition (other states' municipal bond
+        # interest) because line 6 adds all federal tax-exempt interest. The
+        # model computes no such addition (ut_additions is the
+        # ut_other_additions input alone), so ut_total_income plus
+        # tax_exempt_interest_income counts that interest once, unless the
+        # code 57 amount is also entered in ut_other_additions.
+        relevant_income = tax_unit_non_dep_add(
             tax_unit,
             period,
-            ["tax_exempt_interest_income", "ut_taxable_income"],
+            ["ut_total_income", "tax_exempt_interest_income"],
         )
         filing_status = tax_unit("filing_status", period)
         reduction_start = p.reduction.start[filing_status]

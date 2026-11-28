@@ -12,12 +12,17 @@ class ar_liheap_cooling(Variable):
         # FFY 2025 manual section 6.1: the Electricity Matrix is "used for both
         # Winter and Summer Regular Assistance". No FY2026 manual was found.
         "https://liheapch.acf.gov/docs/2025/manuals/AR_Manual_2025.pdf#page=78",
+        # FY2027 Electric matrix, headed "(WINTER & SUMMER)".
+        # PDF pages 1-2
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/electric-benefit-matrix-fy-2027.pdf#page=1",
         # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf#page=1",
         # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Electric.pdf#page=1",
         # FY2026 state plan section 3.6: cooling benefits of $60 to $344.
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=13",
+        # FY2027 state plan section 3.6: cooling benefits of $66 to $378.
+        "https://liheapch.acf.gov/docs/2027/state-plans/AR_Plan_2027.pdf#page=14",
     )
 
     def formula(spm_unit, period, parameters):
@@ -27,7 +32,5 @@ class ar_liheap_cooling(Variable):
         band = p.income_band.calc(max_(income, 0)).astype(int)
         size_group = p.household_size_group.calc(size).astype(int)
         # One fixed grant per summer from the Electricity matrix, the same for
-        # every heating type, not capped at the bill. The planned FY2027
-        # increase has no posted matrix, so later years carry the FY2026 cells
-        # forward.
+        # every heating type, not capped at the bill.
         return p.matrix.electricity[band][size_group]

@@ -5,8 +5,9 @@
 #   ct_covered_connecticut = max(0, slcsp_annual - aca_ptc)
 # The amount variable is gated by defined_for = "ct_covered_connecticut_eligible",
 # so any tax unit failing the three eligibility gates (in_effect, APTC, income)
-# or the StateCode.CT gate returns 0. slcsp, aca_ptc, aca_magi_fraction and
-# is_aca_ptc_eligible are supplied directly so each residual is hand-verifiable.
+# or the StateCode.CT gate returns 0. slcsp, aca_ptc, is_aca_ptc_eligible and
+# aca_magi against a $10,000 aca_fpg are supplied directly so
+# each residual is hand-verifiable.
 
 # ---- Eligible, small residual near the Medicaid floor (~150% FPL) ----
 - name: Case 1, 150% FPL eligible residual of 500.
@@ -21,7 +22,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -43,7 +45,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.60
+        aca_magi: 16_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 8_700
     households:
@@ -67,7 +70,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.75
+        aca_magi: 17_500
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 8_800
     households:
@@ -90,7 +94,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 8_000
     households:
@@ -113,7 +118,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.76
+        aca_magi: 17_600
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 9_000
     households:
@@ -135,7 +141,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -158,7 +165,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -180,7 +188,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -208,7 +217,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        aca_magi_fraction: 1.60
+        aca_magi: 16_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 18_500
     households:
@@ -231,7 +241,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -255,7 +266,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 9_000
     households:
@@ -280,7 +292,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.38
+        aca_magi: 13_800
+        aca_fpg: 10_000
         slcsp: 8_500
         aca_ptc: 8_300
     households:
@@ -312,7 +325,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 32_000
         aca_ptc: 27_000
     households:
@@ -336,7 +350,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.50
+        aca_magi: 15_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -362,7 +377,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.38
+        aca_magi: 13_800
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -533,3 +549,193 @@
   output:
     # Neither spouse is in a federal tax family.
     ct_covered_connecticut: 0
+
+# ---- PY2027: the 175% limit and the residual carry forward unchanged ----
+# Public Act 26-68, Sec. 462, re-enacts C.G.S. 19a-754c with the same 175% limit
+# and the same fully subsidized premium. PY2027 uses the 2026 guideline:
+# $15,960 for one person and $33,000 for four, supplied as aca_fpg so these
+# cases don't depend on the uprated guideline. $798 is 5% of $15,960.
+
+- name: Case 16, PY2027 140% FPL eligible residual of 600.
+  # 22_344 / 15_960 = 1.40 <= 1.75. slcsp 7_200 - aca_ptc 6_600 = 600.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 6_600
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 600
+
+- name: Case 17, PY2027 exactly 175% FPL is eligible.
+  # 27_930 / 15_960 = 1.75 exactly, "up to one hundred seventy-five per cent"
+  # (inclusive). slcsp 7_200 - aca_ptc 6_000 = 1_200.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_930
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 1_200
+
+- name: Case 18, PY2027 $1 above 175% FPL is ineligible though it truncates to 1.75.
+  # 27_931 / 15_960 = 1.750063 > 1.75 -> not eligible -> 0, although
+  # aca_magi_fraction truncates it to 1.75.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_931
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.75
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0
+
+- name: Case 19, PY2027 family of four at exactly 175% FPL.
+  # 57_750 / 33_000 = 1.75 exactly. slcsp 24_000 - aca_ptc 20_000 = 4_000.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: true
+      person3:
+        age: 10
+        is_aca_ptc_eligible: false
+      person4:
+        age: 8
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 57_750
+        aca_fpg: 33_000
+        slcsp: 24_000
+        aca_ptc: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 4_000
+
+- name: Case 20, PY2027 no APTC-eligible member yields no benefit.
+  # any(is_aca_ptc_eligible) is false -> not eligible -> 0.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_344
+        aca_fpg: 15_960
+        slcsp: 7_200
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0
+
+- name: Case 21, PY2027 150% FPL residual against the 2027 federal credit.
+  # aca_ptc is computed from the 2027 federal applicable percentage, which is
+  # 4.30% at exactly 150% FPL: 8_000 - 0.043 * 23_940 = 8_000 - 1_029.42
+  # = 6_970.58. Covered Connecticut pays the rest: 8_000 - 6_970.58 = 1_029.42.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_940
+        aca_fpg: 15_960
+        slcsp: 8_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_ptc: 6_970.58
+    ct_covered_connecticut: 1_029.42
+
+- name: Case 22, PY2027 exactly 175% FPL residual against the 2027 federal credit.
+  # 2027 federal applicable percentage at 175% FPL: 4.30% + 0.5 * (6.78% - 4.30%)
+  # = 5.54%. aca_ptc = 8_000 - 0.0554 * 27_930 = 8_000 - 1_547.322 = 6_452.678.
+  # Covered Connecticut pays 8_000 - 6_452.678 = 1_547.322.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_930
+        aca_fpg: 15_960
+        slcsp: 8_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_ptc: 6_452.678
+    ct_covered_connecticut: 1_547.322

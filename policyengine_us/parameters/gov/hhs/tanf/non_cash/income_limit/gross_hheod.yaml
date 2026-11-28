@@ -14,6 +14,10 @@ AZ:
   2026-03-01: 2
 AR:
   2015-10-01: -.inf
+  # SNAP Certification Manual Appendix AA sets 165% for aged/disabled
+  # households from the 2025-04-04 emergency rule; see the note under AR in
+  # gross.yaml. Households above it keep the regular rules.
+  2025-04-04: 1.65
 CA:
   2015-10-01: 2
 CO:
@@ -130,6 +134,12 @@ metadata:
   period: year
   label: SNAP BBCE elderly or disabled household gross income limit
   reference:
+    - title: Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023 (effective April 4, 2025), SNAP Certification Manual 1919
+      href: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+    - title: Arkansas SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility
+      href: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
+    - title: USDA BBCE States Chart, June 2026
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/BBCE-States-Chart-June2026.pdf#page=1
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)

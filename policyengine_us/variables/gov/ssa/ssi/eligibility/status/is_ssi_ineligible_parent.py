@@ -5,6 +5,9 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._deemed_income_without_ism import (
     ssi_income_deemed_from_ineligible_spouse_without_ism,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
+    ssi_budget_spousal_deeming_applies,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_established_spouse_indices,
 )
@@ -57,8 +60,11 @@ class is_ssi_ineligible_parent(Variable):
             person, period, parameters
         )
         p = parameters(period).gov.ssa.ssi
+        # This test covers the year, so it compares the year's remaining spouse
+        # income with the year's rate difference, or takes a supplied flag.
         benefit_rate = where(
-            joint_claim | person("is_ssi_spousal_deeming_applies", period),
+            joint_claim
+            | ssi_budget_spousal_deeming_applies(person, period, parameters),
             p.amount.couple,
             p.amount.individual,
         )
