@@ -856,3 +856,178 @@
     is_in_snap_abawd_waived_area: [false, false, false, false]
   output:
     is_snap_abawd_exempt: [false, false, false, true]
+
+- name: Case 44, Texas uses the pre-FRA threshold.
+  period: 2023-08
+  input:
+    age:
+      2023: [50, 51, 52, 53, 54, 55]
+    state_code:
+      2023: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2023: [false, false, false, false, false, false]
+    is_homeless:
+      2023: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2023: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2023: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, true, true, true, true, true]
+
+- name: Case 45, Texas uses the first FRA threshold.
+  period: 2023-09
+  input:
+    age:
+      2023: [50, 51, 52, 53, 54, 55]
+    state_code:
+      2023: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2023: [false, false, false, false, false, false]
+    is_homeless:
+      2023: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2023: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2023: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, true, true, true, true, true]
+
+- name: Case 46, Texas uses the second FRA threshold.
+  period: 2023-10
+  input:
+    age:
+      2023: [50, 51, 52, 53, 54, 55]
+    state_code:
+      2023: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2023: [false, false, false, false, false, false]
+    is_homeless:
+      2023: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2023: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2023: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false, true, true, true]
+
+- name: Case 47, Texas keeps the second FRA threshold.
+  period: 2024-09
+  input:
+    age:
+      2024: [50, 51, 52, 53, 54, 55]
+    state_code:
+      2024: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2024: [false, false, false, false, false, false]
+    is_homeless:
+      2024: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2024: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2024: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false, true, true, true]
+
+- name: Case 48, Texas uses the final FRA threshold.
+  period: 2024-10
+  input:
+    age:
+      2024: [50, 51, 52, 53, 54, 55]
+    state_code:
+      2024: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2024: [false, false, false, false, false, false]
+    is_homeless:
+      2024: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2024: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2024: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false, false, false, true]
+
+- name: Case 49, California keeps the final FRA threshold through May.
+  period: 2026-05
+  input:
+    age:
+      2026: [54, 55, 64, 65]
+    state_code:
+      2026: [CA, CA, CA, CA]
+    is_veteran:
+      2026: [false, false, false, false]
+    is_homeless:
+      2026: [false, false, false, false]
+    was_in_foster_care:
+      2026: [false, false, false, false]
+    is_disabled: [false, false, false, false]
+    is_usda_disabled:
+      2026: [false, false, false, false]
+    is_pregnant: [false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, true, true, true]
+
+- name: Case 50, California applies the HR1 threshold in June.
+  period: 2026-06
+  input:
+    age:
+      2026: [54, 55, 64, 65]
+    state_code:
+      2026: [CA, CA, CA, CA]
+    is_veteran:
+      2026: [false, false, false, false]
+    is_homeless:
+      2026: [false, false, false, false]
+    was_in_foster_care:
+      2026: [false, false, false, false]
+    is_disabled: [false, false, false, false]
+    is_usda_disabled:
+      2026: [false, false, false, false]
+    is_pregnant: [false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false]
+    is_snap_abawd_indian_exempt: [false, false, false, false]
+    is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false, true]

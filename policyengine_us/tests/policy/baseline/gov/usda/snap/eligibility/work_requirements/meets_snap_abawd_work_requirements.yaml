@@ -4,7 +4,7 @@
 # CA through 2026-05-31 (ACL 25-93 delayed adoption).
 # =====================================================
 
-# --- 273.24(c)(1): Age — under 18 or 55+ exempt ---
+# --- 273.24(c)(1): Age — under 18 or at least the dated upper threshold ---
 
 - name: Case 1, pre-HR1 age 17 exempt.
   period: 2022
@@ -33,16 +33,25 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-# state_code defaults to CA, which holds a statewide waiver from
-# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
-- name: Case 4, pre-HR1 age 54 NOT exempt.
-  period: 2024
-  absolute_error_margin: 0.1
+- name: Case 4a, age 54 meets the September FRA age exemption.
+  period: 2024-09
   input:
     age: 54
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
     state_code: TX
+    is_in_snap_abawd_waived_area: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 4b, age 54 falls below the October FRA age exemption.
+  period: 2024-10
+  input:
+    age: 54
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    is_in_snap_abawd_waived_area: false
   output:
     meets_snap_abawd_work_requirements: false
 

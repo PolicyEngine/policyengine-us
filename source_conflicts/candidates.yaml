@@ -17284,7 +17284,7 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10858
   state: open
-  note: This item concerns only FRA-era upper-age wording and the inherited modern agency boundary. Pre-FRA 2017-forward age handling is ruled separately in us:snap-abawd-pre-fra-upper-age-wording and is no longer unresolved here. The retained FRA-era pre-HR1 branch uses the June 2025 age scale for earlier FRA phases, leaving a separate historical future-lookup defect; this item does not endorse that defect. No agency-over-statute ruling or FRA/HR1 age interpretation is adopted by this repair. This item remains open, and no final Source conflict marker belongs here before the four-step global-register workflow.
+  note: PolicyEngine uses the dated FNS age thresholds for the FRA phases and keeps the final threshold until each state adopts HR1. The statute-versus-agency question for the FRA-era threshold remains open.
 - id: us-sd:cca-hourly-private-pay-cap
   program: ccdf
   years:

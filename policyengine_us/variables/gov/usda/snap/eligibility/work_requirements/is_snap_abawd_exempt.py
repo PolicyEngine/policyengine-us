@@ -1,3 +1,5 @@
+from policyengine_core.periods import instant
+
 from policyengine_us.model_api import *
 
 
@@ -30,14 +32,16 @@ class is_snap_abawd_exempt(Variable):
     def formula(person, period, parameters):
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         p = parameters(period).gov.usda.snap.work_requirements.abawd
-        # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
-        p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
-        # (A) Age — 7 U.S.C. 2015(o)(3)(A). Ages outside the ABAWD range are
-        # exempt; HR1 (P.L. 119-21) raised the upper bound from 54 to 64.
+        # (A) Age — 7 U.S.C. 2015(o)(3)(A).
+        # Keep the final FRA age threshold for states that adopt HR1 later.
+        fra_age_date = min(period.start, instant("2025-07-03"))
+        fra_age_threshold = parameters(
+            fra_age_date
+        ).gov.usda.snap.work_requirements.abawd.age_threshold
         age = person("monthly_age", period)
         pre_hr1_age_exempt = where(
             p.fra_exemptions_apply,
-            p_pre.age_threshold.exempted.calc(age),
+            fra_age_threshold.exempted.calc(age),
             p.age_threshold.pre_fra_common_exempted.calc(age),
         )
         working_age_exempt = where(
@@ -78,6 +82,8 @@ class is_snap_abawd_exempt(Variable):
         # State responsibility on their 18th birthday (added by the Fiscal
         # Responsibility Act of 2023, removed by P.L. 119-21).
         was_in_foster_care = person("was_in_foster_care", period)
+        # Use the pre-HR1 foster care age limit for FRA and good-faith exemptions.
+        p_pre = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
         former_foster_youth = was_in_foster_care & (
             age <= p_pre.age_threshold.former_foster_care
         )
