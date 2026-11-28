@@ -1,0 +1,77 @@
+# A household is eligible when it has an award. The award applies every
+# condition of 7 AAC 44, including the 2.0-point minimum of 44.080(m) after
+# the dwelling share (h) and the utility-allowance reduction (l).
+# Sources, each URL listed once:
+# Regulation 7 AAC 44.035-44.080:
+# https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+# Grant manual 3004-5 steps 1-8 and FY2027 price of $175 per point:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3004/3004-5_grant_computation.htm
+# Community table, Fairbanks oil 10, Juneau oil 5:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+
+# Fairbanks oil 10 * two-bedroom house 1 * income factor 1 = 10 points, plus
+# 1 for age 65 = 11; 11 * 175 = 1,925.
+- name: Case 1, a household with an award is eligible.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 1_000
+        ak_atap: 0
+        receives_housing_assistance: false
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '24230'
+  output:
+    ak_hap: 1_925
+    ak_hap_eligible: true
+    liheap_eligible: true
+
+# Juneau oil 5 * dwelling 1 * income factor .6 = 3 points, so the base award
+# is 3 * 175 = 525. This subsidized household pays its heat directly, so
+# 44.080(l) halves the points to 1.5, below the 2.0 minimum of (m).
+- name: Case 2, a household below the minimum after the utility-allowance reduction is not eligible.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 24_000
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ak_hap_dwelling_type: TWO_BEDROOM_HOUSE
+        fuel_oil_expense: 300
+        ak_atap: 0
+        receives_housing_assistance: true
+        heat_expense_included_in_rent: false
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+        place_fips: '36400'
+  output:
+    ak_hap_base_benefit: 525
+    ak_hap: 0
+    ak_hap_eligible: false
+    liheap_eligible: false

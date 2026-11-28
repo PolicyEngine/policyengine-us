@@ -37,6 +37,7 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
     "gov/hhs/liheap/regular_payments.yaml",
+    "gov/hhs/liheap/regular_eligibility.yaml",
     "gov/household/household_state_benefits.yaml",
     "gov/states/household/state_property_tax_refunds.yaml",
 ]
@@ -231,6 +232,44 @@ def test_liheap_total_sums_every_registered_state_payment(variables):
     assert not double_counted, (
         f"{LIHEAP_PAYMENTS} lists {double_counted}, which "
         "LIHEAP_PAYMENT_STAND_INS replaces or leaves out on purpose."
+    )
+
+
+LIHEAP_ELIGIBILITY = "gov/hhs/liheap/regular_eligibility.yaml"
+
+# Eligibility flags of listed payments whose defined_for is not the flag.
+LIHEAP_ELIGIBILITY_FLAGS = {
+    # Alaska's flag is derived from its award.
+    "ak_hap": "ak_hap_eligible",
+    # These payments are gated by state and read the flag in the formula.
+    "al_liheap": "al_liheap_eligible",
+    "fl_liheap": "fl_liheap_eligible",
+    "ok_liheap": "ok_liheap_eligible",
+    # California's components each require its common household eligibility.
+    "ca_liheap_utility_heating": "ca_liheap_basic_eligible",
+    "ca_liheap_covered_liquid_heating": "ca_liheap_basic_eligible",
+}
+
+
+def test_liheap_eligibility_lists_the_flag_of_every_listed_payment(variables):
+    """A payment in the national total must have its flag in the eligibility list.
+
+    `liheap_eligible` is true when any listed state flag is true. Each payment
+    `liheap` sums is gated by an eligibility flag, usually its defined_for.
+    That flag belongs in the eligibility list, so a new state or cooling
+    payment cannot reach the total while its households read as ineligible.
+    """
+    listed = members_of(LIHEAP_ELIGIBILITY)
+    missing = sorted(
+        payment
+        for payment in members_of(LIHEAP_PAYMENTS)
+        if LIHEAP_ELIGIBILITY_FLAGS.get(payment, variables[payment].defined_for)
+        not in listed
+    )
+    assert not missing, (
+        f"{LIHEAP_ELIGIBILITY} lacks the eligibility flag of these payments "
+        f"in {LIHEAP_PAYMENTS}: {missing}. Add each flag to the list, or name "
+        "it in LIHEAP_ELIGIBILITY_FLAGS in this test."
     )
 
 
