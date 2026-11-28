@@ -1,3 +1,10 @@
+## [2.154.3] - 2026-11-28
+
+### Fixed
+
+- Correct pre-FRA SNAP age exemptions and apply the Fiscal Responsibility Act's age phases and additional exemptions from September 2023.
+
+
 ## [2.154.2] - 2026-11-27
 
 ### Fixed
