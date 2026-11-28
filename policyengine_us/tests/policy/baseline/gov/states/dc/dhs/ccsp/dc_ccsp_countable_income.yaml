@@ -7,3 +7,14 @@
     railroad_benefits: 12_000
   output:
     dc_ccsp_countable_income: 1_000
+
+- name: Case 2, exclude the disability share of railroad benefits.
+  # CCSP Policy Manual 2.5.3 excludes permanent disability payments.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: DC
+    railroad_benefits: 12_000
+    railroad_disability_benefits: 6_000
+  output:
+    dc_ccsp_countable_income: 500
