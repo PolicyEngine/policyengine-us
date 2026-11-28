@@ -1,0 +1,47 @@
+# Full-benefit dual eligibles, SSI recipients and Medicare Savings Program
+# enrollees are treated as eligible for the full subsidy (42 CFR
+# 423.773(c)(1)).
+
+- name: Medicaid enrollee is deemed eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicaid_enrolled: true
+        ssi: 0
+        msp_eligible: false
+  output:
+    part_d_lis_deemed_eligible: true
+
+- name: SSI recipient is deemed eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 1_200
+        msp_eligible: false
+  output:
+    part_d_lis_deemed_eligible: true
+
+- name: Medicare Savings Program eligible person is deemed eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        msp_eligible: true
+  output:
+    part_d_lis_deemed_eligible: true
+
+- name: None of the three is not deemed eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        msp_eligible: false
+  output:
+    part_d_lis_deemed_eligible: false

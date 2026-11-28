@@ -1,0 +1,114 @@
+# Rental property equity counts as a resource less up to $6,000 when the
+# household's net rental income is at least 6% of the excluded equity; when
+# the return falls short, all of it counts (20 CFR 416.1222(a), POMS SI
+# 01130.503). With $6,000 or more of equity, the return needed is 6% x
+# 6,000 = 360.
+
+- name: POMS SI 01130.503 example 1, $10,000 of equity returning 6% counts $4,000.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: 600
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 10_000
+  output:
+    part_d_lis_countable_rental_property_equity: 4_000
+
+- name: A return of exactly 6% of the excluded equity meets the test.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: 360
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 10_000
+  output:
+    part_d_lis_countable_rental_property_equity: 4_000
+
+- name: A return a dollar short of 6% leaves all the equity countable.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: 359
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 10_000
+  output:
+    part_d_lis_countable_rental_property_equity: 10_000
+
+- name: POMS SI 01130.503 example 2, $3,000 of equity returning $750 is excluded.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: 750
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 3_000
+  output:
+    # 6% x 3,000 = 180 <= 750.
+    part_d_lis_countable_rental_property_equity: 0
+
+- name: Under $6,000 of equity, the return needed is 6% of that equity.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: 179
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 3_000
+  output:
+    # 179 < 6% x 3,000 = 180.
+    part_d_lis_countable_rental_property_equity: 3_000
+
+- name: A rental loss leaves all the equity countable.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: -2_000
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: 5_000
+  output:
+    part_d_lis_countable_rental_property_equity: 5_000
+
+- name: Rental property worth less than its debt counts as zero.
+  period: 2026
+  input:
+    people:
+      person:
+        rental_income: -2_000
+    households:
+      household:
+        members: [person]
+        household_rental_property_equity: -20_000
+  output:
+    part_d_lis_countable_rental_property_equity: 0
+
+- name: The return test uses the household's combined rental income.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        rental_income: 200
+      spouse2:
+        rental_income: 200
+    households:
+      household:
+        members: [spouse1, spouse2]
+        household_rental_property_equity: 10_000
+  output:
+    # 200 + 200 = 400 >= 360.
+    part_d_lis_countable_rental_property_equity: 4_000

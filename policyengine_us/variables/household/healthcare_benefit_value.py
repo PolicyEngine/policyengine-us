@@ -11,11 +11,14 @@ class healthcare_benefit_value(Variable):
         "Annual canonical household resource value of health coverage. This "
         "uses annual health-value and government-cost proxy variables directly, "
         "including assigned_aca_ptc for ACA premium tax credits. CHIP is counted "
-        "through `chip`, which is gated on eligibility, take-up, and enrollment."
+        "through `chip`, which is gated on eligibility, take-up, and enrollment. "
+        "The Medicare Part D low-income subsidy counts through `part_d_lis`; "
+        "Medicare's own spending (`medicare_cost`) is not included."
     )
     adds = [
         "medicaid_cost",
         "msp_cost",
+        "part_d_lis",
         "chip",
         "assigned_aca_ptc",
         "assigned_ca_premium_subsidy",
