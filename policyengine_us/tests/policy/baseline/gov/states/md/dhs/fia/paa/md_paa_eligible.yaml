@@ -415,7 +415,6 @@
       person1:
         age: 50
         is_blind: false
-        is_disabled: false
         meets_ssi_disability_criteria: false
         ssi: 0
         social_security: 0
@@ -437,7 +436,6 @@
       person1:
         age: 50
         is_blind: false
-        is_disabled: true
         meets_ssi_disability_criteria: true
         ssi: 0
         social_security: 0
@@ -472,3 +470,25 @@
         state_code: MD
   output:
     md_paa_eligible: false
+
+# COMAR 07.03.07.03(A)(2) includes a federal benefit for blindness.
+- name: Case 23, a blind applicant receives a qualifying railroad annuity.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        is_ssi_disabled: false
+        ssi: 0
+        social_security: 0
+        railroad_benefits: 12_000
+        md_paa_receives_qualifying_railroad_annuity: true
+        ssi_countable_resources: 500
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
