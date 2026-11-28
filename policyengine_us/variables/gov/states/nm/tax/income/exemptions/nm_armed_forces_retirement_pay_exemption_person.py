@@ -18,8 +18,8 @@ class nm_armed_forces_retirement_pay_exemption_person(Variable):
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.armed_forces_retirement_pay
-        retirement_pay = person("military_retirement_pay", period)
-        survivor_pay = person("military_retirement_pay_survivors", period)
+        retirement_pay = person("armed_forces_retirement_pay", period)
+        survivor_pay = person("armed_forces_retirement_pay_survivors", period)
         surviving_spouse = person("is_surviving_spouse", period)
         armed_forces_retirement_pay = (
             retirement_pay + survivor_pay * surviving_spouse * p.survivors_eligible

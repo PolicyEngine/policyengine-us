@@ -25,8 +25,13 @@ class in_military_retirement_deduction(Variable):
         # own return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # IC 6-3-2-4(a)(2) covers the service member and surviving spouse.
-        retirement_pay = person("military_retirement_pay", period)
-        survivor_pay = person("military_retirement_pay_survivors", period)
+        if p.uniformed_services_eligible:
+            retirement_pay = person("military_retirement_pay", period)
+            survivor_pay = person("military_retirement_pay_survivors", period)
+        else:
+            # Before 2025 the deduction covers the armed forces only.
+            retirement_pay = person("armed_forces_retirement_pay", period)
+            survivor_pay = person("armed_forces_retirement_pay_survivors", period)
         surviving_spouse = person("is_surviving_spouse", period)
         military_retirement = retirement_pay + survivor_pay * surviving_spouse
         excess = max_(0, military_retirement - p.base)

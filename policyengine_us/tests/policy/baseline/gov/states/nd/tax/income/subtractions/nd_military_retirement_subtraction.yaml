@@ -55,3 +55,24 @@
   output:
     nd_military_retirement_subtraction: 30_000
     nd_subtractions: 30_000
+
+- name: North Dakota does not subtract retirement pay from a uniformed service outside the armed forces.
+  period: 2024
+  input:
+    state_code: ND
+    age: 70
+    military_retirement_pay: 10_000
+    military_retirement_pay_is_armed_forces: false
+  output:
+    nd_military_retirement_subtraction: 0
+
+- name: North Dakota does not subtract a surviving spouse's annuity from a uniformed service outside the armed forces.
+  period: 2024
+  input:
+    state_code: ND
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+    military_retirement_pay_is_armed_forces: false
+  output:
+    nd_military_retirement_subtraction: 0
