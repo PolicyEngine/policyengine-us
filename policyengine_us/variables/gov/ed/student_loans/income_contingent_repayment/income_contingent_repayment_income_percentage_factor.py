@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    income_contingent_repayment_factor,
+)
 
 
 class income_contingent_repayment_income_percentage_factor(Variable):
@@ -15,7 +18,10 @@ class income_contingent_repayment_income_percentage_factor(Variable):
         "the married or head of household table. An income between two rows "
         "of the table is linearly interpolated and rounded to the nearest "
         "hundredth of a percent, as the notice instructs. An income below "
-        "the first row or above the last row takes that row's factor."
+        "the first row or above the last row takes that row's factor. This is "
+        "the factor for the head and spouse of the tax unit. A borrower "
+        "claimed as a tax dependent takes the single table's factor at their "
+        "own income."
     )
     unit = "/1"
     definition_period = MONTH
@@ -26,22 +32,9 @@ class income_contingent_repayment_income_percentage_factor(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.ed.student_loans.income_contingent_repayment.income_percentage_factor
         agi = tax_unit(
             "income_driven_repayment_adjusted_gross_income", period.this_year
         )
         filing_status = tax_unit("filing_status", period.this_year)
         is_single = filing_status == filing_status.possible_values.SINGLE
-        # The table rows are points to interpolate between, not brackets.
-        single_factor = np.interp(agi, p.single.thresholds, p.single.amounts)
-        married_factor = np.interp(
-            agi,
-            p.married_or_head_of_household.thresholds,
-            p.married_or_head_of_household.amounts,
-        )
-        factor = where(is_single, single_factor, married_factor)
-        # The notice rounds the interpolated factor to the nearest hundredth of
-        # a percent, which is four decimal places of the fraction.
-        return np.round(factor, 4)
+        return income_contingent_repayment_factor(agi, is_single, period, parameters)

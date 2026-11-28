@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    borrower_discretionary_income,
+)
 
 
 class pay_as_you_earn_payment(Variable):
@@ -23,7 +26,12 @@ class pay_as_you_earn_payment(Variable):
         "amount exceeds their standard payment pays that standard payment "
         "times their balance share. As with the Income-Based Repayment plan, "
         "the cap uses the current balance, not the balance when the borrower "
-        "entered the plan. A borrower with a Direct Loan made on or after "
+        "entered the plan. A borrower whom another taxpayer claims as a "
+        "dependent pays on their own income "
+        "(income_driven_repayment_dependent_adjusted_gross_income) above the "
+        "plan's multiple of the poverty guideline for a family of one, with "
+        "no spousal proration; the claiming taxpayer's income and loans do "
+        "not enter. A borrower with a Direct Loan made on or after "
         "July 1, 2026 cannot use the plan and owes nothing under it. The "
         "other limits on who can repay under the plan are not modeled: being "
         "a new borrower under 34 CFR 685.209(b)(13)(i), repaying under the "
@@ -49,8 +57,15 @@ class pay_as_you_earn_payment(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ed.student_loans
-        discretionary_income = person.tax_unit(
-            "pay_as_you_earn_discretionary_income", period
+        # A head or spouse uses the tax unit's discretionary income. A
+        # borrower claimed as a tax dependent uses their own income and a
+        # family of one (685.209(b)(9), (b)(10), (e)(1)).
+        discretionary_income = borrower_discretionary_income(
+            person,
+            period,
+            parameters,
+            "pay_as_you_earn_discretionary_income",
+            p.pay_as_you_earn.fpg_exempt_rate,
         )
         # 685.209(f)(2)(ii), as 20 U.S.C. 1098e(b)(6)(A) does for the
         # Income-Based Repayment plan, makes the payment the lesser of the

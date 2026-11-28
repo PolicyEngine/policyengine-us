@@ -108,8 +108,8 @@
         filing_status: HEAD_OF_HOUSEHOLD
   output:
     # The head's 20,000: 222.04. The dependent's 15,000: 166.53, which does
-    # not enter the head's cap; the dependent's own Income-Based Repayment and
-    # Pay As You Earn payments are 0 through income_driven_repayment_eligible.
+    # not enter the head's cap. It caps the dependent's own Income-Based
+    # Repayment and Pay As You Earn payments.
     income_driven_repayment_standard_payment: [222.04, 166.53]
 
 - name: Case 6, an FFEL balance given for 2024 reads unchanged in 2026.

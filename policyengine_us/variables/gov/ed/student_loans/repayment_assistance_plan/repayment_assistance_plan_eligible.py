@@ -6,14 +6,13 @@ class repayment_assistance_plan_eligible(Variable):
     entity = Person
     label = "Eligible for the Repayment Assistance Plan"
     documentation = (
-        "The person has loans that the Repayment Assistance Plan can repay, "
-        "is the head or spouse of their tax unit, and the plan is in effect "
-        "(from July 1, 2026). Modeling restriction: a borrower claimed as "
-        "someone else's tax dependent is treated as ineligible and owes $0, "
-        "because their tax unit's adjusted gross income is the claiming "
-        "taxpayer's, not the borrower's own. The law does not exclude these "
-        "borrowers (34 CFR 685.209(c)(6)): their base payment would come from "
-        "their own income, and the $10 minimum payment would apply."
+        "The person has loans that the Repayment Assistance Plan can repay "
+        "and the plan is in effect (from July 1, 2026). A borrower whom "
+        "another taxpayer claims as a dependent is eligible like any other: "
+        "34 CFR 685.209(c)(6) lets any Direct Loan borrower with eligible "
+        "loans repay under the plan. Their base payment comes from their own "
+        "income (income_driven_repayment_dependent_adjusted_gross_income), "
+        "and the $10 minimum payment applies."
     )
     definition_period = MONTH
     reference = (
@@ -27,7 +26,4 @@ class repayment_assistance_plan_eligible(Variable):
         has_eligible_loans = (
             person("federal_student_loan_balance", period.this_year) > 0
         )
-        # Modeling restriction: tax dependents are excluded (see documentation
-        # and rulespec-us#1455 companion case C17).
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        return p.in_effect & has_eligible_loans & is_head_or_spouse
+        return p.in_effect & has_eligible_loans

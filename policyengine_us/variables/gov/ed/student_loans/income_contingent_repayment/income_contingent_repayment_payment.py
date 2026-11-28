@@ -1,4 +1,9 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    DEPENDENT_BORROWER_INCOME,
+    borrower_discretionary_income,
+    income_contingent_repayment_factor,
+)
 from policyengine_us.variables.gov.ed.student_loans.student_loan_amortization_helpers import (
     amortized_monthly_payment,
 )
@@ -19,7 +24,14 @@ class income_contingent_repayment_payment(Variable):
         "spouse's payment uses only their own balance; the payment is not "
         "prorated, because 34 CFR 685.209(g)(1) adjusts only the other plans. "
         "Married borrowers who elect to repay jointly (685.209(f)(4)(ii)) are "
-        "not modeled. A borrower with a Direct Loan made on or after July 1, "
+        "not modeled. A borrower whom another taxpayer claims as a dependent "
+        "pays on their own income "
+        "(income_driven_repayment_dependent_adjusted_gross_income): the "
+        "single table's income percentage factor at that income, and "
+        "discretionary income above the poverty guideline for a family of "
+        "one. The claiming taxpayer's income does not enter. A dependent who "
+        "is married and would use the married table is not modeled. "
+        "A borrower with a Direct Loan made on or after July 1, "
         "2026 cannot use the plan and owes nothing under it. The other limits "
         "on who can repay under the plan are not modeled: repaying under the "
         "plan on July 1, 2024, and the plan's end on June 30, 2028 "
@@ -59,11 +71,30 @@ class income_contingent_repayment_payment(Variable):
         fixed_payment = amortized_monthly_payment(
             balance, annual_rate, number_of_payments
         )
-        factor = person.tax_unit(
-            "income_contingent_repayment_income_percentage_factor", period
+        # A head or spouse uses the tax unit's factor and discretionary
+        # income. A borrower claimed as a tax dependent uses their own income:
+        # the single table's factor and a family of one (685.209(b)(9),
+        # (b)(10), (e)(1)(ii)).
+        is_dependent = person("is_tax_unit_dependent", period.this_year)
+        dependent_factor = income_contingent_repayment_factor(
+            person(DEPENDENT_BORROWER_INCOME, period.this_year),
+            True,
+            period,
+            parameters,
         )
-        discretionary_income = person.tax_unit(
-            "income_contingent_repayment_discretionary_income", period
+        factor = where(
+            is_dependent,
+            dependent_factor,
+            person.tax_unit(
+                "income_contingent_repayment_income_percentage_factor", period
+            ),
+        )
+        discretionary_income = borrower_discretionary_income(
+            person,
+            period,
+            parameters,
+            "income_contingent_repayment_discretionary_income",
+            p.fpg_exempt_rate,
         )
         income_payment = p.rate * discretionary_income
         # Payments are set in whole cents. Rounding before the minimum keeps

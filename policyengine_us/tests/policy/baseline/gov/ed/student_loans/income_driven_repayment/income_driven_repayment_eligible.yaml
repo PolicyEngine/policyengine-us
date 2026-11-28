@@ -25,7 +25,7 @@
     # Parent PLUS loans are excluded from IBR and SAVE (685.209(d)(1), (d)(2)).
     income_driven_repayment_eligible: false
 
-- name: Case 3, a tax dependent with loans is not eligible.
+- name: Case 3, a tax dependent with loans is eligible.
   period: 2026-01
   input:
     people:
@@ -43,4 +43,6 @@
         members: [person1, person2]
         filing_status: HEAD_OF_HOUSEHOLD
   output:
-    income_driven_repayment_eligible: [false, false]
+    # 34 CFR 685.209(c)(2)-(5) do not exclude a borrower whom another taxpayer
+    # claims as a dependent. The parent has no loans.
+    income_driven_repayment_eligible: [false, true]

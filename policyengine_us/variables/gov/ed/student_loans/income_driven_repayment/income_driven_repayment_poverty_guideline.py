@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    poverty_guideline_for_family_size,
+)
 
 
 class income_driven_repayment_poverty_guideline(Variable):
@@ -9,7 +12,10 @@ class income_driven_repayment_poverty_guideline(Variable):
         "HHS poverty guideline for the tax unit's size. Alaska and Hawaii "
         "residents use their own guidelines; everyone else, including "
         "residents of the territories, uses the 48 contiguous states' "
-        "guideline. Tax unit size stands in for the regulation's family size."
+        "guideline. Tax unit size stands in for the regulation's family size. "
+        "This is the guideline for the head and spouse of the tax unit. A "
+        "borrower claimed as a tax dependent uses the guideline for a family "
+        "of one."
     )
     unit = USD
     definition_period = YEAR
@@ -19,15 +25,7 @@ class income_driven_repayment_poverty_guideline(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.hhs.fpg
         size = tax_unit("tax_unit_size", period)
-        state_group = tax_unit.household("state_group", period)
-        groups = state_group.possible_values
-        guideline_group = where(
-            state_group == groups.AK,
-            "AK",
-            where(state_group == groups.HI, "HI", "CONTIGUOUS_US"),
+        return poverty_guideline_for_family_size(
+            tax_unit.household, period, parameters, size
         )
-        first_person = p.first_person[guideline_group]
-        additional_person = p.additional_person[guideline_group]
-        return first_person + additional_person * (size - 1)

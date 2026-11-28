@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    repayment_assistance_plan_annual_base_payment,
+)
 
 
 class repayment_assistance_plan_base_payment(Variable):
@@ -10,7 +13,10 @@ class repayment_assistance_plan_base_payment(Variable):
         "gross income of the most recent return "
         "(income_driven_repayment_adjusted_gross_income), or the low-income "
         "amount when that income is not more than the rate scale's first "
-        "finite threshold."
+        "finite threshold. This is the base payment of the head and spouse "
+        "of the tax unit. A borrower claimed as a tax dependent has a base "
+        "payment on their own income, computed in "
+        "repayment_assistance_plan_payment."
     )
     unit = USD
     definition_period = YEAR
@@ -21,11 +27,5 @@ class repayment_assistance_plan_base_payment(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.ed.student_loans.repayment_assistance_plan.base_payment
         agi = tax_unit("income_driven_repayment_adjusted_gross_income", period)
-        # The low-income limit is the first finite threshold of the rate scale.
-        low_income = agi <= p.rate.thresholds[1]
-        income_based_payment = p.rate.calc(agi, right=True) * agi
-        return where(low_income, p.low_income_amount, income_based_payment)
+        return repayment_assistance_plan_annual_base_payment(agi, period, parameters)
