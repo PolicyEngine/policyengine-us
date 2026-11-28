@@ -1031,3 +1031,95 @@
     is_snap_abawd_in_good_faith_exemption_window: [false, false, false, false]
   output:
     is_snap_abawd_exempt: [false, false, false, true]
+
+- name: Case 51, January 2015 applies the pre-FRA completed-year age thresholds.
+  period: 2015-01
+  input:
+    age:
+      2015: [17, 18, 49.99, 50, 50.99, 51]
+    state_code:
+      2015: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2015: [false, false, false, false, false, false]
+    is_homeless:
+      2015: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2015: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2015: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [true, false, false, false, false, true]
+
+- name: Case 52, January 2015 gives no exemption for FRA statuses alone.
+  period: 2015-01
+  input:
+    age:
+      2015: [30, 30, 24]
+    state_code:
+      2015: [TX, TX, TX]
+    is_veteran:
+      2015: [true, false, false]
+    is_homeless:
+      2015: [false, true, false]
+    was_in_foster_care:
+      2015: [false, false, true]
+    is_usda_disabled:
+      2015: [false, false, false]
+    is_disabled: [false, false, false]
+    is_pregnant: [false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false]
+
+- name: Case 53, October 2016 applies the pre-FRA completed-year age thresholds.
+  period: 2016-10
+  input:
+    age:
+      2016: [17, 18, 49.99, 50, 50.99, 51]
+    state_code:
+      2016: [TX, TX, TX, TX, TX, TX]
+    is_veteran:
+      2016: [false, false, false, false, false, false]
+    is_homeless:
+      2016: [false, false, false, false, false, false]
+    was_in_foster_care:
+      2016: [false, false, false, false, false, false]
+    is_usda_disabled:
+      2016: [false, false, false, false, false, false]
+    is_disabled: [false, false, false, false, false, false]
+    is_pregnant: [false, false, false, false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false, false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false, false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false, false, false, false]
+  output:
+    is_snap_abawd_exempt: [true, false, false, false, false, true]
+
+- name: Case 54, October 2016 gives no exemption for FRA statuses alone.
+  period: 2016-10
+  input:
+    age:
+      2016: [30, 30, 24]
+    state_code:
+      2016: [TX, TX, TX]
+    is_veteran:
+      2016: [true, false, false]
+    is_homeless:
+      2016: [false, true, false]
+    was_in_foster_care:
+      2016: [false, false, true]
+    is_usda_disabled:
+      2016: [false, false, false]
+    is_disabled: [false, false, false]
+    is_pregnant: [false, false, false]
+    is_snap_work_registration_exempt_non_age: [false, false, false]
+    is_snap_abawd_discretionary_exempt: [false, false, false]
+    is_in_snap_abawd_waived_area: [false, false, false]
+  output:
+    is_snap_abawd_exempt: [false, false, false]

@@ -17232,12 +17232,24 @@ candidates:
 - id: us:snap-abawd-pre-fra-upper-age-wording
   program: snap
   years:
-    from: 2017
+    from: 2015
     to: 2023
     type: program
-    note: January 2017 through August 2023, before the FRA exemption gate; not an audit of every intervening provision.
+    note: PolicyEngine applies the pre-FRA age threshold from January 2015 through August 2023.
   question: Before FRA, does the statutory over-50 exception start at completed age 51 or follow the CFR's 50-or-older boundary?
   sources:
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2015 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2015-title7/html/USCODE-2015-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2015 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2015-title7-vol4/pdf/CFR-2015-title7-vol4-sec273-24.pdf
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2016 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2016-title7/html/USCODE-2016-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2016 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2016-title7-vol4/pdf/CFR-2016-title7-vol4-sec273-24.pdf
   - kind: statute
     citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2017 edition
     url: https://www.govinfo.gov/content/pkg/USCODE-2017-title7/html/USCODE-2017-title7-chap51-sec2015.htm
@@ -17256,14 +17268,14 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10858
   state: ruled
-  note: PolicyEngine adopts the completed-years statutory reading for the examined 2017-forward pre-FRA interval. Age 51 or older, or under 18, is exempt by age; ages 50 through below 51 are not. Veteran, homeless or former-foster status alone supplies no pre-FRA exemption. This explicitly governs the total exemption result after removing the accidentally backdated FRA flags, rather than merely preserving an age subexpression. USDA OIG's 2016 finding 2 supports consistent treatment of over 15 and over 50; FNS defended its contrary longstanding CFR interpretation and only agreed to review it. The decision follows the existing statute-first rule and delegated single-reading authority. FRA/HR1 boundaries and remaining future-lookup defects are outside this ruling. No final Source conflict marker belongs here before the four-step global-register workflow.
+  note: PolicyEngine reads age in completed years from January 2015 through August 2023. We found the same age wording in the cited provisions in the 2015, 2016 and 2017 editions. People under 18 or aged 51 and older qualify by age. People aged at least 50 and under 51 do not qualify by age. Veteran, homeless or former-foster status alone supplies no pre-FRA exemption. USDA OIG favored consistent treatment of the two age clauses in finding 2. FNS defended its existing CFR interpretation and agreed to review it. PolicyEngine follows the statute for this pre-FRA ruling.
 - id: us:snap-abawd-upper-age-wording
   program: snap
   years:
     from: 2023
-    to: 2025
+    to: 2026
     type: program
-    note: FRA pre-HR1 phases from September 2023 through the applicable HR1 transition, including retained state-legacy handling; not a claim that every state adoption date was audited.
+    note: FRA phases from September 2023 through each modeled HR1 transition.
   question: For FRA-era ABAWD exceptions, does the upper-age boundary begin at the numbered birthday under USDA regulations or after the stated age under the statute?
   sources:
   - kind: statute
@@ -17284,7 +17296,7 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10858
   state: open
-  note: PolicyEngine uses the dated FNS age thresholds for the FRA phases and keeps the final threshold until each state adopts HR1. The statute-versus-agency question for the FRA-era threshold remains open.
+  note: PolicyEngine uses the dated FNS age thresholds for the FRA phases and keeps the final threshold until each state adopts HR1. California uses the pre-HR1 branch through May 2026. The statute-versus-agency question for the FRA-era threshold remains open.
 - id: us-sd:cca-hourly-private-pay-cap
   program: ccdf
   years:
