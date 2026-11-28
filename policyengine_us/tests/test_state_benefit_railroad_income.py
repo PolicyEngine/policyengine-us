@@ -596,11 +596,10 @@ FEDERAL_GAPS = {
     # The list holds medicare_enrolled.
     "gov.hhs.chip.disqualifying_health_coverage": "CHIP coverage list: RI",
     "has_chip_disqualifying_health_coverage": "CHIP coverage test: CA CCHIP",
-    # It counts railroad benefits through SSI's unearned income list, and its
-    # Part B premium deduction takes the Medicare gap.
-    "medicaid_optional_senior_or_disabled_countable_income": "MS HMW income",
 }
-# Formulas R5 follows past each federal variable it starts from.
+# Mississippi's waiver reads the annual Medicaid income wrapper. The shared
+# monthly formula reads the Part B premium two steps from Medicare eligibility.
+# R5 stops before the annual wrapper. Mississippi sets the deduction to false.
 FEDERAL_FORMULA_STEPS = 2
 
 
