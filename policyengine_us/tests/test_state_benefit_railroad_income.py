@@ -9,7 +9,8 @@ everything outside its exclusions.
 Invariants:
 
 - R1: for every program below and amounts from $1 to $200,000, railroad benefits
-  raise the program's income by the amount received, at the variable's period.
+  raise the program's income by the amount received, at the variable's period,
+  with program-specific components and withholding inputs unset.
   Where the income total also counts cash aid that the same benefit reduces, the
   test holds that aid at zero, so the row isolates the income list from the aid's
   own income test. R1 shows that the list entry reaches the program's income,
@@ -260,7 +261,7 @@ R1_ROWS = PROGRAMS + ALREADY_COUNTED
 @given(AMOUNTS)
 @settings(max_examples=5, deadline=None)
 def test_railroad_benefits_count_as_received(state, variable, rule, amount):
-    """R1. The whole benefit counts, from the first dollar."""
+    """R1. Count the benefit in full when the case supplies no exclusions."""
     change = income(state, variable, {"railroad_benefits": amount}) - base_income(
         state, variable
     )
@@ -545,8 +546,9 @@ def test_no_list_holds_railroad_benefits_twice():
 
 # Federal totals, lists and tests that state and county programs read. Each one
 # counts Social Security, tests for Social Security disability, or turns on such
-# a total or test, and leaves railroad benefits out, so the programs that read it
-# leave them out too.
+# a total or test, and omits a railroad benefit or receipt test.
+# A state program can count railroad dollars and still inherit a gap in a federal
+# Medicare eligibility test or premium.
 FEDERAL_GAPS = {
     # Issue PolicyEngine/policyengine-us#10551 covers the TANF and SNAP lists.
     # Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
@@ -555,9 +557,10 @@ FEDERAL_GAPS = {
     # "gross benefit amount" that the Railroad Retirement Board pays.
     "tanf_gross_unearned_income": "TANF baseline list: 64 TANF variables in 37 states",
     "gov.usda.snap.income.sources.unearned": "SNAP unearned list: Nebraska LIHEAP",
-    # Under IRC 86(d)(1)(B), a tier 1 benefit is a Social Security benefit, so
-    # its taxable part belongs in gross income. On main, the gross income list
-    # counts taxable_social_security and no railroad amount.
+    # Under IRC 86(d)(1)(B) and (d)(4), taxpayers treat the Social Security-equivalent
+    # share of tier 1 as a Social Security benefit and include its taxable part in
+    # gross income. On main, the list names taxable_social_security and omits
+    # the railroad amount.
     # PolicyEngine/policyengine-us#10696 adds the taxable railroad amounts.
     "irs_gross_income": "Gross income: DC, IL, MA energy aid; IL IHWAP, I-PASS, SCRETD",
     "filer_tax_exempt_social_security": "Filer tax-exempt Social Security: IL SCRETD",
@@ -565,11 +568,11 @@ FEDERAL_GAPS = {
     "adjusted_gross_income_person": "Person AGI: IL FPP, IL BAP",
     "charitable_contributions_ald": "Charitable deduction: CA CVRP normal rebate",
     "tax_unit_is_filer": "Filing requirement: NM premium help",
-    # Under IRC 36B(d)(2)(B)(iii), taxpayers add to AGI the untaxed share of
-    # "social security benefits (as defined in section 86(d))", tier 1 included.
-    # On main, neither adjusted_gross_income nor the MAGI additions list counts
-    # railroad benefits. PolicyEngine/policyengine-us#10696 adds the taxable
-    # amounts to AGI and the tax-free tier 1 amount to the additions list.
+    # Under IRC 36B(d)(2)(B)(iii), taxpayers add their untaxed Social Security
+    # benefits to AGI, including the untaxed Social Security-equivalent share of
+    # tier 1. On main, these inputs omit the railroad amounts.
+    # PolicyEngine/policyengine-us#10696 adds the taxable amounts to AGI and the
+    # untaxed Social Security-equivalent amount to the MAGI additions list.
     "medicaid_magi": "MAGI: Colorado CHP+, Healthy Michigan, Montana HELP",
     "tax_unit_medicaid_income_level": "MAGI ratio: 17 CHIP premiums, IN HIP, MI, MT",
     # CA CCHIP and RI postpartum coverage also reach medicaid_income_level
