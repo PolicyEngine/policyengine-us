@@ -1,0 +1,18 @@
+description: Alaska assigns separate heating points to a community inside a larger Census place in these ZIP codes under the Heating Assistance Program.
+# For these ZIP codes the ZIP code table, not the place table, supplies the
+# points and routing. Chugiak has 7 oil points in Addendum A and Appendix A to
+# 7 AAC 44 and lies inside the Anchorage municipality (place 03000, 8 points),
+# which has no separate Census place for it.
+values:
+  2026-10-01:
+    - "99567"  # Chugiak
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP ZIP codes that refine their Census place
+  reference:
+    - title: 7 AAC 44.080(a) and Appendix A to 7 AAC 44
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm

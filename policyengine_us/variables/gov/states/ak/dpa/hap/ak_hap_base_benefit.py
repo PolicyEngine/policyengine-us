@@ -8,12 +8,40 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # 2.0-point minimum (m), half-up rounding (n) and the 35-point cap (o).
     p = parameters(period).gov.states.ak.dpa.hap.benefit
     place = spm_unit.household("place_fips", period)
+    # A caller may send the ZIP code as text, a number or ZIP+4, so keep the
+    # first five characters as text.
+    zip_code = np.char.strip(
+        np.asarray(spm_unit.household("zip_code", period)).astype(str)
+    ).astype("<U5")
+    county = spm_unit.household("county_str", period)
     fuel = spm_unit("heating_type", period)
     fuels = fuel.possible_values
-    oil_table = p.community_points.oil
-    gas_table = p.community_points.natural_gas
-    oil_place = where(np.isin(place, list(oil_table)), place, "UNAVAILABLE")
-    gas_place = where(np.isin(place, list(gas_table)), place, "UNAVAILABLE")
+    # Addendum A assigns points by community. A listed Census place is the
+    # closest match, unless the ZIP code names a community inside a larger
+    # place. A household without a place takes the points of its ZIP code's
+    # largest community, and otherwise the most common points of its borough
+    # or census area. The oil and gas tables share their keys. The shared
+    # county variable supplies the state's first county when none is sent.
+    zip_refines_place = np.isin(zip_code, p.place_refining_zip_codes)
+    place_listed = ~zip_refines_place & np.isin(place, list(p.community_points.oil))
+    place_key = where(place_listed, place, "UNAVAILABLE")
+    zip_listed = ~place_listed & np.isin(zip_code, list(p.zip_code_points.oil))
+    zip_key = where(zip_listed, zip_code, "UNAVAILABLE")
+    county_listed = np.isin(county, list(p.county_points.oil))
+    county_key = where(county_listed, county, "UNAVAILABLE")
+    oil_points = select(
+        [place_listed, zip_listed],
+        [p.community_points.oil[place_key], p.zip_code_points.oil[zip_key]],
+        default=p.county_points.oil[county_key],
+    )
+    gas_points = select(
+        [place_listed, zip_listed],
+        [
+            p.community_points.natural_gas[place_key],
+            p.zip_code_points.natural_gas[zip_key],
+        ],
+        default=p.county_points.natural_gas[county_key],
+    )
     # 7 AAC 44.080(f) and grant step 1 put electricity, propane, steam, hot
     # water and vehicle gasoline on oil points. OTHER stands for the steam,
     # hot-water and vehicle-gasoline cases, which heating_type cannot name,
@@ -31,14 +59,14 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
     # heating_type cannot identify self-harvested fuel or pellets, whose
     # factors differ under (c) and (e).
     wood_or_coal = (fuel == fuels.WOOD) | (fuel == fuels.COAL)
-    # Both tables cover every Census place; a missing or unknown place code
-    # has no points.
+    # A household with no listed place, no listed ZIP code and no Alaska
+    # borough has no points.
     community_points = select(
         [oil_fuel, fuel == fuels.NATURAL_GAS, wood_or_coal],
         [
-            oil_table[oil_place],
-            gas_table[gas_place],
-            oil_table[oil_place] * p.purchased_wood_coal_multiplier,
+            oil_points,
+            gas_points,
+            oil_points * p.purchased_wood_coal_multiplier,
         ],
         default=0,
     )
@@ -82,20 +110,32 @@ def ak_hap_award(spm_unit, period, parameters, share, apply_utility_allowance):
         add(spm_unit, period, ["rent"]),
         spm_unit("heating_expense", period),
     )
-    # The table identifies all-resident tribal routing. Native-only tribal
-    # eligibility and contrary interagency arrangements are unobserved;
-    # never infer tribal enrollment from race. Finer residency, temporary
-    # shelter duration and vendor-credit rules are also unobserved.
-    state_served = ~np.isin(place, p.tribal_service_places)
+    # The lists identify all-resident tribal routing by the same key that
+    # supplies the points: place, then ZIP code, then borough. Native-only
+    # tribal eligibility and contrary interagency arrangements are
+    # unobserved; never infer tribal enrollment from race. Finer residency,
+    # temporary shelter duration and vendor-credit rules are also unobserved.
+    tribe_served = select(
+        [place_listed, zip_listed],
+        [
+            np.isin(place, p.tribal_service_places),
+            np.isin(zip_code, p.tribal_service_zip_codes),
+        ],
+        default=np.isin(county, p.tribal_service_counties),
+    )
     # 7 AAC 44.040(b)(3)(B) excludes households residing on a military base.
-    # Census draws the listed places from the installations themselves.
-    on_base = np.isin(place, p.military_base_places)
+    # Census draws the listed places from the installations themselves, and
+    # Addendum A prints the listed ZIP codes beside them. Either marks a
+    # household, since some bases have no place and others share a ZIP code.
+    on_base = np.isin(place, p.military_base_places) | np.isin(
+        zip_code, p.military_base_zip_codes
+    )
     eligible = (
         (factor > 0)
         & (community_points > 0)
         & (expense > p.minimum_expense)
         & ~(heat_in_rent & subsidized)
-        & state_served
+        & ~tribe_served
         & ~on_base
         & (points >= p.minimum_points)
     )

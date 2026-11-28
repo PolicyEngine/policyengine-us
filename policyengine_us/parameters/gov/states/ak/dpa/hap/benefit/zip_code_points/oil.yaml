@@ -1,0 +1,544 @@
+description: Alaska assigns these oil heating points to the largest community in each ZIP code under the Heating Assistance Program.
+# Derived ZIP code crosswalk for a household with no listed Census place
+# (community_points); this is not a state-issued table. Addendum A assigns
+# points to communities and prints one ZIP code beside each. Here each ZIP
+# code takes the points of the community where most of its residents live,
+# from 2020 Census block counts by Census place and ZIP Code Tabulation Area,
+# with each place's points taken from community_points.
+# - 227 ZIP codes are both Census areas and Addendum A listings. Each takes
+#   the points of a community Addendum A lists under it, except 99613, which
+#   takes King Salmon's 13 (Addendum A lists King Salmon under 99549).
+#   ZIP 99567 lies wholly inside the Anchorage municipality, so Census counts
+#   cannot rank the three communities Addendum A lists there. It takes 7, the
+#   points of Chugiak, the Postal Service's city name for the ZIP code;
+#   Eklutna and Peters Creek are listed at 8, the value community_points
+#   gives the whole municipality. place_refining_zip_codes lets this ZIP
+#   code's value apply to a household that also sends the place.
+# - 15 Census ZIP codes are not in Addendum A (99502, 99503, 99504, 99507,
+#   99508, 99515, 99516, 99517 and 99518 in Anchorage, and 99519, 99635,
+#   99652, 99694, 99734 and 99775) and take their largest Census place's
+#   points.
+# - Six Addendum A ZIP codes have no Census area (99545, 99716, 99731, 99821,
+#   99928 and 99950) and take the points Addendum A lists for them.
+# 30 ZIP codes hold communities with different points, and every household
+# there gets the largest community's points; outside ZIP 99567, about 97% of
+# Alaskans in a Census place keep their own community's points. ZIP 99901
+# follows Ketchikan (4) and 99780 follows Tok (12), so a Loring or Tetlin
+# household that sends only its ZIP code gets those points, not the 5 and 16
+# community_points holds for the two places.
+# A household whose ZIP code is not listed takes its borough's points
+# (county_points).
+"99501": # Anchorage
+  2026-10-01: 8
+"99502": # Anchorage
+  2026-10-01: 8
+"99503": # Anchorage
+  2026-10-01: 8
+"99504": # Anchorage
+  2026-10-01: 8
+"99505": # Anchorage
+  2026-10-01: 8
+"99506": # Anchorage
+  2026-10-01: 8
+"99507": # Anchorage
+  2026-10-01: 8
+"99508": # Anchorage
+  2026-10-01: 8
+"99515": # Anchorage
+  2026-10-01: 8
+"99516": # Anchorage
+  2026-10-01: 8
+"99517": # Anchorage
+  2026-10-01: 8
+"99518": # Anchorage
+  2026-10-01: 8
+"99519": # Prudhoe Bay
+  2026-10-01: 20
+"99540": # Anchorage
+  2026-10-01: 8
+"99545": # Kongiganak (Addendum A)
+  2026-10-01: 22
+"99546": # Adak
+  2026-10-01: 6
+"99547": # Atka
+  2026-10-01: 6
+"99548": # Chignik Lake
+  2026-10-01: 9
+"99549": # Port Heiden
+  2026-10-01: 12
+"99550": # Port Lions
+  2026-10-01: 8
+"99551": # Akiachak
+  2026-10-01: 21
+"99552": # Akiak
+  2026-10-01: 21
+"99553": # Akutan
+  2026-10-01: 11
+"99554": # Alakanuk
+  2026-10-01: 21
+"99555": # Aleknagik
+  2026-10-01: 13
+"99556": # Anchor Point
+  2026-10-01: 6
+"99557": # Aniak
+  2026-10-01: 21
+"99558": # Anvik
+  2026-10-01: 19
+"99559": # Bethel
+  2026-10-01: 16
+"99561": # Chefornak
+  2026-10-01: 20
+"99563": # Chevak
+  2026-10-01: 25
+"99564": # Chignik
+  2026-10-01: 9
+"99565": # Chignik Lagoon
+  2026-10-01: 9
+"99566": # McCarthy
+  2026-10-01: 11
+"99567": # Chugiak (Addendum A)
+  2026-10-01: 7
+"99568": # Clam Gulch
+  2026-10-01: 7
+"99569": # Clark's Point
+  2026-10-01: 16
+"99571": # Cold Bay
+  2026-10-01: 11
+"99572": # Cooper Landing
+  2026-10-01: 9
+"99573": # Copper Center
+  2026-10-01: 11
+"99574": # Cordova
+  2026-10-01: 7
+"99575": # Crooked Creek
+  2026-10-01: 26
+"99576": # Dillingham
+  2026-10-01: 11
+"99577": # Anchorage
+  2026-10-01: 8
+"99578": # Eek
+  2026-10-01: 22
+"99579": # Egegik
+  2026-10-01: 15
+"99580": # Ekwok
+  2026-10-01: 14
+"99581": # Emmonak
+  2026-10-01: 24
+"99583": # False Pass
+  2026-10-01: 11
+"99585": # Marshall
+  2026-10-01: 25
+"99586": # Gakona
+  2026-10-01: 11
+"99587": # Anchorage
+  2026-10-01: 8
+"99588": # Glennallen
+  2026-10-01: 11
+"99589": # Goodnews Bay
+  2026-10-01: 20
+"99590": # Grayling
+  2026-10-01: 22
+"99591": # St. George
+  2026-10-01: 11
+"99602": # Holy Cross
+  2026-10-01: 21
+"99603": # Homer
+  2026-10-01: 7
+"99604": # Hooper Bay
+  2026-10-01: 25
+"99605": # Hope
+  2026-10-01: 7
+"99606": # Newhalen
+  2026-10-01: 19
+"99607": # Upper Kalskag
+  2026-10-01: 23
+"99608": # Karluk
+  2026-10-01: 10
+"99609": # Kasigluk
+  2026-10-01: 19
+"99610": # Cohoe
+  2026-10-01: 7
+"99611": # Kenai
+  2026-10-01: 8
+"99612": # King Cove
+  2026-10-01: 11
+"99613": # King Salmon
+  2026-10-01: 13
+"99614": # Kipnuk
+  2026-10-01: 20
+"99615": # Kodiak
+  2026-10-01: 6
+"99620": # Kotlik
+  2026-10-01: 24
+"99621": # Kwethluk
+  2026-10-01: 20
+"99622": # Kwigillingok
+  2026-10-01: 22
+"99623": # Knik-Fairview
+  2026-10-01: 7
+"99624": # Larsen Bay
+  2026-10-01: 7
+"99625": # Levelock
+  2026-10-01: 12
+"99626": # Lower Kalskag
+  2026-10-01: 23
+"99627": # McGrath
+  2026-10-01: 22
+"99628": # Manokotak
+  2026-10-01: 16
+"99630": # Mekoryuk
+  2026-10-01: 21
+"99631": # Moose Pass
+  2026-10-01: 6
+"99632": # Mountain Village
+  2026-10-01: 25
+"99633": # Naknek
+  2026-10-01: 13
+"99634": # Napakiak
+  2026-10-01: 11
+"99635": # Tyonek
+  2026-10-01: 7
+"99636": # New Stuyahok
+  2026-10-01: 16
+"99637": # Toksook Bay
+  2026-10-01: 21
+"99638": # Nikolski
+  2026-10-01: 6
+"99639": # Ninilchik
+  2026-10-01: 8
+"99640": # Nondalton
+  2026-10-01: 19
+"99641": # Nunapitchuk
+  2026-10-01: 19
+"99643": # Old Harbor
+  2026-10-01: 7
+"99644": # Ouzinkie
+  2026-10-01: 6
+"99645": # Palmer
+  2026-10-01: 7
+"99647": # Pedro Bay
+  2026-10-01: 19
+"99648": # Perryville
+  2026-10-01: 9
+"99649": # Pilot Point
+  2026-10-01: 12
+"99650": # Pilot Station
+  2026-10-01: 25
+"99651": # Platinum
+  2026-10-01: 20
+"99652": # Big Lake
+  2026-10-01: 7
+"99653": # Port Alsworth
+  2026-10-01: 19
+"99654": # North Lakes
+  2026-10-01: 7
+"99655": # Quinhagak
+  2026-10-01: 20
+"99656": # Red Devil
+  2026-10-01: 26
+"99657": # Russian Mission
+  2026-10-01: 25
+"99658": # St. Mary's
+  2026-10-01: 25
+"99659": # St. Michael
+  2026-10-01: 23
+"99660": # St. Paul
+  2026-10-01: 11
+"99661": # Sand Point
+  2026-10-01: 8
+"99662": # Scammon Bay
+  2026-10-01: 22
+"99663": # Seldovia
+  2026-10-01: 9
+"99664": # Seward
+  2026-10-01: 6
+"99665": # Shageluk
+  2026-10-01: 24
+"99666": # Nunam Iqua
+  2026-10-01: 24
+"99667": # Skwentna
+  2026-10-01: 11
+"99668": # Sleetmute
+  2026-10-01: 26
+"99669": # Kalifornsky
+  2026-10-01: 9
+"99670": # South Naknek
+  2026-10-01: 13
+"99671": # Stebbins
+  2026-10-01: 21
+"99672": # Sterling
+  2026-10-01: 9
+"99674": # Sutton-Alpine
+  2026-10-01: 7
+"99675": # Takotna
+  2026-10-01: 20
+"99676": # Talkeetna
+  2026-10-01: 8
+"99677": # Tatitlek
+  2026-10-01: 11
+"99678": # Togiak
+  2026-10-01: 17
+"99679": # Tuluksak
+  2026-10-01: 21
+"99680": # Tuntutuliak
+  2026-10-01: 20
+"99681": # Tununak
+  2026-10-01: 20
+"99682": # Tyonek
+  2026-10-01: 7
+"99683": # Trapper Creek
+  2026-10-01: 8
+"99684": # Unalakleet
+  2026-10-01: 21
+"99685": # Unalaska
+  2026-10-01: 6
+"99686": # Valdez
+  2026-10-01: 8
+"99688": # Willow
+  2026-10-01: 7
+"99689": # Yakutat
+  2026-10-01: 6
+"99690": # Nightmute
+  2026-10-01: 21
+"99691": # Nikolai
+  2026-10-01: 27
+"99692": # Unalaska
+  2026-10-01: 6
+"99693": # Whittier
+  2026-10-01: 8
+"99694": # Houston
+  2026-10-01: 7
+"99695": # Ivanof Bay
+  2026-10-01: 12
+"99701": # Fairbanks
+  2026-10-01: 10
+"99702": # Eielson AFB
+  2026-10-01: 11
+"99703": # Fairbanks
+  2026-10-01: 10
+"99704": # Anderson
+  2026-10-01: 11
+"99705": # Badger
+  2026-10-01: 11
+"99706": # Healy Lake
+  2026-10-01: 13
+"99709": # College
+  2026-10-01: 10
+"99712": # Steele Creek
+  2026-10-01: 11
+"99714": # Salcha
+  2026-10-01: 11
+"99716": # Two Rivers (Addendum A)
+  2026-10-01: 11
+"99720": # Allakaket
+  2026-10-01: 27
+"99721": # Anaktuvuk Pass
+  2026-10-01: 16
+"99722": # Arctic Village
+  2026-10-01: 32
+"99723": # Utqiaġvik
+  2026-10-01: 21
+"99724": # Beaver
+  2026-10-01: 24
+"99725": # Ester
+  2026-10-01: 11
+"99726": # Bettles
+  2026-10-01: 29
+"99727": # Buckland
+  2026-10-01: 33
+"99729": # Cantwell
+  2026-10-01: 11
+"99730": # Central
+  2026-10-01: 23
+"99731": # Fort Greely (Addendum A)
+  2026-10-01: 11
+"99732": # Chicken
+  2026-10-01: 19
+"99733": # Circle
+  2026-10-01: 23
+"99734": # Prudhoe Bay
+  2026-10-01: 20
+"99736": # Deering
+  2026-10-01: 31
+"99737": # Deltana
+  2026-10-01: 11
+"99738": # Eagle
+  2026-10-01: 19
+"99739": # Elim
+  2026-10-01: 26
+"99740": # Fort Yukon
+  2026-10-01: 23
+"99741": # Galena
+  2026-10-01: 20
+"99742": # Gambell
+  2026-10-01: 27
+"99743": # Healy
+  2026-10-01: 10
+"99744": # Anderson
+  2026-10-01: 11
+"99745": # Hughes
+  2026-10-01: 33
+"99746": # Huslia
+  2026-10-01: 30
+"99747": # Kaktovik
+  2026-10-01: 24
+"99748": # Kaltag
+  2026-10-01: 22
+"99749": # Kiana
+  2026-10-01: 26
+"99750": # Kivalina
+  2026-10-01: 28
+"99751": # Kobuk
+  2026-10-01: 35
+"99752": # Kotzebue
+  2026-10-01: 21
+"99753": # Koyuk
+  2026-10-01: 25
+"99754": # Koyukuk
+  2026-10-01: 20
+"99755": # Denali Park
+  2026-10-01: 10
+"99756": # Manley Hot Springs
+  2026-10-01: 13
+"99757": # Lake Minchumina
+  2026-10-01: 27
+"99758": # Minto
+  2026-10-01: 16
+"99759": # Point Lay
+  2026-10-01: 18
+"99760": # Nenana
+  2026-10-01: 11
+"99761": # Noatak
+  2026-10-01: 32
+"99762": # Nome
+  2026-10-01: 17
+"99763": # Noorvik
+  2026-10-01: 26
+"99764": # Northway
+  2026-10-01: 12
+"99765": # Nulato
+  2026-10-01: 24
+"99766": # Point Hope
+  2026-10-01: 23
+"99767": # Rampart
+  2026-10-01: 20
+"99768": # Ruby
+  2026-10-01: 19
+"99769": # Savoonga
+  2026-10-01: 27
+"99770": # Selawik
+  2026-10-01: 29
+"99771": # Shaktoolik
+  2026-10-01: 21
+"99772": # Shishmaref
+  2026-10-01: 29
+"99773": # Shungnak
+  2026-10-01: 35
+"99774": # Stevens Village
+  2026-10-01: 23
+"99775": # College
+  2026-10-01: 10
+"99776": # Tanacross
+  2026-10-01: 12
+"99777": # Tanana
+  2026-10-01: 20
+"99778": # Teller
+  2026-10-01: 23
+"99780": # Tok
+  2026-10-01: 12
+"99781": # Venetie
+  2026-10-01: 23
+"99782": # Wainwright
+  2026-10-01: 21
+"99783": # Wales
+  2026-10-01: 27
+"99784": # White Mountain
+  2026-10-01: 26
+"99785": # Brevig Mission
+  2026-10-01: 23
+"99786": # Ambler
+  2026-10-01: 35
+"99788": # Chalkyitsik
+  2026-10-01: 28
+"99789": # Nuiqsut
+  2026-10-01: 20
+"99790": # Livengood
+  2026-10-01: 14
+"99791": # Atqasuk
+  2026-10-01: 24
+"99801": # Juneau
+  2026-10-01: 5
+"99820": # Angoon
+  2026-10-01: 8
+"99821": # Auke Bay (Addendum A)
+  2026-10-01: 5
+"99824": # Juneau
+  2026-10-01: 5
+"99825": # Elfin Cove
+  2026-10-01: 6
+"99826": # Gustavus
+  2026-10-01: 6
+"99827": # Haines
+  2026-10-01: 6
+"99829": # Hoonah
+  2026-10-01: 7
+"99830": # Kake
+  2026-10-01: 6
+"99832": # Pelican
+  2026-10-01: 7
+"99833": # Petersburg
+  2026-10-01: 5
+"99835": # Sitka
+  2026-10-01: 6
+"99836": # Port Alexander
+  2026-10-01: 11
+"99840": # Skagway
+  2026-10-01: 8
+"99841": # Tenakee Springs
+  2026-10-01: 7
+"99850": # Excursion Inlet
+  2026-10-01: 7
+"99901": # Ketchikan
+  2026-10-01: 4
+"99903": # Wrangell
+  2026-10-01: 5
+"99918": # Coffman Cove
+  2026-10-01: 6
+"99919": # Thorne Bay
+  2026-10-01: 5
+"99921": # Craig
+  2026-10-01: 5
+"99922": # Hydaburg
+  2026-10-01: 5
+"99923": # Hyder
+  2026-10-01: 4
+"99925": # Klawock
+  2026-10-01: 5
+"99926": # Metlakatla
+  2026-10-01: 6
+"99927": # Port Protection
+  2026-10-01: 11
+"99928": # Ward Cove (Addendum A)
+  2026-10-01: 4
+"99929": # Wrangell
+  2026-10-01: 5
+"99950": # Naukati (Addendum A)
+  2026-10-01: 6
+UNAVAILABLE:
+  2026-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: Alaska HAP oil heating points by ZIP code
+  reference:
+    - title: 7 AAC 44.080(a) and Appendix A to 7 AAC 44
+      href: https://www.akleg.gov/basis/aac.asp?media=print&secStart=7.44.010&secEnd=7.44.9001
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Census 2025 Alaska Places Gazetteer
+      href: https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_02.txt
+    - title: 2020 Census Redistricting Data (P.L. 94-171), Alaska geographic header
+      href: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Alaska/ak2020.pl.zip
+    - title: 2020 Census ZIP Code Tabulation Area to tabulation block relationship file
+      href: https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/tab20_zcta520_tabblock20_natl.txt

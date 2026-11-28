@@ -1,0 +1,124 @@
+description: Alaska excludes all residents of the tribe-served community that is the largest in each of these ZIP codes under the Heating Assistance Program.
+# Derived list for a household with no listed Census place. ZIP codes where
+# most residents live in a place on tribal_service_places, from 2020 Census
+# block counts by Census place; 99545 has no Census area and follows its
+# Addendum A row. Where a ZIP code mixes communities, all its households
+# follow the majority: 99780 follows Tok, so a Tetlin household that sends
+# only its ZIP code is not routed to the tribe.
+values:
+  2026-10-01:
+    - "99545"  # Kongiganak (Addendum A)
+    - "99548"  # Chignik Lake
+    - "99549"  # Port Heiden
+    - "99551"  # Akiachak
+    - "99552"  # Akiak
+    - "99554"  # Alakanuk
+    - "99555"  # Aleknagik
+    - "99557"  # Aniak
+    - "99558"  # Anvik
+    - "99559"  # Bethel
+    - "99561"  # Chefornak
+    - "99563"  # Chevak
+    - "99564"  # Chignik
+    - "99565"  # Chignik Lagoon
+    - "99569"  # Clark's Point
+    - "99576"  # Dillingham
+    - "99578"  # Eek
+    - "99579"  # Egegik
+    - "99580"  # Ekwok
+    - "99581"  # Emmonak
+    - "99585"  # Marshall
+    - "99589"  # Goodnews Bay
+    - "99590"  # Grayling
+    - "99602"  # Holy Cross
+    - "99604"  # Hooper Bay
+    - "99606"  # Newhalen
+    - "99607"  # Upper Kalskag
+    - "99609"  # Kasigluk
+    - "99613"  # King Salmon
+    - "99614"  # Kipnuk
+    - "99620"  # Kotlik
+    - "99621"  # Kwethluk
+    - "99622"  # Kwigillingok
+    - "99625"  # Levelock
+    - "99626"  # Lower Kalskag
+    - "99627"  # McGrath
+    - "99628"  # Manokotak
+    - "99630"  # Mekoryuk
+    - "99632"  # Mountain Village
+    - "99633"  # Naknek
+    - "99634"  # Napakiak
+    - "99636"  # New Stuyahok
+    - "99637"  # Toksook Bay
+    - "99640"  # Nondalton
+    - "99641"  # Nunapitchuk
+    - "99649"  # Pilot Point
+    - "99650"  # Pilot Station
+    - "99651"  # Platinum
+    - "99655"  # Quinhagak
+    - "99656"  # Red Devil
+    - "99657"  # Russian Mission
+    - "99658"  # St. Mary's
+    - "99662"  # Scammon Bay
+    - "99665"  # Shageluk
+    - "99666"  # Nunam Iqua
+    - "99668"  # Sleetmute
+    - "99670"  # South Naknek
+    - "99675"  # Takotna
+    - "99678"  # Togiak
+    - "99679"  # Tuluksak
+    - "99680"  # Tuntutuliak
+    - "99681"  # Tununak
+    - "99689"  # Yakutat
+    - "99690"  # Nightmute
+    - "99691"  # Nikolai
+    - "99695"  # Ivanof Bay
+    - "99706"  # Healy Lake
+    - "99720"  # Allakaket
+    - "99722"  # Arctic Village
+    - "99724"  # Beaver
+    - "99726"  # Bettles
+    - "99730"  # Central
+    - "99732"  # Chicken
+    - "99733"  # Circle
+    - "99738"  # Eagle
+    - "99740"  # Fort Yukon
+    - "99741"  # Galena
+    - "99745"  # Hughes
+    - "99746"  # Huslia
+    - "99748"  # Kaltag
+    - "99754"  # Koyukuk
+    - "99756"  # Manley Hot Springs
+    - "99757"  # Lake Minchumina
+    - "99758"  # Minto
+    - "99760"  # Nenana
+    - "99764"  # Northway
+    - "99765"  # Nulato
+    - "99767"  # Rampart
+    - "99768"  # Ruby
+    - "99774"  # Stevens Village
+    - "99776"  # Tanacross
+    - "99777"  # Tanana
+    - "99781"  # Venetie
+    - "99788"  # Chalkyitsik
+    - "99820"  # Angoon
+    - "99829"  # Hoonah
+    - "99830"  # Kake
+    - "99921"  # Craig
+    - "99922"  # Hydaburg
+    - "99925"  # Klawock
+    - "99926"  # Metlakatla
+
+metadata:
+  unit: list
+  period: year
+  label: Alaska HAP all resident tribal service ZIP codes
+  reference:
+    - title: Alaska HAP Manual Addendum A, FFY2027 Community Listing and symbol key
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/addendum/addendum_a.htm
+    - title: Alaska HAP Manual 3002-1 A.2, Ineligible Household
+      href: http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+    - title: 2020 Census Redistricting Data (P.L. 94-171), Alaska geographic header
+      href: https://www2.census.gov/programs-surveys/decennial/2020/data/01-Redistricting_File--PL_94-171/Alaska/ak2020.pl.zip
+    - title: 2020 Census ZIP Code Tabulation Area to tabulation block relationship file
+      href: https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/tab20_zcta520_tabblock20_natl.txt
