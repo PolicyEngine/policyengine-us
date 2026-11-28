@@ -1,4 +1,4 @@
-description: The Department of Agriculture makes the homeless, veteran, and former foster youth exceptions available under the pre-HR1 SNAP ABAWD rules if this is true.
+description: Before HR1 applies, PolicyEngine uses the dated FRA age thresholds and allows the homelessness, veteran, and former foster youth exemptions when this parameter is true. When it is false, PolicyEngine uses the pre-FRA age thresholds and disallows those three exemptions.
 values:
   2017-01-01: false
   2023-09-01: true
