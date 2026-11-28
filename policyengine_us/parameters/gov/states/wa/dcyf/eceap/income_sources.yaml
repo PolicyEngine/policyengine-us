@@ -6,6 +6,8 @@ values:
     - tanf
     - ssi
     - social_security
+    # Under PAO-45(2)(c), contractors count regular annuity and retirement payments.
+    - railroad_benefits
     - child_support_received
     - total_unemployment_compensation
     - veterans_benefits
@@ -16,7 +18,9 @@ metadata:
   period: year
   label: Washington ECEAP family income sources
   reference:
-    - title: DCYF 05-006 ECEAP Prescreen and Application (Combined Form), Section 9 - Income Received by Child's Parent(s) or Guardian(s)
-      href: https://olycap.org/hubfs/PDF%20Attachments/ECEAP%202025-2026%20(EN).pdf#page=6
+    - title: DCYF 2021-22 ECEAP Performance Standards, PAO-45(2)(c)(ii) and (vi)
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/2021-22ECEAP-PerfStandards-Training.pdf#page=44
+    - title: DCYF 05-006 ECEAP Prescreen and Application (Combined Form, revised 04/2025), Section 9 - Income Received by Child's Parent(s) or Guardian(s)
+      href: https://www.dcyf.wa.gov/sites/default/files/forms/05-006.pdf#page=8
     - title: RCW 43.216.505 Eligible children
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505

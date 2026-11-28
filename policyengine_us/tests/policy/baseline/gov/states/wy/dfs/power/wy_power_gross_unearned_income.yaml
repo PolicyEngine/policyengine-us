@@ -63,3 +63,25 @@
     taxable_interest_income: 2400
   output:
     wy_power_gross_unearned_income: 400
+
+- name: Case 8, railroad retirement benefits count as unearned income.
+  # Manual 901(J) marks "Railroad retirement or railroad unemployment" nonexempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    railroad_benefits: 12_000
+  output:
+    wy_power_gross_unearned_income: 1_000
+
+- name: Wyoming POWER excludes a retroactive railroad lump sum from income and counts the cash in resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    railroad_benefits: 12_000
+    railroad_benefits_retroactive_lump_sum: 12_000
+    bank_account_assets: 12_000
+  output:
+    wy_power_gross_unearned_income: 0
+    wy_power_resources_eligible: false

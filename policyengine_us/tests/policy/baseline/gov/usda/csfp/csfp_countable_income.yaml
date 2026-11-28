@@ -102,3 +102,23 @@
     csfp_countable_income: 50_042
     tx_dta_csfp_countable_income: 50_042
     ca_cvrp_countable_income: 50_042
+
+- name: California CVRP counts a railroad annuity in gross income.
+  period: 2023
+  input:
+    age: 63
+    state_code: CA
+    railroad_benefits: 12_000
+    ssi: 0
+  output:
+    ca_cvrp_countable_income: 12_000
+
+- name: Texas CSFP counts a railroad annuity before deductions.
+  period: 2026
+  input:
+    age: 63
+    state_code: TX
+    railroad_benefits: 12_000
+    ssi: 0
+  output:
+    tx_dta_csfp_countable_income: 12_000

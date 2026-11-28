@@ -110,3 +110,27 @@
     # court-appointed guardian — so their 3,000 in wages is counted
     # (R986-700-710(4)(a) and (4)(b)).
     ut_ccap_gross_income: 3_000
+
+- name: Case 5, railroad retirement benefits count as income.
+  # R986-200-235(2)(a) counts "pensions and annuities such as Railroad Retirement".
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: UT
+  output:
+    ut_ccap_gross_income: 1_000

@@ -15,6 +15,7 @@ values:
     # Counted excluding the Medicare deduction; we don't track
     # Medicare premium withholding at the moment
     - social_security
+    - railroad_benefits
     # Calculated SSI; API partners can override by sending ssi as an input
     - ssi
     - pension_income

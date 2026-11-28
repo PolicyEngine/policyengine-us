@@ -231,3 +231,29 @@
     nj_liheap_countable_income_person: [24_000, 9_600]
     # 2,000 and 800 a month are whole dollars, so rounding changes nothing.
     nj_liheap_countable_income: [24_000, 9_600]
+
+- name: Case 10, railroad benefits count before the Medicare Part B premium.
+  # Handbook 2.3.D counts benefits, pensions and annuities. The Part B deduction
+  # in 2.3.F.7 names Social Security benefits only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    age: 70
+    railroad_benefits: 24_000
+    medicare_part_b_premium: 2_400
+  output:
+    nj_liheap_countable_income_person: 24_000
+
+- name: Case 11, a child's railroad benefits count while a child's Social Security does not.
+  # Two one-person households aged 10. Handbook 2.3.E.9 excludes Social Security
+  # benefits for children under 18 and names no other benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NJ, NJ]
+    age: [10, 10]
+    railroad_benefits: [6_000, 0]
+    social_security: [0, 6_000]
+  output:
+    nj_liheap_countable_income_person: [6_000, 0]

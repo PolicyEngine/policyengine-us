@@ -144,3 +144,29 @@
         state_code: LA
   output:
     la_ccap_countable_income: 0
+
+- name: Case 8, railroad retirement benefits count as unearned income.
+  # LAC 28:CLXV.509.A.3.b counts recurring retirement (iv) and disability (v)
+  # benefits of all household members.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: LA
+  output:
+    # 12,000 / 12 = 1,000
+    la_ccap_countable_income: 1_000

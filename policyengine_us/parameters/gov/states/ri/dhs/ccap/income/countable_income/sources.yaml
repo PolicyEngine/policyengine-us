@@ -5,6 +5,8 @@ values:
     - self_employment_income
     - sstb_self_employment_income
     - social_security_retirement
+    # DHS counts income available to the financial unit under section 4.2(29).
+    - railroad_benefits
     - social_security_disability
     - social_security_survivors
     - ssi

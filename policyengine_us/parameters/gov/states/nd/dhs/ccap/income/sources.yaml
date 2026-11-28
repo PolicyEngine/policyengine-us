@@ -16,6 +16,8 @@ values:
     # Regular periodic withdrawals from annuities, pensions, and other
     # retirement plans are countable income (exclusion #8 exception).
     - pension_income
+    # North Dakota excludes nonrecurring lump sums from income.
+    - railroad_benefits_excluding_retroactive_lump_sum
     - alimony_income
     - child_support_received
 
@@ -93,3 +95,5 @@ metadata:
       href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
     - title: NDAC 75-02-01.3-07
       href: https://ndlegis.gov/prod/acdata/pdf/75-02-01.3.pdf
+    - title: NDAC 75-02-01.3-08, disregarded income
+      href: https://ndlegis.gov/prod/acdata/pdf/75-02-01.3.pdf#page=5

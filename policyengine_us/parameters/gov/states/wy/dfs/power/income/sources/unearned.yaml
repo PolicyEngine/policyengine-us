@@ -16,6 +16,8 @@ values:
     - workers_compensation
     - gi_cash_assistance
     - social_security
+    # Wyoming excludes retroactive lump sums from income under section 1205.
+    - railroad_benefits_excluding_retroactive_lump_sum
     # Section 901(J) treats state, local and tribal GA as nonexempt income.
     # Vendor payments for purposes not covered by POWER are separately exempt.
     - general_assistance

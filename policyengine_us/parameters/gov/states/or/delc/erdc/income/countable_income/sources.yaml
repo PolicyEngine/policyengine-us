@@ -8,6 +8,11 @@ values:
     - social_security
     - ssi
     - pension_income
+    # OAR 414-175-0035(52)(a)(A) and (c)(A) count monthly benefits employees
+    # receive only when they retire as unearned income. OAR 414-175-0030(1)(c)
+    # counts income no rule excludes, and 414-175-0035 excludes no railroad
+    # benefit.
+    - railroad_benefits
     - retirement_distributions
     - military_retirement_income
     - total_unemployment_compensation

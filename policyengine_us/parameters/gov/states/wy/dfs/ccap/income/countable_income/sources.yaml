@@ -17,7 +17,8 @@ values:
     - interest_income
     - dividend_income
     - rental_income  # The manual's mortgage-payment deduction is not modeled
-    - pension_income  # Pensions, annuities, retirement, railroad retirement
+    - pension_income  # Pensions, annuities, retirement
+    - railroad_benefits  # Rules Appendix B: RR retirement is unearned and nonexempt
     - retirement_distributions
     - alimony_income
     - child_support_received  # From a non-assistance-unit member

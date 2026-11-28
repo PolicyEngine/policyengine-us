@@ -8,6 +8,9 @@ values:
     - interest_income 
     - rental_income
     - pension_income
+    # OSSE counts railroad retirement under Manual 2.5.2 and exempts
+    # permanent disability payments under 2.5.3.
+    - dc_ccsp_countable_railroad_benefits
     - veterans_benefits
     - military_retirement_income
     - alimony_income
@@ -26,5 +29,5 @@ metadata:
   period: year
   label: DC CCSP countable income sources
   reference:
-    - title: "DC Child Care Subsidy Program Policy Manual, Sections 2.5.2-2.5.3 #page 12-14"
-      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=12
+    - title: "DC Child Care Subsidy Program Policy Manual, Sections 2.5.2-2.5.3 #page 13"
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=13

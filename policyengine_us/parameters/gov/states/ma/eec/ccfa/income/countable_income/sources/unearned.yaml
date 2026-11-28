@@ -7,6 +7,7 @@ values:
     - interest_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - veterans_benefits
     - military_retirement_income
     - alimony_income
@@ -19,12 +20,16 @@ values:
   # (all types), SSI, child support, and veterans disability benefits, and
   # the countable list becomes exclusive; interest income is not on it.
   # CCFA mapping assumption: veterans_benefits contains disability payments.
+  # EEC counts retirement income under the October 2023 and May 2026 policies.
+  # Use the reported railroad total for retirement income. Treatment of disability
+  # and survivor annuities under the retirement line remains uncertain.
   2023-10-01:
     - farm_rent_income
     - estate_income
     - dividend_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - military_retirement_income
     - alimony_income
     - total_unemployment_compensation
@@ -35,6 +40,7 @@ values:
     - dividend_income
     - rental_income
     - pension_income
+    - railroad_benefits
     - military_retirement_income
     - alimony_income
     - total_unemployment_compensation

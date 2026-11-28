@@ -1,0 +1,20 @@
+- name: Missouri excludes recoveries the Railroad Retirement Board withholds from SNC income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    ssi: 0
+    railroad_benefits: 14_400
+    railroad_benefits_overpayment_withheld: 1_200
+  output:
+    mo_snc_countable_income: 1_100
+
+- name: Missouri counts a railroad retirement annuity without recovery withholding in full.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    ssi: 0
+    railroad_benefits: 14_400
+  output:
+    mo_snc_countable_income: 1_200

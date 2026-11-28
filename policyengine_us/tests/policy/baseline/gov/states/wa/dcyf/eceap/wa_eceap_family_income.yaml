@@ -1,0 +1,27 @@
+- name: Case 1, railroad retirement benefits count as family income.
+  # DCYF 05-006 Section 9 lists "Social Security or other retirement benefits".
+  # Wages above TANF's limit keep TANF, which the list also counts, at zero.
+  # TANF counts wages before labor supply responses, so the case sets those.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income_before_lsr: 60_000
+        railroad_benefits: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # 60,000 + 12,000 = 72,000
+    wa_eceap_family_income: 72_000

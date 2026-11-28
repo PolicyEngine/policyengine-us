@@ -16,6 +16,8 @@ values:
     - workers_compensation
     - gi_cash_assistance
     - social_security
+    # North Dakota excludes retroactive railroad retirement payments from income.
+    - railroad_benefits_excluding_retroactive_lump_sum
     # Direct GA cash is countable. Section 400-19-55-25 separately excludes
     # GA reimbursements, third-party payments and complementary assistance
     # for needs not covered by TANF; those are not represented by this input.
