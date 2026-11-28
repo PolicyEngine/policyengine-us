@@ -1,4 +1,4 @@
-- name: Household with a missing premium is filled with the state-average index.
+- name: Fill a missing singleton premium with 1 and retain unrelated household indices.
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -17,7 +17,7 @@
       tax_unit3:
         members: [person3]
     households:
-      # Missing SLCSP premium data -> zero index, filled with the state average.
+      # Missing SLCSP premium data gives a zero index and a household fallback of 1.
       household1:
         members: [person1]
         state_code: TX
@@ -34,5 +34,6 @@
         slcsp_age_0:
           2026-01: 2_000
   output:
-    # person1 filled with mean of the two positive indices (1,670.6, 3,341.2).
-    medicaid_slcsp_cost_index_filled: [2_505.9, 1_670.6, 3_341.2]
+    # No positive index gives person1 a fallback of 1.
+    # Retain 1,000 * 1.6706 = 1,670.6 and 2,000 * 1.6706 = 3,341.2 for the peers.
+    medicaid_slcsp_cost_index_filled: [1, 1_670.6, 3_341.2]

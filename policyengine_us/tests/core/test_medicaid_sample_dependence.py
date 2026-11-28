@@ -1,0 +1,114 @@
+"""Check Medicaid household isolation and stored reference inputs.
+
+Dataset-mode tests set the same flag as dataset loading, without loading
+microdata. Python exercises sample splits and stored simulation inputs,
+which the policy YAML runner cannot express.
+"""
+
+import numpy as np
+import pytest
+from hypothesis import HealthCheck, given, settings
+from hypothesis import strategies as st
+
+from policyengine_us import Simulation
+
+
+YEAR = 2026
+AVERAGE = "medicaid_slcsp_state_average_cost_index"
+DENOMINATOR = "medicaid_slcsp_state_denominator"
+VALUE = "medicaid_cost_if_enrolled"
+
+
+def _simulation(indices, weights, *, dataset=True, reform=None):
+    names = [f"person_{i}" for i in range(len(indices))]
+    situation = {
+        "people": {
+            name: {
+                "age": {YEAR: 40},
+                "person_weight": {YEAR: weight},
+                "medicaid_enrolled": {YEAR: True},
+                **(
+                    {"medicaid_slcsp_cost_index": {YEAR: index}}
+                    if index is not None
+                    else {}
+                ),
+            }
+            for name, index, weight in zip(names, indices, weights)
+        },
+        **{
+            group: {name: {"members": [name]} for name in names}
+            for group in ("tax_units", "spm_units", "families", "marital_units")
+        },
+        "households": {
+            name: {
+                "members": [name],
+                "state_code": {YEAR: "TX"},
+                "slcsp_rating_area": {f"{YEAR}-01": 1},
+            }
+            for name in names
+        },
+    }
+    simulation = Simulation(situation=situation, reform=reform)
+    simulation.is_over_dataset = dataset
+    if simulation.baseline is not None:
+        simulation.baseline.is_over_dataset = dataset
+    return simulation
+
+
+def _spending(simulation):
+    return simulation.tax_benefit_system.parameters(
+        f"{YEAR}-01-01"
+    ).calibration.gov.hhs.medicaid.totals.spending.TX
+
+
+def test_adding_an_unrelated_household_preserves_medicaid_value():
+    alone = _simulation([100], [1], dataset=False)
+    together = _simulation([100, 300], [1, 1], dataset=False)
+    # Each singleton uses its own index: S*100/(E*100) = S/E.
+    # TX: 57,284,033,548 / 4,178,724 = 13,708.498945611148.
+    assert alone.calculate(VALUE, YEAR)[0] == pytest.approx(13_708.498945611148)
+    assert together.calculate(VALUE, YEAR)[0] == pytest.approx(
+        alone.calculate(VALUE, YEAR)[0]
+    )
+
+
+@settings(
+    max_examples=5,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow],
+)
+@given(
+    first_index=st.integers(1, 1_000),
+    second_index=st.integers(1, 1_000),
+    first_weight=st.integers(1, 10_000),
+    second_weight=st.integers(1, 10_000),
+)
+def test_materialized_reference_totals_preserve_values_across_splits(
+    first_index, second_index, first_weight, second_weight
+):
+    full = _simulation([first_index, second_index], [first_weight, second_weight])
+    # Both enrollees have positive indices, so D = w1*i1 + w2*i2.
+    denominator = first_weight * first_index + second_weight * second_index
+    average = denominator / (first_weight + second_weight)
+    expected = (
+        _spending(full)
+        * np.array([first_index, second_index], dtype=float)
+        / denominator
+    )
+    np.testing.assert_allclose(full.calculate(AVERAGE, YEAR), average, rtol=1e-6)
+    np.testing.assert_allclose(
+        full.calculate(DENOMINATOR, YEAR), denominator, rtol=1e-6
+    )
+    original = full.calculate(VALUE, YEAR)
+    np.testing.assert_allclose(original, expected, rtol=1e-6)
+    for index, weight, value in zip(
+        [first_index, second_index], [first_weight, second_weight], original
+    ):
+        subset = _simulation([index], [weight])
+        subset.set_input(AVERAGE, YEAR, [average])
+        subset.set_input(DENOMINATOR, YEAR, [denominator])
+        np.testing.assert_allclose(subset.calculate(VALUE, YEAR), [value], rtol=1e-6)
+    assert np.dot([first_weight, second_weight], original) == pytest.approx(
+        _spending(full), rel=1e-6
+    )

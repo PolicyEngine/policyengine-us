@@ -246,7 +246,10 @@ def test_household_medicaid_cost_uses_state_enrollment_denominator():
 
     costs = simulation.calculate("medicaid_cost_if_enrolled", 2026)
 
-    assert costs[1] == pytest.approx(costs[0] * 2)
+    # Each singleton uses its own index: S*100/(E*100) = S*200/(E*200) = S/E.
+    # CA: 124,063,730,563 / 13,431,928 = 9,236.479719292718.
+    np.testing.assert_allclose(costs, [9_236.479719292718] * 2, rtol=1e-6)
+    assert costs[1] == pytest.approx(costs[0])
     assert costs[0] > 0
     assert costs[1] < 50_000
 
