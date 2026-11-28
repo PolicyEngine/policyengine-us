@@ -17,22 +17,16 @@ Invariants:
   and each row cites the rule whose text covers railroad benefits.
 - R2: the same dollars count the same whether a person receives them as railroad
   benefits or as a pension, for programs whose lists count pensions.
-- R3 scans every state and county list outside the tax code, and the top level
-  and each function or class body of every state and county variable outside the
-  tax code. Each one that reads a Social Security amount counts railroad benefits
-  (the total or one of its parts), belongs to an R1 variable, or appears in
-  NO_RAILROAD_INCOME with the reason it doesn't. A new reader fails this test
-  until its author reads the rule and does one or the other. R3 reads names
-  written out in full, so a name built with an f-string or concatenation, or a
-  scalar parameter, passes unseen. So does a module that names Social Security in
-  one top-level list and railroad benefits in another, since R3 reads a
-  module's top level as one scope. A scope that names a railroad amount passes
-  even if it reads the amount only as a yes-or-no test, so R1 rows cover the two
-  LIHEAP programs that do that and count the benefits through their lists.
-- R4: no two entries of a parameter list or variable adds list hold the same
-  railroad dollars. The total, the tier 1 amount, the taxable total and each
-  part map to the taxable and tax-free tier 1 benefits and the taxable and
-  tax-free rest of the annuity.
+- R3 scans state and county parameter lists and Python scopes outside the tax
+  code for literal Social Security names, including taxable Social Security.
+  Each matching list or scope must name a railroad amount or have a documented
+  exception. R1 covers the active formula at its sample period. R3 scans every
+  other formula in those files and requires a nonempty reason for each exception.
+  R3 groups each module and class body into one scope. It reads literal names in
+  those scopes and each function, and searches YAML lists of strings.
+- R4 checks overlap among entries named in RAILROAD_DOLLARS within each parameter
+  list and literal variable adds list. It compares the railroad amounts each
+  entry names directly.
 - R5: a state or county program that reads a federal total, list or test takes
   its sources. R5 starts from each federal list that holds Social Security
   without railroad benefits, each federal variable that adds such a list or
@@ -302,6 +296,7 @@ SOCIAL_SECURITY = {
     "social_security_survivors",
     "tax_exempt_social_security",
 }
+R3_SOCIAL_SECURITY = SOCIAL_SECURITY | {"taxable_social_security"}
 
 # Each railroad amount and the dollars it holds: the filers' taxable tier 1
 # social security equivalent benefits, a dependent's taxable tier 1 benefits,
@@ -448,7 +443,7 @@ def code_strings(nodes, docstrings):
     }
 
 
-def code_scopes(text):
+def code_scopes(text, exempt_method=None):
     """String constants of the module's top level, each function and each class body."""
     tree = ast.parse(text)
     docstrings = {
@@ -460,6 +455,14 @@ def code_scopes(text):
         and isinstance(node.body[0].value, ast.Constant)
     }
     functions = (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)
+    exempt = {
+        child
+        for node in tree.body
+        if isinstance(node, ast.ClassDef)
+        for child in node.body
+        if isinstance(child, functions)
+        and (node.name, getattr(child, "name", None)) == exempt_method
+    }
     yield code_strings(
         [
             child
@@ -470,27 +473,42 @@ def code_scopes(text):
     )
     for node in ast.walk(tree):
         if isinstance(node, functions):
-            yield code_strings([node], docstrings)
+            if node not in exempt:
+                yield code_strings([node], docstrings)
         elif isinstance(node, ast.ClassDef):
             body = [child for child in node.body if not isinstance(child, functions)]
             yield code_strings(body, docstrings)
 
 
-def lacks_railroad(names):
-    """Whether names count Social Security and no railroad benefit."""
-    return bool(SOCIAL_SECURITY & set(names)) and not RAILROAD & set(names)
+def lacks_railroad(names, social_security=SOCIAL_SECURITY):
+    """Check for a Social Security name without a railroad name."""
+    return bool(social_security & set(names)) and not RAILROAD & set(names)
 
 
-def reads_without_railroad(path, text):
-    """Whether a file reads Social Security and leaves railroad benefits out."""
+def reads_without_railroad(
+    path, text, *, exempt_method=None, social_security=R3_SOCIAL_SECURITY
+):
+    """Find a list or scope that names Social Security without railroad benefits."""
     if path.suffix == ".yaml":
-        return any(lacks_railroad(names) for names in parameter_lists(text))
-    return any(lacks_railroad(names) for names in code_scopes(text))
+        scopes = parameter_lists(text)
+    else:
+        scopes = code_scopes(text, exempt_method)
+    return any(lacks_railroad(names, social_security) for names in scopes)
+
+
+def r1_formula(variable_name):
+    """Identify the class method R1 exercises at the sample period."""
+    variable = system.variables[variable_name]
+    period = YEAR if variable.definition_period == "year" else MONTH
+    formula = variable.get_formula(period)
+    if formula is not None:
+        return variable_name, formula.__name__
 
 
 def readers_without_railroad():
     """Non-tax state and county files that read Social Security without railroad benefits."""
     found = set()
+    checked_by_r1 = {variable for _, variable, _ in R1_ROWS}
     for tree, suffix in (("parameters/gov", ".yaml"), ("variables/gov", ".py")):
         for area in ("states", "local"):
             for path in (PACKAGE / tree / area).rglob(f"*{suffix}"):
@@ -498,19 +516,25 @@ def readers_without_railroad():
                 if "/tax/" in relative:
                     continue
                 text = path.read_text(encoding="utf8")
-                if "social_security" in text and reads_without_railroad(path, text):
+                if "social_security" not in text:
+                    continue
+                exempt_method = None
+                if suffix == ".py" and path.stem in checked_by_r1:
+                    exempt_method = r1_formula(path.stem)
+                if reads_without_railroad(path, text, exempt_method=exempt_method):
                     found.add(relative)
     return found
 
 
 def test_each_social_security_reader_counts_railroad_benefits_or_says_why():
     """R3. Tax provisions read the three railroad parts, so this test leaves them out."""
-    checked_by_r1 = {variable for _, variable, _ in R1_ROWS}
-    found = {
+    missing_reasons = sorted(
         path
-        for path in readers_without_railroad()
-        if Path(path).stem not in checked_by_r1
-    }
+        for path, reason in NO_RAILROAD_INCOME.items()
+        if not isinstance(reason, str) or not reason.strip()
+    )
+    assert not missing_reasons, f"Add a reason for each exception: {missing_reasons}"
+    found = readers_without_railroad()
     unexplained = sorted(found - set(NO_RAILROAD_INCOME))
     assert not unexplained, (
         "These read Social Security and leave out railroad_benefits. Read the rule, "
@@ -521,14 +545,52 @@ def test_each_social_security_reader_counts_railroad_benefits_or_says_why():
     assert not stale, f"These no longer leave railroad_benefits out: {stale}"
 
 
+def test_r3_finds_taxable_social_security():
+    source = (
+        'def formula(person, period): return person("taxable_social_security", period)'
+    )
+    assert reads_without_railroad(Path("example.py"), source)
+
+
+def test_r3_checks_formulas_outside_the_r1_sample(monkeypatch, tmp_path):
+    path = tmp_path / "variables/gov/states/co/co_leap_countable_income_person.py"
+    path.parent.mkdir(parents=True)
+    sample = (
+        "class co_leap_countable_income_person:\n"
+        "    def formula(person, period):\n"
+        '        return person("social_security", period)\n'
+    )
+    path.write_text(sample, encoding="utf8")
+    monkeypatch.setitem(globals(), "PACKAGE", tmp_path)
+    monkeypatch.setitem(globals(), "NO_RAILROAD_INCOME", {})
+    test_each_social_security_reader_counts_railroad_benefits_or_says_why()
+
+    path.write_text(
+        sample
+        + "    def formula_2027(person, period):\n"
+        + '        return person("social_security", period)\n',
+        encoding="utf8",
+    )
+    with pytest.raises(AssertionError, match=path.name):
+        test_each_social_security_reader_counts_railroad_benefits_or_says_why()
+
+
+def test_r3_requires_a_reason_for_each_exception(monkeypatch):
+    path = "variables/gov/states/example.py"
+    monkeypatch.setitem(globals(), "readers_without_railroad", lambda: {path})
+    monkeypatch.setitem(globals(), "NO_RAILROAD_INCOME", {path: "   "})
+    with pytest.raises(AssertionError, match=path):
+        test_each_social_security_reader_counts_railroad_benefits_or_says_why()
+
+
 def counts_railroad_twice(names):
-    """Whether two entries of a list hold the same railroad dollars."""
+    """Check whether two mapped entries name the same railroad dollars."""
     dollars = [part for name in names for part in RAILROAD_DOLLARS.get(name, ())]
     return len(dollars) != len(set(dollars))
 
 
 def test_no_list_holds_railroad_benefits_twice():
-    """R4. Two entries that hold the same dollars would count them twice."""
+    """R4. Check direct entries in parameter lists and literal adds lists."""
     repeated = []
     for path in (PACKAGE / "parameters" / "gov").rglob("*.yaml"):
         text = path.read_text(encoding="utf8")
@@ -630,7 +692,9 @@ def federal_lists_without_railroad():
         if is_state_or_local(relative):
             continue
         text = path.read_text(encoding="utf8")
-        if "social_security" in text and reads_without_railroad(path, text):
+        if "social_security" in text and reads_without_railroad(
+            path, text, social_security=SOCIAL_SECURITY
+        ):
             parts = path.relative_to(PACKAGE / "parameters").with_suffix("").parts
             found.add(".".join(parts))
     return found
