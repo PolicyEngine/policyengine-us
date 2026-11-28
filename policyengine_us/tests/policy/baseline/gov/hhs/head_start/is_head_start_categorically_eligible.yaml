@@ -5,7 +5,7 @@
     ssi: 0
     snap: 0
     is_homeless: false
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: false
 
@@ -16,7 +16,7 @@
     ssi: 0
     snap: 0
     is_homeless: false
-    was_in_foster_care: true
+    is_in_foster_care: true
   output:
     is_head_start_categorically_eligible: true
 
@@ -27,7 +27,7 @@
     ssi: 0
     snap: 0
     is_homeless: false
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: true
 
@@ -38,7 +38,7 @@
     ssi: 100
     snap: 10
     is_homeless: false
-    was_in_foster_care: true
+    is_in_foster_care: true
   output:
     is_head_start_categorically_eligible: true
 
@@ -49,7 +49,7 @@
     ssi: 0
     snap: 10
     is_homeless: true
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: true
 
@@ -60,7 +60,7 @@
     ssi: 50
     snap: 10
     is_homeless: true
-    was_in_foster_care: true
+    is_in_foster_care: true
   output:
     is_head_start_categorically_eligible: true
 
@@ -71,7 +71,7 @@
     ssi: 500
     snap: 0
     is_homeless: false
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: true
 
@@ -82,7 +82,7 @@
     ssi: 0
     snap: 200
     is_homeless: false
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: true
 
@@ -93,7 +93,7 @@
     ssi: 0
     snap: 0
     is_homeless: true
-    was_in_foster_care: false
+    is_in_foster_care: false
   output:
     is_head_start_categorically_eligible: true
 
@@ -102,10 +102,10 @@
   input:
     people:
       person1:
-        was_in_foster_care: true
+        is_in_foster_care: true
         ssi: 0
       person2:
-        was_in_foster_care: false
+        is_in_foster_care: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -127,7 +127,7 @@
         ssi: 10_000
       person2:
         ssi: 0
-        was_in_foster_care: false
+        is_in_foster_care: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -239,3 +239,65 @@
     # Income too high for computed TANF/SSI/SNAP, but reported SNAP receipt
     # confers categorical eligibility
     is_head_start_categorically_eligible: [true, true]
+
+- name: Case 13, child adopted out of foster care is not categorically eligible on that basis.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 4
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 45 CFR 1302.12(c)(1)(iv) covers a child who is in foster care. A child
+    # who has left care, with no other route, does not qualify.
+    is_head_start_categorically_eligible: [false, false]
+
+- name: Case 14, child in foster care from January through June is categorically eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 4
+        is_in_foster_care:
+          2024-01: true
+          2024-02: true
+          2024-03: true
+          2024-04: true
+          2024-05: true
+          2024-06: true
+          2024-07: false
+          2024-08: false
+          2024-09: false
+          2024-10: false
+          2024-11: false
+          2024-12: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Reunified in July: a placement in any month of the year counts, not
+    # only December.
+    is_head_start_categorically_eligible: [false, true]

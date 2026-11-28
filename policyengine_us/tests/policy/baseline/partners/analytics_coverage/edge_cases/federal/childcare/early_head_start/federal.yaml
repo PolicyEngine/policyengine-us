@@ -464,7 +464,7 @@
         is_pregnant: false
         immigration_status_str: CITIZEN
         # 40_000 exceeds FPG(2) and the SNAP BBCE gross limit, so only the
-        # child's foster care history drives eligibility.
+        # child's current foster care placement drives eligibility.
         employment_income_before_lsr: 40_000
       child1:
         age: 2
@@ -474,7 +474,7 @@
         is_disabled: false
         is_pregnant: false
         # Person-level categorical route despite AGI 40_000 > FPG(2).
-        was_in_foster_care: true
+        is_in_foster_care: true
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
     households:
@@ -507,7 +507,8 @@
       head:
         early_head_start: 0.0
       child1:
-        # Foster care history makes the child categorically eligible.
+        # A current foster care placement makes the child categorically
+        # eligible (45 CFR 1302.12(c)(1)(iv)).
         # 285_688_754 x (328.4 / 304.7) / 14_166 = 21_735.85
         early_head_start: 21_735.85
 # Deliberate ineligible-side zero: pregnancy satisfies only the age prong;

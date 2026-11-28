@@ -445,7 +445,7 @@
         is_breastfeeding: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
-        was_in_foster_care: true
+        is_in_foster_care: true
     households:
       household:
         members: &id008
@@ -476,8 +476,9 @@
       head:
         head_start: 0.0
       child1:
-        # Person-level categorical route: was_in_foster_care keeps the child
-        # eligible even though AGI 50_000 is ~231% of FPG and SNAP is 0.
+        # Person-level categorical route: a current foster care placement
+        # (45 CFR 1302.12(c)(1)(iv)) keeps the child eligible even though
+        # AGI 50_000 is ~231% of FPG and SNAP is 0.
         is_head_start_categorically_eligible: true
         # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
         head_start: 12_320.27
