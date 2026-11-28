@@ -26,9 +26,15 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
             return person("medicaid_enrolled", period)
 
         simulation = person.simulation
-        enrolled = simulation.get_array("medicaid_enrolled", period)
-        if enrolled is not None:
-            return enrolled
+        # Read enrollment directly only when it was supplied. A calculated
+        # value keeps the SNAP/TANF exclusion, and whether one is stored yet
+        # depends on what was calculated first, so reading it made this
+        # variable order-dependent: it then differed for anyone who relies on
+        # the exclusion, including an SSI recipient whom a reform moves into
+        # the adult group.
+        holder = simulation.get_holder("medicaid_enrolled")
+        if period in holder.get_input_periods(simulation.branch_name):
+            return holder.get_array(period, simulation.branch_name)
 
         # SNAP counts these state supplements as income, so asking for receipt
         # status here would recurse. SSP candidates qualify through SSI or
