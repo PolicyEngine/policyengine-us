@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_daily_schedule
 
 
 class KYCCAPDayLength(Enum):
@@ -19,9 +20,9 @@ class ky_ccap_day_length(Variable):
     def formula(person, period, parameters):
         # 922 KAR 2:160 Section 1(13) defines a full day as 5 or more hours and
         # Section 1(21) defines a part day as under 5 hours.
-        # Zero is also the input default for unknown hours. Use full-time
-        # pricing; attendance and expense rules still determine payment.
-        hours_per_day = person("childcare_hours_per_day", period.this_year)
+        # Unresolved hours retain full-time pricing; attendance and expense
+        # rules still determine payment.
+        hours_per_day = childcare_hours_for_daily_schedule(person, period)
         p = parameters(period).gov.states.ky.dcbs.ccap.rates
         is_full_day = (hours_per_day == 0) | (hours_per_day >= p.full_day_min_hours)
         return where(

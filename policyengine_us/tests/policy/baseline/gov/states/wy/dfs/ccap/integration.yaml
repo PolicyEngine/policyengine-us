@@ -313,3 +313,40 @@
     wy_ccap_eligible: false
     wy_ccap: 0
     wy_child_care_subsidies: 0
+
+# Issue #9544: part-day rates times 20 days, less the existing family copay.
+- period: 2026-01
+  absolute_error_margin: 0.01
+  name: Case 8, weekly hours and monthly attendance produce a part-day benefit.
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 20_000
+      person2:
+        age: 3
+        pre_subsidy_childcare_expenses: 12_000
+        childcare_hours_per_week: 10
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: WY
+  output:
+    wy_ccap: 410.2
+    wy_ccap_day_length:
+    - FULL_DAY
+    - PART_DAY

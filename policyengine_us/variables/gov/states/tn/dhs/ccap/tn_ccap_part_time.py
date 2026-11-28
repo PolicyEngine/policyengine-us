@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 
 
 class tn_ccap_part_time(Variable):
@@ -11,7 +12,7 @@ class tn_ccap_part_time(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.tn.dhs.ccap.time
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = childcare_hours_for_weekly_schedule(person, period)
         # Full-time care is 20 or more hours per week; part-time is fewer.
         # Zero is also the input default for unknown hours.
         return (hours > 0) & (hours < p.full_time_threshold)

@@ -21,13 +21,21 @@ class fl_sr(Variable):
         copay = spm_unit("fl_sr_copay", period)
         # Cap the subsidy at the statewide maximum reimbursement rate
         # (6M-4.500; SPB 2502 FY2025-26): each eligible child's daily rate times
-        # authorized attendance days, summed across the unit. A county with no
+        # attendance days, summed across the unit. A county with no
         # published rate (an unknown / non-Florida county_str) yields a zero cap
         # and therefore a zero subsidy -- there is no published rate to pay
         # against, so the benefit is not provided.
         person = spm_unit.members
         daily_rate = person("fl_sr_max_daily_rate", period)
-        attending_days = person("childcare_attending_days_per_month", period.this_year)
+        # Rule 6M-4.500(1)(d), F.A.C.: providers are reimbursed for each
+        # documented attendance day at the full-time or part-time rate, so a
+        # reported weekly schedule implies paid attendance days. When monthly
+        # days are not reported, derive them from weekly care days (52 weeks
+        # over 12 months); hours-only inputs still yield no attendance days.
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        derived_monthly_days = weekly_days * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        attending_days = where(monthly_days > 0, monthly_days, derived_monthly_days)
         is_eligible_child = person("is_fl_sr_child_eligible", period)
         monthly_cap = spm_unit.sum(daily_rate * attending_days * is_eligible_child)
         capped_expenses = min_(monthly_expenses, monthly_cap)
