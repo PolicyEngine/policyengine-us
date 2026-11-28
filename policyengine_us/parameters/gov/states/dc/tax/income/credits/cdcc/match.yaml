@@ -14,8 +14,13 @@ metadata:
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2024_D40_Booklet_011525.pdf#page=34
     - title: 2025 DC Form D-40 Booklet, Line 21
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=43
-    - title: DC Code 47-1806.04(c)(1)(B), as amended by FY2025 Budget Support Act (D.C. Act 25-506, sec. 7032)
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04
+    - title: D.C. Code § 47-1806.04(c)(1)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(c)(1)
+    - title: D.C. Income and Franchise Tax Conformity and Revision Temporary Amendment Act of 2025 (D.C. Law 26-89), sections 2(i)(1) and 6(b)
+      href: https://code.dccouncil.gov/us/dc/council/laws/26-89
 values:
+  # D.C. Law 26-89 § 2(i)(1) (temporary, Feb. 12 to Sep. 25, 2026) set the
+  # match to 24.25% for taxable years beginning after December 31, 2025. It
+  # expired before the calendar tax year ended, so the permanent (c)(1) rate
+  # of 32% applies to 2026.
   2021-01-01: 0.32
-  2026-01-01: 0.2425
