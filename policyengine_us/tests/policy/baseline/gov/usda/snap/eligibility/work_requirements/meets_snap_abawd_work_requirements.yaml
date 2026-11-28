@@ -36,23 +36,37 @@
 - name: Case 4a, age 54 meets the September FRA age exemption.
   period: 2024-09
   input:
-    age: 54
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: TX
+    age:
+      2024: 54
+    weekly_hours_worked_before_lsr:
+      2024: 1
+    is_disabled:
+      2024: false
+    state_code:
+      2024: TX
     is_in_snap_abawd_waived_area: false
   output:
+    monthly_age: 54
+    snap_work_requirement_weekly_hours:
+      2024: 1
     meets_snap_abawd_work_requirements: true
 
 - name: Case 4b, age 54 falls below the October FRA age exemption.
   period: 2024-10
   input:
-    age: 54
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: TX
+    age:
+      2024: 54
+    weekly_hours_worked_before_lsr:
+      2024: 1
+    is_disabled:
+      2024: false
+    state_code:
+      2024: TX
     is_in_snap_abawd_waived_area: false
   output:
+    monthly_age: 54
+    snap_work_requirement_weekly_hours:
+      2024: 1
     meets_snap_abawd_work_requirements: false
 
 # --- 273.24(c)(2): Medically certified disabled ---
@@ -163,13 +177,21 @@
 - name: Case 11, pre-HR1 homeless person exempt.
   period: 2024-01
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    is_homeless: true
-    state_code: TX
+    age:
+      2024: 30
+    weekly_hours_worked_before_lsr:
+      2024: 1
+    is_disabled:
+      2024: false
+    is_homeless:
+      2024: true
+    state_code:
+      2024: TX
     is_in_snap_abawd_waived_area: false
   output:
+    monthly_age: 30
+    snap_work_requirement_weekly_hours:
+      2024: 1
     meets_snap_abawd_work_requirements: true
 
 # --- FRA 2023 veteran exemption from September 2023 until HR1 adoption ---
@@ -177,13 +199,21 @@
 - name: Case 12, pre-HR1 veteran exempt.
   period: 2024-01
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    is_veteran: true
-    state_code: TX
+    age:
+      2024: 30
+    weekly_hours_worked_before_lsr:
+      2024: 1
+    is_disabled:
+      2024: false
+    is_veteran:
+      2024: true
+    state_code:
+      2024: TX
     is_in_snap_abawd_waived_area: false
   output:
+    monthly_age: 30
+    snap_work_requirement_weekly_hours:
+      2024: 1
     meets_snap_abawd_work_requirements: true
 
 # =====================================================
