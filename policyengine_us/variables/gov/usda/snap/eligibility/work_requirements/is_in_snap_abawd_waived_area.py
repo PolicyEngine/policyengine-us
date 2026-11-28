@@ -5,11 +5,9 @@ from policyengine_us.model_api import *
 # hr1_waiver_criteria.in_effect false, the waiver lists in effect on this day
 # stay waived. Core parameters cannot hold dates, so the instant lives here;
 # test_snap_abawd_waived_counties.py checks that it is one day before the
-# switch's first true value. It is not the "2025-06-01" pre-HR1 instant that
-# is_snap_abawd_exempt uses for the age and exemption rules, because the
-# waiver lists differ between the two dates: the Minnesota and North Dakota
-# replacement waivers took effect 2025-07-01, and the Hawaii, Massachusetts,
-# and Virginia waivers ended 2025-06-30.
+# switch's first true value. The Minnesota and North Dakota replacement
+# waivers took effect on 2025-07-01. The Hawaii, Massachusetts, and
+# Virginia waivers ended on 2025-06-30.
 PRE_HR1_WAIVER_SNAPSHOT = "2025-07-03"
 
 

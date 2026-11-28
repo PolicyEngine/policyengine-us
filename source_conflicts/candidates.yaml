@@ -18145,6 +18145,75 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+
+- id: us:snap-abawd-pre-fra-upper-age-wording
+  program: snap
+  years:
+    from: 2015
+    to: 2023
+    type: program
+    note: PolicyEngine applies the pre-FRA age threshold from January 2015 through August 2023.
+  question: Before FRA, does the statutory over-50 exception start at completed age 51 or follow the CFR's 50-or-older boundary?
+  sources:
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2015 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2015-title7/html/USCODE-2015-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2015 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2015-title7-vol4/pdf/CFR-2015-title7-vol4-sec273-24.pdf
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2016 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2016-title7/html/USCODE-2016-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2016 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2016-title7-vol4/pdf/CFR-2016-title7-vol4-sec273-24.pdf
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A) and (d)(1)(A), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2017-title7/html/USCODE-2017-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2017-title7-vol4/pdf/CFR-2017-title7-vol4-sec273-24.pdf
+  readings:
+    statute: Read age in completed years. The over-50 exception starts at age 51, consistent with the same section's over-15 work requirement starting at 16. A fractional age from 50 inclusive to 51 exclusive remains completed age 50.
+    other: The CFR exempts people age 50 or older, making the 50th birthday sufficient.
+  example: A pre-FRA person aged 50 or 50.99 with no other exemption is not age-exempt under the adopted statutory reading, while the CFR reading exempts that person. At age 51 both readings exempt the person. Veteran or homeless status alone supplies no pre-FRA exemption.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/usda/snap/work_requirements/abawd/age_threshold/pre_fra_common_exempted.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_exempt.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10858
+  state: ruled
+  note: PolicyEngine reads age in completed years from January 2015 through August 2023. We found the same age wording in the cited provisions in the 2015, 2016 and 2017 editions. People under 18 or aged 51 and older qualify by age. People aged at least 50 and under 51 do not qualify by age. Veteran, homeless or former-foster status alone supplies no pre-FRA exemption. USDA OIG favored consistent treatment of the two age clauses in finding 2. FNS defended its existing CFR interpretation and agreed to review it. PolicyEngine follows the statute for this pre-FRA ruling.
+- id: us:snap-abawd-upper-age-wording
+  program: snap
+  years:
+    from: 2023
+    to: 2026
+    type: program
+    note: FRA phases from September 2023 through each modeled HR1 transition.
+  question: For FRA-era ABAWD exceptions, does the upper-age boundary begin at the numbered birthday under USDA regulations or after the stated age under the statute?
+  sources:
+  - kind: statute
+    citation: Public Law 118-5 section 311(a)(1) and (b), 137 Stat. 36-37
+    url: https://www.govinfo.gov/content/pkg/PLAW-118publ5/pdf/PLAW-118publ5.pdf#page=28
+  - kind: rulemaking
+    citation: 89 FR 102342, age-based exception discussion and amendment to 7 CFR 273.24(c)(1), effective January 16, 2025
+    url: https://www.govinfo.gov/content/pkg/FR-2024-12-17/html/2024-29072.htm
+  readings:
+    statute: FRA uses over 51, over 53 and over 55 by fiscal year. A completed-years reading gives exemption at 52, 54 and 56 respectively.
+    other: USDA describes the FRA phases as 51, 53 and 55 or older, treating the numbered birthday as sufficient.
+  example: In June 2025 an otherwise nonexempt person with completed age 55 is exempt under the inherited agency boundary, while a completed-years statutory reading would keep that person subject through age 55.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/usda/snap/work_requirements/abawd/age_threshold/exempted.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_exempt.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10858
+  state: open
+  note: PolicyEngine uses the dated FNS age thresholds for the FRA phases and keeps the final threshold until each state adopts HR1. California uses the pre-HR1 branch through May 2026. The statute-versus-agency question for the FRA-era threshold remains open.
 - id: us-sd:cca-hourly-private-pay-cap
   program: ccdf
   years:
