@@ -1,1 +1,3 @@
-Count Railroad Retirement Act benefits as income in the state and county benefit programs whose rules name them, count pensions, retirement benefits or federal benefits, or count all income they do not exclude, and let a railroad annuity meet Maryland PAA's federal benefit test for aged, blind or disabled applicants.
+Count railroad retirement benefits in state and county benefit income totals.
+Apply program-specific rules for withholding, disability payments and retroactive lump sums.
+Accept qualifying railroad annuities for Maryland Public Assistance to Adults.
