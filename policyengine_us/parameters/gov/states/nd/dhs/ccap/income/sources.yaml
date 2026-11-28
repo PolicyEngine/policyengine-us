@@ -16,10 +16,8 @@ values:
     # Regular periodic withdrawals from annuities, pensions, and other
     # retirement plans are countable income (exclusion #8 exception).
     - pension_income
-    # NDAC 75-02-01.3-08 disregards twenty types of income, and recurring
-    # railroad retirement benefits are not one of them; exclusion #1 below
-    # reaches only retroactive lump sums.
-    - railroad_benefits
+    # North Dakota excludes nonrecurring lump sums from income.
+    - railroad_benefits_excluding_retroactive_lump_sum
     - alimony_income
     - child_support_received
 

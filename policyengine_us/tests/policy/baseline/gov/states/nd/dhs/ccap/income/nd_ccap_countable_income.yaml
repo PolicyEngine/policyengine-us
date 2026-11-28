@@ -178,3 +178,28 @@
     # 12,000 / 12 = 1,000
     nd_ccap_gross_income: 1_000
     nd_ccap_countable_income: 1_000
+
+- name: North Dakota CCAP excludes retroactive railroad lump sums from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+        railroad_benefits_retroactive_lump_sum: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    nd_ccap_gross_income: 0
+    nd_ccap_countable_income: 0

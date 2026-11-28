@@ -325,6 +325,9 @@ RAILROAD_DOLLARS = {
     "railroad_benefits_medicare_premium_withheld": TIER_1
     | {REST_TAXABLE, REST_TAX_FREE},
     "nc_tanf_countable_railroad_benefits": TIER_1 | {REST_TAXABLE, REST_TAX_FREE},
+    "railroad_benefits_retroactive_lump_sum": TIER_1 | {REST_TAXABLE, REST_TAX_FREE},
+    "railroad_benefits_excluding_retroactive_lump_sum": TIER_1
+    | {REST_TAXABLE, REST_TAX_FREE},
     "railroad_social_security_equivalent_benefits": TIER_1,
     "tax_unit_railroad_social_security_equivalent_benefits": TIER_1,
     "tax_unit_railroad_social_security_equivalent_benefits_for_taxability": {

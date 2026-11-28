@@ -85,3 +85,13 @@
     railroad_benefits: 12_000
   output:
     nd_tanf_gross_unearned_income: 1_000
+
+- name: North Dakota TANF excludes retroactive railroad lump sums from unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: ND
+    railroad_benefits: 12_000
+    railroad_benefits_retroactive_lump_sum: 12_000
+  output:
+    nd_tanf_gross_unearned_income: 0
