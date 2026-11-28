@@ -1,0 +1,1 @@
+Stopped subtracting the federal student loan interest deduction from Hawaii adjusted gross income a second time for 2021-2024; those years now use the Form N-11 Student Loan Interest Deduction Worksheet adjustment, as 2025 does.

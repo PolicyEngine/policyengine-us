@@ -1,15 +1,18 @@
 description: Hawaii begins phasing out the student loan interest deduction when modified adjusted gross income exceeds this amount, by filing status.
 
 SINGLE:
-  2025-01-01: 50_000
+  2021-01-01: 50_000
 JOINT:
-  2025-01-01: 100_000
+  2021-01-01: 100_000
 HEAD_OF_HOUSEHOLD:
-  2025-01-01: 50_000
+  2021-01-01: 50_000
 SURVIVING_SPOUSE:
+  # Worksheet line 3 for 2021-2024: $50,000 for a qualifying widow(er) /
+  # qualifying surviving spouse.
+  2021-01-01: 50_000
   2025-01-01: 100_000
 SEPARATE:
-  2025-01-01: 0
+  2021-01-01: 0
 
 metadata:
   propagate_metadata_to_children: true
@@ -21,5 +24,13 @@ metadata:
   reference:
     - title: HRS section 235-2.4 - Hawaii operative IRC provisions (sections 63 to 530)
       href: https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm
+    - title: 2021 Hawaii N-11 Instructions, Student Loan Interest Deduction Worksheet
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=34
+    - title: 2022 Hawaii N-11 Instructions, Student Loan Interest Deduction Worksheet
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=34
+    - title: 2023 Hawaii N-11 Instructions, Student Loan Interest Deduction Worksheet
+      href: https://files.hawaii.gov/tax/forms/2023/n11ins.pdf#page=34
+    - title: 2024 Hawaii N-11 Instructions, Student Loan Interest Deduction Worksheet
+      href: https://files.hawaii.gov/tax/forms/2024/n11ins.pdf#page=34
     - title: 2025 Hawaii N-11 Instructions
       href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35
