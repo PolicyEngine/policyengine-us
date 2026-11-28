@@ -29,3 +29,24 @@
         state_code: IL
   output:
     il_tanf_gross_unearned_income: 0
+
+- name: Illinois disregards a railroad disability annuity below the SSI payment level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    railroad_benefits: 1_200
+    railroad_disability_benefits: 1_200
+  output:
+    il_tanf_gross_unearned_income: 0
+
+- name: Illinois counts the regular railroad annuity and disability dollars above the SSI payment level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    railroad_benefits: 18_000
+    railroad_disability_benefits: 14_400
+  output:
+    # $1,500 - $994 = $506.
+    il_tanf_gross_unearned_income: 506
