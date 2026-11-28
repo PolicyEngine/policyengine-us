@@ -10,6 +10,14 @@ class nj_njhps_member_eligible(Variable):
     reference = (
         "https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=8",
         "https://pub.njleg.gov/bills/2020/AL20/61_.HTM",
+        # DOBI's plan year 2026 schedule, by "Federal Poverty Level Range".
+        "https://www.nj.gov/dobi/division_insurance/ihcseh/ratefilings/2027RateFilingRequirements.pdf#page=4",
+        # The 600% limit in dollars for one person: $93,900 (600% of the 2025
+        # guideline) in DOBI's July 2026 release, and $95,760 (600% of the 2026
+        # guideline) for "tax households" on Get Covered NJ during open
+        # enrollment for 2027.
+        "https://www.nj.gov/dobi/pressreleases/pr260709.html#:~:text=up%20to%20600%20percent%20of%20the%20federal%20poverty%20level",
+        "https://www.nj.gov/getcoverednj/financialhelp/premiums/#:~:text=Tax%20households%20with%20annual%20incomes",
     )
     documentation = (
         "A person is a New Jersey Health Plan Savings enrollee when they pay an "
@@ -40,8 +48,24 @@ class nj_njhps_member_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.dobi.njhps
-        # aca_magi_fraction is a TaxUnit variable read at the person level.
-        magi_fraction = person.tax_unit("aca_magi_fraction", period)
+        # DOBI's plan year 2026 schedule runs to "less than or equal to 600%
+        # FPL" ($0 "Above 600% FPL"). Test the exact ratio, not the truncated
+        # aca_magi_fraction: truncation maps 600.00%-600.99% to 6.00, which
+        # would admit incomes above 600%. The 138% floor (">=") is unaffected
+        # by truncation. Both are TaxUnit quantities read at the person level.
+        # No New Jersey source found defines the poverty line. Published dollar
+        # limits imply the guideline year, which aca_fpg matches: DOBI gave
+        # $93,900 for one person in July 2026 (600% of the 2025 guideline), and
+        # Get Covered NJ gives $95,760 during open enrollment for 2027 (600% of
+        # the 2026 guideline). Get Covered NJ applies the limit to "tax
+        # households" without defining the term or saying whether a filer who
+        # can be claimed on another return counts. Leaving that filer out, as
+        # aca_fpg does, is a modeling choice.
+        magi = max_(person.tax_unit("aca_magi", period), 0)
+        fpg = person.tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
         # pays_aca_premium is the Person-level Marketplace enrollment test:
         # TIN, immigration/lawful-presence status, no ineligible minimum
         # essential coverage, the age-based premium requirement and, since
@@ -58,5 +82,7 @@ class nj_njhps_member_eligible(Variable):
         tax_family_member = person("is_aca_tax_family_member", period)
         fstatus = person.tax_unit("filing_status", period)
         not_separate = fstatus != fstatus.possible_values.SEPARATE
-        within_band = (magi_fraction >= p.fpl_floor) & (magi_fraction <= p.fpl_limit)
+        within_band = (exact_magi_frac >= p.fpl_floor) & (
+            exact_magi_frac <= p.fpl_limit
+        )
         return pays_premium & tax_family_member & not_separate & within_band

@@ -1,21 +1,23 @@
 # Unit tests for the New Jersey Health Plan Savings (NJHPS) amount.
 #
-# All inputs (pays_aca_premium per person, aca_magi_fraction, slcsp as an annual
-# value, aca_ptc) are supplied directly so every expected value is exactly
-# hand-verifiable and independent of the rating-area premium lookup. slcsp is a
+# All inputs (pays_aca_premium per person, aca_magi against an aca_fpg pinned to
+# $10,000, slcsp as an annual value, aca_ptc) are supplied
+# directly so every expected value is exactly hand-verifiable and independent of the rating-area premium lookup. slcsp is a
 # MONTH-period variable; the amount formula annualizes it via
 # add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
 # annual total, so the values below are annual SLCSP.
 #
 # Formula (REQ-5):
 #   n            = count of nj_njhps_member_eligible members
-#   pmpm(frac)   = 20 [1.38-1.5], 40 (1.5-2.0], 50 (2.0-2.5], 100 (2.5-4.0],
-#                  50 (4.0-6.0], 0 elsewhere   [per member per month]
+#   pmpm(frac)   = 20 [1.38-1.5), 40 [1.5-2.0), 50 [2.0-2.5), 100 [2.5-4.0),
+#                  50 [4.0-6.0], 0 elsewhere   [per member per month]
 #   base_annual  = 12 * pmpm(frac) * n
 #   residual     = max(0, slcsp_annual - aca_ptc)
 #   annual       = eligible * min(base_annual, residual)
-# PMPM bracket thresholds are 1.5001 / 2.0001 / 2.5001 / 4.0001 / 6.0001, so a
-# fraction EXACTLY at a band boundary (e.g. 1.5 or 2.0) stays in the LOWER band.
+# PMPM bracket thresholds are 1.5 / 2 / 2.5 / 4 (DOBI's plan year 2026 bands,
+# "At least 150% FPL but less than 200% FPL" and so on), so a fraction EXACTLY at
+# a band boundary (e.g. 1.5 or 2.0) takes the HIGHER band. The 600% ceiling is
+# inclusive ("less than or equal to 600% FPL").
 
 # --- Each PMPM band with a positive residual (base binds) ---
 
@@ -32,7 +34,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -55,7 +58,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.8
+        aca_magi: 18_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 5_000
     households:
@@ -78,7 +82,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 4_000
     households:
@@ -101,7 +106,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 3.0
+        aca_magi: 30_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 2_000
     households:
@@ -126,7 +132,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 5.0
+        aca_magi: 50_000
+        aca_fpg: 10_000
         slcsp: 7_000
         aca_ptc: 0
     households:
@@ -136,11 +143,12 @@
   output:
     nj_njhps: 600
 
-# --- Band step boundaries (upper-inclusive; lower band wins at the exact edge) ---
+# --- Band step boundaries (lower-inclusive; higher band wins at the exact edge) ---
 
-- name: Case 6, exactly 150% FPL stays in the $20 band.
-  # frac 1.5 is NOT > 1.5001, so pmpm 20 (not 40). base = 12*20 = 240.
-  # residual = max(0, 6_000 - 5_000) = 1_000. annual = min(240, 1_000) = 240.
+- name: Case 6, exactly 150% FPL is in the $40 band.
+  # DOBI's plan year 2026 bands: "At least 150% FPL but less than 200% FPL" ->
+  # pmpm 40. base = 12*40 = 480.
+  # residual = max(0, 6_000 - 5_000) = 1_000. annual = min(480, 1_000) = 480.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -151,7 +159,32 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.5
+        aca_magi: 15_000
+        aca_fpg: 10_000
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 480
+
+- name: Case 7, just below 150% FPL stays in the $20 band.
+  # frac 1.49 < 1.5 -> pmpm 20. base = 12*20 = 240.
+  # residual = max(0, 6_000 - 5_000) = 1_000 -> annual = min(240, 1_000) = 240.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 14_999
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -161,54 +194,8 @@
   output:
     nj_njhps: 240
 
-- name: Case 7, just above 150% FPL moves to the $40 band.
-  # frac 1.51 > 1.5001 -> pmpm 40. base = 12*40 = 480.
-  # residual = max(0, 6_000 - 5_000) = 1_000 -> annual = min(480, 1_000) = 480.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        pays_aca_premium: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        aca_magi_fraction: 1.51
-        slcsp: 6_000
-        aca_ptc: 5_000
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
-  output:
-    nj_njhps: 480
-
-- name: Case 8, exactly 200% FPL stays in the $40 band.
-  # frac 2.0 is NOT > 2.0001, so pmpm 40. base = 12*40 = 480.
-  # residual = max(0, 8_000 - 5_000) = 3_000 -> annual = min(480, 3_000) = 480.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        pays_aca_premium: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        aca_magi_fraction: 2.0
-        slcsp: 8_000
-        aca_ptc: 5_000
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
-  output:
-    nj_njhps: 480
-
-- name: Case 9, just above 200% FPL moves to the $50 band.
-  # frac 2.01 > 2.0001 -> pmpm 50. base = 12*50 = 600.
+- name: Case 8, exactly 200% FPL is in the $50 band.
+  # "At least 200% FPL but less than 250% FPL" -> pmpm 50. base = 12*50 = 600.
   # residual = max(0, 8_000 - 5_000) = 3_000 -> annual = min(600, 3_000) = 600.
   period: 2026
   absolute_error_margin: 0.01
@@ -220,7 +207,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.01
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 5_000
     households:
@@ -230,9 +218,9 @@
   output:
     nj_njhps: 600
 
-- name: Case 10, exactly 250% FPL stays in the $50 band.
-  # frac 2.5 is NOT > 2.5001, so pmpm 50. base = 12*50 = 600.
-  # residual = max(0, 9_000 - 4_000) = 5_000 -> annual = min(600, 5_000) = 600.
+- name: Case 9, just below 200% FPL stays in the $40 band.
+  # frac 1.99 < 2.0 -> pmpm 40. base = 12*40 = 480.
+  # residual = max(0, 8_000 - 5_000) = 3_000 -> annual = min(480, 3_000) = 480.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -243,18 +231,19 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.5
-        slcsp: 9_000
-        aca_ptc: 4_000
+        aca_magi: 19_999
+        aca_fpg: 10_000
+        slcsp: 8_000
+        aca_ptc: 5_000
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
-    nj_njhps: 600
+    nj_njhps: 480
 
-- name: Case 11, just above 250% FPL moves to the $100 band.
-  # frac 2.51 > 2.5001 -> pmpm 100. base = 12*100 = 1_200.
+- name: Case 10, exactly 250% FPL is in the $100 band.
+  # "At least 250% FPL but less than 400% FPL" -> pmpm 100. base = 12*100 = 1_200.
   # residual = max(0, 9_000 - 4_000) = 5_000 -> annual = min(1_200, 5_000) = 1_200.
   period: 2026
   absolute_error_margin: 0.01
@@ -266,7 +255,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.51
+        aca_magi: 25_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 4_000
     households:
@@ -276,9 +266,9 @@
   output:
     nj_njhps: 1_200
 
-- name: Case 12, exactly 400% FPL stays in the $100 band.
-  # frac 4.0 is NOT > 4.0001, so pmpm 100. base = 12*100 = 1_200.
-  # residual = max(0, 10_000 - 1_000) = 9_000 -> annual = min(1_200, 9_000) = 1_200.
+- name: Case 11, just below 250% FPL stays in the $50 band.
+  # frac 2.49 < 2.5 -> pmpm 50. base = 12*50 = 600.
+  # residual = max(0, 9_000 - 4_000) = 5_000 -> annual = min(600, 5_000) = 600.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -289,32 +279,10 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.0
-        slcsp: 10_000
-        aca_ptc: 1_000
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
-  output:
-    nj_njhps: 1_200
-
-- name: Case 13, just above 400% FPL moves to the $50 band.
-  # frac 4.01 > 4.0001 -> pmpm 50. Above the APTC cliff aca_ptc is 0.
-  # base = 12*50 = 600. residual = max(0, 7_000 - 0) = 7_000 -> annual = 600.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 40
-        pays_aca_premium: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        aca_magi_fraction: 4.01
-        slcsp: 7_000
-        aca_ptc: 0
+        aca_magi: 24_999
+        aca_fpg: 10_000
+        slcsp: 9_000
+        aca_ptc: 4_000
     households:
       household:
         members: [person1]
@@ -322,8 +290,56 @@
   output:
     nj_njhps: 600
 
+- name: Case 12, exactly 400% FPL is in the $50 band.
+  # "At least 400% FPL but less than 450% FPL" -> pmpm 50. base = 12*50 = 600.
+  # residual = max(0, 10_000 - 1_000) = 9_000 -> annual = min(600, 9_000) = 600.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_000
+        aca_fpg: 10_000
+        slcsp: 10_000
+        aca_ptc: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 600
+
+- name: Case 13, just below 400% FPL stays in the $100 band.
+  # frac 3.99 < 4.0 -> pmpm 100. aca_ptc is supplied as 0.
+  # base = 12*100 = 1_200. residual = max(0, 7_000 - 0) = 7_000 -> annual = 1_200.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_999
+        aca_fpg: 10_000
+        slcsp: 7_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 1_200
+
 - name: Case 14, exactly 600% FPL stays in the $50 band.
-  # frac 6.0 is NOT > 6.0001, so pmpm 50. base = 12*50 = 600.
+  # frac 6.0 is NOT > 6.0001 (the ceiling is inclusive), so pmpm 50. base = 12*50 = 600.
   # residual = max(0, 8_000 - 0) = 8_000 -> annual = min(600, 8_000) = 600.
   period: 2026
   absolute_error_margin: 0.01
@@ -335,7 +351,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 6.0
+        aca_magi: 60_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 0
     households:
@@ -357,7 +374,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 6.01
+        aca_magi: 60_100
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 0
     households:
@@ -384,7 +402,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 3.0
+        aca_magi: 30_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 8_000
     households:
@@ -412,7 +431,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.45
+        aca_magi: 14_500
+        aca_fpg: 10_000
         slcsp: 5_100
         aca_ptc: 5_000
     households:
@@ -435,7 +455,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.45
+        aca_magi: 14_500
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -461,7 +482,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 5_000
         aca_ptc: 5_000
     households:
@@ -485,7 +507,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.3
+        aca_magi: 13_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 3_000
     households:
@@ -509,7 +532,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 0
     households:
@@ -533,7 +557,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 5_000
     households:
@@ -557,7 +582,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 5_000
     households:
@@ -588,7 +614,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -614,7 +641,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 5_600
         aca_ptc: 5_000
     households:
@@ -631,10 +659,10 @@
 # residual jumps to the full slcsp. The pmpm band ALSO steps $100 -> $50 here, so
 # the pair shows the band step and the residual-source flip together.
 
-- name: Case 26, exactly 400% FPL, $100 band, APTC-positive residual caps the base.
-  # notes: 400.0 leg of the cliff pair. frac 4.0 (NOT > 4.0001) -> pmpm 100,
-  # base = 12*100 = 1_200. aca_ptc 9_500 (still APTC-eligible at the cliff) ->
-  # residual = max(0, 10_000 - 9_500) = 500 -> annual = min(1_200, 500) = 500.
+- name: Case 26, exactly 400% FPL, $50 band, APTC-positive residual caps the base.
+  # notes: 400.0 leg of the cliff pair. "At least 400% FPL" -> pmpm 50,
+  # base = 12*50 = 600. aca_ptc 9_500 (still APTC-eligible at the cliff) ->
+  # residual = max(0, 10_000 - 9_500) = 500 -> annual = min(600, 500) = 500.
   # The post-APTC residual binds (distinct from Case 12, where the base binds).
   period: 2026
   absolute_error_margin: 0.01
@@ -646,7 +674,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.0
+        aca_magi: 40_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 9_500
     households:
@@ -657,8 +686,8 @@
     nj_njhps: 500
 
 - name: Case 27, just above 400% FPL, $50 band, APTC 0 so residual is full SLCSP.
-  # notes: 400.01 leg of the cliff pair (same slcsp 10_000 as Case 26). frac 4.01 >
-  # 4.0001 -> pmpm 50, base = 12*50 = 600. Above the 400% cliff aca_ptc 0 ->
+  # notes: 400.01 leg of the cliff pair (same slcsp 10_000 as Case 26). frac 4.01 >=
+  # 4.0 -> pmpm 50, base = 12*50 = 600. Above the 400% cliff aca_ptc 0 ->
   # residual = max(0, 10_000 - 0) = 10_000 -> annual = min(600, 10_000) = 600.
   # The residual source flips from slcsp - aptc (500 available) to full slcsp
   # (10_000 available), so the base now binds -> 600.
@@ -672,7 +701,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 0
     households:
@@ -700,7 +730,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 3.0
+        aca_magi: 30_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 8_000
     households:
@@ -728,7 +759,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 30_000
         aca_ptc: 5_000
     households:
@@ -755,7 +787,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.38
+        aca_magi: 13_800
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 3_000
     households:
@@ -783,7 +816,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        aca_fpg: 10_000
         slcsp: 5_000
         aca_ptc: 6_000
     households:
@@ -792,6 +826,30 @@
         state_code: NJ
   output:
     nj_njhps: 0
+
+- name: Case 32, $23,630.56 (150.994% of the 2025 guideline) is in the $40 band.
+  # The truncated fraction is 1.50, which is "at least 150%": pmpm 40, so
+  # base = 12*40 = 480. residual = max(0, 6_000 - 5_000) = 1_000 -> annual = 480.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_630.56
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 1.50
+    nj_njhps: 480
 
 - name: 2026 NJ joint return with one claimable spouse (the claimable spouse is the head)
   period: 2026
@@ -831,10 +889,11 @@
         state_code: NJ
   output:
     # Tax family of one: 23,475 / 15,650 = 150% FPL; aca_ptc_slcsp 6,000;
-    # aca_ptc = 6,000 - 0.0419 * 23,475 = 5,016.40.
-    # NJHPS goes to enrollees otherwise eligible for APTC: one member at
-    # $20 PMPM (138-150% FPL) = 240; nobody claimable is 110% FPL, below 138%.
-    nj_njhps: 240
+    # aca_ptc = 6,000 - 0.0419 * 23,475 = 5,016.40, leaving a residual of 983.60.
+    # NJHPS goes to enrollees otherwise eligible for APTC: one member at $40
+    # PMPM ("At least 150% FPL but less than 200% FPL") = 480. Counting the
+    # claimable spouse would put the return at 110% FPL, below the 138% floor.
+    nj_njhps: 480
 
 - name: 2026 NJ joint return with one claimable spouse (the claimable spouse is the spouse)
   period: 2026
@@ -873,7 +932,8 @@
         members: [person_b, person_a]
         state_code: NJ
   output:
-    nj_njhps: 240
+    # The same return with the roles swapped: one member at $40 PMPM = 480.
+    nj_njhps: 480
 
 - name: 2026 NJ joint return with neither spouse claimable
   period: 2026
@@ -953,4 +1013,96 @@
         state_code: NJ
   output:
     # Neither spouse is in a federal tax family.
+    nj_njhps: 0
+
+- name: Case 33, a joint return with one claimable spouse at 600% of the one-person guideline gets the $50 band.
+  # The claimable spouse is outside the section 36B tax family, so aca_fpg is
+  # the one-person guideline: 93_900 / 15_650 = 6.00, inclusive at the ceiling.
+  # One member at $50 PMPM: 12 * 50 = 600. Above 400% FPL aca_ptc is 0, so the
+  # residual is the 6,000 benchmark. New Jersey's sources don't say whether this
+  # filer counts; this pins the model's use of aca_fpg.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 93_900
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    aca_magi_fraction: 6.00
+    aca_ptc: 0
+    nj_njhps: 600
+
+- name: Case 34, the same return at 600.003% of the one-person guideline gets nothing.
+  # 93_900.47 / 15_650 = 6.00003, above the ceiling though truncated to 6.00
+  # and only 444% of the whole unit's $21,150 guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 93_900.47
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_650
+    aca_magi_fraction: 6.00
     nj_njhps: 0
