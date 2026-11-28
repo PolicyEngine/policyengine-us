@@ -1,0 +1,194 @@
+# The matrix pays the flat benefit to public housing, rent subsidy and
+# photovoltaic households. The FY2027 plan adds households with no rent or
+# mortgage expense, apart from a paid-off home where every member is elderly or
+# disabled and all income is fixed.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf
+# https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf
+
+- name: Case 1, subsidized, public-housing and net-consuming photovoltaic households are flat-rate in FY2026.
+  period: 2026
+  # In order: a rent subsidy, public housing, a photovoltaic system with net
+  # billed usage, a private renter and a home owned outright, which is not
+  # flat-rate before FY2027.
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+      person5:
+        age: 40
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        receives_housing_assistance: true
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+        hi_liheap_photovoltaic_status: PV_WITH_NET_USAGE
+      spm_unit4:
+        members: [person4]
+      spm_unit5:
+        members: [person5]
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+      household2:
+        members: [person2]
+        state_code: HI
+        is_in_public_housing: true
+      household3:
+        members: [person3]
+        state_code: HI
+      household4:
+        members: [person4]
+        state_code: HI
+        tenure_type: RENTED
+      household5:
+        members: [person5]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+  output:
+    hi_liheap_flat_rate: [true, true, true, false, false]
+
+- name: Case 2, from FY2027 a household with no rent or mortgage is flat-rate, apart from a paid-off home of elderly or disabled members on fixed income.
+  period: 2027
+  # Wages are a full-time job at Hawaii's $16 minimum wage, 16 x 2_080 = 33_280,
+  # or 15 hours a week, 16 x 15 x 52 = 12_480. Benefits are 1_300 a month.
+  # 1. A working-age household that pays no rent or mortgage: flat-rate.
+  # 2. A 70-year-old on Social Security in a paid-off home: points.
+  # 3. The same owner with wages: flat-rate.
+  # 4. The same owner living with a 40-year-old: flat-rate.
+  # 5. A 45-year-old on Social Security disability in a paid-off home: points.
+  # 6. A 55-year-old owner with the general disability flag and a private
+  #    pension, but none of the listed disability benefits: flat-rate.
+  # 7. A 70-year-old owner on a Railroad Retirement annuity: points.
+  # 8. A 70-year-old on Social Security who pays no rent and is not an owner:
+  #    flat-rate, since the exception needs a home paid in full.
+  # 9. A renter paying 12_000 a year: points.
+  # 10. An owner paying a mortgage of 12_000 a year: points.
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person2:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+      person3:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+        employment_income_before_lsr: 12_480
+      person4:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+      person5:
+        age: 40
+        ssi: 0
+      person6:
+        age: 45
+        ssi: 0
+        social_security_disability: 15_600
+      person7:
+        age: 55
+        ssi: 0
+        is_disabled: true
+        taxable_private_pension_income: 15_600
+      person8:
+        age: 70
+        ssi: 0
+        railroad_benefits: 15_600
+      person9:
+        age: 70
+        ssi: 0
+        social_security_retirement: 15_600
+      person10:
+        age: 40
+        ssi: 0
+        employment_income_before_lsr: 33_280
+        rent: 12_000
+      person11:
+        age: 40
+        ssi: 0
+        employment_income_before_lsr: 33_280
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        hi_tanf: 0
+      spm_unit4:
+        members: [person4, person5]
+        hi_tanf: 0
+      spm_unit5:
+        members: [person6]
+        hi_tanf: 0
+      spm_unit6:
+        members: [person7]
+        hi_tanf: 0
+      spm_unit7:
+        members: [person8]
+        hi_tanf: 0
+      spm_unit8:
+        members: [person9]
+        hi_tanf: 0
+      spm_unit9:
+        members: [person10]
+        hi_tanf: 0
+      spm_unit10:
+        members: [person11]
+        hi_tanf: 0
+        mortgage_payments: 12_000
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+      household2:
+        members: [person2]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household3:
+        members: [person3]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household4:
+        members: [person4, person5]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household5:
+        members: [person6]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household6:
+        members: [person7]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household7:
+        members: [person8]
+        state_code: HI
+        tenure_type: OWNED_OUTRIGHT
+      household8:
+        members: [person9]
+        state_code: HI
+      household9:
+        members: [person10]
+        state_code: HI
+      household10:
+        members: [person11]
+        state_code: HI
+  output:
+    hi_liheap_flat_rate: [true, false, true, true, false, true, false, true, false, false]

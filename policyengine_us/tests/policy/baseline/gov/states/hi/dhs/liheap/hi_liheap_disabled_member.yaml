@@ -1,0 +1,40 @@
+# The manuals define a disabled individual by receipt of SSI or Social Security
+# disability payments, or VA benefits for a 100% service-connected disability.
+# https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf
+
+- name: Case 1, each recognized disability benefit identifies a disabled member.
+  period: 2026
+  # In order: the general disability flag alone, which is not one of the listed
+  # benefits; an SSI payment; reported SSI receipt; Social Security disability;
+  # the VA 100% flag; and none of these.
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        is_disabled: true
+      person2:
+        age: 40
+        ssi: 1_200
+      person3:
+        age: 40
+        ssi: 0
+        receives_ssi:
+          2026-01: true
+      person4:
+        age: 40
+        ssi: 0
+        social_security_disability: 12_000
+      person5:
+        age: 40
+        ssi: 0
+        is_fully_disabled_service_connected_veteran: true
+      person6:
+        age: 40
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: HI
+  output:
+    hi_liheap_disabled_member: [false, true, true, true, true, false]

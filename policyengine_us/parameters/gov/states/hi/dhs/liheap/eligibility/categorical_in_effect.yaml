@@ -1,0 +1,18 @@
+description: Hawaii waives the income test for households receiving nutrition assistance, cash assistance or Supplemental Security Income when this is true under the Low Income Home Energy Assistance Program.
+# The FY2026 plan answers yes to categorical eligibility and the FY2027 plan
+# answers no. The draft FY2027 policies replace section 2.8, categorical
+# eligibility, with an income limit that every household must meet.
+values:
+  2025-10-01: true
+  2026-10-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii LIHEAP categorical eligibility in effect
+  reference:
+    - title: Hawaii FY2026 LIHEAP State Plan, section 1.4
+      href: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5
+    - title: Hawaii FY2027 LIHEAP State Plan, section 1.4
+      href: https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=5
+    - title: Hawaii FY2027 H-HEAP plan packet, draft Policies and Procedures, section 2.8
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2026/09/H-HEAP-Model-Plan-for-DHS-Website.pdf#page=63

@@ -10,6 +10,8 @@ class hi_liheap_eligible(Variable):
     reference = (
         # PDF pages 5,9,12
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5",
+        # FY2027 plan 1.4.
+        "https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=5",
         # PDF pages 1, 3
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1",
         # Draft FY2026 manual Energy Credit definition and sections 1.4, 2.1, 2.8,
@@ -22,21 +24,31 @@ class hi_liheap_eligible(Variable):
         size = spm_unit("hi_liheap_household_size", period)
         income = spm_unit("hi_liheap_countable_income", period)
         limit = spm_unit("hi_liheap_income_limit", period)
-        # Draft manual 5.5 reads "equal to or less than"; draft 2.9 and the matrix
-        # read "less than" and "below". The calculation section is followed.
-        income_eligible = income <= limit
-        # Any member's receipt qualifies. Plan vs manual: draft 2.8 and the matrix
-        # add general assistance and AABD to the plan's SNAP, SSI and TANF, and the
-        # manual is followed. AABD and the DHS-case match have no input, and SSA's
-        # independent-living certification is not read. Annual receipt stands in
-        # for the first day of the application month.
-        person = spm_unit.members
-        receives_ssi = spm_unit.any(
-            (person("ssi", period) > 0) | (add(person, period, ["receives_ssi"]) > 0)
-        )
-        categorical = receives_ssi | (
-            add(spm_unit, period, ["snap", "tanf", "general_assistance"]) > 0
-        )
+        p = parameters(period).gov.states.hi.dhs.liheap.eligibility
+        # Draft FY2026 manual 5.5 reads "equal to or less than"; draft 2.9 and the
+        # matrix read "less than" and "below". The calculation section is
+        # followed. Every FY2027 text requires income below the limit.
+        if p.income_at_limit_eligible:
+            income_eligible = income <= limit
+        else:
+            income_eligible = income < limit
+        # The FY2027 plan ends categorical eligibility from October 2026.
+        categorical = False
+        if p.categorical_in_effect:
+            # Any member's receipt qualifies. Plan vs manual: draft 2.8 and the
+            # matrix add general assistance and AABD to the plan's SNAP, SSI and
+            # TANF, and the manual is followed. AABD and the DHS-case match have
+            # no input, and SSA's independent-living certification is not read.
+            # Annual receipt stands in for the first day of the application
+            # month.
+            person = spm_unit.members
+            receives_ssi = spm_unit.any(
+                (person("ssi", period) > 0)
+                | (add(person, period, ["receives_ssi"]) > 0)
+            )
+            categorical = receives_ssi | (
+                add(spm_unit, period, ["snap", "tanf", "general_assistance"]) > 0
+            )
         # The Energy Credit goes to one gas or electricity account (draft 2.12
         # and application Q17). The model uses a gas or electric bill and a
         # known heating fuel to establish utility responsibility. Reported PV

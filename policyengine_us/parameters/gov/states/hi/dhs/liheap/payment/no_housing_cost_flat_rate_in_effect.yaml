@@ -1,0 +1,13 @@
+description: Hawaii pays its flat benefit to households with no rent or mortgage expense when this is true under the Low Income Home Energy Assistance Program.
+# The accepted FY2027 plan adds this group. The earlier FY2027 plan packet,
+# with its draft policies and benefit matrix, does not list it.
+values:
+  2025-10-01: false
+  2026-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii LIHEAP flat benefit for households with no rent or mortgage in effect
+  reference:
+    - title: "Hawaii FY2027 LIHEAP State Plan, sections 2.5 and 3.5 #page 10,13"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/HI_Plan_2027.pdf#page=10

@@ -1,0 +1,15 @@
+description: Hawaii treats a household with income equal to its income limit as income eligible when this is true under the Low Income Home Energy Assistance Program.
+# The draft FY2026 policies calculate eligibility as "equal to or less than" the
+# limit. The FY2027 income chart and draft policies require income below it.
+values:
+  2025-10-01: true
+  2026-10-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii LIHEAP income at the limit eligible
+  reference:
+    - title: Hawaii draft FY2026 Policies and Procedures, section 5.5
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=67
+    - title: "Hawaii FY2027 H-HEAP plan packet, 2027 income limits and draft Policies and Procedures, section 2.8 #page 57,63"
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2026/09/H-HEAP-Model-Plan-for-DHS-Website.pdf#page=57
