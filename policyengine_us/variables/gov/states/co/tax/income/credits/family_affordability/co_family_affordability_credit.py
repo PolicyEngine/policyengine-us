@@ -9,11 +9,16 @@ class co_family_affordability_credit(Variable):
     label = "Colorado Family Affordability Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://leg.colorado.gov/bills/hb24-1311"
+    reference = (
+        "https://leg.colorado.gov/sites/default/files/2024a_1311_signed.pdf#page=3",
+        "https://www.law.cornell.edu/uscode/text/26/152#c",
+    )
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
         age = person("age", period)
+        # The statute uses IRC 152(c) qualifying-child status, which is
+        # retained when the filer can be claimed elsewhere.
         dependent = person("is_qualifying_child_dependent", period)
         p = parameters(period).gov.states.co.tax.income.credits.family_affordability
         base_amount = p.amount * dependent
