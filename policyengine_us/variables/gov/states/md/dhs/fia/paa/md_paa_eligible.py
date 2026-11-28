@@ -17,7 +17,7 @@ class md_paa_eligible(Variable):
         # disabled and receive SSI, SSDI, or other federal cash benefit
         # on the basis of those criteria. SSI and SSDI receipt already
         # implies categorical qualification, so the aged/blind/disabled
-        # gate only applies to the broader OASI / survivor and the
+        # gate applies to non-SSDI Social Security, railroad annuities and the
         # §300.5 / COMAR 07.03.07.03(G)(1) pending-application pathway,
         # which under COMAR additionally requires DHS to verify ABD
         # status before granting interim PAA — narrower than §300.5
@@ -40,13 +40,13 @@ class md_paa_eligible(Variable):
         receives_other_oasdi_qualifying = (
             non_ssdi_oasi > 0
         ) & is_categorically_qualifying
-        # The Railroad Retirement Board pays retirement, disability and survivor
-        # annuities, each a federal benefit under (A)(2). railroad_benefits
-        # doesn't say which kind, so the same aged, blind or disabled gate
-        # applies as for non-SSDI Social Security.
+        # Maryland requires the federal payment to cover age, blindness or
+        # disability. Gross railroad benefits also include other annuities.
         receives_railroad_qualifying = (
-            person("railroad_benefits", period) > 0
-        ) & is_categorically_qualifying
+            (person("railroad_benefits", period) > 0)
+            & person("md_paa_receives_qualifying_railroad_annuity", period)
+            & is_categorically_qualifying
+        )
         pending_federal_benefit = (
             person("md_paa_pending_federal_benefit", period)
             & is_categorically_qualifying
